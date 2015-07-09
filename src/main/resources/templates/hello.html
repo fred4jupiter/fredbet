@@ -8,7 +8,7 @@
 	<div layout:fragment="content" class="container">
 		<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" />
+			<button type="submit" class="btn btn-default">Sign Out</button>
 		</form>
 	</div>
 </body>
