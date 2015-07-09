@@ -5,11 +5,13 @@
 <title>Home</title>
 </head>
 <body>
-	<h1 layout:fragment="header">Home</h1>
-	<div layout:fragment="content" class="container">
-		<h1>Welcome!</h1>
-
-        <p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>
+	<div layout:fragment="content">
+		<div class="jumbotron">
+			<h1>Welcome!</h1>
+			<p>
+				Click <a th:href="@{/hello}">here</a> to see a greeting.
+			</p>
+		</div>
 	</div>
 </body>
 </html>
