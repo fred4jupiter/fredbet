@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Spring Security Example</title>
-    </head>
-    <body>
-        <h1>Welcome!</h1>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="layout">
+<head>
+<title>Home</title>
+</head>
+<body>
+	<h1 layout:fragment="header">Home</h1>
+	<div layout:fragment="content" class="container">
+		<h1>Welcome!</h1>
 
         <p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>
-    </body>
+	</div>
+</body>
 </html>
