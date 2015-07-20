@@ -32,7 +32,8 @@
 						data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello [[${#httpServletRequest.remoteUser}]] <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" th:href="@{/logout}">Logout</a></li>
+							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();">Logout</a>
+								<form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form></li>
 						</ul></li>
 				</ul>
 			</div>

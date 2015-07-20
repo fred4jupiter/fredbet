@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title>Fredbet - Login</title>
+<title>Fredbet - Login</title>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
@@ -20,13 +20,16 @@
 				out.
 			</div>
 		</div>
-		<form th:action="@{/login}" method="post">
+		<form th:action="@{/login}" method="post">			
 			<div>
 				<div class="form-group">
 					<input type="text" name="username" placeholder="User Name" class="form-control" />
 				</div>
 				<div class="form-group">
 					<input type="password" name="password" placeholder="Password" class="form-control" />
+				</div>
+				<div class="checkbox">
+					<label><input type="checkbox" />Remember me</label>
 				</div>
 				<button type="submit" class="btn btn-success">Sign in</button>
 			</div>
