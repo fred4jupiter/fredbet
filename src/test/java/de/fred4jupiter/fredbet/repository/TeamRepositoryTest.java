@@ -1,33 +1,15 @@
 package de.fred4jupiter.fredbet.repository;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
-
-import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
-import com.lordofthejars.nosqlunit.mongodb.MongoDbRule.MongoDbRuleBuilder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.domain.Team;
 
-@ActiveProfiles("mongo-embedded")
-public class TeamRepositoryTest extends AbstractIntegrationTest {
-
-	@Rule
-	public MongoDbRule mongoDbRule = MongoDbRuleBuilder.newMongoDbRule().defaultSpringMongoDb("demo-test");
-
-	/**
-	 *
-	 * nosql-unit requirement
-	 *
-	 */
-	@Autowired
-	private ApplicationContext applicationContext;
+public class TeamRepositoryTest extends AbstractMongoEmbeddedTest {
 
 	@Autowired
 	private TeamRepository teamRepository;
