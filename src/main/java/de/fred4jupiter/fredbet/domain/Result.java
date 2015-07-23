@@ -8,25 +8,22 @@ public class Result {
 
 	@Id
 	private String id;
-	
+
 	private int goalsTeamOne;
-	
+
 	private int goalsTeamTwo;
+
+	public Result(int goalsTeamOne, int goalsTeamTwo) {
+		this.goalsTeamOne = goalsTeamOne;
+		this.goalsTeamTwo = goalsTeamTwo;
+	}
 
 	public int getGoalsTeamOne() {
 		return goalsTeamOne;
 	}
 
-	public void setGoalsTeamOne(int goalsTeamOne) {
-		this.goalsTeamOne = goalsTeamOne;
-	}
-
 	public int getGoalsTeamTwo() {
 		return goalsTeamTwo;
-	}
-
-	public void setGoalsTeamTwo(int goalsTeamTwo) {
-		this.goalsTeamTwo = goalsTeamTwo;
 	}
 
 	public String getId() {

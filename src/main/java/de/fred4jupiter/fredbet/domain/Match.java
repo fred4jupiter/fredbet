@@ -8,28 +8,39 @@ public class Match {
 
 	@Id
 	private String id;
-	
+
 	private Team teamOne;
-	
+
 	private Team teamTwo;
+
+	private Result result;
+
+	public Match(String teamNameOne, String teamNameTwo) {
+		this(new Team(teamNameOne), new Team(teamNameTwo));
+	}
+
+	public Match(Team teamOne, Team teamTwo) {
+		this.teamOne = teamOne;
+		this.teamTwo = teamTwo;
+	}
 
 	public Team getTeamOne() {
 		return teamOne;
-	}
-
-	public void setTeamOne(Team teamOne) {
-		this.teamOne = teamOne;
 	}
 
 	public Team getTeamTwo() {
 		return teamTwo;
 	}
 
-	public void setTeamTwo(Team teamTwo) {
-		this.teamTwo = teamTwo;
-	}
-
 	public String getId() {
 		return id;
+	}
+
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
 	}
 }

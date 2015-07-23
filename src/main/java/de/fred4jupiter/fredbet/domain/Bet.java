@@ -17,7 +17,19 @@ public class Bet {
 	@DBRef
 	private Match match;
 
+	private Result result;
+
 	private int points;
+
+	public Bet(String userName, Match match, Result result) {
+		this.userName = userName;
+		this.match = match;
+		this.result = result;
+	}
+
+	public Result getResult() {
+		return result;
+	}
 
 	public String getId() {
 		return id;
@@ -27,16 +39,8 @@ public class Bet {
 		return userName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
 	public Match getMatch() {
 		return match;
-	}
-
-	public void setMatch(Match match) {
-		this.match = match;
 	}
 
 	public int getPoints() {
