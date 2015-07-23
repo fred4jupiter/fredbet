@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,6 +22,7 @@ public class Bet {
 
 	private int points;
 
+	@PersistenceConstructor
 	public Bet(String userName, Match match, Result result) {
 		this.userName = userName;
 		this.match = match;

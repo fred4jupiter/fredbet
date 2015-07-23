@@ -51,6 +51,7 @@ public class DataBasePopulator {
 
 		Match match = new Match(germany, italy);
 		match.setGroup("Gruppe A");
+		match.setResult(new Result(3,2));
 		matchRepository.save(match);
 
 		Bet bet = new Bet(appUser.getUsername(), match, new Result(2,1));

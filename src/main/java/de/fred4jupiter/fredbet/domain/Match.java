@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -21,6 +22,7 @@ public class Match {
 		this(new Team(teamNameOne), new Team(teamNameTwo));
 	}
 
+	@PersistenceConstructor
 	public Match(Team teamOne, Team teamTwo) {
 		this.teamOne = teamOne;
 		this.teamTwo = teamTwo;

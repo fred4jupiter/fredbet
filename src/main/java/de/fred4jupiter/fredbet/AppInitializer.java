@@ -9,11 +9,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
 public class AppInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AppInitializer.class);
-	
+
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		ConfigurableEnvironment environment = applicationContext.getEnvironment();
-		if (environment.acceptsProfiles("dev", "default")) {
+		if (environment.acceptsProfiles("dev")) {
 			environment.addActiveProfile("demodata");
 			environment.addActiveProfile("mongo-embedded");
 			LOG.info("added active profile demodata and mongo-embedded");

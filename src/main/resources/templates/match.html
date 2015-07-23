@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Matches</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="jumbotron">
+			<p>Spielergebnisse</p>
+			<form action="#" th:action="@{/matches}" method="post">
+				<ul>
+					<li th:each="match : ${allMatches}"><input type="text" th:text="${match.teamOne.name}" th:value="${match.result.goalsTeamOne}" />
+					<input type="text" th:text="${match.teamTwo.name}" th:value="${match.result.goalsTeamTwo}" /></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
