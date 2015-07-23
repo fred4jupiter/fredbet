@@ -12,6 +12,8 @@ public class Match {
 	private Team teamOne;
 
 	private Team teamTwo;
+	
+	private String group;
 
 	private Result result;
 
@@ -42,5 +44,13 @@ public class Match {
 
 	public void setResult(Result result) {
 		this.result = result;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Error page</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="jumbotron">
+			<h2>Following error has occured:</h2>
+			<h3 th:text="${errorCode}">500</h3>
+			<p th:text="${errorMessage}">java.lang.NullPointerException</p>
+		</div>
+	</div>
+</body>
+</html>
