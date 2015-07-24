@@ -19,7 +19,7 @@
 					aria-controls="navbar">
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="home.html" th:href="@{/home}">Fredbet</a>
+				<a class="navbar-brand" href="home.html" th:href="@{/home}"><span class="glyphicon glyphicon-home"></span> Fredbet</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -30,7 +30,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}">Login</a></li>
 					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown"><a href="#" th:inline="text" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">[[${#httpServletRequest.remoteUser}]] <span
+						data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]] <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();">Logout</a>
