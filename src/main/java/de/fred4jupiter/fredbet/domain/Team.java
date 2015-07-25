@@ -54,9 +54,10 @@ public class Team {
 
 	@Override
 	public int hashCode() {
-		// you pick a hard-coded, randomly chosen, non-zero, odd number
-		// ideally different for each class
-		return new HashCodeBuilder(17, 37).append(id).append(name).toHashCode();
+		HashCodeBuilder builder = new HashCodeBuilder();
+		builder.append(id);
+		builder.append(name);
+		return builder.toHashCode();
 	}
 
 	@Override

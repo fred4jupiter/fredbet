@@ -14,7 +14,7 @@
 						<label for="match1a" th:text="${match.teamOne.name}">Deutschland</label> <span> - </span> <label for="match1b" th:text="${match.teamTwo.name}">Italien</label>
 						<input id="match1" type="text" class="form-control form-size-small" th:value="${match.result.goalsTeamOne}?: ''" />
 						<input id="match1b" type="text" class="form-control form-size-small" th:value="${match.result.goalsTeamTwo}?: ''" />
-						<a href="view.html" th:href="@{'/' + ${match.id}}">Edit</a>
+						<a href="view.html" th:href="@{'/matches/' + ${match.id}}">Edit</a>
 					</div>
 				</div>				
 			</div>

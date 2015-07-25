@@ -2,22 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Matches</title>
+<title>Spiel</title>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
 		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
-		<div class="pull-right">
-			<a th:href="@{/matches}" href="list.html"> Matches </a>
-		</div>
-		<dl>
-			<dt>ID</dt>
-			<dd id="id" th:text="${match.id}">123</dd>
-			<dt>TeamOne Name</dt>
-			<dd id="summary" th:text="${match.teamOne.name}">TeamOne Name</dd>
-			<dt>TeamTwo Name</dt>
-			<dd id="summary" th:text="${match.teamTwo.name}">TeamTwo Name</dd>
-		</dl>
+		<form id="matchesForm" th:action="@{/matches/update}" th:object="${match}" action="#" method="post" role="form">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3">
+					<div class="form-group">						
+						<label for="match1a" th:text="${match.teamOne.name}">Deutschland</label> <span> - </span> <label for="match1b" th:text="${match.teamTwo.name}">Italien</label>						
+						<input id="match1" type="text" class="form-control form-size-small" th:value="${match.result.goalsTeamOne}?: ''" />
+						<input id="match1b" type="text" class="form-control form-size-small" th:value="${match.result.goalsTeamTwo}?: ''" />
+					</div>			
+				</div>
+			</div>
+			<div class="btn-group" role="group">
+				<a href="list.html" th:href="@{/matches}" class="btn btn-info" role="button">Spiele anzeigen</a>
+				<button type="submit" class="btn btn-default">Ergebnisse aktualisieren</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>
