@@ -13,10 +13,10 @@ public class Match {
 	private Team teamOne;
 
 	private Team teamTwo;
-	
+
 	private String group;
 
-	private Result result;
+	private Result result = new Result();
 
 	public Match(String teamNameOne, String teamNameTwo) {
 		this(new Team(teamNameOne), new Team(teamNameTwo));

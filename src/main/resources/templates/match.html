@@ -6,15 +6,18 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="jumbotron">
-			<p>Spielergebnisse</p>
-			<form action="#" th:action="@{/matches}" method="post">
-				<ul>
-					<li th:each="match : ${allMatches}"><input type="text" th:text="${match.teamOne.name}" th:value="${match.result.goalsTeamOne}" />
-					<input type="text" th:text="${match.teamTwo.name}" th:value="${match.result.goalsTeamTwo}" /></li>
-				</ul>
-			</form>
-		</div>
+		<h2>Spielergebnisse</h2>
+		<form class="form-inline" role="form" action="#" th:action="@{/matches}" method="post">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3" th:each="match : ${allMatches}">
+					<div class="form-group">						
+						<label for="match1a" th:text="${match.teamOne.name}">Deutschland</label> <span> - </span> <label for="match1b" th:text="${match.teamTwo.name}">Italien</label>
+						<input id="match1" type="text" class="form-control form-size-small" th:value="${match.result.goalsTeamOne}?: ''" />
+						<input id="match1b" type="text" class="form-control form-size-small" th:value="${match.result.goalsTeamTwo}?: ''" />
+					</div>
+				</div>				
+			</div>			
+		</form>
 	</div>
 </body>
 </html>

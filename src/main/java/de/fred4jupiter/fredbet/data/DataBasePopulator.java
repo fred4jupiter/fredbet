@@ -49,12 +49,19 @@ public class DataBasePopulator {
 		AppUser appUser = new AppUser("michael", "michael", "ROLE_USER");
 		appUserRepository.save(appUser);
 
-		Match match = new Match(germany, italy);
-		match.setGroup("Gruppe A");
-		match.setResult(new Result(3,2));
-		matchRepository.save(match);
+		for (int i=0;i<12;i++) {
+			Match match = new Match(germany, italy);
+			match.setGroup("Gruppe A");
+			match.setResult(new Result(3,2));
+			matchRepository.save(match);	
+		}
+		
+		Match match2 = new Match(germany, italy);
+		match2.setGroup("Gruppe A");
+//		match2.setResult(new Result(1,4));
+		matchRepository.save(match2);	
 
-		Bet bet = new Bet(appUser.getUsername(), match, new Result(2,1));
+		Bet bet = new Bet(appUser.getUsername(), match2, new Result(2,1));
 		betRepository.save(bet);		
 	}
 }

@@ -10,16 +10,20 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
 	th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap-theme.min.css}" />
+	<link rel="stylesheet" href="../static/css/bootstrap-responsive" th:href="@{/css/bootstrap-responsive}" />
+<link rel="stylesheet" href="../static/css/custom.css" th:href="@{/css/custom.css}" />
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+					aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="home.html" th:href="@{/home}"><span class="glyphicon glyphicon-home"></span> Fredbet</a>
+				<a class="navbar-brand" href="home.html" th:href="@{/home}"><span class="glyphicon glyphicon-home"></span>
+					Fredbet</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -28,12 +32,14 @@
 					<li><a href="#matches" th:href="@{/matches}">Spiele</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}">Login</a></li>
-					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown"><a href="#" th:inline="text" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]] <span
-							class="caret"></span></a>
+					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}"><span
+							class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown"><a href="#" th:inline="text"
+						class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span
+							class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]] <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();">Logout</a>
+							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();"><span
+									class="glyphicon glyphicon-log-out"></span> Logout</a>
 								<form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form></li>
 						</ul></li>
 				</ul>
@@ -43,7 +49,9 @@
 	<div class="container" role="main">
 		<div layout:fragment="content" class="container" role="main" style="padding-top: 70px;">Content Placeholder</div>
 	</div>
-	<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js" th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-	<script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+	<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+		th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+	<script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
 </body>
 </html>

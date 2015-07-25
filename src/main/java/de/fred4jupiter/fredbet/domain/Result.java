@@ -10,21 +10,25 @@ public class Result {
 	@Id
 	private String id;
 
-	private int goalsTeamOne;
+	private Integer goalsTeamOne;
 
-	private int goalsTeamTwo;
+	private Integer goalsTeamTwo;
+	
+	public Result() {
+		
+	}
 
 	@PersistenceConstructor
-	public Result(int goalsTeamOne, int goalsTeamTwo) {
+	public Result(Integer goalsTeamOne, Integer goalsTeamTwo) {
 		this.goalsTeamOne = goalsTeamOne;
 		this.goalsTeamTwo = goalsTeamTwo;
 	}
 
-	public int getGoalsTeamOne() {
+	public Integer getGoalsTeamOne() {
 		return goalsTeamOne;
 	}
 
-	public int getGoalsTeamTwo() {
+	public Integer getGoalsTeamTwo() {
 		return goalsTeamTwo;
 	}
 
