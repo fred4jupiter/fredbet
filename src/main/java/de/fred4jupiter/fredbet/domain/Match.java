@@ -16,7 +16,13 @@ public class Match {
 
 	private String group;
 
-	private Result result = new Result();
+	private Result result;
+
+	public Match() {
+		this.teamOne = new Team();
+		this.teamTwo = new Team();
+		this.result = new Result();
+	}
 
 	public Match(String teamNameOne, String teamNameTwo) {
 		this(new Team(teamNameOne), new Team(teamNameTwo));

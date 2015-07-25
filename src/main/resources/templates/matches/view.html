@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Matches</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<div class="pull-right">
+			<a th:href="@{/matches}" href="list.html"> Matches </a>
+		</div>
+		<dl>
+			<dt>ID</dt>
+			<dd id="id" th:text="${match.id}">123</dd>
+			<dt>TeamOne Name</dt>
+			<dd id="summary" th:text="${match.teamOne.name}">TeamOne Name</dd>
+			<dt>TeamTwo Name</dt>
+			<dd id="summary" th:text="${match.teamTwo.name}">TeamTwo Name</dd>
+		</dl>
+	</div>
+</body>
+</html>

@@ -2,6 +2,8 @@ package de.fred4jupiter.fredbet.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {
 
+	private static final Logger LOG = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
+	
 	public static final String DEFAULT_ERROR_VIEW = "error";
 
 	@ExceptionHandler(value = Exception.class)
@@ -23,6 +27,8 @@ public class GlobalDefaultExceptionHandler {
 			throw e;
 		}
 
+		LOG.error(e.getMessage(), e);
+		
 		// Otherwise setup and send the user to a default error-view.
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("exception", e);
