@@ -7,19 +7,18 @@
 <body>
 	<div layout:fragment="content">
 		<h2>Spiele</h2>
-		<form class="form-inline" role="form" action="#" th:action="@{/matches}" method="post">
 			<div class="row">
 				<div class="col-sm-6 col-lg-3" th:each="match : ${allMatches}">
-					<div class="form-group">						
-						<label for="match1a" th:text="${match.teamOne.name}">Deutschland</label> <span> - </span> <label for="match1b" th:text="${match.teamTwo.name}">Italien</label>
-						<input id="match1" type="text" class="form-control form-size-small" th:value="${match.goalsTeamOne}?: ''" />
-						<input id="match1b" type="text" class="form-control form-size-small" th:value="${match.goalsTeamTwo}?: ''" />
+					<div class="panel panel-default">
+					  <div class="panel-body">
+					    <span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>
+						<span class="badge" th:text="${match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${match.goalsTeamTwo}">1</span>
 						<a href="view.html" th:href="@{'/matches/' + ${match.id}}">Edit</a>
-					</div>
+					  </div>
+					</div>					
 				</div>				
 			</div>
 			<a href="form.html" th:href="@{/matches(form)}">Spiel anlegen</a>			
-		</form>
 	</div>
 </body>
 </html>
