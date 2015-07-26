@@ -47,9 +47,10 @@ public class MatchController {
 			return new ModelAndView("matches/form", "formErrors", result.getAllErrors());
 		}
 
-		String matchId = matchService.save(matchCommand);
+		matchService.save(matchCommand);
 
-		redirect.addFlashAttribute("globalMessage", "Successfully created a new message");
-		return new ModelAndView("redirect:/matches/{matchCommand.id}", "matchCommand.id", matchId);
+		String msg = "Spiel " + matchCommand.getTeamNameOne() + " gegen " + matchCommand.getTeamNameTwo() + " angelegt!";
+		redirect.addFlashAttribute("globalMessage", msg);
+		return new ModelAndView("redirect:/matches");
 	}
 }
