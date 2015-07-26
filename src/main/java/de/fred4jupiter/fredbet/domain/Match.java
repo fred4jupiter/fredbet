@@ -20,16 +20,28 @@ public class Match {
 
 	private String group;
 
-	private Result result;
+	private Integer goalsTeamOne;
 
-	public Match() {
-		this.teamOne = new Team();
-		this.teamTwo = new Team();
-		this.result = new Result();
-	}
+	private Integer goalsTeamTwo;
 
 	public Match(String teamNameOne, String teamNameTwo) {
 		this(new Team(teamNameOne), new Team(teamNameTwo));
+	}
+
+	public Integer getGoalsTeamOne() {
+		return goalsTeamOne;
+	}
+
+	public void setGoalsTeamOne(Integer goalsTeamOne) {
+		this.goalsTeamOne = goalsTeamOne;
+	}
+
+	public Integer getGoalsTeamTwo() {
+		return goalsTeamTwo;
+	}
+
+	public void setGoalsTeamTwo(Integer goalsTeamTwo) {
+		this.goalsTeamTwo = goalsTeamTwo;
 	}
 
 	@PersistenceConstructor
@@ -54,7 +66,8 @@ public class Match {
 		builder.append(teamOne, match.teamOne);
 		builder.append(teamTwo, match.teamTwo);
 		builder.append(group, match.group);
-		builder.append(result, match.result);
+		builder.append(goalsTeamOne, match.goalsTeamOne);
+		builder.append(goalsTeamTwo, match.goalsTeamTwo);
 
 		return builder.isEquals();
 	}
@@ -66,7 +79,8 @@ public class Match {
 		builder.append(teamOne);
 		builder.append(teamTwo);
 		builder.append(group);
-		builder.append(result);
+		builder.append(goalsTeamOne);
+		builder.append(goalsTeamTwo);
 		return builder.toHashCode();
 	}
 
@@ -77,10 +91,11 @@ public class Match {
 		builder.append("teamOne", teamOne);
 		builder.append("teamTwo", teamTwo);
 		builder.append("group", group);
-		builder.append("result", result);
+		builder.append("goalsTeamOne", goalsTeamOne);
+		builder.append("goalsTeamTwo", goalsTeamTwo);
 		return builder.toString();
 	}
-	
+
 	public Team getTeamOne() {
 		return teamOne;
 	}
@@ -93,13 +108,7 @@ public class Match {
 		return id;
 	}
 
-	public Result getResult() {
-		return result;
-	}
-
-	public void setResult(Result result) {
-		this.result = result;
-	}
+	
 
 	public String getGroup() {
 		return group;

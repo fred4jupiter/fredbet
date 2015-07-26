@@ -15,37 +15,25 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.service.MatchService;
 
 @Controller
 @RequestMapping("/matches")
 public class MatchController {
 
 	@Autowired
-	private MatchRepository matchRepository;
+	private MatchService matchService;
 
 	@RequestMapping
 	public ModelAndView list() {
-		List<Match> matches = matchRepository.findAll();
+		List<Match> matches = matchService.findAll();
 		return new ModelAndView("matches/list", "allMatches", matches);
 	}
 
 	@RequestMapping("{id}")
 	public ModelAndView edit(@PathVariable("id") String matchId) {
-		Match match = matchRepository.findOne(matchId);
-		MatchCommand matchCommand = toMatchCommand(match);
-		
+		MatchCommand matchCommand = matchService.findByMatchId(matchId);
 		return new ModelAndView("matches/form", "matchCommand", matchCommand);
-	}
-
-	private MatchCommand toMatchCommand(Match match) {
-		MatchCommand matchCommand = new MatchCommand();
-		matchCommand.setMatchId(match.getId());
-		matchCommand.setTeamNameOne(match.getTeamOne().getName());
-		matchCommand.setTeamNameTwo(match.getTeamTwo().getName());
-		matchCommand.setTeamResultOne(match.getResult().getGoalsTeamOne());
-		matchCommand.setTeamResultTwo(match.getResult().getGoalsTeamTwo());
-		return matchCommand;
 	}
 
 	@RequestMapping(params = "form", method = RequestMethod.GET)
@@ -59,19 +47,9 @@ public class MatchController {
 			return new ModelAndView("matches/form", "formErrors", result.getAllErrors());
 		}
 
-		Match match = matchRepository.findOne(matchCommand.getMatchId());
-		if (match == null) {
-			match = new Match();
-		}
+		String matchId = matchService.save(matchCommand);
 
-		match.getTeamOne().setName(matchCommand.getTeamNameOne());
-		match.getTeamTwo().setName(matchCommand.getTeamNameTwo());
-		match.getResult().setGoalsTeamOne(matchCommand.getTeamResultOne());
-		match.getResult().setGoalsTeamTwo(matchCommand.getTeamResultTwo());
-
-		match = this.matchRepository.save(match);
-		matchCommand.setMatchId(match.getId());
 		redirect.addFlashAttribute("globalMessage", "Successfully created a new message");
-		return new ModelAndView("redirect:/matches/{matchCommand.id}", "matchCommand.id", matchCommand.getMatchId());
+		return new ModelAndView("redirect:/matches/{matchCommand.id}", "matchCommand.id", matchId);
 	}
 }
