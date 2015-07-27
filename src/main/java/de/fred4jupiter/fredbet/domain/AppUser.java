@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +23,7 @@ public class AppUser implements UserDetails {
 
 	private List<String> roles;
 
+	@Indexed(unique = true)
 	private String username;
 
 	private String password;
