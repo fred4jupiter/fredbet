@@ -2,19 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Matches</title>
+<title>Spiele</title>
 </head>
 <body>
 	<div layout:fragment="content">
 		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
 		<h2>Spiele</h2>
 			<div class="row">
-				<div class="col-sm-6 col-lg-3" th:each="match : ${allMatches}">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${allMatches}">
 					<div class="panel panel-default">
 					  <div class="panel-body">
 					    <span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>
 						<span class="badge" th:text="${match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${match.goalsTeamTwo}">1</span>
-						<a href="view.html" th:href="@{'/matches/' + ${match.id}}">Edit</a>
+						<div class="btn-group pull-right" role="group">
+							<a href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-sm btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#" class="btn-sm btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>	
+						</div>
 					  </div>
 					</div>					
 				</div>				
