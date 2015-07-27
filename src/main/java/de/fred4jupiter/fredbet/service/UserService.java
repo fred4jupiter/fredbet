@@ -13,7 +13,12 @@ public class UserService {
 	private AppUserRepository appUserRepository;
 
 	public AppUser createAndSaveUser(String username, String password, String... roles) {
-		AppUser appUser = new AppUser(username, password, roles);
-		return appUserRepository.save(appUser);
+		AppUser appUser = appUserRepository.findByUsername(username);
+		if (appUser == null) {
+			appUser = new AppUser(username, password, roles);
+			appUser = appUserRepository.save(appUser);
+		}
+		
+		return appUser;
 	}
 }

@@ -15,7 +15,7 @@ public class Bet {
 	@Id
 	private String id;
 
-	@Indexed(unique = true)
+	@Indexed
 	private String userName;
 
 	@DBRef

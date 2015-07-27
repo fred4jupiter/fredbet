@@ -49,7 +49,7 @@ public class MatchController {
 
 		matchService.save(matchCommand);
 
-		String msg = "Spiel " + matchCommand.getTeamNameOne() + " gegen " + matchCommand.getTeamNameTwo() + " angelegt!";
+		String msg = "Spiel " + matchCommand.getTeamNameOne() + " gegen " + matchCommand.getTeamNameTwo() + " angelegt/aktualisiert!";
 		redirect.addFlashAttribute("globalMessage", msg);
 		return new ModelAndView("redirect:/matches");
 	}
