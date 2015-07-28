@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+	<title>Navigation page</title>
+</head>
+<body>
+	<nav th:fragment="menu" class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="home.html" th:href="@{/matches}"><span class="glyphicon glyphicon-home"></span></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#" th:href="@{/home}">Home</a></li>
+					<li><a href="#hello" th:href="@{/hello}">Hello</a></li>
+					<li><a href="#matches" th:href="@{/matches}">Spiele</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}"><span
+							class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown"><a href="#" th:inline="text"
+						class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span
+							class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]] <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();"><span
+									class="glyphicon glyphicon-log-out"></span> Logout</a>
+								<form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}">
+								</form>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</body>
+</html>
