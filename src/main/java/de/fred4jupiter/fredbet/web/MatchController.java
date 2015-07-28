@@ -36,7 +36,7 @@ public class MatchController {
 		return new ModelAndView("matches/form", "matchCommand", matchCommand);
 	}
 
-	@RequestMapping(params = "form", method = RequestMethod.GET)
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createForm(@ModelAttribute MatchCommand matchCommand) {
 		return "matches/form";
 	}
