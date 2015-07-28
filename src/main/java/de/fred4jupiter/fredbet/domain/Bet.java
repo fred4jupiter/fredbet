@@ -25,7 +25,7 @@ public class Bet {
 
 	private Integer goalsTeamTwo;
 
-	private Integer points;
+	private Integer points = Integer.valueOf(0);
 
 	public boolean equals(Object obj) {
 		if (obj == null) {

@@ -18,9 +18,8 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#" th:href="@{/home}">Home</a></li>
-					<li><a href="#hello" th:href="@{/hello}">Hello</a></li>
-					<li><a href="#matches" th:href="@{/matches}">Spiele</a></li>
+					<li class="active"><a href="#matches" th:href="@{/matches}">Spiele</a></li>
+					<li><a href="#bet" th:href="@{/bet}">Meine Tipps</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}"><span

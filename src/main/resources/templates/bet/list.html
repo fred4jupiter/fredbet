@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Meine Spieletipps</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<h2>Meine Spieletipps</h2>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4" th:each="bet : ${allBets}">
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  	<div class="form-group">
+					    <span th:text="${bet.match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${bet.match.teamTwo.name}">Italien</span>
+					    <span class="badge" th:text="${bet.match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${bet.match.goalsTeamTwo}">1</span>
+					    <div class="btn-group pull-right" role="group">
+							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${bet.match.id}}" class="btn-sm btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>	
+						</div>
+				    </div>
+				    <span>getippt:</span>
+					<span class="label label-success label-as-badge" th:text="${bet.goalsTeamOne}">2</span><span> - </span><span class="label label-success label-as-badge" th:text="${bet.goalsTeamTwo}">1</span>
+					 <span>Punkte:</span>
+					<span th:text="${bet.points}">Punkte: 4</span>
+				  </div>
+				</div>					
+			</div>				
+		</div>
+	</div>
+</body>
+</html>

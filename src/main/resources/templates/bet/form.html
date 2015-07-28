@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Spieltipp</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form">			
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<input type="hidden" th:field="*{betId}" class="form-control" />
+					<input type="hidden" th:field="*{matchId}" class="form-control" />
+					<div class="form-group">
+						<span th:text="*{teamNameOne}" ></span> - <span th:text="*{teamNameTwo}"></span>
+						<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" />
+						<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" />
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Speichern</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
