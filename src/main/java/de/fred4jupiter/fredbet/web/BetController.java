@@ -22,28 +22,23 @@ public class BetController {
 
 	@Autowired
 	private BettingService bettingService;
-	
+
 	@RequestMapping
 	public ModelAndView list() {
 		List<Bet> allBets = bettingService.findAll();
 		return new ModelAndView("bet/list", "allBets", allBets);
 	}
 
-	@RequestMapping("{id}")
-	public ModelAndView edit(@PathVariable("id") String betId) {
-		BetCommand betCommand = bettingService.findByBetId(betId);
-		return new ModelAndView("bet/form", "betCommand", betCommand);
-	}
-
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
 	public ModelAndView createOrUpdate(@PathVariable("matchId") String matchId) {
 		BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
-		
+
 		return new ModelAndView("bet/form", "betCommand", betCommand);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect) {
+	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result,
+			RedirectAttributes redirect) {
 		if (result.hasErrors()) {
 			return new ModelAndView("bet/form", "formErrors", result.getAllErrors());
 		}
