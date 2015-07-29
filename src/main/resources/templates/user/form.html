@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Benutzer anlegen</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<form id="userForm" th:action="@{/user}" th:object="${userCommand}" action="#" method="post" role="form">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<input type="hidden" th:field="*{userId}" class="form-control" />
+					<div class="form-group">
+						<label for="username">Benutzername:</label> 
+						<input type="text" th:field="*{username}" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label for="password">Passwort:</label> 
+						<input type="password" th:field="*{password}" class="form-control" />
+					</div>
+					<ul>
+						<li th:each="roleCheck : ${userCommand.roleCheckList}">
+							<input type="checkbox" th:field="*{roleCheckList}" th:value="${roleCheck.role}" /> 
+							<label th:for="${#ids.prev('roleCheck')}">ROLE_USER</label>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

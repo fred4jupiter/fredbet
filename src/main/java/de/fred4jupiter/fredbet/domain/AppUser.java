@@ -78,4 +78,8 @@ public class AppUser implements UserDetails {
 		return true;
 	}
 
+	public String getRolesAsString() {
+		return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
+	}
+
 }
