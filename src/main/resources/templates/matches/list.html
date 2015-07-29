@@ -12,16 +12,14 @@
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${allMatches}">
 					<div class="panel panel-default">
 					  <div class="panel-body">
-					  	<div class="form-group">
-					  		<span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>							
-							<div class="btn-group pull-right" role="group">
-								<a href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
-								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>	
-							</div>
+					  	<span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>	
+				  		<span class="badge success" th:text="${match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${match.goalsTeamTwo}">1</span>	
+						<div class="btn-group">
+							<a href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 						</div>
-						<span class="badge success" th:text="${match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${match.goalsTeamTwo}">1</span>
 					  </div>					  
-					</div>					
+					</div>
 				</div>				
 			</div>
 			<a href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button">Spiel anlegen</a>	
