@@ -33,6 +33,7 @@ public class DataBasePopulator {
 	public void initDatabaseWithDemoData() {
 		LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
+		userService.createAndSaveUser("admin", "admin", "ROLE_USER", "ROLE_ADMIN");
 		AppUser appUser = userService.createAndSaveUser("michael", "michael", "ROLE_USER");
 
 //		for (int i = 0; i < 12; i++) {
