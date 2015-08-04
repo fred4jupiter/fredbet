@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.CollectionUtils;
 
 @Document
 public class AppUser implements UserDetails {
@@ -45,6 +46,9 @@ public class AppUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (CollectionUtils.isEmpty(roles)) {
+			return null;
+		}
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
 	}
 
@@ -79,7 +83,26 @@ public class AppUser implements UserDetails {
 	}
 
 	public String getRolesAsString() {
+		if (CollectionUtils.isEmpty(roles)) {
+			return null;
+		}
 		return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

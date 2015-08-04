@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserCommand {
 
@@ -12,23 +11,29 @@ public class UserCommand {
 
 	private String password;
 
-	private List<RoleCheck> roleCheckList = new ArrayList<>();
-	
+	private List<String> roles = new ArrayList<>();
+
+	private final List<String> availableRoles = new ArrayList<>();
+
 	public UserCommand() {
-		roleCheckList.add(new RoleCheck("ROLE_USER", false));
-		roleCheckList.add(new RoleCheck("ROLE_ADMIN", false));
+		availableRoles.add("ROLE_USER");
+		availableRoles.add("ROLE_ADMIN");
 	}
-	
+
+	public List<String> getAvailableRoles() {
+		return availableRoles;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
 	public void addRole(String role) {
-		for (RoleCheck roleCheck : roleCheckList) {
-			if (roleCheck.getRole().equals(role)) {
-				roleCheck.setEnabled(true);
-			}
-		}
-	}
-	
-	public List<String> toRoles() {
-		return roleCheckList.stream().map(roleCheck -> roleCheck.getRole()).collect(Collectors.toList());
+		roles.add(role);
 	}
 
 	public String getUserId() {
@@ -39,7 +44,6 @@ public class UserCommand {
 		this.userId = userId;
 	}
 
-	
 	public String getPassword() {
 		return password;
 	}
@@ -54,14 +58,6 @@ public class UserCommand {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public List<RoleCheck> getRoleCheckList() {
-		return roleCheckList;
-	}
-
-	public void setRoleCheckList(List<RoleCheck> roleCheckList) {
-		this.roleCheckList = roleCheckList;
 	}
 
 }

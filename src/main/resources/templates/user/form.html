@@ -20,11 +20,14 @@
 						<input type="password" th:field="*{password}" class="form-control" />
 					</div>
 					<ul>
-						<li th:each="roleCheck : ${userCommand.roleCheckList}">
-							<input type="checkbox" th:field="*{roleCheckList}" th:value="${roleCheck.role}" /> 
-							<label th:for="${#ids.prev('roleCheck')}">ROLE_USER</label>
+						<li th:each="role : ${userCommand.availableRoles}">
+							<input type="checkbox" th:field="*{roles}" th:value="${role}" /> 
+							<label th:for="${#ids.prev('roles')}" th:text="${role}">ROLE_USER</label>
 						</li>
 					</ul>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Speichern</button>
+					</div>
 				</div>
 			</div>
 		</form>

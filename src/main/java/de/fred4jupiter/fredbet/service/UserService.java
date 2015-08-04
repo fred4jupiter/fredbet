@@ -48,8 +48,12 @@ public class UserService {
 	public void save(UserCommand userCommand) {
 		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
 		if (appUser == null) {
-			appUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), userCommand.toRoles());
+			appUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), userCommand.getRoles());
 		}
+		
+		appUser.setUsername(userCommand.getUsername());
+		appUser.setPassword(userCommand.getPassword());
+		appUser.setRoles(userCommand.getRoles());
 		
 		appUserRepository.save(appUser);
 	}
