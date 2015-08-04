@@ -15,7 +15,7 @@
 					  	<span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>	
 				  		<span class="badge success" th:text="${match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${match.goalsTeamTwo}">1</span>	
 						<div class="btn-group">
-							<a href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
 							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 						</div>
 					  </div>					  

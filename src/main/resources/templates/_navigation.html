@@ -20,14 +20,14 @@
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#matches" th:href="@{/matches}">Spiele</a></li>
 					<li><a href="#bet" th:href="@{/bet}">Meine Tipps</a></li>
-					  	<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
+				  	<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}"><span
 							class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown"><a href="#" th:inline="text"
 						class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span
-							class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]] <span class="caret"></span></a>
+							class="glyphicon glyphicon-user"></span> <span sec:authentication="name">Bob</span><span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();"><span
 									class="glyphicon glyphicon-log-out"></span> Logout</a>
