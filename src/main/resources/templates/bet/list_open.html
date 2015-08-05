@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Noch nicht getippt</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<h2>Noch nicht getippt</h2>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${matchesToBet}">
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  	<div class="form-group">
+					    <span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>
+					    <div class="btn-group pull-right" role="group">
+							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>	
+						</div>
+				    </div>				    
+				  </div>
+				</div>					
+			</div>				
+		</div>
+	</div>
+</body>
+</html>

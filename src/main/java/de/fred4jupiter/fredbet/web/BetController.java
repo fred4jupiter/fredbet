@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 
 @Controller
@@ -23,10 +24,19 @@ public class BetController {
 	@Autowired
 	private BettingService bettingService;
 
+	@Autowired
+	private SecurityBean securityBean;
+
 	@RequestMapping
 	public ModelAndView list() {
 		List<Bet> allBets = bettingService.findAll();
 		return new ModelAndView("bet/list", "allBets", allBets);
+	}
+
+	@RequestMapping("/open")
+	public ModelAndView listStillOpen(RedirectAttributes redirect) {
+		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
+		return new ModelAndView("bet/list_open", "matchesToBet", matchesToBet);
 	}
 
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)

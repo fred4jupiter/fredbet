@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,6 +47,21 @@ public class BettingService {
 
 	public List<Bet> findAll() {
 		return betRepository.findAll();
+	}
+	
+	public List<Match> findMatchesToBet(String username) {
+		List<Bet> userBets = betRepository.findByUserName(username);
+		List<String> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
+		
+		List<Match> matchesToBet = new ArrayList<>();
+		List<Match> allMatches = matchRepository.findAll();
+		for (Match match : allMatches) {
+			if (!matchIds.contains(match.getId())) {
+				matchesToBet.add(match);
+			}
+		}
+		
+		return matchesToBet;
 	}
 
 	public BetCommand findByBetId(String betId) {
@@ -95,4 +112,6 @@ public class BettingService {
 		
 		return mapBetToCommand(bet);
 	}
+
+	
 }
