@@ -14,7 +14,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
-import de.fred4jupiter.fredbet.web.BetCommand;
+import de.fred4jupiter.fredbet.web.bet.BetCommand;
 
 @Service
 public class BettingService {

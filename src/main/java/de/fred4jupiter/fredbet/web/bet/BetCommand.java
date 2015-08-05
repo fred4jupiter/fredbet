@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web;
+package de.fred4jupiter.fredbet.web.bet;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

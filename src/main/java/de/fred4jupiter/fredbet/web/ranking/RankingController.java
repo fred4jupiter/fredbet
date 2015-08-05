@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web;
+package de.fred4jupiter.fredbet.web.ranking;
 
 import java.util.List;
 

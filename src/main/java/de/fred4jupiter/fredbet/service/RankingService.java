@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.repository.BetRepository;
-import de.fred4jupiter.fredbet.web.RankingCommand;
+import de.fred4jupiter.fredbet.web.ranking.RankingCommand;
 
 @Service
 public class RankingService {

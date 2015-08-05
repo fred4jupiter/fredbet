@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web;
+package de.fred4jupiter.fredbet.web.bet;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
+import de.fred4jupiter.fredbet.web.SecurityBean;
 
 @Controller
 @RequestMapping("/bet")

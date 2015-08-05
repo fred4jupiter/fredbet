@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
-import de.fred4jupiter.fredbet.web.UserCommand;
+import de.fred4jupiter.fredbet.web.user.UserCommand;
 
 @Service
 public class UserService {

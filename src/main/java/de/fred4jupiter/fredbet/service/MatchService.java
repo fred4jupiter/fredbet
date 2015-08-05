@@ -9,7 +9,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.TeamRepository;
-import de.fred4jupiter.fredbet.web.MatchCommand;
+import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Service
 public class MatchService {

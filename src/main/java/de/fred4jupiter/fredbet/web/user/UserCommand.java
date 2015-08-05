@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web;
+package de.fred4jupiter.fredbet.web.user;
 
 import java.util.ArrayList;
 import java.util.List;
