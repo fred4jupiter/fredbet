@@ -18,11 +18,11 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#matches" th:href="@{/matches}">Spiele</a></li>
-					<li><a href="#bet" th:href="@{/bet}">Meine Tipps</a></li>
-					<li><a href="#bet" th:href="@{/bet/open}">noch zu tippen</a></li>
-					<li><a href="#bet" th:href="@{/ranking}">Ranking</a></li>
-				  	<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
+					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}">Spiele</a></li>
+					<li th:class="${pageState_bet}"><a href="#bet" th:href="@{/bet}">Meine Tipps</a></li>
+					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}">noch zu tippen</a></li>
+					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}">Ranking</a></li>
+				  	<li th:class="${pageState_user}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}"><span
