@@ -13,4 +13,5 @@ public interface BetRepository extends MongoRepository<Bet, String>{
 	
 	List<Bet> findByUserName(String currentUsername);
 
+
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Ranking</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<h2>Ranking</h2>
+		<div class="row" th:each="ranking : ${rankings}">
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="panel panel-default">
+				  <div class="panel-body">
+				  	<span th:text="${ranking.username}">Fred</span> 	
+				  	<span class="badge success pull-right" th:text="${ranking.points}">0</span> 	
+				  </div>					  
+				</div>
+			</div>				
+		</div>
+	</div>
+</body>
+</html>
