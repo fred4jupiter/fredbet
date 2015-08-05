@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import de.fred4jupiter.fredbet.domain.RememberMeToken;
 
 @Repository
-public class PersistentTokenRepositoryMangoDelete implements PersistentTokenRepository {
+public class MongoDBPersistentTokenRepository implements PersistentTokenRepository {
 
 	@Autowired
 	private RememberMeTokenRepository rememberMeTokenRepository;

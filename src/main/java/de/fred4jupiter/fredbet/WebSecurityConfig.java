@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import de.fred4jupiter.fredbet.repository.PersistentTokenRepositoryMangoDelete;
+import de.fred4jupiter.fredbet.repository.MongoDBPersistentTokenRepository;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	@Autowired
-	private PersistentTokenRepositoryMangoDelete persistentTokenRepositoryMangoDelete;
+	private MongoDBPersistentTokenRepository persistentTokenRepositoryMangoDelete;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

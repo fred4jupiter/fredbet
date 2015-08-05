@@ -11,6 +11,5 @@ public interface RememberMeTokenRepository extends MongoRepository<RememberMeTok
 	RememberMeToken findBySeries(String series);
 
 	List<RememberMeToken> findByUsername(String username);
-	
 
 }
