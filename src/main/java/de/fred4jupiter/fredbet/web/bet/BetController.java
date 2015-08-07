@@ -30,7 +30,7 @@ public class BetController {
 
 	@RequestMapping
 	public ModelAndView list() {
-		List<Bet> allBets = bettingService.findAll();
+		List<Bet> allBets = bettingService.findAllByUsername(securityBean.getCurrentUserName());
 		return new ModelAndView("bet/list", "allBets", allBets);
 	}
 

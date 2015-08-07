@@ -42,6 +42,6 @@ public class DataBasePopulator {
 
 		Match match = matchService.createAndSaveMatch("Bulgarien", "Irland", 3, 5, "Gruppe A");
 
-		bettingService.createBetting(appUser, match, 2, 1);
+		bettingService.createAndSaveBetting(appUser, match, 2, 1);
 	}
 }

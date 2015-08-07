@@ -28,15 +28,15 @@ public class BettingService {
 	@Autowired
 	private BetRepository betRepository;
 
-	public void createBetting(String username, String matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
+	public void createAndSaveBetting(String username, String matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		AppUser appUser = appUserRepository.findByUsername(username);
 
 		Match match = matchRepository.findOne(matchId);
 
-		createBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
+		createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
 	}
 
-	public Bet createBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo) {
+	public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		Bet bet = new Bet();
 		bet.setGoalsTeamOne(goalsTeamOne);
 		bet.setGoalsTeamTwo(goalsTeamTwo);
@@ -45,8 +45,8 @@ public class BettingService {
 		return betRepository.save(bet);
 	}
 
-	public List<Bet> findAll() {
-		return betRepository.findAll();
+	public List<Bet> findAllByUsername(String username) {
+		return betRepository.findByUserName(username);
 	}
 	
 	public List<Match> findMatchesToBet(String username) {
