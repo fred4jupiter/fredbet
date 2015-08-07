@@ -29,7 +29,7 @@
 					</div>
 				</div>				
 			</div>
-			<a href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button">Spiel anlegen</a>	
+			<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button">Spiel anlegen</a>	
 	</div>
 </body>
 </html>

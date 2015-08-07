@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -38,6 +39,7 @@ public class MatchController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createForm(@ModelAttribute MatchCommand matchCommand) {
+		matchCommand.setKickOffDate(new Date());
 		return "matches/form";
 	}
 

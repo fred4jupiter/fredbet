@@ -83,6 +83,7 @@ public class MatchService {
 		match.setGoalsTeamTwo(matchCommand.getTeamResultTwo());
 		match.setKickOffDate(matchCommand.getKickOffDate());
 		match.setGroup(matchCommand.getGroup());
+		match.setStadium(matchCommand.getStadium());
 
 		match = this.matchRepository.save(match);
 		matchCommand.setMatchId(match.getId());
