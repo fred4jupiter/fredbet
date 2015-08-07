@@ -34,6 +34,10 @@ public class Match {
 		this.teamTwo = teamTwo;
 	}
 	
+	public boolean hasResultSet() {
+		return goalsTeamOne != null && goalsTeamTwo != null;
+	}
+	
 	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
 		this.goalsTeamOne = goalsTeamOne;
 		this.goalsTeamTwo = goalsTeamTwo;

@@ -19,6 +19,9 @@ public class MatchService {
 
 	@Autowired
 	private TeamRepository teamRepository;
+	
+	@Autowired
+	private PointsCalculationService pointsCalculationService;
 
 	public List<Match> findAll() {
 		return matchRepository.findAll();
@@ -85,6 +88,11 @@ public class MatchService {
 
 		match = this.matchRepository.save(match);
 		matchCommand.setMatchId(match.getId());
+		
+		if (match.hasResultSet()) {
+			pointsCalculationService.calculatePointsForAllBets();
+		}
+		
 		return match.getId();
 	}
 
