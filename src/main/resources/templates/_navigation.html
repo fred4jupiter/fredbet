@@ -25,15 +25,18 @@
 				  	<li th:class="${pageState_user}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li th:if="${@securityBean.isUserLoggedIn()} == false"><a href="#login" th:href="@{/login}"><span
-							class="glyphicon glyphicon-log-in"></span> Login</a></li>
-					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown"><a href="#" th:inline="text"
-						class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span
-							class="glyphicon glyphicon-user"></span> <span sec:authentication="name">Bob</span><span class="caret"></span></a>
+					<li th:if="${@securityBean.isUserLoggedIn()} == false">
+							<a href="#login" th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+					</li>
+					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown">
+						<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user"></span> <span sec:authentication="name">Bob</span><span class="caret"></span>
+                        </a>
 						<ul class="dropdown-menu">
-							<li><a href="/logout" th:href="@{#}" onclick="$('#form').submit();"><span
-									class="glyphicon glyphicon-log-out"></span> Logout</a>
-								<form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}">
+							<li>
+                                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
+                                    <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+								<form id="form" method="post" action="#" th:action="@{/logout}">
 								</form>
 							</li>
 						</ul>
