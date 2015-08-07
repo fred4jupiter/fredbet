@@ -13,7 +13,9 @@
 					<div class="panel panel-default">
 					  <div class="panel-body">
 					  	<span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>	
-				  		<span class="badge success" th:text="${match.goalsTeamOne}">2</span><span> - </span><span class="badge" th:text="${match.goalsTeamTwo}">1</span>	
+				  		<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamOne}">2</span>
+				  		<span th:if="${match.goalsTeamOne != null}"> : </span>
+			  			<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamTwo}">1</span>
 						<div class="btn-group">
 							<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
 							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>

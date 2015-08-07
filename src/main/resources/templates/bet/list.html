@@ -14,7 +14,7 @@
 				  <div class="panel-body">
 				  	<div class="form-group">
 					    <span th:text="${bet.match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${bet.match.teamTwo.name}">Italien</span>
-					    <span class="badge" th:text="${bet.match.goalsTeamOne}">2</span><span th:if="${bet.match.goalsTeamOne != null}"> - </span><span class="badge" th:text="${bet.match.goalsTeamTwo}">1</span>
+					    <span class="badge" th:text="${bet.match.goalsTeamOne}">2</span><span th:if="${bet.match.goalsTeamOne != null}"> : </span><span class="badge" th:text="${bet.match.goalsTeamTwo}">1</span>
 					    <div class="btn-group pull-right" role="group">
 							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${bet.match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>	
 						</div>

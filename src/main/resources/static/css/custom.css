@@ -4,3 +4,10 @@
 	display: inline;
 }
 
+.label-as-badge {
+	border-radius: 1em;
+}
+
+.big-badge {
+	font-size: 16px;
+}

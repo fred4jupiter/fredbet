@@ -13,7 +13,7 @@
 				<div class="panel panel-default">
 				  <div class="panel-body">
 				  	<div class="form-group">
-					    <span th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span th:text="${match.teamTwo.name}">Italien</span>
+					    <span th:text="${match.teamOne.name}">Deutschland</span> <span> : </span><span th:text="${match.teamTwo.name}">Italien</span>
 					    <div class="btn-group pull-right" role="group">
 							<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>	
 						</div>
