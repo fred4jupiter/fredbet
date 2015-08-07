@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.TeamRepository;
@@ -19,7 +20,7 @@ public class MatchService {
 
 	@Autowired
 	private TeamRepository teamRepository;
-	
+
 	@Autowired
 	private PointsCalculationService pointsCalculationService;
 
@@ -31,7 +32,7 @@ public class MatchService {
 		Match match = matchRepository.findOne(matchId);
 		return toMatchCommand(match);
 	}
-	
+
 	public Match findMatchByMatchId(String matchId) {
 		return matchRepository.findOne(matchId);
 	}
@@ -43,24 +44,19 @@ public class MatchService {
 		matchCommand.setTeamNameTwo(match.getTeamTwo().getName());
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
 		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
+		matchCommand.setKickOffDate(match.getKickOffDate());
+		matchCommand.setStadium(match.getStadium());
+		matchCommand.setGroup(match.getGroup());
 		return matchCommand;
 	}
 
-	public Match createAndSaveMatch(String teamNameOne, String teamNameTwo, Integer goalsTeamOne, Integer goalsTeamTwo) {
-		return createAndSaveMatch(teamNameOne, teamNameTwo, goalsTeamOne, goalsTeamTwo, null);
-	}
-	
-	public Match createAndSaveMatch(String teamNameOne, String teamNameTwo, Integer goalsTeamOne, Integer goalsTeamTwo, String group) {
-		Team teamOne = findOrCreate(teamNameOne);
-		Team teamTwo = findOrCreate(teamNameTwo);
-		
-		Match match = new Match(teamOne, teamTwo);
-		match.setGoalsTeamOne(goalsTeamOne);
-		match.setGoalsTeamTwo(goalsTeamTwo);
-		if (group != null) {
-			match.setGroup(group);
-		}
-		
+	public Match save(Match match) {
+		Team teamOne = findOrCreate(match.getTeamOne().getName());
+		Team teamTwo = findOrCreate(match.getTeamTwo().getName());
+
+		match.setTeamOne(teamOne);
+		match.setTeamTwo(teamTwo);
+
 		match = matchRepository.save(match);
 		return match;
 	}
@@ -77,7 +73,7 @@ public class MatchService {
 	public String save(MatchCommand matchCommand) {
 		Match match = matchRepository.findOne(matchCommand.getMatchId());
 		if (match == null) {
-			match = new Match(matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
+			match = MatchBuilder.create().withTeams(matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo()).build();
 		} else {
 			match.getTeamOne().setName(matchCommand.getTeamNameOne());
 			match.getTeamTwo().setName(matchCommand.getTeamNameTwo());
@@ -85,14 +81,16 @@ public class MatchService {
 
 		match.setGoalsTeamOne(matchCommand.getTeamResultOne());
 		match.setGoalsTeamTwo(matchCommand.getTeamResultTwo());
+		match.setKickOffDate(matchCommand.getKickOffDate());
+		match.setGroup(matchCommand.getGroup());
 
 		match = this.matchRepository.save(match);
 		matchCommand.setMatchId(match.getId());
-		
+
 		if (match.hasResultSet()) {
 			pointsCalculationService.calculatePointsForAllBets();
 		}
-		
+
 		return match.getId();
 	}
 

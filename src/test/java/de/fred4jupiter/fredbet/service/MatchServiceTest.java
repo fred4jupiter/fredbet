@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
 public class MatchServiceTest extends AbstractMongoEmbeddedTest{
 
@@ -15,8 +16,9 @@ public class MatchServiceTest extends AbstractMongoEmbeddedTest{
 	
 	@Test
 	public void createMatchAndFindAgain() {
-		Match match = matchService.createAndSaveMatch("A", "B",	1, 1);
+		Match match = MatchBuilder.create().withTeams("A", "B").withGoals(1, 1).build();
 		assertNotNull(match);
+		matchService.save(match);
 		
 		Match foundMatch = matchService.findMatchByMatchId(match.getId());
 		assertNotNull(foundMatch);

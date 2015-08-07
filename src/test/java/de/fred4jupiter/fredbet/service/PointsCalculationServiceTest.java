@@ -9,6 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PointsCalculationServiceTest {
@@ -64,8 +65,6 @@ public class PointsCalculationServiceTest {
 	}
 
 	private Match createMatch(Integer goalsTeamOne, Integer goalsTeamTwo) {
-		Match match = new Match("Deutschland", "Italien");
-		match.enterResult(goalsTeamOne, goalsTeamTwo);
-		return match;
+		return MatchBuilder.create().withTeams("Deutschland", "Italien").withGoals(goalsTeamOne, goalsTeamTwo).build();
 	}
 }

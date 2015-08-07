@@ -10,11 +10,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
 
-
 @Configuration
 @EnableMongoRepositories
-@Profile(value = {"mongo-embedded", "default"})
-public class MongoEmbeddedConfig extends AbstractMongoConfiguration{
+@Profile(value = { "mongo-embedded", "default" })
+public class MongoEmbeddedConfig extends AbstractMongoConfiguration {
 
 	private static final String MONGO_DB_NAME = "fredbet_db";
 
@@ -25,13 +24,14 @@ public class MongoEmbeddedConfig extends AbstractMongoConfiguration{
 
 	@Bean
 	@Override
-	public Mongo mongo()  {
-        return new Fongo("mongo-embedded").getMongo();
+	public Mongo mongo() {
+		return new Fongo("mongo-embedded").getMongo();
 	}
-	
+
 	@Bean
 	public MongoTemplate mongoTemplate() {
 		return new MongoTemplate(mongo(), MONGO_DB_NAME);
 	}
 
+	
 }

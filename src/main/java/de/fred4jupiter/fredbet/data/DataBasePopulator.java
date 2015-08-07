@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
+import java.time.LocalDateTime;
+
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -10,9 +12,11 @@ import org.springframework.stereotype.Component;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Component
 @Profile("demodata")
@@ -40,7 +44,10 @@ public class DataBasePopulator {
 //			matchService.createAndSaveMatch("Deutschland", "Italien", 2, 1);
 //		}
 
-		Match match = matchService.createAndSaveMatch("Bulgarien", "Irland", 3, 5, "Gruppe A");
+		Match match = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGoals(3, 5).withGroup("Gruppe A").build();
+		match.setStadium("Westfalenstadium, Dortmund");
+		match.setKickOffDate(DateUtils.toDate(LocalDateTime.now().plusMinutes(5)));
+		matchService.save(match);
 
 		bettingService.createAndSaveBetting(appUser, match, 2, 1);
 	}

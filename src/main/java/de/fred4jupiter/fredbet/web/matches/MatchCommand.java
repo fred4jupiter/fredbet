@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class MatchCommand {
 
@@ -14,6 +17,13 @@ public class MatchCommand {
 	private Integer teamResultOne;
 
 	private Integer teamResultTwo;
+	
+	private String group;
+	
+	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
+	private Date kickOffDate;
+
+	private String stadium;
 
 	public MatchCommand() {
 		super();
@@ -76,5 +86,29 @@ public class MatchCommand {
 		builder.append("teamResultOne", teamResultOne);
 		builder.append("teamResultTwo", teamResultTwo);
 		return builder.toString();
+	}
+
+	public Date getKickOffDate() {
+		return kickOffDate;
+	}
+
+	public void setKickOffDate(Date kickOffDate) {
+		this.kickOffDate = kickOffDate;
+	}
+
+	public String getStadium() {
+		return stadium;
+	}
+
+	public void setStadium(String stadium) {
+		this.stadium = stadium;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 }

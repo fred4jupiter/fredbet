@@ -1,12 +1,17 @@
 package de.fred4jupiter.fredbet.domain;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Document
 public class Match {
@@ -24,20 +29,23 @@ public class Match {
 
 	private Integer goalsTeamTwo;
 
-	public Match(String teamNameOne, String teamNameTwo) {
-		this(new Team(teamNameOne), new Team(teamNameTwo));
-	}
+	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
+	private Date kickOffDate;
 
-	@PersistenceConstructor
-	public Match(Team teamOne, Team teamTwo) {
-		this.teamOne = teamOne;
-		this.teamTwo = teamTwo;
-	}
-	
+	private String stadium;
+
 	public boolean hasResultSet() {
 		return goalsTeamOne != null && goalsTeamTwo != null;
 	}
-	
+
+	public void setTeamOne(Team teamOne) {
+		this.teamOne = teamOne;
+	}
+
+	public void setTeamTwo(Team teamTwo) {
+		this.teamTwo = teamTwo;
+	}
+
 	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
 		this.goalsTeamOne = goalsTeamOne;
 		this.goalsTeamTwo = goalsTeamTwo;
@@ -100,6 +108,8 @@ public class Match {
 		builder.append(group, match.group);
 		builder.append(goalsTeamOne, match.goalsTeamOne);
 		builder.append(goalsTeamTwo, match.goalsTeamTwo);
+		builder.append(kickOffDate, match.kickOffDate);
+		builder.append(stadium, match.stadium);
 
 		return builder.isEquals();
 	}
@@ -113,6 +123,8 @@ public class Match {
 		builder.append(group);
 		builder.append(goalsTeamOne);
 		builder.append(goalsTeamTwo);
+		builder.append(kickOffDate);
+		builder.append(stadium);
 		return builder.toHashCode();
 	}
 
@@ -125,6 +137,8 @@ public class Match {
 		builder.append("group", group);
 		builder.append("goalsTeamOne", goalsTeamOne);
 		builder.append("goalsTeamTwo", goalsTeamTwo);
+		builder.append("kickOffDate", kickOffDate);
+		builder.append("stadium", stadium);
 		return builder.toString();
 	}
 
@@ -140,11 +154,34 @@ public class Match {
 		return id;
 	}
 
+	public String getKickOffDateFormated() {
+		if (kickOffDate == null) {
+			return null;
+		}
+		return DateUtils.toLocalDateTime(kickOffDate).format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+	}
+
 	public String getGroup() {
 		return group;
 	}
 
 	public void setGroup(String group) {
 		this.group = group;
+	}
+
+	public String getStadium() {
+		return stadium;
+	}
+
+	public void setStadium(String stadium) {
+		this.stadium = stadium;
+	}
+
+	public Date getKickOffDate() {
+		return kickOffDate;
+	}
+
+	public void setKickOffDate(Date kickOffDate) {
+		this.kickOffDate = kickOffDate;
 	}
 }
