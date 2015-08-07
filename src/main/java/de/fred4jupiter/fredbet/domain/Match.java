@@ -28,6 +28,40 @@ public class Match {
 		this(new Team(teamNameOne), new Team(teamNameTwo));
 	}
 
+	@PersistenceConstructor
+	public Match(Team teamOne, Team teamTwo) {
+		this.teamOne = teamOne;
+		this.teamTwo = teamTwo;
+	}
+	
+	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
+		this.goalsTeamOne = goalsTeamOne;
+		this.goalsTeamTwo = goalsTeamTwo;
+	}
+
+	public Integer getGoalDifference() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			throw new IllegalStateException("Match has not finished! No goal results set!");
+		}
+		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
+	}
+
+	public boolean isTeamOneWinner() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			throw new IllegalStateException("Match has not finished! No goal results set!");
+		}
+
+		return goalsTeamOne.intValue() > goalsTeamTwo.intValue();
+	}
+
+	public boolean isTeamTwoWinner() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			throw new IllegalStateException("Match has not finished! No goal results set!");
+		}
+
+		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
+	}
+
 	public Integer getGoalsTeamOne() {
 		return goalsTeamOne;
 	}
@@ -42,12 +76,6 @@ public class Match {
 
 	public void setGoalsTeamTwo(Integer goalsTeamTwo) {
 		this.goalsTeamTwo = goalsTeamTwo;
-	}
-
-	@PersistenceConstructor
-	public Match(Team teamOne, Team teamTwo) {
-		this.teamOne = teamOne;
-		this.teamTwo = teamTwo;
 	}
 
 	public boolean equals(Object obj) {
@@ -107,8 +135,6 @@ public class Match {
 	public String getId() {
 		return id;
 	}
-
-	
 
 	public String getGroup() {
 		return group;

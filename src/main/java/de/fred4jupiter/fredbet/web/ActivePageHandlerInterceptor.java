@@ -16,7 +16,7 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
 			throws Exception {
 		String requestURI = request.getRequestURI();
-		LOG.info("requestURI: " + requestURI);
+		LOG.debug("requestURI: " + requestURI);
 
 		if (requestURI.contains("matches")) {
 			addStateAttributeFor("matches", modelAndView);

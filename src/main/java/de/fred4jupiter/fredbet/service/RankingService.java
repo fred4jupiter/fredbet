@@ -21,7 +21,7 @@ public class RankingService {
 	public List<RankingCommand> calculateCurrentRanking() {
 		List<Bet> bets = betRepository.findAll(new Sort(Direction.DESC, "points"));
 		
-		List<RankingCommand> rankingList = new ArrayList<>();
+		final List<RankingCommand> rankingList = new ArrayList<>();
 		for (Bet bet : bets) {
 			rankingList.add(new RankingCommand(bet.getUserName(), bet.getPoints()));
 		}

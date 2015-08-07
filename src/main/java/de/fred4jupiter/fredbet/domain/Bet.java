@@ -27,6 +27,29 @@ public class Bet {
 
 	private Integer points = Integer.valueOf(0);
 
+	public Integer getGoalDifference() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			throw new IllegalStateException("Bet not finished! No goal bets set!");
+		}
+		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
+	}
+	
+	public boolean isTeamOneWinner() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			throw new IllegalStateException("Bet not finished! No goal bets set!");
+		}
+		
+		return goalsTeamOne.intValue() > goalsTeamTwo.intValue();
+	}
+	
+	public boolean isTeamTwoWinner() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			throw new IllegalStateException("Bet not finished! No goal bets set!");
+		}
+		
+		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
+	}
+	
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
