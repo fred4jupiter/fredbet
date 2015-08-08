@@ -17,7 +17,7 @@
 							  		<span class="bold" th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span class="bold" th:text="${match.teamTwo.name}">Italien</span>
 									<br/>
 									<span th:text="${#dates.format(match.kickOffDate, 'E dd.MM.yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/> 
-									<span th:text="${match.stadium}">Statium</span>							  		
+									<span th:text="${match.stadium}">Stadium</span>							  		
 					  			</div>
 					  			<div class="col-xs-2 vcenter">
 					  				<span class="label label-warning label-as-badge big-badge">1</span>
@@ -36,7 +36,7 @@
 					  			</div>  			
 					  			<div class="col-xs-5">
 						  			<div class="btn-group pull-right">
-		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>								
+		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn btn-info" role="button" title="Spiel ändern"><span class="glyphicon glyphicon-pencil"></span></a>								
 										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 		       						</div>
 	       						</div>
