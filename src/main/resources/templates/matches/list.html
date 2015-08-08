@@ -12,20 +12,46 @@
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${allMatches}">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<span class="bold" th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span class="bold" th:text="${match.teamTwo.name}">Italien</span>
-							<br/>
-							<span th:text="${match.kickOffDateFormated}">04.08.2015, 19:15 Uhr</span>, 
-							<span th:text="${match.stadium}">Statium</span>	
+							<div class="row">
+								<div class="col-xs-10">
+							  		<span class="bold" th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span class="bold" th:text="${match.teamTwo.name}">Italien</span>
+									<br/>
+									<span th:text="${match.kickOffDateFormated}">04.08.2015, 19:15 Uhr</span><br/> 
+									<span th:text="${match.stadium}">Statium</span>							  		
+					  			</div>
+					  			<div class="col-xs-2 vcenter">
+					  				<span class="label label-warning label-as-badge big-badge">1</span>
+					  			</div>
+				  			</div>				  									
 						</div>
-						<div class="panel-body">		
-					  		<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamOne}">2</span>
-					  		<span th:if="${match.goalsTeamOne != null}"> : </span>
-				  			<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamTwo}">1</span>
-							<div class="btn-group pull-right">
-								<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
-								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn-lg btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
-							</div>						
-					  </div>					  
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-xs-3">
+							  		<span>Ergebnis:</span>							  		
+					  			</div>					
+					  			<div class="col-xs-4">
+					  				<span class="label label-info label-as-badge big-badge" th:text="${match.goalsTeamOne}">2</span>
+							  		<span th:if="${match.goalsTeamOne != null}"> : </span>
+						  			<span class="label label-info label-as-badge big-badge" th:text="${match.goalsTeamTwo}">1</span>
+					  			</div>  			
+					  			<div class="col-xs-5">
+						  			<div class="btn-group pull-right">
+		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>								
+										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
+		       						</div>
+	       						</div>
+       						</div>
+       						<div class="row">
+       							<div class="col-xs-3">
+							  		<span>getippt:</span>							  		
+					  			</div>					
+					  			<div class="col-xs-4">
+					  				<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamOne}">2</span>
+							  		<span th:if="${match.goalsTeamOne != null}"> : </span>
+						  			<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamTwo}">1</span>
+					  			</div>  		
+       						</div>
+					   </div>					   
 					</div>
 				</div>				
 			</div>
