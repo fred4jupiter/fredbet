@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.domain;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -10,8 +9,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Document
 public class Match {
@@ -152,13 +149,6 @@ public class Match {
 
 	public String getId() {
 		return id;
-	}
-
-	public String getKickOffDateFormated() {
-		if (kickOffDate == null) {
-			return null;
-		}
-		return DateUtils.toLocalDateTime(kickOffDate).format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
 	}
 
 	public String getGroup() {

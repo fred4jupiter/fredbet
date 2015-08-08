@@ -13,7 +13,7 @@
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
 					<div class="form-group">
 						<label for="teamNameOne">Team One Name</label> 
-						<input type="text" th:field="*{teamNameOne}" class="form-control" />						
+						<input type="text" th:field="*{teamNameOne}" class="form-control" required="required"/>						
 					</div>
 					<div class="form-group">
 						<label for="teamResultOne">Team One Goals</label>
@@ -21,7 +21,7 @@
 					</div>
 					<div class="form-group">
 						<label for="teamNameTwo">Team Two Name</label> 
-						<input type="text" th:field="*{teamNameTwo}" class="form-control" />						
+						<input type="text" th:field="*{teamNameTwo}" class="form-control" required="required"/>						
 					</div>
 					<div class="form-group">
 						<label for="teamResultTwo">Team Two Goals</label>
@@ -29,7 +29,7 @@
 					</div>
 					<div class="form-group">
 						<label for="teamResultTwo">Anstoss:</label>
-						<input type="text" th:field="*{kickOffDate}" class="form-control" th:value="${#dates.format(matchCommand.kickOffDate, 'dd.MM.yyyy HH:mm')}"/>
+						<input type="text" th:field="*{kickOffDate}" class="form-control" th:value="${#dates.format(matchCommand.kickOffDate, 'dd.MM.yyyy HH:mm')}" required="required"/>
 					</div>
 					<div class="form-group">
 						<label for="teamResultTwo">Stadium:</label>
@@ -37,7 +37,7 @@
 					</div>
 					<div class="form-group">
 						<label for="teamResultTwo">Gruppe:</label>
-						<input type="text" th:field="*{group}" class="form-control"/>
+						<input type="text" th:field="*{group}" class="form-control" required="required"/>
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">Speichern</button>
