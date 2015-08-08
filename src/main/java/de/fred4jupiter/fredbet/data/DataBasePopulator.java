@@ -38,7 +38,7 @@ public class DataBasePopulator {
 		LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
 		userService.createAndSaveUser("admin", "admin", "ROLE_USER", "ROLE_ADMIN");
-		AppUser appUser = userService.createAndSaveUser("michael", "michael", "ROLE_USER");
+		userService.createAndSaveUser("michael", "michael", "ROLE_USER");
 
 //		for (int i = 0; i < 12; i++) {
 //			matchService.createAndSaveMatch("Deutschland", "Italien", 2, 1);
@@ -49,6 +49,5 @@ public class DataBasePopulator {
 		match.setKickOffDate(DateUtils.toDate(LocalDateTime.now().plusMinutes(5)));
 		matchService.save(match);
 
-		bettingService.createAndSaveBetting(appUser, match, 2, 1);
 	}
 }
