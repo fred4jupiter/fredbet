@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web.matches;
+	package de.fred4jupiter.fredbet.web.matches;
 
 import java.util.Date;
 
@@ -17,13 +17,19 @@ public class MatchCommand {
 	private Integer teamResultOne;
 
 	private Integer teamResultTwo;
-	
+
 	private String group;
-	
+
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
 	private Date kickOffDate;
 
 	private String stadium;
+
+	private Integer userBetGoalsTeamOne;
+
+	private Integer userBetGoalsTeamTwo;
+
+	private Integer points;
 
 	public MatchCommand() {
 		super();
@@ -37,6 +43,10 @@ public class MatchCommand {
 		this.teamResultTwo = teamResultTwo;
 	}
 
+	public boolean hasMatchFinished() {
+		return teamResultOne != null && teamResultTwo != null;
+	}
+	
 	public String getTeamNameOne() {
 		return teamNameOne;
 	}
@@ -76,7 +86,7 @@ public class MatchCommand {
 	public void setMatchId(String matchId) {
 		this.matchId = matchId;
 	}
-	
+
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
@@ -110,5 +120,29 @@ public class MatchCommand {
 
 	public void setGroup(String group) {
 		this.group = group;
+	}
+
+	public Integer getUserBetGoalsTeamOne() {
+		return userBetGoalsTeamOne;
+	}
+
+	public void setUserBetGoalsTeamOne(Integer userBetgoalsTeamOne) {
+		this.userBetGoalsTeamOne = userBetgoalsTeamOne;
+	}
+
+	public Integer getUserBetGoalsTeamTwo() {
+		return userBetGoalsTeamTwo;
+	}
+
+	public void setUserBetGoalsTeamTwo(Integer userBetGoalsTeamTwo) {
+		this.userBetGoalsTeamTwo = userBetGoalsTeamTwo;
+	}
+
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
 	}
 }

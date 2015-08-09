@@ -58,6 +58,6 @@ public class BetController {
 
 		String msg = "Tippspiel angelegt/aktualisiert!";
 		redirect.addFlashAttribute("globalMessage", msg);
-		return new ModelAndView("redirect:/bet");
+		return new ModelAndView("redirect:/matches");
 	}
 }

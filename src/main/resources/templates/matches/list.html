@@ -9,18 +9,18 @@
 		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
 		<h2>Spiele</h2>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${allMatches}">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-10">
-							  		<span class="bold" th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span class="bold" th:text="${match.teamTwo.name}">Italien</span>
+							  		<span class="bold" th:text="${matchCommand.teamNameOne}">Deutschland</span> <span> - </span><span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
 									<br/>
-									<span th:text="${#dates.format(match.kickOffDate, 'E dd.MM.yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/> 
-									<span th:text="${match.stadium}">Stadium</span>							  		
+									<span th:text="${#dates.format(matchCommand.kickOffDate, 'E dd.MM.yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/> 
+									<span th:text="${matchCommand.stadium}">Stadium</span>							  		
 					  			</div>
 					  			<div class="col-xs-2 vcenter">
-					  				<span class="label label-warning label-as-badge big-badge">1</span>
+					  				<span class="label label-warning label-as-badge big-badge" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}">1</span>
 					  			</div>
 				  			</div>				  									
 						</div>
@@ -30,14 +30,14 @@
 							  		<span>Ergebnis:</span>							  		
 					  			</div>					
 					  			<div class="col-xs-4">
-					  				<span class="label label-info label-as-badge big-badge" th:text="${match.goalsTeamOne}">2</span>
-							  		<span th:if="${match.goalsTeamOne != null}"> : </span>
-						  			<span class="label label-info label-as-badge big-badge" th:text="${match.goalsTeamTwo}">1</span>
+					  				<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultOne}">2</span>
+							  		<span th:if="${matchCommand.teamResultOne != null}"> : </span>
+						  			<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultTwo}">1</span>
 					  			</div>  			
 					  			<div class="col-xs-5">
 						  			<div class="btn-group pull-right">
-		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${match.id}}" class="btn btn-info" role="button" title="Spiel ändern"><span class="glyphicon glyphicon-pencil"></span></a>								
-										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
+		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Spiel ändern"><span class="glyphicon glyphicon-pencil"></span></a>								
+										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 		       						</div>
 	       						</div>
        						</div>
@@ -46,9 +46,9 @@
 							  		<span>getippt:</span>							  		
 					  			</div>					
 					  			<div class="col-xs-4">
-					  				<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamOne}">2</span>
-							  		<span th:if="${match.goalsTeamOne != null}"> : </span>
-						  			<span class="label label-success label-as-badge big-badge" th:text="${match.goalsTeamTwo}">1</span>
+					  				<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamOne}">2</span>
+							  		<span th:if="${matchCommand.userBetGoalsTeamOne != null}"> : </span>
+						  			<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamTwo}">1</span>
 					  			</div>  		
        						</div>
 					   </div>					   

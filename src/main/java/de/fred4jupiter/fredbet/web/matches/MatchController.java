@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.web.SecurityBean;
 
 @Controller
 @RequestMapping("/matches")
@@ -24,10 +24,13 @@ public class MatchController {
 
 	@Autowired
 	private MatchService matchService;
+	
+	@Autowired
+	private SecurityBean securityBean;
 
 	@RequestMapping
 	public ModelAndView list() {
-		List<Match> matches = matchService.findAll();
+		List<MatchCommand> matches = matchService.findAllMatches(securityBean.getCurrentUserName());
 		return new ModelAndView("matches/list", "allMatches", matches);
 	}
 
