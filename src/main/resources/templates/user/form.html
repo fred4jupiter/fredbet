@@ -19,8 +19,8 @@
 						<label for="password">Passwort:</label> 
 						<input type="password" th:field="*{password}" class="form-control" />
 					</div>
-					<ul>
-						<li th:each="role : ${userCommand.availableRoles}">
+					<ul class="list-group">
+						<li class="list-group-item" th:each="role : ${userCommand.availableRoles}">
 							<input type="checkbox" th:field="*{roles}" th:value="${role}" /> 
 							<label th:for="${#ids.prev('roles')}" th:text="${role}">ROLE_USER</label>
 						</li>

@@ -21,3 +21,7 @@
 	vertical-align: middle;
 	float: none;
 }
+
+.list-group-item {
+	background-color: mediumturquoise;
+}
