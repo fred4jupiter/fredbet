@@ -1,10 +1,13 @@
 	package de.fred4jupiter.fredbet.web.matches;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 public class MatchCommand {
 
@@ -43,6 +46,11 @@ public class MatchCommand {
 		this.teamResultTwo = teamResultTwo;
 	}
 
+	public boolean hasMatchStarted() {
+		LocalDateTime kickOffLocalDateTime = DateUtils.toLocalDateTime(kickOffDate);
+		return LocalDateTime.now().isAfter(kickOffLocalDateTime);
+	}
+	
 	public boolean hasMatchFinished() {
 		return teamResultOne != null && teamResultTwo != null;
 	}

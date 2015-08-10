@@ -21,7 +21,7 @@
 				  			</div>		
 				  			<div class="col-xs-2">
 					  			<div class="btn-group pull-right">
-									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
+									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" th:classappend="${match.hasStarted()}? 'disabled'" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 	       						</div>
        						</div>
       					</div>

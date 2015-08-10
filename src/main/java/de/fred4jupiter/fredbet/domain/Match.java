@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Document
 public class Match {
@@ -33,6 +36,11 @@ public class Match {
 
 	public boolean hasResultSet() {
 		return goalsTeamOne != null && goalsTeamTwo != null;
+	}
+	
+	public boolean hasStarted() {
+		LocalDateTime kickOffLocalDateTime = DateUtils.toLocalDateTime(kickOffDate);
+		return LocalDateTime.now().isAfter(kickOffLocalDateTime);
 	}
 
 	public void setTeamOne(Team teamOne) {

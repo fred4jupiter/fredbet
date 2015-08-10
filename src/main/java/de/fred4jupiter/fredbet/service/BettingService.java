@@ -48,11 +48,11 @@ public class BettingService {
 	public List<Bet> findAllByUsername(String username) {
 		return betRepository.findByUserName(username);
 	}
-	
+
 	public List<Match> findMatchesToBet(String username) {
 		List<Bet> userBets = betRepository.findByUserName(username);
 		List<String> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
-		
+
 		List<Match> matchesToBet = new ArrayList<>();
 		List<Match> allMatches = matchRepository.findAll();
 		for (Match match : allMatches) {
@@ -60,7 +60,7 @@ public class BettingService {
 				matchesToBet.add(match);
 			}
 		}
-		
+
 		return matchesToBet;
 	}
 
@@ -82,17 +82,21 @@ public class BettingService {
 	}
 
 	public String save(BetCommand betCommand) {
+		Match match = matchRepository.findOne(betCommand.getMatchId());
+		if (match.hasStarted()) {
+			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
+		}
+
 		Bet bet = betRepository.findOne(betCommand.getBetId());
 		if (bet == null) {
 			bet = new Bet();
 		}
-		Match match = matchRepository.findOne(betCommand.getMatchId());
-		
+
 		bet.setMatch(match);
 		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
 		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
 		bet.setUserName(getCurrentUsername());
-		
+
 		bet = betRepository.save(bet);
 		return bet.getId();
 	}
@@ -109,9 +113,8 @@ public class BettingService {
 			bet.setMatch(match);
 			bet.setUserName(getCurrentUsername());
 		}
-		
+
 		return mapBetToCommand(bet);
 	}
 
-	
 }

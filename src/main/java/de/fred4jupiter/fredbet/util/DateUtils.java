@@ -8,7 +8,7 @@ import java.util.Date;
 public final class DateUtils {
 
 	private DateUtils() {
-		
+		// only static methods
 	}
 	
 	public static LocalDateTime toLocalDateTime(Date date) {

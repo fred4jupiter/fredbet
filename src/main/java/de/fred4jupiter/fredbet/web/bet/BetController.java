@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
+import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.web.SecurityBean;
 
 @Controller
@@ -48,16 +49,20 @@ public class BetController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result,
-			RedirectAttributes redirect) {
+	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect) {
 		if (result.hasErrors()) {
 			return new ModelAndView("bet/form", "formErrors", result.getAllErrors());
 		}
 
-		bettingService.save(betCommand);
+		try {
+			bettingService.save(betCommand);
+			String msg = "Tippspiel angelegt/aktualisiert!";
+			redirect.addFlashAttribute("globalMessage", msg);
+		} catch (NoBettingAfterMatchStartedAllowedException e) {
+			String msg = "Das Spiel hat bereits begonnen! Keine Tippabgabe mehr möglich!";
+			redirect.addFlashAttribute("globalMessage", msg);
+		}
 
-		String msg = "Tippspiel angelegt/aktualisiert!";
-		redirect.addFlashAttribute("globalMessage", msg);
 		return new ModelAndView("redirect:/matches");
 	}
 }
