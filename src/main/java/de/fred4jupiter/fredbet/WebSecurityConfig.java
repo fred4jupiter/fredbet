@@ -15,6 +15,8 @@ import de.fred4jupiter.fredbet.repository.MongoDBPersistentTokenRepository;
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60; // 24 Stunden
+	
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -24,12 +26,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/home", "/webjars/**", "/login", "/logout", "/static/**").permitAll();
+		http.authorizeRequests().antMatchers("/user/**").hasAnyRole(FredBetRole.ADMIN.name());
 		http.authorizeRequests().anyRequest().authenticated();
+		
 		http.formLogin().loginPage("/login").permitAll();
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID").permitAll();
-		int validityInSec = 86400; // 24 Stunden
-		http.rememberMe().tokenRepository(persistentTokenRepositoryMangoDelete).tokenValiditySeconds(validityInSec);
+		http.rememberMe().tokenRepository(persistentTokenRepositoryMangoDelete).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 	}
 
 	@Autowired
