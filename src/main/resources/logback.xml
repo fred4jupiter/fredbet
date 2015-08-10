@@ -8,7 +8,7 @@
 
 	<logger name="org.springframework" level="INFO" />
 	
-	<logger name="org.springframework.security" level="DEBUG" />
+	<logger name="org.springframework.security" level="INFO" />
 
 	<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
 	

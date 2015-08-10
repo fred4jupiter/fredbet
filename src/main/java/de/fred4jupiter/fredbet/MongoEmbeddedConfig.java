@@ -25,7 +25,7 @@ public class MongoEmbeddedConfig extends AbstractMongoConfiguration {
 	@Bean
 	@Override
 	public Mongo mongo() {
-		return new Fongo("mongo-embedded").getMongo();
+		return new Fongo(MONGO_DB_NAME).getMongo();
 	}
 
 	@Bean
