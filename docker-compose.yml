@@ -1,0 +1,19 @@
+wp:
+  image: oskarhane/wordpress
+links:
+  - mysql:mysql
+ports:
+  - "80"
+volumes_from:
+  - paasdata
+
+mysql:
+    image: mysql
+    volumes_from:
+    - paasdata
+    environment:
+    - MYSQL_ROOT_PASSWORD=myrootpass
+
+paasdata:
+    image: oskarhane/data
+    command: tail -f /dev/null
