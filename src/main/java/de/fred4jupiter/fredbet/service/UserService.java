@@ -3,6 +3,8 @@ package de.fred4jupiter.fredbet.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,7 @@ public class UserService {
 	}
 
 	public List<AppUser> findAll() {
-		return appUserRepository.findAll();
+		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
 	}
 
 	public UserCommand findByUserId(String userId) {
