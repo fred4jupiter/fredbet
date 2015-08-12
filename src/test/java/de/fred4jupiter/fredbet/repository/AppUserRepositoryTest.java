@@ -8,17 +8,18 @@ import static org.junit.Assert.*;
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 
-public class AppUserRepositoryTest extends AbstractMongoEmbeddedTest{
+public class AppUserRepositoryTest extends AbstractMongoEmbeddedTest {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
-	
+
 	@Test
 	public void saveAppUser() {
-		AppUser appUser = new AppUser("michael", "michael", "ROLE_USER");
+		final String username = "robert";
+		AppUser appUser = new AppUser(username, username, "ROLE_USER");
 		appUser = appUserRepository.save(appUser);
 		assertNotNull(appUser.getId());
-		
+
 		AppUser foundAppUser = appUserRepository.findOne(appUser.getId());
 		assertNotNull(foundAppUser);
 		assertEquals(appUser.getUsername(), foundAppUser.getUsername());

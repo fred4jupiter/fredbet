@@ -16,6 +16,6 @@ public class InitialUserPopulator {
 	@PostConstruct
 	public void createInitialUsers() {
 		userService.createAndSaveUser("admin", "admin", "ROLE_USER", "ROLE_ADMIN");
-		userService.createAndSaveUser("michael", "michael", "ROLE_USER");
+		userService.createAndSaveUser("test", "test", "ROLE_USER");
 	}
 }
