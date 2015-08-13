@@ -10,7 +10,7 @@ mongodb:
   image: mongo
   command: "mongod --smallfiles"
   volumes:
-  - /var/lib/mongodb:/data/db 
+  - /var/lib/mongodb/fredbet/test:/data/db 
   ports:
   - "27017:27017"
   - "28017:28017"
@@ -23,7 +23,7 @@ fredbet:
   links:
     - mongodb
   ports:
-    - "8080:8080"
+    - "8180:8080"
   environment:
    - spring.profiles.active=test
  
