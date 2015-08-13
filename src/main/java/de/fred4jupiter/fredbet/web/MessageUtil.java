@@ -15,11 +15,11 @@ public class MessageUtil {
 	}
 
 	public void addWarnMsg(RedirectAttributes redirect, String text) {
-		addMessage(redirect, "alert-success",text);
+		addMessage(redirect, "alert-warning",text);
 	}
 
 	public void addErrorMsg(RedirectAttributes redirect, String text) {
-		addMessage(redirect, "alert-success",text);
+		addMessage(redirect, "alert-danger",text);
 	}
 
 	public static final class WebMessage {
