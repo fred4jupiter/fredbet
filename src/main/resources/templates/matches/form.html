@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div class="alert alert-success" th:if="${globalMessage}" th:text="${globalMessage}">Some Success message</div>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
 		<form id="matchesForm" th:action="@{/matches}" th:object="${matchCommand}" action="#" method="post" role="form">			
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">

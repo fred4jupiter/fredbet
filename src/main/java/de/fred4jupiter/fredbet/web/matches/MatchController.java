@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.SecurityBean;
 
 @Controller
@@ -27,6 +28,9 @@ public class MatchController {
 	
 	@Autowired
 	private SecurityBean securityBean;
+	
+	@Autowired
+	private MessageUtil messageUtil;
 
 	@RequestMapping
 	public ModelAndView list() {
@@ -55,7 +59,7 @@ public class MatchController {
 		matchService.save(matchCommand);
 
 		String msg = "Spiel " + matchCommand.getTeamNameOne() + " gegen " + matchCommand.getTeamNameTwo() + " angelegt/aktualisiert!";
-		redirect.addFlashAttribute("globalMessage", msg);
+		messageUtil.addInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/matches");
 	}
 }

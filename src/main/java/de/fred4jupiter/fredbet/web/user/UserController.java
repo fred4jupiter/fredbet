@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -23,6 +24,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MessageUtil messageUtil;
 	
 	@RequestMapping
 	public ModelAndView list() {
@@ -50,7 +54,7 @@ public class UserController {
 		userService.save(userCommand);
 
 		String msg = "Benutzer " + userCommand.getUsername() + " angelegt/aktualisiert!";
-		redirect.addFlashAttribute("globalMessage", msg);
+		messageUtil.addInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/user");
 	}
 }

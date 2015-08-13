@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
@@ -24,7 +25,7 @@ public class UserService {
 			appUser = new AppUser(username, password, roles);
 			appUser = appUserRepository.save(appUser);
 		}
-		
+
 		return appUser;
 	}
 
@@ -40,10 +41,12 @@ public class UserService {
 		UserCommand userCommand = new UserCommand();
 		userCommand.setUserId(appUser.getId());
 		userCommand.setUsername(appUser.getUsername());
-		for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
-			userCommand.addRole(grantedAuthority.getAuthority());
+		if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
+			for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
+				userCommand.addRole(grantedAuthority.getAuthority());
+			}
 		}
-		
+
 		return userCommand;
 	}
 
@@ -52,11 +55,11 @@ public class UserService {
 		if (appUser == null) {
 			appUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), userCommand.getRoles());
 		}
-		
+
 		appUser.setUsername(userCommand.getUsername());
 		appUser.setPassword(userCommand.getPassword());
 		appUser.setRoles(userCommand.getRoles());
-		
+
 		appUserRepository.save(appUser);
 	}
 }
