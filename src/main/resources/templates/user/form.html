@@ -13,11 +13,11 @@
 					<input type="hidden" th:field="*{userId}" class="form-control" />
 					<div class="form-group">
 						<label for="username">Benutzername:</label> 
-						<input type="text" th:field="*{username}" class="form-control" />
+						<input type="text" th:field="*{username}" class="form-control" required="required"/>
 					</div>
 					<div class="form-group">
 						<label for="password">Passwort:</label> 
-						<input type="password" th:field="*{password}" class="form-control" />
+						<input type="password" th:field="*{password}" class="form-control" required="required"/>
 					</div>
 					<ul class="list-group">
 						<li class="list-group-item" th:each="role : ${userCommand.availableRoles}">

@@ -20,12 +20,13 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-xs-10">
+							<div class="col-xs-8">
 								<span th:text="${user.rolesAsString}">ROLE_USER</span>						  		
 				  			</div>		
-				  			<div class="col-xs-2">
+				  			<div class="col-xs-4">
 					  			<div class="btn-group pull-right">
 									<a href="#" th:href="@{'/user/' + ${user.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+									<a href="#" th:href="@{'/user/' + ${user.id} + '/delete'}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-remove"></span></a>
 	       						</div>
        						</div>
       					</div>
@@ -33,7 +34,7 @@
 				</div>
 			</div>				
 		</div>
-		<a href="#" th:href="@{/user/create}" class="btn btn-primary" role="button">Benutzer anlegen</a>	
+		<a href="#" th:href="@{/user/create}" class="btn btn-primary" role="button">Benutzer anlegen</a>
 	</div>
 </body>
 </html>

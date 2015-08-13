@@ -62,4 +62,8 @@ public class UserService {
 
 		appUserRepository.save(appUser);
 	}
+
+	public void deleteUser(String userId) {
+		appUserRepository.delete(userId);
+	}
 }

@@ -39,6 +39,15 @@ public class UserController {
 		UserCommand userCommand = userService.findByUserId(userId);
 		return new ModelAndView("user/form", "userCommand", userCommand);
 	}
+	
+	@RequestMapping("{id}/delete")
+	public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
+		UserCommand userCommand = userService.findByUserId(userId);
+		userService.deleteUser(userId);
+		String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
+		messageUtil.addInfoMsg(redirect, msg);
+		return new ModelAndView("redirect:/user");
+	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createForm(@ModelAttribute UserCommand UserCommand) {
