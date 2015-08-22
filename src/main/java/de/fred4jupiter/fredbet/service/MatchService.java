@@ -95,7 +95,7 @@ public class MatchService {
 		matchCommand.setMatchId(match.getId());
 
 		if (match.hasResultSet()) {
-			pointsCalculationService.calculatePointsForAllBets();
+			pointsCalculationService.calculatePointsFor(match);
 		}
 
 		return match.getId();
