@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.RankingService;
 
 @Controller
@@ -18,7 +19,7 @@ public class RankingController {
 
 	@RequestMapping
 	public ModelAndView list() {
-		List<RankingCommand> rankings = rankingService.calculateCurrentRanking();
+		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking();
 		return new ModelAndView("ranking/list", "rankings", rankings);
 	}
 }
