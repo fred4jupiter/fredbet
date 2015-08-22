@@ -21,7 +21,9 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-xs-8">
-								<span th:text="${user.rolesAsString}">ROLE_USER</span>						  		
+								<div th:each="role : ${user.roles}">
+									<span th:text="${role}">ROLE_USER</span>
+								</div>														  		
 				  			</div>		
 				  			<div class="col-xs-4">
 					  			<div class="btn-group pull-right">
