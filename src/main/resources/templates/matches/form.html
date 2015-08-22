@@ -34,11 +34,15 @@
 					<div class="form-group">
 						<label for="teamResultTwo">Stadium:</label>
 						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. Westfalenstadion"/>
-					</div>
+					</div>					
 					<div class="form-group">
-						<label for="teamResultTwo">Gruppe:</label>
-						<input type="text" th:field="*{group}" class="form-control" placeholder="z.B. Gruppe A, Viertelfinale..." required="required"/>
-					</div>
+						<label for="teamResultTwo">Gruppierung:</label>
+						<select th:field="*{group}">
+						  <option th:each="gr : ${availableGroups}" 
+						          th:value="${gr}" 
+						          th:text="#{${'group.entry.' + gr}}">Gruppe A</option>
+						</select>						
+			        </div>					
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">Speichern</button>
 						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button">Abbrechen</a>	

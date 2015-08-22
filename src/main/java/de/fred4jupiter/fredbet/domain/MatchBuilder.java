@@ -30,14 +30,18 @@ public class MatchBuilder {
 		return this;
 	}
 	
-	public MatchBuilder withKickOffDateAndStatium(LocalDateTime kickOffDate, String stadium) {
+	public MatchBuilder withKickOffDate(LocalDateTime kickOffDate) {
 		match.setKickOffDate(DateUtils.toDate(kickOffDate));
-		match.setStadium(stadium);
 		return this;
 	}
 	
-	public MatchBuilder withGroup(String group) {
+	public MatchBuilder withGroup(Group group) {
 		match.setGroup(group);
+		return this;
+	}
+	
+	public MatchBuilder withStadium(String stadium) {
+		match.setStadium(stadium);
 		return this;
 	}
 	

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
 public class MatchCommand {
@@ -21,7 +22,7 @@ public class MatchCommand {
 
 	private Integer teamResultTwo;
 
-	private String group;
+	private Group group;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
 	private Date kickOffDate;
@@ -103,6 +104,8 @@ public class MatchCommand {
 		builder.append("teamNameTwo", teamNameTwo);
 		builder.append("teamResultOne", teamResultOne);
 		builder.append("teamResultTwo", teamResultTwo);
+		builder.append("group", group);
+		builder.append("kickOffDate", kickOffDate);
 		return builder.toString();
 	}
 
@@ -122,11 +125,11 @@ public class MatchCommand {
 		this.stadium = stadium;
 	}
 
-	public String getGroup() {
+	public Group getGroup() {
 		return group;
 	}
 
-	public void setGroup(String group) {
+	public void setGroup(Group group) {
 		this.group = group;
 	}
 

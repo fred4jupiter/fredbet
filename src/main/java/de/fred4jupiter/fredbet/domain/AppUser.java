@@ -14,6 +14,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
+import de.fred4jupiter.fredbet.FredBetRole;
+
 @Document
 public class AppUser implements UserDetails {
 
@@ -28,6 +30,13 @@ public class AppUser implements UserDetails {
 	private String username;
 
 	private String password;
+
+	public AppUser(String username, String password, FredBetRole... roles) {
+		List<FredBetRole> rolesList = Arrays.asList(roles);
+		this.roles = rolesList.stream().map(role -> role.name()).collect(Collectors.toList());
+		this.username = username;
+		this.password = password;
+	}
 
 	public AppUser(String username, String password, String... roles) {
 		this(username, password, Arrays.asList(roles));

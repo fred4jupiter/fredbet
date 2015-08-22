@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Component
 @Profile("demodata")
@@ -24,19 +23,22 @@ public class DataBasePopulator {
 	@Autowired
 	private MatchService matchService;
 
-	
 	@PostConstruct
 	public void initDatabaseWithDemoData() {
 		LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
-//		for (int i = 0; i < 12; i++) {
-//			matchService.createAndSaveMatch("Deutschland", "Italien", 2, 1);
-//		}
+		// for (int i = 0; i < 12; i++) {
+		// matchService.createAndSaveMatch("Deutschland", "Italien", 2, 1);
+		// }
 
-		Match match = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGoals(3, 5).withGroup("Gruppe A").build();
-		match.setStadium("Westfalenstadium, Dortmund");
-		match.setKickOffDate(DateUtils.toDate(LocalDateTime.now().plusMinutes(5)));
-		matchService.save(match);
+		matchService.save(MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
+				.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(5)).build());
+		
+		matchService.save(MatchBuilder.create().withTeams("Deutschland", "Frankfreich").withGroup(Group.GROUP_B)
+				.withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(10)).build());
+		
+		matchService.save(MatchBuilder.create().withTeams("Belgien", "England").withGroup(Group.GROUP_D)
+				.withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(15)).build());
 
 	}
 }

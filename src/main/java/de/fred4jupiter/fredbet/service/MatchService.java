@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -36,6 +37,7 @@ public class MatchService {
 	}
 
 	public MatchCommand findByMatchId(String matchId) {
+		Assert.notNull(matchId);
 		Match match = matchRepository.findOne(matchId);
 		return toMatchCommand(match);
 	}
@@ -45,6 +47,7 @@ public class MatchService {
 	}
 
 	private MatchCommand toMatchCommand(Match match) {
+		Assert.notNull(match);
 		MatchCommand matchCommand = new MatchCommand();
 		matchCommand.setMatchId(match.getId());
 		matchCommand.setTeamNameOne(match.getTeamOne().getName());
@@ -107,9 +110,8 @@ public class MatchService {
 	}
 
 	public List<MatchCommand> findAllMatches(String username) {
-		List<Match> allMatches = matchRepository.findAll();
-		List<Bet> allUserBets = bettingService.findAllByUsername(username);
-		Map<String,Bet> matchToBetMap = toBetMap(allUserBets);
+		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
+		final Map<String, Bet> matchToBetMap = findBetsForMatchIds(username);
 		final List<MatchCommand> resultList = new ArrayList<>();
 		for (Match match : allMatches) {
 			MatchCommand matchCommand = toMatchCommand(match);
@@ -123,6 +125,12 @@ public class MatchService {
 		}
 		
 		return resultList;
+	}
+
+	private Map<String, Bet> findBetsForMatchIds(String username) {
+		List<Bet> allUserBets = bettingService.findAllByUsername(username);
+		Map<String,Bet> matchToBetMap = toBetMap(allUserBets);
+		return matchToBetMap;
 	}
 
 	private Map<String, Bet> toBetMap(List<Bet> allUserBets) {

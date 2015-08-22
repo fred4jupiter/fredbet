@@ -23,7 +23,7 @@ public class Match {
 
 	private Team teamTwo;
 
-	private String group;
+	private Group group;
 
 	private Integer goalsTeamOne;
 
@@ -159,11 +159,11 @@ public class Match {
 		return id;
 	}
 
-	public String getGroup() {
+	public Group getGroup() {
 		return group;
 	}
 
-	public void setGroup(String group) {
+	public void setGroup(Group group) {
 		this.group = group;
 	}
 

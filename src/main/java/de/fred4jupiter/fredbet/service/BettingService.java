@@ -54,7 +54,7 @@ public class BettingService {
 		List<String> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
 
 		List<Match> matchesToBet = new ArrayList<>();
-		List<Match> allMatches = matchRepository.findAll();
+		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
 		for (Match match : allMatches) {
 			if (!matchIds.contains(match.getId())) {
 				matchesToBet.add(match);
