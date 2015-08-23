@@ -39,7 +39,7 @@
 		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Spiel ändern">
 		            						<span class="glyphicon glyphicon-pencil"></span>
 		            					</a>								
-										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" class="btn btn-info" role="button" title="Spiel tippen">
+										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" class="btn btn-info" role="button" title="Spiel tippen">
 											<span class="glyphicon glyphicon-hand-up"></span>
 										</a>
 		       						</div>

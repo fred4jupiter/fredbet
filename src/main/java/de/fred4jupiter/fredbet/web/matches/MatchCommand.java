@@ -47,7 +47,19 @@ public class MatchCommand {
 		this.teamResultTwo = teamResultTwo;
 	}
 
-	public boolean hasMatchStarted() {
+	private boolean hasResults() {
+		return teamResultOne != null && teamResultTwo != null;
+	}
+	
+	public boolean isBettable() {
+		if (hasMatchStarted() || hasMatchFinished() || hasResults()) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private boolean hasMatchStarted() {
 		LocalDateTime kickOffLocalDateTime = DateUtils.toLocalDateTime(kickOffDate);
 		return LocalDateTime.now().isAfter(kickOffLocalDateTime);
 	}
