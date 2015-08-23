@@ -36,12 +36,12 @@ public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 		UsernamePoints usernamePointsMichael = ranking.get(0);
 		assertNotNull(usernamePointsMichael);
 		assertEquals("michael", usernamePointsMichael.getUserName());
-		assertEquals(Integer.valueOf(5), usernamePointsMichael.getPoints());
+		assertEquals(Integer.valueOf(5), usernamePointsMichael.getTotalPoints());
 
 		UsernamePoints usernamePointsBert = ranking.get(1);
 		assertNotNull(usernamePointsBert);
 		assertEquals("bert", usernamePointsBert.getUserName());
-		assertEquals(Integer.valueOf(3), usernamePointsBert.getPoints());
+		assertEquals(Integer.valueOf(3), usernamePointsBert.getTotalPoints());
 	}
 
 	private void createAndSaveBetForWith(String userName, Integer points) {

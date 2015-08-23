@@ -13,7 +13,7 @@ public class UsernamePoints {
 	private String userName;
 
 	@Field("total")
-	private Integer points;
+	private Integer totalPoints;
 
 	public String getUserName() {
 		return userName;
@@ -27,16 +27,16 @@ public class UsernamePoints {
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
 		builder.append("userName", userName);
-		builder.append("points", points);
+		builder.append("points", totalPoints);
 		return builder.toString();
 	}
 
-	public Integer getPoints() {
-		return points;
+	public Integer getTotalPoints() {
+		return totalPoints;
 	}
 
-	public void setPoints(Integer points) {
-		this.points = points;
+	public void setTotalPoints(Integer totalPoints) {
+		this.totalPoints = totalPoints;
 	}
 
 }
