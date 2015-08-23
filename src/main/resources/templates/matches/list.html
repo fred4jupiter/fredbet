@@ -36,14 +36,18 @@
 					  			</div>					
 					  			<div class="col-xs-4">				
 					  				<div class="short-div">
-					  					<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultOne}">2</span>
-								  		<span th:if="${matchCommand.teamResultOne != null}"> : </span>
-							  			<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultTwo}">1</span>
+					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultOne != null} ? label-info : label-default" 
+					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}">2</span>
+								  		<span> : </span>
+							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultTwo != null} ? label-info : label-default" 
+							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}">1</span>
 					  				</div>	  				
 					  				<div class="short-div betting-results">
-					  					<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamOne}">2</span>
-								  		<span th:if="${matchCommand.userBetGoalsTeamOne != null}"> : </span>
-							  			<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamTwo}">1</span>
+					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamOne != null} ? label-success : label-default" 
+					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}">2</span>
+								  		<span> : </span>
+							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamTwo != null} ? label-success : label-default" 
+							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}">1</span>
 					  				</div>
 					  			</div>  			
 					  			<div class="col-xs-2">
