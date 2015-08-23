@@ -27,33 +27,42 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-xs-3">
-							  		<span>Ergebnis:</span>							  		
+									<div class="short-div">
+										<span>Ergebnis:</span>
+									</div>
+									<div class="short-div betting-results">										
+										<span>getippt:</span>
+									</div>							  									  		
 					  			</div>					
-					  			<div class="col-xs-4">
-					  				<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultOne}">2</span>
-							  		<span th:if="${matchCommand.teamResultOne != null}"> : </span>
-						  			<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultTwo}">1</span>
+					  			<div class="col-xs-4">				
+					  				<div class="short-div">
+					  					<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultOne}">2</span>
+								  		<span th:if="${matchCommand.teamResultOne != null}"> : </span>
+							  			<span class="label label-info label-as-badge big-badge" th:text="${matchCommand.teamResultTwo}">1</span>
+					  				</div>	  				
+					  				<div class="short-div betting-results">
+					  					<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamOne}">2</span>
+								  		<span th:if="${matchCommand.userBetGoalsTeamOne != null}"> : </span>
+							  			<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamTwo}">1</span>
+					  				</div>
 					  			</div>  			
-					  			<div class="col-xs-5">
-						  			<div class="btn-group pull-right">
-		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Spiel ändern">
+					  			<div class="col-xs-2">
+						  			<div class="btn-group">
+		            					<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-lg btn-info" role="button" title="Spiel ändern">
 		            						<span class="glyphicon glyphicon-pencil"></span>
-		            					</a>								
-										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" class="btn btn-info" role="button" title="Spiel tippen">
+		            					</a>
+		       						</div>
+	       						</div>
+	       						<div class="col-xs-1">
+	       						</div>
+	       						<div class="col-xs-2">
+	       							<div class="btn-group">		            													
+										<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" 
+										   class="btn btn-lg btn-info" role="button" title="Spiel tippen">
 											<span class="glyphicon glyphicon-hand-up"></span>
 										</a>
 		       						</div>
 	       						</div>
-       						</div>
-       						<div class="row">
-       							<div class="col-xs-3">
-							  		<span>getippt:</span>							  		
-					  			</div>					
-					  			<div class="col-xs-4">
-					  				<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamOne}">2</span>
-							  		<span th:if="${matchCommand.userBetGoalsTeamOne != null}"> : </span>
-						  			<span class="label label-success label-as-badge big-badge" th:text="${matchCommand.userBetGoalsTeamTwo}">1</span>
-					  			</div>  		
        						</div>
 					   </div>					   
 					</div>
