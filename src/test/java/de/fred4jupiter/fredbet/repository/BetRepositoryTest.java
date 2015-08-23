@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
@@ -13,51 +15,41 @@ import de.fred4jupiter.fredbet.domain.Bet;
 
 public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 
+	private static final Logger LOG = LoggerFactory.getLogger(BetRepositoryTest.class);
+
 	@Autowired
 	private BetRepository betRepository;
 
 	@Test
 	public void calculateRanging() {
-		Bet bet = new Bet();
-		bet.setGoalsTeamOne(2);
-		bet.setGoalsTeamTwo(1);
-		bet.setUserName("michael");
-		bet.setPoints(3);
-		betRepository.save(bet);
-		
-		Bet bet2 = new Bet();
-		bet2.setGoalsTeamOne(3);
-		bet2.setGoalsTeamTwo(1);
-		bet2.setUserName("michael");
-		bet2.setPoints(1);
-		betRepository.save(bet2);
+		createAndSaveBetForWith("michael", 3);
+		createAndSaveBetForWith("michael", 2);
 
-		Bet bet3 = new Bet();
-		bet3.setGoalsTeamOne(3);
-		bet3.setGoalsTeamTwo(1);
-		bet3.setUserName("bert");
-		bet3.setPoints(1);
-		betRepository.save(bet3);
-		
-		Bet bet4 = new Bet();
-		bet4.setGoalsTeamOne(2);
-		bet4.setGoalsTeamTwo(5);
-		bet4.setUserName("bert");
-		bet4.setPoints(0);
-		betRepository.save(bet4);
+		createAndSaveBetForWith("bert", 2);
+		createAndSaveBetForWith("bert", 1);
 
 		List<UsernamePoints> ranking = betRepository.calculateRanging();
+		ranking.forEach(usernamePoint -> LOG.debug("usernamePoint={}", usernamePoint));
 		assertNotNull(ranking);
 		assertEquals(2, ranking.size());
 
 		UsernamePoints usernamePointsMichael = ranking.get(0);
 		assertNotNull(usernamePointsMichael);
 		assertEquals("michael", usernamePointsMichael.getUserName());
-		assertEquals(Integer.valueOf(4), usernamePointsMichael.getTotalPoints());
+		assertEquals(Integer.valueOf(5), usernamePointsMichael.getPoints());
 
 		UsernamePoints usernamePointsBert = ranking.get(1);
 		assertNotNull(usernamePointsBert);
 		assertEquals("bert", usernamePointsBert.getUserName());
-		assertEquals(Integer.valueOf(1), usernamePointsBert.getTotalPoints());
+		assertEquals(Integer.valueOf(3), usernamePointsBert.getPoints());
+	}
+
+	private void createAndSaveBetForWith(String userName, Integer points) {
+		Bet bet = new Bet();
+		bet.setGoalsTeamOne(2);
+		bet.setGoalsTeamTwo(1);
+		bet.setUserName(userName);
+		bet.setPoints(points);
+		betRepository.save(bet);
 	}
 }
