@@ -13,15 +13,15 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-xs-10">
+							<div class="col-xs-9">
 								<span class="bold" th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span class="bold" th:text="${match.teamTwo.name}">Italien</span>
 								<br/>
 								<span th:text="${#dates.format(match.kickOffDate, 'E dd.MM.yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/> 
 								<span th:text="${match.stadium}">Stadium</span>							  		
 				  			</div>		
-				  			<div class="col-xs-2">
-					  			<div class="btn-group pull-right">
-									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" th:classappend="${match.hasStarted()}? 'disabled'" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
+				  			<div class="col-xs-3">
+					  			<div class="btn-group">
+									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" th:classappend="${match.hasStarted()}? 'disabled'" class="btn btn-lg btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 	       						</div>
        						</div>
       					</div>
