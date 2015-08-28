@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,9 +54,11 @@ public class UserService {
 	}
 
 	public void save(AppUser appUser) {
-		if (!appUserRepository.exists(appUser.getId())) {
+		try {
 			appUserRepository.save(appUser);	
-		}		
+		} catch (DuplicateKeyException e) {
+			LOG.info("user with username={} still exists. skipping save...", appUser.getUsername());
+		}
 	}
 
 	private AppUser toAppUser(UserCommand userCommand) {
@@ -77,10 +80,5 @@ public class UserService {
 		appUserRepository.delete(userId);
 	}
 
-	public void createOrUpdate(AppUser adminUser) {
-		AppUser appUser = appUserRepository.findByUsername(adminUser.getUsername());
-		if (appUser == null) {
-			save(appUser);
-		}
-	}
+	
 }

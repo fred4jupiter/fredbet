@@ -41,9 +41,9 @@ public class DataBasePopulator {
 		LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
 		final AppUser adminUser = new AppUser("admin", "admin", "ROLE_USER", "ROLE_ADMIN");
-		userService.createOrUpdate(adminUser);
+		userService.save(adminUser);
 		final AppUser testUser = new AppUser("test", "test", "ROLE_USER");
-		userService.createOrUpdate(testUser);
+		userService.save(testUser);
 
 		// this we be executed in demodata profile only
 		if (environment.acceptsProfiles("demodata")) {
