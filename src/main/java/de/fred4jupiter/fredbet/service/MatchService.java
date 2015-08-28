@@ -112,6 +112,10 @@ public class MatchService {
 
 	public List<MatchCommand> findAllMatches(String username) {
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
+		return toMatchCommandsWithBets(username, allMatches);
+	}
+
+	private List<MatchCommand> toMatchCommandsWithBets(String username, List<Match> allMatches) {
 		final Map<String, Bet> matchToBetMap = findBetsForMatchIds(username);
 		final List<MatchCommand> resultList = new ArrayList<>();
 		for (Match match : allMatches) {
@@ -124,9 +128,14 @@ public class MatchService {
 			}
 			resultList.add(matchCommand);
 		}
-		
 		return resultList;
 	}
+	
+	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
+		List<Match> allMatches = matchRepository.findByGroupOrderByKickOffDateAsc(group);
+		return toMatchCommandsWithBets(currentUserName, allMatches);
+	}
+
 
 	private Map<String, Bet> findBetsForMatchIds(String username) {
 		List<Bet> allUserBets = bettingService.findAllByUsername(username);
@@ -142,9 +151,5 @@ public class MatchService {
 		return matchIdBetMap;
 	}
 
-	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 }

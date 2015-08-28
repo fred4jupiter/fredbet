@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,8 +26,7 @@ public class GroupMatchController {
 
 	@ModelAttribute("groups")
 	public List<Group> availableGroups() {
-		List<Group> groups = Arrays.asList(Group.values());
-		return groups.stream().filter(group -> group.name().startsWith("GROUP_")).collect(Collectors.toList());
+		return Group.getMainGroups();
 	}
 
 	@RequestMapping

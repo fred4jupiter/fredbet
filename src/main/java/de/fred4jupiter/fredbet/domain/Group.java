@@ -1,5 +1,9 @@
 package de.fred4jupiter.fredbet.domain;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum Group {
 
 	GROUP_A,
@@ -30,5 +34,10 @@ public enum Group {
 
 	public String getName() {
 		return this.name();
+	}
+	
+	public static List<Group> getMainGroups() {
+		List<Group> groups = Arrays.asList(values());
+		return groups.stream().filter(group -> group.name().startsWith("GROUP_")).collect(Collectors.toList());
 	}
 }

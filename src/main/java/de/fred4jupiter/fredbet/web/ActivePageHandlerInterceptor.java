@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,31 +11,36 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 
+	private static final String CSS_ACTIVE = "active";
+
+	private static final String PAGE_STATE_REFIX = "pageState_";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ActivePageHandlerInterceptor.class);
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
 			throws Exception {
-		String requestURI = request.getRequestURI();
+		final String requestURI = request.getRequestURI();
 		LOG.debug("requestURI: " + requestURI);
 
-		if (requestURI.contains("matches")) {
-			addStateAttributeFor("matches", modelAndView);
-		} else if (requestURI.contains("bet/open")) {
-			addStateAttributeFor("bet_open", modelAndView);
-		} else if (requestURI.contains("bet")) {
-			addStateAttributeFor("bet", modelAndView);
-		} else if (requestURI.contains("groups")) {
-			addStateAttributeFor("groups", modelAndView);
-		} else if (requestURI.contains("ranking")) {
-			addStateAttributeFor("ranking", modelAndView);
-		} else if (requestURI.contains("user")) {
-			addStateAttributeFor("user", modelAndView);
+		final int numberOfSlashes = StringUtils.countMatches(requestURI, "/");
+		if (numberOfSlashes == 1) {
+			String page = StringUtils.substring(requestURI, 1);
+			modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
+			return;
 		}
-	}
 
-	private void addStateAttributeFor(String page, ModelAndView modelAndView) {
-		modelAndView.addObject("pageState_" + page, "active");
+		if (numberOfSlashes == 2) {
+			String page = StringUtils.substring(requestURI, 1);
+			page = StringUtils.replace(page, "/", "_");
+			modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
+			return;
+		}
+		
+		if (requestURI.contains("group")) {
+			String page = StringUtils.substringAfter(requestURI, "group/");
+			modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
+		}
 	}
 
 	@Override
