@@ -15,7 +15,6 @@ The application is available under [http://localhost:8080/](http://localhost:808
 
 Notes for pushing into Tutums private repository:
 
-	export TUTUM_USER="fred4jupiter"
 	docker login tutum.co
-	docker tag fred4jupiter/fredbet tutum.co/$TUTUM_USER/fred4jupiter/fredbet
-	docker push tutum.co/$TUTUM_USER/fred4jupiter/fredbet
+	docker tag fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet
+	docker push tutum.co/fred4jupiter/fredbet
