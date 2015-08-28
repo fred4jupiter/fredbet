@@ -24,6 +24,8 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 			addStateAttributeFor("bet_open", modelAndView);
 		} else if (requestURI.contains("bet")) {
 			addStateAttributeFor("bet", modelAndView);
+		} else if (requestURI.contains("groups")) {
+			addStateAttributeFor("groups", modelAndView);
 		} else if (requestURI.contains("ranking")) {
 			addStateAttributeFor("ranking", modelAndView);
 		} else if (requestURI.contains("user")) {

@@ -18,7 +18,8 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul th:if="${@securityBean.isUserLoggedIn()}" class="nav navbar-nav">
-					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}">Spiele</a></li>					
+					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}">alle Spiele</a></li>
+					<li th:class="${pageState_groups}"><a href="#groups" th:href="@{/groups}">Gruppenspiele</a></li>					
 					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}">noch zu tippen</a></li>
 					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}">Ranking</a></li>
 				  	<li th:class="${pageState_user}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>

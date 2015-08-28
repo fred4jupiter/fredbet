@@ -14,6 +14,12 @@ public enum Group {
 	
 	GROUP_F,
 	
+	GROUP_G,
+	
+	GROUP_H,
+	
+	GROUP_I,
+	
 	ROUND_OF_SIXTEEN, // Achtelfinale
 	
 	QUARTER_FINAL,

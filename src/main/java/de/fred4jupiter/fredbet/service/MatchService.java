@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.Team;
@@ -139,6 +140,11 @@ public class MatchService {
 			matchIdBetMap.put(bet.getMatch().getId(), bet);
 		}
 		return matchIdBetMap;
+	}
+
+	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
