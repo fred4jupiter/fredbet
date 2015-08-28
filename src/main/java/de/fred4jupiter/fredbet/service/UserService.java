@@ -47,21 +47,6 @@ public class UserService {
 		return userCommand;
 	}
 
-//	public void save(UserCommand userCommand) {
-//		Assert.notNull(userCommand.getUserId());
-//		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
-//		if (appUser == null) {
-//			LOG.error("Could not find user with userId: {}", userCommand.getUserId());
-//			return;
-//		}
-//
-//		appUser.setUsername(userCommand.getUsername());
-//		appUser.setPassword(userCommand.getPassword());
-//		appUser.setRoles(userCommand.getRoles());
-//
-//		save(appUser);
-//	}
-
 	public void save(AppUser appUser) {
 		try {
 			appUserRepository.save(appUser);

@@ -28,7 +28,7 @@ public class RankingController {
 			else if (i == 1) {
 				usernamePoints.setCssRankClass("label-primary");	
 			}
-			else if (i == 1) {
+			else if (i == 2) {
 				usernamePoints.setCssRankClass("label-warning");	
 			}
 			else {
