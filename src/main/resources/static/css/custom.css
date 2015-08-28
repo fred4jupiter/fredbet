@@ -1,3 +1,7 @@
+h1 {
+	font-size: 2em;
+}
+
 .form-group input.form-size-small {
 	width: 45px;
 	text-align: center;

@@ -42,13 +42,17 @@ public class MatchController {
 	@RequestMapping
 	public ModelAndView list() {
 		List<MatchCommand> matches = matchService.findAllMatches(securityBean.getCurrentUserName());
-		return new ModelAndView("matches/list", "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
+		modelAndView.addObject("heading", "alle Spiele");
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/group/{groupName}")
 	public ModelAndView listByGroup(@PathVariable("groupName") String groupName) {
 		List<MatchCommand> matches = matchService.findMatchesByGroup(securityBean.getCurrentUserName(), Group.valueOf(groupName));
-		return new ModelAndView("matches/list", "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
+		modelAndView.addObject("heading", messageUtil.getMessageFor("group.entry." + groupName));
+		return modelAndView;
 	}
 
 	@RequestMapping("{id}")

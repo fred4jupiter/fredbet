@@ -1,11 +1,18 @@
 package de.fred4jupiter.fredbet.web;
 
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Component
 public class MessageUtil {
 
+	@Autowired
+	private MessageSource messageSource;
+	
 	public void addInfoMsg(RedirectAttributes redirect, String text) {
 		addMessage(redirect, "alert-success",text);
 	}
@@ -22,6 +29,10 @@ public class MessageUtil {
 		addMessage(redirect, "alert-danger",text);
 	}
 
+	public String getMessageFor(String msgKey, Object... params) {
+		return messageSource.getMessage(msgKey, params, Locale.GERMAN);
+	}
+	
 	public static final class WebMessage {
 		private String cssClass;
 
