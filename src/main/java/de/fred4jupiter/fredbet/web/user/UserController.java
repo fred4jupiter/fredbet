@@ -60,7 +60,7 @@ public class UserController {
 			return new ModelAndView("user/form", "formErrors", result.getAllErrors());
 		}
 
-		userService.save(userCommand);
+		userService.createOrUpdateUser(userCommand);
 
 		String msg = "Benutzer " + userCommand.getUsername() + " angelegt/aktualisiert!";
 		messageUtil.addInfoMsg(redirect, msg);

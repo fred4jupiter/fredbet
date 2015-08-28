@@ -8,11 +8,12 @@
 	<div layout:fragment="content">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
 		<h1>Ranking</h1>
-		<div class="row" th:each="ranking : ${rankings}">
+		<div class="row" th:each="ranking,status : ${rankings}">
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<div class="panel panel-default">
 				  <div class="panel-body">
-				  	<span th:text="${ranking.userName}">Fred</span> 	
+				  	<span class="label" th:classappend="${ranking.cssRankClass}" th:text="${'Platz ' + status.count}">1</span>
+				  	<span th:text="${ranking.userName}">Fred</span>
 				  	<span class="badge success pull-right" th:text="${ranking.totalPoints}">0</span> 	
 				  </div>					  
 				</div>

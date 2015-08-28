@@ -3,6 +3,9 @@ package de.fred4jupiter.fredbet.web.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class UserCommand {
 
 	private String userId;
@@ -60,4 +63,12 @@ public class UserCommand {
 		this.username = username;
 	}
 
+	@Override
+	public String toString() {
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+		builder.append("userId", userId);
+		builder.append("password", password != null ? "is set" : "is null");
+		builder.append("roles", roles);
+		return builder.toString();
+	}
 }

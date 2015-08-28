@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,39 +47,47 @@ public class UserService {
 		return userCommand;
 	}
 
-	public void save(UserCommand userCommand) {
-		AppUser appUser = toAppUser(userCommand);
-		if (appUser != null) {
-			save(appUser);
-		}
-	}
+//	public void save(UserCommand userCommand) {
+//		Assert.notNull(userCommand.getUserId());
+//		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
+//		if (appUser == null) {
+//			LOG.error("Could not find user with userId: {}", userCommand.getUserId());
+//			return;
+//		}
+//
+//		appUser.setUsername(userCommand.getUsername());
+//		appUser.setPassword(userCommand.getPassword());
+//		appUser.setRoles(userCommand.getRoles());
+//
+//		save(appUser);
+//	}
 
 	public void save(AppUser appUser) {
 		try {
-			appUserRepository.save(appUser);	
+			appUserRepository.save(appUser);
 		} catch (DuplicateKeyException e) {
 			LOG.info("user with username={} still exists. skipping save...", appUser.getUsername());
 		}
-	}
-
-	private AppUser toAppUser(UserCommand userCommand) {
-		Assert.notNull(userCommand.getUserId());
-		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
-		if (appUser == null) {
-			LOG.error("Could not find user with userId: {}", userCommand.getUserId());
-			return null;
-		}
-
-		appUser.setUsername(userCommand.getUsername());
-		appUser.setPassword(userCommand.getPassword());
-		appUser.setRoles(userCommand.getRoles());
-
-		return appUser;
 	}
 
 	public void deleteUser(String userId) {
 		appUserRepository.delete(userId);
 	}
 
-	
+	public void createOrUpdateUser(UserCommand userCommand) {
+		if (StringUtils.isBlank(userCommand.getUserId())) {
+			// create new user
+			final AppUser adminUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), userCommand.getRoles());
+			appUserRepository.save(adminUser);
+			return;
+		}
+
+		Assert.notNull(userCommand.getUserId());
+		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
+		appUser.setUsername(userCommand.getUsername());
+		appUser.setPassword(userCommand.getPassword());
+		appUser.setRoles(userCommand.getRoles());
+		appUserRepository.save(appUser);
+	}
+
 }

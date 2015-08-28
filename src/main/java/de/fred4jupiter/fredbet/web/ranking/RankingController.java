@@ -20,6 +20,21 @@ public class RankingController {
 	@RequestMapping
 	public ModelAndView list() {
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking();
+		for (int i = 0; i < rankings.size(); i++) {
+			UsernamePoints usernamePoints = rankings.get(i);
+			if (i == 0) {
+				usernamePoints.setCssRankClass("label-success");	
+			}
+			else if (i == 1) {
+				usernamePoints.setCssRankClass("label-primary");	
+			}
+			else if (i == 1) {
+				usernamePoints.setCssRankClass("label-warning");	
+			}
+			else {
+				usernamePoints.setCssRankClass("label-default");
+			}
+		}
 		return new ModelAndView("ranking/list", "rankings", rankings);
 	}
 }

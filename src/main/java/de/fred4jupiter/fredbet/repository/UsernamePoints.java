@@ -14,6 +14,8 @@ public class UsernamePoints {
 
 	@Field("total")
 	private Integer totalPoints;
+	
+	private String cssRankClass;
 
 	public String getUserName() {
 		return userName;
@@ -37,6 +39,22 @@ public class UsernamePoints {
 
 	public void setTotalPoints(Integer totalPoints) {
 		this.totalPoints = totalPoints;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCssRankClass() {
+		return cssRankClass;
+	}
+
+	public void setCssRankClass(String cssRankClass) {
+		this.cssRankClass = cssRankClass;
 	}
 
 }
