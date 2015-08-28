@@ -41,10 +41,11 @@ public class DataBasePopulator {
 		LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
 		final AppUser adminUser = new AppUser("admin", "admin", "ROLE_USER", "ROLE_ADMIN");
-		userService.save(adminUser);
+		userService.createOrUpdate(adminUser);
 		final AppUser testUser = new AppUser("test", "test", "ROLE_USER");
-		userService.save(testUser);
+		userService.createOrUpdate(testUser);
 
+		// this we be executed in demodata profile only
 		if (environment.acceptsProfiles("demodata")) {
 			Match match1 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
 					.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(5)).build();

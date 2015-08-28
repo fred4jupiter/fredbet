@@ -53,7 +53,9 @@ public class UserService {
 	}
 
 	public void save(AppUser appUser) {
-		appUserRepository.save(appUser);
+		if (!appUserRepository.exists(appUser.getId())) {
+			appUserRepository.save(appUser);	
+		}		
 	}
 
 	private AppUser toAppUser(UserCommand userCommand) {
@@ -73,5 +75,12 @@ public class UserService {
 
 	public void deleteUser(String userId) {
 		appUserRepository.delete(userId);
+	}
+
+	public void createOrUpdate(AppUser adminUser) {
+		AppUser appUser = appUserRepository.findByUsername(adminUser.getUsername());
+		if (appUser == null) {
+			save(appUser);
+		}
 	}
 }
