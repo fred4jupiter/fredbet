@@ -7,7 +7,7 @@
 <body>
 	<div layout:fragment="content">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
-		<h2>Ranking</h2>
+		<h1>Ranking</h1>
 		<div class="row" th:each="ranking : ${rankings}">
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<div class="panel panel-default">

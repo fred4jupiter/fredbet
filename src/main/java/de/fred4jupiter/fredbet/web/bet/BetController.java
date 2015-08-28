@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +42,12 @@ public class BetController {
 	}
 
 	@RequestMapping("/open")
-	public ModelAndView listStillOpen(RedirectAttributes redirect) {
+	public ModelAndView listStillOpen(ModelMap modelMap) {
 		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
+		if (CollectionUtils.isEmpty(matchesToBet)) {
+			messageUtil.addInfoMsg(modelMap, "Alle Tipps abgegeben!");
+		}
+		
 		return new ModelAndView("bet/list_open", "matchesToBet", matchesToBet);
 	}
 

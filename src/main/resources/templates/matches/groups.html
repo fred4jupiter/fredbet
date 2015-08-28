@@ -7,7 +7,7 @@
 <body>
 	<div layout:fragment="content">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
-		<h2>Spiele</h2>
+		<h1>Spiele</h1>
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" th:each="group : ${groups}">

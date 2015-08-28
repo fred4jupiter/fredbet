@@ -7,7 +7,7 @@
 <body>
 	<div layout:fragment="content">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
-		<h2>Noch nicht getippt</h2>
+		<h1 th:if="${not #lists.isEmpty(matchesToBet)}">Noch nicht getippt</h1>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${matchesToBet}">
 				<div class="panel panel-default">
