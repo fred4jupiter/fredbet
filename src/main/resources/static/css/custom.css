@@ -44,3 +44,7 @@ h1 {
 .label.ranking {
 	font-size: 100%;
 }
+
+.panel-body.user-panel-body {
+	 height: 70px;
+}

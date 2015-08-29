@@ -11,11 +11,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
-import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserService;
 
@@ -34,7 +33,7 @@ public class DataBasePopulator {
 	private UserService userService;
 
 	@Autowired
-	private BetRepository betRepository;
+	private BettingService bettingService;
 
 	@PostConstruct
 	public void initDatabaseWithDemoData() {
@@ -47,6 +46,11 @@ public class DataBasePopulator {
 
 		// this we be executed in demodata profile only
 		if (environment.acceptsProfiles("demodata")) {
+
+			for (int i = 0; i < 10; i++) {
+				userService.save(new AppUser("test" + i, "test" + i, "ROLE_USER"));
+			}
+
 			Match match1 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
 					.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(5)).build();
 			matchService.save(match1);
@@ -59,22 +63,14 @@ public class DataBasePopulator {
 					.withKickOffDate(LocalDateTime.now().plusMinutes(15)).build();
 			matchService.save(match3);
 
-			createAndSaveBetForWith(adminUser.getUsername(), 2, 1, match1);
-			createAndSaveBetForWith(adminUser.getUsername(), 3, 1, match2);
-			createAndSaveBetForWith(adminUser.getUsername(), 2, 4, match3);
-			
-			createAndSaveBetForWith(testUser.getUsername(), 0, 1, match1);
-			createAndSaveBetForWith(testUser.getUsername(), 1, 2, match2);
-			createAndSaveBetForWith(testUser.getUsername(), 5, 0, match3);
+			bettingService.createAndSaveBetting(adminUser, match1, 2, 1);
+			bettingService.createAndSaveBetting(adminUser, match2, 3, 1);
+			bettingService.createAndSaveBetting(adminUser, match3, 2, 4);
+
+			bettingService.createAndSaveBetting(testUser, match1, 0, 1);
+			bettingService.createAndSaveBetting(testUser, match2, 1, 2);
+			bettingService.createAndSaveBetting(testUser, match3, 5, 0);
 		}
 	}
 
-	private void createAndSaveBetForWith(String userName, int goalsTeamOne, int goalsTeamTwo, Match match) {
-		Bet bet = new Bet();
-		bet.setGoalsTeamOne(goalsTeamOne);
-		bet.setGoalsTeamTwo(goalsTeamTwo);
-		bet.setUserName(userName);
-		bet.setMatch(match);
-		betRepository.save(bet);
-	}
 }
