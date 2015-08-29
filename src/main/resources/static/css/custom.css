@@ -48,3 +48,8 @@ h1 {
 .panel-body.user-panel-body {
 	 height: 70px;
 }
+
+.full-box {
+	padding-left: 0px;
+	padding-right: 0px;
+}
