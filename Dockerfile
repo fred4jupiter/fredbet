@@ -4,11 +4,9 @@ MAINTAINER Michael Staehler <hamsterhase@gmx.de>
 
 RUN echo 'Building docker image for fredbet application...'v
 
-# Set the time zone
-RUN echo "Europe/Berlin" > /config/etc/timezone
-
-# Set timezone as specified in /config/etc/timezone
-RUN dpkg-reconfigure -f noninteractive tzdata
+# Configure timezone and locale
+RUN echo "Europe/Berlin" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
+RUN export LANGUAGE=de_DE.UTF-8; export LANG=de_DE.UTF-8; export LC_ALL=de_DE.UTF-8; locale-gen de_DE.UTF-8; DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 ENV spring.profiles.active dev
 
