@@ -4,6 +4,12 @@ MAINTAINER Michael Staehler <hamsterhase@gmx.de>
 
 RUN echo 'Building docker image for fredbet application...'v
 
+# Set the time zone
+RUN echo "Europe/Berlin" > /config/etc/timezone
+
+# Set timezone as specified in /config/etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 ENV spring.profiles.active dev
 
 VOLUME /tmp
