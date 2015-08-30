@@ -38,10 +38,6 @@ public class AppUser implements UserDetails {
 		this.password = password;
 	}
 
-	public AppUser(String username, String password, String... roles) {
-		this(username, password, Arrays.asList(roles));
-	}
-
 	@PersistenceConstructor
 	public AppUser(String username, String password, List<String> roles) {
 		this.username = username;

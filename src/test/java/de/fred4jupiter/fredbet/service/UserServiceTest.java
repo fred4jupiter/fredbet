@@ -14,7 +14,7 @@ public class UserServiceTest extends AbstractMongoEmbeddedTest {
 
 	@Test
 	public void avoidDuplicateUser() {
-		userService.save(new AppUser("michael", "michael", FredBetRole.USER));
-		userService.save(new AppUser("michael", "michael", FredBetRole.USER));
+		userService.save(new AppUser("michael", "michael", FredBetRole.ROLE_USER));
+		userService.save(new AppUser("michael", "michael", FredBetRole.ROLE_USER));
 	}
 }

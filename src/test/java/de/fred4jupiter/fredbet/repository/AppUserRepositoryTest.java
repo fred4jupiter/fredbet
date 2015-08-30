@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
 
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
+import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 
 public class AppUserRepositoryTest extends AbstractMongoEmbeddedTest {
@@ -16,7 +17,7 @@ public class AppUserRepositoryTest extends AbstractMongoEmbeddedTest {
 	@Test
 	public void saveAppUser() {
 		final String username = "robert";
-		AppUser appUser = new AppUser(username, username, "ROLE_USER");
+		AppUser appUser = new AppUser(username, username, FredBetRole.ROLE_USER);
 		appUser = appUserRepository.save(appUser);
 		assertNotNull(appUser.getId());
 

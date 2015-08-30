@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**").permitAll();
-		http.authorizeRequests().antMatchers("/user/**").hasAnyRole(FredBetRole.ADMIN.name());
+		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("ADMIN");
 		http.authorizeRequests().anyRequest().authenticated();
 		
 		http.formLogin().loginPage("/login").permitAll();

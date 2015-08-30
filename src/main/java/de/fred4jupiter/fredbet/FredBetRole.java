@@ -8,7 +8,7 @@ package de.fred4jupiter.fredbet;
  */
 public enum FredBetRole {
 
-	USER,
+	ROLE_USER,
 	
-	ADMIN,
+	ROLE_ADMIN,
 }

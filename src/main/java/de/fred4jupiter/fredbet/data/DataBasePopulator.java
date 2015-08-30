@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -39,16 +40,16 @@ public class DataBasePopulator {
 	public void initDatabaseWithDemoData() {
 		LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
-		final AppUser adminUser = new AppUser("admin", "admin", "ROLE_USER", "ROLE_ADMIN");
+		final AppUser adminUser = new AppUser("admin", "admin", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN);
 		userService.save(adminUser);
-		final AppUser testUser = new AppUser("test", "test", "ROLE_USER");
+		final AppUser testUser = new AppUser("test", "test", FredBetRole.ROLE_USER);
 		userService.save(testUser);
 
 		// this we be executed in demodata profile only
 		if (environment.acceptsProfiles("demodata")) {
 
 			for (int i = 0; i < 10; i++) {
-				userService.save(new AppUser("test" + i, "test" + i, "ROLE_USER"));
+				userService.save(new AppUser("test" + i, "test" + i, FredBetRole.ROLE_USER));
 			}
 
 			Match match1 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
