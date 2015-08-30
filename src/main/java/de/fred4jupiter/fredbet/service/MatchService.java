@@ -16,6 +16,7 @@ import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.TeamRepository;
+import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Service
@@ -55,7 +56,7 @@ public class MatchService {
 		matchCommand.setTeamNameTwo(match.getTeamTwo().getName());
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
 		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
-		matchCommand.setKickOffDate(match.getKickOffDate());
+		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
 		matchCommand.setStadium(match.getStadium());
 		matchCommand.setGroup(match.getGroup());
 		return matchCommand;
@@ -105,7 +106,7 @@ public class MatchService {
 	private void toMatch(MatchCommand matchCommand, Match match) {
 		match.setGoalsTeamOne(matchCommand.getTeamResultOne());
 		match.setGoalsTeamTwo(matchCommand.getTeamResultTwo());
-		match.setKickOffDate(matchCommand.getKickOffDate());
+		match.setKickOffDate(DateUtils.toDate(matchCommand.getKickOffDate()));
 		match.setGroup(matchCommand.getGroup());
 		match.setStadium(matchCommand.getStadium());
 	}

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Matches</title>
+	<title>Matches</title>    
 </head>
 <body>
 	<div layout:fragment="content" class="container">
@@ -26,13 +26,27 @@
 					<div class="form-group">
 						<label for="teamResultTwo">Anzahl Tore Team 2:</label>
 						<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small" />
-					</div>
+					</div>					
 					<div class="form-group">
-						<label for="teamResultTwo">Anstoss: *</label>
-						<input type="text" th:field="*{kickOffDate}" class="form-control" placeholder="10.08.2015 20:24" th:value="${#dates.format(matchCommand.kickOffDate, 'dd.MM.yyyy HH:mm')}" required="required"/>
-					</div>
+		                <label for="dtp_input2">Datum:</label>
+		                <div class="input-group date form_date" data-date="" data-date-format="dd. MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+		                    <input class="form-control" size="16" type="text" value="" readonly="readonly"/>
+		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+		                </div>
+						<input type="hidden" id="dtp_input2" th:field="*{kickOffDateString}" value="" /><br/>
+		            </div>
 					<div class="form-group">
-						<label for="teamResultTwo">Stadium:</label>
+		                <label for="dtp_input3">Uhrzeit:</label>
+		                <div class="input-group date form_time" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
+		                    <input class="form-control" size="16" type="text" value="" readonly="readonly"/>
+		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+		                </div>
+						<input type="hidden" id="dtp_input3" th:field="*{kickOffTimeString}" value="" /><br/>
+		            </div>
+					<div class="form-group">
+						<label for="teamResultTwo">Stadion:</label>
 						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. Westfalenstadion" required="required"/>
 					</div>					
 					<div class="form-group">
@@ -49,5 +63,6 @@
 			</div>
 		</form>
 	</div>
+	
 </body>
 </html>

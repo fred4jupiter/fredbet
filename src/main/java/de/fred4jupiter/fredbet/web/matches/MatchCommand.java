@@ -1,14 +1,15 @@
-	package de.fred4jupiter.fredbet.web.matches;
+package de.fred4jupiter.fredbet.web.matches;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 public class MatchCommand {
 
@@ -24,8 +25,10 @@ public class MatchCommand {
 
 	private Group group;
 
-	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
-	private Date kickOffDate;
+	// format: yyyy-MM-dd
+	private String kickOffDateString;
+
+	private String kickOffTimeString;
 
 	private String stadium;
 
@@ -50,24 +53,34 @@ public class MatchCommand {
 	private boolean hasResults() {
 		return teamResultOne != null && teamResultTwo != null;
 	}
-	
+
 	public boolean isBettable() {
 		if (hasMatchStarted() || hasMatchFinished() || hasResults()) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	private boolean hasMatchStarted() {
-		LocalDateTime kickOffLocalDateTime = DateUtils.toLocalDateTime(kickOffDate);
-		return LocalDateTime.now().isAfter(kickOffLocalDateTime);
+
+	public LocalDateTime getKickOffDate() {
+		LocalDate parsedDate = LocalDate.parse(this.kickOffDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalTime localTime = LocalTime.parse(this.kickOffTimeString, DateTimeFormatter.ofPattern("HH:mm"));
+		return LocalDateTime.of(parsedDate, localTime);
 	}
 	
+	public void setKickOffDate(LocalDateTime kickOffDate) {
+		this.kickOffDateString = kickOffDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.kickOffTimeString = kickOffDate.format(DateTimeFormatter.ofPattern("HH:mm"));
+	}
+
+	private boolean hasMatchStarted() {
+		return LocalDateTime.now().isAfter(getKickOffDate());
+	}
+
 	public boolean hasMatchFinished() {
 		return teamResultOne != null && teamResultTwo != null;
 	}
-	
+
 	public String getTeamNameOne() {
 		return teamNameOne;
 	}
@@ -117,16 +130,8 @@ public class MatchCommand {
 		builder.append("teamResultOne", teamResultOne);
 		builder.append("teamResultTwo", teamResultTwo);
 		builder.append("group", group);
-		builder.append("kickOffDate", kickOffDate);
+		builder.append("kickOffDate", getKickOffDate());
 		return builder.toString();
-	}
-
-	public Date getKickOffDate() {
-		return kickOffDate;
-	}
-
-	public void setKickOffDate(Date kickOffDate) {
-		this.kickOffDate = kickOffDate;
 	}
 
 	public String getStadium() {
@@ -168,4 +173,22 @@ public class MatchCommand {
 	public void setPoints(Integer points) {
 		this.points = points;
 	}
+
+	public String getKickOffDateString() {
+		return kickOffDateString;
+	}
+
+	public void setKickOffDateString(String kickOffDateString) {
+		this.kickOffDateString = kickOffDateString;
+	}
+
+	public String getKickOffTimeString() {
+		return kickOffTimeString;
+	}
+
+	public void setKickOffTimeString(String kickOffTimeString) {
+		this.kickOffTimeString = kickOffTimeString;
+	}
+
+	
 }
