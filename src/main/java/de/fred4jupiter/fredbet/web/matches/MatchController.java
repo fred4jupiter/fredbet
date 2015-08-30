@@ -64,7 +64,7 @@ public class MatchController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createForm(@ModelAttribute MatchCommand matchCommand) {
-		matchCommand.setKickOffDate(LocalDateTime.now());
+		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
 		return "matches/form";
 	}
 
