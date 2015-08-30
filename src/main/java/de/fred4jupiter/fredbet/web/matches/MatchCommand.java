@@ -8,8 +8,6 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.fred4jupiter.fredbet.domain.Group;
 
@@ -18,8 +16,6 @@ public class MatchCommand {
 	private static final String TIME_FORMAT_PATTERN = "HH:mm";
 
 	private static final String DATE_FORMAT_PATTERN = "dd. MMMM yyyy";
-
-	private static final Logger LOG = LoggerFactory.getLogger(MatchCommand.class);
 
 	private String matchId;
 
