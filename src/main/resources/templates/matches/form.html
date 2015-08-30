@@ -38,9 +38,7 @@
 					<div class="form-group">
 						<label for="teamResultTwo">Gruppierung:</label>
 						<select th:field="*{group}">
-						  <option th:each="gr : ${availableGroups}" 
-						          th:value="${gr}" 
-						          th:text="#{${'group.entry.' + gr}}">Gruppe A</option>
+						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}">Gruppe A</option>
 						</select>						
 			        </div>					
 					<div class="form-group">

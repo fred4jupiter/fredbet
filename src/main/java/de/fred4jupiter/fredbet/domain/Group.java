@@ -36,6 +36,10 @@ public enum Group {
 		return this.name();
 	}
 	
+	public static List<Group> getAllGroups() {
+		return Arrays.asList(Group.values());
+	}
+	
 	public static List<Group> getMainGroups() {
 		List<Group> groups = Arrays.asList(values());
 		return groups.stream().filter(group -> group.name().startsWith("GROUP_")).collect(Collectors.toList());

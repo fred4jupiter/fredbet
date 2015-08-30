@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class MatchController {
 	
 	@ModelAttribute("availableGroups")
 	public List<Group> availableGroups() {
-		return Arrays.asList(Group.values());
+		return Group.getAllGroups();
 	}
 
 	@RequestMapping
