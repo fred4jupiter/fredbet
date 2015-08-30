@@ -53,3 +53,8 @@ h1 {
 	padding-left: 0px;
 	padding-right: 0px;
 }
+
+.custom-button-group {
+	float: right;
+	padding-right: 20px;
+}

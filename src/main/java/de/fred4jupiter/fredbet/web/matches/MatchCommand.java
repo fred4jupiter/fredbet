@@ -29,7 +29,6 @@ public class MatchCommand {
 
 	private Group group;
 
-	// format: yyyy-MM-dd
 	private String kickOffDateString;
 
 	private String kickOffTimeString;
