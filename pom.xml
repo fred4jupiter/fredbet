@@ -6,7 +6,7 @@
 	<groupId>de.fred4jupiter.fredbet</groupId>
 	<artifactId>fredbet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+
 	<packaging>jar</packaging>
 
 	<name>Fredbet Tippspiel</name>
@@ -107,9 +107,17 @@
 
 	<build>
 		<plugins>
+			<!-- Run mvn clean install spring-boot:run to start on console with spring loaded activated -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<version>1.2.4.RELEASE</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
