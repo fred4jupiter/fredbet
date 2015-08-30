@@ -23,6 +23,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<docker.image.prefix>fred4jupiter</docker.image.prefix>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 	</properties>
 
 	<dependencies>
@@ -110,7 +112,7 @@
 		</dependency>
 	</dependencies>
 
-	<build>
+	<build>		
 		<plugins>
 			<!-- Run mvn clean install spring-boot:run to start on console with spring loaded activated -->
 			<plugin>
@@ -145,6 +147,43 @@
 					</resources>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>com.rodiontsev.maven.plugins</groupId>
+                <artifactId>build-info-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <filename>build.info</filename>
+                    <projectProperties>
+                        <projectProperty>project.groupId</projectProperty>
+                        <projectProperty>project.artifactId</projectProperty>
+                        <projectProperty>project.version</projectProperty>
+                    </projectProperties>
+                    <systemProperties>
+                        <systemProperty>user.name</systemProperty>
+                        <systemProperty>user.timezone</systemProperty>
+                        <systemProperty>java.vm.vendor</systemProperty>
+                        <systemProperty>java.vm.version</systemProperty>
+                        <systemProperty>java.vm.name</systemProperty>
+                        <systemProperty>java.runtime.version</systemProperty>
+                        <systemProperty>os.name</systemProperty>
+                        <systemProperty>os.version</systemProperty>
+                        <systemProperty>os.arch</systemProperty>
+                    </systemProperties>
+                    <environmentVariables>
+                        <environmentVariable>JAVA_HOME</environmentVariable>
+                    </environmentVariables>
+                    <dateTimePattern>yyyy-MM-dd HH:mm:ss</dateTimePattern>
+                    <includeVcsInfo>true</includeVcsInfo>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>extract</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
