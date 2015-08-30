@@ -1,0 +1,3 @@
+Noch offen:
+
+- Benutzer sollten Passwort ändern können
