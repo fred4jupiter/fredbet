@@ -1,18 +1,26 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fred4jupiter.fredbet.domain.Group;
 
 public class MatchCommand {
 
+	private static final Logger LOG = LoggerFactory.getLogger(MatchCommand.class);
+	
 	private String matchId;
 
 	private String teamNameOne;
@@ -63,13 +71,13 @@ public class MatchCommand {
 	}
 
 	public LocalDateTime getKickOffDate() {
-		LocalDate parsedDate = LocalDate.parse(this.kickOffDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate parsedDate = LocalDate.parse(this.kickOffDateString, DateTimeFormatter.ofPattern("dd. MMMM yyyy"));
 		LocalTime localTime = LocalTime.parse(this.kickOffTimeString, DateTimeFormatter.ofPattern("HH:mm"));
 		return LocalDateTime.of(parsedDate, localTime);
 	}
 	
 	public void setKickOffDate(LocalDateTime kickOffDate) {
-		this.kickOffDateString = kickOffDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.kickOffDateString = kickOffDate.format(DateTimeFormatter.ofPattern("dd. MMMM yyyy"));
 		this.kickOffTimeString = kickOffDate.format(DateTimeFormatter.ofPattern("HH:mm"));
 	}
 
@@ -176,6 +184,22 @@ public class MatchCommand {
 
 	public String getKickOffDateString() {
 		return kickOffDateString;
+	}
+	
+	public String getKickOffDateFormatted() {
+		if (StringUtils.isBlank(kickOffDateString)) {
+			return null;
+		}
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd. MMMM yyyy", Locale.GERMAN);
+		try {
+			Date parse = simpleDateFormat.parse(kickOffDateString);
+			SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd. MMMM yyyy", Locale.GERMAN);
+			return simpleDateFormat2.format(parse);
+		} catch (ParseException e) {
+			LOG.error(e.getMessage(), e);
+			return null;
+		}
 	}
 
 	public void setKickOffDateString(String kickOffDateString) {

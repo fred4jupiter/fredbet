@@ -28,22 +28,22 @@
 						<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small" />
 					</div>					
 					<div class="form-group">
-		                <label for="dtp_input2">Datum:</label>
-		                <div class="input-group date form_date" data-date="" data-date-format="dd. MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-		                    <input class="form-control" size="16" type="text" value="" readonly="readonly"/>
+		                <label for="kickOffDateString">Datum:</label>
+		                <div class="input-group date form_date" data-date="" data-date-format="dd. MM yyyy" data-link-field="kickOffDateString" data-link-format="dd. MM yyyy">
+		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.KickOffDateFormatted}" readonly="readonly"/>
 		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 		                </div>
-						<input type="hidden" id="dtp_input2" th:field="*{kickOffDateString}" value="" /><br/>
+						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" /><br/>
 		            </div>
 					<div class="form-group">
-		                <label for="dtp_input3">Uhrzeit:</label>
-		                <div class="input-group date form_time" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
-		                    <input class="form-control" size="16" type="text" value="" readonly="readonly"/>
+		                <label for="kickOffTimeString">Uhrzeit:</label>
+		                <div class="input-group date form_time" data-date="" data-date-format="hh:ii" data-link-field="kickOffTimeString" data-link-format="hh:ii">
+		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffTimeString}" readonly="readonly"/>
 		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 		                </div>
-						<input type="hidden" id="dtp_input3" th:field="*{kickOffTimeString}" value="" /><br/>
+						<input type="hidden" id="kickOffTimeString" th:field="*{kickOffTimeString}" value="" /><br/>
 		            </div>
 					<div class="form-group">
 						<label for="teamResultTwo">Stadion:</label>
