@@ -29,6 +29,10 @@ public class MessageUtil {
 	public void addInfoMsg(ModelMap modelMap, String text) {
 		modelMap.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALT_SUCCESS, text));
 	}
+	
+	public void addErrorMsg(ModelMap modelMap, String text) {
+		modelMap.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALERT_ERROR, text));
+	}
 
 	private void addMessage(RedirectAttributes redirect, String cssClass, String text) {
 		redirect.addFlashAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(cssClass, text));

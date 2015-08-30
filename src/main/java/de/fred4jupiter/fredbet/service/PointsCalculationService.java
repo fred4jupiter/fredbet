@@ -40,6 +40,13 @@ public class PointsCalculationService {
 	}
 
 	private boolean isSameGoalDifference(Match match, Bet bet) {
+		if (match.isTeamOneWinner() && bet.isTeamTwoWinner()) {
+			return false;
+		}
+		if (match.isTeamTwoWinner() && bet.isTeamOneWinner()) {
+			return false;
+		}
+
 		return match.getGoalDifference().intValue() == bet.getGoalDifference().intValue();
 	}
 

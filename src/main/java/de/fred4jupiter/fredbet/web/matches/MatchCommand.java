@@ -66,7 +66,7 @@ public class MatchCommand {
 	}
 
 	public LocalDateTime getKickOffDate() {
-		if (StringUtils.isBlank(kickOffDateString)) {
+		if (StringUtils.isBlank(kickOffDateString) || StringUtils.isBlank(kickOffTimeString)) {
 			return null;
 		}
 		LocalDate parsedDate = LocalDate.parse(this.kickOffDateString, DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
@@ -77,10 +77,6 @@ public class MatchCommand {
 	public void setKickOffDate(LocalDateTime kickOffDate) {
 		this.kickOffDateString = kickOffDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
 		this.kickOffTimeString = kickOffDate.format(DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
-	}
-
-	public String getKickOffDateFormatted() {
-		return DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN).format(getKickOffDate());
 	}
 
 	private boolean hasMatchStarted() {
@@ -198,6 +194,14 @@ public class MatchCommand {
 
 	public void setKickOffTimeString(String kickOffTimeString) {
 		this.kickOffTimeString = kickOffTimeString;
+	}
+
+	public boolean isDateOrTimeEmpty() {
+		if (StringUtils.isEmpty(kickOffDateString) || StringUtils.isEmpty(kickOffTimeString)) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

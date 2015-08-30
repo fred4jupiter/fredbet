@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,9 +69,21 @@ public class MatchController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid MatchCommand matchCommand, BindingResult result, RedirectAttributes redirect) {
+	public ModelAndView createOrUpdate(@Valid MatchCommand matchCommand, BindingResult result, RedirectAttributes redirect,
+			ModelMap modelMap) {
 		if (result.hasErrors()) {
 			return new ModelAndView("matches/form", "formErrors", result.getAllErrors());
+		}
+
+		if ((matchCommand.getTeamResultOne() != null && matchCommand.getTeamResultOne().intValue() < 0)
+				|| (matchCommand.getTeamResultTwo() != null && matchCommand.getTeamResultTwo().intValue() < 0)) {
+			messageUtil.addErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
+			return new ModelAndView("matches/form", "matchCommand", matchCommand);
+		}
+
+		if (matchCommand.isDateOrTimeEmpty()) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");
+			return new ModelAndView("matches/form", "matchCommand", matchCommand);
 		}
 
 		matchService.save(matchCommand);

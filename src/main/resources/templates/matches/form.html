@@ -30,20 +30,20 @@
 					<div class="form-group">
 		                <label for="kickOffDateString">Datum:</label>
 		                <div class="input-group date form_date" data-date="" data-date-format="dd. MM yyyy" data-link-field="kickOffDateString" data-link-format="dd. MM yyyy">
-		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.KickOffDateFormatted}" readonly="readonly"/>
+		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffDateString}" readonly="readonly" required="required"/>
 		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 		                </div>
-						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" /><br/>
+						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" required="required" />
 		            </div>
 					<div class="form-group">
 		                <label for="kickOffTimeString">Uhrzeit:</label>
 		                <div class="input-group date form_time" data-date="" data-date-format="hh:ii" data-link-field="kickOffTimeString" data-link-format="hh:ii">
-		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffTimeString}" readonly="readonly"/>
+		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffTimeString}" readonly="readonly" required="required"/>
 		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 		                </div>
-						<input type="hidden" id="kickOffTimeString" th:field="*{kickOffTimeString}" value="" /><br/>
+						<input type="hidden" id="kickOffTimeString" th:field="*{kickOffTimeString}" value="" required="required" />
 		            </div>
 					<div class="form-group">
 						<label for="teamResultTwo">Stadion:</label>
