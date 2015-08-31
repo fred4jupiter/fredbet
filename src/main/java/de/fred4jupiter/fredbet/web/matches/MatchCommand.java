@@ -1,8 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +11,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 
 public class MatchCommand {
 
-	private static final String TIME_FORMAT_PATTERN = "HH:mm";
-
-	private static final String DATE_FORMAT_PATTERN = "dd. MMMM yyyy";
+	private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
 	private String matchId;
 
@@ -29,9 +25,7 @@ public class MatchCommand {
 
 	private Group group;
 
-	private String kickOffDateString;
-
-	private String kickOffTimeString;
+	private LocalDateTime kickOffDate;
 
 	private String stadium;
 
@@ -65,19 +59,24 @@ public class MatchCommand {
 		return true;
 	}
 
-	public LocalDateTime getKickOffDate() {
-		if (StringUtils.isBlank(kickOffDateString) || StringUtils.isBlank(kickOffTimeString)) {
-			return null;
-		}
-		LocalDate parsedDate = LocalDate.parse(this.kickOffDateString, DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-		LocalTime localTime = LocalTime.parse(this.kickOffTimeString, DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
-		return LocalDateTime.of(parsedDate, localTime);
-	}
-
-	public void setKickOffDate(LocalDateTime kickOffDate) {
-		this.kickOffDateString = kickOffDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-		this.kickOffTimeString = kickOffDate.format(DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
-	}
+	// public LocalDateTime getKickOffDate() {
+	// if (StringUtils.isBlank(kickOffDateString) ||
+	// StringUtils.isBlank(kickOffTimeString)) {
+	// return null;
+	// }
+	// LocalDate parsedDate = LocalDate.parse(this.kickOffDateString,
+	// DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+	// LocalTime localTime = LocalTime.parse(this.kickOffTimeString,
+	// DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
+	// return LocalDateTime.of(parsedDate, localTime);
+	// }
+	//
+	// public void setKickOffDate(LocalDateTime kickOffDate) {
+	// this.kickOffDateString =
+	// kickOffDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+	// this.kickOffTimeString =
+	// kickOffDate.format(DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
+	// }
 
 	private boolean hasMatchStarted() {
 		return LocalDateTime.now().isAfter(getKickOffDate());
@@ -180,28 +179,34 @@ public class MatchCommand {
 		this.points = points;
 	}
 
-	public String getKickOffDateString() {
-		return kickOffDateString;
-	}
-
-	public void setKickOffDateString(String kickOffDateString) {
-		this.kickOffDateString = kickOffDateString;
-	}
-
-	public String getKickOffTimeString() {
-		return kickOffTimeString;
-	}
-
-	public void setKickOffTimeString(String kickOffTimeString) {
-		this.kickOffTimeString = kickOffTimeString;
-	}
-
 	public boolean isDateOrTimeEmpty() {
-		if (StringUtils.isEmpty(kickOffDateString) || StringUtils.isEmpty(kickOffTimeString)) {
+		if (kickOffDate == null) {
 			return true;
 		}
 
 		return false;
+	}
+
+	public LocalDateTime getKickOffDate() {
+		return kickOffDate;
+	}
+
+	public void setKickOffDate(LocalDateTime kickOffDate) {
+		this.kickOffDate = kickOffDate;
+	}
+
+	public String getKickOffDateString() {
+		if (kickOffDate == null) {
+			return "";
+		}
+		return kickOffDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+	}
+
+	public void setKickOffDateString(String kickOffDateString) {
+		if (StringUtils.isBlank(kickOffDateString)) {
+			return;
+		}
+		this.kickOffDate = LocalDateTime.parse(kickOffDateString, DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
 	}
 
 }

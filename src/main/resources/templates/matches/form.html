@@ -5,9 +5,15 @@
 	<title>Matches</title>    
 </head>
 <body>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container">		
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
-		<form id="matchesForm" th:action="@{/matches}" th:object="${matchCommand}" action="#" method="post" role="form">			
+		<form id="matchesForm" th:action="@{/matches}" th:object="${matchCommand}" action="#" method="post" role="form">	
+			<ul>
+	            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+	                <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+	                <span th:text="${e.message}">The error message</span>
+	            </li>
+	        </ul>		
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
@@ -29,22 +35,12 @@
 					</div>					
 					<div class="form-group">
 		                <label for="kickOffDateString">Datum:</label>
-		                <div class="input-group date form_date" data-date="" data-date-format="dd. MM yyyy" data-link-field="kickOffDateString" data-link-format="dd. MM yyyy">
-		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffDateString}" readonly="readonly" required="required"/>
-		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+		                <div class="input-group date form_datetime" data-link-field="kickOffDateString" data-date-format="dd. MM yyyy - HH:ii p">
+		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffDateString}" readonly="readonly"/>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
 		                </div>
-						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" required="required" />
-		            </div>
-					<div class="form-group">
-		                <label for="kickOffTimeString">Uhrzeit:</label>
-		                <div class="input-group date form_time" data-date="" data-date-format="hh:ii" data-link-field="kickOffTimeString" data-link-format="hh:ii">
-		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffTimeString}" readonly="readonly" required="required"/>
-		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-							<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-		                </div>
-						<input type="hidden" id="kickOffTimeString" th:field="*{kickOffTimeString}" value="" required="required" />
-		            </div>
+						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" /><br/>
+		            </div>					
 					<div class="form-group">
 						<label for="teamResultTwo">Stadion:</label>
 						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. Westfalenstadion" required="required"/>
