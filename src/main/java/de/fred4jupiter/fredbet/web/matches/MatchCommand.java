@@ -11,7 +11,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 
 public class MatchCommand {
 
-	private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm";
 
 	private String matchId;
 
