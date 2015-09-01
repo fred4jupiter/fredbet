@@ -7,7 +7,8 @@ $('.form_datetime').datetimepicker({
 	startView : 2,
 	forceParse : 0,
 	showMeridian : 1,
-	startDate: '-3d'
+	startDate: '-3d',
+	endDate: '+1y'
 });
 $('.form_date').datetimepicker({
 	language : 'de',
