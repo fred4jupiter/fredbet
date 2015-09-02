@@ -75,8 +75,7 @@ public class MatchController {
 			return new ModelAndView("matches/form", "formErrors", result.getAllErrors());
 		}
 
-		if ((matchCommand.getTeamResultOne() != null && matchCommand.getTeamResultOne().intValue() < 0)
-				|| (matchCommand.getTeamResultTwo() != null && matchCommand.getTeamResultTwo().intValue() < 0)) {
+		if (matchCommand.hasValidGoals()) {
 			messageUtil.addErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
 			return new ModelAndView("matches/form", "matchCommand", matchCommand);
 		}

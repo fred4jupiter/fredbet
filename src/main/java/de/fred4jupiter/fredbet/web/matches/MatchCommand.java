@@ -213,4 +213,9 @@ public class MatchCommand {
 		return (getTeamResultOne() == null && getTeamResultTwo() != null) || (getTeamResultOne() != null && getTeamResultTwo() == null);
 	}
 
+	public boolean hasValidGoals() {
+		return (getTeamResultOne() != null && getTeamResultOne().intValue() < 0)
+				|| (getTeamResultTwo() != null && getTeamResultTwo().intValue() < 0);
+	}
+
 }
