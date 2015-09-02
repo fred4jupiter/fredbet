@@ -80,6 +80,11 @@ public class MatchController {
 			messageUtil.addErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
 			return new ModelAndView("matches/form", "matchCommand", matchCommand);
 		}
+		
+		if ((matchCommand.isOnlyOneResultSet())) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie beide Tore an!");
+			return new ModelAndView("matches/form", "matchCommand", matchCommand);
+		}
 
 		if (matchCommand.isDateOrTimeEmpty()) {
 			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");

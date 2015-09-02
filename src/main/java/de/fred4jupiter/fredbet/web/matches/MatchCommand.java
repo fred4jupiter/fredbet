@@ -209,4 +209,8 @@ public class MatchCommand {
 		this.kickOffDate = LocalDateTime.parse(kickOffDateString, DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
 	}
 
+	public boolean isOnlyOneResultSet() {
+		return (getTeamResultOne() == null && getTeamResultTwo() != null) || (getTeamResultOne() != null && getTeamResultTwo() == null);
+	}
+
 }
