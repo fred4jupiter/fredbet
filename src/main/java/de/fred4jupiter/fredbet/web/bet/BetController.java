@@ -45,7 +45,7 @@ public class BetController {
 	public ModelAndView listStillOpen(ModelMap modelMap) {
 		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
 		if (CollectionUtils.isEmpty(matchesToBet)) {
-			messageUtil.addInfoMsg(modelMap, "Alle Tipps abgegeben!");
+			messageUtil.addInfoMsg(modelMap, "Derzeit alle Spiele getippt!");
 		}
 		
 		return new ModelAndView("bet/list_open", "matchesToBet", matchesToBet);
