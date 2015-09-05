@@ -22,7 +22,9 @@
 						<div class="row">
 							<div class="col-xs-7">
 								<span>Anzahl Berechtigungen: </span>
-								<span th:text="${user.roleCount()}">ROLE_USER</span>														  		
+								<span th:text="${user.roleCount()}">ROLE_USER</span>
+								<span>Angelegt: </span>							
+								<span th:text="${#temporals.format(user.createdAt, 'dd.MM.yyyy HH:mm')}">05.09.2015</span>							  		
 				  			</div>
 				  			<div class="col-xs-5">
 				  				<div class="row custom-button-group">

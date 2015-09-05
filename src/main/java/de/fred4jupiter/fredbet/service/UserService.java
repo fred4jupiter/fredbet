@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
@@ -66,7 +67,7 @@ public class UserService {
 	public void createOrUpdateUser(UserCommand userCommand) {
 		if (StringUtils.isBlank(userCommand.getUserId())) {
 			// create new user
-			final AppUser adminUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), userCommand.getRoles());
+			final AppUser adminUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), FredBetRole.ROLE_USER);
 			appUserRepository.save(adminUser);
 			return;
 		}

@@ -15,23 +15,22 @@ import com.mongodb.Mongo;
 @Profile(value = { "mongo-embedded", "default" })
 public class MongoEmbeddedConfig extends AbstractMongoConfiguration {
 
-	private static final String MONGO_DB_NAME = "fredbet_db";
+    private static final String MONGO_DB_NAME = "fredbet_db";
 
-	@Override
-	protected String getDatabaseName() {
-		return MONGO_DB_NAME;
-	}
+    @Override
+    protected String getDatabaseName() {
+        return MONGO_DB_NAME;
+    }
 
-	@Bean
-	@Override
-	public Mongo mongo() {
-		return new Fongo(MONGO_DB_NAME).getMongo();
-	}
+    @Bean
+    @Override
+    public Mongo mongo() {
+        return new Fongo(MONGO_DB_NAME).getMongo();
+    }
 
-	@Bean
-	public MongoTemplate mongoTemplate() {
-		return new MongoTemplate(mongo(), MONGO_DB_NAME);
-	}
+    @Bean
+    public MongoTemplate mongoTemplate() {
+        return new MongoTemplate(mongo(), MONGO_DB_NAME);
+    }
 
-	
 }
