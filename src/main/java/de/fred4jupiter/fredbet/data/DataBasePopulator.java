@@ -41,7 +41,7 @@ public class DataBasePopulator {
         LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
         // will also be used for remote shell login
-        final AppUser adminUser = new AppUser("michael", "michael", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH);
+        final AppUser adminUser = new AppUser("admin", "admin", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH);
         userService.save(adminUser);
         final AppUser editUser = new AppUser("edit", "edit", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH);
         userService.save(editUser);
