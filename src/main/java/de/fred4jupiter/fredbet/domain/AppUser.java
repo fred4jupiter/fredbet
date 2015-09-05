@@ -122,4 +122,7 @@ public class AppUser implements UserDetails {
 		this.password = password;
 	}
 
+	public int roleCount() {
+	    return this.roles.size();
+	}
 }

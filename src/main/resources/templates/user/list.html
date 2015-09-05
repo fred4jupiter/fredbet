@@ -21,9 +21,8 @@
 					<div class="panel-body user-panel-body">
 						<div class="row">
 							<div class="col-xs-7">
-								<div th:each="role : ${user.roles}">
-									<span th:text="${role}">ROLE_USER</span>
-								</div>														  		
+								<span>Anzahl Berechtigungen: </span>
+								<span th:text="${user.roleCount()}">ROLE_USER</span>														  		
 				  			</div>
 				  			<div class="col-xs-5">
 				  				<div class="row custom-button-group">

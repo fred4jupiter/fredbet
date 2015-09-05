@@ -29,8 +29,6 @@ public class UserController {
 
     @Autowired
     private MessageUtil messageUtil;
-    
-    
 
     @RequestMapping
     public ModelAndView list() {
@@ -47,12 +45,12 @@ public class UserController {
     @RequestMapping("{id}/delete")
     public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
-        
+
         if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
             messageUtil.addErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
             return new ModelAndView("redirect:/user");
         }
-        
+
         userService.deleteUser(userId);
         String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
         messageUtil.addInfoMsg(redirect, msg);
@@ -84,7 +82,7 @@ public class UserController {
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, BindingResult result,
-            RedirectAttributes redirect,ModelMap modelMap) {
+            RedirectAttributes redirect, ModelMap modelMap) {
         if (result.hasErrors()) {
             return new ModelAndView("user/change_password", "formErrors", result.getAllErrors());
         }
@@ -93,12 +91,12 @@ public class UserController {
             messageUtil.addErrorMsg(modelMap, "Das alte Passwort ist falsch!");
             return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
         }
-        
+
         if (changePasswordCommand.isPasswordRepeatMismatch()) {
             messageUtil.addErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
             return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
         }
-        
+
         userService.changePassword(SecurityUtils.getCurrentUser().getUsername(), changePasswordCommand.getNewPassword());
 
         String msg = "Passwort erfolgreich geändert!";
