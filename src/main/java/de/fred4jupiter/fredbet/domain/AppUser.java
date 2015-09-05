@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -45,6 +47,16 @@ public class AppUser implements UserDetails {
 		this.roles = roles;
 	}
 
+	@Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("id", id);
+        builder.append("username", username);
+        builder.append("password", password != null ? "is set" : "is null");
+        builder.append("roles", roles);
+        return builder.toString();
+    }
+	
 	public String getId() {
 		return id;
 	}

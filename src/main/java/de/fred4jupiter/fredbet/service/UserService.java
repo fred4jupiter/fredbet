@@ -30,6 +30,10 @@ public class UserService {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
 	}
 
+	public AppUser findByAppUserId(String userId) {
+	    return appUserRepository.findOne(userId);
+	}
+	
 	public UserCommand findByUserId(String userId) {
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {
@@ -74,5 +78,15 @@ public class UserService {
 		appUser.setRoles(userCommand.getRoles());
 		appUserRepository.save(appUser);
 	}
+
+    public void changePassword(String username, String newPassword) {
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser == null) {
+            throw new IllegalArgumentException("User with username="+username+" does not exists!");
+        }
+        
+        appUser.setPassword(newPassword);
+        appUserRepository.save(appUser);
+    }
 
 }
