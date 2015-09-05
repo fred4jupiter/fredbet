@@ -1,10 +1,14 @@
 package de.fred4jupiter.fredbet.web.user;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import de.fred4jupiter.fredbet.FredBetRole;
 
 public class UserCommand {
 
@@ -19,8 +23,8 @@ public class UserCommand {
 	private final List<String> availableRoles = new ArrayList<>();
 
 	public UserCommand() {
-		availableRoles.add("ROLE_USER");
-		availableRoles.add("ROLE_ADMIN");
+	    List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
+	    this.availableRoles.addAll(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
 	}
 
 	public List<String> getAvailableRoles() {

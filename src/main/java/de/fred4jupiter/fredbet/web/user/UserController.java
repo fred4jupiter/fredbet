@@ -47,6 +47,12 @@ public class UserController {
     @RequestMapping("{id}/delete")
     public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
+        
+        if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
+            messageUtil.addErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
+            return new ModelAndView("redirect:/user");
+        }
+        
         userService.deleteUser(userId);
         String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
         messageUtil.addInfoMsg(redirect, msg);
