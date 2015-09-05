@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -42,6 +43,7 @@ public class UserController {
         return new ModelAndView("user/form", "userCommand", userCommand);
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("{id}/delete")
     public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
@@ -57,6 +59,7 @@ public class UserController {
         return new ModelAndView("redirect:/user");
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createForm(@ModelAttribute UserCommand userCommand) {
         return "user/form";
