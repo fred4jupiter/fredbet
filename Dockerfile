@@ -13,6 +13,7 @@ ENV spring.profiles.active dev
 VOLUME /tmp
 
 EXPOSE 8080
+EXPOSE 2000
 
 ADD fredbet-0.0.1-SNAPSHOT.jar fredbet.jar
 
