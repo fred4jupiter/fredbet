@@ -38,8 +38,10 @@ public class DataBasePopulator {
 
         createDefaultUsers();
 
-        // this we be executed in demodata profile only
+        // create matches for demo
         if (environment.acceptsProfiles("demodata")) {
+            matchService.deleteAllMatches();
+            
             Match match1 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
                     .withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(5)).build();
             matchService.save(match1);

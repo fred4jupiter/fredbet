@@ -152,5 +152,9 @@ public class MatchService {
 		return matchIdBetMap;
 	}
 
+    public void deleteAllMatches() {
+        matchRepository.deleteAll();
+    }
+
 	
 }
