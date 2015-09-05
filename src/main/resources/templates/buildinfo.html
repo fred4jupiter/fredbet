@@ -6,6 +6,20 @@
 </head>
 <body>
 	<div layout:fragment="content">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Info</th>
+					<th>Wert</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="entry: ${buildInfoMap.entrySet()}">
+					<td th:text="${entry.key}">Key</td>
+					<td th:text="${entry.value}">Value</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

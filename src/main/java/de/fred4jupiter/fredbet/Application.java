@@ -1,7 +1,13 @@
 package de.fred4jupiter.fredbet;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 /**
  * Main application start.
@@ -18,5 +24,10 @@ public class Application {
     	SpringApplication app = new SpringApplication(Application.class);
     	app.addInitializers(new AppInitializer());
     	app.run(args);
+    }
+    
+    @Bean
+    public Properties gitProperties() throws IOException {
+    	return PropertiesLoaderUtils.loadProperties(new ClassPathResource("git.properties"));
     }
 }

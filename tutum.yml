@@ -12,4 +12,3 @@ mongodb:
   - /var/lib/mongodb/fredbet/test:/data/db
   ports:
   - "27017:27017"
-  - "28017:28017"
