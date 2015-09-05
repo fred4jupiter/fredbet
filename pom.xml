@@ -54,6 +54,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-remote-shell</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -109,8 +113,7 @@
 
 	<build>
 		<plugins>
-			<!-- Run mvn clean install spring-boot:run to start on console with spring 
-				loaded activated -->
+			<!-- Run mvn clean install spring-boot:run to start on console with spring loaded activated -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
