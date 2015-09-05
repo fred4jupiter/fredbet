@@ -11,5 +11,5 @@ fredbet:
 mongodb:
   image: 'mongo:latest'
   command: 'mongod --smallfiles'
-  ports:
+  expose:
     - '27017'
