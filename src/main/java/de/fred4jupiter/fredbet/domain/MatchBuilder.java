@@ -10,7 +10,7 @@ public class MatchBuilder {
 	
 	private MatchBuilder() {
 		match = new Match();
-		match.setKickOffDate(DateUtils.toDate(LocalDateTime.now().plusHours(1)));
+		match.setKickOffDate(DateUtils.toDate(LocalDateTime.now()));
 	}
 	
 	public static MatchBuilder create() {
