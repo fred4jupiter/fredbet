@@ -22,57 +22,61 @@ import de.fred4jupiter.fredbet.service.UserService;
 @Component
 public class DataBasePopulator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
 
-	@Autowired
-	private MatchService matchService;
+    @Autowired
+    private MatchService matchService;
 
-	@Autowired
-	private Environment environment;
+    @Autowired
+    private Environment environment;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private BettingService bettingService;
+    @Autowired
+    private BettingService bettingService;
 
-	@PostConstruct
-	public void initDatabaseWithDemoData() {
-		LOG.info("initDatabaseWithDemoData: inserting demo data...");
+    @PostConstruct
+    public void initDatabaseWithDemoData() {
+        LOG.info("initDatabaseWithDemoData: inserting demo data...");
 
-		// will also be used for remote shell login
-		final AppUser adminUser = new AppUser("admin", "admin", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN);
-		userService.save(adminUser);
-		final AppUser testUser = new AppUser("test", "test", FredBetRole.ROLE_USER);
-		userService.save(testUser);
+        // will also be used for remote shell login
+        final AppUser adminUser = new AppUser("michael", "michael", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH);
+        userService.save(adminUser);
+        final AppUser editUser = new AppUser("edit", "edit", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH);
+        userService.save(editUser);
+        
+        final AppUser normalUser = new AppUser("normal", "normal", FredBetRole.ROLE_USER);
+        userService.save(normalUser);
 
-		// this we be executed in demodata profile only
-		if (environment.acceptsProfiles("demodata")) {
+        // this we be executed in demodata profile only
+        if (environment.acceptsProfiles("demodata")) {
 
-			for (int i = 0; i < 10; i++) {
-				userService.save(new AppUser("test" + i, "test" + i, FredBetRole.ROLE_USER));
-			}
+            // for (int i = 0; i < 10; i++) {
+            // userService.save(new AppUser("test" + i, "test" + i,
+            // FredBetRole.ROLE_USER));
+            // }
 
-			Match match1 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
-					.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(5)).build();
-			matchService.save(match1);
+            Match match1 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
+                    .withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(5)).build();
+            matchService.save(match1);
 
-			Match match2 = MatchBuilder.create().withTeams("Deutschland", "Frankfreich").withGroup(Group.GROUP_B)
-					.withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(10)).build();
-			matchService.save(match2);
+            Match match2 = MatchBuilder.create().withTeams("Deutschland", "Frankfreich").withGroup(Group.GROUP_B)
+                    .withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(10)).build();
+            matchService.save(match2);
 
-			Match match3 = MatchBuilder.create().withTeams("Belgien", "England").withGroup(Group.GROUP_D).withStadium("AOL Arena, München")
-					.withKickOffDate(LocalDateTime.now().plusMinutes(15)).build();
-			matchService.save(match3);
+            Match match3 = MatchBuilder.create().withTeams("Belgien", "England").withGroup(Group.GROUP_D).withStadium("AOL Arena, München")
+                    .withKickOffDate(LocalDateTime.now().plusMinutes(15)).build();
+            matchService.save(match3);
 
-			bettingService.createAndSaveBetting(adminUser, match1, 2, 1);
-			bettingService.createAndSaveBetting(adminUser, match2, 3, 1);
-			bettingService.createAndSaveBetting(adminUser, match3, 2, 4);
+            bettingService.createAndSaveBetting(adminUser, match1, 2, 1);
+            bettingService.createAndSaveBetting(adminUser, match2, 3, 1);
+            bettingService.createAndSaveBetting(adminUser, match3, 2, 4);
 
-			bettingService.createAndSaveBetting(testUser, match1, 0, 1);
-			bettingService.createAndSaveBetting(testUser, match2, 1, 2);
-			bettingService.createAndSaveBetting(testUser, match3, 5, 0);
-		}
-	}
+            bettingService.createAndSaveBetting(editUser, match1, 0, 1);
+            bettingService.createAndSaveBetting(editUser, match2, 1, 2);
+            bettingService.createAndSaveBetting(editUser, match3, 5, 0);
+        }
+    }
 
 }
