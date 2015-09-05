@@ -56,7 +56,7 @@ public class BettingService {
 		List<Match> matchesToBet = new ArrayList<>();
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
 		for (Match match : allMatches) {
-			if (!matchIds.contains(match.getId())) {
+			if (!matchIds.contains(match.getId()) && match.isBetable()) {
 				matchesToBet.add(match);
 			}
 		}
@@ -66,6 +66,9 @@ public class BettingService {
 
 	public BetCommand findByBetId(String betId) {
 		Bet bet = betRepository.findOne(betId);
+		if (bet == null) {
+		    throw new IllegalArgumentException("Could not find bet with betId="+betId);
+		}
 		BetCommand betCommand = mapBetToCommand(bet);
 		return betCommand;
 	}
