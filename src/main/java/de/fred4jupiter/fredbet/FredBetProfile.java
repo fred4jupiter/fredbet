@@ -9,4 +9,9 @@ public interface FredBetProfile {
 	String PROD = "prod";
 	
 	String DEMODATA = "demodata";
+	
+	/**
+	 * This is the MongoDB in memory usage.
+	 */
+	String FONGO = "fongo";
 }

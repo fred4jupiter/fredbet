@@ -12,7 +12,7 @@ import com.mongodb.Mongo;
 
 @Configuration
 @EnableMongoRepositories
-@Profile(value = { "mongo-embedded", "default" })
+@Profile(value = FredBetProfile.FONGO)
 public class MongoEmbeddedConfig extends AbstractMongoConfiguration {
 
     private static final String MONGO_DB_NAME = "fredbet_db";

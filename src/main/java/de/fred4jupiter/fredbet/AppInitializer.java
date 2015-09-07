@@ -19,9 +19,9 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		ConfigurableEnvironment environment = applicationContext.getEnvironment();
-		if (environment.acceptsProfiles("dev")) {
-			environment.addActiveProfile("demodata");
-			environment.addActiveProfile("mongo-embedded");
+		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
+			environment.addActiveProfile(FredBetProfile.DEMODATA);
+			environment.addActiveProfile(FredBetProfile.FONGO);
 			LOG.info("added active profile demodata and mongo-embedded");
 		}
 	}
