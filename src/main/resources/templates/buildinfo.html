@@ -6,20 +6,18 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Info</th>
-					<th>Wert</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="entry: ${buildInfoMap.entrySet()}">
-					<td th:text="${entry.key}">Key</td>
-					<td th:text="${entry.value}">Value</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
+				<div class="panel panel-default">
+					<div class="user panel-heading">
+						  <span th:text="${entry.key}">Key</span>
+					</div>
+					<div class="panel-body">
+						 <span th:text="${entry.value}">Value</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

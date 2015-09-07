@@ -37,16 +37,21 @@ h1 {
 
 .ranking-name {
 	font-size: 16px;
-    vertical-align: sub;
-    padding-left: 20px;
+	vertical-align: sub;
+	padding-left: 20px;
 }
 
 .label.ranking {
 	font-size: 100%;
 }
 
+.panel-heading.user {
+	font-weight: bold;
+}
+
 .panel-body.user-panel-body {
-	 height: 70px;
+	height: 70px;
+	background-color: lavender;
 }
 
 .full-box {

@@ -10,18 +10,11 @@
 		<h1>Benutzer</h1>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="user : ${allUsers}">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-12">
-						  		<span class="bold" th:text="${user.username}">Bert</span>				  		
-				  			</div>
-			  			</div>				  									
-					</div>
+				<div class="panel panel-default">					
 					<div class="panel-body user-panel-body">
 						<div class="row">
 							<div class="col-xs-7">
-								<span th:text="${#temporals.format(user.createdAt, 'dd.MM.yyyy HH:mm')}">05.09.2015</span>							  		
+								<span class="bold" th:text="${user.username}">Bert</span>							  		
 				  			</div>
 				  			<div class="col-xs-5">
 				  				<div class="row custom-button-group">
