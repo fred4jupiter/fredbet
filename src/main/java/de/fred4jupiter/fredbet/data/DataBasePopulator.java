@@ -15,6 +15,7 @@ import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserService;
 
@@ -31,6 +32,9 @@ public class DataBasePopulator {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BettingService bettingService;
 
 	@PostConstruct
 	public void initDatabaseWithDemoData() {
@@ -40,6 +44,7 @@ public class DataBasePopulator {
 
 		// create matches for demo
 		if (environment.acceptsProfiles(FredBetProfile.DEMODATA)) {
+			bettingService.deleteAllBets();
 			matchService.deleteAllMatches();
 
 			matchService.save(MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)

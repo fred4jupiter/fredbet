@@ -120,4 +120,8 @@ public class BettingService {
 		return mapBetToCommand(bet);
 	}
 
+	public void deleteAllBets() {
+		betRepository.deleteAll();
+	}
+
 }

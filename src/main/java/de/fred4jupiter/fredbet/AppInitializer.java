@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextInitializer;
@@ -20,10 +22,11 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		ConfigurableEnvironment environment = applicationContext.getEnvironment();
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
-			environment.addActiveProfile(FredBetProfile.DEMODATA);
-			environment.addActiveProfile(FredBetProfile.FONGO);
-			LOG.info("added active profile demodata and mongo-embedded");
+//			environment.addActiveProfile(FredBetProfile.DEMODATA);
+//			environment.addActiveProfile(FredBetProfile.FONGO);
 		}
+
+		LOG.info("Active profiles: " + Arrays.asList(environment.getActiveProfiles()));
 	}
 
 }

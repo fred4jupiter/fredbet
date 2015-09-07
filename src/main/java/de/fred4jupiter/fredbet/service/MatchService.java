@@ -1,10 +1,14 @@
 package de.fred4jupiter.fredbet.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -22,6 +26,8 @@ import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 @Service
 public class MatchService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(MatchService.class);
+
 	@Autowired
 	private MatchRepository matchRepository;
 
@@ -30,7 +36,7 @@ public class MatchService {
 
 	@Autowired
 	private PointsCalculationService pointsCalculationService;
-	
+
 	@Autowired
 	private BettingService bettingService;
 
@@ -131,30 +137,35 @@ public class MatchService {
 		}
 		return resultList;
 	}
-	
+
 	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
 		List<Match> allMatches = matchRepository.findByGroupOrderByKickOffDateAsc(group);
 		return toMatchCommandsWithBets(currentUserName, allMatches);
 	}
 
-
 	private Map<String, Bet> findBetsForMatchIds(String username) {
 		List<Bet> allUserBets = bettingService.findAllByUsername(username);
-		Map<String,Bet> matchToBetMap = toBetMap(allUserBets);
-		return matchToBetMap;
+		if (CollectionUtils.isEmpty(allUserBets)) {
+			LOG.warn("Could not found any bets for user: {}", username);
+			return Collections.emptyMap();
+		}
+		return toBetMap(allUserBets);
 	}
 
 	private Map<String, Bet> toBetMap(List<Bet> allUserBets) {
 		Map<String, Bet> matchIdBetMap = new HashMap<>();
 		for (Bet bet : allUserBets) {
+			if (bet.getMatch() == null) {
+				LOG.error("No referenced match found for bet={}", bet);
+				continue;
+			}
 			matchIdBetMap.put(bet.getMatch().getId(), bet);
 		}
 		return matchIdBetMap;
 	}
 
-    public void deleteAllMatches() {
-        matchRepository.deleteAll();
-    }
+	public void deleteAllMatches() {
+		matchRepository.deleteAll();
+	}
 
-	
 }
