@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -75,18 +76,7 @@ public class MatchController {
 			return new ModelAndView("matches/form", "formErrors", result.getAllErrors());
 		}
 
-		if (matchCommand.hasValidGoals()) {
-			messageUtil.addErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
-			return new ModelAndView("matches/form", "matchCommand", matchCommand);
-		}
-		
-		if ((matchCommand.isOnlyOneResultSet())) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie beide Tore an!");
-			return new ModelAndView("matches/form", "matchCommand", matchCommand);
-		}
-
-		if (matchCommand.isDateOrTimeEmpty()) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");
+		if (validate(matchCommand, modelMap)) {
 			return new ModelAndView("matches/form", "matchCommand", matchCommand);
 		}
 
@@ -95,5 +85,34 @@ public class MatchController {
 		String msg = "Spiel " + matchCommand.getTeamNameOne() + " gegen " + matchCommand.getTeamNameTwo() + " angelegt/aktualisiert!";
 		messageUtil.addInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/matches");
+	}
+
+	private boolean validate(MatchCommand matchCommand, ModelMap modelMap) {
+		if (matchCommand.hasValidGoals()) {
+			messageUtil.addErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
+			return true;
+		}
+
+		if ((matchCommand.isOnlyOneResultSet())) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie beide Tore an!");
+			return true;
+		}
+
+		if (matchCommand.isDateOrTimeEmpty()) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");
+			return true;
+		}
+		
+		if (matchCommand.isTeamNamesEmpty()) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie den Namen für Team 1 und Team 2 ein!");
+			return true;
+		}
+		
+		if (StringUtils.isEmpty(matchCommand.getStadium())) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie das Station ein!");
+			return true;
+		}
+
+		return false;
 	}
 }

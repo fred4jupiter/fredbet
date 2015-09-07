@@ -218,4 +218,8 @@ public class MatchCommand {
 				|| (getTeamResultTwo() != null && getTeamResultTwo().intValue() < 0);
 	}
 
+	public boolean isTeamNamesEmpty() {
+		return StringUtils.isEmpty(teamNameOne) || StringUtils.isEmpty(teamNameTwo);
+	}
+
 }
