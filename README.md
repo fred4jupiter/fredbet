@@ -18,4 +18,9 @@ Notes for pushing into Tutums private repository:
 	docker tag fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet
 	docker push tutum.co/fred4jupiter/fredbet
 	
-Note: You can springloaded javaagent like this: -javaagent:d:/maven_local_repo/org/springframework/springloaded/1.2.4.RELEASE/springloaded-1.2.4.RELEASE.jar -noverify 
+Note: You can use the springloaded javaagent like this: 
+
+	-javaagent:d:/maven_local_repo/org/springframework/springloaded/1.2.4.RELEASE/springloaded-1.2.4.RELEASE.jar -Dnoverify
+
+## Travis Build Status ##
+[![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet) 
