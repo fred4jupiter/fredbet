@@ -12,8 +12,8 @@
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{betId}" class="form-control" />
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
-					<div class="form-group">
-						<span th:text="*{teamNameOne}" ></span> - <span th:text="*{teamNameTwo}"></span><br/>
+					<div class="form-group">						
+						<span th:text="*{teamNameOne}" class="teamName"></span> - <span th:text="*{teamNameTwo}" class="teamName"></span><br/>
 						<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" required="required"/>
 						<span>:</span>
 						<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" required="required"/>

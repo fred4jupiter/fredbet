@@ -58,3 +58,7 @@ h1 {
 	float: right;
 	padding-right: 20px;
 }
+
+.teamName {
+	font-size: 1.4em;
+}

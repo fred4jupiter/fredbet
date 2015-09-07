@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
@@ -30,6 +31,10 @@ public class UserService {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
 	}
 
+	public AppUser findByAppUserId(String userId) {
+	    return appUserRepository.findOne(userId);
+	}
+	
 	public UserCommand findByUserId(String userId) {
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {
@@ -62,7 +67,7 @@ public class UserService {
 	public void createOrUpdateUser(UserCommand userCommand) {
 		if (StringUtils.isBlank(userCommand.getUserId())) {
 			// create new user
-			final AppUser adminUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), userCommand.getRoles());
+			final AppUser adminUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), FredBetRole.ROLE_USER);
 			appUserRepository.save(adminUser);
 			return;
 		}
@@ -74,5 +79,15 @@ public class UserService {
 		appUser.setRoles(userCommand.getRoles());
 		appUserRepository.save(appUser);
 	}
+
+    public void changePassword(String username, String newPassword) {
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser == null) {
+            throw new IllegalArgumentException("User with username="+username+" does not exists!");
+        }
+        
+        appUser.setPassword(newPassword);
+        appUserRepository.save(appUser);
+    }
 
 }

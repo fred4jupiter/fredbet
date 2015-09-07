@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+	<title>Error Page</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="alert alert-danger">Oops! Das hätte nicht passieren dürfen. Bitte versuchen Sie es später noch einmal.</div>
+	
+		<p th:if="${url}">
+			<b>Page:</b> <span th:text="${url}">Page URL</span>
+		</p>
+	
+		<p th:if="${timestamp}" id='created'>
+			<b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
+		</p>
+	
+		<p th:if="${status}">
+			<b>Response Status:</b> <span th:text="${status}">status-code</span> <span th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+		</p>
+		
+		<div th:if="${ex} or ${exception} or (${message} and ${message.length() != 0})">
+			<b>Cause:</b>
+			<span th:if="${ex}" th:text="${ex}">exception ...</span>
+			<span th:if="${exception}" th:text="${exception}">exception</span>
+			<span th:if="${message} and ${message.length() != 0}" th:text="${message}">message ...</span>		
+		</div>
+	
+		<p th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">Cause unknown (no exception details available)</p>
+	</div>
+</body>
+</html>

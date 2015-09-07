@@ -5,7 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -22,48 +25,91 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/user")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private MessageUtil messageUtil;
-	
-	@RequestMapping
-	public ModelAndView list() {
-		List<AppUser> users = userService.findAll();
-		return new ModelAndView("user/list", "allUsers", users);
-	}
+    @Autowired
+    private UserService userService;
 
-	@RequestMapping("{id}")
-	public ModelAndView edit(@PathVariable("id") String userId) {
-		UserCommand userCommand = userService.findByUserId(userId);
-		return new ModelAndView("user/form", "userCommand", userCommand);
-	}
-	
-	@RequestMapping("{id}/delete")
-	public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
-		UserCommand userCommand = userService.findByUserId(userId);
-		userService.deleteUser(userId);
-		String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
-		messageUtil.addInfoMsg(redirect, msg);
-		return new ModelAndView("redirect:/user");
-	}
+    @Autowired
+    private MessageUtil messageUtil;
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String createForm(@ModelAttribute UserCommand UserCommand) {
-		return "user/form";
-	}
+    @RequestMapping
+    public ModelAndView list() {
+        List<AppUser> users = userService.findAll();
+        return new ModelAndView("user/list", "allUsers", users);
+    }
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid UserCommand userCommand, BindingResult result, RedirectAttributes redirect) {
-		if (result.hasErrors()) {
-			return new ModelAndView("user/form", "formErrors", result.getAllErrors());
-		}
+    @RequestMapping("{id}")
+    public ModelAndView edit(@PathVariable("id") String userId) {
+        UserCommand userCommand = userService.findByUserId(userId);
+        return new ModelAndView("user/form", "userCommand", userCommand);
+    }
 
-		userService.createOrUpdateUser(userCommand);
+    @Secured("ROLE_ADMIN")
+    @RequestMapping("{id}/delete")
+    public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
+        UserCommand userCommand = userService.findByUserId(userId);
 
-		String msg = "Benutzer " + userCommand.getUsername() + " angelegt/aktualisiert!";
-		messageUtil.addInfoMsg(redirect, msg);
-		return new ModelAndView("redirect:/user");
-	}
+        if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
+            messageUtil.addErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
+            return new ModelAndView("redirect:/user");
+        }
+
+        userService.deleteUser(userId);
+        String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
+        messageUtil.addInfoMsg(redirect, msg);
+        return new ModelAndView("redirect:/user");
+    }
+
+    @Secured("ROLE_ADMIN")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String createForm(@ModelAttribute UserCommand userCommand) {
+        return "user/form";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView createOrUpdate(@Valid UserCommand userCommand, BindingResult result, RedirectAttributes redirect) {
+        if (result.hasErrors()) {
+            return new ModelAndView("user/form", "formErrors", result.getAllErrors());
+        }
+
+        userService.createOrUpdateUser(userCommand);
+
+        String msg = "Benutzer " + userCommand.getUsername() + " angelegt/aktualisiert!";
+        messageUtil.addInfoMsg(redirect, msg);
+        return new ModelAndView("redirect:/user");
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+    public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
+        return "user/change_password";
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, BindingResult result,
+            RedirectAttributes redirect, ModelMap modelMap) {
+        if (result.hasErrors()) {
+            return new ModelAndView("user/change_password", "formErrors", result.getAllErrors());
+        }
+
+        if (!isCorrectOldPassword(changePasswordCommand)) {
+            messageUtil.addErrorMsg(modelMap, "Das alte Passwort ist falsch!");
+            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
+        }
+
+        if (changePasswordCommand.isPasswordRepeatMismatch()) {
+            messageUtil.addErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
+            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
+        }
+
+        userService.changePassword(SecurityUtils.getCurrentUser().getUsername(), changePasswordCommand.getNewPassword());
+
+        String msg = "Passwort erfolgreich geändert!";
+        messageUtil.addInfoMsg(redirect, msg);
+        return new ModelAndView("redirect:/matches");
+    }
+
+    private boolean isCorrectOldPassword(ChangePasswordCommand changePasswordCommand) {
+        String userId = SecurityUtils.getCurrentUser().getId();
+        AppUser appUser = userService.findByAppUserId(userId);
+        return appUser.getPassword().equals(changePasswordCommand.getOldPassword());
+    }
 }

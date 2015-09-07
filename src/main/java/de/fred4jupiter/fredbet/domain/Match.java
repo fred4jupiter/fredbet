@@ -182,4 +182,8 @@ public class Match {
 	public void setKickOffDate(Date kickOffDate) {
 		this.kickOffDate = kickOffDate;
 	}
+
+    public boolean isBetable() {
+        return !hasStarted() && !hasResultSet();
+    }
 }

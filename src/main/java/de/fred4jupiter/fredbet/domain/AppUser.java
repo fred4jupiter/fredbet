@@ -1,10 +1,14 @@
 package de.fred4jupiter.fredbet.domain;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -15,99 +19,118 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
 import de.fred4jupiter.fredbet.FredBetRole;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Document
 public class AppUser implements UserDetails {
 
-	private static final long serialVersionUID = -2973861561213230375L;
+    private static final long serialVersionUID = -2973861561213230375L;
 
-	@Id
-	private String id;
+    @Id
+    private String id;
 
-	private List<String> roles;
+    private List<String> roles;
 
-	@Indexed(unique = true)
-	private String username;
+    @Indexed(unique = true)
+    private String username;
 
-	private String password;
+    private String password;
 
-	public AppUser(String username, String password, FredBetRole... roles) {
-		List<FredBetRole> rolesList = Arrays.asList(roles);
-		this.roles = rolesList.stream().map(role -> role.name()).collect(Collectors.toList());
-		this.username = username;
-		this.password = password;
-	}
+    private Date createdAt;
 
-	@PersistenceConstructor
-	public AppUser(String username, String password, List<String> roles) {
-		this.username = username;
-		this.password = password;
-		this.roles = roles;
-	}
+    @PersistenceConstructor
+    protected AppUser() {
+        // for mongodb
+    }
 
-	public String getId() {
-		return id;
-	}
+    public AppUser(String username, String password, FredBetRole... roles) {
+        List<FredBetRole> rolesList = Arrays.asList(roles);
+        this.roles = rolesList.stream().map(role -> role.name()).collect(Collectors.toList());
+        this.username = username;
+        this.password = password;
+        this.createdAt = new Date();
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (CollectionUtils.isEmpty(roles)) {
-			return null;
-		}
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
-	}
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("id", id);
+        builder.append("username", username);
+        builder.append("password", password != null ? "is set" : "is null");
+        builder.append("roles", roles);
+        return builder.toString();
+    }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    public String getId() {
+        return id;
+    }
 
-	@Override
-	public String getUsername() {
-		return username;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (CollectionUtils.isEmpty(roles)) {
+            return null;
+        }
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	public String getRolesAsString() {
-		if (CollectionUtils.isEmpty(roles)) {
-			return null;
-		}
-		return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	public List<String> getRoles() {
-		return roles;
-	}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
+    public String getRolesAsString() {
+        if (CollectionUtils.isEmpty(roles)) {
+            return null;
+        }
+        return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public List<String> getRoles() {
+        return roles;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int roleCount() {
+        return this.roles.size();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return DateUtils.toLocalDateTime(createdAt);
+    }
 }
