@@ -5,10 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.ui.ModelMap;
 
 import de.fred4jupiter.fredbet.FredBetRole;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class UserCommand {
 
@@ -65,6 +69,23 @@ public class UserCommand {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
+		if (StringUtils.isEmpty(this.username)) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie einen Benutzernamen ein!");
+			return true;
+		}
+		if (StringUtils.isEmpty(this.password)) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie einen Passwort ein!");
+			return true;
+		}
+		if (CollectionUtils.isEmpty(this.roles)) {
+			messageUtil.addErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override

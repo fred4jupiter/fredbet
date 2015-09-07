@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import de.fred4jupiter.fredbet.security.SecurityUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.ui.ModelMap;
+
+import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class ChangePasswordCommand {
 
@@ -37,4 +40,21 @@ public class ChangePasswordCommand {
     public boolean isPasswordRepeatMismatch() {
         return !this.newPassword.equals(this.newPasswordRepeat);
     }
+
+	public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
+		if (StringUtils.isBlank(this.oldPassword)) {
+			messageUtil.addErrorMsg(modelMap, "Das geben Sie das alte Passwort ein!");
+			return true;
+		}
+
+		if (StringUtils.isBlank(this.newPassword)) {
+			messageUtil.addErrorMsg(modelMap, "Das geben Sie das neue Passwort ein!");
+			return true;
+		}
+		if (StringUtils.isBlank(this.newPasswordRepeat)) {
+			messageUtil.addErrorMsg(modelMap, "Das geben Sie Passwortwiederholung ein!");
+			return true;
+		}
+		return false;
+	}
 }
