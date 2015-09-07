@@ -1,8 +1,12 @@
 package de.fred4jupiter.fredbet.repository;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +31,7 @@ public class MatchRepositoryTest extends AbstractMongoEmbeddedTest {
 
 		matchRepository.save(MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
 				.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).build());
-		
+
 		matchRepository.save(MatchBuilder.create().withTeams("Belgien", "England").withGroup(Group.GROUP_D)
 				.withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(15)).build());
 
@@ -35,8 +39,8 @@ public class MatchRepositoryTest extends AbstractMongoEmbeddedTest {
 		assertNotNull(matchesOrderByKickOffDate);
 		assertFalse(matchesOrderByKickOffDate.isEmpty());
 
-		assertEquals("Bulgarien", matchesOrderByKickOffDate.get(0).getTeamOne().getName());
-		assertEquals("Belgien", matchesOrderByKickOffDate.get(1).getTeamOne().getName());
-		assertEquals("Deutschland", matchesOrderByKickOffDate.get(2).getTeamOne().getName());
+		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamOne", hasProperty("name", equalTo("Bulgarien")))));
+		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamOne", hasProperty("name", equalTo("Belgien")))));
+		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamOne", hasProperty("name", equalTo("Deutschland")))));
 	}
 }
