@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import de.fred4jupiter.fredbet.FredBetProfile;
 import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Group;
@@ -47,7 +48,7 @@ public class DataBasePopulator {
 		userService.save(testUser);
 
 		// this we be executed in demodata profile only
-		if (environment.acceptsProfiles("demodata")) {
+		if (environment.acceptsProfiles(FredBetProfile.DEMODATA)) {
 
 			for (int i = 0; i < 10; i++) {
 				userService.save(new AppUser("test" + i, "test" + i, FredBetRole.ROLE_USER));
