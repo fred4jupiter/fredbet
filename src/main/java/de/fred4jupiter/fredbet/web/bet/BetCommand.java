@@ -29,6 +29,10 @@ public class BetCommand {
 		return builder.toString();
 	}
 
+	public boolean hasGoalsSet() {
+		return goalsTeamOne != null && goalsTeamTwo != null;
+	}
+	
 	public String getTeamNameOne() {
 		return teamNameOne;
 	}

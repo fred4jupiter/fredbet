@@ -59,9 +59,10 @@ public class BetController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect) {
-		if (result.hasErrors()) {
-			return new ModelAndView("bet/form", "formErrors", result.getAllErrors());
+	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
+		if (!betCommand.hasGoalsSet()) {
+			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Ihren Tipp ein!");
+			return new ModelAndView("bet/form", "betCommand", betCommand);
 		}
 
 		try {
