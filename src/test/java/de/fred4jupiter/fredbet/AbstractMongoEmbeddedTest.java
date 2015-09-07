@@ -8,8 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule.MongoDbRuleBuilder;
 
-@ActiveProfiles(value = {"dev", "mongo-embedded"})
-public abstract class AbstractMongoEmbeddedTest extends AbstractIntegrationTest{
+@ActiveProfiles(value = { FredBetProfile.DEV, FredBetProfile.FONGO })
+public abstract class AbstractMongoEmbeddedTest extends AbstractIntegrationTest {
 
 	@Rule
 	public MongoDbRule mongoDbRule = MongoDbRuleBuilder.newMongoDbRule().defaultSpringMongoDb("demo-test");
