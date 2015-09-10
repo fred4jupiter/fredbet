@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,11 @@ public class MatchService {
 
 	public List<MatchCommand> findAllMatches(String username) {
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
+		return toMatchCommandsWithBets(username, allMatches);
+	}
+	
+	public List<MatchCommand> findAllMatchesBeginAfterNow(String username) {
+		List<Match> allMatches = matchRepository.findByKickOffDateGreaterThanOrderByKickOffDateAsc(new Date());
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 

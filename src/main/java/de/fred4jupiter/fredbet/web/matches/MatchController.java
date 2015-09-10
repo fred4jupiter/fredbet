@@ -41,10 +41,18 @@ public class MatchController {
 	}
 
 	@RequestMapping
-	public ModelAndView list() {
+	public ModelAndView listAllMatches() {
 		List<MatchCommand> matches = matchService.findAllMatches(securityBean.getCurrentUserName());
 		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
-		modelAndView.addObject("heading", "alle Spiele");
+		modelAndView.addObject("heading", messageUtil.getMessageFor("all.matches"));
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "upcoming")
+	public ModelAndView upcomingMatches() {
+		List<MatchCommand> matches = matchService.findAllMatchesBeginAfterNow(securityBean.getCurrentUserName());
+		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
+		modelAndView.addObject("heading", messageUtil.getMessageFor("upcoming.matches"));
 		return modelAndView;
 	}
 
