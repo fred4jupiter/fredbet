@@ -73,15 +73,15 @@ public class UserCommand {
 	
 	public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
 		if (StringUtils.isEmpty(this.username)) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie einen Benutzernamen ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie einen Benutzernamen ein!");
 			return true;
 		}
 		if (StringUtils.isEmpty(this.password)) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie einen Passwort ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie einen Passwort ein!");
 			return true;
 		}
 		if (CollectionUtils.isEmpty(this.roles)) {
-			messageUtil.addErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
 			return true;
 		}
 		

@@ -45,7 +45,7 @@ public class BetController {
 	public ModelAndView listStillOpen(ModelMap modelMap) {
 		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
 		if (CollectionUtils.isEmpty(matchesToBet)) {
-			messageUtil.addInfoMsg(modelMap, "Derzeit alle Spiele getippt!");
+			messageUtil.addPlainInfoMsg(modelMap, "Derzeit alle Spiele getippt!");
 		}
 		
 		return new ModelAndView("bet/list_open", "matchesToBet", matchesToBet);
@@ -61,15 +61,15 @@ public class BetController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
 		if (!betCommand.hasGoalsSet()) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Ihren Tipp ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie Ihren Tipp ein!");
 			return new ModelAndView("bet/form", "betCommand", betCommand);
 		}
 
 		try {
 			bettingService.save(betCommand);
-			messageUtil.addInfoMsg(redirect, "Tippspiel angelegt/aktualisiert!");
+			messageUtil.addPlainInfoMsg(redirect, "Tippspiel angelegt/aktualisiert!");
 		} catch (NoBettingAfterMatchStartedAllowedException e) {
-			messageUtil.addErrorMsg(redirect, "Das Spiel hat bereits begonnen! Keine Tippabgabe mehr möglich!");
+			messageUtil.addPlainErrorMsg(redirect, "Das Spiel hat bereits begonnen! Keine Tippabgabe mehr möglich!");
 		}
 
 		return new ModelAndView("redirect:/matches");

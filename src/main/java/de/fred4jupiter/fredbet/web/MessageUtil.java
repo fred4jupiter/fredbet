@@ -22,15 +22,20 @@ public class MessageUtil {
 	@Autowired
 	private MessageSource messageSource;
 
-	public void addInfoMsg(RedirectAttributes redirect, String text) {
+	public void addPlainInfoMsg(RedirectAttributes redirect, String text) {
 		addMessage(redirect, CSS_ALT_SUCCESS, text);
 	}
+	
+	public void addInfoMsg(RedirectAttributes redirect, String msgKey, Object... params) {
+		String message = getMessageFor(msgKey, params);
+		addMessage(redirect, CSS_ALT_SUCCESS, message);
+	}
 
-	public void addInfoMsg(ModelMap modelMap, String text) {
+	public void addPlainInfoMsg(ModelMap modelMap, String text) {
 		modelMap.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALT_SUCCESS, text));
 	}
 	
-	public void addErrorMsg(ModelMap modelMap, String text) {
+	public void addPlainErrorMsg(ModelMap modelMap, String text) {
 		modelMap.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALERT_ERROR, text));
 	}
 
@@ -38,11 +43,11 @@ public class MessageUtil {
 		redirect.addFlashAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(cssClass, text));
 	}
 
-	public void addWarnMsg(RedirectAttributes redirect, String text) {
+	public void addPlainWarnMsg(RedirectAttributes redirect, String text) {
 		addMessage(redirect, CSS_ALERT_WARN, text);
 	}
 
-	public void addErrorMsg(RedirectAttributes redirect, String text) {
+	public void addPlainErrorMsg(RedirectAttributes redirect, String text) {
 		addMessage(redirect, CSS_ALERT_ERROR, text);
 	}
 

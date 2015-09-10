@@ -49,13 +49,13 @@ public class UserController {
 		UserCommand userCommand = userService.findByUserId(userId);
 
 		if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
-			messageUtil.addErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
+			messageUtil.addPlainErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
 			return new ModelAndView("redirect:/user");
 		}
 
 		userService.deleteUser(userId);
 		String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
-		messageUtil.addInfoMsg(redirect, msg);
+		messageUtil.addPlainInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/user");
 	}
 
@@ -74,12 +74,12 @@ public class UserController {
 		try {
 			userService.createOrUpdateUser(userCommand);
 		} catch (DuplicateKeyException e) {
-			messageUtil.addErrorMsg(modelMap, "Dieser Benutzername ist bereits vergeben!");
+			messageUtil.addPlainErrorMsg(modelMap, "Dieser Benutzername ist bereits vergeben!");
 			return new ModelAndView("user/form", "userCommand", userCommand);
 		}
 
 		String msg = "Benutzer " + userCommand.getUsername() + " angelegt/aktualisiert!";
-		messageUtil.addInfoMsg(redirect, msg);
+		messageUtil.addPlainInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/user");
 	}
 
@@ -96,19 +96,19 @@ public class UserController {
 		}
 
 		if (!isCorrectOldPassword(changePasswordCommand)) {
-			messageUtil.addErrorMsg(modelMap, "Das alte Passwort ist falsch!");
+			messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
 			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
 		}
 
 		if (changePasswordCommand.isPasswordRepeatMismatch()) {
-			messageUtil.addErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
 			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
 		}
 
 		userService.changePassword(SecurityUtils.getCurrentUser().getUsername(), changePasswordCommand.getNewPassword());
 
 		String msg = "Passwort erfolgreich geändert!";
-		messageUtil.addInfoMsg(redirect, msg);
+		messageUtil.addPlainInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/matches");
 	}
 

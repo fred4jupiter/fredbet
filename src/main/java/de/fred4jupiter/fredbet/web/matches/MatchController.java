@@ -90,34 +90,33 @@ public class MatchController {
 
 		matchService.save(matchCommand);
 
-		String msg = "Spiel " + matchCommand.getTeamNameOne() + " gegen " + matchCommand.getTeamNameTwo() + " angelegt/aktualisiert!";
-		messageUtil.addInfoMsg(redirect, msg);
+		messageUtil.addInfoMsg(redirect, "msg.match.created.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
 		return new ModelAndView("redirect:/matches");
 	}
 
 	private boolean validate(MatchCommand matchCommand, ModelMap modelMap) {
 		if (matchCommand.hasValidGoals()) {
-			messageUtil.addErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
+			messageUtil.addPlainErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
 			return true;
 		}
 
 		if ((matchCommand.isOnlyOneResultSet())) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie beide Tore an!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie beide Tore an!");
 			return true;
 		}
 
 		if (matchCommand.isDateOrTimeEmpty()) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");
 			return true;
 		}
 		
 		if (matchCommand.isTeamNamesEmpty()) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie den Namen für Team 1 und Team 2 ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie den Namen für Team 1 und Team 2 ein!");
 			return true;
 		}
 		
 		if (StringUtils.isEmpty(matchCommand.getStadium())) {
-			messageUtil.addErrorMsg(modelMap, "Bitte geben Sie das Station ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie das Station ein!");
 			return true;
 		}
 
