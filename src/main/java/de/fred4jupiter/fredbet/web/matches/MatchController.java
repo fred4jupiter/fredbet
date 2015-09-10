@@ -96,27 +96,27 @@ public class MatchController {
 
 	private boolean validate(MatchCommand matchCommand, ModelMap modelMap) {
 		if (matchCommand.hasValidGoals()) {
-			messageUtil.addPlainErrorMsg(modelMap, "Negative Werte sind nicht erlaubt!");
+			messageUtil.addErrorMsg(modelMap, "msg.negative.values.not.allowed");
 			return true;
 		}
 
 		if ((matchCommand.isOnlyOneResultSet())) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie beide Tore an!");
+			messageUtil.addErrorMsg(modelMap, "msg.input.complete.result");
 			return true;
 		}
 
 		if (matchCommand.isDateOrTimeEmpty()) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie Datum und Uhrzeit ein!");
+			messageUtil.addErrorMsg(modelMap, "msg.input.complete.date.time");
 			return true;
 		}
 		
 		if (matchCommand.isTeamNamesEmpty()) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie den Namen für Team 1 und Team 2 ein!");
+			messageUtil.addErrorMsg(modelMap, "msg.input.teamOne.teamTwo");
 			return true;
 		}
 		
 		if (StringUtils.isEmpty(matchCommand.getStadium())) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie das Station ein!");
+			messageUtil.addErrorMsg(modelMap, "msg.input.stadium");
 			return true;
 		}
 
