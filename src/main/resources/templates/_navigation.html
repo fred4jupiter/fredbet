@@ -18,23 +18,23 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul th:if="${@securityBean.isUserLoggedIn()}" class="nav navbar-nav">
-					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}">alle Spiele</a></li>
+					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}">Matches</a></li>
 					<li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gruppen<span class="caret"></span></a>
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{groups}">Groups<span class="caret"></span></a>
 			          <ul class="dropdown-menu">
-			            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}">Gruppe A</a></li>
-			            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}">Gruppe B</a></li>
-			            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}">Gruppe C</a></li>
-			            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}">Gruppe D</a></li>
-			            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}">Gruppe E</a></li>
-			            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}">Gruppe F</a></li>
-			            <li th:class="${pageState_GROUP_G}"><a href="#matches" th:href="@{/matches/group/GROUP_G}">Gruppe G</a></li>
-			            <li th:class="${pageState_GROUP_H}"><a href="#matches" th:href="@{/matches/group/GROUP_H}">Gruppe H</a></li>
-			            <li th:class="${pageState_GROUP_I}"><a href="#matches" th:href="@{/matches/group/GROUP_I}">Gruppe I</a></li>			            
+			            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'">Group A</a></li>
+			            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'">Group B</a></li>
+			            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'">Group C</a></li>
+			            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'">Group D</a></li>
+			            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'">Group E</a></li>
+			            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'">Group F</a></li>
+			            <li th:class="${pageState_GROUP_G}"><a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'">Group G</a></li>
+			            <li th:class="${pageState_GROUP_H}"><a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'">Group H</a></li>
+			            <li th:class="${pageState_GROUP_I}"><a href="#matches" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'">Group I</a></li>			            
 			          </ul>
 			        </li>
 			        <li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Finalrunden<span class="caret"></span></a>
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{finals}">Finals<span class="caret"></span></a>
 			          <ul class="dropdown-menu">
 			            <li th:class="${pageState_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}">Achtelfinale</a></li>
 			            <li th:class="${pageState_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}">Viertelfinale</a></li>
