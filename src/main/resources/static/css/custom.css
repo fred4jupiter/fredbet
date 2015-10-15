@@ -67,3 +67,8 @@ h1 {
 .teamName {
 	font-size: 1.4em;
 }
+
+.user-label {
+	font-size: 1.5em;
+	padding-top: 7px;
+}
