@@ -10,6 +10,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -26,6 +27,9 @@ public class UserService {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -54,6 +58,7 @@ public class UserService {
 
 	public void save(AppUser appUser) {
 		try {
+			appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
 			appUserRepository.save(appUser);
 		} catch (DuplicateKeyException e) {
 			LOG.info("user with username={} still exists. skipping save...", appUser.getUsername());
@@ -68,7 +73,7 @@ public class UserService {
 		if (StringUtils.isBlank(userCommand.getUserId())) {
 			// create new user
 			final AppUser adminUser = new AppUser(userCommand.getUsername(), userCommand.getPassword(), FredBetRole.ROLE_USER);
-			appUserRepository.save(adminUser);
+			save(adminUser);
 			return;
 		}
 
@@ -77,7 +82,7 @@ public class UserService {
 		appUser.setUsername(userCommand.getUsername());
 		appUser.setPassword(userCommand.getPassword());
 		appUser.setRoles(userCommand.getRoles());
-		appUserRepository.save(appUser);
+		save(appUser);
 	}
 
     public void changePassword(String username, String newPassword) {
@@ -87,7 +92,7 @@ public class UserService {
         }
         
         appUser.setPassword(newPassword);
-        appUserRepository.save(appUser);
+        save(appUser);
     }
 
 }
