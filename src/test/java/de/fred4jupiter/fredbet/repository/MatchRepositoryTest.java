@@ -48,6 +48,8 @@ public class MatchRepositoryTest extends AbstractMongoEmbeddedTest {
 
 	@Test
 	public void findByKickOffDateGreaterThanOrderByKickOffDateAsc() {
+		matchRepository.deleteAll();
+		
 		createSomeMatches();
 
 		List<Match> matches = matchRepository
