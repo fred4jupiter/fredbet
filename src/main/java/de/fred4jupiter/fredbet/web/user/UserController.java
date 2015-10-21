@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
+import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -95,26 +96,21 @@ public class UserController {
 			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
 		}
 
-		if (!isCorrectOldPassword(changePasswordCommand)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
-			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-		}
-
 		if (changePasswordCommand.isPasswordRepeatMismatch()) {
 			messageUtil.addPlainErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
 			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
 		}
 
-		userService.changePassword(SecurityUtils.getCurrentUser().getUsername(), changePasswordCommand.getNewPassword());
+		try {
+			userService.changePassword(SecurityUtils.getCurrentUser(), changePasswordCommand);
+		} catch (OldPasswordWrongException e) {
+			messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
+			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
+		}
 
 		String msg = "Passwort erfolgreich geändert!";
 		messageUtil.addPlainInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/matches");
 	}
 
-	private boolean isCorrectOldPassword(ChangePasswordCommand changePasswordCommand) {
-		String userId = SecurityUtils.getCurrentUser().getId();
-		AppUser appUser = userService.findByAppUserId(userId);
-		return appUser.getPassword().equals(changePasswordCommand.getOldPassword());
-	}
 }

@@ -18,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import de.fred4jupiter.fredbet.web.user.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
 
 @Service
@@ -27,7 +28,7 @@ public class UserService {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -36,9 +37,9 @@ public class UserService {
 	}
 
 	public AppUser findByAppUserId(String userId) {
-	    return appUserRepository.findOne(userId);
+		return appUserRepository.findOne(userId);
 	}
-	
+
 	public UserCommand findByUserId(String userId) {
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {
@@ -85,14 +86,21 @@ public class UserService {
 		save(appUser);
 	}
 
-    public void changePassword(String username, String newPassword) {
-        AppUser appUser = appUserRepository.findByUsername(username);
-        if (appUser == null) {
-            throw new IllegalArgumentException("User with username="+username+" does not exists!");
-        }
-        
-        appUser.setPassword(newPassword);
-        save(appUser);
-    }
+	public void changePassword(AppUser appUser, ChangePasswordCommand changePasswordCommand) {
+		if (appUser == null) {
+			throw new IllegalArgumentException("Given user must not be null!");
+		}
+
+		if (!isCorrectOldPassword(appUser, changePasswordCommand)) {
+			throw new OldPasswordWrongException("The old password is wrong!");
+		}
+
+		appUser.setPassword(changePasswordCommand.getNewPassword());
+		save(appUser);
+	}
+
+	private boolean isCorrectOldPassword(AppUser appUser, ChangePasswordCommand changePasswordCommand) {
+		return passwordEncoder.matches(changePasswordCommand.getOldPassword(), appUser.getPassword());
+	}
 
 }
