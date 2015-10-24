@@ -3,7 +3,7 @@ machine:
     version: oraclejdk8
   services:
     - docker
-	
+
 dependencies:
   override:
     - docker info
