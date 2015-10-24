@@ -1,3 +1,15 @@
 machine:
   java:
     version: oraclejdk8
+  services:
+    - docker
+	
+dependencies:
+  override:
+    - docker info
+    - docker build -t fred4jupiter/fredbet .
+
+test:
+  override:
+    - docker run -d -p 9200:9200 fred4jupiter/fredbet; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:9200
