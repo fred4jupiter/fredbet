@@ -6,6 +6,7 @@ machine:
 
 dependencies:
   override:
+    - mvn verify
     - docker info
     - docker build -t fred4jupiter/fredbet .
 
