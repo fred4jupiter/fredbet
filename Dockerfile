@@ -13,7 +13,7 @@ ENV spring.profiles.active dev
 EXPOSE 8080
 EXPOSE 2000
 
-ADD fredbet-0.0.1-SNAPSHOT.jar fredbet.jar
+ADD target/fredbet-0.0.1-SNAPSHOT.jar fredbet.jar
 
 RUN bash -c 'touch /fredbet.jar'
 
