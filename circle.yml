@@ -19,6 +19,6 @@ deployment:
   tutum:
     branch: master
     commands:
-      - docker login --username=$TUTUM_USER --password=$TUTUM_PASS tutum.co
+      - docker login --username=$TUTUM_USER --password=$TUTUM_PASS --email=$TUTUM_EMAIL tutum.co
       - docker tag -f fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet
       - docker push tutum.co/fred4jupiter/fredbet
