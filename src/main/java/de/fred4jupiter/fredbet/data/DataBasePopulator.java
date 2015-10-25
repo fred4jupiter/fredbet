@@ -32,7 +32,7 @@ public class DataBasePopulator {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private BettingService bettingService;
 
@@ -60,7 +60,11 @@ public class DataBasePopulator {
 
 	private void createDefaultUsers() {
 		// will also be used for remote shell login
-		userService.save(new AppUser("michael", "michael", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("admin", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("michael", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+
+		userService.save(new AppUser("janz", "janz", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("joernf", "joernf", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
 
 		userService.save(new AppUser("edit", "edit", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
 		userService.save(new AppUser("normal", "normal", FredBetRole.ROLE_USER));
