@@ -27,7 +27,7 @@ public class Application {
     }
     
     @Bean
-    public Properties gitProperties() throws IOException {
-    	return PropertiesLoaderUtils.loadProperties(new ClassPathResource("git.properties"));
+    public Properties buildProperties() throws IOException {
+    	return PropertiesLoaderUtils.loadProperties(new ClassPathResource("build.properties"));
     }
 }

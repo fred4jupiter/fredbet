@@ -12,11 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class BuildInfoController {
 
 	@Autowired
-	private Properties gitProperties;
+	private Properties buildProperties;
 
 	@RequestMapping
 	public ModelAndView list() {
-		ModelAndView modelAndView = new ModelAndView("buildinfo", "buildInfoMap", gitProperties);
-		return modelAndView;
+		return new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
 	}
 }
