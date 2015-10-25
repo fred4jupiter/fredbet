@@ -10,7 +10,12 @@
 	<packaging>jar</packaging>
 
 	<name>Fredbet Tippspiel</name>
-	<description></description>
+
+	<description>Simple football betting application.</description>
+
+	<scm>
+		<connection>scm:git:git://github.com/fred4jupiter/fredbet.git</connection>
+	</scm>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -23,7 +28,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<docker.image.prefix>fred4jupiter</docker.image.prefix>
-		<timestamp>${maven.build.timestamp}</timestamp>
+		<buildtimestamp>${maven.build.timestamp}</buildtimestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 	</properties>
 
@@ -141,22 +146,19 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<!-- <plugin> -->
-			<!-- <groupId>pl.project13.maven</groupId> -->
-			<!-- <artifactId>git-commit-id-plugin</artifactId> -->
-			<!-- <version>2.1.15</version> -->
-			<!-- <configuration> -->
-			<!-- <dotGitDirectory>${project.basedir}/.git</dotGitDirectory> -->
-			<!-- <includeOnlyProperties> -->
-			<!-- <includeOnlyProperty>git.commit.time</includeOnlyProperty> -->
-			<!-- <includeOnlyProperty>git.build.version</includeOnlyProperty> -->
-			<!-- <includeOnlyProperty>git.commit.id</includeOnlyProperty> -->
-			<!-- <includeOnlyProperty>git.commit.message.short</includeOnlyProperty> -->
-			<!-- <includeOnlyProperty>git.branch</includeOnlyProperty> -->
-			<!-- <includeOnlyProperty>git.build.time</includeOnlyProperty> -->
-			<!-- </includeOnlyProperties> -->
-			<!-- </configuration> -->
-			<!-- </plugin> -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>				
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
