@@ -8,7 +8,9 @@ This will build an image with name `fred4jupiter/fredbet`.
 
 Running the docker containers with MongoDB issue the following command:
 
+	cd src/docker/development
 	docker-compose up -d
+
 The application is available under [http://localhost:8080/](http://localhost:8080/)
 
 Notes for pushing into Tutums private repository:
