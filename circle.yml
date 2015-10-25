@@ -3,6 +3,8 @@ machine:
     version: oraclejdk8
   services:
     - docker
+  timezone:
+    Europe/Berlin
 
 dependencies:
   override:    
