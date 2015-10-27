@@ -69,6 +69,10 @@ h1 {
 }
 
 .user-label {
-	font-size: 1.5em;
+	font-size: 1.3em;
 	padding-top: 7px;
+}
+
+a.btn.disabled, fieldset[disabled] a.btn {
+    background-color: #BAFAAA;
 }
