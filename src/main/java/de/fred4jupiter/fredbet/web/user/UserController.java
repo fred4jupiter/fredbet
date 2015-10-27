@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
+import de.fred4jupiter.fredbet.service.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -54,9 +55,13 @@ public class UserController {
 			return new ModelAndView("redirect:/user");
 		}
 
-		userService.deleteUser(userId);
-		String msg = "Benutzer " + userCommand.getUsername() + " wurde gelöscht!";
-		messageUtil.addPlainInfoMsg(redirect, msg);
+		try {
+			userService.deleteUser(userId);
+			messageUtil.addInfoMsg(redirect, "user.deleted",userCommand.getUsername());
+		} catch (UserNotDeletableException e) {
+			messageUtil.addErrorMsg(redirect, "user.not.deletable", userCommand.getUsername());
+		}
+
 		return new ModelAndView("redirect:/user");
 	}
 

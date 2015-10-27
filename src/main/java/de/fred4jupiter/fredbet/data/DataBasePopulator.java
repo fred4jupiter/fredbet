@@ -60,7 +60,7 @@ public class DataBasePopulator {
 
 	private void createDefaultUsers() {
 		// will also be used for remote shell login
-		userService.save(new AppUser("admin", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("admin", "Pinky4Ever", false, FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
 		userService.save(new AppUser("michael", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
 
 		userService.save(new AppUser("janz", "janz", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));

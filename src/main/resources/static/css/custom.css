@@ -72,7 +72,3 @@ h1 {
 	font-size: 1.3em;
 	padding-top: 7px;
 }
-
-a.btn.disabled, fieldset[disabled] a.btn {
-    background-color: #BAFAAA;
-}

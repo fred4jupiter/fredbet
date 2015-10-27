@@ -67,6 +67,16 @@ public class UserService {
 	}
 
 	public void deleteUser(String userId) {
+		AppUser appUser = appUserRepository.findOne(userId);
+		if (appUser == null) {
+			LOG.info("Could not find user with id={}", userId);
+			return;
+		}
+		
+		if (!appUser.isDeletable()) {
+			throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
+		}
+		
 		appUserRepository.delete(userId);
 	}
 

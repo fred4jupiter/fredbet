@@ -24,113 +24,125 @@ import de.fred4jupiter.fredbet.util.DateUtils;
 @Document
 public class AppUser implements UserDetails {
 
-    private static final long serialVersionUID = -2973861561213230375L;
+	private static final long serialVersionUID = -2973861561213230375L;
 
-    @Id
-    private String id;
+	@Id
+	private String id;
 
-    private List<String> roles;
+	private List<String> roles;
 
-    @Indexed(unique = true)
-    private String username;
+	@Indexed(unique = true)
+	private String username;
 
-    private String password;
+	private String password;
 
-    private Date createdAt;
+	private Date createdAt;
 
-    @PersistenceConstructor
-    protected AppUser() {
-        // for mongodb
-    }
+	private boolean deletable;
 
-    public AppUser(String username, String password, FredBetRole... roles) {
-        List<FredBetRole> rolesList = Arrays.asList(roles);
-        this.roles = rolesList.stream().map(role -> role.name()).collect(Collectors.toList());
-        this.username = username;
-        this.password = password;
-        this.createdAt = new Date();
-    }
+	@PersistenceConstructor
+	protected AppUser() {
+		// for mongodb
+	}
 
-    @Override
-    public String toString() {
-        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("id", id);
-        builder.append("username", username);
-        builder.append("password", password != null ? "is set" : "is null");
-        builder.append("roles", roles);
-        return builder.toString();
-    }
+	public AppUser(String username, String password, FredBetRole... roles) {
+		this(username, password, true, roles);
+	}
 
-    public String getId() {
-        return id;
-    }
+	public AppUser(String username, String password, boolean deletable, FredBetRole... roles) {
+		this.deletable = deletable;
+		List<FredBetRole> rolesList = Arrays.asList(roles);
+		this.roles = rolesList.stream().map(role -> role.name()).collect(Collectors.toList());
+		this.username = username;
+		this.password = password;
+		this.createdAt = new Date();
+	}
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (CollectionUtils.isEmpty(roles)) {
-            return null;
-        }
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
-    }
+	@Override
+	public String toString() {
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+		builder.append("id", id);
+		builder.append("username", username);
+		builder.append("password", password != null ? "is set" : "is null");
+		builder.append("roles", roles);
+		builder.append("deletable", deletable);
+		return builder.toString();
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	public String getId() {
+		return id;
+	}
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (CollectionUtils.isEmpty(roles)) {
+			return null;
+		}
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	public boolean isDeletable() {
+		return deletable;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public String getUsername() {
+		return username;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    public String getRolesAsString() {
-        if (CollectionUtils.isEmpty(roles)) {
-            return null;
-        }
-        return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    public List<String> getRoles() {
-        return roles;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getRolesAsString() {
+		if (CollectionUtils.isEmpty(roles)) {
+			return null;
+		}
+		return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public List<String> getRoles() {
+		return roles;
+	}
 
-    public int roleCount() {
-        return this.roles.size();
-    }
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
 
-    public LocalDateTime getCreatedAt() {
-        return DateUtils.toLocalDateTime(createdAt);
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int roleCount() {
+		return this.roles.size();
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return DateUtils.toLocalDateTime(createdAt);
+	}
 }
