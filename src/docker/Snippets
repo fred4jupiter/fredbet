@@ -1,0 +1,8 @@
+mongodb:
+  image: mongo
+  command: "mongod --smallfiles"
+#  volumes:
+#  - /var/lib/mongodb/fredbet/test:/data/db
+# exposed ports will be visible for linked services only (not the host)
+  expose:
+  - "27017"
