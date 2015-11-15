@@ -1,12 +1,3 @@
-fredbet:
-  image: fred4jupiter/fredbet
-  links:
-    - mongodb
-  ports:
-    - "8180:8080"
-  environment:
-   - spring.profiles.active=test,demodata
-
 mongo1:
   hostname: mongo1
   image: mongo:3.0.6
@@ -17,23 +8,45 @@ mongo1:
   links:
     - mongo2:mongo2
     - mongo3:mongo3
-  restart: always
+  restart: never
 
 mongo2:
-  hostname: mongo3
+  hostname: mongo2
   image: mongo:3.0.6
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   ports:
     - "27018:27017"
     - "28018:28017"
-  restart: always
+  restart: never
 
 mongo3:
-  hostname: mongo2
+  hostname: mongo3
   image: mongo:3.0.6
   entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   ports:
     - "27019:27017"
     - "28019:28017"
-  restart: always
- 
+  restart: never
+
+
+# This configures the MongoDB replicaset
+mongosetup:
+  image: mongo:3.0.6
+  links:
+    - mongo1:mongo1
+    - mongo2:mongo2
+    - mongo3:mongo3
+  volumes:
+    - ./scripts:/scripts
+  entrypoint: [ "/scripts/setup.sh" ]
+
+fredbet:
+  image: fred4jupiter/fredbet
+  links:
+    - mongo1
+    - mongo2
+    - mongo3
+  ports:
+    - "8180:8080"
+  environment:
+   - spring.profiles.active=test,demodata
