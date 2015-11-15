@@ -1,29 +1,57 @@
-dockerui:
-  image: dockerui/dockerui
-  privileged: true
+mongo1:
+  hostname: mongo1
+  image: mongo:3.0.6
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   ports:
-  - "9000:9000"
+    - "27017:27017"
+    - "28017:28017"
+  links:
+    - mongo2:mongo2
+    - mongo3:mongo3
   volumes:
-  - /var/run/docker.sock:/var/run/docker.sock
+  - /var/lib/mongodb/fredbet/prod/mongo1:/data/db 
+  restart: never
 
-mongodb:
-  image: mongo
-  command: "mongod --smallfiles"
-  volumes:
-  - /var/lib/mongodb/fredbet/prod:/data/db 
+mongo2:
+  hostname: mongo2
+  image: mongo:3.0.6
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   ports:
-  - "27017:27017"
-  - "28017:28017"
-  expose:
-  - "27017"
-  - "28017"
+    - "27018:27017"
+    - "28018:28017"
+  volumes:
+  - /var/lib/mongodb/fredbet/prod/mongo2:/data/db 
+  restart: never
+
+mongo3:
+  hostname: mongo3
+  image: mongo:3.0.6
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  ports:
+    - "27019:27017"
+    - "28019:28017"
+  volumes:
+  - /var/lib/mongodb/fredbet/prod/mongo3:/data/db 
+  restart: never
+
+# This configures the MongoDB replicaset
+mongosetup:
+  image: mongo:3.0.6
+  links:
+    - mongo1:mongo1
+    - mongo2:mongo2
+    - mongo3:mongo3
+  volumes:
+    - ./scripts:/scripts
+  entrypoint: [ "/scripts/setup.sh" ]
 
 fredbet:
   image: fred4jupiter/fredbet
   links:
-    - mongodb
+    - mongo1
+    - mongo2
+    - mongo3
   ports:
     - "80:8080"
   environment:
    - spring.profiles.active=prod
- 
