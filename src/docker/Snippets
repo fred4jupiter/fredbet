@@ -6,3 +6,28 @@ mongodb:
 # exposed ports will be visible for linked services only (not the host)
   expose:
   - "27017"
+
+
+------------------
+
+
+fredbet:
+  image: fred4jupiter/fredbet
+  links:
+    - mongodb
+  ports:
+    - "8180:8080"
+  environment:
+   - spring.profiles.active=test,demodata
+
+mongodb:
+  image: mongo
+  command: "mongod --smallfiles"
+#  volumes:
+#  - /var/lib/mongodb/fredbet/test:/data/db
+# exposed ports will be visible for linked services only (not the host)
+  expose:
+  - "27017"
+  
+
+
