@@ -13,8 +13,6 @@ ENV spring.profiles.active dev
 EXPOSE 8080
 EXPOSE 2000
 
-ADD target/fredbet-0.0.1-SNAPSHOT.jar fredbet.jar
-
-RUN bash -c 'touch /fredbet.jar'
+COPY target/fredbet-0.0.1-SNAPSHOT.jar fredbet.jar
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/fredbet.jar"]
