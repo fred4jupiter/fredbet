@@ -9,7 +9,7 @@ mongo1:
     - mongo2:mongo2
     - mongo3:mongo3
   volumes:
-  - /var/lib/mongodb/fredbet/prod/mongo1:/data/db 
+  - /var/lib/mongodb/fredbet/test/mongo1:/data/db 
   restart: never
 
 mongo2:
@@ -20,7 +20,7 @@ mongo2:
     - "27018:27017"
     - "28018:28017"
   volumes:
-  - /var/lib/mongodb/fredbet/prod/mongo2:/data/db 
+  - /var/lib/mongodb/fredbet/test/mongo2:/data/db 
   restart: never
 
 mongo3:
@@ -31,7 +31,7 @@ mongo3:
     - "27019:27017"
     - "28019:28017"
   volumes:
-  - /var/lib/mongodb/fredbet/prod/mongo3:/data/db 
+  - /var/lib/mongodb/fredbet/test/mongo3:/data/db 
   restart: never
 
 # This configures the MongoDB replicaset
