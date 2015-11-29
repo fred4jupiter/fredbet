@@ -1,0 +1,17 @@
+fredbet:
+  image: 'tutum.co/fred4jupiter/fredbet:latest'
+  environment:
+    - 'spring.profiles.active=test,demodata'
+  links:
+    - mongodb
+  ports:
+    - '80:8080'
+    - '2000:2000'
+  target_num_containers: 2
+mongodb:
+  image: mongo:latest'
+  command: 'mongod --smallfiles'
+  ports:
+    - '27017'
+  volumes:
+  - /var/lib/mongodb/fredbet/test:/data/db
