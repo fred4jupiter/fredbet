@@ -36,14 +36,11 @@ mongo3:
 
 # This configures the MongoDB replicaset
 mongosetup:
-  image: mongo:3.0.6
+  image: fred4jupiter/mongosetup
   links:
     - mongo1:mongo1
     - mongo2:mongo2
     - mongo3:mongo3
-  volumes:
-    - ./scripts:/scripts
-  entrypoint: [ "/scripts/setup.sh" ]
 
 fredbet:
   image: fred4jupiter/fredbet
