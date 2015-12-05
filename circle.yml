@@ -22,7 +22,10 @@ deployment:
     branch: master
     heroku:
       appname: fredbet
-    tutum:
+  production:
+    branch: master
+    codedeploy:
+      tutum:
       commands:
       - docker login --username=$TUTUM_USER --password=$TUTUM_PASS --email=$TUTUM_EMAIL tutum.co
       - docker tag -f fred4jupiter/fredbet:$CIRCLE_BUILD_NUM tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
