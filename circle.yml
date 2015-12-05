@@ -17,16 +17,14 @@ test:
 #    - docker run -d -p 9200:8080 fred4jupiter/fredbet; sleep 10
 #    - curl --retry 10 --retry-delay 5 -v http://127.0.0.1:9200
 
-deployment:  
+deployment:
+  all:
+    branch: master
+    commands:
+    - docker login -e $TUTUM_EMAIL -u $TUTUM_USER -p $TUTUM_PASS  tutum.co
+    - "docker tag -f fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet:${CIRCLE_BUILD_NUM}"
+    - docker push tutum.co/fred4jupiter/fredbet:${CIRCLE_BUILD_NUM}
   staging:
     branch: master
     heroku:
       appname: fredbet
-  production:
-    branch: master
-    codedeploy:
-      tutum:
-      commands:
-      - docker login --username=$TUTUM_USER --password=$TUTUM_PASS --email=$TUTUM_EMAIL tutum.co
-      - docker tag -f fred4jupiter/fredbet:$CIRCLE_BUILD_NUM tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
-      - docker push tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
