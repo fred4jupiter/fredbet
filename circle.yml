@@ -18,13 +18,14 @@ test:
 #    - curl --retry 10 --retry-delay 5 -v http://127.0.0.1:9200
 
 deployment:
-  tutum:
-    branch: master
-    commands:
-      - docker login --username=$TUTUM_USER --password=$TUTUM_PASS --email=$TUTUM_EMAIL tutum.co
-      - docker tag -f fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet
-      - docker push tutum.co/fred4jupiter/fredbet
-  #staging:
+  #tutum:
+  #production:
   #  branch: master
-  #  heroku:
-  #    appname: fredbet
+  #  commands:
+  #  - docker login -e $TUTUM_EMAIL -u $TUTUM_USER -p $TUTUM_PASS  tutum.co
+  #  - docker tag -f fred4jupiter/fredbet:$CIRCLE_BUILD_NUM tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
+  #  - docker push tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
+  staging:
+    branch: master
+    heroku:
+      appname: fredbet
