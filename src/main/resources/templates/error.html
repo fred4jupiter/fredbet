@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title>Error Page</title>
+	<title th:text="#{error.title}"></title>
 </head>
 
 <body>
 	<div layout:fragment="content">
-		<div class="alert alert-danger">Oops! Das hätte nicht passieren dürfen. Bitte versuchen Sie es später noch einmal.</div>
+		<div class="alert alert-danger" th:text="#{error.msg.unexpectedError}"></div>
 	
 		<p th:if="${url}">
 			<b>Page:</b> <span th:text="${url}">Page URL</span>
