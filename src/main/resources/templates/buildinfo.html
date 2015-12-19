@@ -7,6 +7,13 @@
 <body>
 	<div layout:fragment="content">
 		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="panel">
+					<span class="currentTime label label-default" th:text="${currentDateTime}"></span>
+				</div>								
+			</div>			
+		</div>
+		<div class="row">			
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
 				<div class="panel panel-default">
 					<div class="user panel-heading">

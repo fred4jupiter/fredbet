@@ -1,5 +1,8 @@
 package de.fred4jupiter.fredbet.web;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ public class BuildInfoController {
 
 	@RequestMapping
 	public ModelAndView list() {
-		return new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM);
+		ModelAndView modelAndView = new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
+		modelAndView.addObject("currentDateTime", formatter.format(LocalDateTime.now()));
+		return modelAndView;
 	}
 }
