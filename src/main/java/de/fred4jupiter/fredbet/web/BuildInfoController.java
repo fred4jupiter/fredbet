@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Properties;
@@ -19,9 +20,13 @@ public class BuildInfoController {
 
 	@RequestMapping
 	public ModelAndView list() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM);
 		ModelAndView modelAndView = new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM);
 		modelAndView.addObject("currentDateTime", formatter.format(LocalDateTime.now()));
+		
+		DateTimeFormatter timeZoneFormatter = DateTimeFormatter.ofPattern("VV x");
+		modelAndView.addObject("timeZone", timeZoneFormatter.format(ZonedDateTime.now()));
 		return modelAndView;
 	}
 }
