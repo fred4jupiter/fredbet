@@ -8,32 +8,22 @@
 	<div layout:fragment="content" class="container">
 		<h1>Login</h1>
 		<div th:if="${param.error}">
-			<div class="alert alert-danger" role="alert">
-				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span>
-				Invalid username and password.
-			</div>
-		</div>
-
-		<div th:if="${param.logout}">
-			<div class="alert alert-info" role="alert">
-				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Info:</span> You
-				have been logged out.
-			</div>
+			<div class="alert alert-danger" role="alert" th:text="#{login.msg.error}"></div>
 		</div>
 		<form th:action="@{/login}" method="post">
 			<div class="row">
 				<div class="col-sm-6 col-lg-3">
 					<div class="form-group">
-						<input type="text" name="username" placeholder="User Name" class="form-control" />
+						<input type="text" name="username" th:placeholder="#{login.placeholder.username}" class="form-control" />
 					</div>
 					<div class="form-group">
-						<input type="password" name="password" placeholder="Password" class="form-control" />
+						<input type="password" name="password" th:placeholder="#{login.placeholder.password}" class="form-control" />
 					</div>
 					<div class="form-group">
         				<input type="checkbox" name="remember-me" id="remember-me"/>
 						<label for="remember-me">Auto-Login</label>
 					</div>					
-					<button type="submit" class="btn btn-success">Anmelden</button>
+					<button type="submit" class="btn btn-success" th:text="#{login.button.login}"></button>
 				</div>
 			</div>
 		</form>
