@@ -8,9 +8,9 @@
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12">
-				<div class="panel">
-					<span class="currentTime label label-default" th:text="${currentDateTime} + ', ' + | ${timeZone}"></span>
-				</div>								
+				<span th:text="${currentDateTime}"></span>
+				<br/>
+				<span th:text="${timeZone}"></span>
 			</div>			
 		</div>
 		<div class="row">			
