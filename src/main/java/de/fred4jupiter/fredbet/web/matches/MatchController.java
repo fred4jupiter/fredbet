@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +27,8 @@ import de.fred4jupiter.fredbet.web.SecurityBean;
 @Controller
 @RequestMapping("/matches")
 public class MatchController {
+
+	private static final Logger LOG = LoggerFactory.getLogger(MatchController.class);
 
 	@Autowired
 	private MatchService matchService;
@@ -47,7 +51,7 @@ public class MatchController {
 		modelAndView.addObject("heading", messageUtil.getMessageFor("all.matches"));
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "upcoming")
 	public ModelAndView upcomingMatches() {
 		List<MatchCommand> matches = matchService.findAllMatchesBeginAfterNow(securityBean.getCurrentUserName());
@@ -75,6 +79,16 @@ public class MatchController {
 	public String createForm(@ModelAttribute MatchCommand matchCommand) {
 		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
 		return "matches/form";
+	}
+
+	@RequestMapping(value = "/delete/{matchId}", method = RequestMethod.GET)
+	public ModelAndView deleteMatch(@PathVariable("matchId") String matchId, RedirectAttributes redirect) {
+		LOG.debug("deleted match with id={}", matchId);
+
+		matchService.deleteMatch(matchId);
+		
+		messageUtil.addInfoMsg(redirect, "msg.match.deleted", matchId);
+		return new ModelAndView("redirect:/matches");
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -109,12 +123,12 @@ public class MatchController {
 			messageUtil.addErrorMsg(modelMap, "msg.input.complete.date.time");
 			return true;
 		}
-		
+
 		if (matchCommand.isTeamNamesEmpty()) {
 			messageUtil.addErrorMsg(modelMap, "msg.input.teamOne.teamTwo");
 			return true;
 		}
-		
+
 		if (StringUtils.isEmpty(matchCommand.getStadium())) {
 			messageUtil.addErrorMsg(modelMap, "msg.input.stadium");
 			return true;

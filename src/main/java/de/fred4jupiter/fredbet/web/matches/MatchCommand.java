@@ -59,25 +59,6 @@ public class MatchCommand {
 		return true;
 	}
 
-	// public LocalDateTime getKickOffDate() {
-	// if (StringUtils.isBlank(kickOffDateString) ||
-	// StringUtils.isBlank(kickOffTimeString)) {
-	// return null;
-	// }
-	// LocalDate parsedDate = LocalDate.parse(this.kickOffDateString,
-	// DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-	// LocalTime localTime = LocalTime.parse(this.kickOffTimeString,
-	// DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
-	// return LocalDateTime.of(parsedDate, localTime);
-	// }
-	//
-	// public void setKickOffDate(LocalDateTime kickOffDate) {
-	// this.kickOffDateString =
-	// kickOffDate.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-	// this.kickOffTimeString =
-	// kickOffDate.format(DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN));
-	// }
-
 	private boolean hasMatchStarted() {
 		return LocalDateTime.now().isAfter(getKickOffDate());
 	}
@@ -222,4 +203,8 @@ public class MatchCommand {
 		return StringUtils.isEmpty(teamNameOne) || StringUtils.isEmpty(teamNameTwo);
 	}
 
+	public boolean isDeletable() {
+		// TODO implement me
+		return true;
+	}
 }

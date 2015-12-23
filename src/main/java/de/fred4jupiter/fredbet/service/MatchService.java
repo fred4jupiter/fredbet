@@ -174,4 +174,8 @@ public class MatchService {
 		matchRepository.deleteAll();
 	}
 
+	public void deleteMatch(String matchId) {
+		matchRepository.delete(matchId);
+	}
+
 }
