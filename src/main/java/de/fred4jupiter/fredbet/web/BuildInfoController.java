@@ -22,11 +22,13 @@ public class BuildInfoController {
 	public ModelAndView list() {
 		ModelAndView modelAndView = new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.MEDIUM);
-		modelAndView.addObject("currentDateTime", formatter.format(LocalDateTime.now()));
-		
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
 		DateTimeFormatter timeZoneFormatter = DateTimeFormatter.ofPattern("VV x");
-		modelAndView.addObject("timeZone", timeZoneFormatter.format(ZonedDateTime.now()));
+		
+		final String key = "currentDateTime";
+		final String value = formatter.format(LocalDateTime.now()) + ", "+timeZoneFormatter.format(ZonedDateTime.now());
+		
+		buildProperties.put(key, value);
 		return modelAndView;
 	}
 }
