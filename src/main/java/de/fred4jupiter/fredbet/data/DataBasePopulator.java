@@ -37,19 +37,25 @@ public class DataBasePopulator {
     private BettingService bettingService;
 
     @PostConstruct
-    public void initDatabaseWithDemoData() {
-        LOG.info("initDatabaseWithDemoData: inserting demo data...");
-
+    private void initDatabaseWithDemoData() {
+        LOG.info("initDatabaseWithDemoData: creating default users ...");
         createDefaultUsers();
 
-        // create matches for demo
         if (environment.acceptsProfiles(FredBetProfile.DEMODATA)) {
-            bettingService.deleteAllBets();
-            matchService.deleteAllMatches();
-
-            createMatches();
+            createDemoData();
         }
     }
+
+    /**
+     * Deletes all current bets and matches and inserts new demo data.
+     */
+    public void createDemoData() {
+    	LOG.info("initDatabaseWithDemoData: inserting demo data ...");
+		bettingService.deleteAllBets();
+		matchService.deleteAllMatches();
+
+		createMatches();
+	}
 
     private void createMatches() {
         matchService.save(MatchBuilder.create().withTeams("Frankreich", "Rumänien").withGroup(Group.GROUP_A)

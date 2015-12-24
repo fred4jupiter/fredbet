@@ -47,6 +47,7 @@
 					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}">Ranking</a></li>
 				  	<li th:class="${pageState_user}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
 				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#buildinfo" th:href="@{/buildinfo}">Build Info</a></li>
+				  	<li th:class="${pageState_administration}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#administration" th:href="@{/administration}">Administration</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false">

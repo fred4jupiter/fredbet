@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Administration</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row">			
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<a href="#createDemodata" th:href="@{/administration/createDemoData}">Testdaten anlegen</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
