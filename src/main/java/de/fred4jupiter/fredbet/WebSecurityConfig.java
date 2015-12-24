@@ -19,7 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// 24  Stunden
+	// 24 Stunden
 	private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
 
 	@Autowired
@@ -32,8 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**").permitAll();
 		http.authorizeRequests().antMatchers("/user/changePassword").hasAnyAuthority(FredBetRole.ROLE_USER.name());
-		http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetRole.ROLE_ADMIN.name());
-		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetRole.ROLE_ADMIN.name());
+		http.authorizeRequests().antMatchers("/user/**", "/admin/**", "/administration/**").hasAnyAuthority(FredBetRole.ROLE_ADMIN.name());
 		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetRole.ROLE_ADMIN.name());
 		http.authorizeRequests().anyRequest().authenticated();
 
@@ -41,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepositoryMangoDelete).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
-    }
+	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
