@@ -34,6 +34,8 @@ public class MatchCommand {
 	private Integer userBetGoalsTeamTwo;
 
 	private Integer points;
+	
+	private boolean deletable;
 
 	public MatchCommand() {
 		super();
@@ -204,7 +206,10 @@ public class MatchCommand {
 	}
 
 	public boolean isDeletable() {
-		// TODO implement me
-		return true;
+		return deletable;
+	}
+	
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
 	}
 }

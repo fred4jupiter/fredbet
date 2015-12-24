@@ -19,6 +19,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.TeamRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -40,6 +41,9 @@ public class MatchService {
 
 	@Autowired
 	private BettingService bettingService;
+	
+	@Autowired
+	private BetRepository betRepository;
 
 	public List<Match> findAll() {
 		return matchRepository.findAll();
@@ -48,7 +52,12 @@ public class MatchService {
 	public MatchCommand findByMatchId(String matchId) {
 		Assert.notNull(matchId);
 		Match match = matchRepository.findOne(matchId);
-		return toMatchCommand(match);
+		Long numberOfBetsForThisMatch = betRepository.countByMatch(match);
+		MatchCommand matchCommand = toMatchCommand(match);
+		if (numberOfBetsForThisMatch == 0) {
+			matchCommand.setDeletable(true);
+		}
+		return matchCommand;
 	}
 
 	public Match findMatchByMatchId(String matchId) {

@@ -14,6 +14,8 @@ public interface BetRepository extends MongoRepository<Bet, String>, BetReposito
 	List<Bet> findByUserName(String currentUsername);
 	
 	List<Bet> findByMatch(Match match);
+	
+	Long countByMatch(Match match);
 
 
 }

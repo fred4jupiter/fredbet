@@ -1,7 +1,9 @@
 package de.fred4jupiter.fredbet.repository;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
 public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 
@@ -19,6 +23,9 @@ public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 
 	@Autowired
 	private BetRepository betRepository;
+	
+	@Autowired
+	private MatchRepository matchRepository;
 
 	@Test
 	public void calculateRanging() {
@@ -42,6 +49,26 @@ public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 		assertNotNull(usernamePointsBert);
 		assertEquals("bert", usernamePointsBert.getUserName());
 		assertEquals(Integer.valueOf(3), usernamePointsBert.getTotalPoints());
+	}
+
+	@Test
+	public void countNumberOfBetsForMatch() {
+		Bet bet = new Bet();
+		bet.setGoalsTeamOne(2);
+		bet.setGoalsTeamTwo(1);
+		bet.setUserName("michael");
+		bet.setPoints(1);
+
+		Match match = MatchBuilder.create().build();
+		bet.setMatch(match);
+		matchRepository.save(match);
+
+		Bet savedBet = betRepository.save(bet);
+		assertNotNull(savedBet);
+		assertNotNull(savedBet.getId());
+
+		Long count = betRepository.countByMatch(match);
+		assertThat(count, equalTo(1L));
 	}
 
 	private void createAndSaveBetForWith(String userName, Integer points) {
