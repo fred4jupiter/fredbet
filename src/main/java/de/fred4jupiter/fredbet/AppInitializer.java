@@ -23,6 +23,7 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 		ConfigurableEnvironment environment = applicationContext.getEnvironment();
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			environment.addActiveProfile(FredBetProfile.FONGO);
+			environment.addActiveProfile(FredBetProfile.DEMODATA);
 		}
 
 		LOG.info("Active profiles: " + Arrays.asList(environment.getActiveProfiles()));
