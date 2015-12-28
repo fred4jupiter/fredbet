@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +27,22 @@ public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 	
 	@Autowired
 	private MatchRepository matchRepository;
+	
+	@Before
+	public void setup() {
+		betRepository.deleteAll();
+		matchRepository.deleteAll();
+	}
 
 	@Test
 	public void calculateRanging() {
-		createAndSaveBetForWith("michael", 3);
-		createAndSaveBetForWith("michael", 2);
+		final String userName1 = "james";
+		createAndSaveBetForWith(userName1, 3);
+		createAndSaveBetForWith(userName1, 2);
 
-		createAndSaveBetForWith("bert", 2);
-		createAndSaveBetForWith("bert", 1);
+		final String userName2 = "roberto";
+		createAndSaveBetForWith(userName2, 2);
+		createAndSaveBetForWith(userName2, 1);
 
 		List<UsernamePoints> ranking = betRepository.calculateRanging();
 		ranking.forEach(usernamePoint -> LOG.debug("usernamePoint={}", usernamePoint));
@@ -42,12 +51,12 @@ public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
 
 		UsernamePoints usernamePointsMichael = ranking.get(0);
 		assertNotNull(usernamePointsMichael);
-		assertEquals("michael", usernamePointsMichael.getUserName());
+		assertEquals(userName1, usernamePointsMichael.getUserName());
 		assertEquals(Integer.valueOf(5), usernamePointsMichael.getTotalPoints());
 
 		UsernamePoints usernamePointsBert = ranking.get(1);
 		assertNotNull(usernamePointsBert);
-		assertEquals("bert", usernamePointsBert.getUserName());
+		assertEquals(userName2, usernamePointsBert.getUserName());
 		assertEquals(Integer.valueOf(3), usernamePointsBert.getTotalPoints());
 	}
 

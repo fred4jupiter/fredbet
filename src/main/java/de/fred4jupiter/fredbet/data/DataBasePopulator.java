@@ -38,7 +38,6 @@ public class DataBasePopulator {
 
     @PostConstruct
     private void initDatabaseWithDemoData() {
-        LOG.info("initDatabaseWithDemoData: creating default users ...");
         createDefaultUsers();
 
         if (environment.acceptsProfiles(FredBetProfile.DEMODATA)) {
@@ -50,7 +49,7 @@ public class DataBasePopulator {
      * Deletes all current bets and matches and inserts new demo data.
      */
     public void createDemoData() {
-    	LOG.info("initDatabaseWithDemoData: inserting demo data ...");
+    	LOG.info("createDemoData: deleting all existend bets and matches ...");
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
 
@@ -58,6 +57,7 @@ public class DataBasePopulator {
 	}
 
     private void createMatches() {
+    	LOG.info("createMatches: inserting demo matches ...");
         matchService.save(MatchBuilder.create().withTeams("Frankreich", "Rumänien").withGroup(Group.GROUP_A)
                 .withStadium("Saint-Denis").withKickOffDate(LocalDateTime.of(2016, 6, 10, 21, 0)).build());
 
@@ -75,6 +75,7 @@ public class DataBasePopulator {
     }
 
     private void createDefaultUsers() {
+    	LOG.info("createDefaultUsers: creating default users ...");
         // will also be used for remote shell login
         userService.save(new AppUser("admin", "Pinky4Ever", false, FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
         userService.save(new AppUser("michael", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
