@@ -14,7 +14,7 @@
 	<description>Simple football betting application.</description>
 
 	<scm>
-		<connection>scm:git:git://github.com/fred4jupiter/fredbet.git</connection>
+		<connection>scm:git:https://github.com/fred4jupiter/fredbet.git</connection>
 	</scm>
 
 	<parent>
