@@ -85,7 +85,17 @@ public class MatchService {
 		match.setTeamOne(teamOne);
 		match.setTeamTwo(teamTwo);
 
-		match = matchRepository.save(match);
+		match = saveMatch(match);
+		return match;
+	}
+
+	private Match saveMatch(Match match) {
+		matchRepository.save(match);
+		
+		if (match.hasResultSet()) {
+			pointsCalculationService.calculatePointsFor(match);
+		}
+		
 		return match;
 	}
 
@@ -109,12 +119,8 @@ public class MatchService {
 
 		toMatch(matchCommand, match);
 
-		match = this.matchRepository.save(match);
+		match = saveMatch(match);
 		matchCommand.setMatchId(match.getId());
-
-		if (match.hasResultSet()) {
-			pointsCalculationService.calculatePointsFor(match);
-		}
 
 		return match.getId();
 	}

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class RandomValueGenerator {
 
 	public Integer generateRandomValue() {
-		return generateRandomValueInRange(1, 10);
+		return generateRandomValueInRange(1, 3);
 	}
 	
 	public Integer generateRandomValueInRange(int min, int max) {

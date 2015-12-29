@@ -216,4 +216,12 @@ public class DataBasePopulator {
 		});
 
 	}
+
+	public void createDemoResultsForAllUsers() {
+		List<Match> allMatches = matchService.findAll();
+		allMatches.forEach(match -> {
+			match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
+			matchService.save(match);
+		});
+	}
 }

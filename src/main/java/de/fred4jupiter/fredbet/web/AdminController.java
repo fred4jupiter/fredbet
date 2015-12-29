@@ -43,4 +43,14 @@ public class AdminController {
 		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoBetsCreated");
 		return modelAndView;
 	}
+	
+	@RequestMapping(path = "/createDemoResults", method = RequestMethod.GET)
+	public ModelAndView createDemoResults(ModelMap modelMap) {
+		dataBasePopulator.createDemoResultsForAllUsers();
+		
+		ModelAndView modelAndView = new ModelAndView("admin/administration");
+		
+		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoResultsCreated");
+		return modelAndView;
+	}
 }
