@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.domain.Team;
 
-public class TeamRepositoryTest extends AbstractMongoEmbeddedTest {
+public class TeamRepositoryIT extends AbstractMongoEmbeddedTest {
 
 	@Autowired
 	private TeamRepository teamRepository;

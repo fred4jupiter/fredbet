@@ -18,9 +18,9 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
-public class BetRepositoryTest extends AbstractMongoEmbeddedTest {
+public class BetRepositoryIT extends AbstractMongoEmbeddedTest {
 
-	private static final Logger LOG = LoggerFactory.getLogger(BetRepositoryTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BetRepositoryIT.class);
 
 	@Autowired
 	private BetRepository betRepository;

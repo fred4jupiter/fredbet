@@ -9,7 +9,7 @@ import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 
-public class AppUserRepositoryTest extends AbstractMongoEmbeddedTest {
+public class AppUserRepositoryIT extends AbstractMongoEmbeddedTest {
 
 	@Autowired
 	private AppUserRepository appUserRepository;

@@ -17,7 +17,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
-public class MatchRepositoryTest extends AbstractMongoEmbeddedTest {
+public class MatchRepositoryIT extends AbstractMongoEmbeddedTest {
 
 	@Autowired
 	private MatchRepository matchRepository;

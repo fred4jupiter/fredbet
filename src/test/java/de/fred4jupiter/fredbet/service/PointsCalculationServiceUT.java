@@ -12,7 +12,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PointsCalculationServiceTest {
+public class PointsCalculationServiceUT {
 
 	@InjectMocks
 	private PointsCalculationService pointsCalculationService;

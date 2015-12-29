@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class FormatTest {
+public class FormatUT {
 
 	@Test
 	public void parseDate() {
