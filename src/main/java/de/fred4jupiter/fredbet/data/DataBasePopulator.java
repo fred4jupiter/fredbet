@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.data;
 
-import java.time.LocalDateTime;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -22,68 +20,181 @@ import de.fred4jupiter.fredbet.service.UserService;
 @Component
 public class DataBasePopulator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
 
-    @Autowired
-    private MatchService matchService;
+	@Autowired
+	private MatchService matchService;
 
-    @Autowired
-    private Environment environment;
+	@Autowired
+	private Environment environment;
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private BettingService bettingService;
+	@Autowired
+	private BettingService bettingService;
 
-    @PostConstruct
-    private void initDatabaseWithDemoData() {
-        createDefaultUsers();
+	@PostConstruct
+	private void initDatabaseWithDemoData() {
+		createDefaultUsers();
 
-        if (environment.acceptsProfiles(FredBetProfile.DEMODATA)) {
-            createDemoData();
-        }
-    }
+		if (environment.acceptsProfiles(FredBetProfile.DEMODATA)) {
+			createEM2016Matches();
+		}
+	}
 
-    /**
-     * Deletes all current bets and matches and inserts new demo data.
-     */
-    public void createDemoData() {
-    	LOG.info("createDemoData: deleting all existend bets and matches ...");
+	/**
+	 * Deletes all current bets and matches and inserts new demo data.
+	 */
+	public void createEM2016Matches() {
+		LOG.info("createDemoData: deleting all existend bets and matches ...");
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
 
 		createMatches();
 	}
 
-    private void createMatches() {
-    	LOG.info("createMatches: inserting demo matches ...");
-        matchService.save(MatchBuilder.create().withTeams("Frankreich", "Rumänien").withGroup(Group.GROUP_A)
-                .withStadium("Saint-Denis").withKickOffDate(LocalDateTime.of(2016, 6, 10, 21, 0)).build());
+	private void createMatches() {
+		LOG.info("createMatches: inserting demo matches ...");
+		createGroupA();
+		createGroupB();
+		createGroupC();
+		createGroupD();
+		createGroupE();
+		createGroupF();
+	}
 
-        matchService.save(MatchBuilder.create().withTeams("Albanien", "Schweiz").withGroup(Group.GROUP_A)
-                .withStadium("Lens").withKickOffDate(LocalDateTime.of(2016, 6, 11, 15, 0)).build());
+	private void createGroupA() {
+		matchService.save(MatchBuilder.create().withTeams("Frankreich", "Rumänien").withGroup(Group.GROUP_A).withStadium("Saint-Denis")
+				.withKickOffDate(10, 6, 21).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Wales", "Slowakei").withGroup(Group.GROUP_B)
-                .withStadium("Bordeaux").withKickOffDate(LocalDateTime.of(2016, 6, 11, 18, 0)).build());
+		matchService.save(MatchBuilder.create().withTeams("Albanien", "Schweiz").withGroup(Group.GROUP_A).withStadium("Lens")
+				.withKickOffDate(11, 6, 15).build());
 
-        matchService.save(MatchBuilder.create().withTeams("England", "Russland").withGroup(Group.GROUP_B)
-                .withStadium("Marseille").withKickOffDate(LocalDateTime.of(2016, 6, 11, 21, 0)).build());
+		matchService.save(MatchBuilder.create().withTeams("Rumänien", "Schweiz").withGroup(Group.GROUP_A).withStadium("Parc de Princes")
+				.withKickOffDate(15, 6, 18).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Türkei", "Kroatien").withGroup(Group.GROUP_D)
-                .withStadium("Paris").withKickOffDate(LocalDateTime.of(2016, 6, 12, 15, 0)).build());
-    }
+		matchService.save(MatchBuilder.create().withTeams("Frankreich", "Albanien").withGroup(Group.GROUP_A).withStadium("Marseille")
+				.withKickOffDate(15, 6, 21).build());
 
-    private void createDefaultUsers() {
-    	LOG.info("createDefaultUsers: creating default users ...");
-        // will also be used for remote shell login
-        userService.save(new AppUser("admin", "Pinky4Ever", false, FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
-        userService.save(new AppUser("michael", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+		matchService.save(MatchBuilder.create().withTeams("Schweiz", "Frankreich").withGroup(Group.GROUP_A).withStadium("Lille")
+				.withKickOffDate(19, 6, 21).build());
 
-        userService.save(new AppUser("janz", "janz", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
-        userService.save(new AppUser("joernf", "joernf", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
+		matchService.save(MatchBuilder.create().withTeams("Rumänien", "Albanien").withGroup(Group.GROUP_A).withStadium("Lyon")
+				.withKickOffDate(19, 6, 21).build());
+	}
 
-        userService.save(new AppUser("edit", "edit", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
-        userService.save(new AppUser("normal", "normal", FredBetRole.ROLE_USER));
-    }
+	private void createGroupB() {
+		matchService.save(MatchBuilder.create().withTeams("Wales", "Slowakei").withGroup(Group.GROUP_B).withStadium("Bordeaux")
+				.withKickOffDate(11, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("England", "Russland").withGroup(Group.GROUP_B).withStadium("Marseille")
+				.withKickOffDate(11, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Russland", "Slowakei").withGroup(Group.GROUP_B).withStadium("Lille")
+				.withKickOffDate(15, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("England", "Wales").withGroup(Group.GROUP_B).withStadium("Lens")
+				.withKickOffDate(16, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Slowakei", "England").withGroup(Group.GROUP_B).withStadium("St. Etienne")
+				.withKickOffDate(20, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Russland", "Wales").withGroup(Group.GROUP_B).withStadium("Toulouse")
+				.withKickOffDate(20, 6, 21).build());
+	}
+
+	private void createGroupC() {
+		matchService.save(MatchBuilder.create().withTeams("Polen", "Nordirland").withGroup(Group.GROUP_C).withStadium("Nizza")
+				.withKickOffDate(12, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Deutschland", "Ukraine").withGroup(Group.GROUP_C).withStadium("Lille")
+				.withKickOffDate(12, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Ukraine", "Nordirland").withGroup(Group.GROUP_C).withStadium("Lyon")
+				.withKickOffDate(16, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Deutschland", "Polen").withGroup(Group.GROUP_C).withStadium("St. Denis")
+				.withKickOffDate(16, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Ukraine", "Polen").withGroup(Group.GROUP_C).withStadium("Marseille")
+				.withKickOffDate(21, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Nordirland", "Deutschland").withGroup(Group.GROUP_C)
+				.withStadium("Parc de Princes").withKickOffDate(21, 6, 18).build());
+	}
+
+	private void createGroupD() {
+		matchService.save(MatchBuilder.create().withTeams("Türkei", "Kroatien").withGroup(Group.GROUP_D).withStadium("Parc de Princes")
+				.withKickOffDate(12, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Spanien", "Tschechien").withGroup(Group.GROUP_D).withStadium("Toulouse")
+				.withKickOffDate(13, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Tschechien", "Kroatien").withGroup(Group.GROUP_D).withStadium("St. Etienne")
+				.withKickOffDate(17, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Spanien", "Türkei").withGroup(Group.GROUP_D).withStadium("Nizza")
+				.withKickOffDate(17, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Kroatien", "Spanien").withGroup(Group.GROUP_D).withStadium("Bordeaux")
+				.withKickOffDate(21, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Tschechien", "Türkei").withGroup(Group.GROUP_D).withStadium("Lens")
+				.withKickOffDate(21, 6, 21).build());
+	}
+
+	private void createGroupE() {
+		matchService.save(MatchBuilder.create().withTeams("Irland", "Schweden").withGroup(Group.GROUP_E).withStadium("St. Denis")
+				.withKickOffDate(13, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Belgien", "Italien").withGroup(Group.GROUP_E).withStadium("Lyon")
+				.withKickOffDate(13, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Italien", "Schweden").withGroup(Group.GROUP_E).withStadium("Toulouse")
+				.withKickOffDate(17, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Belgien", "Irland").withGroup(Group.GROUP_E).withStadium("Bordeaux")
+				.withKickOffDate(18, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Italien", "Irland").withGroup(Group.GROUP_E).withStadium("Lille")
+				.withKickOffDate(22, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Schweden", "Belgien").withGroup(Group.GROUP_E).withStadium("Nizza")
+				.withKickOffDate(22, 6, 21).build());
+	}
+
+	private void createGroupF() {
+		matchService.save(MatchBuilder.create().withTeams("Österreich", "Ungarn").withGroup(Group.GROUP_F).withStadium("Bordeaux")
+				.withKickOffDate(14, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Portugal", "Island").withGroup(Group.GROUP_F).withStadium("St. Etienne")
+				.withKickOffDate(14, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Island", "Ungarn").withGroup(Group.GROUP_F).withStadium("Marseille")
+				.withKickOffDate(18, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Portugal", "Österreich").withGroup(Group.GROUP_F).withStadium("Parc de Princes")
+				.withKickOffDate(18, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Ungarn", "Portugal").withGroup(Group.GROUP_F).withStadium("Lyon")
+				.withKickOffDate(22, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Island", "Österreich").withGroup(Group.GROUP_F).withStadium("St. Denis")
+				.withKickOffDate(22, 6, 18).build());
+	}
+
+	private void createDefaultUsers() {
+		LOG.info("createDefaultUsers: creating default users ...");
+		// will also be used for remote shell login
+		userService.save(
+				new AppUser("admin", "Pinky4Ever", false, FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("michael", "Pinky4Ever", FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH));
+
+		userService.save(new AppUser("janz", "janz", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("joernf", "joernf", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
+
+		userService.save(new AppUser("edit", "edit", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
+		userService.save(new AppUser("normal", "normal", FredBetRole.ROLE_USER));
+	}
 }

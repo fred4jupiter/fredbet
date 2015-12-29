@@ -16,7 +16,9 @@
 								<div class="col-xs-10">
 							  		<span class="bold" th:text="${matchCommand.teamNameOne}">Deutschland</span> <span> - </span><span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
 									<br/>
-									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/> 
+									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ', '}">Fr 04.08.2015, 19:15 Uhr</span>
+									<span th:text="#{${matchCommand.group.titleMsgKey}}">Gruppe</span>
+									<br/> 
 									<span th:text="${matchCommand.stadium}">Stadium</span>							  		
 					  			</div>
 					  			<div class="col-xs-2 vcenter">

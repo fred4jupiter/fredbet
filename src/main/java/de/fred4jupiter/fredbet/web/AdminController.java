@@ -26,7 +26,7 @@ public class AdminController {
 
 	@RequestMapping(path = "/createDemoData", method = RequestMethod.GET)
 	public ModelAndView createDemoData(ModelMap modelMap) {
-		dataBasePopulator.createDemoData();
+		dataBasePopulator.createEM2016Matches();
 		
 		ModelAndView modelAndView = new ModelAndView("admin/administration");
 		

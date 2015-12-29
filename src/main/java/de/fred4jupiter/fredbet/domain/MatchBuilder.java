@@ -36,6 +36,11 @@ public class MatchBuilder {
 		return this;
 	}
 	
+	public MatchBuilder withKickOffDate(int day, int month, int hour) {
+		match.setKickOffDate(DateUtils.toDate(LocalDateTime.of(2016, month, day, hour, 0)));
+		return this;
+	}
+	
 	public MatchBuilder withGroup(Group group) {
 		match.setGroup(group);
 		return this;
