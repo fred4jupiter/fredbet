@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,10 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 			environment.addActiveProfile(FredBetProfile.DEMODATA);
 		}
 
-		LOG.info("Active profiles: " + Arrays.asList(environment.getActiveProfiles()));
+		LOG.info("Active profiles: {}", Arrays.asList(environment.getActiveProfiles()));
+
+		Locale.setDefault(Locale.GERMANY);
+		LOG.info("Setting default locale to: {}", Locale.getDefault());
 	}
 
 }
