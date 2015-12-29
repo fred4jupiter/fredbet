@@ -12,8 +12,12 @@ dependencies:
 
 test:
   override:
-  - mvn verify
+  - mvn build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.$CIRCLE_BUILD_NUM
+  - mvn verify  
+  post:  
+  - mvn scm:tag -Dbasedir=. -Dtag=release_${project.version}
   - docker build -t fred4jupiter/fredbet .
+  - mvn versions:revert  
 #    - docker run -d -p 9200:8080 fred4jupiter/fredbet; sleep 10
 #    - curl --retry 10 --retry-delay 5 -v http://127.0.0.1:9200
 
