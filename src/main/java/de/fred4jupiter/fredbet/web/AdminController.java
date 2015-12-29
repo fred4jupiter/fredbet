@@ -24,13 +24,23 @@ public class AdminController {
 		return "admin/administration";
 	}
 
-	@RequestMapping(path = "/createDemoData", method = RequestMethod.GET)
-	public ModelAndView createDemoData(ModelMap modelMap) {
+	@RequestMapping(path = "/createDemoMatches", method = RequestMethod.GET)
+	public ModelAndView createDemoMatches(ModelMap modelMap) {
 		dataBasePopulator.createEM2016Matches();
 		
 		ModelAndView modelAndView = new ModelAndView("admin/administration");
 		
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoDataCreated");
+		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoMatchesCreated");
+		return modelAndView;
+	}
+	
+	@RequestMapping(path = "/createDemoBets", method = RequestMethod.GET)
+	public ModelAndView createDemoBets(ModelMap modelMap) {
+		dataBasePopulator.createDemoBetsForAllUsers();
+		
+		ModelAndView modelAndView = new ModelAndView("admin/administration");
+		
+		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoBetsCreated");
 		return modelAndView;
 	}
 }

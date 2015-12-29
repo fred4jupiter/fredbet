@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import de.fred4jupiter.fredbet.FredBetProfile;
 import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
@@ -33,6 +36,9 @@ public class DataBasePopulator {
 
 	@Autowired
 	private BettingService bettingService;
+	
+	@Autowired
+	private RandomValueGenerator randomValueGenerator;
 
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
@@ -196,5 +202,18 @@ public class DataBasePopulator {
 
 		userService.save(new AppUser("edit", "edit", FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH));
 		userService.save(new AppUser("normal", "normal", FredBetRole.ROLE_USER));
+	}
+
+	public void createDemoBetsForAllUsers() {
+		List<Match> allMatches = matchService.findAll();
+		List<AppUser> users = userService.findAll();
+		users.forEach(appUser -> {
+			allMatches.forEach(match -> {
+				Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
+				Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
+				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
+			});
+		});
+
 	}
 }

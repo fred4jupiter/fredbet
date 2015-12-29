@@ -9,7 +9,9 @@
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
 		<div class="row">			
 			<div class="col-xs-12 col-sm-6 col-md-4">
-				<a href="#createDemodata" th:href="@{/administration/createDemoData}">Testdaten anlegen</a>
+				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoMatches}">EM 2016 Gruppenspiele anlegen</a>
+				<br/><br/>
+				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}">Testtipps für alle Benutzer anlegen</a>
 			</div>
 		</div>
 	</div>
