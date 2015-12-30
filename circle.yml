@@ -23,6 +23,3 @@ deployment:
     branch: master
     commands:
     - ./release.sh
-    - docker login -e $TUTUM_EMAIL -u $TUTUM_USER -p $TUTUM_PASS  tutum.co
-    - docker tag -f fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
-    - docker push tutum.co/fred4jupiter/fredbet:$CIRCLE_BUILD_NUM
