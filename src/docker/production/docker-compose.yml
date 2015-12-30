@@ -1,3 +1,5 @@
+# Please note: The first time you have to call 'docker-compose up', for subsequent calls use 'docker-compose start'
+
 mongo1:
   hostname: mongo1
   image: mongo:3.0.6
@@ -48,6 +50,7 @@ mongosetup:
 fredbet:
   image: fred4jupiter/fredbet
   links:
+    - mongosetup
     - mongo1
     - mongo2
     - mongo3
