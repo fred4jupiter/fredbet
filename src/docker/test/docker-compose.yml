@@ -46,6 +46,7 @@ mongosetup:
 fredbet:
   image: fred4jupiter/fredbet
   links:
+    - mongosetup
     - mongo1
     - mongo2
     - mongo3

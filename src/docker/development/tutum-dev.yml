@@ -1,7 +1,7 @@
 fredbet:
   image: 'tutum.co/fred4jupiter/fredbet:latest'
   environment:
-    - 'spring.profiles.active=test,demodata'
+    - 'spring.profiles.active=dev'
   links:
     - mongodb
   ports:
