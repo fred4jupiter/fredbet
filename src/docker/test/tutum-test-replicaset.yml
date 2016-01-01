@@ -1,53 +1,49 @@
-mongo1:
-  hostname: mongo1
-  image: mongo:3.0.6
-  entrypoint: "/usr/bin/mongod --replSet rs --journal --smallfiles --rest"
-  ports:
-    - '27017:27017'
-    - '28017:28017'
-  links:
-    - mongo2:mongo2
-    - mongo3:mongo3
-  volumes:
-  - /var/lib/mongodb/fredbet/test/mongo1:/data/db 
-  
-mongo2:
-  hostname: mongo2
-  image: mongo:3.0.6
-  entrypoint: "/usr/bin/mongod --replSet rs --journal --smallfiles --rest"
-  ports:
-    - '27018:27017'
-    - '28018:28017'
-  volumes:
-  - /var/lib/mongodb/fredbet/test/mongo2:/data/db 
-  
-mongo3:
-  hostname: mongo3
-  image: mongo:3.0.6
-  entrypoint: "/usr/bin/mongod --replSet rs --journal --smallfiles --rest"
-  ports:
-    - '27019:27017'
-    - '28019:28017'
-  volumes:
-  - /var/lib/mongodb/fredbet/test/mongo3:/data/db 
-  
-mongosetup:
-  image: 'tutum.co/fred4jupiter/mongosetup'
-  links:
-    - mongo1:mongo1
-    - mongo2:mongo2
-    - mongo3:mongo3
-  
 fredbet:
-  image: 'tutum.co/fred4jupiter/fredbet:80'
+  image: 'tutum.co/fred4jupiter/fredbet:86'
   environment:
-    - 'spring.profiles.active=test'
+    - spring.profiles.active=test
   links:
-    - mongosetup
     - mongo1
     - mongo2
     - mongo3
+    - mongosetup
   ports:
     - '80:8080'
     - '2100:2000'
   target_num_containers: 3
+mongo1:
+  image: 'mongo:3.0.6'
+  entrypoint: '/usr/bin/mongod --replSet rs --journal --smallfiles --rest'
+  hostname: mongo1
+  links:
+    - mongo2
+    - mongo3
+  ports:
+    - '27017:27017'
+    - '28017:28017'
+  volumes:
+    - '/var/lib/mongodb/fredbet/test/mongo1:/data/db'
+mongo2:
+  image: 'mongo:3.0.6'
+  entrypoint: '/usr/bin/mongod --replSet rs --journal --smallfiles --rest'
+  hostname: mongo2
+  ports:
+    - '27018:27017'
+    - '28018:28017'
+  volumes:
+    - '/var/lib/mongodb/fredbet/test/mongo2:/data/db'
+mongo3:
+  image: 'mongo:3.0.6'
+  entrypoint: '/usr/bin/mongod --replSet rs --journal --smallfiles --rest'
+  hostname: mongo3
+  ports:
+    - '27019:27017'
+    - '28019:28017'
+  volumes:
+    - '/var/lib/mongodb/fredbet/test/mongo3:/data/db'
+mongosetup:
+  image: 'tutum.co/fred4jupiter/mongosetup:latest'
+  links:
+    - mongo1
+    - mongo2
+    - mongo3
