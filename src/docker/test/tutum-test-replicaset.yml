@@ -1,0 +1,57 @@
+mongo1:
+  hostname: mongo1
+  image: mongo:3.0.6
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  links:
+    - mongo2:mongo2
+    - mongo3:mongo3
+  volumes:
+  - /var/lib/mongodb/fredbet/test/mongo1:/data/db 
+  restart: never
+
+mongo2:
+  hostname: mongo2
+  image: mongo:3.0.6
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  ports:
+    - "27018:27017"
+    - "28018:28017"
+  volumes:
+  - /var/lib/mongodb/fredbet/test/mongo2:/data/db 
+  restart: never
+
+mongo3:
+  hostname: mongo3
+  image: mongo:3.0.6
+  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+  ports:
+    - "27019:27017"
+    - "28019:28017"
+  volumes:
+  - /var/lib/mongodb/fredbet/test/mongo3:/data/db 
+  restart: never
+
+mongosetup:
+  image: 'tutum.co/fred4jupiter/mongosetup'
+  links:
+    - mongo1:mongo1
+    - mongo2:mongo2
+    - mongo3:mongo3
+  restart: never
+
+fredbet:
+  image: 'tutum.co/fred4jupiter/fredbet:80'
+  environment:
+    - 'spring.profiles.active=test'
+  links:
+    - mongosetup
+    - mongo1
+    - mongo2
+    - mongo3
+  ports:
+    - '80:8080'
+    - '2100:2000'
+  target_num_containers: 3
