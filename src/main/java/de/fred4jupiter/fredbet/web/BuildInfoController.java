@@ -33,14 +33,14 @@ public class BuildInfoController {
 
 	private void addDynamicInfoProperties() {
 		addCurrentDateTime();
-		addIPAddress();
+		addHostName();
 	}
 
-	private void addIPAddress() {
+	private void addHostName() {
 		try {
 			InetAddress localHost = InetAddress.getLocalHost();
-			String hostAddress = localHost.getHostAddress();
-			buildProperties.put("hostAddress", hostAddress);
+			String hostName = localHost.getHostName();
+			buildProperties.put("hostName", hostName);
 		} catch (UnknownHostException e) {
 			LOG.error(e.getMessage(), e);
 		}
