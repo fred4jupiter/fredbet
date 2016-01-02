@@ -11,7 +11,16 @@ The application is available under [http://localhost:8080/](http://localhost:808
 	mvn clean install docker:build
 	docker run -d -p 8080:8080 fred4jupiter/fredbet
 
-This will build an image with name `fred4jupiter/fredbet`. In the 'dev' profile the application starts with an embedded in-memory MongoDB.
+This will build (and run) an image with name `fred4jupiter/fredbet`. In the `dev` profile (which will be activated if no profile is specified) the application starts with an embedded in-memory MongoDB.
+
+### Running with data replication
+
+There are examples for running the application with a MongoDB-Replica Set. See
+
+	src/docker/test/docker-compose.yml
+	src/docker/test/tutum-test-replicaset.yml
+
+for this purpose.
 
 ## Other Notes ##
 
