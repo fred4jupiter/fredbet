@@ -20,7 +20,17 @@ public class PointsCalculationService {
 	@Autowired
 	private BetRepository betRepository;
 
-	public Integer calculatePointsFor(Match match, Bet bet) {
+	public void calculatePointsFor(final Match match) {
+		List<Bet> allBetsForThisMatch = betRepository.findByMatch(match);
+		for (Bet bet : allBetsForThisMatch) {
+			Integer points = calculatePointsFor(match, bet);
+			bet.setPoints(points);
+			LOG.debug("User {} gets {} points", bet.getUserName(), points);
+		}
+		betRepository.save(allBetsForThisMatch);
+	}
+	
+	Integer calculatePointsFor(Match match, Bet bet) {
 		if (isSameGoalResult(match, bet)) {
 			return 3;
 		}
@@ -56,13 +66,5 @@ public class PointsCalculationService {
 		return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) && match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
 	}
 
-	public void calculatePointsFor(final Match match) {
-		List<Bet> allBetsForThisMatch = betRepository.findByMatch(match);
-		for (Bet bet : allBetsForThisMatch) {
-			Integer points = calculatePointsFor(match, bet);
-			bet.setPoints(points);
-			LOG.debug("User {} gets {} points", bet.getUserName(), points);
-		}
-		betRepository.save(allBetsForThisMatch);
-	}
+	
 }
