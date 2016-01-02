@@ -102,9 +102,14 @@ public class MatchController {
 			return new ModelAndView("matches/form", "matchCommand", matchCommand);
 		}
 
+		if (StringUtils.isBlank(matchCommand.getMatchId())) {
+		    messageUtil.addInfoMsg(redirect, "msg.match.created", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
+		}
+		else {
+		    messageUtil.addInfoMsg(redirect, "msg.match.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
+		}
+		
 		matchService.save(matchCommand);
-
-		messageUtil.addInfoMsg(redirect, "msg.match.created.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
 		return new ModelAndView("redirect:/matches");
 	}
 
