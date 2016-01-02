@@ -1,0 +1,17 @@
+mongodb:
+  image: mongo
+  command: "mongod --smallfiles"
+  volumes:
+  - /var/lib/mongodb/fredbet/demo:/data/db
+  expose:
+  - "27017"
+   
+mongo-express:
+  image: mongo-express   
+  links:
+    - mongodb
+  environment:
+    - ME_CONFIG_MONGODB_SERVER=mongodb
+    - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+  ports:
+  - "8180:8081"
