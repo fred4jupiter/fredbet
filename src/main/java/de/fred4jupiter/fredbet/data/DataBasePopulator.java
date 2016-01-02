@@ -36,7 +36,7 @@ public class DataBasePopulator {
 
 	@Autowired
 	private BettingService bettingService;
-	
+
 	@Autowired
 	private RandomValueGenerator randomValueGenerator;
 
@@ -68,6 +68,63 @@ public class DataBasePopulator {
 		createGroupD();
 		createGroupE();
 		createGroupF();
+		createRoundOfSixteen();
+		createQuarterFinal();
+		createSemiFinal();
+		createFinal();
+	}
+
+	private void createFinal() {
+		matchService.save(MatchBuilder.create().withTeams("Sieger HF1", "Sieger HF2").withGroup(Group.FINAL).withStadium("St. Denis")
+				.withKickOffDate(10, 7, 21).build());
+	}
+
+	private void createSemiFinal() {
+		matchService.save(MatchBuilder.create().withTeams("Sieger VF1", "Sieger VF2").withGroup(Group.SEMI_FINAL).withStadium("Lyon")
+				.withKickOffDate(6, 7, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger VF3", "Sieger VF4").withGroup(Group.SEMI_FINAL).withStadium("Marseille")
+				.withKickOffDate(7, 7, 21).build());
+	}
+
+	private void createQuarterFinal() {
+		matchService.save(MatchBuilder.create().withTeams("Sieger AF1", "Sieger AF3").withGroup(Group.QUARTER_FINAL)
+				.withStadium("Marseille").withKickOffDate(30, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger AF2", "Sieger AF6").withGroup(Group.QUARTER_FINAL).withStadium("Lille")
+				.withKickOffDate(1, 7, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger AF5", "Sieger AF7").withGroup(Group.QUARTER_FINAL).withStadium("Bordeaux")
+				.withKickOffDate(2, 7, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger AF4", "Sieger AF8").withGroup(Group.QUARTER_FINAL)
+				.withStadium("St. Denis").withKickOffDate(3, 7, 21).build());
+	}
+
+	private void createRoundOfSixteen() {
+		matchService.save(MatchBuilder.create().withTeams("Zweiter A", "Zweiter B").withGroup(Group.ROUND_OF_SIXTEEN)
+				.withStadium("St. Etienne").withKickOffDate(25, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger B", "Dritter A/C/D").withGroup(Group.ROUND_OF_SIXTEEN)
+				.withStadium("Parc de Princes").withKickOffDate(25, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger D", "Dritter B/E/F").withGroup(Group.ROUND_OF_SIXTEEN).withStadium("Lens")
+				.withKickOffDate(25, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger A", "Dritter C/D/E").withGroup(Group.ROUND_OF_SIXTEEN).withStadium("Lyon")
+				.withKickOffDate(26, 6, 15).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger C", "Dritter A/B/F").withGroup(Group.ROUND_OF_SIXTEEN)
+				.withStadium("Lille").withKickOffDate(26, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger F", "Zweiter E").withGroup(Group.ROUND_OF_SIXTEEN).withStadium("Toulouse")
+				.withKickOffDate(26, 6, 21).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger E", "Zweiter D").withGroup(Group.ROUND_OF_SIXTEEN)
+				.withStadium("St. Denis").withKickOffDate(27, 6, 18).build());
+
+		matchService.save(MatchBuilder.create().withTeams("Sieger B", "Zweiter F").withGroup(Group.ROUND_OF_SIXTEEN).withStadium("Nizza")
+				.withKickOffDate(27, 6, 21).build());
 	}
 
 	private void createGroupA() {
