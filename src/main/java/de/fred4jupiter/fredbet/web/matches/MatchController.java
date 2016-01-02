@@ -85,9 +85,12 @@ public class MatchController {
 	public ModelAndView deleteMatch(@PathVariable("matchId") String matchId, RedirectAttributes redirect) {
 		LOG.debug("deleted match with id={}", matchId);
 
+		MatchCommand matchCommand = matchService.findByMatchId(matchId);
+		
 		matchService.deleteMatch(matchId);
 		
-		messageUtil.addInfoMsg(redirect, "msg.match.deleted", matchId);
+		messageUtil.addInfoMsg(redirect, "msg.match.deleted", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
+		
 		return new ModelAndView("redirect:/matches");
 	}
 
