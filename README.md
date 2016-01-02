@@ -1,30 +1,30 @@
 # FredBet #
 
-Simple football betting application using Spring Boot and MongoDB. You can build the application as a docker container by running the following commands:
+Simple football betting application using Spring Boot and MongoDB. You can run the application by issuing the following commands:
+
+	mvn clean install spring-boot:run
+
+The application is available under [http://localhost:8080/](http://localhost:8080/). Log in with the admin default account credentials `admin/admin`.
+
+## Running within Docker ##
 
 	mvn clean install docker:build
+	docker run -d -p 8080:8080 fred4jupiter/fredbet
 
-This will build an image with name `fred4jupiter/fredbet`.
+This will build an image with name `fred4jupiter/fredbet`. In the 'dev' profile the application starts with an embedded in-memory MongoDB.
 
-Running the docker containers with MongoDB issue the following command:
-
-	cd src/docker/development
-	docker-compose up -d
-
-The application is available under [http://localhost:8080/](http://localhost:8080/)
+## Other Notes ##
 
 Notes for pushing into Tutums private repository:
 
 	docker login tutum.co
-	docker tag fred4jupiter/fredbet tutum.co/fred4jupiter/fredbet
-	docker push tutum.co/fred4jupiter/fredbet
-	
-Note: You can use the springloaded javaagent like this: 
+	docker tag <USERNAME>/fredbet tutum.co/<USERNAME>/fredbet
+	docker push tutum.co/<USERNAME>/fredbet
 
-	-javaagent:d:/maven_local_repo/org/springframework/springloaded/1.2.4.RELEASE/springloaded-1.2.4.RELEASE.jar -Dnoverify
+Replace `<USERNAME>` with your real user name.
 
 ## Travis Build Status ##
-[![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet) 
+[![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
 
 ## CircleCI Build Status ##
 
