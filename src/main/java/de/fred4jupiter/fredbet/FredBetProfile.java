@@ -1,5 +1,11 @@
 package de.fred4jupiter.fredbet;
 
+/**
+ * All available spring profiles within this application.
+ * 
+ * @author michael
+ *
+ */
 public interface FredBetProfile {
 
 	String DEV = "dev";
