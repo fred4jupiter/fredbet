@@ -1,0 +1,28 @@
+{
+    "project": "fredbet",
+    "services": [
+        {
+            "id": "fredbet-services",
+            "apps": [
+                {
+                    "id": "fredbet-web",
+                    "domain": {
+                        "type": "HTTP",
+                        "uri": "fredbet.sloppy.zone"
+                    },
+                    "mem": 128,
+                    "image": "fred4jupiter/fredbet",
+                    "instances": 1,
+                    "port_mappings": [
+                        {
+                            "container_port": 80
+                        }
+                    ],
+                    "env": {
+                        "spring.profiles.active": "dev"
+                    }
+                }
+            ]
+        }
+    ]
+}
