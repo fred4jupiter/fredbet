@@ -11,7 +11,7 @@
                         "uri": "fredbet.sloppy.zone"
                     },
                     "mem": 128,
-                    "image": "fred4jupiter/fredbet",
+                    "image": "hamsterhase/fredbet",
                     "instances": 1,
                     "port_mappings": [
                         {
