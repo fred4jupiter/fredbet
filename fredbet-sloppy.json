@@ -10,7 +10,7 @@
                         "type": "HTTP",
                         "uri": "fredbet.sloppy.zone"
                     },
-                    "mem": 512,
+                    "mem": 2048,
                     "image": "hamsterhase/fredbet",
                     "instances": 1,
                     "port_mappings": [
