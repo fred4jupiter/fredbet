@@ -1,28 +1,28 @@
 {
-  "project": "fredbet",
-  "services": [
-    {
-      "id": "fredbet-services",
-      "apps": [
-        {
-          "id": "fredbet-web",
-          "domain": {
-            "type": "HTTP",
-            "uri": "fredbet.sloppy.zone"
-          },
-          "mem": 2048,
-          "image": "hamsterhase/fredbet",
-          "instances": 1,
-          "port_mappings": [
-            {
-              "container_port": 8080
-            }
-          ],
-          "env": {
-            "spring.profiles.active": "dev"
-          }
-        }
-      ]
-    }
-  ]
+	"project":"fredbet",
+	"services":[
+		{
+			"id":"fredbet-services",
+			"apps":[
+				{
+					"id":"fredbet-web",
+					"domain":{
+						"type":"HTTP",
+						"uri":"fredbet-dev.sloppy.zone"
+					},
+					"mem":2048,
+					"image":"hamsterhase/fredbet",
+					"instances":1,
+					"port_mappings":[
+						{
+							"container_port":8080
+						}
+					],
+					"env":{
+						"spring.profiles.active":"dev"
+					}
+				}
+			]
+		}
+	]
 }
