@@ -1,47 +1,47 @@
 {
-  "project": "fredbet",
-  "services": [
-    {
-      "id": "frontend",
-      "apps": [
-        {
-          "id": "fredbet-web",
-          "domain": {
-            "type": "HTTP",
-            "uri": "fredbet-test.sloppy.zone"
-          },
-          "mem": 1024,
-          "image": "hamsterhase/fredbet",
-          "instances": 1,
-          "port_mappings": [
-            {
-              "container_port": 8080
-            }
-          ],
-          "env": {
-            "spring.profiles.active": "sloppy"			
-          },
-          "dependencies": [
-            "../../database/mongodb"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "database",
-      "apps": [
-        {
-          "id": "mongodb",
-          "mem": 1024,
-          "image": "mongo",
-          "instances": 1,
-          "port_mappings": [
-            {
-              "container_port": 27017
-            }
-          ]
-        }
-      ]
-    }
-  ]
+	"project":"fredbet",
+	"services":[
+		{
+			"id":"frontend",
+			"apps":[
+				{
+					"id":"fredbet-web",
+					"domain":{
+						"type":"HTTP",
+						"uri":"fredbet-test.sloppy.zone"
+					},
+					"mem":1024,
+					"image":"hamsterhase/fredbet",
+					"instances":1,
+					"port_mappings":[
+						{
+							"container_port":8080
+						}
+					],
+					"env":{
+						"spring.profiles.active":"sloppy"
+					},
+					"dependencies":[
+						"../../database/mongodb"
+					]
+				}
+			]
+		},
+		{
+			"id":"database",
+			"apps":[
+				{
+					"id":"mongodb",
+					"mem":1024,
+					"image":"mongo",
+					"instances":1,
+					"port_mappings":[
+						{
+							"container_port":27017
+						}
+					]
+				}
+			]
+		}
+	]
 }
