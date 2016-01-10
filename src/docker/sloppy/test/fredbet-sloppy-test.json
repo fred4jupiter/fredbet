@@ -20,7 +20,10 @@
           ],
           "env": {
             "spring.profiles.active": "sloppy"			
-          }
+          },
+          "dependencies": [
+            "../../database/mongodb"
+          ]
         }
       ]
     },
