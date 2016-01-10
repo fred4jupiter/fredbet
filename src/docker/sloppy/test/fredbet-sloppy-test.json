@@ -2,15 +2,15 @@
   "project": "fredbet",
   "services": [
     {
-      "id": "fredbet-services",
+      "id": "frontend",
       "apps": [
         {
-          "id": "fredbet-test",
+          "id": "fredbet-web",
           "domain": {
             "type": "HTTP",
             "uri": "fredbet-test.sloppy.zone"
           },
-          "mem": 2048,
+          "mem": 1024,
           "image": "hamsterhase/fredbet",
           "instances": 1,
           "port_mappings": [
@@ -19,7 +19,7 @@
             }
           ],
           "env": {
-            "spring.profiles.active": "sloppy"
+            "spring.profiles.active": "sloppy"			
           }
         }
       ]
@@ -29,7 +29,7 @@
       "apps": [
         {
           "id": "mongodb",
-          "mem": 512,
+          "mem": 1024,
           "image": "mongo",
           "instances": 1,
           "port_mappings": [
