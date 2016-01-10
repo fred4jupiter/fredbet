@@ -113,4 +113,12 @@ public class UserService {
 		return passwordEncoder.matches(changePasswordCommand.getOldPassword(), appUser.getPassword());
 	}
 
+	public AppUser updateUser(UserCommand userCommand) {
+		Assert.notNull(userCommand.getUserId());
+		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
+		appUser.setRoles(userCommand.getRoles());
+		save(appUser);		
+		return appUser;
+	}
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.annotation.Secured;
@@ -42,7 +43,7 @@ public class UserController {
 	@RequestMapping("{id}")
 	public ModelAndView edit(@PathVariable("id") String userId) {
 		UserCommand userCommand = userService.findByUserId(userId);
-		return new ModelAndView("user/form", "userCommand", userCommand);
+		return new ModelAndView("user/edit", "userCommand", userCommand);
 	}
 
 	@Secured("ROLE_ADMIN")
@@ -72,7 +73,7 @@ public class UserController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
+	public ModelAndView create(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
 		if (userCommand.validate(messageUtil, modelMap)) {
 			return new ModelAndView("user/form", "userCommand", userCommand);
 		}
@@ -84,7 +85,21 @@ public class UserController {
 			return new ModelAndView("user/form", "userCommand", userCommand);
 		}
 
-		String msg = "Benutzer " + userCommand.getUsername() + " angelegt/aktualisiert!";
+		String msg = "Benutzer " + userCommand.getUsername() + " angelegt!";
+		messageUtil.addPlainInfoMsg(redirect, msg);
+		return new ModelAndView("redirect:/user");
+	}
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
+		if (CollectionUtils.isEmpty(userCommand.getRoles())) {
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
+			return new ModelAndView("user/edit", "userCommand", userCommand);
+		}
+
+		AppUser updateUser = userService.updateUser(userCommand);
+
+		String msg = "Benutzer " + updateUser.getUsername() + " aktualisiert!";
 		messageUtil.addPlainInfoMsg(redirect, msg);
 		return new ModelAndView("redirect:/user");
 	}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+<title>Benutzer bearbeiten</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
+		<form id="userForm" th:action="@{/user/edit}" th:object="${userCommand}" action="#" method="post" role="form">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<input type="hidden" th:field="*{userId}" class="form-control" />
+					<div class="form-group">
+						<label for="username">Benutzername:</label> 
+						<input type="text" th:field="*{username}" class="form-control" disabled="disabled"/>
+					</div>					
+					<ul class="list-group">
+						<li class="list-group-item" th:each="role : ${userCommand.availableRoles}">
+							<input type="checkbox" th:field="*{roles}" th:value="${role}" /> 
+							<label th:for="${#ids.prev('roles')}" th:text="${role}">ROLE_USER</label>
+						</li>
+					</ul>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Speichern</button>
+						<a href="#" th:href="@{/user}" class="btn btn-default" role="button">Abbrechen</a>	
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
