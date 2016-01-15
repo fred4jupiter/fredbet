@@ -48,4 +48,8 @@ public enum Group {
 		List<Group> groups = Arrays.asList(values());
 		return groups.stream().filter(group -> group.name().startsWith("GROUP_")).collect(Collectors.toList());
 	}
+	
+	public static List<Group> getFinalGroups() {
+        return Arrays.asList(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL);
+    }
 }
