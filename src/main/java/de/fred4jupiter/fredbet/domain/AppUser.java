@@ -48,10 +48,12 @@ public class AppUser implements UserDetails {
         // for mongodb
     }
 
+    @Deprecated
     public AppUser(String username, String password, FredBetRole... roles) {
         this(username, password, true, roles);
     }
 
+    @Deprecated
     public AppUser(String username, String password, boolean deletable, FredBetRole... roles) {
         this.deletable = deletable;
         List<FredBetRole> rolesList = Arrays.asList(roles);

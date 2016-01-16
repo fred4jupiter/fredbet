@@ -57,14 +57,15 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 	public void changePasswordOldPasswordIsNotCorrect() {
 		final String plainPassword = "hans";
 		final String plainNewPassword = "mueller";
-		AppUser appUser = new AppUser("mini", plainPassword, FredBetRole.ROLE_USER);
-		userService.insertUser(appUser);
-
+		final AppUser appUser = AppUserBuilder.create().withDemoData().withPassword(plainPassword).build();
+        userService.insertUser(appUser);
+		
 		assertNotNull(appUser.getId());
 
 		ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand();
 		changePasswordCommand.setOldPassword("wrongOldPassword");
 		changePasswordCommand.setNewPassword(plainNewPassword);
+		changePasswordCommand.setNewPasswordRepeat(plainNewPassword);
 
 		try {
 			userService.changePassword(appUser, changePasswordCommand);
