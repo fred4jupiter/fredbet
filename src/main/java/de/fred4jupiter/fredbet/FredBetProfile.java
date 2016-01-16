@@ -20,4 +20,6 @@ public interface FredBetProfile {
 	 * This is the MongoDB in memory usage.
 	 */
 	String FONGO = "fongo";
+	
+	String INTEGRATION_TEST = "integration_test";
 }

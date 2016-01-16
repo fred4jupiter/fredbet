@@ -1,13 +1,16 @@
 package de.fred4jupiter.fredbet.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.Assert.*;
 
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
 import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.web.user.ChangePasswordCommand;
 
 public class UserServiceIT extends AbstractMongoEmbeddedTest {
@@ -17,23 +20,37 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 
 	@Test
 	public void avoidDuplicateUser() {
-		userService.save(new AppUser("michael", "michael", FredBetRole.ROLE_USER));
-		userService.save(new AppUser("michael", "michael", FredBetRole.ROLE_USER));
+	    AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRoles(FredBetRole.ROLE_USER).build();
+	    
+		userService.insertUser(appUser);
+		
+		try {
+		    userService.insertUser(appUser);
+            fail("UserAlreadyExistsException should be thrown");
+        } catch (UserAlreadyExistsException e) {
+            // expected
+        }
 	}
 
 	@Test
 	public void changePassword() {
-		final String plainPassword = "feuerstein";
-		final String plainNewPassword = "wilma";
-		AppUser appUser = new AppUser("fred", plainPassword, FredBetRole.ROLE_USER);
-		userService.save(appUser);
+	    final String oldPassword = "blabla";
+	    final String newPassword = "mega";
+
+	    final AppUser appUser = AppUserBuilder.create().withDemoData().withPassword(oldPassword).build();
+		userService.insertUser(appUser);
 
 		assertNotNull(appUser.getId());
-
+		
 		ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand();
-		changePasswordCommand.setOldPassword(plainPassword);
-		changePasswordCommand.setNewPassword(plainNewPassword);
+		changePasswordCommand.setOldPassword(oldPassword);
+		changePasswordCommand.setNewPassword(newPassword);
+		changePasswordCommand.setNewPasswordRepeat(newPassword);
 		userService.changePassword(appUser, changePasswordCommand);
+		
+		AppUser found = userService.findByAppUserId(appUser.getId());
+		assertNotNull(found);
+		assertEquals(newPassword, found.getPassword());
 	}
 
 	@Test
@@ -41,7 +58,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 		final String plainPassword = "hans";
 		final String plainNewPassword = "mueller";
 		AppUser appUser = new AppUser("mini", plainPassword, FredBetRole.ROLE_USER);
-		userService.save(appUser);
+		userService.insertUser(appUser);
 
 		assertNotNull(appUser.getId());
 
@@ -55,6 +72,23 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 		} catch (OldPasswordWrongException e) {
 			// OK
 		}
-
+	}
+	
+	@Test
+	public void updatePrivilegesAndNotPassword() {
+	    final AppUser appUser = AppUserBuilder.create().withDemoData().build();
+	    userService.insertUser(appUser);
+	    assertEquals(1, appUser.getRoles().size());
+	    
+	    // add role
+	    appUser.addRole(FredBetRole.ROLE_EDIT_MATCH);
+	    assertEquals(2, appUser.getRoles().size());
+	    userService.updateUser(appUser);
+	    
+	    AppUser foundAppUser = userService.findByAppUserId(appUser.getId());
+	    assertNotNull(foundAppUser);
+	    
+	    assertEquals(appUser.getUsername(), foundAppUser.getUsername());
+	    assertEquals(appUser.getPassword(), foundAppUser.getPassword());
 	}
 }

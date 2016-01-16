@@ -1,13 +1,14 @@
 package de.fred4jupiter.fredbet.repository;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
-
 import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
-import de.fred4jupiter.fredbet.FredBetRole;
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 
 public class AppUserRepositoryIT extends AbstractMongoEmbeddedTest {
 
@@ -16,8 +17,7 @@ public class AppUserRepositoryIT extends AbstractMongoEmbeddedTest {
 
 	@Test
 	public void saveAppUser() {
-		final String username = "robert";
-		AppUser appUser = new AppUser(username, username, FredBetRole.ROLE_USER);
+		AppUser appUser = AppUserBuilder.create().withDemoData().build();
 		appUser = appUserRepository.save(appUser);
 		assertNotNull(appUser.getId());
 

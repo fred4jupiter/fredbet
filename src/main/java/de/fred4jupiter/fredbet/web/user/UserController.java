@@ -28,109 +28,109 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/user")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private MessageUtil messageUtil;
+    @Autowired
+    private MessageUtil messageUtil;
 
-	@RequestMapping
-	public ModelAndView list() {
-		List<AppUser> users = userService.findAll();
-		return new ModelAndView("user/list", "allUsers", users);
-	}
+    @RequestMapping
+    public ModelAndView list() {
+        List<AppUser> users = userService.findAll();
+        return new ModelAndView("user/list", "allUsers", users);
+    }
 
-	@RequestMapping("{id}")
-	public ModelAndView edit(@PathVariable("id") String userId) {
-		UserCommand userCommand = userService.findByUserId(userId);
-		return new ModelAndView("user/edit", "userCommand", userCommand);
-	}
+    @RequestMapping("{id}")
+    public ModelAndView edit(@PathVariable("id") String userId) {
+        UserCommand userCommand = userService.findByUserId(userId);
+        return new ModelAndView("user/edit", "userCommand", userCommand);
+    }
 
-	@Secured("ROLE_ADMIN")
-	@RequestMapping("{id}/delete")
-	public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
-		UserCommand userCommand = userService.findByUserId(userId);
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
+        if (CollectionUtils.isEmpty(userCommand.getRoles())) {
+            messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
+            return new ModelAndView("user/edit", "userCommand", userCommand);
+        }
 
-		if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
-			messageUtil.addPlainErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
-			return new ModelAndView("redirect:/user");
-		}
+        AppUser updateUser = userService.updateUser(userCommand);
 
-		try {
-			userService.deleteUser(userId);
-			messageUtil.addInfoMsg(redirect, "user.deleted",userCommand.getUsername());
-		} catch (UserNotDeletableException e) {
-			messageUtil.addErrorMsg(redirect, "user.not.deletable", userCommand.getUsername());
-		}
+        String msg = "Benutzer " + updateUser.getUsername() + " aktualisiert!";
+        messageUtil.addPlainInfoMsg(redirect, msg);
+        return new ModelAndView("redirect:/user");
+    }
 
-		return new ModelAndView("redirect:/user");
-	}
+    @Secured("ROLE_ADMIN")
+    @RequestMapping("{id}/delete")
+    public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
+        UserCommand userCommand = userService.findByUserId(userId);
 
-	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String createForm(@ModelAttribute UserCommand userCommand) {
-		return "user/form";
-	}
+        if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
+            messageUtil.addPlainErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
+            return new ModelAndView("redirect:/user");
+        }
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
-		if (userCommand.validate(messageUtil, modelMap)) {
-			return new ModelAndView("user/form", "userCommand", userCommand);
-		}
+        try {
+            userService.deleteUser(userId);
+            messageUtil.addInfoMsg(redirect, "user.deleted", userCommand.getUsername());
+        } catch (UserNotDeletableException e) {
+            messageUtil.addErrorMsg(redirect, "user.not.deletable", userCommand.getUsername());
+        }
 
-		try {
-			userService.createOrUpdateUser(userCommand);
-		} catch (DuplicateKeyException e) {
-			messageUtil.addPlainErrorMsg(modelMap, "Dieser Benutzername ist bereits vergeben!");
-			return new ModelAndView("user/form", "userCommand", userCommand);
-		}
+        return new ModelAndView("redirect:/user");
+    }
 
-		String msg = "Benutzer " + userCommand.getUsername() + " angelegt!";
-		messageUtil.addPlainInfoMsg(redirect, msg);
-		return new ModelAndView("redirect:/user");
-	}
-	
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
-		if (CollectionUtils.isEmpty(userCommand.getRoles())) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
-			return new ModelAndView("user/edit", "userCommand", userCommand);
-		}
+    @Secured("ROLE_ADMIN")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(@ModelAttribute UserCommand userCommand) {
+        return "user/create";
+    }
 
-		AppUser updateUser = userService.updateUser(userCommand);
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView create(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
+        if (userCommand.validate(messageUtil, modelMap)) {
+            return new ModelAndView("user/create", "userCommand", userCommand);
+        }
 
-		String msg = "Benutzer " + updateUser.getUsername() + " aktualisiert!";
-		messageUtil.addPlainInfoMsg(redirect, msg);
-		return new ModelAndView("redirect:/user");
-	}
+        try {
+            userService.createUser(userCommand);
+        } catch (DuplicateKeyException e) {
+            messageUtil.addPlainErrorMsg(modelMap, "Dieser Benutzername ist bereits vergeben!");
+            return new ModelAndView("user/create", "userCommand", userCommand);
+        }
 
-	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-	public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
-		return "user/change_password";
-	}
+        String msg = "Benutzer " + userCommand.getUsername() + " angelegt!";
+        messageUtil.addPlainInfoMsg(redirect, msg);
+        return new ModelAndView("redirect:/user");
+    }
 
-	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, RedirectAttributes redirect,
-			ModelMap modelMap) {
-		if (changePasswordCommand.validate(messageUtil, modelMap)) {
-			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-		}
+    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+    public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
+        return "user/change_password";
+    }
 
-		if (changePasswordCommand.isPasswordRepeatMismatch()) {
-			messageUtil.addPlainErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
-			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-		}
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, RedirectAttributes redirect,
+            ModelMap modelMap) {
+        if (changePasswordCommand.validate(messageUtil, modelMap)) {
+            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
+        }
 
-		try {
-			userService.changePassword(SecurityUtils.getCurrentUser(), changePasswordCommand);
-		} catch (OldPasswordWrongException e) {
-			messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
-			return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-		}
+        if (changePasswordCommand.isPasswordRepeatMismatch()) {
+            messageUtil.addPlainErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
+            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
+        }
 
-		String msg = "Passwort erfolgreich geändert!";
-		messageUtil.addPlainInfoMsg(redirect, msg);
-		return new ModelAndView("redirect:/matches");
-	}
+        try {
+            userService.changePassword(SecurityUtils.getCurrentUser(), changePasswordCommand);
+        } catch (OldPasswordWrongException e) {
+            messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
+            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
+        }
+
+        String msg = "Passwort erfolgreich geändert!";
+        messageUtil.addPlainInfoMsg(redirect, msg);
+        return new ModelAndView("redirect:/matches");
+    }
 
 }

@@ -13,7 +13,7 @@ import com.lordofthejars.nosqlunit.mongodb.MongoDbRule.MongoDbRuleBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@ActiveProfiles(value = { FredBetProfile.DEV, FredBetProfile.FONGO })
+@ActiveProfiles(value = { FredBetProfile.DEV, FredBetProfile.FONGO, FredBetProfile.INTEGRATION_TEST })
 public abstract class AbstractMongoEmbeddedTest {
 
 	@Rule
