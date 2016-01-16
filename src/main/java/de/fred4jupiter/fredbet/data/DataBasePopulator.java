@@ -255,22 +255,19 @@ public class DataBasePopulator {
         LOG.info("createDefaultUsers: creating default users ...");
 
         // admin user will also be used for remote shell login
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("admin", "admin")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH).deletable(false).build());
+        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("admin", "admin").withRole(FredBetRole.ROLE_ADMIN)
+                .deletable(false).build());
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH).build());
+        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_ADMIN).build());
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("janz", "janz")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH).build());
+        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("janz", "janz").withRole(FredBetRole.ROLE_USER_ADVANCED).build());
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("joernf", "joernf")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH).build());
+        saveIfNotPresent(
+                AppUserBuilder.create().withUsernameAndPassword("joernf", "joernf").withRole(FredBetRole.ROLE_USER_ADVANCED).build());
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("edit", "edit")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH).build());
+        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("edit", "edit").withRole(FredBetRole.ROLE_USER_ADVANCED).build());
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("normal", "normal").withRoles(FredBetRole.ROLE_USER).build());
+        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("normal", "normal").withRole(FredBetRole.ROLE_USER).build());
     }
 
     private void saveIfNotPresent(AppUser appUser) {

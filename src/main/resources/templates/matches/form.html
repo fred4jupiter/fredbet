@@ -54,7 +54,7 @@
 			        </div>					
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">Speichern</button>
-						<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/matches/delete/' + ${matchCommand.matchId}}" 
+						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/matches/delete/' + ${matchCommand.matchId}}" 
 							class="btn btn-danger" role="button" th:classappend="${!matchCommand.isDeletable()}? 'disabled'">Löschen</a>						
 						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button">Abbrechen</a>	
 					</div>

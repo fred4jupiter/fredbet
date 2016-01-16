@@ -54,7 +54,7 @@
 					  			</div>  			
 					  			<div class="col-xs-5">
 					  				<div class="row custom-button-group">
-								        <a sec:authorize="hasRole('ROLE_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Spiel ändern">
+								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Spiel ändern">
 				            						<span class="glyphicon glyphicon-pencil"></span>
 				            				 </a>
 				            				 <a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" 
@@ -68,7 +68,7 @@
 					</div>
 				</div>				
 			</div>
-			<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button">Spiel anlegen</a>	
+			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button">Spiel anlegen</a>	
 	</div>
 </body>
 </html>

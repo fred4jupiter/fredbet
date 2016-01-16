@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.FredBetPermission;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
@@ -63,7 +64,7 @@ public class UserController {
         return new ModelAndView("redirect:/user");
     }
 
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize(FredBetPermission.PERM_DELETE_USER)
     @RequestMapping("{id}/delete")
     public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
@@ -83,12 +84,13 @@ public class UserController {
         return new ModelAndView("redirect:/user");
     }
 
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize(FredBetPermission.PERM_CREATE_USER)
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute UserCommand userCommand) {
         return CREATE_USER_PAGE;
     }
 
+    @PreAuthorize(FredBetPermission.PERM_CREATE_USER)
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView create(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
         if (userCommand.validate(messageUtil, modelMap)) {

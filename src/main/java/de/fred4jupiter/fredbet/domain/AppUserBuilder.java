@@ -26,7 +26,7 @@ public class AppUserBuilder {
         String username = UUID.randomUUID().toString();
         String password = UUID.randomUUID().toString();
         withUsernameAndPassword(username, password);
-        withRoles(FredBetRole.ROLE_USER);
+        withRole(FredBetRole.ROLE_USER);
         deletable(true);
         return this;
     }
@@ -42,10 +42,8 @@ public class AppUserBuilder {
         return this;
     }
     
-    public AppUserBuilder withRoles(FredBetRole... fredBetRoles) {
-        for (FredBetRole fredBetRole : fredBetRoles) {
-            this.appUser.addRole(fredBetRole);
-        }
+    public AppUserBuilder withRole(FredBetRole fredBetRole) {
+        this.appUser.addRole(fredBetRole);
         return this;
     }
     

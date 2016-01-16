@@ -42,9 +42,9 @@
 			        </li>
 					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}">noch zu tippen</a></li>
 					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}">Ranking</a></li>
-				  	<li th:class="${pageState_user}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
-				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#buildinfo" th:href="@{/buildinfo}">Build Info</a></li>
-				  	<li th:class="${pageState_administration}" sec:authorize="hasRole('ROLE_ADMIN')"><a href="#administration" th:href="@{/administration}">Administration</a></li>
+				  	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
+				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}">Build Info</a></li>
+				  	<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}">Administration</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false">

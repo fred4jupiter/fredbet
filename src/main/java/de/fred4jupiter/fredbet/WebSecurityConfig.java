@@ -16,7 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// 24 Stunden
@@ -31,9 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**").permitAll();
-		http.authorizeRequests().antMatchers("/user/changePassword").hasAnyAuthority(FredBetRole.ROLE_USER.name());
-		http.authorizeRequests().antMatchers("/user/**", "/admin/**", "/administration/**").hasAnyAuthority(FredBetRole.ROLE_ADMIN.name());
-		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetRole.ROLE_ADMIN.name());
+		http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
+		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+		http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+		// Spring Boot Actuator
+		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().anyRequest().authenticated();
 
 		http.formLogin().loginPage("/login").permitAll();

@@ -20,7 +20,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 
 	@Test
 	public void avoidDuplicateUser() {
-	    AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRoles(FredBetRole.ROLE_USER).build();
+	    AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_USER).build();
 	    
 		userService.insertAppUser(appUser);
 		
@@ -82,7 +82,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 	    assertEquals(1, appUser.getRoles().size());
 	    
 	    // add role
-	    appUser.addRole(FredBetRole.ROLE_EDIT_MATCH);
+	    appUser.addRole(FredBetRole.ROLE_USER_ADVANCED);
 	    assertEquals(2, appUser.getRoles().size());
 	    userService.updateAppUser(appUser);
 	    
