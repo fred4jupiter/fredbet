@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -48,21 +47,6 @@ public class AppUser implements UserDetails {
         // for mongodb
     }
 
-    @Deprecated
-    public AppUser(String username, String password, FredBetRole... roles) {
-        this(username, password, true, roles);
-    }
-
-    @Deprecated
-    public AppUser(String username, String password, boolean deletable, FredBetRole... roles) {
-        this.deletable = deletable;
-        List<FredBetRole> rolesList = Arrays.asList(roles);
-        this.roles = rolesList.stream().map(role -> role.name()).collect(Collectors.toList());
-        this.username = username;
-        this.password = password;
-        this.createdAt = new Date();
-    }
-
     public void addRole(FredBetRole... fredBetRoles) {
         if (this.roles == null) {
             this.roles = new ArrayList<>();
@@ -71,7 +55,7 @@ public class AppUser implements UserDetails {
             this.roles.add(fredBetRole.name());
         }
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -92,7 +76,7 @@ public class AppUser implements UserDetails {
         builder.append(deletable, other.deletable);
         return builder.isEquals();
     }
-    
+
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder();
