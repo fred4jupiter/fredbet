@@ -24,6 +24,12 @@ import de.fred4jupiter.fredbet.web.user.UserCommand;
 @Service
 public class UserService {
 
+    /**
+     * This is the default password a user gets assigned if the password reset
+     * function has been applied.
+     */
+    private static final String DEFAULT_PASSWORD_ON_RESET = "em2016";
+
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
@@ -62,11 +68,16 @@ public class UserService {
         Assert.notNull(userCommand.getUserId());
         AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
         appUser.setRoles(userCommand.getRoles());
-        updateUser(appUser);
+
+        if (userCommand.isResetPassword()) {
+            appUser.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD_ON_RESET));
+        }
+
+        updateAppUser(appUser);
         return appUser;
     }
 
-    public void insertUser(AppUser appUser) throws UserAlreadyExistsException {
+    public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
         try {
             appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
             appUserRepository.insert(appUser);
@@ -76,7 +87,7 @@ public class UserService {
         }
     }
 
-    public void updateUser(AppUser appUser) {
+    public void updateAppUser(AppUser appUser) {
         AppUser userToBeUpdated = appUserRepository.findOne(appUser.getId());
         if (userToBeUpdated == null) {
             throw new IllegalArgumentException(
@@ -105,7 +116,7 @@ public class UserService {
         // create new user
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword(userCommand.getUsername(), userCommand.getPassword())
                 .withRoles(FredBetRole.ROLE_USER).build();
-        insertUser(appUser);
+        insertAppUser(appUser);
         return;
     }
 
@@ -123,7 +134,7 @@ public class UserService {
         }
 
         appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
-        updateUser(appUser);
+        updateAppUser(appUser);
     }
 
 }

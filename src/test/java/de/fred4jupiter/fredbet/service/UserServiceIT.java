@@ -22,10 +22,10 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 	public void avoidDuplicateUser() {
 	    AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRoles(FredBetRole.ROLE_USER).build();
 	    
-		userService.insertUser(appUser);
+		userService.insertAppUser(appUser);
 		
 		try {
-		    userService.insertUser(appUser);
+		    userService.insertAppUser(appUser);
             fail("UserAlreadyExistsException should be thrown");
         } catch (UserAlreadyExistsException e) {
             // expected
@@ -38,7 +38,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 	    final String newPassword = "mega";
 
 	    final AppUser appUser = AppUserBuilder.create().withDemoData().withPassword(oldPassword).build();
-		userService.insertUser(appUser);
+		userService.insertAppUser(appUser);
 
 		assertNotNull(appUser.getId());
 		
@@ -58,7 +58,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 		final String plainPassword = "hans";
 		final String plainNewPassword = "mueller";
 		final AppUser appUser = AppUserBuilder.create().withDemoData().withPassword(plainPassword).build();
-        userService.insertUser(appUser);
+        userService.insertAppUser(appUser);
 		
 		assertNotNull(appUser.getId());
 
@@ -78,13 +78,13 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 	@Test
 	public void updatePrivilegesAndNotPassword() {
 	    final AppUser appUser = AppUserBuilder.create().withDemoData().build();
-	    userService.insertUser(appUser);
+	    userService.insertAppUser(appUser);
 	    assertEquals(1, appUser.getRoles().size());
 	    
 	    // add role
 	    appUser.addRole(FredBetRole.ROLE_EDIT_MATCH);
 	    assertEquals(2, appUser.getRoles().size());
-	    userService.updateUser(appUser);
+	    userService.updateAppUser(appUser);
 	    
 	    AppUser foundAppUser = userService.findByAppUserId(appUser.getId());
 	    assertNotNull(foundAppUser);

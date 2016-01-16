@@ -18,9 +18,13 @@
 					<ul class="list-group">
 						<li class="list-group-item" th:each="role : ${userCommand.availableRoles}">
 							<input type="checkbox" th:field="*{roles}" th:value="${role}" /> 
-							<label th:for="${#ids.prev('roles')}" th:text="${role}">ROLE_USER</label>
+							<label th:for="${#ids.prev('roles')}" th:text="${role}"></label>
 						</li>
 					</ul>
+					<div class="form-group">
+						<input type="checkbox" th:field="*{resetPassword}" th:value="true" /> 
+						<label for="resetPassword">Passwort zurücksetzen</label> 
+					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">Speichern</button>
 						<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/user/' + ${userCommand.userId} + '/delete'}" 

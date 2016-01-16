@@ -275,7 +275,7 @@ public class DataBasePopulator {
 
     private void saveIfNotPresent(AppUser appUser) {
         try {
-            userService.insertUser(appUser);
+            userService.insertAppUser(appUser);
         } catch (UserAlreadyExistsException e) {
             LOG.info(e.getMessage());
         }

@@ -23,6 +23,8 @@ public class UserCommand {
     private String password;
 
     private boolean deletable;
+    
+    private boolean resetPassword;
 
     private List<String> roles = new ArrayList<>();
 
@@ -105,5 +107,13 @@ public class UserCommand {
 
     public void setDeletable(boolean deletable) {
         this.deletable = deletable;
+    }
+
+    public boolean isResetPassword() {
+        return resetPassword;
+    }
+
+    public void setResetPassword(boolean resetPassword) {
+        this.resetPassword = resetPassword;
     }
 }
