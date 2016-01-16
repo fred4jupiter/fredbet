@@ -40,9 +40,11 @@ public class PermissionResolverImpl implements PermissionResolver {
         }
         
         if (FredBetRole.ROLE_ADMIN.name().equals(role)) {
-            permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH));
             permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_CREATE_MATCH));
+            permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH));
             permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_DELETE_MATCH));
+
+            permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_CREATE_USER));
             permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_DELETE_USER));
             permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_PASSWORD_RESET));
             permissionsForRole.add(new SimpleGrantedAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
