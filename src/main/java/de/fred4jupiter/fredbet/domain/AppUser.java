@@ -40,7 +40,7 @@ public class AppUser implements UserDetails {
 
     private Date createdAt;
 
-    private boolean deletable;
+    private boolean deletable = true;
 
     @PersistenceConstructor
     protected AppUser() {
