@@ -133,7 +133,7 @@ public class UserService {
         }
 
         appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
-        updateAppUser(appUser);
+        appUserRepository.save(appUser);
     }
 
 }
