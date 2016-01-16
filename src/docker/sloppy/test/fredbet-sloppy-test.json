@@ -12,6 +12,7 @@
 					},
 					"mem":1024,
 					"image":"hamsterhase/fredbet",
+                    "force_pull_image": true,
 					"instances":1,
 					"port_mappings":[
 						{
