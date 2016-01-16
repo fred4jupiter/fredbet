@@ -262,10 +262,10 @@ public class DataBasePopulator {
                 .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH).build());
 
         saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("janz", "janz")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH).build());
+                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH).build());
 
         saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("joernf", "joernf")
-                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_ADMIN, FredBetRole.ROLE_EDIT_MATCH).build());
+                .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH).build());
 
         saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("edit", "edit")
                 .withRoles(FredBetRole.ROLE_USER, FredBetRole.ROLE_EDIT_MATCH).build());

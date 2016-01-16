@@ -11,6 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.domain.Group;
 
+/**
+ * Adds css class to html tags for showing the active tab/link.
+ * 
+ * @author michael
+ *
+ */
 public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 
     private static final String CSS_ACTIVE = "active";
@@ -32,6 +38,10 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
             return;
         }
 
+        if (requestURI.contains("userprofile")) {
+            modelAndView.addObject(PAGE_STATE_REFIX + "userprofile", CSS_ACTIVE);
+        }
+
         if (numberOfSlashes == 2) {
             String page = StringUtils.substring(requestURI, 1);
             page = StringUtils.replace(page, "/", "_");
@@ -42,11 +52,10 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
         if (requestURI.contains("group")) {
             if (containsFinalGroups(requestURI)) {
                 modelAndView.addObject(PAGE_STATE_REFIX + "finals", CSS_ACTIVE);
-            }
-            else if (containsMainGroups(requestURI)) {
+            } else if (containsMainGroups(requestURI)) {
                 modelAndView.addObject(PAGE_STATE_REFIX + "group", CSS_ACTIVE);
             }
-            
+
             String page = StringUtils.substringAfter(requestURI, "group/");
             modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
         }

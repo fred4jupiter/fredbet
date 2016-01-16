@@ -46,7 +46,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 		changePasswordCommand.setOldPassword(oldPassword);
 		changePasswordCommand.setNewPassword(newPassword);
 		changePasswordCommand.setNewPasswordRepeat(newPassword);
-		userService.changePassword(appUser, changePasswordCommand);
+		userService.changePassword(appUser.getId(), changePasswordCommand);
 		
 		AppUser found = userService.findByAppUserId(appUser.getId());
 		assertNotNull(found);
@@ -68,7 +68,7 @@ public class UserServiceIT extends AbstractMongoEmbeddedTest {
 		changePasswordCommand.setNewPasswordRepeat(plainNewPassword);
 
 		try {
-			userService.changePassword(appUser, changePasswordCommand);
+			userService.changePassword(appUser.getId(), changePasswordCommand);
 			fail("OldPasswordWrongException should be thrown");
 		} catch (OldPasswordWrongException e) {
 			// OK

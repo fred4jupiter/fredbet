@@ -43,16 +43,16 @@ public class ChangePasswordCommand {
 
 	public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
 		if (StringUtils.isBlank(this.oldPassword)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Das geben Sie das alte Passwort ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie das alte Passwort ein!");
 			return true;
 		}
 
 		if (StringUtils.isBlank(this.newPassword)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Das geben Sie das neue Passwort ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie das neue Passwort ein!");
 			return true;
 		}
 		if (StringUtils.isBlank(this.newPasswordRepeat)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Das geben Sie Passwortwiederholung ein!");
+			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie die Passwortwiederholung ein!");
 			return true;
 		}
 		return false;

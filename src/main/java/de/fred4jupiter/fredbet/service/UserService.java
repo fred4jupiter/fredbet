@@ -108,9 +108,10 @@ public class UserService {
         return;
     }
 
-    public void changePassword(AppUser appUser, ChangePasswordCommand changePasswordCommand) {
+    public void changePassword(String userId, ChangePasswordCommand changePasswordCommand) {
+        AppUser appUser = appUserRepository.findOne(userId);
         if (appUser == null) {
-            throw new IllegalArgumentException("Given user must not be null!");
+            throw new IllegalArgumentException("Could not found user with userId=" + userId);
         }
 
         final String enteredOldPasswordPlain = changePasswordCommand.getOldPassword();
@@ -120,7 +121,7 @@ public class UserService {
             throw new OldPasswordWrongException("The old password is wrong!");
         }
 
-        appUser.setPassword(changePasswordCommand.getNewPassword());
+        appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
         updateUser(appUser);
     }
 

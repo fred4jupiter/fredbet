@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
-import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -104,33 +103,6 @@ public class UserController {
         return new ModelAndView("redirect:/user");
     }
 
-    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-    public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
-        return "user/change_password";
-    }
-
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, RedirectAttributes redirect,
-            ModelMap modelMap) {
-        if (changePasswordCommand.validate(messageUtil, modelMap)) {
-            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-        }
-
-        if (changePasswordCommand.isPasswordRepeatMismatch()) {
-            messageUtil.addPlainErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
-            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-        }
-
-        try {
-            userService.changePassword(SecurityUtils.getCurrentUser(), changePasswordCommand);
-        } catch (OldPasswordWrongException e) {
-            messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
-            return new ModelAndView("user/change_password", "changePasswordCommand", changePasswordCommand);
-        }
-
-        String msg = "Passwort erfolgreich geändert!";
-        messageUtil.addPlainInfoMsg(redirect, msg);
-        return new ModelAndView("redirect:/matches");
-    }
+    
 
 }
