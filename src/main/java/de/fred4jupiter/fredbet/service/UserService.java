@@ -115,7 +115,7 @@ public class UserService {
     public void createUser(UserCommand userCommand) {
         // create new user
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword(userCommand.getUsername(), userCommand.getPassword())
-                .withRole(FredBetRole.ROLE_USER).build();
+                .withRoles(userCommand.getRoles()).build();
         insertAppUser(appUser);
         return;
     }

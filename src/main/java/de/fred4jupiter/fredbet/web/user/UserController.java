@@ -64,7 +64,7 @@ public class UserController {
         return new ModelAndView("redirect:/user");
     }
 
-    @PreAuthorize("hasAuthority('"+FredBetPermission.PERM_DELETE_USER+"')")
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_USER + "')")
     @RequestMapping("{id}/delete")
     public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
@@ -84,13 +84,13 @@ public class UserController {
         return new ModelAndView("redirect:/user");
     }
 
-    @PreAuthorize("hasAuthority('"+FredBetPermission.PERM_CREATE_USER+"')")
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute UserCommand userCommand) {
         return CREATE_USER_PAGE;
     }
 
-    @PreAuthorize("hasAuthority('"+FredBetPermission.PERM_CREATE_USER+"')")
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView create(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
         if (userCommand.validate(messageUtil, modelMap)) {
