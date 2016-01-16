@@ -16,84 +16,94 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class UserCommand {
 
-	private String userId;
+    private String userId;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private List<String> roles = new ArrayList<>();
+    private boolean deletable;
 
-	private final List<String> availableRoles = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
 
-	public UserCommand() {
-	    List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-	    this.availableRoles.addAll(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
-	}
+    private final List<String> availableRoles = new ArrayList<>();
 
-	public List<String> getAvailableRoles() {
-		return availableRoles;
-	}
+    public UserCommand() {
+        List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
+        this.availableRoles.addAll(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
+    }
 
-	public List<String> getRoles() {
-		return roles;
-	}
+    public List<String> getAvailableRoles() {
+        return availableRoles;
+    }
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
+    public List<String> getRoles() {
+        return roles;
+    }
 
-	public void addRole(String role) {
-		roles.add(role);
-	}
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public void addRole(String role) {
+        roles.add(role);
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
-		if (StringUtils.isEmpty(this.username)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie einen Benutzernamen ein!");
-			return true;
-		}
-		if (StringUtils.isEmpty(this.password)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie einen Passwort ein!");
-			return true;
-		}
-		if (CollectionUtils.isEmpty(this.roles)) {
-			messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
-			return true;
-		}
-		
-		return false;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	@Override
-	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-		builder.append("userId", userId);
-		builder.append("password", password != null ? "is set" : "is null");
-		builder.append("roles", roles);
-		return builder.toString();
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
+        if (StringUtils.isEmpty(this.username)) {
+            messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie einen Benutzernamen ein!");
+            return true;
+        }
+        if (StringUtils.isEmpty(this.password)) {
+            messageUtil.addPlainErrorMsg(modelMap, "Bitte geben Sie einen Passwort ein!");
+            return true;
+        }
+        if (CollectionUtils.isEmpty(this.roles)) {
+            messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("userId", userId);
+        builder.append("password", password != null ? "is set" : "is null");
+        builder.append("roles", roles);
+        return builder.toString();
+    }
+
+    public boolean isDeletable() {
+        return deletable;
+    }
+
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
 }

@@ -23,6 +23,8 @@
 					</ul>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">Speichern</button>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" href="#" th:href="@{'/user/' + ${userCommand.userId} + '/delete'}" 
+							class="btn btn-danger" role="button" th:classappend="${!userCommand.isDeletable()}? 'disabled'">Löschen</a>
 						<a href="#" th:href="@{/user}" class="btn btn-default" role="button">Abbrechen</a>	
 					</div>
 				</div>

@@ -48,6 +48,7 @@ public class UserService {
         UserCommand userCommand = new UserCommand();
         userCommand.setUserId(appUser.getId());
         userCommand.setUsername(appUser.getUsername());
+        userCommand.setDeletable(appUser.isDeletable());
         if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
             for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
                 userCommand.addRole(grantedAuthority.getAuthority());

@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
+import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -26,6 +26,10 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    private static final String EDIT_USER_PAGE = "user/edit";
+
+    private static final String CREATE_USER_PAGE = "user/create";
 
     @Autowired
     private UserService userService;
@@ -42,14 +46,14 @@ public class UserController {
     @RequestMapping("{id}")
     public ModelAndView edit(@PathVariable("id") String userId) {
         UserCommand userCommand = userService.findByUserId(userId);
-        return new ModelAndView("user/edit", "userCommand", userCommand);
+        return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
         if (CollectionUtils.isEmpty(userCommand.getRoles())) {
             messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
-            return new ModelAndView("user/edit", "userCommand", userCommand);
+            return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
         }
 
         AppUser updateUser = userService.updateUser(userCommand);
@@ -82,20 +86,20 @@ public class UserController {
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute UserCommand userCommand) {
-        return "user/create";
+        return CREATE_USER_PAGE;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView create(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
         if (userCommand.validate(messageUtil, modelMap)) {
-            return new ModelAndView("user/create", "userCommand", userCommand);
+            return new ModelAndView(CREATE_USER_PAGE, "userCommand", userCommand);
         }
 
         try {
             userService.createUser(userCommand);
-        } catch (DuplicateKeyException e) {
+        } catch (UserAlreadyExistsException e) {
             messageUtil.addPlainErrorMsg(modelMap, "Dieser Benutzername ist bereits vergeben!");
-            return new ModelAndView("user/create", "userCommand", userCommand);
+            return new ModelAndView(CREATE_USER_PAGE, "userCommand", userCommand);
         }
 
         String msg = "Benutzer " + userCommand.getUsername() + " angelegt!";

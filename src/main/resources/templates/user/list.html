@@ -20,9 +20,6 @@
 				  			<div class="col-xs-5">
 				  				<div class="row custom-button-group">
 				  					<a href="#" th:href="@{'/user/' + ${user.id}}" class="btn btn-info" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
-				  					<a href="#" th:href="@{'/user/' + ${user.id} + '/delete'}" class="btn btn-danger" role="button" th:classappend="${!user.isDeletable()}? 'disabled'">
-				  						<span class="glyphicon glyphicon-remove"></span>
-			  						</a>	
 								</div>
 				  			</div>				  				
       					</div>
