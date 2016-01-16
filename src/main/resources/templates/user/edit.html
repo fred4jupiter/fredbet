@@ -21,7 +21,7 @@
 							<label th:for="${#ids.prev('roles')}" th:text="${role}"></label>
 						</li>
 					</ul>
-					<div class="form-group">
+					<div class="form-group" sec:authorize="hasRole('ROLE_ADMIN')">
 						<input type="checkbox" th:field="*{resetPassword}" th:value="true" /> 
 						<label for="resetPassword">Passwort zurücksetzen</label> 
 					</div>
