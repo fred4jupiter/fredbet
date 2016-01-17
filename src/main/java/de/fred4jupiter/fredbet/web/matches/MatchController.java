@@ -30,6 +30,8 @@ import de.fred4jupiter.fredbet.web.SecurityBean;
 @RequestMapping("/matches")
 public class MatchController {
 
+	private static final String MATCH_LIST_PAGE = "matches/list";
+
 	private static final String MATCH_PAGE = "matches/form";
 
 	private static final Logger LOG = LoggerFactory.getLogger(MatchController.class);
@@ -51,7 +53,7 @@ public class MatchController {
 	@RequestMapping
 	public ModelAndView listAllMatches() {
 		List<MatchCommand> matches = matchService.findAllMatches(securityBean.getCurrentUserName());
-		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView(MATCH_LIST_PAGE, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("all.matches"));
 		return modelAndView;
 	}
@@ -59,7 +61,7 @@ public class MatchController {
 	@RequestMapping(value = "upcoming")
 	public ModelAndView upcomingMatches() {
 		List<MatchCommand> matches = matchService.findAllMatchesBeginAfterNow(securityBean.getCurrentUserName());
-		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView(MATCH_LIST_PAGE, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("upcoming.matches"));
 		return modelAndView;
 	}
@@ -67,7 +69,7 @@ public class MatchController {
 	@RequestMapping(value = "/group/{groupName}")
 	public ModelAndView listByGroup(@PathVariable("groupName") String groupName) {
 		List<MatchCommand> matches = matchService.findMatchesByGroup(securityBean.getCurrentUserName(), Group.valueOf(groupName));
-		ModelAndView modelAndView = new ModelAndView("matches/list", "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView(MATCH_LIST_PAGE, "allMatches", matches);
 		String msgKey = "group.entry." + groupName;
 		modelAndView.addObject("heading", messageUtil.getMessageFor(msgKey));
 		return modelAndView;

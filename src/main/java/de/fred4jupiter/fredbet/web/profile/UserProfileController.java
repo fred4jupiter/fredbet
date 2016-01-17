@@ -43,7 +43,7 @@ public class UserProfileController {
         }
 
         if (changePasswordCommand.isPasswordRepeatMismatch()) {
-            messageUtil.addPlainErrorMsg(modelMap, "Das neue Passwort stimmt nicht mit der Passwortwiederholung überein!");
+            messageUtil.addErrorMsg(modelMap, "msg.user.profile.error.passwordMismatch");
             return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
         }
 
@@ -51,12 +51,11 @@ public class UserProfileController {
             AppUser currentUser = SecurityUtils.getCurrentUser();
             userService.changePassword(currentUser.getId(), changePasswordCommand);
         } catch (OldPasswordWrongException e) {
-            messageUtil.addPlainErrorMsg(modelMap, "Das alte Passwort ist falsch!");
+            messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.oldPasswordWrong");
             return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
         }
 
-        String msg = "Passwort erfolgreich geändert!";
-        messageUtil.addPlainInfoMsg(redirect, msg);
+        messageUtil.addInfoMsg(redirect, "msg.user.profile.info.passwordChanged");
         return new ModelAndView("redirect:/matches");
     }
 }

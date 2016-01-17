@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Helper class for preparing messages.
+ * 
+ * @author michael
+ *
+ */
 @Component
 public class MessageUtil {
 
