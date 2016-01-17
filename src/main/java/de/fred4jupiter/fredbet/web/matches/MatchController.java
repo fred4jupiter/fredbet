@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.FredBetPermission;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -27,6 +29,8 @@ import de.fred4jupiter.fredbet.web.SecurityBean;
 @Controller
 @RequestMapping("/matches")
 public class MatchController {
+
+	private static final String MATCH_PAGE = "matches/form";
 
 	private static final Logger LOG = LoggerFactory.getLogger(MatchController.class);
 
@@ -69,49 +73,52 @@ public class MatchController {
 		return modelAndView;
 	}
 
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
 	@RequestMapping("{id}")
 	public ModelAndView edit(@PathVariable("id") String matchId) {
 		MatchCommand matchCommand = matchService.findByMatchId(matchId);
-		return new ModelAndView("matches/form", "matchCommand", matchCommand);
+		return new ModelAndView(MATCH_PAGE, "matchCommand", matchCommand);
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String createForm(@ModelAttribute MatchCommand matchCommand) {
-		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
-		return "matches/form";
-	}
-
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
 	@RequestMapping(value = "/delete/{matchId}", method = RequestMethod.GET)
 	public ModelAndView deleteMatch(@PathVariable("matchId") String matchId, RedirectAttributes redirect) {
 		LOG.debug("deleted match with id={}", matchId);
 
 		MatchCommand matchCommand = matchService.findByMatchId(matchId);
-		
+
 		matchService.deleteMatch(matchId);
-		
+
 		messageUtil.addInfoMsg(redirect, "msg.match.deleted", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
-		
+
 		return new ModelAndView("redirect:/matches");
 	}
 
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public String createMatch(@ModelAttribute MatchCommand matchCommand) {
+		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
+		return MATCH_PAGE;
+	}
+
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid MatchCommand matchCommand, BindingResult result, RedirectAttributes redirect,
+	public ModelAndView createOrUpdateMatch(@Valid MatchCommand matchCommand, BindingResult result, RedirectAttributes redirect,
 			ModelMap modelMap) {
 		if (result.hasErrors()) {
-			return new ModelAndView("matches/form", "formErrors", result.getAllErrors());
+			return new ModelAndView(MATCH_PAGE, "formErrors", result.getAllErrors());
 		}
 
 		if (validate(matchCommand, modelMap)) {
-			return new ModelAndView("matches/form", "matchCommand", matchCommand);
+			return new ModelAndView(MATCH_PAGE, "matchCommand", matchCommand);
 		}
 
 		if (StringUtils.isBlank(matchCommand.getMatchId())) {
-		    messageUtil.addInfoMsg(redirect, "msg.match.created", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
+			messageUtil.addInfoMsg(redirect, "msg.match.created", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
+		} else {
+			messageUtil.addInfoMsg(redirect, "msg.match.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
 		}
-		else {
-		    messageUtil.addInfoMsg(redirect, "msg.match.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
-		}
-		
+
 		matchService.save(matchCommand);
 		return new ModelAndView("redirect:/matches");
 	}
