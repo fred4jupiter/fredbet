@@ -12,7 +12,8 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 /**
  * Main application start.
  * 
- * NOTE: To disable thymeleaf caching correctly please activate the dev profile on local development.
+ * NOTE: To disable thymeleaf caching correctly please activate the dev profile
+ * on local development.
  * 
  * @author michael
  *
@@ -20,14 +21,15 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-    	SpringApplication app = new SpringApplication(Application.class);
-    	app.addInitializers(new AppInitializer());
-    	app.run(args);
-    }
-    
-    @Bean
-    public Properties buildProperties() throws IOException {
-    	return PropertiesLoaderUtils.loadProperties(new ClassPathResource("build.properties"));
-    }
+	public static void main(String[] args) {
+		SpringApplication app = new SpringApplication(Application.class);
+		app.addInitializers(new AppInitializer());
+		app.run(args);
+	}
+
+	@Bean
+	public Properties buildProperties() throws IOException {
+		return PropertiesLoaderUtils.loadProperties(new ClassPathResource("build.properties"));
+	}
+
 }

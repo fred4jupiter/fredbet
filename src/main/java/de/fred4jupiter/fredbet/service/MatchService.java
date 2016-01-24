@@ -167,7 +167,7 @@ public class MatchService {
 	private Map<String, Bet> findBetsForMatchIds(String username) {
 		List<Bet> allUserBets = bettingService.findAllByUsername(username);
 		if (CollectionUtils.isEmpty(allUserBets)) {
-			LOG.warn("Could not found any bets for user: {}", username);
+			LOG.debug("Could not found any bets for user: {}", username);
 			return Collections.emptyMap();
 		}
 		return toBetMap(allUserBets);
