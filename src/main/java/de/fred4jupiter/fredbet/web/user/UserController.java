@@ -53,14 +53,12 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
         if (CollectionUtils.isEmpty(userCommand.getRoles())) {
-            messageUtil.addPlainErrorMsg(modelMap, "Bitte wählen Sie mind. eine Berechtigung!");
+            messageUtil.addErrorMsg(modelMap, "user.edited.noRole");
             return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
         }
 
         AppUser updateUser = userService.updateUser(userCommand);
-
-        String msg = "Benutzer " + updateUser.getUsername() + " aktualisiert!";
-        messageUtil.addPlainInfoMsg(redirect, msg);
+        messageUtil.addInfoMsg(redirect, "user.edited", updateUser.getUsername());
         return new ModelAndView("redirect:/user");
     }
 
@@ -70,7 +68,7 @@ public class UserController {
         UserCommand userCommand = userService.findByUserId(userId);
 
         if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
-            messageUtil.addPlainErrorMsg(redirect, "Der eigene Benutzer kann nicht gelöscht werden!");
+            messageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
             return new ModelAndView("redirect:/user");
         }
 
@@ -100,12 +98,11 @@ public class UserController {
         try {
             userService.createUser(userCommand);
         } catch (UserAlreadyExistsException e) {
-            messageUtil.addPlainErrorMsg(modelMap, "Dieser Benutzername ist bereits vergeben!");
+            messageUtil.addErrorMsg(modelMap, "user.username.duplicate");
             return new ModelAndView(CREATE_USER_PAGE, "userCommand", userCommand);
         }
 
-        String msg = "Benutzer " + userCommand.getUsername() + " angelegt!";
-        messageUtil.addPlainInfoMsg(redirect, msg);
+        messageUtil.addInfoMsg(redirect, "user.created", userCommand.getUsername());
         return new ModelAndView("redirect:/user");
     }
 

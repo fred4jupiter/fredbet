@@ -27,7 +27,7 @@ public class RankingController {
 	public ModelAndView list(ModelMap modelMap) {
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking();
 		if (CollectionUtils.isEmpty(rankings)) {
-		    messageUtil.addPlainInfoMsg(modelMap, "Es wurden noch keine Tipps abgegeben!");
+		    messageUtil.addInfoMsg(modelMap, "ranking.noRankings");
             return new ModelAndView("ranking/list", "rankings", rankings);
 		}
 		
