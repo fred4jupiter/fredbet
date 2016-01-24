@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 		<h1 th:text="${heading}">Spiele</h1>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
@@ -14,12 +14,12 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-10">
-							  		<span class="bold" th:text="${matchCommand.teamNameOne}">Deutschland</span> <span> - </span><span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
+							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span> <span> - </span><span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
-									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ', '}">Fr 04.08.2015, 19:15 Uhr</span>
-									<span th:text="#{${matchCommand.group.titleMsgKey}}">Gruppe</span>
+									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ', '}"></span>
+									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span>
 									<br/> 
-									<span th:text="${matchCommand.stadium}">Stadium</span>							  		
+									<span th:text="${matchCommand.stadium}"></span>							  		
 					  			</div>
 					  			<div class="col-xs-2 vcenter">
 					  				<span class="label label-warning label-as-badge big-badge" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}">1</span>
@@ -39,17 +39,17 @@
 					  			<div class="col-xs-4 full-box">				
 					  				<div class="short-div">
 					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultOne != null} ? label-info : label-default" 
-					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}">2</span>
+					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
 								  		<span> : </span>
 							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultTwo != null} ? label-info : label-default" 
-							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}">1</span>
+							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
 					  				</div>	  				
 					  				<div class="short-div betting-results">
 					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamOne != null} ? label-success : label-default" 
-					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}">2</span>
+					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}"></span>
 								  		<span> : </span>
 							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamTwo != null} ? label-success : label-default" 
-							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}">1</span>
+							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
 					  				</div>
 					  			</div>  			
 					  			<div class="col-xs-5">
