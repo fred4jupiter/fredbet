@@ -18,47 +18,47 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul th:if="${@securityBean.isUserLoggedIn()}" class="nav navbar-nav">
-					<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}">Upcoming Matches</a></li>
-					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}">Matches</a></li>
+					<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
+					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
 					<li class="dropdown" th:classappend="${pageState_group}">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{groups}">Groups<span class="caret"></span></a>
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{groups}"><span class="caret"></span></a>
 			          <ul class="dropdown-menu">
-			            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'">Group A</a></li>
-			            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'">Group B</a></li>
-			            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'">Group C</a></li>
-			            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'">Group D</a></li>
-			            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'">Group E</a></li>
-			            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'">Group F</a></li>			            			            
+			            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
+			            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
+			            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
+			            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
+			            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
+			            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>			            			            
 			          </ul>
 			        </li>
 			        <li class="dropdown" th:classappend="${pageState_finals}">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{finals}">Finals<span class="caret"></span></a>
 			          <ul class="dropdown-menu">
-			            <li th:class="${pageState_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}">Achtelfinale</a></li>
-			            <li th:class="${pageState_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}">Viertelfinale</a></li>
-			            <li th:class="${pageState_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}">Halbfinale</a></li>
-			            <li th:class="${pageState_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}">Finale</a></li>			
+			            <li th:class="${pageState_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
+			            <li th:class="${pageState_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
+			            <li th:class="${pageState_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
+			            <li th:class="${pageState_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
 			          </ul>
 			        </li>
-					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}">noch zu tippen</a></li>
-					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}">Ranking</a></li>
-				  	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}">Benutzer</a></li>
-				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}">Build Info</a></li>
-				  	<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}">Administration</a></li>
+					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
+					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
+				  	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
+				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
+				  	<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.administration}"></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false">
-						<a href="#login" th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+						<a href="#login" th:href="@{/login}" th:text="#{login.button.login}"><span class="glyphicon glyphicon-log-in"></span></a>
 					</li>
 					<li th:if="${@securityBean.isUserLoggedIn()} == true" class="dropdown" th:classappend="${pageState_userprofile}">
 						<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-user"></span> <span sec:authentication="name">Bob</span><span class="caret"></span>
+                            <span class="glyphicon glyphicon-user"></span> <span sec:authentication="name"></span><span class="caret"></span>
                         </a>
 						<ul class="dropdown-menu">
-							<li th:class="${pageState_userprofile_changePassword}"><a href="#changePassword" th:href="@{/userprofile/changePassword}">Passwort ändern</a></li>
+							<li th:class="${pageState_userprofile_changePassword}"><a href="#changePassword" th:href="@{/userprofile/changePassword}" th:text="#{navigation.changePassword}"></a></li>
 							<li>
-                                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
-                                    <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();" th:text="#{navigation.logout}">
+                                    <span class="glyphicon glyphicon-log-out"></span></a>
 								<form id="form" method="post" action="#" th:action="@{/logout}">
 								</form>
 							</li>
