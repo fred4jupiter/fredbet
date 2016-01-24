@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet;
+package de.fred4jupiter.fredbet.security;
 
 public enum FredBetRole {
 

@@ -8,9 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import de.fred4jupiter.fredbet.FredBetPermission;
-import de.fred4jupiter.fredbet.FredBetRole;
-
 @Component
 public class PermissionResolverImpl implements PermissionResolver {
 

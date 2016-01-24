@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet;
 
 import de.fred4jupiter.fredbet.repository.MongoDBPersistentTokenRepository;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

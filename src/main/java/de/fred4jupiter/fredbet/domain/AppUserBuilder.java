@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.domain;
 import java.util.List;
 import java.util.UUID;
 
-import de.fred4jupiter.fredbet.FredBetRole;
+import de.fred4jupiter.fredbet.security.FredBetRole;
 
 /**
  * Builder pattern for appUsers.
