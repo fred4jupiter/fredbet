@@ -23,6 +23,7 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.TeamRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Service
@@ -41,9 +42,12 @@ public class MatchService {
 
 	@Autowired
 	private BettingService bettingService;
-	
+
 	@Autowired
 	private BetRepository betRepository;
+
+	@Autowired
+	private MessageUtil messageUtil;
 
 	public List<Match> findAll() {
 		return matchRepository.findAll();
@@ -66,10 +70,10 @@ public class MatchService {
 
 	private MatchCommand toMatchCommand(Match match) {
 		Assert.notNull(match);
-		MatchCommand matchCommand = new MatchCommand();
+		MatchCommand matchCommand = new MatchCommand(messageUtil);
 		matchCommand.setMatchId(match.getId());
-		matchCommand.setTeamNameOne(match.getTeamOne().getName());
-		matchCommand.setTeamNameTwo(match.getTeamTwo().getName());
+		matchCommand.setTeamOne(match.getTeamOne());
+		matchCommand.setTeamTwo(match.getTeamTwo());
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
 		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
 		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
@@ -79,8 +83,8 @@ public class MatchService {
 	}
 
 	public Match save(Match match) {
-		Team teamOne = findOrCreate(match.getTeamOne().getName());
-		Team teamTwo = findOrCreate(match.getTeamTwo().getName());
+		Team teamOne = findOrCreate(match.getTeamOne());
+		Team teamTwo = findOrCreate(match.getTeamTwo());
 
 		match.setTeamOne(teamOne);
 		match.setTeamTwo(teamTwo);
@@ -91,18 +95,24 @@ public class MatchService {
 
 	private Match saveMatch(Match match) {
 		matchRepository.save(match);
-		
+
 		if (match.hasResultSet()) {
 			pointsCalculationService.calculatePointsFor(match);
 		}
-		
+
 		return match;
 	}
 
-	private Team findOrCreate(String teamName) {
-		Team team = teamRepository.findByName(teamName);
-		if (team == null) {
-			team = new Team(teamName);
+	private Team findOrCreate(Team team) {
+		Team found = null;
+		if (team.getName() != null) {
+			found = teamRepository.findByName(team.getName());
+		} else {
+			found = teamRepository.findByCountry(team.getCountry());
+		}
+
+		if (found != null) {
+			return found;
 		}
 
 		return teamRepository.save(team);
@@ -111,10 +121,10 @@ public class MatchService {
 	public String save(MatchCommand matchCommand) {
 		Match match = matchRepository.findOne(matchCommand.getMatchId());
 		if (match == null) {
-			match = MatchBuilder.create().withTeams(matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo()).build();
+			match = MatchBuilder.create().withTeams(matchCommand.getTeamOne(), matchCommand.getTeamTwo()).build();
 		} else {
-			match.getTeamOne().setName(matchCommand.getTeamNameOne());
-			match.getTeamTwo().setName(matchCommand.getTeamNameTwo());
+			match.setTeamOne(matchCommand.getTeamOne());
+			match.setTeamTwo(matchCommand.getTeamTwo());
 		}
 
 		toMatch(matchCommand, match);
@@ -137,7 +147,7 @@ public class MatchService {
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
 		return toMatchCommandsWithBets(username, allMatches);
 	}
-	
+
 	public List<MatchCommand> findAllMatchesBeginAfterNow(String username) {
 		List<Match> allMatches = matchRepository.findByKickOffDateGreaterThanOrderByKickOffDateAsc(new Date());
 		return toMatchCommandsWithBets(username, allMatches);

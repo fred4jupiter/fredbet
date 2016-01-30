@@ -8,6 +8,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.TeamBuilder;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class MatchCommand {
 
@@ -15,9 +18,9 @@ public class MatchCommand {
 
 	private String matchId;
 
-	private String teamNameOne;
+	private Team teamOne;
 
-	private String teamNameTwo;
+	private Team teamTwo;
 
 	private Integer teamResultOne;
 
@@ -34,19 +37,20 @@ public class MatchCommand {
 	private Integer userBetGoalsTeamTwo;
 
 	private Integer points;
-	
+
 	private boolean deletable;
 
+	private MessageUtil messageUtil;
+
 	public MatchCommand() {
-		super();
 	}
 
-	public MatchCommand(String teamNameOne, String teamNameTwo, Integer teamResultOne, Integer teamResultTwo) {
-		super();
-		this.teamNameOne = teamNameOne;
-		this.teamNameTwo = teamNameTwo;
-		this.teamResultOne = teamResultOne;
-		this.teamResultTwo = teamResultTwo;
+	public MatchCommand(MessageUtil messageUtil) {
+		this.messageUtil = messageUtil;
+	}
+
+	public void setMessageUtil(MessageUtil messageUtil) {
+		this.messageUtil = messageUtil;
 	}
 
 	private boolean hasResults() {
@@ -70,19 +74,19 @@ public class MatchCommand {
 	}
 
 	public String getTeamNameOne() {
-		return teamNameOne;
+		return messageUtil.getTeamName(teamOne);
 	}
-
-	public void setTeamNameOne(String teamNameOne) {
-		this.teamNameOne = teamNameOne;
+	
+	public void setTeamNameOne(String name) {
+		this.teamOne = TeamBuilder.create().withName(name).build();
 	}
 
 	public String getTeamNameTwo() {
-		return teamNameTwo;
+		return messageUtil.getTeamName(teamTwo);
 	}
-
-	public void setTeamNameTwo(String teamNameTwo) {
-		this.teamNameTwo = teamNameTwo;
+	
+	public void setTeamNameTwo(String name) {
+		this.teamTwo = TeamBuilder.create().withName(name).build();
 	}
 
 	public Integer getTeamResultOne() {
@@ -113,8 +117,8 @@ public class MatchCommand {
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("matchId", matchId);
-		builder.append("teamNameOne", teamNameOne);
-		builder.append("teamNameTwo", teamNameTwo);
+		builder.append("teamOne", teamOne);
+		builder.append("teamTwo", teamTwo);
 		builder.append("teamResultOne", teamResultOne);
 		builder.append("teamResultTwo", teamResultTwo);
 		builder.append("group", group);
@@ -205,14 +209,31 @@ public class MatchCommand {
 	}
 
 	public boolean isTeamNamesEmpty() {
-		return StringUtils.isEmpty(teamNameOne) || StringUtils.isEmpty(teamNameTwo);
+		return teamOne == null || teamTwo == null;
 	}
 
 	public boolean isDeletable() {
 		return deletable;
 	}
-	
+
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
 	}
+
+	public void setTeamOne(Team teamOne) {
+		this.teamOne = teamOne;
+	}
+
+	public void setTeamTwo(Team teamTwo) {
+		this.teamTwo = teamTwo;
+	}
+
+	public Team getTeamOne() {
+		return teamOne;
+	}
+
+	public Team getTeamTwo() {
+		return teamTwo;
+	}
+
 }

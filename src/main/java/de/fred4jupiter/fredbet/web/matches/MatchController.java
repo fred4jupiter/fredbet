@@ -100,6 +100,7 @@ public class MatchController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createMatch(@ModelAttribute MatchCommand matchCommand) {
 		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
+		matchCommand.setMessageUtil(messageUtil);
 		return MATCH_PAGE;
 	}
 
@@ -107,6 +108,7 @@ public class MatchController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdateMatch(@Valid MatchCommand matchCommand, BindingResult result, RedirectAttributes redirect,
 			ModelMap modelMap) {
+		matchCommand.setMessageUtil(messageUtil);
 		if (result.hasErrors()) {
 			return new ModelAndView(MATCH_PAGE, "formErrors", result.getAllErrors());
 		}

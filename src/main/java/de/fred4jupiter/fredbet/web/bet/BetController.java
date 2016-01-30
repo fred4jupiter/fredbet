@@ -54,12 +54,15 @@ public class BetController {
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
 	public ModelAndView createOrUpdate(@PathVariable("matchId") String matchId) {
 		BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
+		betCommand.setMessageUtil(messageUtil);
 
 		return new ModelAndView("bet/form", "betCommand", betCommand);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
+		betCommand.setMessageUtil(messageUtil);
+		
 		if (!betCommand.hasGoalsSet()) {
 			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
 			return new ModelAndView("bet/form", "betCommand", betCommand);

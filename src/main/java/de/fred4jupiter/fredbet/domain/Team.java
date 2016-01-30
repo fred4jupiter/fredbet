@@ -13,25 +13,27 @@ public class Team {
 	@Id
 	private String id;
 
+	private Country country;
+
 	private String name;
 
 	public Team() {
 	}
-	
+
 	public Team(String name) {
 		this.name = name;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public Team(Country country) {
+		this.country = country;
 	}
 
 	public String getId() {
 		return id;
+	}
+	
+	public String getName() {
+		return country != null ? country.name() : name;
 	}
 
 	public boolean equals(Object obj) {
@@ -47,6 +49,7 @@ public class Team {
 		Team team = (Team) obj;
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(id, team.id);
+		builder.append(country, team.country);
 		builder.append(name, team.name);
 
 		return builder.isEquals();
@@ -56,6 +59,7 @@ public class Team {
 	public int hashCode() {
 		HashCodeBuilder builder = new HashCodeBuilder();
 		builder.append(id);
+		builder.append(country);
 		builder.append(name);
 		return builder.toHashCode();
 	}
@@ -64,8 +68,17 @@ public class Team {
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("id", id);
+		builder.append("country", country);
 		builder.append("name", name);
 		return builder.toString();
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 
 }

@@ -14,6 +14,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.bet.BetCommand;
 
 @Service
@@ -27,6 +28,9 @@ public class BettingService {
 
 	@Autowired
 	private BetRepository betRepository;
+	
+	@Autowired
+	private MessageUtil messageUtil;
 
 	public void createAndSaveBetting(String username, String matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		AppUser appUser = appUserRepository.findByUsername(username);
@@ -74,10 +78,10 @@ public class BettingService {
 	}
 
 	private BetCommand mapBetToCommand(Bet bet) {
-		BetCommand betCommand = new BetCommand();
+		BetCommand betCommand = new BetCommand(messageUtil);
 		betCommand.setBetId(bet.getId());
-		betCommand.setTeamNameOne(bet.getMatch().getTeamOne().getName());
-		betCommand.setTeamNameTwo(bet.getMatch().getTeamTwo().getName());
+		betCommand.setTeamOne(bet.getMatch().getTeamOne());
+		betCommand.setTeamTwo(bet.getMatch().getTeamTwo());
 		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
 		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
 		betCommand.setMatchId(bet.getMatch().getId());

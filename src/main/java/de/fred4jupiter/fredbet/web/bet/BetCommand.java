@@ -3,27 +3,43 @@ package de.fred4jupiter.fredbet.web.bet;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.web.MessageUtil;
+
 public class BetCommand {
 
 	private String betId;
-	
-	private String matchId;
-	
-	private String teamNameOne;
 
-	private String teamNameTwo;
-	
+	private String matchId;
+
+	private Team teamOne;
+
+	private Team teamTwo;
+
 	private Integer goalsTeamOne;
 
 	private Integer goalsTeamTwo;
+
+	private MessageUtil messageUtil;
+
+	public BetCommand() {
+	}
 	
+	public BetCommand(MessageUtil messageUtil) {
+		this.messageUtil = messageUtil;
+	}
+	
+	public void setMessageUtil(MessageUtil messageUtil) {
+		this.messageUtil = messageUtil;
+	}
+
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("matchId", matchId);
 		builder.append("betId", betId);
-		builder.append("teamNameOne", teamNameOne);
-		builder.append("teamNameTwo", teamNameTwo);
+		builder.append("teamOne", teamOne);
+		builder.append("teamTwo", teamTwo);
 		builder.append("goalsTeamOne", goalsTeamOne);
 		builder.append("goalsTeamTwo", goalsTeamTwo);
 		return builder.toString();
@@ -32,21 +48,13 @@ public class BetCommand {
 	public boolean hasGoalsSet() {
 		return goalsTeamOne != null && goalsTeamTwo != null;
 	}
-	
-	public String getTeamNameOne() {
-		return teamNameOne;
-	}
 
-	public void setTeamNameOne(String teamNameOne) {
-		this.teamNameOne = teamNameOne;
+	public String getTeamNameOne() {
+		return messageUtil.getTeamName(teamOne);
 	}
 
 	public String getTeamNameTwo() {
-		return teamNameTwo;
-	}
-
-	public void setTeamNameTwo(String teamNameTwo) {
-		this.teamNameTwo = teamNameTwo;
+		return messageUtil.getTeamName(teamTwo);
 	}
 
 	public Integer getGoalsTeamOne() {
@@ -80,6 +88,20 @@ public class BetCommand {
 	public void setMatchId(String matchId) {
 		this.matchId = matchId;
 	}
-	
-	
+
+	public void setTeamOne(Team teamOne) {
+		this.teamOne = teamOne;
+	}
+
+	public void setTeamTwo(Team teamTwo) {
+		this.teamTwo = teamTwo;
+	}
+
+	public Team getTeamOne() {
+		return teamOne;
+	}
+
+	public Team getTeamTwo() {
+		return teamTwo;
+	}
 }
