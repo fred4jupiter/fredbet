@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import de.fred4jupiter.fredbet.FredBetProfile;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
@@ -132,22 +133,22 @@ public class DataBasePopulator {
     }
 
     private void createGroupA() {
-        matchService.save(MatchBuilder.create().withTeams("Frankreich", "Rumänien").withGroup(Group.GROUP_A).withStadium("Saint-Denis")
+        matchService.save(MatchBuilder.create().withTeams(Country.FRANCE, Country.ROMANIA).withGroup(Group.GROUP_A).withStadium("Saint-Denis")
                 .withKickOffDate(10, 6, 21).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Albanien", "Schweiz").withGroup(Group.GROUP_A).withStadium("Lens")
+        matchService.save(MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
                 .withKickOffDate(11, 6, 15).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Rumänien", "Schweiz").withGroup(Group.GROUP_A).withStadium("Parc de Princes")
+        matchService.save(MatchBuilder.create().withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Parc de Princes")
                 .withKickOffDate(15, 6, 18).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Frankreich", "Albanien").withGroup(Group.GROUP_A).withStadium("Marseille")
+        matchService.save(MatchBuilder.create().withTeams(Country.FRANCE, Country.ALBANIA).withGroup(Group.GROUP_A).withStadium("Marseille")
                 .withKickOffDate(15, 6, 21).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Schweiz", "Frankreich").withGroup(Group.GROUP_A).withStadium("Lille")
+        matchService.save(MatchBuilder.create().withTeams(Country.SWITZERLAND, Country.FRANCE).withGroup(Group.GROUP_A).withStadium("Lille")
                 .withKickOffDate(19, 6, 21).build());
 
-        matchService.save(MatchBuilder.create().withTeams("Rumänien", "Albanien").withGroup(Group.GROUP_A).withStadium("Lyon")
+        matchService.save(MatchBuilder.create().withTeams(Country.ROMANIA, Country.ALBANIA).withGroup(Group.GROUP_A).withStadium("Lyon")
                 .withKickOffDate(19, 6, 21).build());
     }
 

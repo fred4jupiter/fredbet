@@ -74,11 +74,11 @@ public class MessageUtil {
 	}
 
 	public String getTeamName(Team team) {
-		if (team.getName() != null) {
-			return team.getName();
+		if (team.getCountry() != null) {
+			return getCountryName(team.getCountry());
 		}
 		else {
-			return getCountryName(team.getCountry());
+			return team.getName();
 		}
 	}
 	
