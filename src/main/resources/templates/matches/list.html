@@ -14,7 +14,11 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-10">
-							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span> <span> - </span><span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
+									<img th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>									
+							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
+							  		<span> - </span>
+							  		<img th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ', '}"></span>
 									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span>

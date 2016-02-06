@@ -50,6 +50,8 @@ public enum Country {
 
 	WALES("wales");
 
+	private static final String ICON_BASE_PATH = "/images/flags/";  
+	
 	private String isoCode;
 
 	private Country(String isoCode) {
@@ -70,4 +72,7 @@ public enum Country {
 		return null;
 	}
 
+	public String getIconPath() {
+		return ICON_BASE_PATH + isoCode + ".png";
+	}
 }

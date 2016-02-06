@@ -73,10 +73,30 @@ public class MatchCommand {
 		return teamResultOne != null && teamResultTwo != null;
 	}
 
+	public boolean isShowCountryIcons() {
+		return this.teamOne.getCountry() != null || this.teamTwo.getCountry() != null;
+	}
+
+	public String getIconPathTeamOne() {
+		if (this.teamOne.getCountry() == null) {
+			return "";
+		}
+		
+		return this.teamOne.getCountry().getIconPath();
+	}
+
+	public String getIconPathTeamTwo() {
+		if (this.teamTwo.getCountry() == null) {
+			return "";
+		}
+		
+		return this.teamTwo.getCountry().getIconPath();
+	}
+
 	public String getTeamNameOne() {
 		return messageUtil.getTeamName(teamOne);
 	}
-	
+
 	public void setTeamNameOne(String name) {
 		this.teamOne = TeamBuilder.create().withName(name).build();
 	}
@@ -84,7 +104,7 @@ public class MatchCommand {
 	public String getTeamNameTwo() {
 		return messageUtil.getTeamName(teamTwo);
 	}
-	
+
 	public void setTeamNameTwo(String name) {
 		this.teamTwo = TeamBuilder.create().withName(name).build();
 	}
