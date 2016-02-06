@@ -32,12 +32,12 @@
 						<label>oder</label><br/>
 						<div class="row">							
 							<div class="col-xs-6">
-								<select th:field="*{teamOne.country}">
+								<select th:field="*{teamOne.country}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 								</select>
 							</div>
 							<div class="col-xs-6">
-								<select th:field="*{teamTwo.country}">
+								<select th:field="*{teamTwo.country}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 								</select>
 							</div>
@@ -63,7 +63,7 @@
 					</div>					
 					<div class="form-group">
 						<label for="teamResultTwo">Gruppierung:</label>
-						<select th:field="*{group}">
+						<select th:field="*{group}" class="form-control">
 						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}">Gruppe A</option>
 						</select>						
 			        </div>					
