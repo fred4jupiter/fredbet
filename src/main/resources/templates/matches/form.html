@@ -26,7 +26,22 @@
 							<div class="col-xs-6">
 								<input type="text" th:field="*{teamNameTwo}" class="form-control" />
 							</div>
-						</div>			
+						</div>
+					</div>
+					<div class="form-group">
+						<label>oder</label><br/>
+						<div class="row">							
+							<div class="col-xs-6">
+								<select th:field="*{teamOne.country}">
+								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+								</select>
+							</div>
+							<div class="col-xs-6">
+								<select th:field="*{teamTwo.country}">
+								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+								</select>
+							</div>
+						</div>
 					</div>			
 					<div class="form-group">
 						<label>Ergebnis:</label><br/>

@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.MatchService;
@@ -48,6 +51,13 @@ public class MatchController {
 	@ModelAttribute("availableGroups")
 	public List<Group> availableGroups() {
 		return Group.getAllGroups();
+	}
+
+	@ModelAttribute("availableCountries")
+	public List<Country> availableCountries() {
+		List<Country> countries = Arrays.asList(Country.values());
+		Collections.sort(countries);
+		return countries;
 	}
 
 	@RequestMapping
