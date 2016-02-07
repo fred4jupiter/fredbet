@@ -66,7 +66,7 @@ public class MatchCommand {
 		return true;
 	}
 
-	private boolean hasMatchStarted() {
+	public boolean hasMatchStarted() {
 		return LocalDateTime.now().isAfter(getKickOffDate());
 	}
 
@@ -75,6 +75,9 @@ public class MatchCommand {
 	}
 
 	public boolean isShowCountryIcons() {
+		if (this.countryTeamOne == null || this.countryTeamTwo == null) {
+			return false;
+		}
 		return !Country.NONE.equals(this.countryTeamOne) && !Country.NONE.equals(this.countryTeamTwo);
 	}
 
@@ -95,10 +98,16 @@ public class MatchCommand {
 	}
 
 	public String getTeamNameOne() {
+		if (this.countryTeamOne == null) {
+			return nameTeamOne;
+		}
 		return !Country.NONE.equals(this.countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
 	}
 
 	public String getTeamNameTwo() {
+		if (this.countryTeamTwo == null) {
+			return nameTeamTwo;
+		}
 		return !Country.NONE.equals(this.countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
 	}
 

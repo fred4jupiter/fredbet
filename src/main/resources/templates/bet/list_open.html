@@ -9,19 +9,23 @@
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
 		<h1 th:if="${not #lists.isEmpty(matchesToBet)}">Noch nicht getippt</h1>
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4" th:each="match : ${matchesToBet}">
+			<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-xs-9">
-								<span class="bold" th:text="${match.teamOne.name}">Deutschland</span> <span> - </span><span class="bold" th:text="${match.teamTwo.name}">Italien</span>
+								<img th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
+								<span class="bold" th:text="${matchCommand.teamNameOne}">Deutschland</span>
+								<span> - </span>
+								<img th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+								<span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
 								<br/>
-								<span th:text="${#dates.format(match.kickOffDate, 'E dd.MM.yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/> 
-								<span th:text="${match.stadium}">Stadium</span>							  		
+								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/>
+								<span th:text="${matchCommand.stadium}">Stadium</span>							  		
 				  			</div>		
 				  			<div class="col-xs-3">
 					  			<div class="btn-group">
-									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${match.id}}" th:classappend="${match.hasStarted()}? 'disabled'" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
+									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" class="btn btn-info" role="button"><span class="glyphicon glyphicon-hand-up"></span></a>
 	       						</div>
        						</div>
       					</div>

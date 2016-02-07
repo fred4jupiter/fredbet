@@ -212,4 +212,5 @@ public class Match {
 	public void setCountryTwo(Country countryTwo) {
 		this.countryTwo = countryTwo;
 	}
+
 }

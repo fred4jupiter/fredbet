@@ -19,8 +19,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
-import de.fred4jupiter.fredbet.util.DateUtils;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Service
@@ -41,7 +40,7 @@ public class MatchService {
 	private BetRepository betRepository;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private MatchConverter matchConverter;
 
 	public List<Match> findAll() {
 		return matchRepository.findAll();
@@ -51,7 +50,7 @@ public class MatchService {
 		Assert.notNull(matchId);
 		Match match = matchRepository.findOne(matchId);
 		Long numberOfBetsForThisMatch = betRepository.countByMatch(match);
-		MatchCommand matchCommand = toMatchCommand(match);
+		MatchCommand matchCommand = matchConverter.toMatchCommand(match);
 		if (numberOfBetsForThisMatch == 0) {
 			matchCommand.setDeletable(true);
 		}
@@ -60,22 +59,6 @@ public class MatchService {
 
 	public Match findMatchByMatchId(String matchId) {
 		return matchRepository.findOne(matchId);
-	}
-
-	private MatchCommand toMatchCommand(Match match) {
-		Assert.notNull(match);
-		MatchCommand matchCommand = new MatchCommand(messageUtil);
-		matchCommand.setMatchId(match.getId());
-		matchCommand.setCountryTeamOne(match.getCountryOne());
-		matchCommand.setCountryTeamTwo(match.getCountryTwo());
-		matchCommand.setNameTeamOne(match.getTeamNameOne());
-		matchCommand.setNameTeamTwo(match.getTeamNameTwo());
-		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
-		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
-		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
-		matchCommand.setStadium(match.getStadium());
-		matchCommand.setGroup(match.getGroup());
-		return matchCommand;
 	}
 
 	public Match save(Match match) {
@@ -95,24 +78,12 @@ public class MatchService {
 			match = new Match();
 		}
 
-		toMatch(matchCommand, match);
+		matchConverter.toMatch(matchCommand, match);
 
 		match = save(match);
 		matchCommand.setMatchId(match.getId());
 
 		return match.getId();
-	}
-
-	private void toMatch(MatchCommand matchCommand, Match match) {
-		match.setCountryOne(matchCommand.getCountryTeamOne());
-		match.setCountryTwo(matchCommand.getCountryTeamTwo());
-		match.setTeamNameOne(matchCommand.getNameTeamOne());
-		match.setTeamNameTwo(matchCommand.getNameTeamTwo());
-		match.setGoalsTeamOne(matchCommand.getTeamResultOne());
-		match.setGoalsTeamTwo(matchCommand.getTeamResultTwo());
-		match.setKickOffDate(DateUtils.toDate(matchCommand.getKickOffDate()));
-		match.setGroup(matchCommand.getGroup());
-		match.setStadium(matchCommand.getStadium());
 	}
 
 	public List<MatchCommand> findAllMatches(String username) {
@@ -129,7 +100,7 @@ public class MatchService {
 		final Map<String, Bet> matchToBetMap = findBetsForMatchIds(username);
 		final List<MatchCommand> resultList = new ArrayList<>();
 		for (Match match : allMatches) {
-			MatchCommand matchCommand = toMatchCommand(match);
+			MatchCommand matchCommand = matchConverter.toMatchCommand(match);
 			Bet bet = matchToBetMap.get(match.getId());
 			if (bet != null) {
 				matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());

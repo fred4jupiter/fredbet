@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -19,8 +20,10 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
+import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.SecurityBean;
+import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Controller
 @RequestMapping("/bet")
@@ -40,6 +43,9 @@ public class BetController {
 	
 	@Autowired
 	private MessageUtil messageUtil;
+	
+	@Autowired
+	private MatchConverter matchConverter;
 
 	@RequestMapping
 	public ModelAndView list() {
@@ -54,7 +60,8 @@ public class BetController {
 			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
 		}
 		
-		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchesToBet);
+		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchConverter.toMatchCommand(match)).collect(Collectors.toList());
+		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
 	}
 
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
