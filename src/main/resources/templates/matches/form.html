@@ -62,7 +62,7 @@
 						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
 					</div>					
 					<div class="form-group">
-						<label for="teamResultTwo">Gruppierung:</label>
+						<label for="teamResultTwo">Gruppe:</label>
 						<select th:field="*{group}" class="form-control">
 						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}">Gruppe A</option>
 						</select>						
