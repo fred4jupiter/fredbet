@@ -19,18 +19,7 @@
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
 					<div class="form-group">
 						<label>Spiel:</label><br/>
-						<div class="row">							
-							<div class="col-xs-6">
-								<input type="text" th:field="*{teamNameOne}" class="form-control" />
-							</div>
-							<div class="col-xs-6">
-								<input type="text" th:field="*{teamNameTwo}" class="form-control" />
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label>oder</label><br/>
-						<div class="row">							
+						<div class="row">
 							<div class="col-xs-6">
 								<select th:field="*{teamOne.country}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
@@ -40,6 +29,17 @@
 								<select th:field="*{teamTwo.country}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>oder</label><br/>
+						<div class="row">							
+							<div class="col-xs-6">
+								<input type="text" th:field="*{teamNameOne}" class="form-control" />
+							</div>
+							<div class="col-xs-6">
+								<input type="text" th:field="*{teamNameTwo}" class="form-control" />
 							</div>
 						</div>
 					</div>			
