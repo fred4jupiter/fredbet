@@ -26,6 +26,12 @@ import de.fred4jupiter.fredbet.web.SecurityBean;
 @RequestMapping("/bet")
 public class BetController {
 
+	private static final String VIEW_LIST_OPEN = "bet/list_open";
+
+	private static final String VIEW_LIST = "bet/list";
+
+	private static final String VIEW_EDIT = "bet/edit";
+
 	@Autowired
 	private BettingService bettingService;
 
@@ -38,7 +44,7 @@ public class BetController {
 	@RequestMapping
 	public ModelAndView list() {
 		List<Bet> allBets = bettingService.findAllByUsername(securityBean.getCurrentUserName());
-		return new ModelAndView("bet/list", "allBets", allBets);
+		return new ModelAndView(VIEW_LIST, "allBets", allBets);
 	}
 
 	@RequestMapping("/open")
@@ -48,7 +54,7 @@ public class BetController {
 			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
 		}
 		
-		return new ModelAndView("bet/list_open", "matchesToBet", matchesToBet);
+		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchesToBet);
 	}
 
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
@@ -56,7 +62,7 @@ public class BetController {
 		BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
 		betCommand.setMessageUtil(messageUtil);
 
-		return new ModelAndView("bet/form", "betCommand", betCommand);
+		return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -65,7 +71,7 @@ public class BetController {
 		
 		if (!betCommand.hasGoalsSet()) {
 			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
-			return new ModelAndView("bet/form", "betCommand", betCommand);
+			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
 		try {
