@@ -104,4 +104,24 @@ public class BetCommand {
 	public Team getTeamTwo() {
 		return teamTwo;
 	}
+	
+	public boolean isShowCountryIcons() {
+		return this.teamOne.getCountry() != null || this.teamTwo.getCountry() != null;
+	}
+	
+	public String getIconPathTeamOne() {
+		if (this.teamOne.getCountry() == null) {
+			return "";
+		}
+		
+		return this.teamOne.getCountry().getIconPath();
+	}
+
+	public String getIconPathTeamTwo() {
+		if (this.teamTwo.getCountry() == null) {
+			return "";
+		}
+		
+		return this.teamTwo.getCountry().getIconPath();
+	}
 }

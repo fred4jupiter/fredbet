@@ -6,21 +6,37 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>		
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>		
 		
 		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form">			
-			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>			
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{betId}" class="form-control" />
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
 					<input type="hidden" th:field="*{teamNameOne}" class="form-control" />
 					<input type="hidden" th:field="*{teamNameTwo}" class="form-control" />
-					<div class="form-group">						
-						<span th:text="${betCommand.teamNameOne}" class="teamName"></span> - <span th:text="${betCommand.teamNameTwo}" class="teamName"></span><br/>
-						<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" />
-						<span>:</span>
-						<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" />						
+					<div class="form-group">
+						<table class="table center">
+							<thead>
+								<tr>
+									<th>
+										<img th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
+										<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
+									</th>
+									<th>
+										<img th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
+										<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="success">
+									<td><input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" /></td>
+									<td><input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" /></td>
+								</tr>
+							</tbody>
+						</table>												
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">Speichern</button>
