@@ -33,9 +33,9 @@ import de.fred4jupiter.fredbet.web.SecurityBean;
 @RequestMapping("/matches")
 public class MatchController {
 
-	private static final String MATCH_LIST_PAGE = "matches/list";
+	private static final String VIEW_LIST_MATCHES = "matches/list";
 
-	private static final String MATCH_PAGE = "matches/form";
+	private static final String VIEW_EDIT_MATCH = "matches/form";
 
 	private static final Logger LOG = LoggerFactory.getLogger(MatchController.class);
 
@@ -63,7 +63,7 @@ public class MatchController {
 	@RequestMapping
 	public ModelAndView listAllMatches() {
 		List<MatchCommand> matches = matchService.findAllMatches(securityBean.getCurrentUserName());
-		ModelAndView modelAndView = new ModelAndView(MATCH_LIST_PAGE, "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("all.matches"));
 		return modelAndView;
 	}
@@ -71,7 +71,7 @@ public class MatchController {
 	@RequestMapping(value = "upcoming")
 	public ModelAndView upcomingMatches() {
 		List<MatchCommand> matches = matchService.findAllMatchesBeginAfterNow(securityBean.getCurrentUserName());
-		ModelAndView modelAndView = new ModelAndView(MATCH_LIST_PAGE, "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("upcoming.matches"));
 		return modelAndView;
 	}
@@ -79,7 +79,7 @@ public class MatchController {
 	@RequestMapping(value = "/group/{groupName}")
 	public ModelAndView listByGroup(@PathVariable("groupName") String groupName) {
 		List<MatchCommand> matches = matchService.findMatchesByGroup(securityBean.getCurrentUserName(), Group.valueOf(groupName));
-		ModelAndView modelAndView = new ModelAndView(MATCH_LIST_PAGE, "allMatches", matches);
+		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		String msgKey = "group.entry." + groupName;
 		modelAndView.addObject("heading", messageUtil.getMessageFor(msgKey));
 		return modelAndView;
@@ -89,7 +89,7 @@ public class MatchController {
 	@RequestMapping("{id}")
 	public ModelAndView edit(@PathVariable("id") String matchId) {
 		MatchCommand matchCommand = matchService.findByMatchId(matchId);
-		return new ModelAndView(MATCH_PAGE, "matchCommand", matchCommand);
+		return new ModelAndView(VIEW_EDIT_MATCH, "matchCommand", matchCommand);
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
@@ -111,7 +111,7 @@ public class MatchController {
 	public String createMatch(@ModelAttribute MatchCommand matchCommand) {
 		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
 		matchCommand.setMessageUtil(messageUtil);
-		return MATCH_PAGE;
+		return VIEW_EDIT_MATCH;
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
@@ -120,11 +120,11 @@ public class MatchController {
 			ModelMap modelMap) {
 		matchCommand.setMessageUtil(messageUtil);
 		if (result.hasErrors()) {
-			return new ModelAndView(MATCH_PAGE, "formErrors", result.getAllErrors());
+			return new ModelAndView(VIEW_EDIT_MATCH, "formErrors", result.getAllErrors());
 		}
 
 		if (validate(matchCommand, modelMap)) {
-			return new ModelAndView(MATCH_PAGE, "matchCommand", matchCommand);
+			return new ModelAndView(VIEW_EDIT_MATCH, "matchCommand", matchCommand);
 		}
 
 		if (StringUtils.isBlank(matchCommand.getMatchId())) {
