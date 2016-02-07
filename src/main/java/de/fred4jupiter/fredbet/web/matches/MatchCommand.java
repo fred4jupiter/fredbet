@@ -78,7 +78,7 @@ public class MatchCommand {
 		if (this.countryTeamOne == null || this.countryTeamTwo == null) {
 			return false;
 		}
-		return !Country.NONE.equals(this.countryTeamOne) && !Country.NONE.equals(this.countryTeamTwo);
+		return isNotBlank(countryTeamOne) && isNotBlank(countryTeamTwo);
 	}
 
 	public String getIconPathTeamOne() {
@@ -101,14 +101,14 @@ public class MatchCommand {
 		if (this.countryTeamOne == null) {
 			return nameTeamOne;
 		}
-		return !Country.NONE.equals(this.countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
+		return isNotBlank(countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
 	}
 
 	public String getTeamNameTwo() {
 		if (this.countryTeamTwo == null) {
 			return nameTeamTwo;
 		}
-		return !Country.NONE.equals(this.countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
+		return isNotBlank(countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
 	}
 
 	public Integer getTeamResultOne() {
@@ -233,7 +233,8 @@ public class MatchCommand {
 	}
 
 	public boolean isTeamNamesEmpty() {
-		return (countryTeamOne == null && countryTeamTwo == null) && (StringUtils.isBlank(nameTeamOne) && StringUtils.isBlank(nameTeamTwo));
+		return (isBlank(countryTeamOne) && isBlank(countryTeamTwo))
+				&& (StringUtils.isBlank(nameTeamOne) && StringUtils.isBlank(nameTeamTwo));
 	}
 
 	public boolean isDeletable() {
@@ -274,6 +275,27 @@ public class MatchCommand {
 
 	public void setNameTeamTwo(String nameTeamTwo) {
 		this.nameTeamTwo = nameTeamTwo;
+	}
+
+	private boolean isBlank(Country country) {
+		return !isNotBlank(country);
+	}
+
+	private boolean isNotBlank(Country country) {
+		if (country == null) {
+			return false;
+		}
+
+		if (Country.NONE.equals(country)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean hasCountriesAndTeamNamesEntered() {
+		return ((isNotBlank(countryTeamOne) || isNotBlank(countryTeamTwo))
+				&& (StringUtils.isNotBlank(nameTeamOne) || StringUtils.isNotBlank(nameTeamTwo)));
 	}
 
 }

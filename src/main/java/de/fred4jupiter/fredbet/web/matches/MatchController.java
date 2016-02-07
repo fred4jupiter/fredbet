@@ -172,6 +172,11 @@ public class MatchController {
 			messageUtil.addErrorMsg(modelMap, "msg.input.stadium");
 			return true;
 		}
+		
+		if (matchCommand.hasCountriesAndTeamNamesEntered()) {
+			messageUtil.addErrorMsg(modelMap, "msg.input.countries.and.teamNames");
+			return true;
+		}
 
 		return false;
 	}
