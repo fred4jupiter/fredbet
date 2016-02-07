@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.web.bet;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class BetCommand {
@@ -12,9 +12,11 @@ public class BetCommand {
 
 	private String matchId;
 
-	private Team teamOne;
+	private Country countryTeamOne;
+	private Country countryTeamTwo;
 
-	private Team teamTwo;
+	private String nameTeamOne;
+	private String nameTeamTwo;
 
 	private Integer goalsTeamOne;
 
@@ -24,11 +26,11 @@ public class BetCommand {
 
 	public BetCommand() {
 	}
-	
+
 	public BetCommand(MessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
 	}
-	
+
 	public void setMessageUtil(MessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
 	}
@@ -38,8 +40,10 @@ public class BetCommand {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("matchId", matchId);
 		builder.append("betId", betId);
-		builder.append("teamOne", teamOne);
-		builder.append("teamTwo", teamTwo);
+		builder.append("countryTeamOne", countryTeamOne);
+		builder.append("countryTeamTwo", countryTeamTwo);
+		builder.append("nameTeamOne", nameTeamOne);
+		builder.append("nameTeamTwo", nameTeamTwo);
 		builder.append("goalsTeamOne", goalsTeamOne);
 		builder.append("goalsTeamTwo", goalsTeamTwo);
 		return builder.toString();
@@ -50,11 +54,11 @@ public class BetCommand {
 	}
 
 	public String getTeamNameOne() {
-		return messageUtil.getTeamName(teamOne);
+		return !Country.NONE.equals(this.countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
 	}
 
 	public String getTeamNameTwo() {
-		return messageUtil.getTeamName(teamTwo);
+		return !Country.NONE.equals(this.countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
 	}
 
 	public Integer getGoalsTeamOne() {
@@ -89,39 +93,55 @@ public class BetCommand {
 		this.matchId = matchId;
 	}
 
-	public void setTeamOne(Team teamOne) {
-		this.teamOne = teamOne;
-	}
-
-	public void setTeamTwo(Team teamTwo) {
-		this.teamTwo = teamTwo;
-	}
-
-	public Team getTeamOne() {
-		return teamOne;
-	}
-
-	public Team getTeamTwo() {
-		return teamTwo;
-	}
-	
 	public boolean isShowCountryIcons() {
-		return this.teamOne.getCountry() != null || this.teamTwo.getCountry() != null;
+		return !Country.NONE.equals(this.countryTeamOne) && !Country.NONE.equals(this.countryTeamTwo);
 	}
-	
+
 	public String getIconPathTeamOne() {
-		if (this.teamOne.getCountry() == null) {
+		if (this.countryTeamOne == null) {
 			return "";
 		}
-		
-		return this.teamOne.getCountry().getIconPath();
+
+		return this.countryTeamOne.getIconPath();
 	}
 
 	public String getIconPathTeamTwo() {
-		if (this.teamTwo.getCountry() == null) {
+		if (this.countryTeamTwo == null) {
 			return "";
 		}
-		
-		return this.teamTwo.getCountry().getIconPath();
+
+		return this.countryTeamTwo.getIconPath();
+	}
+
+	public Country getCountryTeamOne() {
+		return countryTeamOne;
+	}
+
+	public void setCountryTeamOne(Country countryTeamOne) {
+		this.countryTeamOne = countryTeamOne;
+	}
+
+	public Country getCountryTeamTwo() {
+		return countryTeamTwo;
+	}
+
+	public void setCountryTeamTwo(Country countryTeamTwo) {
+		this.countryTeamTwo = countryTeamTwo;
+	}
+
+	public String getNameTeamOne() {
+		return nameTeamOne;
+	}
+
+	public void setNameTeamOne(String nameTeamOne) {
+		this.nameTeamOne = nameTeamOne;
+	}
+
+	public String getNameTeamTwo() {
+		return nameTeamTwo;
+	}
+
+	public void setNameTeamTwo(String nameTeamTwo) {
+		this.nameTeamTwo = nameTeamTwo;
 	}
 }

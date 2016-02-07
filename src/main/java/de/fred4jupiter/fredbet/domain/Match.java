@@ -19,9 +19,13 @@ public class Match {
 	@Id
 	private String id;
 
-	private Team teamOne;
+	private Country countryOne;
 
-	private Team teamTwo;
+	private String teamNameOne;
+
+	private Country countryTwo;
+
+	private String teamNameTwo;
 
 	private Group group;
 
@@ -37,18 +41,10 @@ public class Match {
 	public boolean hasResultSet() {
 		return goalsTeamOne != null && goalsTeamTwo != null;
 	}
-	
+
 	public boolean hasStarted() {
 		LocalDateTime kickOffLocalDateTime = DateUtils.toLocalDateTime(kickOffDate);
 		return LocalDateTime.now().isAfter(kickOffLocalDateTime);
-	}
-
-	public void setTeamOne(Team teamOne) {
-		this.teamOne = teamOne;
-	}
-
-	public void setTeamTwo(Team teamTwo) {
-		this.teamTwo = teamTwo;
 	}
 
 	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
@@ -108,8 +104,10 @@ public class Match {
 		Match match = (Match) obj;
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(id, match.id);
-		builder.append(teamOne, match.teamOne);
-		builder.append(teamTwo, match.teamTwo);
+		builder.append(countryOne, match.countryOne);
+		builder.append(countryTwo, match.countryTwo);
+		builder.append(teamNameOne, match.teamNameOne);
+		builder.append(teamNameTwo, match.teamNameTwo);
 		builder.append(group, match.group);
 		builder.append(goalsTeamOne, match.goalsTeamOne);
 		builder.append(goalsTeamTwo, match.goalsTeamTwo);
@@ -123,8 +121,10 @@ public class Match {
 	public int hashCode() {
 		HashCodeBuilder builder = new HashCodeBuilder();
 		builder.append(id);
-		builder.append(teamOne);
-		builder.append(teamTwo);
+		builder.append(countryOne);
+		builder.append(countryTwo);
+		builder.append(teamNameOne);
+		builder.append(teamNameTwo);
 		builder.append(group);
 		builder.append(goalsTeamOne);
 		builder.append(goalsTeamTwo);
@@ -137,22 +137,16 @@ public class Match {
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("id", id);
-		builder.append("teamOne", teamOne);
-		builder.append("teamTwo", teamTwo);
+		builder.append("countryOne", countryOne);
+		builder.append("countryTwo", countryTwo);
+		builder.append("teamNameOne", teamNameOne);
+		builder.append("teamNameTwo", teamNameTwo);
 		builder.append("group", group);
 		builder.append("goalsTeamOne", goalsTeamOne);
 		builder.append("goalsTeamTwo", goalsTeamTwo);
 		builder.append("kickOffDate", kickOffDate);
 		builder.append("stadium", stadium);
 		return builder.toString();
-	}
-
-	public Team getTeamOne() {
-		return teamOne;
-	}
-
-	public Team getTeamTwo() {
-		return teamTwo;
 	}
 
 	public String getId() {
@@ -183,7 +177,39 @@ public class Match {
 		this.kickOffDate = kickOffDate;
 	}
 
-    public boolean isBetable() {
-        return !hasStarted() && !hasResultSet();
-    }
+	public boolean isBetable() {
+		return !hasStarted() && !hasResultSet();
+	}
+
+	public String getTeamNameOne() {
+		return teamNameOne;
+	}
+
+	public void setTeamNameOne(String teamNameOne) {
+		this.teamNameOne = teamNameOne;
+	}
+
+	public String getTeamNameTwo() {
+		return teamNameTwo;
+	}
+
+	public void setTeamNameTwo(String teamNameTwo) {
+		this.teamNameTwo = teamNameTwo;
+	}
+
+	public Country getCountryOne() {
+		return countryOne;
+	}
+
+	public void setCountryOne(Country countryOne) {
+		this.countryOne = countryOne;
+	}
+
+	public Country getCountryTwo() {
+		return countryTwo;
+	}
+
+	public void setCountryTwo(Country countryTwo) {
+		this.countryTwo = countryTwo;
+	}
 }

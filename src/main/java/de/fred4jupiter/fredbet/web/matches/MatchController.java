@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.matches;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -56,7 +57,16 @@ public class MatchController {
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		List<Country> countries = Arrays.asList(Country.values());
-		Collections.sort(countries);
+		Collections.sort(countries, new Comparator<Country>() {
+
+			@Override
+			public int compare(Country o1, Country o2) {
+				if (Country.NONE.equals(o1)) {
+					return -1;
+				}
+				return o1.compareTo(o2);
+			}
+		});
 		return countries;
 	}
 

@@ -73,15 +73,17 @@ public class BettingService {
 		if (bet == null) {
 		    throw new IllegalArgumentException("Could not find bet with betId="+betId);
 		}
-		BetCommand betCommand = mapBetToCommand(bet);
+		BetCommand betCommand = toBetCommand(bet);
 		return betCommand;
 	}
 
-	private BetCommand mapBetToCommand(Bet bet) {
+	private BetCommand toBetCommand(Bet bet) {
 		BetCommand betCommand = new BetCommand(messageUtil);
 		betCommand.setBetId(bet.getId());
-		betCommand.setTeamOne(bet.getMatch().getTeamOne());
-		betCommand.setTeamTwo(bet.getMatch().getTeamTwo());
+		betCommand.setCountryTeamOne(bet.getMatch().getCountryOne());
+		betCommand.setCountryTeamTwo(bet.getMatch().getCountryTwo());
+		betCommand.setNameTeamOne(bet.getMatch().getTeamNameOne());
+		betCommand.setNameTeamTwo(bet.getMatch().getTeamNameTwo());
 		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
 		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
 		betCommand.setMatchId(bet.getMatch().getId());
@@ -121,7 +123,7 @@ public class BettingService {
 			bet.setUserName(getCurrentUsername());
 		}
 
-		return mapBetToCommand(bet);
+		return toBetCommand(bet);
 	}
 
 	public void deleteAllBets() {

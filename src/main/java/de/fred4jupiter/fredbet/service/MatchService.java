@@ -17,11 +17,8 @@ import org.springframework.util.Assert;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.MatchBuilder;
-import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
-import de.fred4jupiter.fredbet.repository.TeamRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
@@ -33,9 +30,6 @@ public class MatchService {
 
 	@Autowired
 	private MatchRepository matchRepository;
-
-	@Autowired
-	private TeamRepository teamRepository;
 
 	@Autowired
 	private PointsCalculationService pointsCalculationService;
@@ -72,8 +66,10 @@ public class MatchService {
 		Assert.notNull(match);
 		MatchCommand matchCommand = new MatchCommand(messageUtil);
 		matchCommand.setMatchId(match.getId());
-		matchCommand.setTeamOne(match.getTeamOne());
-		matchCommand.setTeamTwo(match.getTeamTwo());
+		matchCommand.setCountryTeamOne(match.getCountryOne());
+		matchCommand.setCountryTeamTwo(match.getCountryTwo());
+		matchCommand.setNameTeamOne(match.getTeamNameOne());
+		matchCommand.setNameTeamTwo(match.getTeamNameTwo());
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
 		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
 		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
@@ -83,18 +79,7 @@ public class MatchService {
 	}
 
 	public Match save(Match match) {
-		Team teamOne = findOrCreate(match.getTeamOne());
-		Team teamTwo = findOrCreate(match.getTeamTwo());
-
-		match.setTeamOne(teamOne);
-		match.setTeamTwo(teamTwo);
-
-		match = saveMatch(match);
-		return match;
-	}
-
-	private Match saveMatch(Match match) {
-		matchRepository.save(match);
+		match = matchRepository.save(match);
 
 		if (match.hasResultSet()) {
 			pointsCalculationService.calculatePointsFor(match);
@@ -103,39 +88,26 @@ public class MatchService {
 		return match;
 	}
 
-	private Team findOrCreate(Team team) {
-		Team found = null;
-		if (team.getName() != null) {
-			found = teamRepository.findByName(team.getName());
-		} else {
-			found = teamRepository.findByCountry(team.getCountry());
-		}
-
-		if (found != null) {
-			return found;
-		}
-
-		return teamRepository.save(team);
-	}
-
 	public String save(MatchCommand matchCommand) {
 		Match match = matchRepository.findOne(matchCommand.getMatchId());
+
 		if (match == null) {
-			match = MatchBuilder.create().withTeams(matchCommand.getTeamOne(), matchCommand.getTeamTwo()).build();
-		} else {
-			match.setTeamOne(matchCommand.getTeamOne());
-			match.setTeamTwo(matchCommand.getTeamTwo());
+			match = new Match();
 		}
 
 		toMatch(matchCommand, match);
 
-		match = saveMatch(match);
+		match = save(match);
 		matchCommand.setMatchId(match.getId());
 
 		return match.getId();
 	}
 
 	private void toMatch(MatchCommand matchCommand, Match match) {
+		match.setCountryOne(matchCommand.getCountryTeamOne());
+		match.setCountryTwo(matchCommand.getCountryTeamTwo());
+		match.setTeamNameOne(matchCommand.getNameTeamOne());
+		match.setTeamNameTwo(matchCommand.getNameTeamTwo());
 		match.setGoalsTeamOne(matchCommand.getTeamResultOne());
 		match.setGoalsTeamTwo(matchCommand.getTeamResultTwo());
 		match.setKickOffDate(DateUtils.toDate(matchCommand.getKickOffDate()));

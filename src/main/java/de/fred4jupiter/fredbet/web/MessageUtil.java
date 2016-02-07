@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Team;
 
 /**
  * Helper class for preparing messages.
@@ -68,20 +67,14 @@ public class MessageUtil {
 	public String getMessageFor(String msgKey, Object... params) {
 		return messageSource.getMessage(msgKey, params, Locale.GERMAN);
 	}
-	
+
 	public String getCountryName(Country country) {
+		if (country == null) {
+			return null;
+		}
 		return getMessageFor("country." + country.getIsoCode());
 	}
 
-	public String getTeamName(Team team) {
-		if (team.getCountry() != null) {
-			return getCountryName(team.getCountry());
-		}
-		else {
-			return team.getName();
-		}
-	}
-	
 	public static final class WebMessage {
 		private String cssClass;
 
@@ -103,5 +96,4 @@ public class MessageUtil {
 
 	}
 
-	
 }

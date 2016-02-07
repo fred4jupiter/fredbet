@@ -2,6 +2,8 @@ package de.fred4jupiter.fredbet.domain;
 
 public enum Country {
 
+	NONE("none"),
+	
 	ALBANIA("al"),
 
 	BELGIUM("be"),

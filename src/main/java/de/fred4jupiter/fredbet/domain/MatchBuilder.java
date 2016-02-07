@@ -18,20 +18,14 @@ public class MatchBuilder {
 	}
 
 	public MatchBuilder withTeams(String teamOne, String teamTwo) {
-		match.setTeamOne(new Team(teamOne));
-		match.setTeamTwo(new Team(teamTwo));
-		return this;
-	}
-
-	public MatchBuilder withTeams(Team teamOne, Team teamTwo) {
-		match.setTeamOne(teamOne);
-		match.setTeamTwo(teamTwo);
+		match.setTeamNameOne(teamOne);
+		match.setTeamNameTwo(teamTwo);
 		return this;
 	}
 
 	public MatchBuilder withTeams(Country one, Country two) {
-		match.setTeamOne(new Team(one));
-		match.setTeamTwo(new Team(two));
+		match.setCountryOne(one);
+		match.setCountryTwo(two);
 		return this;
 	}
 
