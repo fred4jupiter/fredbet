@@ -30,9 +30,9 @@ public class MatchRepositoryIT extends AbstractMongoEmbeddedTest {
 		assertNotNull(matchesOrderByKickOffDate);
 		assertFalse(matchesOrderByKickOffDate.isEmpty());
 
-		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamOne", hasProperty("name", equalTo("Bulgarien")))));
-		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamOne", hasProperty("name", equalTo("Belgien")))));
-		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamOne", hasProperty("name", equalTo("Deutschland")))));
+		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamNameOne", equalTo("Bulgarien"))));
+		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamNameOne", equalTo("Belgien"))));
+		assertThat(matchesOrderByKickOffDate, hasItem( hasProperty("teamNameOne", equalTo("Deutschland"))));
 	}
 
 	private void createSomeMatches() {
