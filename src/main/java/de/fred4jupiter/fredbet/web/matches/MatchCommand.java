@@ -298,4 +298,20 @@ public class MatchCommand {
 				&& (StringUtils.isNotBlank(nameTeamOne) || StringUtils.isNotBlank(nameTeamTwo)));
 	}
 
+	public boolean hasSameTeamsPlayingAgainstEachOther() {
+		if (isNotBlank(countryTeamOne) && isNotBlank(countryTeamTwo)) {
+			if (countryTeamOne.equals(countryTeamTwo)) {
+				return true;
+			}
+		}
+
+		if (StringUtils.isNotBlank(nameTeamOne) && StringUtils.isNotBlank(nameTeamTwo)) {
+			if (nameTeamOne.equals(nameTeamTwo)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

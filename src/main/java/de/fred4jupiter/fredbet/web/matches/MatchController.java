@@ -177,6 +177,11 @@ public class MatchController {
 			messageUtil.addErrorMsg(modelMap, "msg.input.countries.and.teamNames");
 			return true;
 		}
+		
+		if (matchCommand.hasSameTeamsPlayingAgainstEachOther()) {
+			messageUtil.addErrorMsg(modelMap, "msg.input.same.teams");
+			return true;
+		}
 
 		return false;
 	}
