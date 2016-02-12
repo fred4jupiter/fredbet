@@ -7,12 +7,9 @@ machine:
     Europe/Berlin
 
 dependencies:
-  pre:
-    - mvn install    
   override:    
     - docker info
-    - mvn verify docker:build
-    
+        
 test:
   override:
   - mvn verify  
@@ -25,7 +22,3 @@ deployment:
     branch: master
     commands:
       - ./release.sh
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker tag -f fred4jupiter/fredbet hamsterhase/fredbet:$CIRCLE_BUILD_NUM
-      - docker push hamsterhase/fredbet:$CIRCLE_BUILD_NUM
-    
