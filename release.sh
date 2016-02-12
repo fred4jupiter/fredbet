@@ -8,6 +8,6 @@ docker build -t fred4jupiter/fredbet .
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}-SNAPSHOT versions:commit
 
 # Deploy section
-docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 docker tag -f fred4jupiter/fredbet hamsterhase/fredbet:$CIRCLE_BUILD_NUM
 docker push hamsterhase/fredbet:$CIRCLE_BUILD_NUM
