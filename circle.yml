@@ -7,9 +7,11 @@ machine:
     Europe/Berlin
 
 dependencies:
+  pre:
+    - mvn install    
   override:    
     - docker info
-    - docker build -t fred4jupiter/fredbet .
+    - mvn verify docker:build
     
 test:
   override:
