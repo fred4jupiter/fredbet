@@ -9,7 +9,6 @@
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>		
 		
 		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form">			
-			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{betId}" class="form-control" />

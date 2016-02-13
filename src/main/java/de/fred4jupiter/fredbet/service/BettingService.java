@@ -20,114 +20,118 @@ import de.fred4jupiter.fredbet.web.bet.BetCommand;
 @Service
 public class BettingService {
 
-	@Autowired
-	private AppUserRepository appUserRepository;
+    @Autowired
+    private AppUserRepository appUserRepository;
 
-	@Autowired
-	private MatchRepository matchRepository;
+    @Autowired
+    private MatchRepository matchRepository;
 
-	@Autowired
-	private BetRepository betRepository;
-	
-	@Autowired
-	private MessageUtil messageUtil;
+    @Autowired
+    private BetRepository betRepository;
 
-	public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
-		AppUser appUser = appUserRepository.findByUsername(username);
+    @Autowired
+    private MessageUtil messageUtil;
 
-		Match match = matchRepository.findOne(matchId);
+    public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
+        AppUser appUser = appUserRepository.findByUsername(username);
 
-		createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
-	}
+        Match match = matchRepository.findOne(matchId);
 
-	public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo) {
-		Bet bet = new Bet();
-		bet.setGoalsTeamOne(goalsTeamOne);
-		bet.setGoalsTeamTwo(goalsTeamTwo);
-		bet.setMatch(match);
-		bet.setUserName(appUser.getUsername());
-		return betRepository.save(bet);
-	}
+        createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
+    }
 
-	public List<Bet> findAllByUsername(String username) {
-		return betRepository.findByUserName(username);
-	}
+    public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo) {
+        Bet bet = new Bet();
+        bet.setGoalsTeamOne(goalsTeamOne);
+        bet.setGoalsTeamTwo(goalsTeamTwo);
+        bet.setMatch(match);
+        bet.setUserName(appUser.getUsername());
+        return betRepository.save(bet);
+    }
 
-	public List<Match> findMatchesToBet(String username) {
-		List<Bet> userBets = betRepository.findByUserName(username);
-		List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
+    public List<Bet> findAllByUsername(String username) {
+        return betRepository.findByUserName(username);
+    }
 
-		List<Match> matchesToBet = new ArrayList<>();
-		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
-		for (Match match : allMatches) {
-			if (!matchIds.contains(match.getId()) && match.isBetable()) {
-				matchesToBet.add(match);
-			}
-		}
+    public List<Match> findMatchesToBet(String username) {
+        List<Bet> userBets = betRepository.findByUserName(username);
+        List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
 
-		return matchesToBet;
-	}
+        List<Match> matchesToBet = new ArrayList<>();
+        List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
+        for (Match match : allMatches) {
+            if (!matchIds.contains(match.getId()) && match.isBetable()) {
+                matchesToBet.add(match);
+            }
+        }
 
-	public BetCommand findByBetId(Long betId) {
-		Bet bet = betRepository.findOne(betId);
-		if (bet == null) {
-		    throw new IllegalArgumentException("Could not find bet with betId="+betId);
-		}
-		BetCommand betCommand = toBetCommand(bet);
-		return betCommand;
-	}
+        return matchesToBet;
+    }
 
-	private BetCommand toBetCommand(Bet bet) {
-		BetCommand betCommand = new BetCommand(messageUtil);
-		betCommand.setBetId(bet.getId());
-		betCommand.setCountryTeamOne(bet.getMatch().getCountryOne());
-		betCommand.setCountryTeamTwo(bet.getMatch().getCountryTwo());
-		betCommand.setNameTeamOne(bet.getMatch().getTeamNameOne());
-		betCommand.setNameTeamTwo(bet.getMatch().getTeamNameTwo());
-		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
-		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-		betCommand.setMatchId(bet.getMatch().getId());
-		return betCommand;
-	}
+    public BetCommand findByBetId(Long betId) {
+        Bet bet = betRepository.findOne(betId);
+        if (bet == null) {
+            throw new IllegalArgumentException("Could not find bet with betId=" + betId);
+        }
+        BetCommand betCommand = toBetCommand(bet);
+        return betCommand;
+    }
 
-	public Long save(BetCommand betCommand) {
-		Match match = matchRepository.findOne(betCommand.getMatchId());
-		if (match.hasStarted()) {
-			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
-		}
+    private BetCommand toBetCommand(Bet bet) {
+        BetCommand betCommand = new BetCommand(messageUtil);
+        betCommand.setBetId(bet.getId());
+        betCommand.setCountryTeamOne(bet.getMatch().getCountryOne());
+        betCommand.setCountryTeamTwo(bet.getMatch().getCountryTwo());
+        betCommand.setNameTeamOne(bet.getMatch().getTeamNameOne());
+        betCommand.setNameTeamTwo(bet.getMatch().getTeamNameTwo());
+        betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
+        betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
+        betCommand.setMatchId(bet.getMatch().getId());
+        return betCommand;
+    }
 
-		Bet bet = betRepository.findOne(betCommand.getBetId());
-		if (bet == null) {
-			bet = new Bet();
-		}
+    public Long save(BetCommand betCommand) {
+        Match match = matchRepository.findOne(betCommand.getMatchId());
+        if (match.hasStarted()) {
+            throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
+        }
 
-		bet.setMatch(match);
-		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
-		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
-		bet.setUserName(getCurrentUsername());
+        Bet bet = null;
+        if (betCommand.getBetId() != null) {
+            bet = betRepository.findOne(betCommand.getBetId());
+        }
 
-		bet = betRepository.save(bet);
-		return bet.getId();
-	}
+        if (bet == null) {
+            bet = new Bet();
+        }
 
-	private String getCurrentUsername() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}
+        bet.setMatch(match);
+        bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
+        bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
+        bet.setUserName(getCurrentUsername());
 
-	public BetCommand findOrCreateBetForMatch(Long matchId) {
-		Match match = matchRepository.findOne(matchId);
-		Bet bet = betRepository.findByUserNameAndMatch(getCurrentUsername(), match);
-		if (bet == null) {
-			bet = new Bet();
-			bet.setMatch(match);
-			bet.setUserName(getCurrentUsername());
-		}
+        bet = betRepository.save(bet);
+        return bet.getId();
+    }
 
-		return toBetCommand(bet);
-	}
+    private String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 
-	public void deleteAllBets() {
-		betRepository.deleteAll();
-	}
+    public BetCommand findOrCreateBetForMatch(Long matchId) {
+        Match match = matchRepository.findOne(matchId);
+        Bet bet = betRepository.findByUserNameAndMatch(getCurrentUsername(), match);
+        if (bet == null) {
+            bet = new Bet();
+            bet.setMatch(match);
+            bet.setUserName(getCurrentUsername());
+        }
+
+        return toBetCommand(bet);
+    }
+
+    public void deleteAllBets() {
+        betRepository.deleteAll();
+    }
 
 }
