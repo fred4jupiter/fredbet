@@ -20,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Entity
-@Table(name = "MATCH")
+@Table(name = "MATCHES")
 public class Match {
 
 	@Id
