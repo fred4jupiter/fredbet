@@ -11,3 +11,5 @@ mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorV
 docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 docker tag -f fred4jupiter/fredbet hamsterhase/fredbet:$CIRCLE_BUILD_NUM
 docker push hamsterhase/fredbet:$CIRCLE_BUILD_NUM
+docker tag -f fred4jupiter/fredbet hamsterhase/fredbet:latest
+docker push hamsterhase/fredbet:latest
