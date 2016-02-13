@@ -32,7 +32,7 @@ public class BettingService {
 	@Autowired
 	private MessageUtil messageUtil;
 
-	public void createAndSaveBetting(String username, String matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
+	public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		AppUser appUser = appUserRepository.findByUsername(username);
 
 		Match match = matchRepository.findOne(matchId);
@@ -55,7 +55,7 @@ public class BettingService {
 
 	public List<Match> findMatchesToBet(String username) {
 		List<Bet> userBets = betRepository.findByUserName(username);
-		List<String> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
+		List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
 
 		List<Match> matchesToBet = new ArrayList<>();
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
@@ -68,7 +68,7 @@ public class BettingService {
 		return matchesToBet;
 	}
 
-	public BetCommand findByBetId(String betId) {
+	public BetCommand findByBetId(Long betId) {
 		Bet bet = betRepository.findOne(betId);
 		if (bet == null) {
 		    throw new IllegalArgumentException("Could not find bet with betId="+betId);
@@ -90,7 +90,7 @@ public class BettingService {
 		return betCommand;
 	}
 
-	public String save(BetCommand betCommand) {
+	public Long save(BetCommand betCommand) {
 		Match match = matchRepository.findOne(betCommand.getMatchId());
 		if (match.hasStarted()) {
 			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
@@ -114,7 +114,7 @@ public class BettingService {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
-	public BetCommand findOrCreateBetForMatch(String matchId) {
+	public BetCommand findOrCreateBetForMatch(Long matchId) {
 		Match match = matchRepository.findOne(matchId);
 		Bet bet = betRepository.findByUserNameAndMatch(getCurrentUsername(), match);
 		if (bet == null) {

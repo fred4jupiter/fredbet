@@ -8,9 +8,9 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class BetCommand {
 
-	private String betId;
+	private Long betId;
 
-	private String matchId;
+	private Long matchId;
 
 	private Country countryTeamOne;
 	private Country countryTeamTwo;
@@ -77,19 +77,19 @@ public class BetCommand {
 		this.goalsTeamTwo = goalsTeamTwo;
 	}
 
-	public String getBetId() {
+	public Long getBetId() {
 		return betId;
 	}
 
-	public void setBetId(String betId) {
+	public void setBetId(Long betId) {
 		this.betId = betId;
 	}
 
-	public String getMatchId() {
+	public Long getMatchId() {
 		return matchId;
 	}
 
-	public void setMatchId(String matchId) {
+	public void setMatchId(Long matchId) {
 		this.matchId = matchId;
 	}
 

@@ -3,22 +3,31 @@ package de.fred4jupiter.fredbet.domain;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import de.fred4jupiter.fredbet.util.DateUtils;
 
-@Document
+@Entity
+@Table(name = "MATCH")
 public class Match {
 
 	@Id
-	private String id;
-
+	@GeneratedValue
+	@Column(name = "MATCH_ID")
+	private Long id;
+	
 	private Country countryOne;
 
 	private String teamNameOne;
@@ -27,6 +36,8 @@ public class Match {
 
 	private String teamNameTwo;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "MATCH_GROUP")
 	private Group group;
 
 	private Integer goalsTeamOne;
@@ -149,7 +160,7 @@ public class Match {
 		return builder.toString();
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 

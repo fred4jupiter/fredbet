@@ -16,7 +16,7 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class UserCommand {
 
-    private String userId;
+    private Long userId;
 
     private String username;
 
@@ -51,11 +51,11 @@ public class UserCommand {
         roles.add(role);
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

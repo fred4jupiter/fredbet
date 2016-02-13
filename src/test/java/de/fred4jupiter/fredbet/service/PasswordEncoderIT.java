@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
+import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 
-public class PasswordEncoderIT extends AbstractMongoEmbeddedTest {
+public class PasswordEncoderIT extends AbstractIntegrationTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

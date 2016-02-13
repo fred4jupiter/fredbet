@@ -1,11 +1,12 @@
 package de.fred4jupiter.fredbet;
 
-import de.fred4jupiter.fredbet.repository.MongoDBPersistentTokenRepository;
+import de.fred4jupiter.fredbet.repository.DefaultPersistentTokenRepository;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,11 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	@Autowired
-	private MongoDBPersistentTokenRepository persistentTokenRepositoryMangoDelete;
+	private DefaultPersistentTokenRepository persistentTokenRepositoryMangoDelete;
+	
+	@Autowired
+	private Environment environment;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**").permitAll();
+		http.authorizeRequests().antMatchers("/console/*").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
@@ -44,6 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepositoryMangoDelete).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
+		
+		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
+			// this is for the embedded h2 console
+			http.csrf().disable();
+			http.headers().frameOptions().disable();
+		}
 	}
 
 	@Autowired

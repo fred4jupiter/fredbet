@@ -11,13 +11,13 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
+import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
-public class MatchRepositoryIT extends AbstractMongoEmbeddedTest {
+public class MatchRepositoryIT extends AbstractIntegrationTest {
 
 	@Autowired
 	private MatchRepository matchRepository;

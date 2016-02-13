@@ -97,14 +97,14 @@ public class MatchController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
 	@RequestMapping("{id}")
-	public ModelAndView edit(@PathVariable("id") String matchId) {
+	public ModelAndView edit(@PathVariable("id") Long matchId) {
 		MatchCommand matchCommand = matchService.findByMatchId(matchId);
 		return new ModelAndView(VIEW_EDIT_MATCH, "matchCommand", matchCommand);
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
 	@RequestMapping(value = "/delete/{matchId}", method = RequestMethod.GET)
-	public ModelAndView deleteMatch(@PathVariable("matchId") String matchId, RedirectAttributes redirect) {
+	public ModelAndView deleteMatch(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
 		LOG.debug("deleted match with id={}", matchId);
 
 		MatchCommand matchCommand = matchService.findByMatchId(matchId);
@@ -137,7 +137,7 @@ public class MatchController {
 			return new ModelAndView(VIEW_EDIT_MATCH, "matchCommand", matchCommand);
 		}
 
-		if (StringUtils.isBlank(matchCommand.getMatchId())) {
+		if (matchCommand.getMatchId() == null) {
 			messageUtil.addInfoMsg(redirect, "msg.match.created", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
 		} else {
 			messageUtil.addInfoMsg(redirect, "msg.match.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());

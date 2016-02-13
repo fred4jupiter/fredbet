@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,117 +22,117 @@ import de.fred4jupiter.fredbet.web.user.UserCommand;
 @Service
 public class UserService {
 
-    /**
-     * This is the default password a user gets assigned if the password reset
-     * function has been applied.
-     */
-    private static final String DEFAULT_PASSWORD_ON_RESET = "em2016";
+	/**
+	 * This is the default password a user gets assigned if the password reset
+	 * function has been applied.
+	 */
+	private static final String DEFAULT_PASSWORD_ON_RESET = "em2016";
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+	@Autowired
+	private AppUserRepository appUserRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    public List<AppUser> findAll() {
-        return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
-    }
+	public List<AppUser> findAll() {
+		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
+	}
 
-    public AppUser findByAppUserId(String userId) {
-        return appUserRepository.findOne(userId);
-    }
+	public AppUser findByAppUserId(Long userId) {
+		return appUserRepository.findOne(userId);
+	}
 
-    public UserCommand findByUserId(String userId) {
-        AppUser appUser = appUserRepository.findOne(userId);
-        if (appUser == null) {
-            return null;
-        }
-        UserCommand userCommand = new UserCommand();
-        userCommand.setUserId(appUser.getId());
-        userCommand.setUsername(appUser.getUsername());
-        userCommand.setDeletable(appUser.isDeletable());
-        if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
-            for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
-                userCommand.addRole(grantedAuthority.getAuthority());
-            }
-        }
+	public UserCommand findByUserId(Long userId) {
+		AppUser appUser = appUserRepository.findOne(userId);
+		if (appUser == null) {
+			return null;
+		}
+		UserCommand userCommand = new UserCommand();
+		userCommand.setUserId(appUser.getId());
+		userCommand.setUsername(appUser.getUsername());
+		userCommand.setDeletable(appUser.isDeletable());
+		if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
+			for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
+				userCommand.addRole(grantedAuthority.getAuthority());
+			}
+		}
 
-        return userCommand;
-    }
+		return userCommand;
+	}
 
-    public AppUser updateUser(UserCommand userCommand) {
-        Assert.notNull(userCommand.getUserId());
-        AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
-        appUser.setRoles(userCommand.getRoles());
+	public AppUser updateUser(UserCommand userCommand) {
+		Assert.notNull(userCommand.getUserId());
+		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
+		appUser.setRoles(userCommand.getRoles());
 
-        if (userCommand.isResetPassword()) {
-            appUser.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD_ON_RESET));
-        }
+		if (userCommand.isResetPassword()) {
+			appUser.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD_ON_RESET));
+		}
 
-        updateAppUser(appUser);
-        return appUser;
-    }
+		updateAppUser(appUser);
+		return appUser;
+	}
 
-    public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
-        try {
-            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-            appUserRepository.insert(appUser);
-        } catch (DuplicateKeyException e) {
-            LOG.info("user with username={} still exists. skipping save...", appUser.getUsername());
-            throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
-        }
-    }
+	public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
+		AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
+		if (foundUser != null) {
+			throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
+		}
 
-    public void updateAppUser(AppUser appUser) {
-        AppUser userToBeUpdated = appUserRepository.findOne(appUser.getId());
-        if (userToBeUpdated == null) {
-            throw new IllegalArgumentException(
-                    "Given user with username=" + appUser.getUsername() + " does not exists. ID=" + appUser.getId());
-        }
+		appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+		appUserRepository.save(appUser);
+	}
 
-        userToBeUpdated.setRoles(appUser.getRoles());
-        appUserRepository.save(appUser);
-    }
+	public void updateAppUser(AppUser appUser) {
+		AppUser userToBeUpdated = appUserRepository.findOne(appUser.getId());
+		if (userToBeUpdated == null) {
+			throw new IllegalArgumentException(
+					"Given user with username=" + appUser.getUsername() + " does not exists. ID=" + appUser.getId());
+		}
 
-    public void deleteUser(String userId) {
-        AppUser appUser = appUserRepository.findOne(userId);
-        if (appUser == null) {
-            LOG.info("Could not find user with id={}", userId);
-            return;
-        }
+		userToBeUpdated.setRoles(appUser.getRoles());
+		appUserRepository.save(appUser);
+	}
 
-        if (!appUser.isDeletable()) {
-            throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
-        }
+	public void deleteUser(Long userId) {
+		AppUser appUser = appUserRepository.findOne(userId);
+		if (appUser == null) {
+			LOG.info("Could not find user with id={}", userId);
+			return;
+		}
 
-        appUserRepository.delete(userId);
-    }
+		if (!appUser.isDeletable()) {
+			throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
+		}
 
-    public void createUser(UserCommand userCommand) {
-        // create new user
-        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword(userCommand.getUsername(), userCommand.getPassword())
-                .withRoles(userCommand.getRoles()).build();
-        insertAppUser(appUser);
-        return;
-    }
+		appUserRepository.delete(userId);
+	}
 
-    public void changePassword(String userId, ChangePasswordCommand changePasswordCommand) {
-        AppUser appUser = appUserRepository.findOne(userId);
-        if (appUser == null) {
-            throw new IllegalArgumentException("Could not found user with userId=" + userId);
-        }
+	public void createUser(UserCommand userCommand) {
+		// create new user
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword(userCommand.getUsername(), userCommand.getPassword())
+				.withRoles(userCommand.getRoles()).build();
+		insertAppUser(appUser);
+		return;
+	}
 
-        final String enteredOldPasswordPlain = changePasswordCommand.getOldPassword();
-        final String oldSavedEncryptedPassword = appUser.getPassword();
+	public void changePassword(Long userId, ChangePasswordCommand changePasswordCommand) {
+		AppUser appUser = appUserRepository.findOne(userId);
+		if (appUser == null) {
+			throw new IllegalArgumentException("Could not found user with userId=" + userId);
+		}
 
-        if (!passwordEncoder.matches(enteredOldPasswordPlain, oldSavedEncryptedPassword)) {
-            throw new OldPasswordWrongException("The old password is wrong!");
-        }
+		final String enteredOldPasswordPlain = changePasswordCommand.getOldPassword();
+		final String oldSavedEncryptedPassword = appUser.getPassword();
 
-        appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
-        appUserRepository.save(appUser);
-    }
+		if (!passwordEncoder.matches(enteredOldPasswordPlain, oldSavedEncryptedPassword)) {
+			throw new OldPasswordWrongException("The old password is wrong!");
+		}
+
+		appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
+		appUserRepository.save(appUser);
+	}
 
 }

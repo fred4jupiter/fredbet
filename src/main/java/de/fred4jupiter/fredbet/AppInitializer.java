@@ -27,7 +27,6 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 		}
 		
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
-			environment.addActiveProfile(FredBetProfile.FONGO);
 			environment.addActiveProfile(FredBetProfile.DEMODATA);
 		}
 

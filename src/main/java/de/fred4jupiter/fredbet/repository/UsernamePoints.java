@@ -2,19 +2,13 @@ package de.fred4jupiter.fredbet.repository;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 public class UsernamePoints {
 
-	@Id
-	private String id;
-
 	private String userName;
 
-	@Field("total")
 	private Integer totalPoints;
-	
+
 	private String cssRankClass;
 
 	public String getUserName() {
@@ -39,14 +33,6 @@ public class UsernamePoints {
 
 	public void setTotalPoints(Integer totalPoints) {
 		this.totalPoints = totalPoints;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getCssRankClass() {

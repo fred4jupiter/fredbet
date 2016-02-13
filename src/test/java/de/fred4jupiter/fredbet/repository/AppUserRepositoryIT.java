@@ -6,11 +6,11 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
+import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 
-public class AppUserRepositoryIT extends AbstractMongoEmbeddedTest {
+public class AppUserRepositoryIT extends AbstractIntegrationTest {
 
 	@Autowired
 	private AppUserRepository appUserRepository;

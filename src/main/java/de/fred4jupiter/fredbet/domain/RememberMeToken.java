@@ -2,19 +2,28 @@ package de.fred4jupiter.fredbet.domain;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Document
+
+@Entity
+@Table(name = "REMEMBERME_TOKEN")
 public class RememberMeToken {
 
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
 
 	private String username;
 	private String series;
 	private String tokenValue;
 	private Date lastUsed;
+	
+	protected RememberMeToken() {
+		// for hibernate
+	}
 
 	public RememberMeToken(String username, String series, String tokenValue, Date lastUsed) {
 		this.username = username;
@@ -23,7 +32,7 @@ public class RememberMeToken {
 		this.lastUsed = lastUsed;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 

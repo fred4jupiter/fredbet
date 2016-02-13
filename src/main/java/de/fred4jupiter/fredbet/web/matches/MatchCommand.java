@@ -15,7 +15,7 @@ public class MatchCommand {
 
 	private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm";
 
-	private String matchId;
+	private Long matchId;
 
 	private Country countryTeamOne;
 	private Country countryTeamTwo;
@@ -127,11 +127,11 @@ public class MatchCommand {
 		this.teamResultTwo = teamResultTwo;
 	}
 
-	public String getMatchId() {
+	public Long getMatchId() {
 		return matchId;
 	}
 
-	public void setMatchId(String matchId) {
+	public void setMatchId(Long matchId) {
 		this.matchId = matchId;
 	}
 

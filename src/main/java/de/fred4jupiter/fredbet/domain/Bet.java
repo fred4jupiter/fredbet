@@ -1,24 +1,32 @@
 package de.fred4jupiter.fredbet.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Entity
+@Table(name = "BET")
 public class Bet {
 
 	@Id
-	private String id;
+	@GeneratedValue
+	@Column(name = "BET_ID")
+	private Long id;
 
-	@Indexed
+	@Column(name = "USER_NAME")
 	private String userName;
 
-	@DBRef
+	@ManyToOne(targetEntity = Match.class)
+	@JoinColumn(name="MATCH_ID")
 	private Match match;
 
 	private Integer goalsTeamOne;
@@ -33,23 +41,23 @@ public class Bet {
 		}
 		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
 	}
-	
+
 	public boolean isTeamOneWinner() {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
 			throw new IllegalStateException("Bet not finished! No goal bets set!");
 		}
-		
+
 		return goalsTeamOne.intValue() > goalsTeamTwo.intValue();
 	}
-	
+
 	public boolean isTeamTwoWinner() {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
 			throw new IllegalStateException("Bet not finished! No goal bets set!");
 		}
-		
+
 		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
 	}
-	
+
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -120,7 +128,7 @@ public class Bet {
 		this.match = match;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 

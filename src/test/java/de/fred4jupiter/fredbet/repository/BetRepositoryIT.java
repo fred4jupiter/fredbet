@@ -13,12 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.fred4jupiter.fredbet.AbstractMongoEmbeddedTest;
+import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
-public class BetRepositoryIT extends AbstractMongoEmbeddedTest {
+public class BetRepositoryIT extends AbstractIntegrationTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BetRepositoryIT.class);
 

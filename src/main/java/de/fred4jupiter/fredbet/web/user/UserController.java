@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @RequestMapping("{id}")
-    public ModelAndView edit(@PathVariable("id") String userId) {
+    public ModelAndView edit(@PathVariable("id") Long userId) {
         UserCommand userCommand = userService.findByUserId(userId);
         return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
     }
@@ -64,7 +64,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_USER + "')")
     @RequestMapping("{id}/delete")
-    public ModelAndView delete(@PathVariable("id") String userId, RedirectAttributes redirect) {
+    public ModelAndView delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
 
         if (SecurityUtils.getCurrentUser().getId().equals(userId)) {

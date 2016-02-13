@@ -1,31 +1,30 @@
 package de.fred4jupiter.fredbet.repository;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-
-import de.fred4jupiter.fredbet.domain.Bet;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 class BetRepositoryImpl implements BetRepositoryCustom {
 
 	@Autowired
-	private MongoTemplate mongoTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	public List<UsernamePoints> calculateRanging() {
-		Aggregation aggregation = newAggregation(group("userName").sum("points").as("total"),
-				project("total").and("userName").previousOperation(), sort(Sort.Direction.DESC, "total"));
+		final String sql = "Select user_name, sum(points) as total from bet group by user_name order by total desc";
 
-		// Convert the aggregation result into a List
-		AggregationResults<UsernamePoints> aggregationResults = mongoTemplate.aggregate(aggregation, Bet.class, UsernamePoints.class);
-		return aggregationResults.getMappedResults();
+		return namedParameterJdbcTemplate.query(sql, new RowMapper<UsernamePoints>() {
+
+			@Override
+			public UsernamePoints mapRow(ResultSet rs, int rowNum) throws SQLException {
+				UsernamePoints usernamePoints = new UsernamePoints();
+				usernamePoints.setUserName(rs.getString(1));
+				usernamePoints.setTotalPoints(rs.getInt(2));
+				return usernamePoints;
+			}
+		});
 	}
 }

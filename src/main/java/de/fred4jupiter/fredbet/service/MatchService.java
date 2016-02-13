@@ -46,7 +46,7 @@ public class MatchService {
 		return matchRepository.findAll();
 	}
 
-	public MatchCommand findByMatchId(String matchId) {
+	public MatchCommand findByMatchId(Long matchId) {
 		Assert.notNull(matchId);
 		Match match = matchRepository.findOne(matchId);
 		Long numberOfBetsForThisMatch = betRepository.countByMatch(match);
@@ -57,7 +57,7 @@ public class MatchService {
 		return matchCommand;
 	}
 
-	public Match findMatchByMatchId(String matchId) {
+	public Match findMatchByMatchId(Long matchId) {
 		return matchRepository.findOne(matchId);
 	}
 
@@ -71,7 +71,7 @@ public class MatchService {
 		return match;
 	}
 
-	public String save(MatchCommand matchCommand) {
+	public Long save(MatchCommand matchCommand) {
 		Match match = matchRepository.findOne(matchCommand.getMatchId());
 
 		if (match == null) {
@@ -97,7 +97,7 @@ public class MatchService {
 	}
 
 	private List<MatchCommand> toMatchCommandsWithBets(String username, List<Match> allMatches) {
-		final Map<String, Bet> matchToBetMap = findBetsForMatchIds(username);
+		final Map<Long, Bet> matchToBetMap = findBetsForMatchIds(username);
 		final List<MatchCommand> resultList = new ArrayList<>();
 		for (Match match : allMatches) {
 			MatchCommand matchCommand = matchConverter.toMatchCommand(match);
@@ -117,7 +117,7 @@ public class MatchService {
 		return toMatchCommandsWithBets(currentUserName, allMatches);
 	}
 
-	private Map<String, Bet> findBetsForMatchIds(String username) {
+	private Map<Long, Bet> findBetsForMatchIds(String username) {
 		List<Bet> allUserBets = bettingService.findAllByUsername(username);
 		if (CollectionUtils.isEmpty(allUserBets)) {
 			LOG.debug("Could not found any bets for user: {}", username);
@@ -126,8 +126,8 @@ public class MatchService {
 		return toBetMap(allUserBets);
 	}
 
-	private Map<String, Bet> toBetMap(List<Bet> allUserBets) {
-		Map<String, Bet> matchIdBetMap = new HashMap<>();
+	private Map<Long, Bet> toBetMap(List<Bet> allUserBets) {
+		Map<Long, Bet> matchIdBetMap = new HashMap<>();
 		for (Bet bet : allUserBets) {
 			if (bet.getMatch() == null) {
 				LOG.error("No referenced match found for bet={}", bet);
@@ -142,7 +142,7 @@ public class MatchService {
 		matchRepository.deleteAll();
 	}
 
-	public void deleteMatch(String matchId) {
+	public void deleteMatch(Long matchId) {
 		matchRepository.delete(matchId);
 	}
 
