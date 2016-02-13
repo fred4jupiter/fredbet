@@ -20,11 +20,11 @@
 							<thead>
 								<tr>
 									<th>
-										<img th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
+										<img class="flag" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
 										<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
 									</th>
 									<th>
-										<img th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
+										<img class="flag" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
 										<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
 									</th>
 								</tr>

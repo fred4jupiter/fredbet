@@ -14,10 +14,10 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-xs-9">
-								<img th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
+								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameOne}">Deutschland</span>
 								<span> - </span>
-								<img th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
 								<br/>
 								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span><br/>

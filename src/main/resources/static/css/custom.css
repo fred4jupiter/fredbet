@@ -81,6 +81,10 @@ h1 {
 	text-align: center;
 }
 
+img.flag {
+	vertical-align: baseline;
+}
+
 /* For earlier break collapse in navbar */
 @media ( max-width : 1200px) {
 	.navbar-header {
