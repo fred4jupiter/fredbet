@@ -1,0 +1,21 @@
+mariadb:  
+  image: mariadb:10.1.11
+  volumes:
+    - /data/db
+  ports:
+    - "3306:3306"
+  environment:
+   - MYSQL_ROOT_PASSWORD=secred
+
+fredbet:
+  image: fred4jupiter/fredbet
+  links:
+    - mariadb
+  ports:
+    - "8080:8080"
+  environment:
+   - spring.profiles.active=test
+   - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+   - JDBC_USERNAME=root
+   - JDBC_PASSWORD=secred
+   
