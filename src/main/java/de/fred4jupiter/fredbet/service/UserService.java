@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -20,6 +21,7 @@ import de.fred4jupiter.fredbet.web.user.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
 
 @Service
+@Transactional
 public class UserService {
 
 	/**
