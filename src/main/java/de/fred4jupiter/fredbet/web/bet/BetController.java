@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -93,9 +92,6 @@ public class BetController {
             messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
         }
 
-        RedirectViewName redirectViewName = StringUtils.isNotBlank(betCommand.getRedirectViewName())
-                ? RedirectViewName.fromName(betCommand.getRedirectViewName()) : RedirectViewName.DEFAULT_MATCHES;
-
-        return new ModelAndView(redirectViewName.getRedirectViewName());
+        return new ModelAndView(RedirectViewName.resolveRedirect(betCommand.getRedirectViewName()));
     }
 }
