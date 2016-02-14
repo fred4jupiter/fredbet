@@ -69,7 +69,7 @@ public class BetController {
     }
 
     @RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
-    public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam String redirectViewName) {
+    public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
         BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
         betCommand.setMessageUtil(messageUtil);
         betCommand.setRedirectViewName(redirectViewName);
