@@ -127,6 +127,10 @@
 			<artifactId>thymeleaf-extras-java8time</artifactId>
 			<version>2.1.0.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
