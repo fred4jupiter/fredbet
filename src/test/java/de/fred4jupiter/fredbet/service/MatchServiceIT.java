@@ -9,14 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 
-public class MatchServiceIT extends AbstractIntegrationTest {
+public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private MatchService matchService;

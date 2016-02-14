@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Bet;
@@ -18,6 +19,7 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.bet.BetCommand;
 
 @Service
+@Transactional
 public class BettingService {
 
     @Autowired
