@@ -119,6 +119,7 @@ public class MatchController {
         return new ModelAndView("redirect:/matches");
     }
 
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
     @RequestMapping(value = "/matchresult/{id}", method = RequestMethod.GET)
     public ModelAndView matchresultGet(@PathVariable("id") Long matchId) {
         Match match = matchService.findMatchById(matchId);
@@ -128,6 +129,7 @@ public class MatchController {
         return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
     }
 
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
     @RequestMapping(value = "/matchresult", method = RequestMethod.POST)
     public ModelAndView matchresultPost(@Valid MatchResultCommand matchResultCommand, BindingResult result, RedirectAttributes redirect,
             ModelMap modelMap) {
