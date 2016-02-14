@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.FredBetProfile;
 import de.fred4jupiter.fredbet.domain.AppUser;
@@ -57,6 +58,7 @@ public class DataBasePopulator {
 	/**
 	 * Deletes all current bets and matches and inserts new demo data.
 	 */
+	@Transactional
 	public void createEM2016Matches() {
 		LOG.info("createDemoData: deleting all existend bets and matches ...");
 		bettingService.deleteAllBets();
@@ -279,6 +281,7 @@ public class DataBasePopulator {
 		}
 	}
 
+	@Transactional
 	public void createDemoBetsForAllUsers() {
 		List<Match> allMatches = matchService.findAll();
 		List<AppUser> users = userService.findAll();
@@ -292,6 +295,7 @@ public class DataBasePopulator {
 
 	}
 
+	@Transactional
 	public void createDemoResultsForAllUsers() {
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
