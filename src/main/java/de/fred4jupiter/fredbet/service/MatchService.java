@@ -22,6 +22,7 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
+import de.fred4jupiter.fredbet.web.matches.MatchResultCommand;
 
 @Service
 @Transactional
@@ -147,5 +148,16 @@ public class MatchService {
 	public void deleteMatch(Long matchId) {
 		matchRepository.delete(matchId);
 	}
+
+    public Match findMatchById(Long matchId) {
+        return matchRepository.findOne(matchId);
+    }
+
+    public void save(MatchResultCommand matchResultCommand) {
+        Match match = findMatchById(matchResultCommand.getMatchId());
+        match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
+        match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
+        save(match);
+    }
 
 }

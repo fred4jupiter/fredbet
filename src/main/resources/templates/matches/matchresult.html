@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+	<title>Matchergebnis editieren</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>		
+		
+		<form id="matchresultForm" th:action="@{/matches/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form">			
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<input type="hidden" th:field="*{matchId}" class="form-control" />
+					<input type="hidden" th:field="*{teamNameOne}" class="form-control" />
+					<input type="hidden" th:field="*{teamNameTwo}" class="form-control" />
+					<div class="form-group">
+						<table class="table center">
+							<thead>
+								<tr>
+									<th>
+										<img class="flag" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamOne()}}"/>
+										<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
+									</th>
+									<th>
+										<img class="flag" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamTwo()}}"/>
+										<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="success">
+									<td><input type="text" th:field="*{teamResultOne}" class="form-control form-size-small" /></td>
+									<td><input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small" /></td>
+								</tr>
+							</tbody>
+						</table>												
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Speichern</button>
+						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button">Abbrechen</a>	
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

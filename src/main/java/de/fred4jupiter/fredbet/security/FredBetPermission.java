@@ -4,6 +4,8 @@ public interface FredBetPermission {
 
     String PERM_EDIT_MATCH = "PERM_EDIT_MATCH";
     
+    String PERM_EDIT_MATCH_RESULT = "PERM_EDIT_MATCH_RESULT";
+    
     String PERM_CREATE_MATCH = "PERM_CREATE_MATCH";
     
     String PERM_DELETE_MATCH = "PERM_DELETE_MATCH";

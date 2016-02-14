@@ -58,13 +58,16 @@
 					  			</div>  			
 					  			<div class="col-xs-5">
 					  				<div class="row custom-button-group">
-								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Spiel ändern">
-				            						<span class="glyphicon glyphicon-pencil"></span>
-				            				 </a>
-				            				 <a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" 
+								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" class="btn btn-primary" role="button" title="Spiel ändern">
+				            					<span class="glyphicon glyphicon-pencil"></span>
+				            			</a>
+				            			<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matches/matchresult/' + ${matchCommand.matchId}}" class="btn btn-info" role="button" title="Ergebnis eingeben">
+				            					<span class="glyphicon glyphicon-ok"></span>
+				            			</a>
+				            			<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" 
 												   class="btn btn-success" role="button" title="Spiel tippen">
-													<span class="glyphicon glyphicon-hand-up"></span>
-											 </a>
+											<span class="glyphicon glyphicon-hand-up"></span>
+										</a>
 							        </div>						  			
 	       						</div>	       						
        						</div>

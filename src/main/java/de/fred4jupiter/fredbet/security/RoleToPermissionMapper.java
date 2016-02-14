@@ -21,12 +21,14 @@ public class RoleToPermissionMapper {
 
 	@PostConstruct
 	private void init() {
-		PERMISSIONS_ROLE_USER_ADVANCED.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH));
+	    // User Advanced
+		PERMISSIONS_ROLE_USER_ADVANCED.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH_RESULT));
 
+		// User Admin
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_CREATE_MATCH));
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH));
+		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH_RESULT));
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_DELETE_MATCH));
-
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_CREATE_USER));
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_DELETE_USER));
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_PASSWORD_RESET));
