@@ -9,3 +9,5 @@ target/
 .idea/
 *.iml
 
+*.log
+

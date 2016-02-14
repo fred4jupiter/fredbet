@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- With status you can configure the log level for log4j internal logs -->
+<configuration status="warn" packages="org.graylog2.log4j2">
+	<appenders>
+		<Console name="consoleAppender" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %p [%c] - %m%n" />
+		</Console>
+	</appenders>
+
+	<loggers>
+		<logger name="org.springframework" level="WARN" />
+		<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
+
+		<root level="INFO">
+			<appender-ref ref="consoleAppender" />
+		</root>
+	</loggers>
+</configuration>
