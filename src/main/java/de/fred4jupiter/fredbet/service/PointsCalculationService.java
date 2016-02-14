@@ -15,56 +15,57 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 @Service
 public class PointsCalculationService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PointsCalculationService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PointsCalculationService.class);
 
-	@Autowired
-	private BetRepository betRepository;
+    @Autowired
+    private BetRepository betRepository;
 
-	public void calculatePointsFor(final Match match) {
-		List<Bet> allBetsForThisMatch = betRepository.findByMatch(match);
-		for (Bet bet : allBetsForThisMatch) {
-			Integer points = calculatePointsFor(match, bet);
-			bet.setPoints(points);
-			LOG.debug("User {} gets {} points", bet.getUserName(), points);
-		}
-		betRepository.save(allBetsForThisMatch);
-	}
-	
-	Integer calculatePointsFor(Match match, Bet bet) {
-		if (isSameGoalResult(match, bet)) {
-			return 3;
-		}
+    public void calculatePointsFor(final Match match) {
+        List<Bet> allBetsForThisMatch = betRepository.findByMatch(match);
 
-		if (isSameGoalDifference(match, bet)) {
-			return 2;
-		}
+        allBetsForThisMatch.forEach(bet -> {
+            Integer points = calculatePointsFor(match, bet);
+            bet.setPoints(points);
+            LOG.debug("User {} gets {} points", bet.getUserName(), points);
+        });
 
-		if (isCorrectWinner(match, bet)) {
-			return 1;
-		}
-		return 0;
-	}
+        betRepository.save(allBetsForThisMatch);
+    }
 
-	private boolean isCorrectWinner(Match match, Bet bet) {
-		return (match.isTeamOneWinner() && bet.isTeamOneWinner()) || (match.isTeamTwoWinner() && bet.isTeamTwoWinner());
-	}
+    Integer calculatePointsFor(Match match, Bet bet) {
+        if (isSameGoalResult(match, bet)) {
+            return 3;
+        }
 
-	private boolean isSameGoalDifference(Match match, Bet bet) {
-		if (match.isTeamOneWinner() && bet.isTeamTwoWinner()) {
-			return false;
-		}
-		if (match.isTeamTwoWinner() && bet.isTeamOneWinner()) {
-			return false;
-		}
+        if (isSameGoalDifference(match, bet)) {
+            return 2;
+        }
 
-		return match.getGoalDifference().intValue() == bet.getGoalDifference().intValue();
-	}
+        if (isCorrectWinner(match, bet)) {
+            return 1;
+        }
+        return 0;
+    }
 
-	private boolean isSameGoalResult(Match match, Bet bet) {
-		Assert.notNull(match.getGoalsTeamOne(), "no goals team one given");
-		Assert.notNull(match.getGoalsTeamTwo(), "no goals team two given");
-		return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) && match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
-	}
+    private boolean isCorrectWinner(Match match, Bet bet) {
+        return (match.isTeamOneWinner() && bet.isTeamOneWinner()) || (match.isTeamTwoWinner() && bet.isTeamTwoWinner());
+    }
 
-	
+    private boolean isSameGoalDifference(Match match, Bet bet) {
+        if (match.isTeamOneWinner() && bet.isTeamTwoWinner()) {
+            return false;
+        }
+        if (match.isTeamTwoWinner() && bet.isTeamOneWinner()) {
+            return false;
+        }
+
+        return match.getGoalDifference().intValue() == bet.getGoalDifference().intValue();
+    }
+
+    private boolean isSameGoalResult(Match match, Bet bet) {
+        Assert.notNull(match.getGoalsTeamOne(), "no goals team one given");
+        Assert.notNull(match.getGoalsTeamTwo(), "no goals team two given");
+        return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) && match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
+    }
+
 }
