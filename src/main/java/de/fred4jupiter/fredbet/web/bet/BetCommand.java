@@ -23,6 +23,8 @@ public class BetCommand {
 	private Integer goalsTeamTwo;
 
 	private MessageUtil messageUtil;
+	
+	private String redirectViewName;
 
 	public BetCommand() {
 	}
@@ -144,4 +146,12 @@ public class BetCommand {
 	public void setNameTeamTwo(String nameTeamTwo) {
 		this.nameTeamTwo = nameTeamTwo;
 	}
+
+    public String getRedirectViewName() {
+        return redirectViewName;
+    }
+
+    public void setRedirectViewName(String redirectViewName) {
+        this.redirectViewName = redirectViewName;
+    }
 }
