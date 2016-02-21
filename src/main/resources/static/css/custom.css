@@ -31,8 +31,13 @@ h1 {
 }
 
 .goal_padding {
-	padding-top: 5px;
+	padding-top: 0px;
 	padding-bottom: 5px;
+}
+
+.goal_padding_bigger {
+	padding-top: 0px;
+	padding-bottom: 15px;
 }
 
 .ranking-name {

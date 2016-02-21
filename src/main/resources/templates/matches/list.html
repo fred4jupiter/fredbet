@@ -33,15 +33,15 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-xs-2">
-									<div class="short-div">
+									<div class="short-div goal_padding">
 										<img th:src="@{/images/final_flag.png}" title="Ergebnis"/>
 									</div>
-									<div class="short-div">										
+									<div class="short-div goal_padding">										
 										<img th:src="@{/images/gaming_cube.png}" title="getippt"/>
 									</div>							  									  		
 					  			</div>					
 					  			<div class="col-xs-4 full-box">				
-					  				<div class="short-div goal_padding">
+					  				<div class="short-div goal_padding_bigger">
 					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultOne != null} ? label-info : label-default" 
 					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
 								  		<span> : </span>
