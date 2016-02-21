@@ -18,6 +18,8 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul th:if="${@securityBean.isUserLoggedIn()}" class="nav navbar-nav">
+					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
+					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
 					<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
 					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
 					<li class="dropdown" th:classappend="${pageState_group}">
@@ -39,9 +41,7 @@
 			            <li th:class="${pageState_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
 			            <li th:class="${pageState_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
 			          </ul>
-			        </li>
-					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
-					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
+			        </li>					
 				  	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
 				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
 				  	<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.administration}"></a></li>
