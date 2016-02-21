@@ -30,9 +30,9 @@ h1 {
 	background-color: mintcream;
 }
 
-.betting-results {
-	padding-top: 10px;
-	padding-bottom: 10px;
+.goal_padding {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .ranking-name {
