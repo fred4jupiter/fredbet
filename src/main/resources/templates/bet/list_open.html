@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Noch nicht getippt</title>
+	<title>Noch nicht getippt</title>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -20,7 +20,9 @@
 								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
 								<br/>
-								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ' Uhr'}">Fr 04.08.2015, 19:15 Uhr</span><br/>
+								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ' Uhr'}">Fr 04.08.2015, 19:15 Uhr</span>
+								<br/>
+								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
 								<span th:text="${matchCommand.stadium}">Stadium</span>							  		
 				  			</div>		
 				  			<div class="col-xs-3">
