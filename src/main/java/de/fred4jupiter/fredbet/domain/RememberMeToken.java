@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,9 +17,14 @@ public class RememberMeToken {
 	@GeneratedValue
 	private Long id;
 
+	@Column(name = "USERNAME")
 	private String username;
+	
+	@Column(name = "SERIES", unique = true)
 	private String series;
+	
 	private String tokenValue;
+	
 	private Date lastUsed;
 	
 	protected RememberMeToken() {
