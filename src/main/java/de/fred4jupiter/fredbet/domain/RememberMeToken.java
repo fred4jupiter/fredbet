@@ -20,7 +20,7 @@ public class RememberMeToken {
 	@Column(name = "USERNAME")
 	private String username;
 	
-	@Column(name = "SERIES", unique = true)
+	@Column(name = "SERIES")
 	private String series;
 	
 	private String tokenValue;
