@@ -33,6 +33,7 @@ public class UserCommand {
     public UserCommand() {
         List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
         this.availableRoles.addAll(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
+        this.roles.add(FredBetRole.ROLE_USER.name());
     }
 
     public List<String> getAvailableRoles() {
