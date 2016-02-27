@@ -11,26 +11,16 @@ The application is available under [http://localhost:8080/](http://localhost:808
 	mvn clean install docker:build
 	docker run -d -p 8080:8080 fred4jupiter/fredbet
 
-This will build (and run) an image with name `fred4jupiter/fredbet`. In the `dev` profile (which will be activated if no profile is specified) the application starts with an embedded in-memory MongoDB.
+This will build (and run) an image with name `fred4jupiter/fredbet`. In the `dev` profile (which will be activated if no profile is specified) the application starts with an embedded in-memory H2 database.
 
-### Running with data replication
+## Running within Docker Compose##
 
-There are examples for running the application with a MongoDB-Replica Set. See
+There is a docker compose file available to run the application with a MariaDB database in one docker container and the application in another. For that run
 
-	src/docker/test/docker-compose.yml
-	src/docker/test/tutum-test-replicaset.yml
+	cd src/docker/docker-compose/mariadb
+	docker-compose up -d
 
-for this purpose.
-
-## Other Notes ##
-
-Notes for pushing into Tutums private repository:
-
-	docker login tutum.co
-	docker tag <USERNAME>/fredbet tutum.co/<USERNAME>/fredbet
-	docker push tutum.co/<USERNAME>/fredbet
-
-Replace `<USERNAME>` with your real user name.
+The application is available under [http://localhost:8080/](http://localhost:8080/).
 
 ## Travis Build Status ##
 [![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
