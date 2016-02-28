@@ -13,7 +13,7 @@ h1 {
 }
 
 .big-badge {
-	font-size: 16px;
+	font-size: 15px;
 }
 
 .bold {
@@ -24,6 +24,10 @@ h1 {
 	display: inline-block;
 	vertical-align: middle;
 	float: none;
+}
+
+.button-bar {
+	padding-top: 14px;
 }
 
 .list-group-item {
@@ -38,6 +42,23 @@ h1 {
 .goal_padding_bigger {
 	padding-top: 3px;
 	padding-bottom: 13px;
+}
+
+.no-left-right-padding {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.no-right-padding {
+	padding-right: 0px;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	float: right;
 }
 
 .ranking-name {
@@ -61,7 +82,7 @@ h1 {
 
 .custom-button-group {
 	float: right;
-	padding-right: 20px;
+	padding-right: 15px;
 }
 
 .teamName {

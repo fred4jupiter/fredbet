@@ -41,10 +41,15 @@
 			            <li th:class="${pageState_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
 			            <li th:class="${pageState_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
 			          </ul>
-			        </li>					
-				  	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
-				  	<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
-				  	<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.administration}"></a></li>
+			        </li>
+			        <li class="dropdown" th:classappend="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{navigation.administration}"><span class="caret"></span></a>
+			        	<ul class="dropdown-menu">
+				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
+					  		<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
+					  		<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a></li>
+			        	</ul>
+			        </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()} == false">
