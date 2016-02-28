@@ -1,0 +1,35 @@
+mariadb:  
+  image: mariadb:10.1.11
+  volumes:
+    - /data/db
+  ports:
+    - "3306:3306"
+  environment:
+   - MYSQL_DATABASE=fredbetdb
+   - MYSQL_ROOT_PASSWORD=secred
+   - MYSQL_USER=fred
+   - MYSQL_PASSWORD=fred
+
+fredbet:
+  image: fred4jupiter/fredbet
+  links:
+    - mariadb:mariadb
+    - graylog
+  ports:
+    - "8080:8080"
+  environment:
+   - spring.profiles.active=test
+   - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+   - JDBC_USERNAME=fred
+   - JDBC_PASSWORD=fred
+#  log_driver: "gelf"
+#  log_opt:
+#   gelf-address: "udp://0.0.0.0:12201"
+#   gelf-tag: "first-logs"
+
+graylog:
+  image: graylog2/allinone
+  ports:
+    - "9000:9000"
+    - "12201:12201"
+    - "12202:12202"
