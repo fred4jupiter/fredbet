@@ -1,1 +1,0 @@
-DROP INDEX UK_SERIES ON rememberme_token;

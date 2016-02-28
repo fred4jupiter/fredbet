@@ -1,1 +1,0 @@
-ALTER TABLE rememberme_token ADD UNIQUE INDEX UK_SERIES (series);
