@@ -13,21 +13,19 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-xs-10">
+								<div class="col-xs-12">
 									<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>									
 							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 							  		<span> - </span>
 							  		<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
-									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ' Uhr'}"></span>
+									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}">1</span>							  		
 									<br/> 
 									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
-									<span th:text="${matchCommand.stadium}"></span>							  		
-					  			</div>
-					  			<div class="col-xs-2 vcenter">
-					  				<span class="label label-warning label-as-badge big-badge" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}">1</span>
-					  			</div>
+									<span th:text="${matchCommand.stadium}"></span>
+					  			</div>					  			
 				  			</div>				  									
 						</div>
 						<div class="panel-body">
@@ -56,7 +54,7 @@
 							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
 					  				</div>
 					  			</div>  			
-					  			<div class="col-xs-6">
+					  			<div class="col-xs-6 button-bar">
 					  				<div class="row center">
 								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" 
 								              class="btn btn-primary" role="button" title="Spiel ändern">
