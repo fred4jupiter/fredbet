@@ -3,7 +3,7 @@
 # release section
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}.$GO_PIPELINE_COUNTER versions:commit
 mvn build-helper:parse-version scm:tag -Dbasedir=. -Dtag=release_\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}.$GO_PIPELINE_COUNTER -Dusername=$GITHUB_USERNAME -Dpassword=$GITHUB_PASSWORD
-mvn package
+mvn verify -DskipTests
 docker build -t opitzconsulting/fredbet .
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}-SNAPSHOT versions:commit
 
