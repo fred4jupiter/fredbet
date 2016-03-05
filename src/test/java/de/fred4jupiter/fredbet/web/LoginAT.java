@@ -32,7 +32,7 @@ public class LoginAT extends FluentTest {
 	private String getURL() {
 		return "http://localhost:" + serverPort;
 	}
-	
+
 	@Override
 	public WebDriver getDefaultDriver() {
 		return new HtmlUnitDriver();
@@ -40,7 +40,7 @@ public class LoginAT extends FluentTest {
 
 	@Test
 	public void login() {
-		LOG.debug("try to call URL=" + getURL());
+		LOG.debug("try to call URL={}", getURL());
 
 		goTo(getURL());
 
