@@ -1,13 +1,12 @@
 package de.fred4jupiter.fredbet.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
+import org.fluentlenium.adapter.FluentTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,36 +22,32 @@ import de.fred4jupiter.fredbet.Application;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebIntegrationTest("server.port:0")
 @ActiveProfiles("dev")
-public class LoginAT {
+public class LoginAT extends FluentTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginAT.class);
 
 	@Value("${local.server.port}")
 	private int serverPort;
 
-	private WebDriver driver = new HtmlUnitDriver();
-
 	private String getURL() {
 		return "http://localhost:" + serverPort;
+	}
+	
+	@Override
+	public WebDriver getDefaultDriver() {
+		return new HtmlUnitDriver();
 	}
 
 	@Test
 	public void login() {
 		LOG.debug("try to call URL=" + getURL());
 
-		driver.get(getURL());
+		goTo(getURL());
 
-		WebElement header = driver.findElement(By.tagName("h1"));
-		assertEquals("Login", header.getText());
+		fill("#username").with("admin");
+		fill("#password").with("admin");
 
-		WebElement userNameElement = driver.findElement(By.id("username"));
-		assertNotNull(userNameElement);
-		userNameElement.sendKeys("admin");
-
-		WebElement passwordElement = driver.findElement(By.id("password"));
-		passwordElement.sendKeys("admin");
-
-		passwordElement.submit();
-		assertEquals("Spiele", driver.getTitle());
+		submit("#loginSubmitBtn");
+		assertThat(title(), equalTo("Spiele"));
 	}
 }
