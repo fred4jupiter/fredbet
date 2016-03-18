@@ -53,9 +53,7 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 		}
 
 		if (requestURI.contains("group")) {
-			if (containsFinalGroups(requestURI)) {
-				modelAndView.addObject(PAGE_STATE_REFIX + "finals", CSS_ACTIVE);
-			} else if (containsMainGroups(requestURI)) {
+			if (containsMainGroups(requestURI) || containsFinalGroups(requestURI)) {
 				modelAndView.addObject(PAGE_STATE_REFIX + "group", CSS_ACTIVE);
 			}
 
