@@ -23,18 +23,24 @@
 					<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
 					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
 					<li class="dropdown" th:classappend="${pageState_group}">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{groups}"><span class="caret"></span></a>
-			          <ul class="dropdown-menu">
-			            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
-			            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
-			            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
-			            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
-			            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
-			            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>			            			            
-			          </ul>
+			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			        		<span th:text="#{groups}" th:remove="tag"></span>			        		
+			        		<span class="caret"></span>
+			        	</a>
+				        <ul class="dropdown-menu">
+				            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
+				            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
+				            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
+				            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
+				            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
+				            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>
+				        </ul>
 			        </li>
 			        <li class="dropdown" th:classappend="${pageState_finals}">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{finals}">Finals<span class="caret"></span></a>
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			          		<span th:text="#{finals}" th:remove="tag"></span>			        		
+			        		<span class="caret"></span>
+			          </a>
 			          <ul class="dropdown-menu">
 			            <li th:class="${pageState_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
 			            <li th:class="${pageState_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
@@ -43,7 +49,10 @@
 			          </ul>
 			        </li>
 			        <li class="dropdown" th:classappend="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{navigation.administration}"><span class="caret"></span></a>
+			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
+			        		<span class="caret"></span>
+			        	</a>
 			        	<ul class="dropdown-menu">
 				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
 					  		<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
