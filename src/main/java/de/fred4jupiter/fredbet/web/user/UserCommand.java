@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.ui.ModelMap;
 
 import de.fred4jupiter.fredbet.security.FredBetRole;
+import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class UserCommand {
@@ -116,5 +117,10 @@ public class UserCommand {
 
     public void setResetPassword(boolean resetPassword) {
         this.resetPassword = resetPassword;
+    }
+    
+    public boolean isUserItself() {
+    	String loggedInUser = SecurityUtils.getCurrentUser().getUsername();
+    	return loggedInUser.equals(username);
     }
 }
