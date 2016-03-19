@@ -64,13 +64,11 @@
 						<ul class="dropdown-menu">
 							<li th:class="${pageState_userprofile_changePassword}"><a href="#changePassword" th:href="@{/userprofile/changePassword}" th:text="#{navigation.changePassword}"></a></li>
 							<li>
-                                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();" th:text="#{navigation.logout}">
-                                    <span class="glyphicon glyphicon-log-out"></span></a>
-								<form id="form" method="post" action="#" th:action="@{/logout}">
-								</form>
+                                <a th:href="@{/logout}" th:text="#{navigation.logout}"></a>								
 							</li>
-						</ul>
+						</ul>						
 					</li>
+					<li th:if="${@securityBean.isUserLoggedIn()} == true"><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span></a></li>					
 				</ul>
 			</div>
 		</div>
