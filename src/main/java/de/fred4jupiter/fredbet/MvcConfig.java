@@ -16,6 +16,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
+import de.fred4jupiter.fredbet.web.ExecutionTimeInterceptor;
 
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
@@ -30,6 +31,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new ActivePageHandlerInterceptor());
 		registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(new ExecutionTimeInterceptor());
 	}
 
 	@Bean
