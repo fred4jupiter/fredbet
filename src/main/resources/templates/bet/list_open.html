@@ -12,8 +12,8 @@
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<div class="row">
-							<div class="col-xs-9">
+						<div class="col-xs-9">
+							<div class="row">
 								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameOne}">Deutschland</span>
 								<span> - </span>
@@ -23,15 +23,15 @@
 								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span>
 								<br/>
 								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
-								<span th:text="${matchCommand.stadium}">Stadium</span>							  		
-				  			</div>		
-				  			<div class="col-xs-3 button-bar">
-					  			<div class="row center">
-									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" 
-										class="btn btn-success" role="button">
-										<span class="glyphicon glyphicon-hand-up"></span>
-									</a>
-	       						</div>
+								<span th:text="${matchCommand.stadium}">Stadium</span>
+							</div>							  		
+			  			</div>		
+			  			<div class="col-xs-3 button-bar">
+							<div class="row center">
+								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" 
+									class="btn btn-success" role="button">
+									<span class="glyphicon glyphicon-hand-up"></span>
+								</a>
        						</div>
       					</div>
 				   </div>					   
