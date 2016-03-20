@@ -25,8 +25,8 @@
 								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
 								<span th:text="${matchCommand.stadium}">Stadium</span>							  		
 				  			</div>		
-				  			<div class="col-xs-3">
-					  			<div class="btn-group">
+				  			<div class="col-xs-3 button-bar">
+					  			<div class="row center">
 									<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" 
 										class="btn btn-success" role="button">
 										<span class="glyphicon glyphicon-hand-up"></span>
