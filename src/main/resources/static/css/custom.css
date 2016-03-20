@@ -111,6 +111,7 @@ img.flag {
 	vertical-align: baseline;
 }
 
+/** justified break point for navigation collapse on tablets */
 @media (max-width: 991px) {
     .navbar-header {
         float: none;
