@@ -20,7 +20,7 @@
 								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}">Italien</span>
 								<br/>
-								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm') + ' Uhr'}">Fr 04.08.2015, 19:15 Uhr</span>
+								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}">Fr 04.08.2015, 19:15 Uhr</span>
 								<br/>
 								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
 								<span th:text="${matchCommand.stadium}">Stadium</span>							  		
