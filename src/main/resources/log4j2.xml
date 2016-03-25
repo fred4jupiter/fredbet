@@ -2,7 +2,18 @@
 <!-- With status you can configure the log level for log4j internal logs -->
 <configuration status="warn" packages="org.graylog2.log4j2">
 	<appenders>
-<!-- 		 <GELF name="gelfAppender" server="graylog" port="12202" hostName="fredbet_docker" protocol="TCP" additionalFields="environment=DEV,application=fredbet" /> -->
+		<Gelf name="gelfAppender" host="udp:localhost" server="graylog" port="12202" originHost="%host{fqdn}" protocol="UDP" hostName="fredbet_docker"
+			additionalFields="environment=TEST,application=fredbet">
+			<Field name="timestamp" pattern="%d{dd MMM yyyy HH:mm:ss,SSS}" />
+			<Field name="level" pattern="%level" />
+			<Field name="simpleClassName" pattern="%C{1}" />
+
+			<Field name="applicationName" literal="fredbet" />
+
+			<!-- This is a field using MDC -->
+			<Field name="mdcField2" mdc="mdcField2" />
+			<DynamicMdcFields regex="mdc.*" />
+		</Gelf>
 
 		<File name="fileAppender" fileName="fredbet.log">
 			<PatternLayout>
@@ -20,7 +31,7 @@
 		<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
 
 		<root level="INFO">
-<!-- 			<appender-ref ref="gelfAppender" /> -->
+			<appender-ref ref="gelfAppender" />
 			<appender-ref ref="fileAppender" />
 			<appender-ref ref="consoleAppender" />
 		</root>
