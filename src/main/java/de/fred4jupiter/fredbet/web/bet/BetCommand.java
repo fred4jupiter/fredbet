@@ -23,7 +23,7 @@ public class BetCommand {
 	private Integer goalsTeamTwo;
 
 	private MessageUtil messageUtil;
-	
+
 	private String redirectViewName;
 
 	public BetCommand() {
@@ -56,11 +56,15 @@ public class BetCommand {
 	}
 
 	public String getTeamNameOne() {
-		return !Country.NONE.equals(this.countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
+		return hasContrySet(this.countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
 	}
 
 	public String getTeamNameTwo() {
-		return !Country.NONE.equals(this.countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
+		return hasContrySet(this.countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
+	}
+
+	private boolean hasContrySet(Country country) {
+		return country != null && !Country.NONE.equals(country);
 	}
 
 	public Integer getGoalsTeamOne() {
@@ -96,7 +100,7 @@ public class BetCommand {
 	}
 
 	public boolean isShowCountryIcons() {
-		return !Country.NONE.equals(this.countryTeamOne) && !Country.NONE.equals(this.countryTeamTwo);
+		return hasContrySet(this.countryTeamOne) && hasContrySet(this.countryTeamTwo);
 	}
 
 	public String getIconPathTeamOne() {
@@ -147,11 +151,11 @@ public class BetCommand {
 		this.nameTeamTwo = nameTeamTwo;
 	}
 
-    public String getRedirectViewName() {
-        return redirectViewName;
-    }
+	public String getRedirectViewName() {
+		return redirectViewName;
+	}
 
-    public void setRedirectViewName(String redirectViewName) {
-        this.redirectViewName = redirectViewName;
-    }
+	public void setRedirectViewName(String redirectViewName) {
+		this.redirectViewName = redirectViewName;
+	}
 }
