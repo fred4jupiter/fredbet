@@ -35,9 +35,9 @@ public class ExecutionTimeInterceptor extends HandlerInterceptorAdapter {
 
 		final String requestURI = request.getRequestURI();
 
-		ThreadContext.put("mdc.executeTime", "" + executeTime);
+		ThreadContext.put("mdc.executionTime", "" + executeTime);
 
-		LOG.debug("requestURI={}, executeTime={}", requestURI, executeTime);
+		LOG.debug("requestURI={}, executionTime={}", requestURI, executeTime);
 
 		ThreadContext.clearMap();
 	}

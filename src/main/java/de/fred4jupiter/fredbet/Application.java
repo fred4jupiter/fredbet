@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.h2.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,7 +31,7 @@ public class Application {
 
 	@Autowired
 	private Environment environment;
-	
+
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
 		app.addInitializers(new AppInitializer());
@@ -42,22 +43,23 @@ public class Application {
 		return PropertiesLoaderUtils.loadProperties(new ClassPathResource("build.properties"));
 	}
 
-	@Bean
-	public HikariConfig hikariConfig() {
-		HikariConfig config = new HikariConfig();
-		config.setPoolName("FredBet");
-		config.setConnectionTestQuery("SELECT 1 FROM DUAL");
-		config.setDriverClassName(environment.getProperty("spring.datasource.driverclassName"));
-		config.setJdbcUrl(environment.getProperty("spring.datasource.url"));
-		config.setUsername(environment.getProperty("spring.datasource.username"));
-		config.setPassword(environment.getProperty("spring.datasource.password"));
-		config.setMaximumPoolSize(10);
-		config.setIdleTimeout(30000);
-		return config;
-	}
-
 	@Bean(destroyMethod = "close")
-	public DataSource dataSource(HikariConfig hikariConfig) {
-		return new HikariDataSource(hikariConfig);
+	public DataSource dataSource() {
+		HikariConfig config = new HikariConfig();
+		config.setPoolName("FredBetCP");
+		config.setConnectionTestQuery("SELECT 1");
+		config.setJdbcUrl(environment.getProperty("fredbet.db.url"));
+		config.setUsername(environment.getProperty("fredbet.db.username"));
+		config.setPassword(environment.getProperty("fredbet.db.password"));
+		config.setMaximumPoolSize(20);
+		config.setIdleTimeout(30000);
+
+		if (environment.acceptsProfiles("dev", "default")) {
+			config.setDriverClassName(org.h2.Driver.class.getName());
+		} else {
+			config.setDriverClassName(org.mariadb.jdbc.Driver.class.getName());
+		}
+
+		return new HikariDataSource(config);
 	}
 }
