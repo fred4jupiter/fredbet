@@ -60,7 +60,7 @@ public class DataBasePopulator {
      */
     @Transactional
     public void createEM2016Matches() {
-        LOG.info("createDemoData: deleting all existend bets and matches ...");
+        LOG.info("createEM2016Matches: deleting all existend bets and matches ...");
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
 
