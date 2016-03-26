@@ -75,7 +75,10 @@ public class MatchService {
 	}
 
 	public Long save(MatchCommand matchCommand) {
-		Match match = matchRepository.findOne(matchCommand.getMatchId());
+		Match match = null;
+		if (matchCommand.getMatchId() != null) {
+			match = matchRepository.findOne(matchCommand.getMatchId());
+		}
 
 		if (match == null) {
 			match = new Match();
@@ -149,15 +152,15 @@ public class MatchService {
 		matchRepository.delete(matchId);
 	}
 
-    public Match findMatchById(Long matchId) {
-        return matchRepository.findOne(matchId);
-    }
+	public Match findMatchById(Long matchId) {
+		return matchRepository.findOne(matchId);
+	}
 
-    public void save(MatchResultCommand matchResultCommand) {
-        Match match = findMatchById(matchResultCommand.getMatchId());
-        match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
-        match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
-        save(match);
-    }
+	public void save(MatchResultCommand matchResultCommand) {
+		Match match = findMatchById(matchResultCommand.getMatchId());
+		match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
+		match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
+		save(match);
+	}
 
 }
