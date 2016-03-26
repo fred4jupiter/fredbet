@@ -21,15 +21,20 @@ fredbet:
    - spring.profiles.active=test
    - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
    - JDBC_USERNAME=fred
-   - JDBC_PASSWORD=fred
-#  log_driver: "gelf"
-#  log_opt:
-#   gelf-address: "udp://0.0.0.0:12201"
-#   gelf-tag: "first-logs"
+   - JDBC_PASSWORD=fred  
+  log_driver: "gelf"
+  log_opt:
+    gelf-address: "udp://0.0.0.0:12203"   
 
 graylog:
   image: graylog2/allinone
+  environment:    
+    GRAYLOG_USERNAME: admin
+    GRAYLOG_PASSWORD: admin
+    GRAYLOG_TIMEZONE: Europe/Berlin
+    GRAYLOG_SERVER_SECRET:    
   ports:
     - "9000:9000"
     - "12201:12201"
     - "12202:12202"
+    - "12203:12203"
