@@ -30,6 +30,12 @@ public class Application {
 
 	@Autowired
 	private Environment environment;
+	
+	static {
+		// to avoid warning 'Unable to instantiate
+		// org.fusesource.jansi.WindowsAnsiOutputStream'
+		System.setProperty("log4j.skipJansi", "true");
+	}
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);

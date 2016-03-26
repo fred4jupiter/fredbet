@@ -2,7 +2,8 @@
 <!-- With status you can configure the log level for log4j internal logs -->
 <configuration status="warn" packages="org.graylog2.log4j2">
 	<appenders>
-		<GELF name="gelfAppender" server="graylog" port="12202" hostName="fredbet_docker" protocol="UDP" additionalFields="environment=TEST,application=fredbet" />
+		<GELF name="gelfAppender" server="graylog" port="12202" hostName="fredbet_docker" protocol="UDP"
+			additionalFields="environment=TEST,application=fredbet" />
 
 		<File name="fileAppender" fileName="fredbet.log">
 			<PatternLayout>
