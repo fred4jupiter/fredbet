@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
@@ -23,12 +24,6 @@ import de.fred4jupiter.fredbet.web.user.UserCommand;
 @Service
 @Transactional
 public class UserService {
-
-	/**
-	 * This is the default password a user gets assigned if the password reset
-	 * function has been applied.
-	 */
-	private static final String DEFAULT_PASSWORD_ON_RESET = "em2016";
 
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
@@ -70,7 +65,7 @@ public class UserService {
 		appUser.setRoles(userCommand.getRoles());
 
 		if (userCommand.isResetPassword()) {
-			appUser.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD_ON_RESET));
+			appUser.setPassword(passwordEncoder.encode(FredbetConstants.DEFAULT_PASSWORD_ON_RESET));
 		}
 
 		updateAppUser(appUser);

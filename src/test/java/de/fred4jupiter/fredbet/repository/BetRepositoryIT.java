@@ -24,10 +24,10 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private BetRepository betRepository;
-	
+
 	@Autowired
 	private MatchRepository matchRepository;
-	
+
 	@Before
 	public void setup() {
 		betRepository.deleteAll();
