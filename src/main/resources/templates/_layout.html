@@ -9,19 +9,18 @@
 		<link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" />
 		<!-- Optional theme -->
 		<link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css}" />
-		<link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}"  media="screen"/>	
-		
+		<link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen"/>	
 		<link rel="stylesheet" th:href="@{/css/custom.css}" />
 	</head>
-<body>
-	<nav th:include="_navigation :: menu" class="navbar navbar-inverse navbar-fixed-top"></nav>
-	<div class="container" role="main">		
-		<div layout:fragment="content" class="container" role="main" style="padding-top: 70px;">Content Placeholder</div>
-	</div>
-	<script type="text/javascript" th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-	<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>	
-	<script type="text/javascript" src="../../static/js/bootstrap-datetimepicker.js" th:src="@{/js/bootstrap-datetimepicker.js}" charset="UTF-8"></script>
-	<script type="text/javascript" src="../../static/js/bootstrap-datetimepicker.de.js" th:src="@{/js/bootstrap-datetimepicker.de.js}" charset="UTF-8"></script>
-	<script type="text/javascript" src="../../static/js/datepicker-selection.js" th:src="@{/js/datepicker-selection.js}" charset="UTF-8"></script>
-</body>
+	<body>
+		<nav th:include="_navigation :: menu" class="navbar navbar-inverse navbar-fixed-top"></nav>
+		<div class="container" role="main">		
+			<div layout:fragment="content" class="container" role="main" style="padding-top: 70px;">Content Placeholder</div>
+		</div>
+		<script type="text/javascript" th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>	
+		<script type="text/javascript" src="../../static/js/bootstrap-datetimepicker.js" th:src="@{/js/bootstrap-datetimepicker.js}" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../static/js/bootstrap-datetimepicker.de.js" th:src="@{/js/bootstrap-datetimepicker.de.js}" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../static/js/datepicker-selection.js" th:src="@{/js/datepicker-selection.js}" charset="UTF-8"></script>
+	</body>
 </html>
