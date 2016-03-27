@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().anyRequest().authenticated();
 
-		http.formLogin().loginPage("/login").permitAll();
+		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
