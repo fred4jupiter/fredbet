@@ -31,67 +31,73 @@ import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 @RequestMapping("/bet")
 public class BetController {
 
-    private static final String VIEW_LIST_OPEN = "bet/list_open";
+	private static final String VIEW_LIST_OPEN = "bet/list_open";
 
-    private static final String VIEW_LIST = "bet/list";
+	private static final String VIEW_LIST = "bet/list";
 
-    private static final String VIEW_EDIT = "bet/edit";
+	private static final String VIEW_EDIT = "bet/edit";
 
-    @Autowired
-    private BettingService bettingService;
+	@Autowired
+	private BettingService bettingService;
 
-    @Autowired
-    private SecurityBean securityBean;
+	@Autowired
+	private SecurityBean securityBean;
 
-    @Autowired
-    private MessageUtil messageUtil;
+	@Autowired
+	private MessageUtil messageUtil;
 
-    @Autowired
-    private MatchConverter matchConverter;
+	@Autowired
+	private MatchConverter matchConverter;
 
-    @RequestMapping
-    public ModelAndView list() {
-        List<Bet> allBets = bettingService.findAllByUsername(securityBean.getCurrentUserName());
-        return new ModelAndView(VIEW_LIST, "allBets", allBets);
-    }
+	@RequestMapping
+	public ModelAndView list() {
+		List<Bet> allBets = bettingService.findAllByUsername(securityBean.getCurrentUserName());
+		return new ModelAndView(VIEW_LIST, "allBets", allBets);
+	}
 
-    @RequestMapping("/open")
-    public ModelAndView listStillOpen(ModelMap modelMap) {
-        List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
-        if (CollectionUtils.isEmpty(matchesToBet)) {
-            messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
-        }
+	@RequestMapping("/open")
+	public ModelAndView listStillOpen(ModelMap modelMap) {
+		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
+		if (CollectionUtils.isEmpty(matchesToBet)) {
+			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
+		}
 
-        List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchConverter.toMatchCommand(match))
-                .collect(Collectors.toList());
-        return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
-    }
+		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchConverter.toMatchCommand(match))
+				.collect(Collectors.toList());
+		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
+	}
 
-    @RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
-    public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
-        BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
-        betCommand.setMessageUtil(messageUtil);
-        betCommand.setRedirectViewName(redirectViewName);
+	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
+	public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
+		BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
+		betCommand.setMessageUtil(messageUtil);
+		betCommand.setRedirectViewName(redirectViewName);
 
-        return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
-    }
+		return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+	}
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
-        betCommand.setMessageUtil(messageUtil);
+	@RequestMapping(method = RequestMethod.POST)
+	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
+		betCommand.setMessageUtil(messageUtil);
 
-        if (!betCommand.hasGoalsSet()) {
-            messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
-            return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
-        }
+		if (!betCommand.hasGoalsSet()) {
+			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
+			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+		}
 
-        try {
-            bettingService.save(betCommand);
-            messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
-        } catch (NoBettingAfterMatchStartedAllowedException e) {
-            messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
-        }
+		try {
+			bettingService.save(betCommand);
+			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
+		} catch (NoBettingAfterMatchStartedAllowedException e) {
+			messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
+		}
 
-        return new ModelAndView(RedirectViewName.resolveRedirect(betCommand.getRedirectViewName()));
-    }
+		return new ModelAndView(RedirectViewName.resolveRedirect(betCommand.getRedirectViewName()));
+	}
+
+	@RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
+	public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId) {
+		AllBetsCommand allBetsCommand = bettingService.findAllBetsForMatchId(matchId);
+		return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
+	}
 }

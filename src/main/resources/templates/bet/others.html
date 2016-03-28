@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+	<title>Tipps der anderen Benutzer</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1>Tipps der anderen...</h1>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-12">
+								<img class="flag" th:if="${allBetsCommand.isShowCountryIcons()}" th:src="@{${allBetsCommand.getIconPathTeamOne()}}"/>									
+						  		<span class="bold" th:text="${allBetsCommand.teamNameOne}"></span>
+						  		<span> - </span>
+						  		<img class="flag" th:if="${allBetsCommand.isShowCountryIcons()}" th:src="@{${allBetsCommand.getIconPathTeamTwo()}}"/>
+						  		<span class="bold" th:text="${allBetsCommand.teamNameTwo}"></span>
+								<br/>
+								<span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>																  		
+								<br/> 
+								<span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
+								<span th:text="${allBetsCommand.stadium}"></span>
+				  			</div>					  			
+			  			</div>				  									
+					</div>
+					<div class="panel-body">
+						<div class="row" th:each="bet : ${allBetsCommand.allBetsForMatch}">
+							<div class="col-xs-6">
+								<span th:text="${bet.userName}" class="ranking-name"></span>			  									  		
+				  			</div>					
+				  			<div class="col-xs-6 goal-badges">				
+				  				<div class="short-div goal_padding_bigger">
+				  					<span class="label label-as-badge big-badge label-success" th:text="${bet.goalsTeamOne}"></span>
+							  		<span> : </span>
+						  			<span class="label label-as-badge big-badge label-success" th:text="${bet.goalsTeamTwo}"></span>
+				  				</div>	  			
+				  			</div>  			
+     					</div>
+     					<div class="row">
+	     					<div class="col-xs-12 button-bar">
+					  			<a th:href="@{/matches}" class="btn btn-default" role="button">zurück</a>
+					  		</div>
+     					</div>
+				   </div>					   
+				</div>
+			</div>		
+		</div>
+	</div>
+</body>
+</html>

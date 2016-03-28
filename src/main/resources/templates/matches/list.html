@@ -32,7 +32,10 @@
 							<div class="row">
 								<div class="col-xs-2 center">
 									<div class="short-div goal_padding">
-										<span class="fa fa-thumbs-o-up fa-2x" title="getippt"></span>
+										<a th:if="${matchCommand.hasMatchStarted()}" th:href="@{'/bet/others/match/' + ${matchCommand.matchId}}">
+											<span class="fa fa-thumbs-o-up fa-2x" title="getippt"></span>
+										</a>
+										<span th:if="${!matchCommand.hasMatchStarted()}" class="fa fa-thumbs-o-up fa-2x" title="getippt"></span>
 									</div>
 									<div class="short-div goal_padding">
 										<span class="fa fa-trophy fa-2x" title="Ergebnis"></span>
