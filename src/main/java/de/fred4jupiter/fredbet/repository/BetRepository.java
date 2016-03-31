@@ -15,6 +15,8 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
 	
 	List<Bet> findByMatch(Match match);
 	
+	List<Bet> findByMatchOrderByUserNameAsc(Match match);
+	
 	Long countByMatch(Match match);
 
 

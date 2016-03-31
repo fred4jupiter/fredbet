@@ -2,19 +2,23 @@ package de.fred4jupiter.fredbet.repository;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
@@ -27,6 +31,9 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private MatchRepository matchRepository;
+	
+	@Autowired
+	private DataBasePopulator dataBasePopulator;
 
 	@Before
 	public void setup() {
@@ -87,5 +94,23 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 		bet.setUserName(userName);
 		bet.setPoints(points);
 		betRepository.save(bet);
+	}
+	
+	@Ignore("Fix me")
+	@Test
+	public void findByMatchIdOrderByUserName() {
+		dataBasePopulator.createEM2016Matches();
+		dataBasePopulator.createDemoBetsForAllUsers();
+
+		List<Match> germanMatches = matchRepository.findByCountryOne(Country.GERMANY);
+		assertNotNull(germanMatches);
+		assertFalse(germanMatches.isEmpty());
+		
+		List<Bet> bets = betRepository.findByMatchOrderByUserNameAsc(germanMatches.get(0));
+		assertNotNull(bets);
+		assertFalse(bets.isEmpty());
+		for (Bet bet : bets) {
+			assertNotNull(bet);
+		}
 	}
 }
