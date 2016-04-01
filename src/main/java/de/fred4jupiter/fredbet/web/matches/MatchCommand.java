@@ -30,12 +30,8 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 		super(messageUtil);
 	}
 
-	private boolean hasResults() {
-		return teamResultOne != null && teamResultTwo != null;
-	}
-
 	public boolean isBettable() {
-		if (hasMatchStarted() || hasMatchFinished() || hasResults()) {
+		if (hasMatchStarted() || hasMatchFinished()) {
 			return false;
 		}
 
