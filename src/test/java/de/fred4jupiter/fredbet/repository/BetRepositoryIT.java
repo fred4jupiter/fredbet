@@ -2,23 +2,22 @@ package de.fred4jupiter.fredbet.repository;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
@@ -31,9 +30,6 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private MatchRepository matchRepository;
-	
-	@Autowired
-	private DataBasePopulator dataBasePopulator;
 
 	@Before
 	public void setup() {
@@ -95,22 +91,36 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 		bet.setPoints(points);
 		betRepository.save(bet);
 	}
-	
-	@Ignore("Fix me")
+
 	@Test
 	public void findByMatchIdOrderByUserName() {
-		dataBasePopulator.createEM2016Matches();
-		dataBasePopulator.createDemoBetsForAllUsers();
+		Match match1 = MatchBuilder.create().withTeams(Country.ALBANIA, Country.AUSTRIA).withGroup(Group.GROUP_A)
+				.withKickOffDate(LocalDateTime.now().minusHours(1)).withStadium("somewhere").build();
+		match1 = matchRepository.save(match1);
 
-		List<Match> germanMatches = matchRepository.findByCountryOne(Country.GERMANY);
-		assertNotNull(germanMatches);
-		assertFalse(germanMatches.isEmpty());
-		
-		List<Bet> bets = betRepository.findByMatchOrderByUserNameAsc(germanMatches.get(0));
+		Bet bet1 = new Bet();
+		bet1.setGoalsTeamOne(2);
+		bet1.setGoalsTeamTwo(1);
+		bet1.setUserName("fred");
+		bet1.setMatch(match1);
+		betRepository.save(bet1);
+
+		Bet bet2 = new Bet();
+		bet2.setGoalsTeamOne(3);
+		bet2.setGoalsTeamTwo(2);
+		bet2.setUserName("albert");
+		bet2.setMatch(match1);
+		betRepository.save(bet2);
+
+		List<Bet> bets = betRepository.findByMatchIdOrderByUserNameAsc(match1.getId());
 		assertNotNull(bets);
-		assertFalse(bets.isEmpty());
-		for (Bet bet : bets) {
-			assertNotNull(bet);
-		}
+		assertEquals(2, bets.size());
+		Bet first = bets.get(0);
+		assertNotNull(first);
+		assertEquals(bet2, first);
+
+		Bet second = bets.get(1);
+		assertNotNull(second);
+		assertEquals(bet1, second);
 	}
 }

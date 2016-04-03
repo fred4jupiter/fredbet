@@ -140,7 +140,7 @@ public class BettingService {
 
 	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
 		Match match = matchRepository.findOne(matchId);
-		List<Bet> allBets = betRepository.findByMatch(match);
+		List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
 		List<Bet> filtered = allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME)).collect(Collectors.toList());
 		
 		return new AllBetsCommand(filtered, match, messageUtil);
