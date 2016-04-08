@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
@@ -33,8 +32,6 @@ public class BetController {
 
 	private static final String VIEW_LIST_OPEN = "bet/list_open";
 
-	private static final String VIEW_LIST = "bet/list";
-
 	private static final String VIEW_EDIT = "bet/edit";
 
 	@Autowired
@@ -48,12 +45,6 @@ public class BetController {
 
 	@Autowired
 	private MatchConverter matchConverter;
-
-	@RequestMapping
-	public ModelAndView list() {
-		List<Bet> allBets = bettingService.findAllByUsername(securityBean.getCurrentUserName());
-		return new ModelAndView(VIEW_LIST, "allBets", allBets);
-	}
 
 	@RequestMapping("/open")
 	public ModelAndView listStillOpen(ModelMap modelMap) {
