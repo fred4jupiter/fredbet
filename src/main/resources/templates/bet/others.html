@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title>Tipps der anderen Benutzer</title>
+	<title th:text="#{bet.others.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1>Tipps der anderen...</h1>
+		<h1 th:text="#{bet.others.title}"></h1>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<div class="panel panel-default">
@@ -42,7 +42,7 @@
      					</div>
      					<div class="row">
 	     					<div class="col-xs-12 button-bar">
-					  			<a th:href="@{/matches}" class="btn btn-default" role="button">zurück</a>
+					  			<a th:href="@{/matches}" class="btn btn-default" role="button" th:text="${button.back}"></a>
 					  		</div>
      					</div>
 				   </div>					   

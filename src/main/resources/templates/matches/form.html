@@ -2,23 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title>Matches</title>    
+	<title th:text="#{matches.form.title}"></title>    
 </head>
 <body>
 	<div layout:fragment="content" class="container">		
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 		<form id="matchesForm" th:action="@{/matches}" th:object="${matchCommand}" action="#" method="post" role="form">				
 			<ul>
 	            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-	                <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
-	                <span th:text="${e.message}">The error message</span>
+	                <span th:text="${e.global}? '*' : ${e.fieldName}"></span> |
+	                <span th:text="${e.message}"></span>
 	            </li>
 	        </ul>		
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
 					<div class="form-group">
-						<label>Länderauswahl:</label><br/>
+						<label th:text="#{matches.form.chooseCountry} + ':'"></label><br/>
 						<div class="row">
 							<div class="col-xs-6">
 								<select th:field="*{countryTeamOne}" class="form-control">
@@ -33,7 +33,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label>oder Teamnamen:</label><br/>
+						<label th:text="#{matches.form.teamNames} + ':'"></label><br/>
 						<div class="row">							
 							<div class="col-xs-6">
 								<input type="text" th:field="*{nameTeamOne}" class="form-control" />
@@ -44,13 +44,13 @@
 						</div>
 					</div>			
 					<div class="form-group">
-						<label>Ergebnis:</label><br/>
+						<label th:text="#{matches.form.result} + ':'"></label><br/>
 						<input type="text" th:field="*{teamResultOne}" class="form-control form-size-small" />
 						<span>:</span>
 						<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small" />
 					</div>										
 					<div class="form-group">
-		                <label for="kickOffDateString">Anstoß:</label>
+		                <label for="kickOffDateString" th:text="#{matches.form.kickOff} + ':'"></label>
 		                <div class="input-group date form_datetime" data-link-field="kickOffDateString" data-date-format="dd.mm.yyyy hh:ii" data-link-format="dd.mm.yyyy hh:ii">
 		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffDateString}" readonly="readonly"/>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
@@ -58,20 +58,20 @@
 						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" /><br/>
 		            </div>					
 					<div class="form-group">
-						<label for="teamResultTwo">Stadion:</label>
+						<label for="teamResultTwo" th:text="#{matches.form.stadium} + ':'"></label>
 						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
 					</div>					
 					<div class="form-group">
-						<label for="teamResultTwo">Gruppe:</label>
+						<label for="teamResultTwo" th:text="#{matches.form.group} + ':'"></label>
 						<select th:field="*{group}" class="form-control">
-						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}">Gruppe A</option>
+						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}"></option>
 						</select>						
 			        </div>					
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Speichern</button>
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/matches/delete/' + ${matchCommand.matchId}}" 
-							class="btn btn-danger" role="button" th:classappend="${!matchCommand.isDeletable()}? 'disabled'">Löschen</a>						
-						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button">Abbrechen</a>	
+							class="btn btn-danger" role="button" th:classappend="${!matchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>						
+						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>
 			</div>
