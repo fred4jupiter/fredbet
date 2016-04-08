@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Administration</title>
+	<title th:text="#{administration.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 		<div class="row">			
 			<div class="col-xs-12 col-sm-6 col-md-4">
-				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoMatches}">EM 2016 Gruppenspiele anlegen</a>
+				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoMatches}" th:text="#{administration.createEmMatches}"></a>
 				<br/><br/>
-				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}">Testtipps für alle Benutzer anlegen</a>
+				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}" th:text="#{administration.demoBetsAllUsers}"></a>
 				<br/><br/>
-				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}">Testergebnisse für alle Benutzer erzeugen</a>
+				<a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}" th:text="#{administration.testResultsAllUsers}"></a>
 			</div>
 		</div>
 	</div>
