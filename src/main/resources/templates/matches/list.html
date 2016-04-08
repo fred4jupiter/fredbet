@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Spiele</title>
+	<title th:text="${heading}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
-		<h1 th:text="${heading}">Spiele</h1>
+		<h1 th:text="${heading}"></h1>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
 					<div class="panel panel-default">
