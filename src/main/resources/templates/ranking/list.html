@@ -2,19 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Ranking</title>
+	<title th:text="#{ranking.list.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
-		<h1>Ranking</h1>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+		<h1 th:text="#{ranking.list.title}"></h1>
 		<div class="row" th:each="ranking,status : ${rankings}">
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<div class="panel panel-default">
 				  <div class="panel-body">
-				  	<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="${'Platz ' + status.count}">1</span>
-				  	<span class="ranking-name" th:text="${ranking.userName}">Fred</span>
-				  	<span class="badge success pull-right" th:text="${ranking.totalPoints}">0</span> 	
+				  	<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="#{ranking.list.order} + ' ' + ${status.count}"></span>
+				  	<span class="ranking-name" th:text="${ranking.userName}"></span>
+				  	<span class="badge success pull-right" th:text="${ranking.totalPoints}"></span> 	
 				  </div>					  
 				</div>
 			</div>				

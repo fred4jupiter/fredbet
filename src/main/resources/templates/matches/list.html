@@ -21,7 +21,7 @@
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}">1</span>							  		
+									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>							  		
 									<br/> 
 									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
 									<span th:text="${matchCommand.stadium}"></span>
@@ -33,12 +33,12 @@
 								<div class="col-xs-2 center">
 									<div class="short-div goal_padding">
 										<a th:if="${!matchCommand.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.matchId}}">
-											<span class="fa fa-thumbs-o-up fa-2x" title="getippt"></span>
+											<span class="fa fa-thumbs-o-up fa-2x" th:title="#{matches.list.betted}"></span>
 										</a>
-										<span th:if="${matchCommand.isBettable()}" class="fa fa-thumbs-o-up fa-2x" title="getippt"></span>
+										<span th:if="${matchCommand.isBettable()}" class="fa fa-thumbs-o-up fa-2x" th:title="#{matches.list.betted}"></span>
 									</div>
 									<div class="short-div goal_padding">
-										<span class="fa fa-trophy fa-2x" title="Ergebnis"></span>
+										<span class="fa fa-trophy fa-2x" th:title="#{matches.list.result}"></span>
 									</div>							  									  		
 					  			</div>					
 					  			<div class="col-xs-4 goal-badges">				
@@ -60,15 +60,15 @@
 					  			<div class="col-xs-6 button-bar">
 					  				<div class="row center">
 								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" 
-								              class="btn btn-primary" role="button" title="Spiel ändern">
+								              class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
 				            				  <span class="glyphicon glyphicon-pencil"></span>
 				            			</a>
 				            			<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matches/matchresult/' + ${matchCommand.matchId}}" 
-				            			        class="btn btn-info" role="button" title="Ergebnis eingeben">
+				            			        class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
 				            					<span class="fa fa-trophy fa-lg"></span>
 				            			</a>
 				            			<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" 
-												   class="btn btn-success" role="button" title="Spiel tippen">
+												   class="btn btn-success" role="button" th:title="#{matches.list.betMatch}">
 											<span class="fa fa-thumbs-o-up fa-lg"></span>
 										</a>
 							        </div>
@@ -78,7 +78,7 @@
 					</div>
 				</div>				
 			</div>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button">Spiel anlegen</a>	
+			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>	
 	</div>
 </body>
 </html>
