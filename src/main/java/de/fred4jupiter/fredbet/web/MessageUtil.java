@@ -1,9 +1,8 @@
 package de.fred4jupiter.fredbet.web;
 
-import java.util.Locale;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -65,7 +64,7 @@ public class MessageUtil {
 	}
 
 	public String getMessageFor(String msgKey, Object... params) {
-		return messageSource.getMessage(msgKey, params, Locale.GERMAN);
+		return messageSource.getMessage(msgKey, params, LocaleContextHolder.getLocale());
 	}
 
 	public String getCountryName(Country country) {
