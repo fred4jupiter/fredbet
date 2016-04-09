@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Benutzer bearbeiten</title>
+	<title th:text="#{user.edit.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 		<form id="userForm" th:action="@{/user/edit}" th:object="${userCommand}" action="#" method="post" role="form">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{userId}" class="form-control" />
 					<div class="form-group">
-						<label for="username">Benutzername:</label> 
+						<label for="username" th:text="#{user.edit.username} + ':'"></label> 
 						<input type="text" th:field="*{username}" class="form-control" disabled="disabled"/>
 					</div>					
 					<ul class="list-group">
@@ -23,13 +23,13 @@
 					</ul>
 					<div class="form-group" sec:authorize="hasAuthority('PERM_PASSWORD_RESET')">
 						<input type="checkbox" th:field="*{resetPassword}" th:value="true" /> 
-						<label for="resetPassword">Passwort zurücksetzen</label> 
+						<label for="resetPassword" th:text="#{user.edit.passwordReset}"></label> 
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Speichern</button>
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a sec:authorize="hasAuthority('PERM_DELETE_USER')" href="#" th:href="@{'/user/' + ${userCommand.userId} + '/delete'}" 
-							class="btn btn-danger" role="button" th:classappend="${!userCommand.isDeletable()}? 'disabled'">Löschen</a>
-						<a href="#" th:href="@{/user}" class="btn btn-default" role="button">Abbrechen</a>	
+							class="btn btn-danger" role="button" th:classappend="${!userCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>
+						<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>
 			</div>

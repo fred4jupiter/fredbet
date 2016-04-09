@@ -2,21 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Benutzer anlegen</title>
+	<title th:text="#{user.create.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 		<form id="userForm" th:action="@{/user}" th:object="${userCommand}" action="#" method="post" role="form">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{userId}" class="form-control" />
 					<div class="form-group">
-						<label for="username">Benutzername:</label> 
+						<label for="username" th:text="#{user.create.username} + ':'"></label> 
 						<input type="text" th:field="*{username}" class="form-control" />
 					</div>
 					<div class="form-group">
-						<label for="password">Passwort:</label> 
+						<label for="password" th:text="#{user.create.password} + ':'"></label> 
 						<input type="password" th:field="*{password}" class="form-control" />
 					</div>
 					<ul class="list-group">
@@ -26,8 +26,8 @@
 						</li>
 					</ul>
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Speichern</button>
-						<a href="#" th:href="@{/user}" class="btn btn-default" role="button">Abbrechen</a>	
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+						<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>
 			</div>

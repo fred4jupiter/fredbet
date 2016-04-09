@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Benutzer</title>
+	<title th:text="#{user.list.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}">Some Success message</div>
-		<h1>Benutzer</h1>
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+		<h1 th:text="#{user.list.title}"></h1>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="user : ${allUsers}">
 				<div class="panel panel-default">					
@@ -15,11 +15,13 @@
 						<div class="row">
 							<div class="col-xs-7 user-label">
 								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-								<span th:text="${user.username}">Bert</span>							  		
+								<span th:text="${user.username}"></span>							  		
 				  			</div>
 				  			<div class="col-xs-5">
 				  				<div class="row custom-button-group">
-				  					<a href="#" th:href="@{'/user/' + ${user.id}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+				  					<a href="#" th:href="@{'/user/' + ${user.id}}" class="btn btn-primary" role="button">
+				  						<span class="glyphicon glyphicon-pencil"></span>
+			  						</a>
 								</div>
 				  			</div>				  				
       					</div>
@@ -27,7 +29,7 @@
 				</div>
 			</div>				
 		</div>
-		<a href="#" th:href="@{/user/create}" class="btn btn-primary" role="button">Benutzer anlegen</a>
+		<a href="#" th:href="@{/user/create}" class="btn btn-primary" role="button" th:text="#{user.list.createUser}"></a>
 	</div>
 </body>
 </html>
