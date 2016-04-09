@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-<title>Build Info</title>
+	<title th:text="#{buildinfo.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -10,10 +10,10 @@
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
 				<div class="panel panel-default">
 					<div class="user panel-heading">
-						  <span th:text="${entry.key}">Key</span>
+						  <span th:text="${entry.key}"></span>
 					</div>
 					<div class="panel-body">
-						 <span th:text="${entry.value}">Value</span>
+						 <span th:text="${entry.value}"></span>
 					</div>
 				</div>
 			</div>

@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<h1>Login</h1>
+		<h1 th:text="#{login.title.short}"></h1>
 		<div th:if="${param.error}">
 			<div class="alert alert-danger" role="alert" th:text="#{login.msg.error}"></div>
 		</div>
