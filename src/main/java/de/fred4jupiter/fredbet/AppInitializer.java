@@ -21,11 +21,7 @@ public class AppInitializer implements ApplicationContextInitializer<Configurabl
 
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
-		ConfigurableEnvironment environment = applicationContext.getEnvironment();
-		if (environment.getActiveProfiles() == null || environment.getActiveProfiles().length == 0) {
-			environment.addActiveProfile(FredBetProfile.DEV);
-		}
-		
+		final ConfigurableEnvironment environment = applicationContext.getEnvironment();
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			environment.addActiveProfile(FredBetProfile.DEMODATA);
 		}

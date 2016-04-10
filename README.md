@@ -1,10 +1,10 @@
 # FredBet #
 
-Simple football betting application using Spring Boot and MongoDB. You can run the application by issuing the following commands:
+Simple football betting application using Spring Boot and MariaDB. You can run the application by issuing the following commands:
 
-	mvn clean install spring-boot:run
+	mvn install spring-boot:run
 
-The application is available under [http://localhost:8080/](http://localhost:8080/). Log in with the admin default account credentials `admin/admin`.
+The application is available under [http://localhost:8080/](http://localhost:8080/) and runs with an in-memory H2 database. Log in with the admin default account credentials `admin/admin`.
 
 ## Running within Docker ##
 
