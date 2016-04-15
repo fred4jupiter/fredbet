@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -28,6 +29,9 @@ public class LoginAT extends FluentTest {
 
 	@Value("${local.server.port}")
 	private int serverPort;
+
+	@Autowired
+	private MessageUtil messageUtil;
 
 	private String getURL() {
 		return "http://localhost:" + serverPort;
@@ -48,6 +52,6 @@ public class LoginAT extends FluentTest {
 		fill("#password").with("admin");
 
 		submit("#loginSubmitBtn");
-		assertThat(title(), equalTo("Spiele"));
+		assertThat(title(), equalTo(messageUtil.getMessageFor("all.matches")));
 	}
 }
