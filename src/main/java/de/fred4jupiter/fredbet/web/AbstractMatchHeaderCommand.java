@@ -26,16 +26,9 @@ public abstract class AbstractMatchHeaderCommand {
 
 	protected String stadium;
 
-	protected MessageUtil messageUtil;
-
-	public AbstractMatchHeaderCommand() {
-	}
+	protected final MessageUtil messageUtil;
 
 	public AbstractMatchHeaderCommand(MessageUtil messageUtil) {
-		this.messageUtil = messageUtil;
-	}
-
-	public void setMessageUtil(MessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
 	}
 

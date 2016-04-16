@@ -23,9 +23,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	private boolean deletable;
 
-	public MatchCommand() {
-	}
-
 	public MatchCommand(MessageUtil messageUtil) {
 		super(messageUtil);
 	}

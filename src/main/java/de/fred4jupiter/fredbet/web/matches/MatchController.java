@@ -62,6 +62,16 @@ public class MatchController {
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountries();
 	}
+	
+	@ModelAttribute("matchCommand")
+	public MatchCommand matchCommand() {
+		return new MatchCommand(messageUtil);
+	}
+	
+	@ModelAttribute("matchResultCommand")
+	public MatchResultCommand matchResultCommand() {
+		return new MatchResultCommand(messageUtil);
+	}
 
 	@RequestMapping
 	public ModelAndView listAllMatches() {
@@ -121,9 +131,8 @@ public class MatchController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
 	@RequestMapping(value = "/matchresult", method = RequestMethod.POST)
-	public ModelAndView matchresultPost(@Valid MatchResultCommand matchResultCommand, BindingResult result, RedirectAttributes redirect,
+	public ModelAndView matchresultPost(MatchResultCommand matchResultCommand, BindingResult result, RedirectAttributes redirect,
 			ModelMap modelMap) {
-		matchResultCommand.setMessageUtil(messageUtil);
 		if (result.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "formErrors", result.getAllErrors());
 		}
@@ -144,9 +153,8 @@ public class MatchController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String createMatch(@ModelAttribute MatchCommand matchCommand) {
+	public String createMatch(@ModelAttribute("matchCommand") MatchCommand matchCommand) {
 		matchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
-		matchCommand.setMessageUtil(messageUtil);
 		return VIEW_EDIT_MATCH;
 	}
 
@@ -154,7 +162,6 @@ public class MatchController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdateMatch(@Valid MatchCommand matchCommand, BindingResult result, RedirectAttributes redirect,
 			ModelMap modelMap) {
-		matchCommand.setMessageUtil(messageUtil);
 		if (result.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT_MATCH, "formErrors", result.getAllErrors());
 		}
