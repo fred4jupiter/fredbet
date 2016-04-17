@@ -6,4 +6,6 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 
 public interface ExtraBetRepository extends JpaRepository<ExtraBet, Long>{
 
+	ExtraBet findByUserName(String userName);
+
 }

@@ -85,6 +85,38 @@ public class Match {
 
 		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
 	}
+	
+	public Country getWinner() {
+		if (!hasResultSet()) {
+			return null;
+		}
+		
+		if (isTeamOneWinner()) {
+			return countryOne;
+		}
+		
+		if (isTeamTwoWinner()) {
+			return countryTwo;
+		}
+		
+		return null;
+	}
+	
+	public Country getLooser() {
+		if (!hasResultSet()) {
+			return null;
+		}
+		
+		if (isTeamOneWinner()) {
+			return countryTwo;
+		}
+		
+		if (isTeamTwoWinner()) {
+			return countryOne;
+		}
+		
+		return null;
+	}
 
 	public Integer getGoalsTeamOne() {
 		return goalsTeamOne;

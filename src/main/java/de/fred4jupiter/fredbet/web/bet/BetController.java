@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
+import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -45,6 +49,14 @@ public class BetController {
 
 	@Autowired
 	private MatchConverter matchConverter;
+	
+	@Autowired
+	private CountryService countryService;
+	
+	@ModelAttribute("availableCountries")
+	public List<Country> availableCountries() {
+		return countryService.getAvailableCountries();
+	}
 
 	@RequestMapping("/open")
 	public ModelAndView listStillOpen(ModelMap modelMap) {
@@ -90,5 +102,26 @@ public class BetController {
 	public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId) {
 		AllBetsCommand allBetsCommand = bettingService.findAllBetsForMatchId(matchId);
 		return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
+	}
+	
+	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
+	public ModelAndView showExtraBets() {
+		ExtraBet extraBet = bettingService.findExtraBetOfUser(securityBean.getCurrentUserName());
+		if (extraBet == null) {
+			return new ModelAndView("bet/extra_bets", "extraBetCommand", new ExtraBetCommand(messageUtil));
+		}
+		else {
+			return new ModelAndView("bet/extra_bets", "extraBetCommand", new ExtraBetCommand(messageUtil, extraBet.getId(), extraBet.getFinalWinner(), extraBet.getSemiFinalWinner()));
+		}
+	}
+	
+	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
+	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand) {
+		ExtraBet extraBet = bettingService.findExtraBetOfUser(securityBean.getCurrentUserName());
+		extraBet.setFinalWinner(extraBetCommand.getFinalWinner());
+		extraBet.setSemiFinalWinner(extraBetCommand.getSemiFinalWinner());
+		
+		bettingService.saveExtraBet(extraBet);
+		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}
 }

@@ -15,6 +15,10 @@ import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 @Service
 public class ExtraPointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
 
+	private static final int POINTS_SEMI_FINAL_WINNER = 10;
+
+	private static final int POINTS_FINAL_WINNER = 5;
+
 	private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
 	@Autowired
@@ -32,12 +36,22 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchF
 			Integer points = calculatePointsFor(event.getMatch(), extraBet);
 			extraBet.setPoints(points);
 			LOG.debug("User {} gets {} points", extraBet.getUserName(), points);
+			extraBetRepository.save(extraBet);
 		});
 	}
 
 	private Integer calculatePointsFor(Match finalMatch, ExtraBet extraBet) {
-		// TODO: calculate extra bet
-		return 0;
+		int points = 0;
+
+		if (extraBet.getFinalWinner().equals(finalMatch.getWinner())) {
+			points = points + POINTS_FINAL_WINNER;
+		}
+
+		if (extraBet.getSemiFinalWinner().equals(finalMatch.getLooser())) {
+			points = points + POINTS_SEMI_FINAL_WINNER;
+		}
+
+		return points;
 	}
 
 }

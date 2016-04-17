@@ -12,9 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
@@ -35,6 +37,9 @@ public class BettingService {
 
 	@Autowired
 	private MessageUtil messageUtil;
+
+	@Autowired
+	private ExtraBetRepository extraBetRepository;
 
 	public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		AppUser appUser = appUserRepository.findByUsername(username);
@@ -141,8 +146,21 @@ public class BettingService {
 	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
 		Match match = matchRepository.findOne(matchId);
 		List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
-		List<Bet> filtered = allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME)).collect(Collectors.toList());
-		
+		List<Bet> filtered = allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+				.collect(Collectors.toList());
+
 		return new AllBetsCommand(filtered, match, messageUtil);
+	}
+
+	public ExtraBet findExtraBetOfUser(String currentUserName) {
+		ExtraBet extraBet = extraBetRepository.findByUserName(currentUserName);
+		if (extraBet == null) {
+			extraBet = new ExtraBet();
+		}
+		return extraBet;
+	}
+
+	public void saveExtraBet(ExtraBet extraBet) {
+		extraBetRepository.save(extraBet);
 	}
 }
