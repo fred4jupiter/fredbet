@@ -11,6 +11,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -34,9 +35,6 @@ public class MatchService {
 	private MatchRepository matchRepository;
 
 	@Autowired
-	private PointsCalculationService pointsCalculationService;
-
-	@Autowired
 	private BettingService bettingService;
 
 	@Autowired
@@ -44,6 +42,9 @@ public class MatchService {
 
 	@Autowired
 	private MatchConverter matchConverter;
+
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	public List<Match> findAll() {
 		return matchRepository.findAll();
@@ -68,7 +69,7 @@ public class MatchService {
 		match = matchRepository.save(match);
 
 		if (match.hasResultSet()) {
-			pointsCalculationService.calculatePointsFor(match);
+			applicationContext.publishEvent(new MatchFinishedEvent(this, match));
 		}
 
 		return match;
