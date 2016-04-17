@@ -1,9 +1,7 @@
 package de.fred4jupiter.fredbet.repository;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -123,4 +121,5 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 		assertNotNull(second);
 		assertEquals(bet1, second);
 	}
+
 }

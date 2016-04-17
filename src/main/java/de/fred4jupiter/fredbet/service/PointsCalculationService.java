@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -13,14 +14,20 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 
 @Service
-public class PointsCalculationService {
+public class PointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(PointsCalculationService.class);
 
     @Autowired
     private BetRepository betRepository;
 
-    public void calculatePointsFor(final Match match) {
+    @Override
+	public void onApplicationEvent(MatchFinishedEvent event) {
+		LOG.debug("match={} has finished. Calculating points for bets...", event.getMatch());
+		calculatePointsFor(event.getMatch());
+	}
+    
+    void calculatePointsFor(final Match match) {
         List<Bet> allBetsForThisMatch = betRepository.findByMatch(match);
 
         allBetsForThisMatch.forEach(bet -> {

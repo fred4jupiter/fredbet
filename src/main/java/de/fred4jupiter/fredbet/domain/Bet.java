@@ -26,7 +26,7 @@ public class Bet {
 	private String userName;
 
 	@ManyToOne(targetEntity = Match.class)
-	@JoinColumn(name="MATCH_ID")
+	@JoinColumn(name = "MATCH_ID")
 	private Match match;
 
 	private Integer goalsTeamOne;

@@ -224,4 +224,7 @@ public class Match {
 		this.countryTwo = countryTwo;
 	}
 
+	public boolean isFinal() {
+		return Group.FINAL.equals(this.group);
+	}
 }
