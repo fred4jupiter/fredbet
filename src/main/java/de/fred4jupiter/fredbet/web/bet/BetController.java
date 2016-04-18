@@ -49,13 +49,18 @@ public class BetController {
 
 	@Autowired
 	private MatchConverter matchConverter;
-	
+
 	@Autowired
 	private CountryService countryService;
-	
+
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountries();
+	}
+
+	@ModelAttribute("extraBetCommand")
+	public ExtraBetCommand extraBetCommand() {
+		return new ExtraBetCommand(messageUtil);
 	}
 
 	@RequestMapping("/open")
@@ -103,24 +108,21 @@ public class BetController {
 		AllBetsCommand allBetsCommand = bettingService.findAllBetsForMatchId(matchId);
 		return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
 	}
-	
+
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
 	public ModelAndView showExtraBets() {
 		ExtraBet extraBet = bettingService.findExtraBetOfUser(securityBean.getCurrentUserName());
-		if (extraBet == null) {
-			return new ModelAndView("bet/extra_bets", "extraBetCommand", new ExtraBetCommand(messageUtil));
-		}
-		else {
-			return new ModelAndView("bet/extra_bets", "extraBetCommand", new ExtraBetCommand(messageUtil, extraBet.getId(), extraBet.getFinalWinner(), extraBet.getSemiFinalWinner()));
-		}
+		return new ModelAndView("bet/extra_bets", "extraBetCommand",
+				new ExtraBetCommand(messageUtil, extraBet.getId(), extraBet.getFinalWinner(), extraBet.getSemiFinalWinner()));
 	}
-	
+
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
 	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand) {
 		ExtraBet extraBet = bettingService.findExtraBetOfUser(securityBean.getCurrentUserName());
 		extraBet.setFinalWinner(extraBetCommand.getFinalWinner());
 		extraBet.setSemiFinalWinner(extraBetCommand.getSemiFinalWinner());
-		
+		extraBet.setUserName(securityBean.getCurrentUserName());
+
 		bettingService.saveExtraBet(extraBet);
 		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}

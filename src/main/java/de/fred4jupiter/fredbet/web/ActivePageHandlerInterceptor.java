@@ -44,6 +44,10 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 		if (requestURI.contains("userprofile")) {
 			modelAndView.addObject(PAGE_STATE_REFIX + "userprofile", CSS_ACTIVE);
 		}
+		
+		if (requestURI.contains("/bet/")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "betting", CSS_ACTIVE);
+		}
 
 		if (numberOfSlashes == 2) {
 			String page = StringUtils.substring(requestURI, 1);

@@ -19,7 +19,16 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul th:if="${@securityBean.isUserLoggedIn()}" class="nav navbar-nav">
 					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
-					<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
+					<li class="dropdown" th:classappend="${pageState_betting}">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			        		<span th:text="#{navigation.betting}" th:remove="tag"></span>			        		
+			        		<span class="caret"></span>
+			        	</a>
+			        	<ul class="dropdown-menu">
+							<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
+							<li th:class="${pageState_bet_extra_bets}"><a href="#bet" th:href="@{/bet/extra_bets}" th:text="#{navigation.betting.extraBets}"></a></li>
+						</ul>
+					</li>
 					<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
 					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
 					<li class="dropdown" th:classappend="${pageState_group}">
