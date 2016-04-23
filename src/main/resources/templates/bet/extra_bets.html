@@ -15,7 +15,7 @@
 					<div class="form-group">
 						<div class="panel panel-success">
 							<div class="panel-heading">
-								<label th:text="#{extra_bets.finalWinner} + ':'"></label>
+								<label class="bold" th:text="#{extra_bets.finalWinner} + ':'"></label>
 								<span class="right" th:text="#{extra_bets.points(${extraBetCommand.reachablePointsFinalWinner})}"></span>
 							</div>
 							<div class="panel-body">
@@ -32,7 +32,7 @@
 					<div class="form-group">
 						<div class="panel panel-warning">
 							<div class="panel-heading">
-								<label th:text="#{extra_bets.semiFinalWinner} + ':'"></label>
+								<span class="bold" th:text="#{extra_bets.semiFinalWinner} + ':'"></span>
 								<span class="right" th:text="#{extra_bets.points(${extraBetCommand.reachablePointsSemiFinalWinner})}"></span>
 							</div>
 							<div class="panel-body">
@@ -47,9 +47,9 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="form-group">
-						<div class="panel panel-warning">
+						<div class="panel panel-info">
 							<div class="panel-heading">
-								<span th:text="#{extra_bets.reachedPoints} + ':'"></span>
+								<span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
 								<span class="right label label-as-badge big-badge" th:classappend="${extraBetCommand.points != null} ? label-warning : label-default" 
 					  					      th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>
 							</div>
