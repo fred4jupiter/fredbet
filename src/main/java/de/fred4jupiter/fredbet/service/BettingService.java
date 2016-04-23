@@ -162,7 +162,13 @@ public class BettingService {
 	}
 
 	public void saveExtraBet(ExtraBet extraBet) {
-		extraBetRepository.save(extraBet);
+		ExtraBet found = extraBetRepository.findByUserName(extraBet.getUserName());
+		if (found == null) {
+			extraBetRepository.save(extraBet);	
+		}
+		else {
+			extraBetRepository.save(found);
+		}
 	}
 
 	public boolean hasFinalMatchFinished() {

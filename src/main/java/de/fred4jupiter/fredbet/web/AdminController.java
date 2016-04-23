@@ -46,7 +46,7 @@ public class AdminController {
 	
 	@RequestMapping(path = "/createDemoResults", method = RequestMethod.GET)
 	public ModelAndView createDemoResults(ModelMap modelMap) {
-		dataBasePopulator.createDemoResultsForAllUsers();
+		dataBasePopulator.createDemoResultsForAllMatches();
 		
 		ModelAndView modelAndView = new ModelAndView("admin/administration");
 		

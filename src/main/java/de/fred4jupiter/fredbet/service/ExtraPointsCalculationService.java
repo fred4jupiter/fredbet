@@ -12,7 +12,6 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 
-
 /**
  * Calculates the extra betting points.
  * 
@@ -22,11 +21,11 @@ import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 @Service
 public class ExtraPointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
+
 	public static final int POINTS_FINAL_WINNER = 10;
 
 	public static final int POINTS_SEMI_FINAL_WINNER = 5;
-
-	private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
 	@Autowired
 	private ExtraBetRepository extraBetRepository;
@@ -37,6 +36,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchF
 			return;
 		}
 
+		LOG.debug("Calculate extra betting points for final match...");
 		List<ExtraBet> extraBets = extraBetRepository.findAll();
 
 		extraBets.forEach(extraBet -> {

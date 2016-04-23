@@ -41,7 +41,7 @@ public class RankingServiceIT extends AbstractTransactionalIntegrationTest {
 
 		dataBasePopulator.createEM2016Matches();
 		dataBasePopulator.createDemoBetsForAllUsers();
-		dataBasePopulator.createDemoResultsForAllUsers();
+		dataBasePopulator.createDemoResultsForAllMatches();
 
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking();
 		assertNotNull(rankings);

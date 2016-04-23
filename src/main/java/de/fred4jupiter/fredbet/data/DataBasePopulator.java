@@ -16,6 +16,7 @@ import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
@@ -284,12 +285,18 @@ public class DataBasePopulator {
 				Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
 				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
 			});
+
+			ExtraBet extraBet = new ExtraBet();
+			extraBet.setFinalWinner(randomValueGenerator.generateRandomCountry());
+			extraBet.setSemiFinalWinner(randomValueGenerator.generateRandomCountry());
+			extraBet.setUserName(appUser.getUsername());
+			bettingService.saveExtraBet(extraBet);
 		});
 
 	}
 
 	@Transactional
-	public void createDemoResultsForAllUsers() {
+	public void createDemoResultsForAllMatches() {
 		LOG.info("createDemoResultsForAllUsers...");
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
