@@ -133,7 +133,6 @@ public class BetController {
 
 		bettingService.saveExtraBet(extraBet);
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
-//		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
-		return new ModelAndView(RedirectViewName.OPEN_BETS.getRedirectViewName());
+		return new ModelAndView("redirect:/bet/extra_bets");
 	}
 }
