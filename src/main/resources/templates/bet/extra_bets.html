@@ -7,41 +7,36 @@
 <body>
 	<div layout:fragment="content" class="container">		
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
-		<form id="extraBetForm" th:action="@{/bet/extra_bets}" th:object="${extraBetCommand}" action="#" method="post" role="form">				
-			<ul>
-	            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-	                <span th:text="${e.global}? '*' : ${e.fieldName}"></span> |
-	                <span th:text="${e.message}"></span>
-	            </li>
-	        </ul>		
+		<form id="extraBetForm" th:action="@{/bet/extra_bets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
+			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 					<div class="form-group">
-						<div class="row">
-							<div class="col-xs-6">
-								<label th:text="#{extra_bets.finalWinner} + ':'"></label><br/>
-								<select th:field="*{finalWinner}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-xs-6">
-								<label th:text="#{extra_bets.semiFinalWinner} + ':'"></label><br/>
-								<select th:field="*{semiFinalWinner}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>							
-						</div>
+						<label th:text="#{extra_bets.finalWinner} + ':'"></label><br/>
+						<select th:field="*{finalWinner}" class="form-control">
+						  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="form-group">
+						<label th:text="#{extra_bets.semiFinalWinner} + ':'"></label><br/>
+						<select th:field="*{semiFinalWinner}" class="form-control">
+						  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>							
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
-	
 </body>
 </html>
