@@ -12,6 +12,13 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 
+
+/**
+ * Calculates the extra betting points.
+ * 
+ * @author michael
+ *
+ */
 @Service
 public class ExtraPointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
 

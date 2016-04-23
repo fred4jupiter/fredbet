@@ -13,6 +13,12 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 
+/**
+ * Calculates the general betting points.
+ * 
+ * @author michael
+ *
+ */
 @Service
 public class PointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
 
