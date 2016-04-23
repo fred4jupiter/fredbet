@@ -19,4 +19,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	List<Match> findByCountryOne(Country country);
 
+	List<Match> findByGroup(Group group);
+
 }

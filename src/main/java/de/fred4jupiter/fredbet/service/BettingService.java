@@ -13,6 +13,7 @@ import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
@@ -162,5 +163,19 @@ public class BettingService {
 
 	public void saveExtraBet(ExtraBet extraBet) {
 		extraBetRepository.save(extraBet);
+	}
+
+	public boolean hasFinalMatchFinished() {
+		List<Match> matches = matchRepository.findByGroup(Group.FINAL);
+		if (matches == null || matches.isEmpty()) {
+			return false;
+		}
+		
+		if (matches.size() > 1) {
+			throw new IllegalStateException("Found more than one final match!");
+		}
+		
+		Match finalMatch = matches.get(0);
+		return finalMatch.hasResultSet();
 	}
 }

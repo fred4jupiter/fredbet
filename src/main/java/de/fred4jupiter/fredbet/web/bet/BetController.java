@@ -120,7 +120,7 @@ public class BetController {
 		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
 		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
 		extraBetCommand.setPoints(extraBet.getPoints());
-
+		extraBetCommand.setFinalMatchFinished(bettingService.hasFinalMatchFinished());
 		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}
 
