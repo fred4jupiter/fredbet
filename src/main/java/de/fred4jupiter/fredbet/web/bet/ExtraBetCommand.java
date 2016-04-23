@@ -14,6 +14,8 @@ public class ExtraBetCommand {
 	private Integer reachablePointsFinalWinner;
 
 	private Integer reachablePointsSemiFinalWinner;
+
+	private boolean finalMatchStarted;
 	
 	private boolean finalMatchFinished;
 
@@ -66,6 +68,14 @@ public class ExtraBetCommand {
 
 	public void setReachablePointsSemiFinalWinner(Integer reachablePointsSemiFinalWinner) {
 		this.reachablePointsSemiFinalWinner = reachablePointsSemiFinalWinner;
+	}
+
+	public boolean isFinalMatchStarted() {
+		return finalMatchStarted;
+	}
+
+	public void setFinalMatchStarted(boolean finalMatchStarted) {
+		this.finalMatchStarted = finalMatchStarted;
 	}
 
 	public boolean isFinalMatchFinished() {

@@ -57,7 +57,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" th:if="${!extraBetCommand.isFinalMatchFinished()}">
+			<div class="row" th:if="${!extraBetCommand.isFinalMatchStarted()}">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>

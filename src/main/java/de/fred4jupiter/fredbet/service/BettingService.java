@@ -184,4 +184,19 @@ public class BettingService {
 		Match finalMatch = matches.get(0);
 		return finalMatch.hasResultSet();
 	}
+
+	// TODO: refactor with method hasFinalMatchFinished
+	public boolean hasFinalMatchStarted() {
+		List<Match> matches = matchRepository.findByGroup(Group.FINAL);
+		if (matches == null || matches.isEmpty()) {
+			return false;
+		}
+		
+		if (matches.size() > 1) {
+			throw new IllegalStateException("Found more than one final match!");
+		}
+		
+		Match finalMatch = matches.get(0);
+		return finalMatch.hasStarted();
+	}
 }
