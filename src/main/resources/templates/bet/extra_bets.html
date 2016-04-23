@@ -7,6 +7,7 @@
 <body>
 	<div layout:fragment="content" class="container">		
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+		
 		<form id="extraBetForm" th:action="@{/bet/extra_bets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
 			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
@@ -16,6 +17,10 @@
 						<select th:field="*{finalWinner}" class="form-control">
 						  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 						</select>
+					</div>
+					<div class="form-group">
+						<label th:text="#{extra_bets.reachablePoints} + ':'"></label>
+						<span class="label label-default label-as-badge big-badge" th:text="${extraBetCommand.reachablePointsFinalWinner}"></span>												
 					</div>
 				</div>
 			</div>
@@ -27,9 +32,22 @@
 						  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 						</select>
 					</div>
+					<div class="form-group">
+						<label th:text="#{extra_bets.reachablePoints} + ':'"></label>
+						<span class="label label-default label-as-badge big-badge" th:text="${extraBetCommand.reachablePointsSemiFinalWinner}"></span>												
+					</div>
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="form-group">
+						<label th:text="#{extra_bets.points} + ':'"></label>
+						<span class="label label-as-badge big-badge" th:classappend="${extraBetCommand.points != null} ? label-warning : label-default" 
+					  					      th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>												
+					</div>
+				</div>
+			</div>
+			<div class="row" th:if="${extraBetCommand.points == null}">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>							

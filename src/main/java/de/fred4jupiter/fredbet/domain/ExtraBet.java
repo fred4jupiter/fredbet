@@ -33,7 +33,7 @@ public class ExtraBet {
 	@Column(name = "SEMI_FINAL_WINNER")
 	private Country semiFinalWinner;
 
-	private Integer points = Integer.valueOf(0);
+	private Integer points;
 	
 	public boolean equals(Object obj) {
 		if (obj == null) {

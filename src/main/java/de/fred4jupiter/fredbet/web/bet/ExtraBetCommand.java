@@ -1,26 +1,19 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class ExtraBetCommand {
 
 	private Long extraBetId;
 
-	private final MessageUtil messageUtil;
 	private Country finalWinner;
 	private Country semiFinalWinner;
 
-	public ExtraBetCommand(MessageUtil messageUtil) {
-		this.messageUtil = messageUtil;
-	}
+	private Integer points;
 
-	public ExtraBetCommand(MessageUtil messageUtil, Long extraBetId, Country finalWinner, Country semiFinalWinner) {
-		this.messageUtil = messageUtil;
-		this.extraBetId = extraBetId;
-		this.finalWinner = finalWinner;
-		this.semiFinalWinner = semiFinalWinner;
-	}
+	private Integer reachablePointsFinalWinner;
+
+	private Integer reachablePointsSemiFinalWinner;
 
 	public Country getFinalWinner() {
 		return finalWinner;
@@ -45,4 +38,29 @@ public class ExtraBetCommand {
 	public void setExtraBetId(Long extraBetId) {
 		this.extraBetId = extraBetId;
 	}
+
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
+	}
+
+	public Integer getReachablePointsFinalWinner() {
+		return reachablePointsFinalWinner;
+	}
+
+	public void setReachablePointsFinalWinner(Integer reachablePointsFinalWinner) {
+		this.reachablePointsFinalWinner = reachablePointsFinalWinner;
+	}
+
+	public Integer getReachablePointsSemiFinalWinner() {
+		return reachablePointsSemiFinalWinner;
+	}
+
+	public void setReachablePointsSemiFinalWinner(Integer reachablePointsSemiFinalWinner) {
+		this.reachablePointsSemiFinalWinner = reachablePointsSemiFinalWinner;
+	}
+
 }

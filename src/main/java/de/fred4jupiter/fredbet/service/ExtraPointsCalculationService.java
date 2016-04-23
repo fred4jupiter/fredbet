@@ -15,9 +15,9 @@ import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 @Service
 public class ExtraPointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
 
-	private static final int POINTS_SEMI_FINAL_WINNER = 10;
+	public static final int POINTS_FINAL_WINNER = 10;
 
-	private static final int POINTS_FINAL_WINNER = 5;
+	public static final int POINTS_SEMI_FINAL_WINNER = 5;
 
 	private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
