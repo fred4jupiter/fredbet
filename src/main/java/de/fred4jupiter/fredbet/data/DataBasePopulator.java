@@ -300,6 +300,12 @@ public class DataBasePopulator {
 		LOG.info("createDemoResultsForAllUsers...");
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
+			if (match.getCountryOne() == null) {
+				match.setCountryOne(randomValueGenerator.generateRandomCountry());
+				match.setCountryTwo(randomValueGenerator.generateRandomCountry());
+				match.setTeamNameOne(null);
+				match.setTeamNameTwo(null);
+			}
 			match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
 			matchService.save(match);
 		});
