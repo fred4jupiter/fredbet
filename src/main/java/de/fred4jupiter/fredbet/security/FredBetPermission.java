@@ -18,6 +18,7 @@ public interface FredBetPermission {
 
     // users
     String PERM_CREATE_USER = "PERM_CREATE_USER";
+    String PERM_EDIT_USER = "PERM_EDIT_USER";
     String PERM_DELETE_USER = "PERM_DELETE_USER";
     String PERM_USER_ADMINISTRATION = "PERM_USER_ADMINISTRATION";
     String PERM_CHANGE_USER_ROLE = "PERM_CHANGE_USER_ROLE";

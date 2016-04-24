@@ -50,6 +50,7 @@ public class UserController {
         return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
     }
 
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
         if (CollectionUtils.isEmpty(userCommand.getRoles())) {
