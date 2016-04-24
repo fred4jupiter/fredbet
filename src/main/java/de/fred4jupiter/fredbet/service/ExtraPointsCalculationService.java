@@ -19,7 +19,7 @@ import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
  *
  */
 @Service
-public class ExtraPointsCalculationService implements ApplicationListener<MatchFinishedEvent> {
+public class ExtraPointsCalculationService implements ApplicationListener<MatchGoalsChangedEvent> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
@@ -31,7 +31,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchF
 	private ExtraBetRepository extraBetRepository;
 
 	@Override
-	public void onApplicationEvent(MatchFinishedEvent event) {
+	public void onApplicationEvent(MatchGoalsChangedEvent event) {
 		if (!event.getMatch().isFinal()) {
 			return;
 		}
@@ -48,6 +48,10 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchF
 	}
 
 	private Integer calculatePointsFor(Match finalMatch, ExtraBet extraBet) {
+		if (!finalMatch.hasResultSet()) {
+			return null;
+		}
+		
 		int points = 0;
 
 		if (extraBet.getFinalWinner().equals(finalMatch.getWinner())) {

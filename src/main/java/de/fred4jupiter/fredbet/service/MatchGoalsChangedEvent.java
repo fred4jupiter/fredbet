@@ -10,13 +10,13 @@ import de.fred4jupiter.fredbet.domain.Match;
  * @author michael
  *
  */
-public class MatchFinishedEvent extends ApplicationEvent {
+public class MatchGoalsChangedEvent extends ApplicationEvent {
 
 	private static final long serialVersionUID = -1204081537702240481L;
 
 	private final Match match;
 
-	public MatchFinishedEvent(Object source, Match match) {
+	public MatchGoalsChangedEvent(Object source, Match match) {
 		super(source);
 		this.match = match;
 	}

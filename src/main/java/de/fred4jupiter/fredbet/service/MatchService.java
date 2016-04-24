@@ -68,8 +68,9 @@ public class MatchService {
 	public Match save(Match match) {
 		match = matchRepository.save(match);
 
-		if (match.hasResultSet()) {
-			applicationContext.publishEvent(new MatchFinishedEvent(this, match));
+		if (match.hasGoalsChanged()) {
+			LOG.debug("fire MatchGoalsChangedEvent...");
+			applicationContext.publishEvent(new MatchGoalsChangedEvent(this, match));
 		}
 
 		return match;

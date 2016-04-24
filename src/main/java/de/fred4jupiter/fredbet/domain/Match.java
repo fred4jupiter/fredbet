@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,11 +44,21 @@ public class Match {
 	private Integer goalsTeamOne;
 
 	private Integer goalsTeamTwo;
+	
+	@Transient
+	private boolean goalsChanged; 
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
 	private Date kickOffDate;
 
 	private String stadium;
+	
+	public boolean hasGoalsChanged() {
+		boolean hasChanged = new Boolean(goalsChanged);
+		// reset flag
+		this.goalsChanged = false;
+		return hasChanged;
+	}
 
 	public boolean hasResultSet() {
 		return goalsTeamOne != null && goalsTeamTwo != null;
@@ -61,6 +72,7 @@ public class Match {
 	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
 		this.goalsTeamOne = goalsTeamOne;
 		this.goalsTeamTwo = goalsTeamTwo;
+		this.goalsChanged = true;
 	}
 
 	public Integer getGoalDifference() {
@@ -124,6 +136,7 @@ public class Match {
 
 	public void setGoalsTeamOne(Integer goalsTeamOne) {
 		this.goalsTeamOne = goalsTeamOne;
+		this.goalsChanged = true;
 	}
 
 	public Integer getGoalsTeamTwo() {
@@ -132,6 +145,7 @@ public class Match {
 
 	public void setGoalsTeamTwo(Integer goalsTeamTwo) {
 		this.goalsTeamTwo = goalsTeamTwo;
+		this.goalsChanged = true;
 	}
 
 	public boolean equals(Object obj) {
