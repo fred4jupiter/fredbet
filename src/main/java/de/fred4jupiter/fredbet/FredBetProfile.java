@@ -10,11 +10,11 @@ public interface FredBetProfile {
 
 	String DEV = "dev";
 
-	String TEST = "test";
-
-	String PROD = "prod";
+	String DOCKER = "docker";
 
 	String DEMODATA = "demodata";
+	
+	String LOCALDB = "localdb";
 
 	String INTEGRATION_TEST = "integration_test";
 }
