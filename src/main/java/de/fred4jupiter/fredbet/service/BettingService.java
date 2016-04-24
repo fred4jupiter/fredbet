@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -22,6 +23,7 @@ import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
 import de.fred4jupiter.fredbet.web.bet.BetCommand;
+import de.fred4jupiter.fredbet.web.bet.ExtraBetCommand;
 
 @Service
 @Transactional
@@ -153,50 +155,51 @@ public class BettingService {
 		return new AllBetsCommand(filtered, match, messageUtil);
 	}
 
-	public ExtraBet findExtraBetOfUser(String currentUserName) {
-		ExtraBet extraBet = extraBetRepository.findByUserName(currentUserName);
+	public void saveExtraBet(Country finalWinner, Country semiFinalWinner, String username) {
+		ExtraBet found = extraBetRepository.findByUserName(username);
+		if (found == null) {
+			found = new ExtraBet();
+		}
+
+		found.setFinalWinner(finalWinner);
+		found.setSemiFinalWinner(semiFinalWinner);
+		found.setUserName(username);
+
+		extraBetRepository.save(found);
+	}
+
+	public ExtraBetCommand loadExtraBetforUser(String username) {
+		ExtraBet extraBet = extraBetRepository.findByUserName(username);
 		if (extraBet == null) {
 			extraBet = new ExtraBet();
 		}
-		return extraBet;
+
+		ExtraBetCommand extraBetCommand = new ExtraBetCommand();
+		Match finalMatch = findFinalMatch();
+		if (finalMatch != null) {
+			extraBetCommand.setFinalMatchFinished(finalMatch.hasResultSet());
+			extraBetCommand.setFinalMatchStarted(finalMatch.hasStarted());
+		}
+
+		extraBetCommand.setExtraBetId(extraBet.getId());
+		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
+		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
+		extraBetCommand.setPoints(extraBet.getPoints());
+		return extraBetCommand;
 	}
 
-	public void saveExtraBet(ExtraBet extraBet) {
-		ExtraBet found = extraBetRepository.findByUserName(extraBet.getUserName());
-		if (found == null) {
-			extraBetRepository.save(extraBet);	
-		}
-		else {
-			extraBetRepository.save(found);
-		}
-	}
-
-	public boolean hasFinalMatchFinished() {
+	private Match findFinalMatch() {
 		List<Match> matches = matchRepository.findByGroup(Group.FINAL);
 		if (matches == null || matches.isEmpty()) {
-			return false;
+			return null;
 		}
-		
+
 		if (matches.size() > 1) {
 			throw new IllegalStateException("Found more than one final match!");
 		}
-		
+
 		Match finalMatch = matches.get(0);
-		return finalMatch.hasResultSet();
+		return finalMatch;
 	}
 
-	// TODO: refactor with method hasFinalMatchFinished
-	public boolean hasFinalMatchStarted() {
-		List<Match> matches = matchRepository.findByGroup(Group.FINAL);
-		if (matches == null || matches.isEmpty()) {
-			return false;
-		}
-		
-		if (matches.size() > 1) {
-			throw new IllegalStateException("Found more than one final match!");
-		}
-		
-		Match finalMatch = matches.get(0);
-		return finalMatch.hasStarted();
-	}
 }

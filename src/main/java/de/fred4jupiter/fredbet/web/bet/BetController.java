@@ -19,11 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
-import de.fred4jupiter.fredbet.service.ExtraPointsCalculationService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -57,14 +55,6 @@ public class BetController {
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountries();
-	}
-
-	@ModelAttribute("extraBetCommand")
-	public ExtraBetCommand extraBetCommand() {
-		ExtraBetCommand extraBetCommand = new ExtraBetCommand();
-		extraBetCommand.setReachablePointsFinalWinner(ExtraPointsCalculationService.POINTS_FINAL_WINNER);
-		extraBetCommand.setReachablePointsSemiFinalWinner(ExtraPointsCalculationService.POINTS_SEMI_FINAL_WINNER);
-		return extraBetCommand;
 	}
 
 	@RequestMapping("/open")
@@ -114,25 +104,15 @@ public class BetController {
 	}
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
-	public ModelAndView showExtraBets(@ModelAttribute("extraBetCommand") ExtraBetCommand extraBetCommand) {
-		ExtraBet extraBet = bettingService.findExtraBetOfUser(securityBean.getCurrentUserName());
-		extraBetCommand.setExtraBetId(extraBet.getId());
-		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
-		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
-		extraBetCommand.setPoints(extraBet.getPoints());
-		extraBetCommand.setFinalMatchFinished(bettingService.hasFinalMatchFinished());
-		extraBetCommand.setFinalMatchStarted(bettingService.hasFinalMatchStarted());
+	public ModelAndView showExtraBets() {
+		ExtraBetCommand extraBetCommand = bettingService.loadExtraBetforUser(securityBean.getCurrentUserName());
 		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
 	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
-		ExtraBet extraBet = bettingService.findExtraBetOfUser(securityBean.getCurrentUserName());
-		extraBet.setFinalWinner(extraBetCommand.getFinalWinner());
-		extraBet.setSemiFinalWinner(extraBetCommand.getSemiFinalWinner());
-		extraBet.setUserName(securityBean.getCurrentUserName());
+		bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(), securityBean.getCurrentUserName());
 
-		bettingService.saveExtraBet(extraBet);
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		return new ModelAndView("redirect:/bet/extra_bets");
 	}
