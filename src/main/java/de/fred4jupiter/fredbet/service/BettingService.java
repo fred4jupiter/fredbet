@@ -157,6 +157,12 @@ public class BettingService {
 
 	public void saveExtraBet(Country finalWinner, Country semiFinalWinner, String username) {
 		ExtraBet found = extraBetRepository.findByUserName(username);
+		if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && found != null) {
+			// reset/delete existing extra bet
+			extraBetRepository.delete(found);
+			return;
+		}
+		
 		if (found == null) {
 			found = new ExtraBet();
 		}
