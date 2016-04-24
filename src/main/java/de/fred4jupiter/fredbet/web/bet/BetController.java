@@ -64,6 +64,10 @@ public class BetController {
 			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
 		}
 
+		if (bettingService.hasOpenExtraBet(securityBean.getCurrentUserName())) {
+			messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
+		}
+		
 		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchConverter.toMatchCommand(match))
 				.collect(Collectors.toList());
 		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);

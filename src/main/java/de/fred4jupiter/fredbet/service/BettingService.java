@@ -201,4 +201,9 @@ public class BettingService {
 		return finalMatch;
 	}
 
+	public boolean hasOpenExtraBet(String currentUserName) {
+		ExtraBet extraBet = extraBetRepository.findByUserName(currentUserName);
+		return extraBet == null;
+	}
+
 }
