@@ -16,9 +16,7 @@ public class ExtraBetCommand {
 
 	private final Integer reachablePointsSemiFinalWinner = ExtraPointsCalculationService.POINTS_SEMI_FINAL_WINNER;
 
-	private boolean finalMatchStarted;
-
-	private boolean finalMatchFinished;
+	private boolean finalMatchBettable;
 
 	public Country getFinalWinner() {
 		return finalWinner;
@@ -45,7 +43,7 @@ public class ExtraBetCommand {
 	}
 
 	public Integer getPoints() {
-		if (isFinalMatchFinished() && points == null) {
+		if (!isFinalMatchBettable() && points == null) {
 			return 0;
 		}
 		return points;
@@ -63,20 +61,12 @@ public class ExtraBetCommand {
 		return reachablePointsSemiFinalWinner;
 	}
 
-	public boolean isFinalMatchStarted() {
-		return finalMatchStarted;
+	public boolean isFinalMatchBettable() {
+		return finalMatchBettable;
 	}
 
-	public void setFinalMatchStarted(boolean finalMatchStarted) {
-		this.finalMatchStarted = finalMatchStarted;
-	}
-
-	public boolean isFinalMatchFinished() {
-		return finalMatchFinished;
-	}
-
-	public void setFinalMatchFinished(boolean finalMatchFinished) {
-		this.finalMatchFinished = finalMatchFinished;
+	public void setFinalMatchBettable(boolean finalMatchBettable) {
+		this.finalMatchBettable = finalMatchBettable;
 	}
 
 }

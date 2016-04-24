@@ -177,8 +177,7 @@ public class BettingService {
 		ExtraBetCommand extraBetCommand = new ExtraBetCommand();
 		Match finalMatch = findFinalMatch();
 		if (finalMatch != null) {
-			extraBetCommand.setFinalMatchFinished(finalMatch.hasResultSet());
-			extraBetCommand.setFinalMatchStarted(finalMatch.hasStarted());
+			extraBetCommand.setFinalMatchBettable(finalMatch.isBetable());
 		}
 
 		extraBetCommand.setExtraBetId(extraBet.getId());
