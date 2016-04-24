@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.ExtraPointsCalculationService;
 
 public class ExtraBetCommand {
@@ -16,7 +17,7 @@ public class ExtraBetCommand {
 
 	private final Integer reachablePointsSemiFinalWinner = ExtraPointsCalculationService.POINTS_SEMI_FINAL_WINNER;
 
-	private boolean finalMatchBettable;
+	private Match finalMatch;
 
 	public Country getFinalWinner() {
 		return finalWinner;
@@ -43,7 +44,7 @@ public class ExtraBetCommand {
 	}
 
 	public Integer getPoints() {
-		if (!isFinalMatchBettable() && points == null) {
+		if (finalMatch.hasResultSet() && points == null) {
 			return 0;
 		}
 		return points;
@@ -61,12 +62,12 @@ public class ExtraBetCommand {
 		return reachablePointsSemiFinalWinner;
 	}
 
-	public boolean isFinalMatchBettable() {
-		return finalMatchBettable;
+	public Match getFinalMatch() {
+		return finalMatch;
 	}
 
-	public void setFinalMatchBettable(boolean finalMatchBettable) {
-		this.finalMatchBettable = finalMatchBettable;
+	public void setFinalMatch(Match finalMatch) {
+		this.finalMatch = finalMatch;
 	}
 
 }
