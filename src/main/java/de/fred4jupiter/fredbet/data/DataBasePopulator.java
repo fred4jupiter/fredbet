@@ -61,7 +61,7 @@ public class DataBasePopulator {
 	private void createAdditionalUsers() {
 		LOG.info("createAdditionalUsers: creating additional demo users ...");
 
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= 5; i++) {
 			saveIfNotPresent(
 					AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i).withRole(FredBetRole.ROLE_USER).build());
 		}
