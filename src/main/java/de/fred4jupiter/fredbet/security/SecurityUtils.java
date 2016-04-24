@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.security;
 
+import java.util.Collection;
+
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -19,5 +22,17 @@ public final class SecurityUtils {
         }
         
         return (AppUser) authentication.getPrincipal();
+    }
+    
+    public static boolean hasPermission(String permission) {
+    	AppUser currentUser = getCurrentUser();
+    	Collection<? extends GrantedAuthority> authorities = currentUser.getAuthorities();
+    	for (GrantedAuthority grantedAuthority : authorities) {
+			if (grantedAuthority.getAuthority().equals(permission)) {
+				return true;
+			}
+		}
+    	
+    	return false;
     }
 }

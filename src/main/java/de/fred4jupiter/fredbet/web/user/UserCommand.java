@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.ui.ModelMap;
 
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -120,7 +121,7 @@ public class UserCommand {
     }
     
     public boolean isRoleSelectionDisabled() {
-    	return isUserItself();
+    	return isUserItself() || !SecurityUtils.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE);
     }
     
     private boolean isUserItself() {
