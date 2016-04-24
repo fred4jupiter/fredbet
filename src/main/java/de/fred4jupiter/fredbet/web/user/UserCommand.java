@@ -119,7 +119,11 @@ public class UserCommand {
         this.resetPassword = resetPassword;
     }
     
-    public boolean isUserItself() {
+    public boolean isRoleSelectionDisabled() {
+    	return isUserItself();
+    }
+    
+    private boolean isUserItself() {
     	String loggedInUser = SecurityUtils.getCurrentUser().getUsername();
     	return loggedInUser.equals(username);
     }

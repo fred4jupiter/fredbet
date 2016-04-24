@@ -15,14 +15,14 @@ public class RoleToPermissionMapper {
 
 	private static final Collection<GrantedAuthority> PERMISSIONS_ROLE_USER = new HashSet<>();
 
-	private static final Collection<GrantedAuthority> PERMISSIONS_ROLE_USER_ADVANCED = new HashSet<>();
+	private static final Collection<GrantedAuthority> PERMISSIONS_ROLE_USER_ENTER_RESULTS = new HashSet<>();
 
 	private static final Collection<GrantedAuthority> PERMISSIONS_ROLE_ADMIN = new HashSet<>();
 
 	@PostConstruct
-	private void init() {
+	private void mapPermissionsToRoles() {
 	    // User Advanced
-		PERMISSIONS_ROLE_USER_ADVANCED.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH_RESULT));
+		PERMISSIONS_ROLE_USER_ENTER_RESULTS.add(new SimpleGrantedAuthority(FredBetPermission.PERM_EDIT_MATCH_RESULT));
 
 		// User Admin
 		PERMISSIONS_ROLE_ADMIN.add(new SimpleGrantedAuthority(FredBetPermission.PERM_CREATE_MATCH));
@@ -42,8 +42,8 @@ public class RoleToPermissionMapper {
 			return PERMISSIONS_ROLE_USER;
 		}
 
-		if (FredBetRole.ROLE_USER_ADVANCED.equals(role)) {
-			return PERMISSIONS_ROLE_USER_ADVANCED;
+		if (FredBetRole.ROLE_USER_ENTER_RESULTS.equals(role)) {
+			return PERMISSIONS_ROLE_USER_ENTER_RESULTS;
 		}
 
 		if (FredBetRole.ROLE_ADMIN.equals(role)) {

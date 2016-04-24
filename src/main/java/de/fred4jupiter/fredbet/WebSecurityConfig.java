@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**", "/console/*").permitAll();
 		http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+		http.authorizeRequests().antMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_BUILD_INFO);
 		http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		// Spring Boot Actuator
 		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);

@@ -1,21 +1,24 @@
 package de.fred4jupiter.fredbet.security;
 
+/**
+ * All available permissions in FredBet application.
+ * 
+ * @author michael
+ *
+ */
 public interface FredBetPermission {
 
+	// match	
+	String PERM_CREATE_MATCH = "PERM_CREATE_MATCH";
     String PERM_EDIT_MATCH = "PERM_EDIT_MATCH";
-    
     String PERM_EDIT_MATCH_RESULT = "PERM_EDIT_MATCH_RESULT";
-    
-    String PERM_CREATE_MATCH = "PERM_CREATE_MATCH";
-    
     String PERM_DELETE_MATCH = "PERM_DELETE_MATCH";
     
     String PERM_PASSWORD_RESET = "PERM_PASSWORD_RESET";
-    
-    String PERM_DELETE_USER = "PERM_DELETE_USER";
-    
+
+    // users
     String PERM_CREATE_USER = "PERM_CREATE_USER";
-    
+    String PERM_DELETE_USER = "PERM_DELETE_USER";
     String PERM_USER_ADMINISTRATION = "PERM_USER_ADMINISTRATION";
     
     String PERM_BUILD_INFO = "PERM_BUILD_INFO";
