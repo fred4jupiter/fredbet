@@ -62,15 +62,15 @@
 								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" 
 								              class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
 				            				  <span class="glyphicon glyphicon-pencil"></span>
-				            			</a>
-				            			<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matches/matchresult/' + ${matchCommand.matchId}}" 
-				            			        class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
-				            					<span class="fa fa-trophy fa-lg"></span>
-				            			</a>
+				            			</a>				            			
 				            			<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'" 
 												   class="btn btn-success" role="button" th:title="#{matches.list.betMatch}">
 											<span class="fa fa-thumbs-o-up fa-lg"></span>
 										</a>
+										<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matches/matchresult/' + ${matchCommand.matchId}}" 
+				            			        class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
+				            					<span class="fa fa-trophy fa-lg"></span>
+				            			</a>
 							        </div>
 	       						</div>	       						
        						</div>
