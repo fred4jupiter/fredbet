@@ -24,7 +24,9 @@ The application is available under [http://localhost:8080/](http://localhost:808
 
 ## License ##
 
-FredBet (c) by Michael Stähler
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+	<img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a> FredBet (c) by Michael Stähler
 
 FredBet is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
 
