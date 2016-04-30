@@ -11,6 +11,7 @@
 		<form id="matchresultForm" th:action="@{/matches/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form">			
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
+					<h3 th:text="#{matchresult.heading}"></h3>
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
 					<div class="form-group">
 						<table class="table center">
