@@ -22,9 +22,18 @@ There is a docker compose file available to run the application with a MariaDB d
 
 The application is available under [http://localhost:8080/](http://localhost:8080/).
 
+## License ##
+
+FredBet (c) by Michael Stähler
+
+FredBet is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
+You should have received a copy of the license along with this work. If not, see [http://creativecommons.org/licenses/by-sa/4.0/](http://creativecommons.org/licenses/by-sa/4.0/).
+
 ## Travis Build Status ##
 [![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
 
 ## CircleCI Build Status ##
 
 [![Circle CI](https://circleci.com/gh/fred4jupiter/fredbet.svg?style=shield)](https://circleci.com/gh/fred4jupiter/fredbet)
+
