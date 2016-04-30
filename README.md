@@ -22,6 +22,10 @@ There is a docker compose file available to run the application with a MariaDB d
 
 The application is available under [http://localhost:8080/](http://localhost:8080/).
 
+## Screenshot ##
+
+![FredBet Screenshot](/src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot")
+
 ## License ##
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
