@@ -20,28 +20,37 @@ public enum FredBetRole {
 	/**
 	 * Normal user role with permission to bet matches.
 	 */
-	ROLE_USER,
+	ROLE_USER("msg.ROLE_USER"),
 
 	/**
 	 * Like the user role but with permission to enter the results of a match.
 	 */
-	ROLE_USER_ENTER_RESULTS(PERM_EDIT_MATCH_RESULT),
+	ROLE_USER_ENTER_RESULTS("msg.ROLE_USER_ENTER_RESULTS", PERM_EDIT_MATCH_RESULT),
 
 	/**
 	 * Like ROLE_USER_ENTER_RESULTS role but with permission to add users.
 	 */
-	ROLE_USER_ENTER_RESULTS_ADD_USERS(PERM_EDIT_MATCH_RESULT, PERM_CREATE_USER, PERM_USER_ADMINISTRATION, PERM_PASSWORD_RESET, PERM_EDIT_USER),
+	ROLE_USER_ENTER_RESULTS_ADD_USERS("msg.ROLE_USER_ENTER_RESULTS_ADD_USERS", PERM_EDIT_MATCH_RESULT, PERM_CREATE_USER, PERM_USER_ADMINISTRATION,
+			PERM_PASSWORD_RESET, PERM_EDIT_USER),
 
 	/**
 	 * All permissions.
 	 */
-	ROLE_ADMIN(PERM_CREATE_MATCH, PERM_EDIT_MATCH, PERM_EDIT_MATCH_RESULT, PERM_DELETE_MATCH, PERM_CREATE_USER, PERM_EDIT_USER,
-			PERM_DELETE_USER, PERM_PASSWORD_RESET, PERM_USER_ADMINISTRATION, PERM_BUILD_INFO, PERM_ADMINISTRATION, PERM_CHANGE_USER_ROLE);
+	ROLE_ADMIN("msg.ROLE_ADMIN", PERM_CREATE_MATCH, PERM_EDIT_MATCH, PERM_EDIT_MATCH_RESULT, PERM_DELETE_MATCH, PERM_CREATE_USER,
+			PERM_EDIT_USER, PERM_DELETE_USER, PERM_PASSWORD_RESET, PERM_USER_ADMINISTRATION, PERM_BUILD_INFO, PERM_ADMINISTRATION,
+			PERM_CHANGE_USER_ROLE);
 
 	private String[] permissions = new String[] {};
 
-	private FredBetRole(String... permissions) {
+	private String msgUserRole;
+
+	private FredBetRole(String msgUserRole, String... permissions) {
+		this.msgUserRole = msgUserRole;
 		this.permissions = permissions;
+	}
+
+	public String getMsgUserRole() {
+		return msgUserRole;
 	}
 
 	public Collection<? extends GrantedAuthority> getPermissions() {
