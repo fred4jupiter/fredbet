@@ -31,13 +31,13 @@
 							</thead>
 							<tbody>
 								<tr class="success">
-									<td><input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" /></td>
-									<td><input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" /></td>
+									<td><input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" onchange="checkPenalty()"/></td>
+									<td><input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" onchange="checkPenalty()"/></td>
 								</tr>								
 							</tbody>
 						</table>												
 					</div>
-					<div class="form-group" th:if="${!betCommand.isGroupMatch()}">
+					<div id="penaltyBox" class="form-group" th:if="${!betCommand.isGroupMatch()}">
 						<table class="table center">
 							<thead>
 								<tr>
