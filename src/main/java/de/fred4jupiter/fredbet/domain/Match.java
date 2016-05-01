@@ -45,7 +45,7 @@ public class Match {
 
 	private Integer goalsTeamTwo;
 	
-	@Column(name = "PENALTY_WINNER_ONE", columnDefinition = "TINYINT(1)")
+	@Column(name = "PENALTY_WINNER_ONE")
 	private boolean penaltyWinnerOne;
 	
 	@Transient
