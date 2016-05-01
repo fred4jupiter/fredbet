@@ -162,6 +162,7 @@ public class MatchService {
 		Match match = findMatchById(matchResultCommand.getMatchId());
 		match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
 		match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
+		match.setPenaltyWinnerOne(matchResultCommand.isPenaltyWinnerOne());
 		save(match);
 	}
 

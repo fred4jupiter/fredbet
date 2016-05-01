@@ -19,6 +19,8 @@ public class MatchResultCommand {
 	private Integer teamResultTwo;
 
 	private final MessageUtil messageUtil;
+	
+	private boolean penaltyWinnerOne;
 
 	public MatchResultCommand(MessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
@@ -33,6 +35,7 @@ public class MatchResultCommand {
 		this.nameTeamTwo = match.getTeamNameTwo();
 		this.teamResultOne = match.getGoalsTeamOne();
 		this.teamResultTwo = match.getGoalsTeamTwo();
+		this.penaltyWinnerOne = match.isPenaltyWinnerOne();
 	}
 
 	public Long getMatchId() {
@@ -115,5 +118,13 @@ public class MatchResultCommand {
 		}
 
 		return this.countryTeamTwo.getIconPath();
+	}
+
+	public boolean isPenaltyWinnerOne() {
+		return penaltyWinnerOne;
+	}
+
+	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
 }

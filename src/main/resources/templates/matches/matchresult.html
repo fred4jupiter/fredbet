@@ -36,6 +36,23 @@
 						</table>												
 					</div>
 					<div class="form-group">
+						<table class="table center">
+							<thead>
+								<tr>
+									<th colspan="2">
+										<span>Gewinner nach 11 Meter schießen</span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="info">
+									<td><input type="radio" th:field="*{penaltyWinnerOne}" value="true" /></td>
+									<td><input type="radio" th:field="*{penaltyWinnerOne}" value="false" /></td>
+								</tr>								
+							</tbody>
+						</table>												
+					</div>
+					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
