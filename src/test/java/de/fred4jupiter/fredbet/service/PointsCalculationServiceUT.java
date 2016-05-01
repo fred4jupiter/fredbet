@@ -22,7 +22,7 @@ public class PointsCalculationServiceUT {
 		Match match = createMatch(2, 1);
 		Bet bet = createBet(2, 1);
 
-		assertEquals(Integer.valueOf(3), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(3, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 
 	@Test
@@ -30,23 +30,23 @@ public class PointsCalculationServiceUT {
 		Match match = createMatch(2, 1);
 		Bet bet = createBet(3, 2);
 
-		assertEquals(Integer.valueOf(2), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(2, pointsCalculationService.calculatePointsFor(match, bet));
 	}
-	
+
 	@Test
 	public void twoPointsOnSameGoalDifferenceHigherRange() {
 		Match match = createMatch(10, 2);
 		Bet bet = createBet(20, 12);
 
-		assertEquals(Integer.valueOf(2), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(2, pointsCalculationService.calculatePointsFor(match, bet));
 	}
-	
+
 	@Test
 	public void noPointsOnSameGoalDifferenceOtherIsWinner() {
 		Match match = createMatch(4, 2);
 		Bet bet = createBet(2, 4);
 
-		assertEquals(Integer.valueOf(0), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(0, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 
 	@Test
@@ -54,23 +54,43 @@ public class PointsCalculationServiceUT {
 		Match match = createMatch(6, 3);
 		Bet bet = createBet(2, 1);
 
-		assertEquals(Integer.valueOf(1), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(1, pointsCalculationService.calculatePointsFor(match, bet));
 	}
-	
+
 	@Test
 	public void wrongResultNoPoints() {
 		Match match = createMatch(6, 3);
 		Bet bet = createBet(3, 4);
 
-		assertEquals(Integer.valueOf(0), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(0, pointsCalculationService.calculatePointsFor(match, bet));
 	}
-	
+
 	@Test
 	public void correctGoalDifferenceButWrongRelation() {
 		Match match = createMatch(4, 3);
 		Bet bet = createBet(3, 4);
 
-		assertEquals(Integer.valueOf(0), pointsCalculationService.calculatePointsFor(match, bet));
+		assertEquals(0, pointsCalculationService.calculatePointsFor(match, bet));
+	}
+
+	@Test
+	public void extraPointOnCorrectPenaltyWinner() {
+		Match match = createMatch(4, 4);
+		match.setPenaltyWinnerOne(true);
+		Bet bet = createBet(4, 4);
+		bet.setPenaltyWinnerOne(true);
+
+		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
+	}
+	
+	@Test
+	public void extraPointOnCorrectPenaltyOtherWinner() {
+		Match match = createMatch(0, 0);
+		match.setPenaltyWinnerOne(false);
+		Bet bet = createBet(0, 0);
+		bet.setPenaltyWinnerOne(false);
+
+		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 
 	private Bet createBet(Integer goalsTeamOne, Integer goalsTeamTwo) {

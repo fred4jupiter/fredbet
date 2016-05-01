@@ -84,6 +84,10 @@ public class Match {
 		}
 		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
 	}
+	
+	public boolean isUndecidedResult() {
+		return getGoalDifference().intValue() == 0;
+	}
 
 	public boolean isTeamOneWinner() {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
@@ -283,5 +287,9 @@ public class Match {
 
 	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
 		this.penaltyWinnerOne = penaltyWinnerOne;
+	}
+	
+	public boolean isGroupMatch() {
+		return this.group.name().startsWith("GROUP");
 	}
 }

@@ -39,7 +39,11 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 		List<Bet> allBetsForThisMatch = betRepository.findByMatch(match);
 
 		allBetsForThisMatch.forEach(bet -> {
-			bet.setPoints(calculatePointsFor(match, bet));
+			if (match.hasResultSet()) {
+				bet.setPoints(calculatePointsFor(match, bet));
+			} else {
+				bet.setPoints(null);
+			}
 
 			LOG.debug("User {} gets {} points", bet.getUserName(), bet.getPoints());
 		});
@@ -47,11 +51,27 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 		betRepository.save(allBetsForThisMatch);
 	}
 
-	Integer calculatePointsFor(Match match, Bet bet) {
-		if (!match.hasResultSet()) {
-			return null;
+	int calculatePointsFor(Match match, Bet bet) {
+		int standardPoints = calculateStandardPointsFor(match, bet);
+		int penaltyPoints = calculatePenaltyPointsFor(match, bet);
+		return standardPoints + penaltyPoints;
+	}
+
+	private int calculatePenaltyPointsFor(Match match, Bet bet) {
+		if (match.isUndecidedResult()) {
+			if (match.isPenaltyWinnerOne() && bet.isPenaltyWinnerOne()) {
+				return 1;
+			}
+
+			if (!match.isPenaltyWinnerOne() && !bet.isPenaltyWinnerOne()) {
+				return 1;
+			}
 		}
-		
+
+		return 0;
+	}
+
+	private int calculateStandardPointsFor(Match match, Bet bet) {
 		if (isSameGoalResult(match, bet)) {
 			return 3;
 		}
