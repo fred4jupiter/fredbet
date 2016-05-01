@@ -35,7 +35,7 @@ public class Bet {
 
 	private Integer points = Integer.valueOf(0);
 
-	@Column(name = "PENALTY_WINNER_ONE", columnDefinition = "BOOLEAN")
+	@Column(name = "PENALTY_WINNER_ONE", columnDefinition = "TINYINT(1)")
 	private boolean penaltyWinnerOne;
 
 	public Integer getGoalDifference() {
