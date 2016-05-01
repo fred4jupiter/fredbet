@@ -156,4 +156,8 @@ public class BetCommand {
 	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
 		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
+	
+	public boolean isGroupMatch() {
+		return this.bet.getMatch().isGroupMatch();
+	}
 }
