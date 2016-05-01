@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
+import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -51,6 +54,9 @@ public class BetController {
 
 	@Autowired
 	private CountryService countryService;
+	
+	@Autowired
+	private MatchService matchService;
 
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
@@ -88,6 +94,14 @@ public class BetController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
+		if (betCommand.getBetId() == null) {
+			Match match = matchService.findMatchById(betCommand.getMatchId());
+			Bet bet = new Bet();
+			bet.setMatch(match);
+			bet.setUserName(SecurityUtils.getCurrentUser().getUsername());
+			betCommand.setBet(bet);
+		}
+		
 		if (!betCommand.hasGoalsSet()) {
 			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);

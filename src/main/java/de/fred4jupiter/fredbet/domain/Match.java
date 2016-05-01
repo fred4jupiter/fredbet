@@ -45,6 +45,9 @@ public class Match {
 
 	private Integer goalsTeamTwo;
 	
+	@Column(name = "PENALTY_WINNER_ONE")
+	private boolean penaltyWinnerOne;
+	
 	@Transient
 	private boolean goalsChanged; 
 
@@ -272,5 +275,13 @@ public class Match {
 
 	public boolean isFinal() {
 		return Group.FINAL.equals(this.group);
+	}
+
+	public boolean isPenaltyWinnerOne() {
+		return penaltyWinnerOne;
+	}
+
+	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
 }

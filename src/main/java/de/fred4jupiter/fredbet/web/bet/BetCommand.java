@@ -23,6 +23,8 @@ public class BetCommand {
 
 	private Bet bet;
 
+	private boolean penaltyWinnerOne;
+
 	public BetCommand(MessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
 	}
@@ -31,8 +33,14 @@ public class BetCommand {
 		this.messageUtil = messageUtil;
 		this.bet = bet;
 		setBetId(bet.getId());
+		setMatchId(bet.getMatch().getId());
 		setGoalsTeamOne(bet.getGoalsTeamOne());
 		setGoalsTeamTwo(bet.getGoalsTeamTwo());
+	}
+
+	public void setBet(Bet bet) {
+		this.bet = bet;
+		setBetId(bet.getId());
 		setMatchId(bet.getMatch().getId());
 	}
 
@@ -125,37 +133,13 @@ public class BetCommand {
 		return this.bet.getMatch().getCountryTwo();
 	}
 
-	// public Country getCountryTeamOne() {
-	// return countryTeamOne;
-	// }
-	//
-	// public void setCountryTeamOne(Country countryTeamOne) {
-	// this.countryTeamOne = countryTeamOne;
-	// }
-	//
-	// public Country getCountryTeamTwo() {
-	// return countryTeamTwo;
-	// }
-	//
-	// public void setCountryTeamTwo(Country countryTeamTwo) {
-	// this.countryTeamTwo = countryTeamTwo;
-	// }
-
 	public String getNameTeamOne() {
 		return this.bet.getMatch().getTeamNameOne();
 	}
 
-	// public void setNameTeamOne(String nameTeamOne) {
-	// this.nameTeamOne = nameTeamOne;
-	// }
-
 	public String getNameTeamTwo() {
 		return this.bet.getMatch().getTeamNameTwo();
 	}
-
-	// public void setNameTeamTwo(String nameTeamTwo) {
-	// this.nameTeamTwo = nameTeamTwo;
-	// }
 
 	public String getRedirectViewName() {
 		return redirectViewName;
@@ -163,5 +147,13 @@ public class BetCommand {
 
 	public void setRedirectViewName(String redirectViewName) {
 		this.redirectViewName = redirectViewName;
+	}
+
+	public boolean isPenaltyWinnerOne() {
+		return penaltyWinnerOne;
+	}
+
+	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
 }

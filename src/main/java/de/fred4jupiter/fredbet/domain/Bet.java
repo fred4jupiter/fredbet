@@ -34,6 +34,9 @@ public class Bet {
 	private Integer goalsTeamTwo;
 
 	private Integer points = Integer.valueOf(0);
+	
+	@Column(name = "PENALTY_WINNER_ONE")
+	private boolean penaltyWinnerOne;
 
 	public Integer getGoalDifference() {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
@@ -146,6 +149,14 @@ public class Bet {
 
 	public void setPoints(Integer points) {
 		this.points = points;
+	}
+
+	public boolean isPenaltyWinnerOne() {
+		return penaltyWinnerOne;
+	}
+
+	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
 
 }

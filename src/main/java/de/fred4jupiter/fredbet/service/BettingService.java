@@ -95,6 +95,7 @@ public class BettingService {
 		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
 		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
 		betCommand.setMatchId(bet.getMatch().getId());
+		betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 		return betCommand;
 	}
 
@@ -117,6 +118,7 @@ public class BettingService {
 		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
 		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
 		bet.setUserName(getCurrentUsername());
+		bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
 
 		bet = betRepository.save(bet);
 		return bet.getId();
