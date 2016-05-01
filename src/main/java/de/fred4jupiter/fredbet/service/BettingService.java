@@ -90,12 +90,8 @@ public class BettingService {
 	}
 
 	private BetCommand toBetCommand(Bet bet) {
-		BetCommand betCommand = new BetCommand(messageUtil);
+		BetCommand betCommand = new BetCommand(messageUtil, bet);
 		betCommand.setBetId(bet.getId());
-		betCommand.setCountryTeamOne(bet.getMatch().getCountryOne());
-		betCommand.setCountryTeamTwo(bet.getMatch().getCountryTwo());
-		betCommand.setNameTeamOne(bet.getMatch().getTeamNameOne());
-		betCommand.setNameTeamTwo(bet.getMatch().getTeamNameTwo());
 		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
 		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
 		betCommand.setMatchId(bet.getMatch().getId());

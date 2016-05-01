@@ -57,6 +57,11 @@ public class BetController {
 		return countryService.getAvailableCountries();
 	}
 
+	@ModelAttribute("betCommand")
+	public BetCommand betCommand() {
+		return new BetCommand(messageUtil);
+	}
+
 	@RequestMapping("/open")
 	public ModelAndView listStillOpen(ModelMap modelMap) {
 		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
@@ -67,7 +72,7 @@ public class BetController {
 		if (bettingService.hasOpenExtraBet(securityBean.getCurrentUserName())) {
 			messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
 		}
-		
+
 		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchConverter.toMatchCommand(match))
 				.collect(Collectors.toList());
 		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
@@ -76,7 +81,6 @@ public class BetController {
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
 	public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
 		BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
-		betCommand.setMessageUtil(messageUtil);
 		betCommand.setRedirectViewName(redirectViewName);
 
 		return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
@@ -84,8 +88,6 @@ public class BetController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
-		betCommand.setMessageUtil(messageUtil);
-
 		if (!betCommand.hasGoalsSet()) {
 			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
@@ -115,7 +117,8 @@ public class BetController {
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
 	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
-		bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(), securityBean.getCurrentUserName());
+		bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
+				securityBean.getCurrentUserName());
 
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		return new ModelAndView("redirect:/bet/extra_bets");
