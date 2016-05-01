@@ -3,8 +3,8 @@ $(document).ready(function() {
 });
 
 function checkPenalty() {
-	var goalsOne = $('#goalsTeamOne').val();
-	var goalsTwo = $('#goalsTeamTwo').val();
+	var goalsOne = $('#goalsTeamOne, #teamResultOne').val();
+	var goalsTwo = $('#goalsTeamTwo, #teamResultTwo').val();
 	if (goalsOne != "" && goalsTwo != "" && goalsOne == goalsTwo) {
 		$('#penaltyBox').show();
 	} else {

@@ -22,12 +22,15 @@ public class MatchResultCommand {
 	
 	private boolean penaltyWinnerOne;
 
+	private Match match;
+
 	public MatchResultCommand(MessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
 	}
 	
 	public MatchResultCommand(MessageUtil messageUtil, Match match) {
 		this.messageUtil = messageUtil;
+		this.match = match;
 		this.matchId = match.getId();
 		this.countryTeamOne = match.getCountryOne();
 		this.countryTeamTwo = match.getCountryTwo();
@@ -126,5 +129,9 @@ public class MatchResultCommand {
 
 	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
 		this.penaltyWinnerOne = penaltyWinnerOne;
+	}
+	
+	public boolean isGroupMatch() {
+		return this.match.isGroupMatch();
 	}
 }
