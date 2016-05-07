@@ -34,7 +34,7 @@ public class Bet {
 	private Integer goalsTeamTwo;
 
 	private Integer points = Integer.valueOf(0);
-	
+
 	@Column(name = "PENALTY_WINNER_ONE")
 	private boolean penaltyWinnerOne;
 
