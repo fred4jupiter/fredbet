@@ -142,6 +142,7 @@ public class BettingService {
 
 	public void deleteAllBets() {
 		betRepository.deleteAll();
+		extraBetRepository.deleteAll();
 	}
 
 	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
