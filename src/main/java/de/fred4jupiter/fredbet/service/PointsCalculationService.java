@@ -58,6 +58,10 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 	}
 
 	private int calculatePenaltyPointsFor(Match match, Bet bet) {
+		if (match.isGroupMatch()) {
+			return 0;
+		}
+		
 		if (match.isUndecidedResult()) {
 			if (match.isPenaltyWinnerOne() && bet.isPenaltyWinnerOne()) {
 				return 1;
