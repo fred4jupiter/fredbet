@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 
@@ -75,17 +76,17 @@ public class PointsCalculationServiceUT {
 
 	@Test
 	public void extraPointOnCorrectPenaltyWinner() {
-		Match match = createMatch(4, 4);
+		Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(4, 4).build();
 		match.setPenaltyWinnerOne(true);
 		Bet bet = createBet(4, 4);
 		bet.setPenaltyWinnerOne(true);
 
 		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
 	}
-	
+
 	@Test
 	public void extraPointOnCorrectPenaltyOtherWinner() {
-		Match match = createMatch(0, 0);
+		Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(0, 0).build();
 		match.setPenaltyWinnerOne(false);
 		Bet bet = createBet(0, 0);
 		bet.setPenaltyWinnerOne(false);
@@ -101,6 +102,7 @@ public class PointsCalculationServiceUT {
 	}
 
 	private Match createMatch(Integer goalsTeamOne, Integer goalsTeamTwo) {
-		return MatchBuilder.create().withTeams("Deutschland", "Italien").withGoals(goalsTeamOne, goalsTeamTwo).build();
+		return MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("Deutschland", "Italien").withGoals(goalsTeamOne, goalsTeamTwo)
+				.build();
 	}
 }
