@@ -36,8 +36,6 @@ public class MatchConverter {
 		match.setCountryTwo(matchCommand.getCountryTeamTwo());
 		match.setTeamNameOne(matchCommand.getNameTeamOne());
 		match.setTeamNameTwo(matchCommand.getNameTeamTwo());
-		match.setGoalsTeamOne(matchCommand.getTeamResultOne());
-		match.setGoalsTeamTwo(matchCommand.getTeamResultTwo());
 		match.setKickOffDate(DateUtils.toDate(matchCommand.getKickOffDate()));
 		match.setGroup(matchCommand.getGroup());
 		match.setStadium(matchCommand.getStadium());
