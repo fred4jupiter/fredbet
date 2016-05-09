@@ -43,17 +43,17 @@
 					  			</div>					
 					  			<div class="col-xs-4 goal-badges">				
 					  				<div class="short-div goal_padding_bigger">
-					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamOne != null} ? label-success : label-default" 
+					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamOneCssClasses}" 
 					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}"></span>
 								  		<span> : </span>
-							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamTwo != null} ? label-success : label-default" 
+							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.userBetGoalsTeamTwoCssClasses}" 
 							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
 					  				</div>	  				
 					  				<div class="short-div goal_padding">
-					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultOne != null} ? label-info : label-default" 
+					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultOneCssClasses}" 
 					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
 								  		<span> : </span>
-							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultTwo != null} ? label-info : label-default" 
+							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.teamResultTwoCssClasses}" 
 							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
 					  				</div>
 					  			</div>  			

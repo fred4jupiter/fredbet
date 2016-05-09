@@ -113,6 +113,7 @@ public class MatchService {
 			if (bet != null) {
 				matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
 				matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
+				matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());				
 				matchCommand.setPoints(bet.getPoints());
 			}
 			resultList.add(matchCommand);

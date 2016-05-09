@@ -23,6 +23,10 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	private boolean deletable;
 
+	private boolean penaltyWinnerOneBet;
+	
+	private boolean penaltyWinnerOneMatch;
+
 	public MatchCommand(MessageUtil messageUtil) {
 		super(messageUtil);
 	}
@@ -75,6 +79,38 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 		return builder.toString();
 	}
 
+	public String getUserBetGoalsTeamOneCssClasses() {
+		if (userBetGoalsTeamOne == null) {
+			return "label-default";
+		}
+
+		return !isGroupMatch() && isPenaltyWinnerOneBet() ? "label-success badge-penalty-winner" : "label-success";
+	}
+
+	public String getUserBetGoalsTeamTwoCssClasses() {
+		if (userBetGoalsTeamTwo == null) {
+			return "label-default";
+		}
+
+		return !isGroupMatch() && !isPenaltyWinnerOneBet() ? "label-success badge-penalty-winner" : "label-success";
+	}
+
+	public String getTeamResultOneCssClasses() {
+		if (teamResultOne == null) {
+			return "label-default";
+		}
+
+		return !isGroupMatch() && isPenaltyWinnerOneMatch() ? "label-info badge-penalty-winner" : "label-info";
+	}
+	
+	public String getTeamResultTwoCssClasses() {
+		if (teamResultTwo == null) {
+			return "label-default";
+		}
+
+		return !isGroupMatch() && !isPenaltyWinnerOneMatch() ? "label-info badge-penalty-winner" : "label-info";
+	}
+	
 	public Integer getUserBetGoalsTeamOne() {
 		return userBetGoalsTeamOne;
 	}
@@ -122,6 +158,28 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
+	}
+
+	
+
+	public boolean isGroupMatch() {
+		return this.group.name().startsWith("GROUP");
+	}
+
+	public boolean isPenaltyWinnerOneBet() {
+		return penaltyWinnerOneBet;
+	}
+
+	public void setPenaltyWinnerOneBet(boolean penaltyWinnerOneBet) {
+		this.penaltyWinnerOneBet = penaltyWinnerOneBet;
+	}
+
+	public boolean isPenaltyWinnerOneMatch() {
+		return penaltyWinnerOneMatch;
+	}
+
+	public void setPenaltyWinnerOneMatch(boolean penaltyWinnerOneMatch) {
+		this.penaltyWinnerOneMatch = penaltyWinnerOneMatch;
 	}
 
 }

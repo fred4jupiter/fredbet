@@ -27,6 +27,7 @@ public class MatchConverter {
 		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
 		matchCommand.setStadium(match.getStadium());
 		matchCommand.setGroup(match.getGroup());
+		matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
 		return matchCommand;
 	}
 	
