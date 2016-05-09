@@ -12,4 +12,9 @@ public class InfoController {
 	public ModelAndView showRules() {
 		return new ModelAndView("info/rules");
 	}
+	
+	@RequestMapping("/prices")
+	public ModelAndView showPrices() {
+		return new ModelAndView("info/prices");
+	}
 }
