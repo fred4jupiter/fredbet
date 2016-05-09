@@ -61,6 +61,15 @@
 					  		<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a></li>
 			        	</ul>
 			        </li>
+			        <li class="dropdown" th:classappend="${pageState_info}">
+			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			        		<span th:text="#{navigation.info}" th:remove="tag"></span>			        		
+			        		<span class="caret"></span>
+			        	</a>
+			        	<ul class="dropdown-menu">
+				        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
+			        	</ul>
+			        </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li th:if="${@securityBean.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_userprofile}">
