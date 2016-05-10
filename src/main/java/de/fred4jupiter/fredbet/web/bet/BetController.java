@@ -125,7 +125,7 @@ public class BetController {
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
 	public ModelAndView showExtraBets() {
-		ExtraBetCommand extraBetCommand = bettingService.loadExtraBetforUser(securityBean.getCurrentUserName());
+		ExtraBetCommand extraBetCommand = bettingService.loadExtraBetForUser(securityBean.getCurrentUserName());
 		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}
 

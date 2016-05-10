@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
 import de.fred4jupiter.fredbet.web.bet.BetCommand;
@@ -161,7 +163,7 @@ public class BettingService {
 			extraBetRepository.delete(found);
 			return;
 		}
-		
+
 		if (found == null) {
 			found = new ExtraBet();
 		}
@@ -173,7 +175,7 @@ public class BettingService {
 		extraBetRepository.save(found);
 	}
 
-	public ExtraBetCommand loadExtraBetforUser(String username) {
+	public ExtraBetCommand loadExtraBetForUser(String username) {
 		ExtraBet extraBet = extraBetRepository.findByUserName(username);
 		if (extraBet == null) {
 			extraBet = new ExtraBet();
@@ -188,7 +190,16 @@ public class BettingService {
 		extraBetCommand.setExtraBetId(extraBet.getId());
 		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
 		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
-		extraBetCommand.setPoints(extraBet.getPoints());
+
+		List<Match> matchAlreadyBegun = matchRepository.findByKickOffDateLessThan(DateUtils.toDate(LocalDateTime.now()));
+		if (matchAlreadyBegun != null && !matchAlreadyBegun.isEmpty()) {
+			extraBetCommand.setBettable(false);
+			extraBetCommand.setPoints(0);
+		} else {
+			extraBetCommand.setBettable(true);
+			extraBetCommand.setPoints(extraBet.getPoints());
+		}
+
 		return extraBetCommand;
 	}
 
