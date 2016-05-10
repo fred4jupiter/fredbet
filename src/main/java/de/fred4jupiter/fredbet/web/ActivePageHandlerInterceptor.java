@@ -34,6 +34,10 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 			return;
 		}
 
+		if (requestURI.contains("user") || requestURI.contains("buildinfo") || requestURI.contains("administration")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "administrationMenu", CSS_ACTIVE);
+		}
+
 		final int numberOfSlashes = StringUtils.countMatches(requestURI, "/");
 		if (numberOfSlashes == 1) {
 			String page = StringUtils.substring(requestURI, 1);
@@ -44,9 +48,13 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 		if (requestURI.contains("userprofile")) {
 			modelAndView.addObject(PAGE_STATE_REFIX + "userprofile", CSS_ACTIVE);
 		}
-		
+
 		if (requestURI.contains("/bet/")) {
 			modelAndView.addObject(PAGE_STATE_REFIX + "betting", CSS_ACTIVE);
+		}
+
+		if (requestURI.contains("info")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "info", CSS_ACTIVE);
 		}
 
 		if (numberOfSlashes == 2) {

@@ -50,7 +50,7 @@
 				            <li th:class="${pageState_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
 				        </ul>
 			        </li>			        
-			        <li class="dropdown" th:classappend="${pageState_administration}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_BUILD_INFO','PERM_ADMINISTRATION')">
+			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_BUILD_INFO','PERM_ADMINISTRATION')">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 			        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
 			        		<span class="caret"></span>
