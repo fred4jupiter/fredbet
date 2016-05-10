@@ -79,38 +79,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 		return builder.toString();
 	}
 
-	public String getUserBetGoalsTeamOneCssClasses() {
-		if (userBetGoalsTeamOne == null) {
-			return "label-default";
-		}
-
-		return !isGroupMatch() && isPenaltyWinnerOneBet() ? "label-success badge-penalty-winner" : "label-success";
-	}
-
-	public String getUserBetGoalsTeamTwoCssClasses() {
-		if (userBetGoalsTeamTwo == null) {
-			return "label-default";
-		}
-
-		return !isGroupMatch() && !isPenaltyWinnerOneBet() ? "label-success badge-penalty-winner" : "label-success";
-	}
-
-	public String getTeamResultOneCssClasses() {
-		if (teamResultOne == null) {
-			return "label-default";
-		}
-
-		return !isGroupMatch() && isPenaltyWinnerOneMatch() ? "label-info badge-penalty-winner" : "label-info";
-	}
-
-	public String getTeamResultTwoCssClasses() {
-		if (teamResultTwo == null) {
-			return "label-default";
-		}
-
-		return !isGroupMatch() && !isPenaltyWinnerOneMatch() ? "label-info badge-penalty-winner" : "label-info";
-	}
-
 	public Integer getUserBetGoalsTeamOne() {
 		return userBetGoalsTeamOne;
 	}
@@ -183,7 +151,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	public boolean isUndecidedBetting() {
 		return getGoalDifferenceBetting().intValue() == 0;
 	}
-	
+
 	private Integer getGoalDifferenceBetting() {
 		if (userBetGoalsTeamOne == null || userBetGoalsTeamTwo == null) {
 			throw new IllegalStateException("No goal bets set!");
@@ -194,7 +162,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	public boolean isUndecidedResult() {
 		return getGoalDifferenceMatch().intValue() == 0;
 	}
-	
+
 	private Integer getGoalDifferenceMatch() {
 		if (teamResultOne == null || teamResultTwo == null) {
 			throw new IllegalStateException("No goals match set!");
