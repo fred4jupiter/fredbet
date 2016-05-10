@@ -32,9 +32,11 @@
 								<span th:text="${bet.userName}" class="ranking-name"></span>			  									  		
 				  			</div>					
 				  			<div class="col-xs-5 top-bottom-space">
-				  				<span class="label label-as-badge big-badge label-success" th:classappend="${bet.isPenaltyWinnerOne() ? 'badge-penalty-winner' : ''}" th:text="${bet.goalsTeamOne}"></span>
+				  				<span class="label label-as-badge big-badge label-success" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getCssClassPenaltyWinnerOne(bet)}" 
+				  					th:text="${bet.goalsTeamOne}"></span>
 							  	<span> : </span>
-						  		<span class="label label-as-badge big-badge label-success" th:classappend="${!bet.isPenaltyWinnerOne() ? 'badge-penalty-winner' : ''}" th:text="${bet.goalsTeamTwo}"></span>	  			
+						  		<span class="label label-as-badge big-badge label-success" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getCssClassPenaltyWinnerTwo(bet)}" 
+						  			th:text="${bet.goalsTeamTwo}"></span>	  			
 				  			</div>  			
 				  			<div class="col-xs2 top-bottom-space">
 				  				<span class="label label-as-badge big-badge label-warning" th:text="${bet.points}"></span>

@@ -60,6 +60,10 @@ public class Bet {
 
 		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
 	}
+	
+	public boolean isUndecidedBetting() {
+		return getGoalDifference().intValue() == 0;
+	}
 
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -153,6 +157,10 @@ public class Bet {
 
 	public boolean isPenaltyWinnerOne() {
 		return penaltyWinnerOne;
+	}
+	
+	public boolean isGroupMatch() {
+		return this.match.isGroupMatch();
 	}
 
 	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {

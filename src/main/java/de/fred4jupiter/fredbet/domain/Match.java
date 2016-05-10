@@ -28,7 +28,7 @@ public class Match {
 	@GeneratedValue
 	@Column(name = "MATCH_ID")
 	private Long id;
-	
+
 	private Country countryOne;
 
 	private String teamNameOne;
@@ -44,18 +44,18 @@ public class Match {
 	private Integer goalsTeamOne;
 
 	private Integer goalsTeamTwo;
-	
+
 	@Column(name = "PENALTY_WINNER_ONE")
 	private boolean penaltyWinnerOne;
-	
+
 	@Transient
-	private boolean goalsChanged; 
+	private boolean goalsChanged;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
 	private Date kickOffDate;
 
 	private String stadium;
-	
+
 	public boolean hasGoalsChanged() {
 		boolean hasChanged = new Boolean(goalsChanged);
 		// reset flag
@@ -84,7 +84,12 @@ public class Match {
 		}
 		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
 	}
-	
+
+	/**
+	 * Goal difference is 0, e.g. 1:1 or 3:3
+	 * 
+	 * @return
+	 */
 	public boolean isUndecidedResult() {
 		return getGoalDifference().intValue() == 0;
 	}
@@ -104,36 +109,36 @@ public class Match {
 
 		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
 	}
-	
+
 	public Country getWinner() {
 		if (!hasResultSet()) {
 			return null;
 		}
-		
+
 		if (isTeamOneWinner()) {
 			return countryOne;
 		}
-		
+
 		if (isTeamTwoWinner()) {
 			return countryTwo;
 		}
-		
+
 		return null;
 	}
-	
+
 	public Country getLooser() {
 		if (!hasResultSet()) {
 			return null;
 		}
-		
+
 		if (isTeamOneWinner()) {
 			return countryTwo;
 		}
-		
+
 		if (isTeamTwoWinner()) {
 			return countryOne;
 		}
-		
+
 		return null;
 	}
 
@@ -288,7 +293,7 @@ public class Match {
 	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
 		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
-	
+
 	public boolean isGroupMatch() {
 		return this.group.name().startsWith("GROUP");
 	}
