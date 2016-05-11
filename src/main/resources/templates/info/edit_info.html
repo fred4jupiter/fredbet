@@ -10,7 +10,8 @@
 		<form id="editInfoForm" th:action="@{/info/editInfo}" th:object="${infoCommand}" method="post" role="form">
 			<div class="row">
 				<div class="col-xs-12">
-					<label for="textContent">Text:</label>
+					<h1 th:text="${infoCommand.name}"></h1>
+					<input type="hidden" th:field="*{name}" class="form-control" />
                     <textarea id="textContent" name="textContent" required="required" th:text="${infoCommand.textContent}">                       
                     </textarea>
                     <script>
