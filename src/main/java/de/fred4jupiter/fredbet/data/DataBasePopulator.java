@@ -121,7 +121,7 @@ public class DataBasePopulator {
 	}
 
 	private void createRoundOfSixteen() {
-		matchService.save(MatchBuilder.create().withTeams("Zweiter A", "Zweiter B").withGroup(Group.ROUND_OF_SIXTEEN)
+		matchService.save(MatchBuilder.create().withTeams("Zweiter A", "Zweiter C").withGroup(Group.ROUND_OF_SIXTEEN)
 				.withStadium("St. Etienne").withKickOffDate(25, 6, 15).build());
 
 		matchService.save(MatchBuilder.create().withTeams("Sieger B", "Dritter A/C/D").withGroup(Group.ROUND_OF_SIXTEEN)
@@ -142,7 +142,7 @@ public class DataBasePopulator {
 		matchService.save(MatchBuilder.create().withTeams("Sieger E", "Zweiter D").withGroup(Group.ROUND_OF_SIXTEEN)
 				.withStadium("St. Denis").withKickOffDate(27, 6, 18).build());
 
-		matchService.save(MatchBuilder.create().withTeams("Sieger B", "Zweiter F").withGroup(Group.ROUND_OF_SIXTEEN).withStadium("Nizza")
+		matchService.save(MatchBuilder.create().withTeams("Zweiter B", "Zweiter F").withGroup(Group.ROUND_OF_SIXTEEN).withStadium("Nizza")
 				.withKickOffDate(27, 6, 21).build());
 	}
 
