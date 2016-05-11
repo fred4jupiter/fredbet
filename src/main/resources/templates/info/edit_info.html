@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+	<title th:text="#{rules.title}"></title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+		<form id="editInfoForm" th:action="@{/info/editInfo}" th:object="${infoCommand}" method="post" role="form">
+			<div class="row">
+				<div class="col-xs-12">
+					<label for="textContent">Text:</label>
+                    <textarea id="textContent" name="textContent" required="required" th:text="${infoCommand.textContent}">                       
+                    </textarea>
+                    <script>
+                        CKEDITOR.replace('textContent', {
+                            allowedContent : true,
+                            height: '400px'
+                        });
+                    </script>
+                    <br />
+                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
