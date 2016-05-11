@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -191,8 +192,8 @@ public class BettingService {
 		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
 		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
 
-		List<Match> matchAlreadyBegun = matchRepository.findByKickOffDateLessThan(DateUtils.toDate(LocalDateTime.now()));
-		if (matchAlreadyBegun != null && !matchAlreadyBegun.isEmpty()) {
+		boolean firstMatchStarted = hasFirstMatchStarted();
+		if (firstMatchStarted) {
 			extraBetCommand.setBettable(false);
 			extraBetCommand.setPoints(0);
 		} else {
@@ -201,6 +202,13 @@ public class BettingService {
 		}
 
 		return extraBetCommand;
+	}
+
+	private boolean hasFirstMatchStarted() {
+		LocalDateTime dateTimeNow = LocalDateTime.now();
+		Date date = matchRepository.findStartDateOfFirstMatch();
+		LocalDateTime firstMatchKickOffDate = DateUtils.toLocalDateTime(date);
+		return dateTimeNow.isAfter(firstMatchKickOffDate);
 	}
 
 	private Match findFinalMatch() {
