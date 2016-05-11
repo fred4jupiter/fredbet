@@ -25,4 +25,6 @@ public interface FredBetPermission {
 	String PERM_BUILD_INFO = "PERM_BUILD_INFO";
 
 	String PERM_ADMINISTRATION = "PERM_ADMINISTRATION";
+	
+	String PERM_EDIT_INFOS = "PERM_EDIT_INFOS";
 }

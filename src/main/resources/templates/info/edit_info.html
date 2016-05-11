@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title th:text="#{rules.title}"></title>
+	<title th:text="#{info.edit.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
@@ -22,6 +22,7 @@
                     </script>
                     <br />
                     <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    <a href="#" th:href="@{/info/rules}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 				</div>
 			</div>
 		</form>

@@ -8,45 +8,11 @@
 	<div layout:fragment="content">
 		<h1>Regeln</h1>		
 		<div class="row">			
-			<div class="col-xs-12 col-sm-12 col-md-12">
-				<h3>Wer kann teilnehmen?</h3>
-				<p>Dies ist kein öffentliches Tippspiel mit kommerziellen Absichten. Teilnehmen können nur Freunde und Bekannte.</p>
-				<h3>Wie hoch ist der Einsatz und was kann ich gewinnen?</h3>
-				<p>Der Einsatz beträgt 3 € pro Mitspieler. Dieser Einsatz geht in den Jackpot und wird unter den 5 bestplatzierten Tippern aufgeteilt. Außerdem gibt es noch Sachpreise zu gewinnen.</p>
-				<h3>Wie gebe ich meinen Tipp ab?</h3>
-				<p>Abgegeben könnt ihr die Tipps dank der Arbeit von Michael Stähler über <a href="http://www.fredbet.de">www.fredbet.de</a></p>
-				<h3>Bis wann kann ich tippen?</h3>
-				<p>Ihr könnt den Spieltipp bis unmittelbar vor Beginn einer Partie abgeben. Genauso gut ist es aber möglich, alle Gruppenspiele schon im Vorfeld zu tippen. Der Bonustipp für den Europa- und Vizeeuropameister ist in jedem Fall bis zu Beginn des Eröffnungsspiels abzugeben.</p>
-				<h3>Wann werden die Tipps veröffentlicht?</h3>
-				<p>Die Tipps sind ab Spielbeginn für alle sichtbar.</p>
-				<h3>Wo ist die schöne Quatschecke hin?</h3>
-				<p>Es gibt nun eine Whattsapp Gruppe in denen wir uns unterhalten können. Falls ihr noch nicht Mitglied der Gruppe seid, bitte bei mir Jörn Fick 01520 1626209 melden.</p>
-				<h3>Wie werden die Tipps gewertet?</h3>
-				<ul>
-					<li>Für ein richtiges Ergebnis werden 3 Punkte gutgeschrieben.</li>
-					<li>Für die richtige Tendenz (z. B. man tippt 3:1, das Spiel geht aber 1:0 aus) wird 1 Punkt gutgeschrieben.</li>
-					<li>Für die richtige Tordifferenz gibt es 2 Punkte. Diese Regelung gilt auch bei Unentschieden. Beispiele: Tipp 3:1 und Ergebnis 2:0 => 2 Punkte. Tipp 1:1 und Ergebnis 2:2 => 2 Punkte </li>
-					<li>Wird in der K. O. Runde der korrekte Sieger des Elfmeterschießens vorhergesagt, erhält man einen Extrapunkt.</li>
-					<li>Es gibt keine Negativpunkte für falsch getippte Spiele oder nicht abgegebene Tipps.</li>
-				</ul>
-				<p>Für die Bonustipps gilt folgendes:</p>
-				<ul>
-					<li>Für den vor Beginn der EM richtig vorhergesagten Europameister werden 10 Extrapunkte gutgeschrieben.</li>
-					<li>Für den vor Beginn der EM richtig vorhergesagten Vizeeuropameister werden 5 Extrapunkte gutgeschrieben.</li>
-				</ul>
-				<h3>Wie laufen die Tipps in der K-O Runde?</h3>
-				<p>Auch in der K. O. Runde (also ab dem Achtelfinale) gelten die üblichen Regeln zur Punktevergabe. Es ist dabei unerheblich, ob ein Spiel nach 90 oder nach 120 Minuten endet. Der Tipp eines Unentschiedens ist somit möglich. Bei einem Tipp auf Unentschieden, ist zusätzlich ein Tipp über den Sieger des Elfmeterschießens abzugeben. Da ein konkretes Ergebnis im Elfmeterschießen schwer vorherzusagen ist, bezieht sich der Elfmetertipp ausschließlich auf den Gewinner. Ist der Gewinner richtig vorhergesagt, wird ein Extrapunkt gutgeschrieben. Der Tipp sieht also z. B. so aus:</p>
-				<p>Deutschland-Italien 1:1 / Sieger im 11m Schießen Deutschland</p>
-				<h3>Wer gewinnt?</h3>
-				<p>Der Spieler mit der höchsten Anzahl an Punkten nach der EM.</p>
-				<h3>Und was geschieht bei Punktgleichheit?</h3>
-				<ul>
-					<li>1. Haben 2 oder mehr Spieler die gleiche Gesamtpunktzahl, entscheidet die höhere Anzahl an korrekt abgegebenen Einzeltipps.</li>
-					<li>2. Ist dann immer noch keine Entscheidung zu treffen, wird die kleinere Gesamtabweichung berechnet. Dies geschieht folgendermaßen: Für jedes Spiel wird errechnet um wieviel Tore der Tipp vom tatsächlichen Ergebnis abweicht. (z. B. wenn der Tipp 3:1 lautet und das Spiel 0:0 ausgeht, ist die Abweichung 3+1=4). Diese Abweichung wird dann für alle Spiele aufsummiert. Derjenige mit der geringsten Abweichung gewinnt den Vergleich.</li>
-				</ul>
-				<p>Sollten noch Fragen offen sein, bitte einfach in die WhattsApp Gruppe schreiben.</p>
+			<div class="col-xs-12 col-sm-12 col-md-12">				
+				<div th:remove="tag" th:utext="${textContent}"></div>				
 			</div>
-		</div>		
+		</div>
+		<a sec:authorize="hasAuthority('PERM_EDIT_INFOS')" href="#" th:href="@{/info/editInfo?name=rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>		
 	</div>
 </body>
 </html>

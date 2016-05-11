@@ -19,6 +19,8 @@ import de.fred4jupiter.fredbet.service.InfoService;
 @RequestMapping("/info")
 public class InfoController {
 
+	private static final String INFO_CONTEXT_RULES = "rules";
+
 	private static final Logger LOG = LoggerFactory.getLogger(InfoController.class);
 
 	@Autowired
@@ -26,7 +28,15 @@ public class InfoController {
 
 	@RequestMapping("/rules")
 	public ModelAndView showRules() {
-		return new ModelAndView("info/rules");
+		Locale locale = LocaleContextHolder.getLocale();
+		Info info = infoService.findBy(INFO_CONTEXT_RULES, locale);
+		if (info == null) {
+			info = infoService.saveInfoContent(INFO_CONTEXT_RULES, "", locale);
+		}
+
+		ModelAndView modelAndView = new ModelAndView("info/rules");
+		modelAndView.addObject("textContent", info.getContent());
+		return modelAndView;
 	}
 
 	@RequestMapping("/prices")
@@ -56,7 +66,7 @@ public class InfoController {
 
 		Locale locale = LocaleContextHolder.getLocale();
 		infoService.saveInfoContent(infoCommand.getName(), infoCommand.getTextContent(), locale);
-		
+
 		ModelAndView modelAndView = new ModelAndView("/info/edit_info");
 		modelAndView.addObject("infoCommand", infoCommand);
 
