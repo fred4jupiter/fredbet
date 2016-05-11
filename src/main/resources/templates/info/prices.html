@@ -9,18 +9,10 @@
 		<h1>Preise</h1>		
 		<div class="row">			
 			<div class="col-xs-12 col-sm-12 col-md-12">
-				<p>Der Jackpot wird wie folgt unter den besten 5 verteilt:</p>
-				<ul>
-					<li>1. Platz 40%</li>
-					<li>2. Platz 25%</li>
-					<li>3. Platz 20%</li>
-					<li>4. Platz 10%</li>
-					<li>5. Platz 5%</li>
-				</ul>
-				<p>Der beste Tipper aller Deutschlandspiele erhält einen Deutschland Schal  (gestiftet von <a href="http://www.iq-radiofick.de">Radio Fick</a>)</p>
-				<p>Der beste Tipper aller Vorrundenspiele erhält einen adidas Spielball der EM 2016 (gestiftet von <a href="http://www.iq-radiofick.de">Radio Fick</a>)</p>
+				<div th:remove="tag" th:utext="${textContent}"></div>
 			</div>
-		</div>		
+		</div>
+		<a sec:authorize="hasAuthority('PERM_EDIT_INFOS')" href="#" th:href="@{/info/editInfo?name=prices}" class="btn btn-primary" role="button" th:text="#{info.prices.edit.button}"></a>
 	</div>
 </body>
 </html>
