@@ -16,13 +16,12 @@ import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
-import de.fred4jupiter.fredbet.web.user.ChangePasswordCommand;
 
 @Controller
-@RequestMapping("/userprofile")
+@RequestMapping("/profile")
 public class UserProfileController {
 
-    private static final String CHANGE_PASSWORD_PAGE = "userprofile/change_password";
+    private static final String CHANGE_PASSWORD_PAGE = "profile/change_password";
 
     @Autowired
     private UserService userService;
@@ -43,7 +42,7 @@ public class UserProfileController {
         }
 
         if (changePasswordCommand.isPasswordRepeatMismatch()) {
-            messageUtil.addErrorMsg(modelMap, "msg.user.profile.error.passwordMismatch");
+            messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.passwordMismatch");
             return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
         }
 

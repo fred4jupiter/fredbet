@@ -45,8 +45,8 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 			return;
 		}
 
-		if (requestURI.contains("userprofile")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "userprofile", CSS_ACTIVE);
+		if (requestURI.contains("profile")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "profile", CSS_ACTIVE);
 		}
 
 		if (requestURI.contains("/bet/")) {

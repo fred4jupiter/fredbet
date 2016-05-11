@@ -13,7 +13,7 @@ import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetRole;
-import de.fred4jupiter.fredbet.web.user.ChangePasswordCommand;
+import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 
 public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 

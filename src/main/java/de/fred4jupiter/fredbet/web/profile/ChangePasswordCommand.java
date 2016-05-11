@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web.user;
+package de.fred4jupiter.fredbet.web.profile;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
