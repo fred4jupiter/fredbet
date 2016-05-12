@@ -9,9 +9,9 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.domain.Info;
@@ -23,7 +23,9 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/info")
 public class InfoController {
 
-	private static final String INFO_CONTEXT_RULES = "rules";
+	private static final String PAGE_EDIT_INFO = "info/edit_info";
+
+    private static final String INFO_CONTEXT_RULES = "rules";
 
 	private static final Logger LOG = LoggerFactory.getLogger(InfoController.class);
 
@@ -62,15 +64,15 @@ public class InfoController {
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
-	@RequestMapping("/editinfo")
-	public ModelAndView editInfo(@RequestParam("name") String name) {
+	@RequestMapping("/editinfo/{name}")
+	public ModelAndView editInfo(@PathVariable("name") String name) {
 		Locale locale = LocaleContextHolder.getLocale();
 		Info info = infoService.findBy(name, locale);
 		if (info == null) {
 			info = infoService.saveInfoContent(name, "", locale);
 		}
 
-		ModelAndView modelAndView = new ModelAndView("/info/edit_info");
+		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
 		InfoCommand infoCommand = new InfoCommand();
 		infoCommand.setName(info.getPk().getName());
 		infoCommand.setTextContent(info.getContent());
@@ -86,7 +88,7 @@ public class InfoController {
 		Locale locale = LocaleContextHolder.getLocale();
 		infoService.saveInfoContent(infoCommand.getName(), infoCommand.getTextContent(), locale);
 
-		ModelAndView modelAndView = new ModelAndView("/info/edit_info");
+		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
 		modelAndView.addObject("infoCommand", infoCommand);
 		messageUtil.addInfoMsg(modelMap, "info.msg.edit.saved");
 
