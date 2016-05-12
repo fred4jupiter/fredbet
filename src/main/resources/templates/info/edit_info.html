@@ -7,7 +7,7 @@
 <body>
 	<div layout:fragment="content" class="container">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
-		<form id="editInfoForm" th:action="@{/info/editInfo}" th:object="${infoCommand}" method="post" role="form">
+		<form id="editInfoForm" th:action="@{/info/editinfo}" th:object="${infoCommand}" method="post" role="form">
 			<div class="row">
 				<div class="col-xs-12">
 					<h1 th:text="#{${infoCommand.name} + '.title'}"></h1>

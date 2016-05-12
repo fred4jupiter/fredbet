@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.domain.Info;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -59,7 +61,8 @@ public class InfoController {
 		return modelAndView;
 	}
 
-	@RequestMapping("/editInfo")
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
+	@RequestMapping("/editinfo")
 	public ModelAndView editInfo(@RequestParam("name") String name) {
 		Locale locale = LocaleContextHolder.getLocale();
 		Info info = infoService.findBy(name, locale);
@@ -75,7 +78,8 @@ public class InfoController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/editInfo", method = RequestMethod.POST)
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
+	@RequestMapping(value = "/editinfo", method = RequestMethod.POST)
 	public ModelAndView saveEditedInfo(InfoCommand infoCommand, ModelMap modelMap) {
 		LOG.debug("textContent: {}", infoCommand.getTextContent());
 
