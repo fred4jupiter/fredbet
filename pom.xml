@@ -289,15 +289,11 @@
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.3.1</version>
+				<version>0.4.10</version>
 				<configuration>
-					<serverId>dtutum-registry</serverId>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-					<dockerDirectory>${project.basedir}</dockerDirectory>
-					<registryUrl>https://tutum.co/fred4jupiter/fredbet</registryUrl>
-					<image>${docker.image.prefix}/${project.artifactId}</image>
-					<!-- <newName>tutum.co/${docker.image.prefix}/${project.artifactId}:${project.version}</newName> -->
-					<newName>tutum.co/${docker.image.prefix}/${project.artifactId}</newName>
+					<serverId>docker-hub</serverId>
+					<imageName>hamsterhase/fredbet:latest</imageName>
+					<dockerDirectory>${project.build.directory}/</dockerDirectory>					
 					<resources>
 						<resource>
 							<targetPath>/</targetPath>
