@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +21,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchResultCommand;
@@ -99,8 +100,10 @@ public class MatchService {
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 
-	public List<MatchCommand> findAllMatchesBeginAfterNow(String username) {
-		List<Match> allMatches = matchRepository.findByKickOffDateGreaterThanOrderByKickOffDateAsc(new Date());
+	public List<MatchCommand> findAllUpcomingMatches(String username) {
+	    // show current matches that has been finished since 2 hours after kick of also
+	    LocalDateTime kickOffBeginSelectionDate = LocalDateTime.now().minusHours(2);
+		List<Match> allMatches = matchRepository.findByKickOffDateGreaterThanOrderByKickOffDateAsc(DateUtils.toDate(kickOffBeginSelectionDate));
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 

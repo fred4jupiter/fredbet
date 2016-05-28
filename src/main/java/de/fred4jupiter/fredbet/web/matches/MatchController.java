@@ -83,7 +83,7 @@ public class MatchController {
 
 	@RequestMapping(value = "upcoming")
 	public ModelAndView upcomingMatches() {
-		List<MatchCommand> matches = matchService.findAllMatchesBeginAfterNow(securityBean.getCurrentUserName());
+		List<MatchCommand> matches = matchService.findAllUpcomingMatches(securityBean.getCurrentUserName());
 		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("upcoming.matches"));
 		return modelAndView;
