@@ -34,43 +34,37 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 			return;
 		}
 
-		if (requestURI.contains("user") || requestURI.contains("buildinfo") || requestURI.contains("administration")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "administrationMenu", CSS_ACTIVE);
-		}
+		final String page = StringUtils.substring(requestURI, 1);
+		final String replaced = StringUtils.replace(page, "/", "_");
+		modelAndView.addObject(PAGE_STATE_REFIX + replaced, CSS_ACTIVE);
 
-		final int numberOfSlashes = StringUtils.countMatches(requestURI, "/");
-		if (numberOfSlashes == 1) {
-			String page = StringUtils.substring(requestURI, 1);
-			modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
-			return;
-		}
+		// add top navigation items with submenus
 
-		if (requestURI.contains("profile")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "profile", CSS_ACTIVE);
-		}
-
+		// Tippen
 		if (requestURI.contains("/bet/")) {
 			modelAndView.addObject(PAGE_STATE_REFIX + "betting", CSS_ACTIVE);
 		}
 
-		if (requestURI.contains("info")) {
-			modelAndView.addObject(PAGE_STATE_REFIX + "info", CSS_ACTIVE);
-		}
-
-		if (numberOfSlashes == 2) {
-			String page = StringUtils.substring(requestURI, 1);
-			page = StringUtils.replace(page, "/", "_");
-			modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
-			return;
-		}
-
+		// Gruppen
 		if (requestURI.contains("group")) {
 			if (containsMainGroups(requestURI) || containsFinalGroups(requestURI)) {
 				modelAndView.addObject(PAGE_STATE_REFIX + "group", CSS_ACTIVE);
 			}
+		}
 
-			String page = StringUtils.substringAfter(requestURI, "group/");
-			modelAndView.addObject(PAGE_STATE_REFIX + page, CSS_ACTIVE);
+		// Administration
+		if (requestURI.contains("user") || requestURI.contains("buildinfo") || requestURI.contains("administration")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "administrationMenu", CSS_ACTIVE);
+		}
+
+		// Infos
+		if (requestURI.contains("info")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "info", CSS_ACTIVE);
+		}
+
+		// user profile
+		if (requestURI.contains("profile")) {
+			modelAndView.addObject(PAGE_STATE_REFIX + "profile", CSS_ACTIVE);
 		}
 	}
 

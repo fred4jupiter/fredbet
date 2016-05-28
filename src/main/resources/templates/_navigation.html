@@ -37,17 +37,17 @@
 			        		<span class="caret"></span>
 			        	</a>
 				        <ul class="dropdown-menu">
-				            <li th:class="${pageState_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
-				            <li th:class="${pageState_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
-				            <li th:class="${pageState_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
-				            <li th:class="${pageState_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
-				            <li th:class="${pageState_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
-				            <li th:class="${pageState_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>
+				            <li th:class="${pageState_matches_group_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
+				            <li th:class="${pageState_matches_group_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
+				            <li th:class="${pageState_matches_group_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
+				            <li th:class="${pageState_matches_group_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
+				            <li th:class="${pageState_matches_group_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
+				            <li th:class="${pageState_matches_group_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>
 				            <li class="divider" role="separator"></li>
-				            <li th:class="${pageState_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
-				            <li th:class="${pageState_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
-				            <li th:class="${pageState_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
-				            <li th:class="${pageState_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
+				            <li th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
+				            <li th:class="${pageState_matches_group_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
+				            <li th:class="${pageState_matches_group_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
+				            <li th:class="${pageState_matches_group_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
 				        </ul>
 			        </li>			        
 			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_BUILD_INFO','PERM_ADMINISTRATION')">
