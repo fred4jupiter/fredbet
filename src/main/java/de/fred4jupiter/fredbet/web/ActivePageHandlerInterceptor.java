@@ -58,7 +58,7 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 		}
 
 		// Infos
-		if (requestURI.contains("info")) {
+		if (requestURI.contains("info/")) {
 			modelAndView.addObject(PAGE_STATE_REFIX + "info", CSS_ACTIVE);
 		}
 
