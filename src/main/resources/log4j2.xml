@@ -18,6 +18,8 @@
 
 	<loggers>
 		<logger name="org.springframework" level="WARN" />
+		<logger name="org.springframework.security.web.session" level="WARN" />
+		
 		<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
 
 		<root level="INFO">

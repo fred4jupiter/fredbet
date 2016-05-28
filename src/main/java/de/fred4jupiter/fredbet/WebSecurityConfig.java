@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,14 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.WebApplicationInitializer;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebApplicationInitializer {
 
 	// 24 Stunden
 	private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
@@ -93,4 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
 	}
 
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		servletContext.addListener(new HttpSessionEventPublisher());
+	}
 }
