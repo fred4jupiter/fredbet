@@ -29,9 +29,6 @@ public class BuildInfoController {
 	@Autowired
 	private Properties buildProperties;
 
-	@Autowired
-	private SessionRegistry sessionRegistry;
-
 	@RequestMapping
 	public ModelAndView list() {
 		ModelAndView modelAndView = new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
@@ -42,19 +39,6 @@ public class BuildInfoController {
 	private void addDynamicInfoProperties() {
 		addCurrentDateTime();
 		addHostName();
-		addCurrentUserCount();
-	}
-
-	private void addCurrentUserCount() {
-		final List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
-
-		final AtomicInteger count = new AtomicInteger();
-        for(final Object principal : allPrincipals) {
-            if(principal instanceof AppUser) {
-                count.incrementAndGet();
-            }
-        }
-        buildProperties.put("currentUserCount", count.get());
 	}
 
 	private void addHostName() {
