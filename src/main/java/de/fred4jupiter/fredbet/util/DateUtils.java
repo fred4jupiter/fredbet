@@ -19,8 +19,8 @@ public final class DateUtils {
 		return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 	}
 
-	public static Date toDate(LocalDateTime kickOffDate) {
-		Instant instant = kickOffDate.atZone(ZoneId.systemDefault()).toInstant();
+	public static Date toDate(LocalDateTime localDateTime) {
+		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 		return Date.from(instant);
 	}
 }
