@@ -6,21 +6,53 @@ Simple football betting application using Spring Boot and MariaDB. You can run t
 
 The application is available under [http://localhost:8080/](http://localhost:8080/) and runs (by default) with an in-memory H2 database. Log in with the admin account `admin/admin`.
 
-## Running within Docker ##
+## Running the released Docker image##
+
+The released docker image is available on [Docker Hub](https://hub.docker.com/r/hamsterhase/fredbet).
+
+	docker run -d -p 8080:8080 hamsterhase/fredbet
+
+## Building your own Docker image##
 
 	mvn clean install docker:build
-	docker run -d -p 8080:8080 fred4jupiter/fredbet
+	docker run -d -p 8080:8080 hamsterhase/fredbet
 
-This will build (and run) an image with name `fred4jupiter/fredbet`. In the `dev` profile (which will be activated if no profile is specified) the application starts with an embedded in-memory H2 database.
+This will build (and run) an image with name `hamsterhase/fredbet`. In the `dev` profile (which will be activated if no profile is specified) the application starts with an embedded in-memory H2 database.
 
-## Running within Docker Compose##
+## Running with Docker Compose##
 
-There is a docker compose file available to run the application with a MariaDB database in one docker container and the application in another. For that run
+There is a docker compose file available to run the application with a MariaDB database in one docker container and the application in another. This is recommended for production use.
 
 	cd src/docker/docker-compose/mariadb
 	docker-compose up -d
 
 The application is available under [http://localhost:8080/](http://localhost:8080/).
+
+A sample docker compose file will look like this:
+
+	mariadb:  
+	  image: mariadb:10.1.11
+	  volumes:
+	    - /data/db
+	  ports:
+	    - "3306:3306"
+	  environment:
+	   - MYSQL_DATABASE=fredbetdb
+	   - MYSQL_ROOT_PASSWORD=secred
+	   - MYSQL_USER=<USERNAME>
+	   - MYSQL_PASSWORD=<PASSWORD>
+	
+	fredbet:
+	  image: hamsterhase/fredbet
+	  links:
+	    - mariadb:mariadb
+	  ports:
+	    - "8080:8080"
+	  environment:
+	   - spring.profiles.active=docker
+	   - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+	   - JDBC_USERNAME=<USERNAME>
+	   - JDBC_PASSWORD=<PASSWORD>
 
 ## Screenshot ##
 
