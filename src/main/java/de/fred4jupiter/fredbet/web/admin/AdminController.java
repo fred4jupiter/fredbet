@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,12 +70,10 @@ public class AdminController {
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
 	@RequestMapping(path = "/active/users", method = RequestMethod.GET)
 	public ModelAndView showActiveUsers(ModelMap modelMap) {
-		List<SessionTracking> sessions = sessionTrackingService.findLoggedInUsers();
-
-		List<String> userNameList = sessions.stream().map(sessionTracking -> sessionTracking.getUserName()).collect(Collectors.toList());
+		List<SessionTracking> userList = sessionTrackingService.findLoggedInUsers();
 
 		ModelAndView modelAndView = new ModelAndView("admin/active_users");
-		modelAndView.addObject("userList", userNameList);
+		modelAndView.addObject("userList", userList);
 		return modelAndView;
 	}
 }
