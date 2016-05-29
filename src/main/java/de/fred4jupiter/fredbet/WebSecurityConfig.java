@@ -59,9 +59,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 
+		// we do not use CSRF in this app (by now)
+		http.csrf().disable();
+		
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			// this is for the embedded h2 console
-			http.csrf().disable();
 			http.headers().frameOptions().disable();
 		}
 	}
