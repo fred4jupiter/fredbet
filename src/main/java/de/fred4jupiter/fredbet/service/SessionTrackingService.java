@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 @Transactional
@@ -39,5 +41,11 @@ public class SessionTrackingService {
 
 	public List<SessionTracking> findLoggedInUsers() {
 		return sessionTrackingRepository.findAllByOrderByUserNameAsc();
+	}
+
+	public void purgeOldActiveUsers() {
+		LocalDateTime nowThirtyMinAgo = LocalDateTime.now().minusMinutes(30);
+		List<SessionTracking> sessions = sessionTrackingRepository.findByLastLoginLessThan(DateUtils.toDate(nowThirtyMinAgo));
+		sessionTrackingRepository.delete(sessions);		
 	}
 }

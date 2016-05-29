@@ -76,4 +76,16 @@ public class AdminController {
 		modelAndView.addObject("userList", userList);
 		return modelAndView;
 	}
+	
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
+	@RequestMapping(path = "/active/users/purge", method = RequestMethod.GET)
+	public ModelAndView deleteOldActiveUsers(ModelMap modelMap) {
+		sessionTrackingService.purgeOldActiveUsers();
+		messageUtil.addInfoMsg(modelMap, "administration.msg.info.deleteOldActiveUsers");
+		
+		ModelAndView modelAndView = new ModelAndView("admin/active_users");
+		List<SessionTracking> userList = sessionTrackingService.findLoggedInUsers();
+		modelAndView.addObject("userList", userList);
+		return modelAndView;
+	}
 }
