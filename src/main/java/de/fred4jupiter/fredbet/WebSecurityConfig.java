@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +24,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.WebApplicationInitializer;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.service.SessionTrackingLogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -44,6 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 	@Autowired
 	private DataSource dataSource;
 
+	@Autowired
+	private SessionTrackingLogoutHandler sessionTrackingLogoutHandler;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**", "/console/*").permitAll();
@@ -56,11 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 		http.authorizeRequests().anyRequest().authenticated();
 
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID").permitAll();
+		http.logout().addLogoutHandler(sessionTrackingLogoutHandler).logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
-
-		http.sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
 
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			// this is for the embedded h2 console
@@ -84,11 +84,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 		JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
 		jdbcTokenRepositoryImpl.setDataSource(dataSource);
 		return jdbcTokenRepositoryImpl;
-	}
-
-	@Bean
-	public SessionRegistry sessionRegistry() {
-		return new SessionRegistryImpl();
 	}
 
 	@Bean
