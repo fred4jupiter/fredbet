@@ -29,7 +29,7 @@ public class SessionTrackingLogoutHandler implements LogoutHandler, ApplicationL
 	@Override
 	public void onApplicationEvent(HttpSessionDestroyedEvent event) {
 		String sessionId = event.getSession().getId();
-		LOG.info("user with sessionId {} has logged out", sessionId);
+		LOG.info("user session with sessionId {} has been destroyed", sessionId);
 	}
 
 }
