@@ -9,13 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class FailedAuthenticationLogHandler implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FailedAuthenticationLogHandler.class);
-    
-    @Override
-    public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
-        Object username = event.getAuthentication().getPrincipal();
-        Object credentials = event.getAuthentication().getCredentials();
-        LOG.debug("Failed login using username='{}' and password='{}'", username, credentials);
-    }
+	private static final Logger LOG = LoggerFactory.getLogger(FailedAuthenticationLogHandler.class);
+
+	@Override
+	public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
+		Object username = event.getAuthentication().getPrincipal();
+		LOG.info("Failed login using username='{}'", username);
+	}
 
 }
