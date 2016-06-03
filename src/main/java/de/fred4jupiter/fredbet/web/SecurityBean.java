@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityBean {
 
+	@Value("${enable.demodata.creation}")
+	private boolean demoDataMenuEntryEnabled;
+	
 	public boolean isUserLoggedIn() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null) {
@@ -29,5 +33,9 @@ public class SecurityBean {
 		}
 		
 		return authentication.getName();
+	}
+	
+	public boolean isDemoDataMenuEntryEnabled() {
+		return demoDataMenuEntryEnabled;
 	}
 }
