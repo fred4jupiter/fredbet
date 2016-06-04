@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.info;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.domain.Info;
+import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.InfoService;
+import de.fred4jupiter.fredbet.service.StatisticService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -34,6 +37,9 @@ public class InfoController {
 
 	@Autowired
 	private InfoService infoService;
+
+	@Autowired
+	private StatisticService statisticService;
 
 	@RequestMapping("/rules")
 	public ModelAndView showRules() {
@@ -104,4 +110,12 @@ public class InfoController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/statistic")
+	public ModelAndView showStatistics() {
+		List<Statistic> statisticList = statisticService.createStatistic();
+
+		ModelAndView modelAndView = new ModelAndView("info/statistic");
+		modelAndView.addObject("statisticList", statisticList);
+		return modelAndView;
+	}
 }

@@ -59,6 +59,7 @@
 				        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
 				        	<li th:class="${pageState_info_prices}"><a href="#prices" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
 				        	<li th:class="${pageState_info_misc}"><a href="#misc" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
+				        	<li th:class="${pageState_info_statistic}"><a href="#misc" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
 			        	</ul>
 			        </li>
 			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_BUILD_INFO','PERM_ADMINISTRATION')">
