@@ -125,6 +125,14 @@ img.flag {
 	max-width: 600px;
 }
 
+.label-rank4 {
+    background-color: #1C8FBB;
+}
+
+.label-rank5 {
+    background-color: #65C5DB;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {
