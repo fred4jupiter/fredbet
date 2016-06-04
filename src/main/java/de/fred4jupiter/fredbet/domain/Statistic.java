@@ -61,4 +61,9 @@ public class Statistic {
 	public String getUsername() {
 		return username;
 	}
+
+	public Integer getSum() {
+		return pointsGroup.intValue() + pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue()
+				+ pointsFinal.intValue();
+	}
 }

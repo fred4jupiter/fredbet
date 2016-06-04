@@ -13,17 +13,17 @@
 				<div class="panel panel-default">					
 					<div class="panel-heading">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span th:text="${statistic.username}"></span>	
+						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ')'"></span>	
 				   </div>
 				   <div class="panel-body">
 					   <div class="table-responsive">
 					   		<table class="table">
 					   			<tr class="active">
-					   				<th>Vorrunde</th>
+					   				<th th:text="#{statistics.group.matches}"></th>
 					   				<th>1/8</th>
 					   				<th>1/4</th>
 					   				<th>1/2</th>
-					   				<th>Finale</th>
+					   				<th th:text="#{group.entry.FINAL}"></th>
 					   			</tr>
 					   			<tr class="success">
 					   				<td th:text="${statistic.pointsGroup}"></td>
