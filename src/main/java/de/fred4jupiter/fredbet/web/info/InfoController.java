@@ -2,8 +2,6 @@ package de.fred4jupiter.fredbet.web.info;
 
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,14 +21,12 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/info")
 public class InfoController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(InfoController.class);
-
 	private static final String PAGE_EDIT_INFO = "info/edit_info";
 
 	private static final String INFO_CONTEXT_RULES = "rules";
 
 	private static final String INFO_CONTEXT_PRICES = "prices";
-	
+
 	private static final String INFO_CONTEXT_MISC = "misc";
 
 	@Autowired
