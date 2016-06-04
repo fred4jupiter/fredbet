@@ -6,6 +6,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
+		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 		<h1 th:text="#{statistics.title}"></h1>		
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">

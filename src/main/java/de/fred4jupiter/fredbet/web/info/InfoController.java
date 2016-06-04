@@ -111,11 +111,15 @@ public class InfoController {
 	}
 
 	@RequestMapping("/statistic")
-	public ModelAndView showStatistics() {
+	public ModelAndView showStatistics(ModelMap modelMap) {
 		List<Statistic> statisticList = statisticService.createStatistic();
 
 		ModelAndView modelAndView = new ModelAndView("info/statistic");
 		modelAndView.addObject("statisticList", statisticList);
+		if (statisticList.isEmpty()) {
+			messageUtil.addInfoMsg(modelMap, "msg.warn.no.statistics");
+		}
+
 		return modelAndView;
 	}
 }
