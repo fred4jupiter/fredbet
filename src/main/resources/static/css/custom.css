@@ -120,6 +120,11 @@ img.flag {
 	border: 2px solid black;
 }
 
+.imgsizing img {
+	width: 100%;
+	max-width: 600px;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {
