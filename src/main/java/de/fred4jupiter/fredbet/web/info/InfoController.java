@@ -23,13 +23,15 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/info")
 public class InfoController {
 
-	private static final String PAGE_EDIT_INFO = "info/edit_info";
-
-    private static final String INFO_CONTEXT_RULES = "rules";
-
 	private static final Logger LOG = LoggerFactory.getLogger(InfoController.class);
 
+	private static final String PAGE_EDIT_INFO = "info/edit_info";
+
+	private static final String INFO_CONTEXT_RULES = "rules";
+
 	private static final String INFO_CONTEXT_PRICES = "prices";
+	
+	private static final String INFO_CONTEXT_MISC = "misc";
 
 	@Autowired
 	private MessageUtil messageUtil;
@@ -59,6 +61,19 @@ public class InfoController {
 		}
 
 		ModelAndView modelAndView = new ModelAndView("info/prices");
+		modelAndView.addObject("textContent", info.getContent());
+		return modelAndView;
+	}
+
+	@RequestMapping("/misc")
+	public ModelAndView showMiscellaneous() {
+		Locale locale = LocaleContextHolder.getLocale();
+		Info info = infoService.findBy(INFO_CONTEXT_MISC, locale);
+		if (info == null) {
+			info = infoService.saveInfoContent(INFO_CONTEXT_MISC, "", locale);
+		}
+
+		ModelAndView modelAndView = new ModelAndView("info/misc");
 		modelAndView.addObject("textContent", info.getContent());
 		return modelAndView;
 	}
