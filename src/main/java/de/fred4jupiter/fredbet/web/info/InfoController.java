@@ -98,8 +98,6 @@ public class InfoController {
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
 	@RequestMapping(value = "/editinfo", method = RequestMethod.POST)
 	public ModelAndView saveEditedInfo(InfoCommand infoCommand, ModelMap modelMap) {
-		LOG.debug("textContent: {}", infoCommand.getTextContent());
-
 		Locale locale = LocaleContextHolder.getLocale();
 		infoService.saveInfoContent(infoCommand.getName(), infoCommand.getTextContent(), locale);
 
