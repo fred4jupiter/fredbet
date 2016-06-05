@@ -66,4 +66,8 @@ public class Statistic {
 		return pointsGroup.intValue() + pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue()
 				+ pointsFinal.intValue();
 	}
+
+	public Integer getSumKOMatches() {
+		return pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue() + pointsFinal.intValue();
+	}
 }

@@ -17,20 +17,22 @@
 				   </div>
 				   <div class="panel-body">
 					   <div class="table-responsive">
-					   		<table class="table">
+					   		<table class="table table-condensed">
 					   			<tr class="active">
 					   				<th th:text="#{statistics.group.matches}"></th>
 					   				<th>1/8</th>
 					   				<th>1/4</th>
 					   				<th>1/2</th>
-					   				<th th:text="#{group.entry.FINAL}"></th>
+					   				<th>1/1</th>
+					   				<th>KO</th>
 					   			</tr>
-					   			<tr class="success">
-					   				<td th:text="${statistic.pointsGroup}"></td>
-					   				<td th:text="${statistic.pointsRoundOfSixteen}"></td>
-					   				<td th:text="${statistic.pointsQuarterFinal}"></td>
-					   				<td th:text="${statistic.pointsSemiFinal}"></td>
-					   				<td th:text="${statistic.pointsFinal}"></td>
+					   			<tr>
+					   				<td class="info" th:text="${statistic.pointsGroup}"></td>
+					   				<td class="success" th:text="${statistic.pointsRoundOfSixteen}"></td>
+					   				<td class="success" th:text="${statistic.pointsQuarterFinal}"></td>
+					   				<td class="success" th:text="${statistic.pointsSemiFinal}"></td>
+					   				<td class="success" th:text="${statistic.pointsFinal}"></td>
+					   				<td class="info" th:text="${statistic.getSumKOMatches()}"></td>
 					   			</tr>
 					   		</table>
 				   	   </div>
