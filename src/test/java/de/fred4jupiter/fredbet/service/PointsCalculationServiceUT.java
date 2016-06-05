@@ -78,10 +78,22 @@ public class PointsCalculationServiceUT {
 	public void extraPointOnCorrectPenaltyWinner() {
 		Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(4, 4).build();
 		match.setPenaltyWinnerOne(true);
+
 		Bet bet = createBet(4, 4);
 		bet.setPenaltyWinnerOne(true);
 
 		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
+	}
+	
+	@Test
+	public void noPointsInFinalIfSetOfWin() {
+		Match match = MatchBuilder.create().withGroup(Group.FINAL).withTeams("Deutschland", "Italien").withGoals(5, 5).build();
+		match.setPenaltyWinnerOne(false);
+
+		Bet bet = createBet(4, 3);
+		bet.setPenaltyWinnerOne(true);
+
+		assertEquals(0, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 
 	@Test
