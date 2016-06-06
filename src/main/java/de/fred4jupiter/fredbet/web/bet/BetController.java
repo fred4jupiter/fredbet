@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.BettingService;
@@ -136,5 +137,11 @@ public class BetController {
 
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		return new ModelAndView("redirect:/bet/extra_bets");
+	}
+	
+	@RequestMapping(value = "/extra_others", method = RequestMethod.GET)
+	public ModelAndView showExtraBetResults() {
+		List<ExtraBet> allExtraBets = bettingService.loadExtraBetDataOthers();
+		return new ModelAndView("bet/extra_others", "allExtraBets", allExtraBets);
 	}
 }

@@ -230,4 +230,9 @@ public class BettingService {
 		return extraBet == null;
 	}
 
+	public List<ExtraBet> loadExtraBetDataOthers() {
+		List<ExtraBet> allExtraBets = extraBetRepository.findAll();
+		return allExtraBets.stream().filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+				.collect(Collectors.toList());
+	}
 }
