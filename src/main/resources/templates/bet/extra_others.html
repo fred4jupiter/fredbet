@@ -18,14 +18,14 @@
 					   <div class="table-responsive">
 					   		<table class="table table-condensed">
 					   			<tr class="active">
-					   				<th>Europameister</th>
-					   				<th>Vize-Europameister</th>
-					   				<th>Punkte</th>
+					   				<th th:text="#{extra_bets.finalWinner}"></th>
+					   				<th th:text="#{extra_bets.semiFinalWinner}"></th>
+					   				<th th:text="#{bet.list.points}"></th>
 					   			</tr>
 					   			<tr>
-					   				<td class="info" th:text="${extraBet.finalWinner}"></td>
-					   				<td class="success" th:text="${extraBet.semiFinalWinner}"></td>
-					   				<td class="success" th:text="${extraBet.points}"></td>
+					   				<td class="info" th:text="#{${'country.' + extraBet.finalWinner.getIsoCode()}}"></td>
+					   				<td class="success" th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></td>
+					   				<td class="warning" th:text="${extraBet.points}"></td>
 					   			</tr>
 					   		</table>
 				   	   </div>
