@@ -2,6 +2,14 @@ h1 {
 	font-size: 1.6em;
 }
 
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.2em;
+}
+
 .form-group input.form-size-small {
 	width: 45px;
 	text-align: center;
@@ -131,6 +139,10 @@ img.flag {
 
 .label-rank5 {
     background-color: #65C5DB;
+}
+
+.label-rank6 {
+    background-color: #843127;
 }
 
 /** justified break point for navigation collapse on tablets */
