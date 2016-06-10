@@ -1,24 +1,26 @@
-mariadb:  
-  image: mariadb:10.1.11
-  volumes:
-    - /data/db
-  ports:
-    - "3306:3306"
-  environment:
-   - MYSQL_DATABASE=fredbetdb
-   - MYSQL_ROOT_PASSWORD=secred
-   - MYSQL_USER=fred
-   - MYSQL_PASSWORD=fred
-
-fredbet:
-  image: hamsterhase/fredbet
-  links:
-    - mariadb:mariadb
-  ports:
-    - "8080:8080"
-  environment:
-   - spring.profiles.active=docker
-   - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
-   - JDBC_USERNAME=fred
-   - JDBC_PASSWORD=fred
-   
+version: '2'
+services:
+    mariadb:  
+      image: mariadb:10.1.11
+      volumes:
+        - /data/db
+      ports:
+        - "3306:3306"
+      environment:
+       - MYSQL_DATABASE=fredbetdb
+       - MYSQL_ROOT_PASSWORD=secred
+       - MYSQL_USER=fred
+       - MYSQL_PASSWORD=fred
+    fredbet:
+      image: hamsterhase/fredbet
+      links:
+        - mariadb:mariadb
+      depends_on:
+        - mariadb
+      ports:
+        - "8080:8080"
+      environment:
+       - spring.profiles.active=docker
+       - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+       - JDBC_USERNAME=fred
+       - JDBC_PASSWORD=fred
