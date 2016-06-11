@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -104,29 +105,18 @@ public class BettingService {
 		return betCommand;
 	}
 
-	public Long save(BetCommand betCommand) {
-		Match match = matchRepository.findOne(betCommand.getMatchId());
+	public Long save(Bet bet) {
+		Match match = matchRepository.findOne(bet.getMatch().getId());
 		if (match.hasStarted()) {
 			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
 		}
 
-		Bet bet = null;
-		if (betCommand.getBetId() != null) {
-			bet = betRepository.findOne(betCommand.getBetId());
+		if (StringUtils.isBlank(bet.getUserName())) {
+			bet.setUserName(getCurrentUsername());
 		}
 
-		if (bet == null) {
-			bet = new Bet();
-		}
-
-		bet.setMatch(match);
-		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
-		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
-		bet.setUserName(getCurrentUsername());
-		bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
-
-		bet = betRepository.save(bet);
-		return bet.getId();
+		Bet saved = betRepository.save(bet);
+		return saved.getId();
 	}
 
 	private String getCurrentUsername() {
@@ -236,5 +226,9 @@ public class BettingService {
 		List<ExtraBet> allExtraBets = extraBetRepository.findAll(new Sort(Direction.ASC, "userName"));
 		return allExtraBets.stream().filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
 				.collect(Collectors.toList());
+	}
+
+	public Bet findBetById(Long betId) {
+		return betRepository.findOne(betId);
 	}
 }
