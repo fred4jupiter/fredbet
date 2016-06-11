@@ -95,7 +95,7 @@ public class BetController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
-		if (betCommand.getBetId() == null) {
+		if (betCommand.getBetId() == null || betCommand.getBet() == null) {
 			Match match = matchService.findMatchById(betCommand.getMatchId());
 			Bet bet = new Bet();
 			bet.setMatch(match);

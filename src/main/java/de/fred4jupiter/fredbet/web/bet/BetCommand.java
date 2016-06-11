@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class BetCommand {
@@ -37,6 +38,10 @@ public class BetCommand {
 		setGoalsTeamOne(bet.getGoalsTeamOne());
 		setGoalsTeamTwo(bet.getGoalsTeamTwo());
 	}
+	
+	public Bet getBet() {
+		return bet;
+	}
 
 	public void setBet(Bet bet) {
 		this.bet = bet;
@@ -61,12 +66,12 @@ public class BetCommand {
 
 	public String getTeamNameOne() {
 		Country countryOne = getCountryOne();
-		return hasContrySet(countryOne) ? messageUtil.getCountryName(countryOne) : this.bet.getMatch().getTeamNameOne();
+		return hasContrySet(countryOne) ? messageUtil.getCountryName(countryOne) : getMatch().getTeamNameOne();
 	}
 
 	public String getTeamNameTwo() {
 		Country countryTwo = getCountryTwo();
-		return hasContrySet(countryTwo) ? messageUtil.getCountryName(countryTwo) : this.bet.getMatch().getTeamNameTwo();
+		return hasContrySet(countryTwo) ? messageUtil.getCountryName(countryTwo) : getMatch().getTeamNameTwo();
 	}
 
 	private boolean hasContrySet(Country country) {
@@ -126,19 +131,38 @@ public class BetCommand {
 	}
 
 	private Country getCountryOne() {
-		return this.bet.getMatch().getCountryOne();
+		if (getMatch() == null) {
+			return null;
+		}
+		return getMatch().getCountryOne();
+	}
+
+	private Match getMatch() {
+		if (this.bet == null) {
+			return null;
+		}
+		return this.bet.getMatch();
 	}
 
 	private Country getCountryTwo() {
-		return this.bet.getMatch().getCountryTwo();
+		if (getMatch() == null) {
+			return null;
+		}
+		return getMatch().getCountryTwo();
 	}
 
 	public String getNameTeamOne() {
-		return this.bet.getMatch().getTeamNameOne();
+		if (getMatch() == null) {
+			return null;
+		}
+		return getMatch().getTeamNameOne();
 	}
 
 	public String getNameTeamTwo() {
-		return this.bet.getMatch().getTeamNameTwo();
+		if (getMatch() == null) {
+			return null;
+		}
+		return getMatch().getTeamNameTwo();
 	}
 
 	public String getRedirectViewName() {
@@ -158,6 +182,6 @@ public class BetCommand {
 	}
 	
 	public boolean isGroupMatch() {
-		return this.bet.getMatch().isGroupMatch();
+		return getMatch().isGroupMatch();
 	}
 }
