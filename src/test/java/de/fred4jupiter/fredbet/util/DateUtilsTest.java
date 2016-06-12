@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.util;
 
+import static org.junit.Assert.*;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +21,9 @@ public class DateUtilsTest {
 
 		ZonedDateTime parsed = ZonedDateTime.parse(buildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z"));
 
-		LOG.debug("formatted: {}", parsed
-				.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault()).withZone(ZoneId.of("Europe/Berlin"))));
+		String formatted = parsed
+				.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault()).withZone(ZoneId.of("Europe/Berlin")));
+		LOG.debug("formatted: {}", formatted);
+		assertEquals("12.06.2016 12:57 MESZ+0200", formatted);
 	}
 }
