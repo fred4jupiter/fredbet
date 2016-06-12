@@ -10,6 +10,7 @@
 		<h1 th:text="${heading}"></h1>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
+					<a class="anchor" th:id="${matchCommand.matchId}"></a>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">

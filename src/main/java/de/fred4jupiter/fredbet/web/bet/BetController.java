@@ -115,14 +115,15 @@ public class BetController {
 			bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
 			bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
 			bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
-			
+
 			bettingService.save(bet);
 			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		} catch (NoBettingAfterMatchStartedAllowedException e) {
 			messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
 		}
 
-		return new ModelAndView(RedirectViewName.resolveRedirect(betCommand.getRedirectViewName()));
+		String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
+		return new ModelAndView(view + "#" + betCommand.getMatchId());
 	}
 
 	@RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
