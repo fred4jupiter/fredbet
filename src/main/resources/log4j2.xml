@@ -5,6 +5,17 @@
 		<!-- <GELF name="gelfAppender" server="graylog" port="12202" hostName="fredbet_docker" protocol="UDP" additionalFields="environment=TEST,application=fredbet" 
 			/> -->
 
+		<RollingFile name="rollingFileAppender" fileName="fredbet.log" filePattern="fredbet-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout>
+				<pattern>%d %p %c{1.} [%t] %m%n</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="5 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
 		<File name="fileAppender" fileName="fredbet.log">
 			<PatternLayout>
 				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
@@ -24,7 +35,7 @@
 
 		<root level="INFO">
 			<!-- <appender-ref ref="gelfAppender" /> -->
-			<appender-ref ref="fileAppender" />
+			<appender-ref ref="rollingFileAppender" />
 			<appender-ref ref="consoleAppender" />
 		</root>
 	</loggers>
