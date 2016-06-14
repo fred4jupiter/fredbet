@@ -19,11 +19,13 @@ public class SessionTrackingLogoutHandler implements LogoutHandler, ApplicationL
 
 	@Autowired
 	private SessionTrackingService sessionTrackingService;
-	
+
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-		LOG.info("user with name {} has logged out", authentication.getName());
-		sessionTrackingService.registerLogout(authentication.getName());
+		if (authentication != null) {
+			LOG.info("user with name {} has logged out", authentication.getName());
+			sessionTrackingService.registerLogout(authentication.getName());
+		}
 	}
 
 	@Override
