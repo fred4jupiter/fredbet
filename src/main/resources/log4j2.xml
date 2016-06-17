@@ -16,11 +16,13 @@
 			<DefaultRolloverStrategy max="10" />
 		</RollingFile>
 
+		<!-- 
 		<File name="fileAppender" fileName="fredbet.log">
 			<PatternLayout>
 				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
 			</PatternLayout>
 		</File>
+		-->
 
 		<Console name="consoleAppender" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d %p [%c] - %m%n" />
