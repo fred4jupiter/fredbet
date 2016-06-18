@@ -11,6 +11,12 @@ public class Statistic {
 	private Integer pointsSemiFinal = Integer.valueOf(0);
 
 	private Integer pointsFinal = Integer.valueOf(0);
+	
+	private Integer pointsFavoriteCountry = Integer.valueOf(0);
+	
+	private boolean favoriteCountryCandidate;
+	
+	private Country favoriteCountry;
 
 	private final String username;
 
@@ -69,5 +75,29 @@ public class Statistic {
 
 	public Integer getSumKOMatches() {
 		return pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue() + pointsFinal.intValue();
+	}
+
+	public Integer getPointsFavoriteCountry() {
+		return pointsFavoriteCountry;
+	}
+
+	public void setPointsFavoriteCountry(Integer pointsFavoriteCountry) {
+		this.pointsFavoriteCountry = pointsFavoriteCountry;
+	}
+
+	public boolean isFavoriteCountryCandidate() {
+		return favoriteCountryCandidate;
+	}
+
+	public void setFavoriteCountryCandidate(boolean favoriteCountryCandidate) {
+		this.favoriteCountryCandidate = favoriteCountryCandidate;
+	}
+
+	public Country getFavoriteCountry() {
+		return favoriteCountry;
+	}
+
+	public void setFavoriteCountry(Country favoriteCountry) {
+		this.favoriteCountry = favoriteCountry;
 	}
 }

@@ -2,7 +2,9 @@ package de.fred4jupiter.fredbet.repository;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import de.fred4jupiter.fredbet.FredbetConstants;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Statistic;
 
@@ -67,5 +70,26 @@ public class StatisticRepository {
 		public List<Statistic> getResult() {
 			return new ArrayList<Statistic>(statisticsMap.values());
 		}
+	}
+
+	public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Select a.user_name, sum(a.points) ");
+		builder.append("from bet a join matches b on a.match_id = b.match_id ");
+		builder.append("where b.country_one = :countryId or b.country_two = :countryId  ");
+		builder.append("group by a.user_name ");
+
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("countryId", favoriteCountry.ordinal());
+
+		Map<String, Integer> userPoints = new HashMap<>();
+		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
+			String userName = rs.getString(1);
+			int points = rs.getInt(2);
+			if (!FredbetConstants.TECHNICAL_USERNAME.equals(userName)) {
+				userPoints.put(userName, points);	
+			}			
+		});
+		return userPoints;
 	}
 }

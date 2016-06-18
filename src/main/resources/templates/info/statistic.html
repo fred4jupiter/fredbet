@@ -13,7 +13,9 @@
 				<div class="panel panel-default">					
 					<div class="panel-heading">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ')'"></span>	
+						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + '), '"></span>
+						<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
+						<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>		
 				   </div>
 				   <div class="panel-body">
 					   <div class="table-responsive">
