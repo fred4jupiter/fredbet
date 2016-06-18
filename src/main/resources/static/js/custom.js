@@ -11,3 +11,8 @@ function checkPenalty() {
 		$('#penaltyBox').hide();
 	}
 }
+
+function clearTeamNameFields() {
+	$('#nameTeamOne').val("");
+	$('#nameTeamTwo').val("");
+}
