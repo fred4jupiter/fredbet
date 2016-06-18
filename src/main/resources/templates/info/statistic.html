@@ -10,19 +10,19 @@
 		<h1 th:text="#{statistics.title}"></h1>		
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
-				<div class="panel" th:classappend="${statistic.favoriteCountryCandidate} ? panel-info: panel-default">
+				<div class="panel panel-default">
 					<div class="panel-heading">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + '), '"></span>
 						<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
 						<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-						<span th:if="${statistic.favoriteCountryCandidate}" class="fa fa-star-o"></span>
+						<span th:if="${statistic.favoriteCountryCandidate}" class="fa fa-star blue"></span>
 				   </div>
 				   <div class="panel-body">
 					   <div class="table-responsive">
 					   		<table class="table table-condensed">
 					   			<tr class="active">
-					   				<th th:text="#{statistics.group.matches}"></th>
+					   				<th><i class="fa fa-users" aria-hidden="true"></i></th>
 					   				<th>1/8</th>
 					   				<th>1/4</th>
 					   				<th>1/2</th>
