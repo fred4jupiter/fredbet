@@ -10,7 +10,7 @@
 		<h1 th:text="#{statistics.title}"></h1>		
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
-				<div class="panel" th:classappend="${statistic.favoriteCountryCandidate} ? panel-primary: panel-default">
+				<div class="panel" th:classappend="${statistic.favoriteCountryCandidate} ? panel-info: panel-default">
 					<div class="panel-heading">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + '), '"></span>
