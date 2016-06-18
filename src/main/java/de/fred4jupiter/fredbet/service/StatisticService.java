@@ -30,18 +30,25 @@ public class StatisticService {
 	}
 
 	public List<Statistic> createStatistic() {
-		List<Statistic> statisticList = statisticRepository.createStatistic();
+		final List<Statistic> statisticList = statisticRepository.createStatistic();
+
+		final Optional<Integer> maxGroupPoints = statisticList.stream().map(statistic -> statistic.getPointsGroup())
+				.max(Comparator.comparing(i -> i));
 
 		final Map<String, Integer> favoriteCountryPointsPerUserMap = statisticRepository
 				.sumPointsPerUserForFavoriteCountry(favoriteCountry);
-		Optional<Integer> maxOptional = favoriteCountryPointsPerUserMap.values().stream().max(Comparator.comparing(i -> i));
+		final Optional<Integer> maxFavoriteCountryPoints = favoriteCountryPointsPerUserMap.values().stream()
+				.max(Comparator.comparing(i -> i));
 
 		for (Statistic statistic : statisticList) {
 			statistic.setFavoriteCountry(this.favoriteCountry);
 			final Integer favoriteCountryPoints = favoriteCountryPointsPerUserMap.get(statistic.getUsername());
 			statistic.setPointsFavoriteCountry(favoriteCountryPoints);
-			if (maxOptional.isPresent() && favoriteCountryPoints.equals(maxOptional.get())) {
+			if (maxFavoriteCountryPoints.isPresent() && favoriteCountryPoints.equals(maxFavoriteCountryPoints.get())) {
 				statistic.setFavoriteCountryCandidate(true);
+			}
+			if (maxGroupPoints.isPresent() && statistic.getPointsGroup().equals(maxGroupPoints.get())) {
+				statistic.setMaxGroupPointsCandidate(true);
 			}
 		}
 		return statisticList;

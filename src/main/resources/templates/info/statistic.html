@@ -30,7 +30,10 @@
 					   				<th>KO</th>
 					   			</tr>
 					   			<tr>
-					   				<td class="info" th:text="${statistic.pointsGroup}"></td>
+					   				<td class="info">
+					   					<span th:text="${statistic.pointsGroup}"></span>
+					   					<span th:if="${statistic.maxGroupPointsCandidate}" class="fa fa-star blue"></span>
+					   				</td>
 					   				<td class="success" th:text="${statistic.pointsRoundOfSixteen}"></td>
 					   				<td class="success" th:text="${statistic.pointsQuarterFinal}"></td>
 					   				<td class="success" th:text="${statistic.pointsSemiFinal}"></td>

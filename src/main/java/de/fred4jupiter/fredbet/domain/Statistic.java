@@ -16,6 +16,8 @@ public class Statistic {
 	
 	private boolean favoriteCountryCandidate;
 	
+	private boolean maxGroupPointsCandidate;
+	
 	private Country favoriteCountry;
 
 	private final String username;
@@ -99,5 +101,13 @@ public class Statistic {
 
 	public void setFavoriteCountry(Country favoriteCountry) {
 		this.favoriteCountry = favoriteCountry;
+	}
+
+	public boolean isMaxGroupPointsCandidate() {
+		return maxGroupPointsCandidate;
+	}
+
+	public void setMaxGroupPointsCandidate(boolean maxGroupPointsCandidate) {
+		this.maxGroupPointsCandidate = maxGroupPointsCandidate;
 	}
 }

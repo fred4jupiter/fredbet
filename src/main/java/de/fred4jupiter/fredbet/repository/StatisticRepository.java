@@ -38,12 +38,37 @@ public class StatisticRepository {
 		final StatisticsCollector statisticsCollector = new StatisticsCollector();
 
 		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
-			statisticsCollector.addValue(rs.getString(1), rs.getString(2), rs.getInt(3));
+			String userName = rs.getString(1);
+			String group = rs.getString(2);
+			int points = rs.getInt(3);
+			statisticsCollector.addValue(userName, group, points);
 		});
 
 		return statisticsCollector.getResult();
 	}
+	
+	
+	public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Select a.user_name, sum(a.points) ");
+		builder.append("from bet a join matches b on a.match_id = b.match_id ");
+		builder.append("where b.country_one = :countryId or b.country_two = :countryId  ");
+		builder.append("group by a.user_name ");
 
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("countryId", favoriteCountry.ordinal());
+
+		Map<String, Integer> userPoints = new HashMap<>();
+		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
+			String userName = rs.getString(1);
+			int points = rs.getInt(2);
+			if (!FredbetConstants.TECHNICAL_USERNAME.equals(userName)) {
+				userPoints.put(userName, points);
+			}
+		});
+		return userPoints;
+	}
+	
 	private static final class StatisticsCollector {
 
 		private TreeMap<String, Statistic> statisticsMap = new TreeMap<>();
@@ -72,24 +97,4 @@ public class StatisticRepository {
 		}
 	}
 
-	public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Select a.user_name, sum(a.points) ");
-		builder.append("from bet a join matches b on a.match_id = b.match_id ");
-		builder.append("where b.country_one = :countryId or b.country_two = :countryId  ");
-		builder.append("group by a.user_name ");
-
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("countryId", favoriteCountry.ordinal());
-
-		Map<String, Integer> userPoints = new HashMap<>();
-		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
-			String userName = rs.getString(1);
-			int points = rs.getInt(2);
-			if (!FredbetConstants.TECHNICAL_USERNAME.equals(userName)) {
-				userPoints.put(userName, points);	
-			}			
-		});
-		return userPoints;
-	}
 }
