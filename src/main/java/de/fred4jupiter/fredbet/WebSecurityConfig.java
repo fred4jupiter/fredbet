@@ -22,7 +22,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.SessionTrackingLogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -40,9 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private DataSource dataSource;
-
-	@Autowired
-	private SessionTrackingLogoutHandler sessionTrackingLogoutHandler;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -62,8 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().anyRequest().authenticated();
 
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
-		http.logout().addLogoutHandler(sessionTrackingLogoutHandler).logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
+		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 
 		// we do not use CSRF in this app (by now)

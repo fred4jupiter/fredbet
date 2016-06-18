@@ -7,21 +7,21 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Component
-public class SessionTrackingLoginListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
+public class SessionLoginTracker implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SessionTrackingLoginListener.class);
-	
+	private static final Logger LOG = LoggerFactory.getLogger(SessionLoginTracker.class);
+
 	@Autowired
 	private SessionTrackingService sessionTrackingService;
 
 	@Override
-	public void onApplicationEvent(InteractiveAuthenticationSuccessEvent appEvent) {
-		InteractiveAuthenticationSuccessEvent event = (InteractiveAuthenticationSuccessEvent) appEvent;
+	public void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
 		UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal();
-		sessionTrackingService.registerLogin(userDetails.getUsername());
-		LOG.info("user with name {} has logged in", userDetails.getUsername());
+		final String sessionId = RequestContextHolder.getRequestAttributes().getSessionId();
+		sessionTrackingService.registerLogin(userDetails.getUsername(), sessionId);
+		LOG.info("Login: user={}, sessionId={}", userDetails.getUsername(), sessionId);
 	}
-
 }

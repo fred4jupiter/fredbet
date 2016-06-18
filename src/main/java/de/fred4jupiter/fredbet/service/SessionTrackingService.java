@@ -19,19 +19,20 @@ public class SessionTrackingService {
 	@Autowired
 	private SessionTrackingRepository sessionTrackingRepository;
 	
-	public void registerLogin(String userName) {
+	public void registerLogin(String userName, String sessionId) {
 		SessionTracking sessionTracking = sessionTrackingRepository.findOne(userName);
 		if (sessionTracking == null) {
 			sessionTracking = new SessionTracking();
 		}
 		
 		sessionTracking.setUserName(userName);
+		sessionTracking.setSessionId(sessionId);
 		sessionTracking.setLastLogin(new Date());
 		sessionTrackingRepository.save(sessionTracking);
 	}
 	
-	public void registerLogout(String userName) {
-		SessionTracking sessionTracking = sessionTrackingRepository.findOne(userName);
+	public void registerLogout(String sessionId) {
+		SessionTracking sessionTracking = sessionTrackingRepository.findBySessionId(sessionId);
 		if (sessionTracking == null) {
 			return;
 		}

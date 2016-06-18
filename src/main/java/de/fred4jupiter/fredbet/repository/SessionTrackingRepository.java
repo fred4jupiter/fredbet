@@ -13,4 +13,6 @@ public interface SessionTrackingRepository extends JpaRepository<SessionTracking
 
 	List<SessionTracking> findByLastLoginLessThan(Date lastLogin);
 
+	SessionTracking findBySessionId(String sessionId);
+
 }
