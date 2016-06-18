@@ -10,12 +10,13 @@
 		<h1 th:text="#{statistics.title}"></h1>		
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
-				<div class="panel panel-default">					
+				<div class="panel" th:classappend="${statistic.favoriteCountryCandidate} ? panel-primary: panel-default">
 					<div class="panel-heading">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + '), '"></span>
 						<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
-						<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>		
+						<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
+						<span th:if="${statistic.favoriteCountryCandidate}" class="fa fa-star-o"></span>
 				   </div>
 				   <div class="panel-body">
 					   <div class="table-responsive">
