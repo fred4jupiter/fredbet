@@ -156,6 +156,10 @@ img.flag {
 	color: blue;	
 }
 
+.red {
+	color: red;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {

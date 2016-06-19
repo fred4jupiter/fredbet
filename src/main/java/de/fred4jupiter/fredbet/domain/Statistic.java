@@ -14,7 +14,11 @@ public class Statistic {
 	
 	private Integer pointsFavoriteCountry = Integer.valueOf(0);
 	
-	private boolean favoriteCountryCandidate;
+	private boolean minPointsCandidate;
+	
+	private boolean maxPointsCandidate;
+	
+	private boolean maxFavoriteCountryCandidate;
 	
 	private boolean maxGroupPointsCandidate;
 	
@@ -87,13 +91,7 @@ public class Statistic {
 		this.pointsFavoriteCountry = pointsFavoriteCountry;
 	}
 
-	public boolean isFavoriteCountryCandidate() {
-		return favoriteCountryCandidate;
-	}
-
-	public void setFavoriteCountryCandidate(boolean favoriteCountryCandidate) {
-		this.favoriteCountryCandidate = favoriteCountryCandidate;
-	}
+	
 
 	public Country getFavoriteCountry() {
 		return favoriteCountry;
@@ -109,5 +107,29 @@ public class Statistic {
 
 	public void setMaxGroupPointsCandidate(boolean maxGroupPointsCandidate) {
 		this.maxGroupPointsCandidate = maxGroupPointsCandidate;
+	}
+
+	public boolean isMaxFavoriteCountryCandidate() {
+		return maxFavoriteCountryCandidate;
+	}
+
+	public void setMaxFavoriteCountryCandidate(boolean maxFavoriteCountryCandidate) {
+		this.maxFavoriteCountryCandidate = maxFavoriteCountryCandidate;
+	}
+
+	public boolean isMinPointsCandidate() {
+		return minPointsCandidate;
+	}
+
+	public void setMinPointsCandidate(boolean minPointsCandidate) {
+		this.minPointsCandidate = minPointsCandidate;
+	}
+
+	public boolean isMaxPointsCandidate() {
+		return maxPointsCandidate;
+	}
+
+	public void setMaxPointsCandidate(boolean maxPointsCandidate) {
+		this.maxPointsCandidate = maxPointsCandidate;
 	}
 }

@@ -32,25 +32,49 @@ public class StatisticService {
 	public List<Statistic> createStatistic() {
 		final List<Statistic> statisticList = statisticRepository.createStatistic();
 
-		final Optional<Integer> maxGroupPoints = statisticList.stream().map(statistic -> statistic.getPointsGroup())
-				.max(Comparator.comparing(i -> i));
-
 		final Map<String, Integer> favoriteCountryPointsPerUserMap = statisticRepository
 				.sumPointsPerUserForFavoriteCountry(favoriteCountry);
 		final Optional<Integer> maxFavoriteCountryPoints = favoriteCountryPointsPerUserMap.values().stream()
 				.max(Comparator.comparing(i -> i));
+		
+		int minPoints = Integer.MAX_VALUE;
+		int maxPoints = 0;
+		int maxGroupPoints = 0;
 
 		for (Statistic statistic : statisticList) {
+			if (statistic.getSum().intValue() < minPoints) {
+				minPoints = statistic.getSum().intValue();
+			}
+			if (statistic.getSum().intValue() > maxPoints) {
+				maxPoints = statistic.getSum().intValue();
+			}
+
+			if (statistic.getPointsGroup().intValue() > maxGroupPoints) {
+				maxGroupPoints = statistic.getPointsGroup().intValue();
+			}
+		}
+		
+		for (Statistic statistic : statisticList) {
 			statistic.setFavoriteCountry(this.favoriteCountry);
+			
 			final Integer favoriteCountryPoints = favoriteCountryPointsPerUserMap.get(statistic.getUsername());
 			statistic.setPointsFavoriteCountry(favoriteCountryPoints);
+			
 			if (maxFavoriteCountryPoints.isPresent() && favoriteCountryPoints.equals(maxFavoriteCountryPoints.get())) {
-				statistic.setFavoriteCountryCandidate(true);
+				statistic.setMaxFavoriteCountryCandidate(true);
 			}
-			if (maxGroupPoints.isPresent() && statistic.getPointsGroup().equals(maxGroupPoints.get())) {
+			
+			if (statistic.getSum().intValue() == minPoints) {
+				statistic.setMinPointsCandidate(true);
+			}
+			if (statistic.getSum().intValue() == maxPoints) {
+				statistic.setMaxPointsCandidate(true);
+			}
+			if (statistic.getPointsGroup().intValue() == maxGroupPoints) {
 				statistic.setMaxGroupPointsCandidate(true);
 			}
 		}
+
 		return statisticList;
 	}
 }

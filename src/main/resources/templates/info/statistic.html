@@ -13,10 +13,13 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + '), '"></span>
+						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
+						<span th:if="${statistic.minPointsCandidate}" class="glyphicon glyphicon-lamp red" aria-hidden="true"></span>
+						<span th:if="${statistic.maxPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+						<span>,</span>
 						<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
 						<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-						<span th:if="${statistic.favoriteCountryCandidate}" class="fa fa-star blue"></span>
+						<span th:if="${statistic.maxFavoriteCountryCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
 				   </div>
 				   <div class="panel-body">
 					   <div class="table-responsive">
@@ -32,7 +35,7 @@
 					   			<tr>
 					   				<td class="info">
 					   					<span th:text="${statistic.pointsGroup}"></span>
-					   					<span th:if="${statistic.maxGroupPointsCandidate}" class="fa fa-star blue"></span>
+					   					<span th:if="${statistic.maxGroupPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
 					   				</td>
 					   				<td class="success" th:text="${statistic.pointsRoundOfSixteen}"></td>
 					   				<td class="success" th:text="${statistic.pointsQuarterFinal}"></td>
