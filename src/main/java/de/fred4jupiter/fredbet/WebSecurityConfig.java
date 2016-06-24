@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID").permitAll();
+				.deleteCookies("JSESSIONID", "remember-me").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 
 		// we do not use CSRF in this app (by now)
