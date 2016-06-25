@@ -8,7 +8,7 @@
 	<div layout:fragment="content" class="container">
 		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>		
 		
-		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form">			
+		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="betForm">			
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<h1 th:text="#{bet.edit.heading}"></h1>
@@ -16,47 +16,52 @@
 					<input type="hidden" th:field="*{matchId}" class="form-control" />					
 					<input type="hidden" th:field="*{redirectViewName}" class="form-control" />
 					<div class="form-group">
-						<table class="table center">
-							<thead>
-								<tr>
-									<th>
-										<img class="flag" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
-										<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
-									</th>
-									<th>
-										<img class="flag" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
-										<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
-									</th>									
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="success">
-									<td><input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small" onchange="checkPenalty()"/></td>
-									<td><input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small" onchange="checkPenalty()"/></td>
-								</tr>								
-							</tbody>
-						</table>												
-					</div>
-					<div id="penaltyBox" class="form-group" th:if="${!betCommand.isGroupMatch()}">
-						<table class="table center">
-							<thead>
-								<tr>
-									<th colspan="2">
-										<span th:text="#{penalty.box.heading}"></span>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="success">
-									<td><input type="radio" th:field="*{penaltyWinnerOne}" value="true" /></td>
-									<td><input type="radio" th:field="*{penaltyWinnerOne}" value="false" /></td>
-								</tr>								
-							</tbody>
-						</table>												
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<a href="#" th:href="@{${'/matches#' + betCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+						<div class="row center">
+							<div class="col-xs-6">
+								<img class="flag" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
+								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
+							</div>
+							<div class="col-xs-6">
+								<img class="flag" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
+								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
+							</div>
+						</div>
+						<div class="row center">
+							<div class="col-xs-6">
+								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small color-vote bold" onchange="checkPenalty()"/>
+							</div>
+							<div class="col-xs-6">
+								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small color-vote bold" onchange="checkPenalty()"/>
+							</div>
+						</div>
+						<div class="row center">
+							<div class="col-xs-6">
+								<button type="button" class="btn vote" onclick="oneVoteUp()"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+								<button type="button" class="btn vote" onclick="oneVoteDown()"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+							</div>
+							<div class="col-xs-6">
+								<button type="button" class="btn vote" onclick="twoVoteUp()"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+								<button type="button" class="btn vote" onclick="twoVoteDown()"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+							</div>
+						</div>						
+						<div id="penaltyBox" th:if="${!betCommand.isGroupMatch()}">
+							<div class="row">
+								<span class="bold" th:text="#{penalty.box.heading}"></span>
+							</div>
+							<div class="row center color-vote penalty-height">
+								<div class="col-xs-6">
+									<input type="radio" th:field="*{penaltyWinnerOne}" value="true" />
+								</div>
+								<div class="col-xs-6">
+									<input type="radio" th:field="*{penaltyWinnerOne}" value="false" />
+								</div>
+							</div>								
+						</div>
+						<br/>
+						<div class="row">
+							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+							<a href="#" th:href="@{${'/matches#' + betCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+						</div>
 					</div>
 				</div>
 			</div>
