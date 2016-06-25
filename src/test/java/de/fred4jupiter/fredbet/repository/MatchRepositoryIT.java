@@ -56,7 +56,7 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 		createSomeMatches();
 
 		List<Match> matches = matchRepository
-				.findByKickOffDateGreaterThanOrderByKickOffDateAsc(DateUtils.toDate(LocalDateTime.now().plusMinutes(10)));
+				.findUpcomingMatches(DateUtils.toDate(LocalDateTime.now().plusMinutes(10)));
 		assertNotNull(matches);
 		assertEquals(2, matches.size());
 	}

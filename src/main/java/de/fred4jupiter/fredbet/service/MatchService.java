@@ -101,9 +101,9 @@ public class MatchService {
 	}
 
 	public List<MatchCommand> findAllUpcomingMatches(String username) {
-	    // show current matches that has been finished since 2 hours after kick of also
+	    // show current matches that has been finished since 2 hours after kick-off
 	    LocalDateTime kickOffBeginSelectionDate = LocalDateTime.now().minusHours(2);
-		List<Match> allMatches = matchRepository.findByKickOffDateGreaterThanOrderByKickOffDateAsc(DateUtils.toDate(kickOffBeginSelectionDate));
+		List<Match> allMatches = matchRepository.findUpcomingMatches(DateUtils.toDate(kickOffBeginSelectionDate));
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 
