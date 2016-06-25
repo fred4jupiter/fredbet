@@ -1,0 +1,38 @@
+version: '2'
+services:
+  mariadb:  
+    image: mariadb:10.1.11
+    volumes:
+    - ~/mariadb:/data/db
+    ports:
+    - "3306:3306"
+    environment:
+    - MYSQL_DATABASE=fredbetdb
+    - MYSQL_ROOT_PASSWORD=secred
+    - MYSQL_USER=fred
+    - MYSQL_PASSWORD=fred
+
+  lb:
+    image: dockercloud/haproxy
+    depends_on:
+      - fredbet    
+    links:
+      - fredbet
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+    environment:
+      - BALANCE=source
+      - "APPSESSION=JSESSIONID len 52 timeout 3h"
+      - "COOKIE=SRV insert indirect nocache"
+
+  fredbet:
+    image: hamsterhase/fredbet
+    links:
+     - mariadb    
+    environment:
+    - spring.profiles.active=docker
+    - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+    - JDBC_USERNAME=fred
+    - JDBC_PASSWORD=fred   
