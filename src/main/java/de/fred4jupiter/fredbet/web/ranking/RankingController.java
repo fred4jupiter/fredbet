@@ -42,6 +42,15 @@ public class RankingController {
 			else if (i == 2) {
 				usernamePoints.setCssRankClass("label-warning");	
 			}
+			else if (i == 3) {
+				usernamePoints.setCssRankClass("label-rank4");	
+			}
+			else if (i == 4) {
+				usernamePoints.setCssRankClass("label-rank5");	
+			}
+			else if (i == 5) {
+				usernamePoints.setCssRankClass("label-rank6");	
+			}
 			else {
 				usernamePoints.setCssRankClass("label-default");
 			}

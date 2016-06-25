@@ -33,7 +33,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label th:text="#{matches.form.teamNames} + ':'"></label><br/>
+						<label th:text="#{matches.form.teamNames} + ':'"></label>
+						<a href="#" onclick="clearTeamNameFields()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>			
+						<br/>
 						<div class="row">							
 							<div class="col-xs-6">
 								<input type="text" th:field="*{nameTeamOne}" class="form-control" />
@@ -49,7 +51,7 @@
 		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffDateString}" readonly="readonly"/>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
 		                </div>
-						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" /><br/>
+						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" />
 		            </div>					
 					<div class="form-group">
 						<label for="teamResultTwo" th:text="#{matches.form.stadium} + ':'"></label>
@@ -65,7 +67,7 @@
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/matches/delete/' + ${matchCommand.matchId}}" 
 							class="btn btn-danger" role="button" th:classappend="${!matchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>						
-						<a href="#" th:href="@{/matches}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+						<a href="#" th:href="@{${'/matches#' + matchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>
 			</div>

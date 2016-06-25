@@ -1,9 +1,8 @@
 package de.fred4jupiter.fredbet.web.info;
 
+import java.util.List;
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.domain.Info;
+import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.InfoService;
+import de.fred4jupiter.fredbet.service.StatisticService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -25,17 +26,20 @@ public class InfoController {
 
 	private static final String PAGE_EDIT_INFO = "info/edit_info";
 
-    private static final String INFO_CONTEXT_RULES = "rules";
-
-	private static final Logger LOG = LoggerFactory.getLogger(InfoController.class);
+	private static final String INFO_CONTEXT_RULES = "rules";
 
 	private static final String INFO_CONTEXT_PRICES = "prices";
+
+	private static final String INFO_CONTEXT_MISC = "misc";
 
 	@Autowired
 	private MessageUtil messageUtil;
 
 	@Autowired
 	private InfoService infoService;
+
+	@Autowired
+	private StatisticService statisticService;
 
 	@RequestMapping("/rules")
 	public ModelAndView showRules() {
@@ -63,6 +67,19 @@ public class InfoController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/misc")
+	public ModelAndView showMiscellaneous() {
+		Locale locale = LocaleContextHolder.getLocale();
+		Info info = infoService.findBy(INFO_CONTEXT_MISC, locale);
+		if (info == null) {
+			info = infoService.saveInfoContent(INFO_CONTEXT_MISC, "", locale);
+		}
+
+		ModelAndView modelAndView = new ModelAndView("info/misc");
+		modelAndView.addObject("textContent", info.getContent());
+		return modelAndView;
+	}
+
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
 	@RequestMapping("/editinfo/{name}")
 	public ModelAndView editInfo(@PathVariable("name") String name) {
@@ -83,8 +100,6 @@ public class InfoController {
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
 	@RequestMapping(value = "/editinfo", method = RequestMethod.POST)
 	public ModelAndView saveEditedInfo(InfoCommand infoCommand, ModelMap modelMap) {
-		LOG.debug("textContent: {}", infoCommand.getTextContent());
-
 		Locale locale = LocaleContextHolder.getLocale();
 		infoService.saveInfoContent(infoCommand.getName(), infoCommand.getTextContent(), locale);
 
@@ -95,4 +110,16 @@ public class InfoController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/statistic")
+	public ModelAndView showStatistics(ModelMap modelMap) {
+		List<Statistic> statisticList = statisticService.createStatistic();
+
+		ModelAndView modelAndView = new ModelAndView("info/statistic");
+		modelAndView.addObject("statisticList", statisticList);
+		if (statisticList.isEmpty()) {
+			messageUtil.addInfoMsg(modelMap, "msg.warn.no.statistics");
+		}
+
+		return modelAndView;
+	}
 }

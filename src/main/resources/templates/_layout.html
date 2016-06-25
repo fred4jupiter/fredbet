@@ -5,13 +5,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Layout</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />		
+		<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />		
 		<link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}" />
 		<!-- Optional theme -->
 		<link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css}" />
 		<link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen"/>	
-		<link rel="stylesheet" th:href="@{/css/custom.css}" />
-		<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
+		<link rel="stylesheet" th:href="@{/css/custom.css}" />		
+		<script type="text/javascript" th:src="@{/js/ckeditor/ckeditor.js}"></script>
 	</head>
 	<body>
 		<nav th:include="_navigation :: menu" class="navbar navbar-inverse navbar-fixed-top"></nav>

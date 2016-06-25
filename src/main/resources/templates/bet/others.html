@@ -41,15 +41,15 @@
 				  			<div class="col-xs2 top-bottom-space">
 				  				<span class="label label-as-badge big-badge label-warning" th:text="${bet.points}"></span>
 				  			</div>
-     					</div>
-     					<div class="row">
-	     					<div class="col-xs-12 button-bar">
-					  			<a th:href="@{/matches}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
-					  		</div>
-     					</div>
+     					</div>     					
 				   </div>					   
 				</div>
 			</div>		
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<a href="#" th:href="@{${'/matches#' + allBetsCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
+			</div>
 		</div>
 	</div>
 </body>

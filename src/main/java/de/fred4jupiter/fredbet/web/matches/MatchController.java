@@ -62,12 +62,12 @@ public class MatchController {
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountries();
 	}
-	
+
 	@ModelAttribute("matchCommand")
 	public MatchCommand matchCommand() {
 		return new MatchCommand(messageUtil);
 	}
-	
+
 	@ModelAttribute("matchResultCommand")
 	public MatchResultCommand matchResultCommand() {
 		return new MatchResultCommand(messageUtil);
@@ -148,7 +148,7 @@ public class MatchController {
 		}
 
 		matchService.save(matchResultCommand);
-		return new ModelAndView("redirect:/matches");
+		return new ModelAndView("redirect:/matches#" + matchResultCommand.getMatchId());
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
@@ -177,7 +177,7 @@ public class MatchController {
 		}
 
 		matchService.save(matchCommand);
-		return new ModelAndView("redirect:/matches");
+		return new ModelAndView("redirect:/matches#" + matchCommand.getMatchId());
 	}
 
 	private boolean validate(MatchCommand matchCommand, ModelMap modelMap) {

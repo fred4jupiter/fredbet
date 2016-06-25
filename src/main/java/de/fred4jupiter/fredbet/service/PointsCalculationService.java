@@ -62,7 +62,7 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 			return 0;
 		}
 		
-		if (match.isUndecidedResult()) {
+		if (match.isUndecidedResult() && bet.isUndecidedBetting()) {
 			if (match.isPenaltyWinnerOne() && bet.isPenaltyWinnerOne()) {
 				return 1;
 			}

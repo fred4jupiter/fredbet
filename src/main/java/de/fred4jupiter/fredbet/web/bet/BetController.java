@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.BettingService;
@@ -54,7 +55,7 @@ public class BetController {
 
 	@Autowired
 	private CountryService countryService;
-	
+
 	@Autowired
 	private MatchService matchService;
 
@@ -94,27 +95,35 @@ public class BetController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
+		Bet bet = null;
 		if (betCommand.getBetId() == null) {
 			Match match = matchService.findMatchById(betCommand.getMatchId());
-			Bet bet = new Bet();
+			bet = new Bet();
 			bet.setMatch(match);
 			bet.setUserName(SecurityUtils.getCurrentUser().getUsername());
-			betCommand.setBet(bet);
+		} else {
+			bet = bettingService.findBetById(betCommand.getBetId());
 		}
-		
+		betCommand.setBet(bet);
+
 		if (!betCommand.hasGoalsSet()) {
 			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
 		try {
-			bettingService.save(betCommand);
+			bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
+			bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
+			bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
+
+			bettingService.save(bet);
 			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		} catch (NoBettingAfterMatchStartedAllowedException e) {
 			messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
 		}
 
-		return new ModelAndView(RedirectViewName.resolveRedirect(betCommand.getRedirectViewName()));
+		String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
+		return new ModelAndView(view + "#" + betCommand.getMatchId());
 	}
 
 	@RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
@@ -136,5 +145,11 @@ public class BetController {
 
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		return new ModelAndView("redirect:/bet/extra_bets");
+	}
+
+	@RequestMapping(value = "/extra_others", method = RequestMethod.GET)
+	public ModelAndView showExtraBetResults() {
+		List<ExtraBet> allExtraBets = bettingService.loadExtraBetDataOthers();
+		return new ModelAndView("bet/extra_others", "allExtraBets", allExtraBets);
 	}
 }

@@ -8,4 +8,5 @@ public interface ExtraBetRepository extends JpaRepository<ExtraBet, Long>{
 
 	ExtraBet findByUserName(String userName);
 
+
 }

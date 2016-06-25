@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +22,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.SessionTrackingLogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -40,8 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-	@Autowired
-	private SessionTrackingLogoutHandler sessionTrackingLogoutHandler;
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		// these matches will not go through the security filter
+		web.ignoring().antMatchers("/webjars/**", "/static/**", "/console/*");
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -55,13 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().anyRequest().authenticated();
 
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
-		http.logout().addLogoutHandler(sessionTrackingLogoutHandler).logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
+		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID", "remember-me").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 
 		// we do not use CSRF in this app (by now)
 		http.csrf().disable();
-		
+
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			// this is for the embedded h2 console
 			http.headers().frameOptions().disable();

@@ -65,6 +65,11 @@
 					</div>
 				</div>
 			</div>
+			<div class="row" th:if="${!extraBetCommand.isBettable()}">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<a href="#" th:href="@{/bet/extra_others}" th:text="#{extrabet.bets.of.others}"></a>
+				</div>	
+			</div>
 		</form>
 	</div>
 </body>

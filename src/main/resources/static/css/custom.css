@@ -1,5 +1,13 @@
 h1 {
-	font-size: 2em;
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.2em;
 }
 
 .form-group input.form-size-small {
@@ -92,6 +100,7 @@ h1 {
 
 .teamName {
 	font-size: 1.4em;
+	font-weight: bold;
 }
 
 .user-label {
@@ -118,6 +127,58 @@ img.flag {
 
 .badge-penalty-winner {
 	border: 2px solid black;
+}
+
+.imgsizing img {
+	width: 100%;
+	max-width: 600px;
+}
+
+.label-rank4 {
+	background-color: #1C8FBB;
+}
+
+.label-rank5 {
+	background-color: #65C5DB;
+}
+
+.label-rank6 {
+	background-color: #843127;
+}
+
+.anchor {
+	display: block;
+	position: relative;
+	top: -60px;
+	visibility: hidden;
+}
+
+.blue {
+	color: blue;
+}
+
+.red {
+	color: red;
+}
+
+button.vote {
+	width: 45%;
+}
+
+.goalsEnter .row {
+	margin-top: 15px;
+}
+
+.color-vote {
+	background-color: #DFF0D8;
+}
+
+.penalty-height {
+	padding: 6px 12px;
+}
+
+.color-result {
+	background-color: #D9EDF7;
 }
 
 /** justified break point for navigation collapse on tablets */

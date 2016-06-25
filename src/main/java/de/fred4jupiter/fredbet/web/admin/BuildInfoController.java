@@ -3,10 +3,14 @@ package de.fred4jupiter.fredbet.web.admin;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Properties;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,17 @@ public class BuildInfoController {
 
 	@Autowired
 	private Properties buildProperties;
+
+	@PostConstruct
+	private void postProcessBuildProperties() {
+		String buildTimestamp = buildProperties.getProperty("build.timestamp");
+		buildTimestamp = buildTimestamp + " +0000";
+
+		ZonedDateTime parsed = ZonedDateTime.parse(buildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z"));
+		String formattedDateTime = parsed
+				.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault()).withZone(ZoneId.of("Europe/Berlin")));
+		buildProperties.put("build.timestamp", formattedDateTime);
+	}
 
 	@RequestMapping
 	public ModelAndView list() {

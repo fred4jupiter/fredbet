@@ -20,6 +20,9 @@ public class SessionTracking {
 	@Column(name = "USER_NAME")
 	private String userName;
 	
+	@Column(name = "SESSION_ID")
+	private String sessionId;
+	
 	@Column(name = "LAST_LOGIN")
 	private Date lastLogin;
 	
@@ -36,6 +39,7 @@ public class SessionTracking {
 		SessionTracking other = (SessionTracking) obj;
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(userName, other.userName);
+		builder.append(sessionId, other.sessionId);
 		builder.append(lastLogin, other.lastLogin);
 		return builder.isEquals();
 	}
@@ -44,6 +48,7 @@ public class SessionTracking {
 	public int hashCode() {
 		HashCodeBuilder builder = new HashCodeBuilder();
 		builder.append(userName);
+		builder.append(sessionId);
 		builder.append(lastLogin);
 		return builder.toHashCode();
 	}
@@ -52,6 +57,7 @@ public class SessionTracking {
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("userName", userName);
+		builder.append("sessionId", sessionId);
 		builder.append("lastLogin", lastLogin);
 		return builder.toString();
 	}
@@ -70,6 +76,14 @@ public class SessionTracking {
 
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 }

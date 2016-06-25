@@ -12,9 +12,12 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 
 	private final List<Bet> allBetsForMatch;
 
+	private final Long matchId;
+
 	public AllBetsCommand(List<Bet> allBetsForMatch, Match match, MessageUtil messageUtil) {
 		super(messageUtil);
 		this.allBetsForMatch = allBetsForMatch;
+		this.matchId = match.getId();
 		setCountryTeamOne(match.getCountryOne());
 		setCountryTeamTwo(match.getCountryTwo());
 		setNameTeamOne(match.getTeamNameOne());
@@ -28,4 +31,7 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 		return allBetsForMatch;
 	}
 
+	public Long getMatchId() {
+		return matchId;
+	}
 }

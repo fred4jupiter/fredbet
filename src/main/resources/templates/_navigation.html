@@ -58,6 +58,8 @@
 			        	<ul class="dropdown-menu">
 				        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
 				        	<li th:class="${pageState_info_prices}"><a href="#prices" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
+				        	<li th:class="${pageState_info_misc}"><a href="#misc" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
+				        	<li th:class="${pageState_info_statistic}"><a href="#misc" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
 			        	</ul>
 			        </li>
 			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_BUILD_INFO','PERM_ADMINISTRATION')">
@@ -69,7 +71,7 @@
 				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
 					  		<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
 					  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')"><a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a></li>
-					  		<li th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a></li>
+					  		<li th:if="${@securityBean.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a></li>
 			        	</ul>
 			        </li>
 				</ul>
