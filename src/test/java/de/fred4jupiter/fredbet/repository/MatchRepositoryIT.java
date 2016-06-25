@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamNameOne", equalTo("Bulgarien"))));
 		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamNameOne", equalTo("Belgien"))));
-		assertThat(matchesOrderByKickOffDate, hasItem( hasProperty("teamNameOne", equalTo("Deutschland"))));
+		assertThat(matchesOrderByKickOffDate, hasItem(hasProperty("teamNameOne", equalTo("Deutschland"))));
 	}
 
 	private void createSomeMatches() {
@@ -43,7 +44,7 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 				.withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).build());
 
 		matchRepository.save(MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
-				.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).build());
+				.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build());
 
 		matchRepository.save(MatchBuilder.create().withTeams("Belgien", "England").withGroup(Group.GROUP_D)
 				.withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(15)).build());
@@ -52,11 +53,11 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 	@Test
 	public void findByKickOffDateGreaterThanOrderByKickOffDateAsc() {
 		matchRepository.deleteAll();
-		
+
 		createSomeMatches();
 
-		List<Match> matches = matchRepository
-				.findUpcomingMatches(DateUtils.toDate(LocalDateTime.now().plusMinutes(10)));
+		Date kickOffDateGreatherThan = DateUtils.toDate(LocalDateTime.now().plusMinutes(10));
+		List<Match> matches = matchRepository.findUpcomingMatches(kickOffDateGreatherThan);
 		assertNotNull(matches);
 		assertEquals(2, matches.size());
 	}
