@@ -18,29 +18,29 @@ function clearTeamNameFields() {
 }
 
 function oneCountUp() {
-	var val = $('#goalsTeamOne').val();
-	$('#goalsTeamOne').val((val*1)+1); 
+	var val = $('#goalsTeamOne, #teamResultOne').val();
+	$('#goalsTeamOne, #teamResultOne').val((val*1)+1); 
 	checkPenalty();
 }
 
 function oneCountDown() {
-	var val = $('#goalsTeamOne').val();
+	var val = $('#goalsTeamOne, #teamResultOne').val();
 	if (val > 0) {
-		$('#goalsTeamOne').val((val*1)-1);
+		$('#goalsTeamOne, #teamResultOne').val((val*1)-1);
 		checkPenalty();
 	}
 }
 
 function twoCountUp() {
-	var val = $('#goalsTeamTwo').val();
-	$('#goalsTeamTwo').val((val*1)+1);
+	var val = $('#goalsTeamTwo, #teamResultTwo').val();
+	$('#goalsTeamTwo, #teamResultTwo').val((val*1)+1);
 	checkPenalty();
 }
 
 function twoCountDown() {
-	var val = $('#goalsTeamTwo').val();
+	var val = $('#goalsTeamTwo, #teamResultTwo').val();
 	if (val > 0) {
-		$('#goalsTeamTwo').val((val*1)-1); 
+		$('#goalsTeamTwo, #teamResultTwo').val((val*1)-1); 
 		checkPenalty();
 	}
 }

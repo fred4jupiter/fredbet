@@ -165,7 +165,7 @@ button.vote {
 	width: 45%;
 }
 
-.betForm .row {
+.goalsEnter .row {
 	margin-top: 15px;
 }
 
@@ -175,6 +175,10 @@ button.vote {
 
 .penalty-height {
 	padding: 6px 12px;
+}
+
+.color-result {
+	background-color: #D9EDF7;
 }
 
 /** justified break point for navigation collapse on tablets */
