@@ -17,13 +17,13 @@ function clearTeamNameFields() {
 	$('#nameTeamTwo').val("");
 }
 
-function oneVoteUp() {
+function oneCountUp() {
 	var val = $('#goalsTeamOne').val();
 	$('#goalsTeamOne').val((val*1)+1); 
 	checkPenalty();
 }
 
-function oneVoteDown() {
+function oneCountDown() {
 	var val = $('#goalsTeamOne').val();
 	if (val > 0) {
 		$('#goalsTeamOne').val((val*1)-1);
@@ -31,13 +31,13 @@ function oneVoteDown() {
 	}
 }
 
-function twoVoteUp() {
+function twoCountUp() {
 	var val = $('#goalsTeamTwo').val();
 	$('#goalsTeamTwo').val((val*1)+1);
 	checkPenalty();
 }
 
-function twoVoteDown() {
+function twoCountDown() {
 	var val = $('#goalsTeamTwo').val();
 	if (val > 0) {
 		$('#goalsTeamTwo').val((val*1)-1); 
