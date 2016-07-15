@@ -54,6 +54,16 @@ A sample docker compose file will look like this:
 	   - JDBC_USERNAME=<USERNAME>
 	   - JDBC_PASSWORD=<PASSWORD>
 
+## Hints ##
+
+	-Dflyway.enabled=false
+
+Disabling Flyway database migration at all. This may be useful if you have an already populated database schema.
+
+	-Denable.demodata.creation=false
+
+Disables the navigation entry for (re)creating the matches and demo results. 
+
 ## Screenshot ##
 
 ![FredBet Screenshot](/src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot")
