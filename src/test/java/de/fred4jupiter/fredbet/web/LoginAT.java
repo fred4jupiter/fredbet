@@ -11,23 +11,22 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.fred4jupiter.fredbet.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebIntegrationTest("server.port:0")
+@SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("dev")
 public class LoginAT extends FluentTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginAT.class);
 
-	@Value("${local.server.port}")
+	@LocalServerPort
 	private int serverPort;
 
 	@Autowired
