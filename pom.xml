@@ -231,15 +231,6 @@
 			</resource>
 		</resources>
 		<plugins>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.springframework.boot</groupId> -->
-<!-- 				<artifactId>spring-boot-maven-plugin</artifactId> -->
-<!-- 				<configuration> -->
-<!-- 					configured for using devtools within the spring boot plugin -->
-<!-- 					<fork>true</fork> -->
-<!-- 					<classifier>exec</classifier> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
