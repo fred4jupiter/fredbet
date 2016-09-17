@@ -28,6 +28,8 @@ import de.fred4jupiter.fredbet.service.UserService;
 @Component
 public class DataBasePopulator {
 
+	private static final String DEFAULT_PASSWORD_ADMIN_USER = FredbetConstants.TECHNICAL_USERNAME;
+
 	private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
 
 	@Autowired
@@ -270,7 +272,7 @@ public class DataBasePopulator {
 		LOG.info("createDefaultUsers: creating default users ...");
 
 		// admin user will also be used for remote shell login
-		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, "admin")
+		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
 				.withRole(FredBetRole.ROLE_ADMIN).deletable(false).build());
 
 		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_ADMIN).build());
