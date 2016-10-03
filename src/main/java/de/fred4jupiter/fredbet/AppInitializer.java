@@ -17,19 +17,16 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 public class AppInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AppInitializer.class);
+	private static final Logger log = LoggerFactory.getLogger(AppInitializer.class);
 
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		final ConfigurableEnvironment environment = applicationContext.getEnvironment();
-		// if (environment.acceptsProfiles(FredBetProfile.DEV)) {
-		// environment.addActiveProfile(FredBetProfile.DEMODATA);
-		// }
 
-		LOG.info("Active profiles: {}", Arrays.asList(environment.getActiveProfiles()));
+		log.info("Active profiles: {}", Arrays.asList(environment.getActiveProfiles()));
 
 		Locale.setDefault(Locale.GERMANY);
-		LOG.info("Setting default locale to: {}", Locale.getDefault());
+		log.info("Setting default locale to: {}", Locale.getDefault());
 	}
 
 }

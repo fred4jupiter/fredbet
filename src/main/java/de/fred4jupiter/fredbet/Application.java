@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -26,11 +27,12 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  */
 @SpringBootApplication
+@EnableConfigurationProperties(FredbetProperties.class)
 public class Application {
 
 	@Autowired
 	private Environment environment;
-	
+
 	static {
 		// to avoid warning 'Unable to instantiate
 		// org.fusesource.jansi.WindowsAnsiOutputStream'
@@ -49,13 +51,13 @@ public class Application {
 	}
 
 	@Bean(destroyMethod = "close")
-	public DataSource dataSource() {
+	public DataSource dataSource(FredbetProperties fredbetProperties) {
 		HikariConfig config = new HikariConfig();
 		config.setPoolName("FredBetCP");
 		config.setConnectionTestQuery("SELECT 1");
-		config.setJdbcUrl(environment.getProperty("fredbet.db.url"));
-		config.setUsername(environment.getProperty("fredbet.db.username"));
-		config.setPassword(environment.getProperty("fredbet.db.password"));
+		config.setJdbcUrl(fredbetProperties.getDatabaseUrl());
+		config.setUsername(fredbetProperties.getDatabaseUsername());
+		config.setPassword(fredbetProperties.getDatabasePassword());
 		config.setMaximumPoolSize(20);
 		config.setIdleTimeout(30000);
 

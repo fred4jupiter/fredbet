@@ -64,19 +64,25 @@ fredbet:
    - JDBC_PASSWORD=<PASSWORD>
 ```
 
+## FredBet Properties
+
+You can ajust some properties by overriding it as JVM parameters. The properties are located in class `FredbetProperties`.
+
+- fredbet.create-demo-data
+	- Creates demo data with additional users and matches.
+- fredbet.enable-demo-data-creation-navigation-entry
+	- Disables the navigation entry for (re)creating the matches and demo results.
+- fredbet.favourite-country
+	- Sum points per user for selected country that will be shown in points statistics.
+
+NOTE: For overriding these properties as JVM parameters you have to apply the Spring Boot Externalize Properties Convention, e.g. for setting the property `fredbet.favourite-country` you will write `-DFREDBET_FAVOURITE-COUNTRY=ireland`.
+
 ## Hints
 
 ```bash
 -Dflyway.enabled=false
 ```
-
 Disabling Flyway database migration at all. This may be useful if you have an already populated database schema.
-
-```bash
--Denable.demodata.creation=false
-```
-
-Disables the navigation entry for (re)creating the matches and demo results. 
 
 ## Screenshot
 

@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import de.fred4jupiter.fredbet.FredbetProperties;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.repository.StatisticRepository;
@@ -22,10 +22,9 @@ public class StatisticService {
 	private final Country favoriteCountry;
 
 	@Autowired
-	public StatisticService(Environment environment, StatisticRepository statisticRepository) {
+	public StatisticService(StatisticRepository statisticRepository, FredbetProperties fredbetProperties) {
 		this.statisticRepository = statisticRepository;
-		String favoriteCountryString = environment.getProperty("favorite.country", Country.GERMANY.name());
-		this.favoriteCountry = Country.fromName(favoriteCountryString);
+		this.favoriteCountry = fredbetProperties.getFavouriteCountry();
 		Assert.notNull(this.favoriteCountry);
 	}
 
