@@ -1,6 +1,6 @@
 # FredBet
 
-Simple football betting application using Spring Boot, MariaDB, Thymeleaf and Bootstrap. The web pages using responsive design with mobile first.
+Simple football betting application using [Spring Boot](https://projects.spring.io/spring-boot/), [MariaDB](https://mariadb.org/), [Thymeleaf](http://www.thymeleaf.org/) and [Bootstrap](http://getbootstrap.com/). The web pages are constructed in responsive design for using on mobile devises.
 
 You can run the application by issuing the following command:
 
@@ -76,6 +76,12 @@ You can ajust some properties by overriding it as JVM parameters. The properties
 	- Disables the navigation entry for (re)creating the matches and demo results.
 - `fredbet.favourite-country`
 	- Sum points per user for selected country that will be shown in points statistics.
+- `fredbet.database-url`
+	- The database jdbc connection url, e.g. jdbc:mariadb://localhost:3306/fredbetdb.
+- `fredbet.database-username`
+	- The database username.
+- `fredbet.database-password`
+	- The database password.
 
 NOTE: For overriding these properties as JVM parameters you have to apply the Spring Boot Externalize Properties Convention, e.g. for setting the property `fredbet.favourite-country` you will write `-DFREDBET_FAVOURITE-COUNTRY=ireland`.
 
