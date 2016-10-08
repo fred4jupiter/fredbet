@@ -38,32 +38,35 @@ docker-compose up -d
 
 The application is available under [http://localhost:8080/](http://localhost:8080/).
 
-A sample docker compose file will look like this:
+A sample `docker-compose.yml` file with containerized MariaDB and FredBet will look like this:
 
 ```yml
-mariadb:
-  image: mariadb:10.1.11
-  volumes:
-    - /data/db
-  ports:
-    - "3306:3306"
-  environment:
-   - MYSQL_DATABASE=fredbetdb
-   - MYSQL_ROOT_PASSWORD=secred
-   - MYSQL_USER=<USERNAME>
-   - MYSQL_PASSWORD=<PASSWORD>
-
-fredbet:
-  image: hamsterhase/fredbet
-  links:
-    - mariadb:mariadb
-  ports:
-    - "8080:8080"
-  environment:
-   - spring.profiles.active=docker
-   - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
-   - JDBC_USERNAME=<USERNAME>
-   - JDBC_PASSWORD=<PASSWORD>
+version: '2'
+services:
+    mariadb:
+      image: mariadb:10.1.11
+      volumes:
+        - /data/db
+      ports:
+        - "3306:3306"
+      environment:
+       - MYSQL_DATABASE=fredbetdb
+       - MYSQL_ROOT_PASSWORD=secred
+       - MYSQL_USER=fred
+       - MYSQL_PASSWORD=fred
+    fredbet:
+      image: hamsterhase/fredbet
+      links:
+        - mariadb:mariadb
+      depends_on:
+        - mariadb
+      ports:
+        - "8080:8080"
+      environment:
+       - spring.profiles.active=prod
+       - FREDBET_DATABASE-URL=jdbc:mariadb://mariadb:3306/fredbetdb
+       - FREDBET_DATABASE-USERNAME=fred
+       - FREDBET_DATABASE-PASSWORD=fred
 ```
 
 ## FredBet Properties
