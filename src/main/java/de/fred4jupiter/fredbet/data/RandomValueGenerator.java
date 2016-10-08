@@ -19,8 +19,8 @@ public class RandomValueGenerator {
 	private final List<Country> availableCountries;
 
 	public RandomValueGenerator() {
-		this.availableCountries = Arrays.asList(Country.values()).stream().filter(country -> !country.equals(Country.NONE))
-				.collect(Collectors.toList());
+		this.availableCountries = Arrays.asList(Country.values()).stream()
+				.filter(country -> !country.equals(Country.NONE)).collect(Collectors.toList());
 	}
 
 	public Integer generateRandomValue() {
@@ -38,5 +38,23 @@ public class RandomValueGenerator {
 		Country country = availableCountries.get(randomVal);
 		LOG.debug("random country: {}", country);
 		return country;
+	}
+
+	public Country getOtherCountryThan(Country alreadyUsedCountry) {
+		for (Country country : Country.values()) {
+			if (!country.equals(alreadyUsedCountry)) {
+				return country;
+			}
+		}
+		throw new IllegalArgumentException("Could not found other country than given one: " + alreadyUsedCountry);
+	}
+	
+	public List<Country> generateTeamPair() {
+		Country countryOne = generateRandomCountry();
+		Country countryTwo = generateRandomCountry();
+		if (countryOne.equals(countryTwo)) {
+			countryTwo = getOtherCountryThan(countryOne);
+		}
+		return Arrays.asList(countryOne, countryTwo);  
 	}
 }

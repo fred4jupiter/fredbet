@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -47,7 +48,7 @@ public class DataBasePopulator {
 
 	@Autowired
 	private RandomValueGenerator randomValueGenerator;
-	
+
 	@Autowired
 	private FredbetProperties fredbetProperties;
 
@@ -59,11 +60,27 @@ public class DataBasePopulator {
 
 		if (fredbetProperties.isCreateDemoData()) {
 			createAdditionalUsers();
-			createEM2016Matches();
+			createRandomMatches();
 		}
 	}
 
-	@Transactional
+	private void createRandomMatches() {
+		createRandomForGroup(Group.GROUP_A);
+		createRandomForGroup(Group.GROUP_B);
+		createRandomForGroup(Group.GROUP_C);
+		createRandomForGroup(Group.GROUP_D);
+		createRandomForGroup(Group.GROUP_E);
+		createRandomForGroup(Group.GROUP_F);
+	}
+
+	private void createRandomForGroup(Group group) {
+		for (int i = 0; i < 4; i++) {
+			List<Country> teamPair = randomValueGenerator.generateTeamPair();
+			matchService.save(MatchBuilder.create().withTeams(teamPair.get(0), teamPair.get(1)).withGroup(group)
+					.withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build());
+		}
+	}
+
 	private void createAdditionalUsers() {
 		log.info("createAdditionalUsers: creating additional demo users ...");
 
@@ -82,11 +99,7 @@ public class DataBasePopulator {
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
 
-		createMatches();
-	}
-
-	private void createMatches() {
-		log.info("createMatches: inserting demo matches ...");
+		log.info("creating EM 2016 matches ...");
 		createGroupA();
 		createGroupB();
 		createGroupC();
