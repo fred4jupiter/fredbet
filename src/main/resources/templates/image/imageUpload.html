@@ -10,10 +10,16 @@
 
 			<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 			
-			<form th:action="@{/image/upload}" method="post" enctype="multipart/form-data">
-		       <input type="file" name="myFile" class="form-control" />
-		       <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
-		    </form>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="availableImage : ${availableImages}">
+					<img th:src="@{'data:image/jpeg;base64,'+${availableImage}}" class="img-responsive"/>
+				</div>
+				
+				<form th:action="@{/image/upload}" method="post" enctype="multipart/form-data">
+			       <input type="file" name="myFile" class="form-control" />
+			       <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
+			    </form>
+			</div>
 		</div>
 	</body>
 </html>
