@@ -1,0 +1,1 @@
+create table file_storage (image_id bigint not null auto_increment, file_name varchar(100), image_binary blob, version integer, primary key (image_id));
