@@ -36,6 +36,7 @@ public class FileStorage {
 	}
 	
 	public FileStorage(String fileName, byte[] imageBinary) {
+		this.fileName = fileName;
 		this.imageBinary = imageBinary;
 	}
 
