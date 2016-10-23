@@ -22,6 +22,8 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/image")
 public class ImageUploadController {
 
+	private static final String REDIRECT_SHOW_PAGE = "redirect:/image/show";
+
 	private static final Logger log = LoggerFactory.getLogger(ImageUploadController.class);
 
 	@Autowired
@@ -44,6 +46,11 @@ public class ImageUploadController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public ModelAndView importParse(@RequestParam("myFile") MultipartFile myFile, RedirectAttributes redirect) {
 		try {
+			if (myFile == null || myFile.getBytes() == null || myFile.getBytes().length == 0) {
+				messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+				return new ModelAndView(REDIRECT_SHOW_PAGE);
+			}
+			
 			imageUploadService.saveImageInDatabase(myFile.getOriginalFilename(), myFile.getBytes());
 			messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 		} catch (IOException e) {
@@ -51,6 +58,6 @@ public class ImageUploadController {
 			messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
 		}
 
-		return new ModelAndView("redirect:/image/show");
+		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
 }
