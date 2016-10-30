@@ -25,7 +25,7 @@
 					   				<td th:text="${imageCommand.galleryGroup}"></td>
 					   				<td th:text="${imageCommand.fileName}"></td>
 					   				<td th:text="${imageCommand.description}"></td>
-					   				<td><img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive"/></td>
+					   				<td><img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/></td>
 					   			</tr>
 				   			</tbody>
 				   		</table>
@@ -40,10 +40,10 @@
 						<input type="text" th:field="*{galleryGroup}" class="form-control" />
 						<label>Description:</label><br/>
 						<input type="text" th:field="*{description}" class="form-control" />
-					    <label class="btn btn-default btn-file">
-					       <input type="file" th:field="*{myFile}"  />
-					   </label>
-				       <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
+					    <label>Datei:</label><br/>
+					    <input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
+					    <br/>
+				        <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
 				    </form>
 			    </div>
 			</div>

@@ -23,10 +23,11 @@ public class ImageUploadService {
 	@Autowired
 	private ImageResizingService imageResizingService;
 
-	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup) {
+	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description) {
 		byte[] thumbnail = imageResizingService.createThumbnail(binary);
-		Image fileStorage = new Image(fileName, binary, galleryGroup, thumbnail);
-		fileStorageRepository.save(fileStorage);
+		Image image = new Image(fileName, binary, galleryGroup, thumbnail);
+		image.setDescription(description);
+		fileStorageRepository.save(image);
 	}
 
 	@Deprecated
