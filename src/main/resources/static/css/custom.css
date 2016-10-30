@@ -181,6 +181,10 @@ button.vote {
 	background-color: #D9EDF7;
 }
 
+.gallery-images  img {
+	display: inline;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {

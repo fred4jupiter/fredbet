@@ -6,8 +6,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
-			<h1 th:text="#{image.upload.title}"></h1>
-
 			<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 			
 			<div class="row">

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+	<head>
+		<title>Gallery</title>
+		<link rel="stylesheet" th:href="@{/blueimpgallery/css/blueimp-gallery.min.css}" />
+	</head>
+	<body>
+		<div layout:fragment="content" class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div id="links" class="gallery-images">
+						<div id="fruits">
+							<label>Fruits</label><br/>
+							<a th:href="@{/images/bild1.jpg}" title="Bild1" data-gallery="#blueimp-gallery-fruits">
+						        <img th:src="@{/images/bild1_s.jpg}" alt="Bild1" class="img-responsive"/>
+						    </a>
+						    <a th:href="@{/images/bild2.jpg}" title="Bild2" data-gallery="#blueimp-gallery-fruits">
+						        <img th:src="@{/images/bild2_s.jpg}" alt="Bild2" class="img-responsive"/>
+						    </a>
+						</div>												
+						<div id="vegetables">
+							<label>Vegetables</label><br/>
+							<a th:href="@{/images/bild1.jpg}" title="Bild1" data-gallery="#blueimp-gallery-vegetables">
+						        <img th:src="@{/images/bild1_s.jpg}" alt="Bild1" class="img-responsive"/>
+						    </a>
+						    <a th:href="@{/images/bild2.jpg}" title="Bild2" data-gallery="#blueimp-gallery-vegetables">
+						        <img th:src="@{/images/bild2_s.jpg}" alt="Bild2" class="img-responsive"/>
+						    </a>
+						</div>					    
+					</div>
+					
+					<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+					    <div class="slides"></div>
+					    <h3 class="title"></h3>
+					    <a class="prev">&#60;</a>
+					    <a class="next">&#62;</a>
+					    <a class="close">X</a>
+					    <a class="play-pause"></a>
+					    <ol class="indicator"></ol>
+					</div>					
+					
+					<script type="text/javascript" th:src="@{/blueimpgallery/js/blueimp-gallery.min.js}"></script>
+					<script>
+					document.getElementById('links').onclick = function (event) {
+					    event = event || window.event;
+					    var target = event.target || event.srcElement,
+					        link = target.src ? target.parentNode : target,
+					        options = {index: link, event: event},
+					        links = this.getElementsByTagName('a');
+					    blueimp.Gallery(links, options);
+					};
+					</script>
+				</div>
+			</div>			
+		</div>
+	</body>	
+</html>
