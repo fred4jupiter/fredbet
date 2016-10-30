@@ -9,25 +9,13 @@
 		<div layout:fragment="content" class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div id="links" class="gallery-images">
-						<div id="fruits">
-							<label>Fruits</label><br/>
-							<a th:href="@{/images/bild1.jpg}" title="Bild1" data-gallery="#blueimp-gallery-fruits">
-						        <img th:src="@{/images/bild1_s.jpg}" alt="Bild1" class="img-responsive"/>
-						    </a>
-						    <a th:href="@{/images/bild2.jpg}" title="Bild2" data-gallery="#blueimp-gallery-fruits">
-						        <img th:src="@{/images/bild2_s.jpg}" alt="Bild2" class="img-responsive"/>
-						    </a>
+					<div id="links" class="gallery-images" th:each="imageCommand : ${availableImages}">
+						<div th:id="${imageCommand.galleryGroup}">
+							<label th:text="${imageCommand.galleryGroup}">Fruits</label><br/>
+							<a th:href="@{/images/bild1.jpg}" th:title="${imageCommand.description}" data-gallery="${'#blueimp-gallery-' + ${imageCommand.galleryGroup}}">
+						        <img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" th:alt="${imageCommand.fileName}" class="img-responsive"/>
+						    </a>						    
 						</div>												
-						<div id="vegetables">
-							<label>Vegetables</label><br/>
-							<a th:href="@{/images/bild1.jpg}" title="Bild1" data-gallery="#blueimp-gallery-vegetables">
-						        <img th:src="@{/images/bild1_s.jpg}" alt="Bild1" class="img-responsive"/>
-						    </a>
-						    <a th:href="@{/images/bild2.jpg}" title="Bild2" data-gallery="#blueimp-gallery-vegetables">
-						        <img th:src="@{/images/bild2_s.jpg}" alt="Bild2" class="img-responsive"/>
-						    </a>
-						</div>					    
 					</div>
 					
 					<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">

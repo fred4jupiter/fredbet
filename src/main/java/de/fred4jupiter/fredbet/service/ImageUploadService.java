@@ -60,4 +60,13 @@ public class ImageUploadService {
 		imageCommand.setThumbImageAsBase64(Base64.getEncoder().encodeToString(image.getThumbImageBinary()));
 		return imageCommand;
 	}
+	
+	public byte[] loadImageById(Long imageId) {
+		Image image = fileStorageRepository.findOne(imageId);
+		if (image == null) {
+			return null;
+		}
+		
+		return image.getImageBinary();
+	}
 }

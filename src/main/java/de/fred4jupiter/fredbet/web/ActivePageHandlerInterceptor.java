@@ -28,6 +28,10 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 		if (requestURI.contains("error")) {
 			return;
 		}
+		
+		if (modelAndView == null) {
+			return;
+		}
 
 		final String page = StringUtils.substring(requestURI, 1);
 		final String replaced = StringUtils.replace(page, "/", "_");

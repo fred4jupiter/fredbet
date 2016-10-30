@@ -14,6 +14,7 @@
 				   		<table class="table table-condensed table-striped">
 				   			<thead>
 					   			<tr>
+					   				<th>ImageId</th>
 					   				<th>Group</th>
 					   				<th>File Name</th>					   				
 					   				<th>Description</th>
@@ -22,10 +23,15 @@
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageCommand : ${availableImages}">
+					   				<td th:text="${imageCommand.imageId}"></td>
 					   				<td th:text="${imageCommand.galleryGroup}"></td>
 					   				<td th:text="${imageCommand.fileName}"></td>
 					   				<td th:text="${imageCommand.description}"></td>
-					   				<td><img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/></td>
+					   				<td>
+					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
+					   						<img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/>
+					   					</a>
+					   				</td>
 					   			</tr>
 				   			</tbody>
 				   		</table>
