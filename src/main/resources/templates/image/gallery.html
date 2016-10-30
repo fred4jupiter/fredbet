@@ -9,12 +9,12 @@
 		<div layout:fragment="content" class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div id="links" class="gallery-images" th:each="imageCommand : ${availableImages}">
-						<div th:id="${imageCommand.galleryGroup}">
-							<label th:text="${imageCommand.galleryGroup}">Fruits</label><br/>
-							<a th:href="@{/images/bild1.jpg}" th:title="${imageCommand.description}" data-gallery="${'#blueimp-gallery-' + ${imageCommand.galleryGroup}}">
+					<div id="links" class="gallery-images">
+						<div th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
+							<label th:text="${galleryGroup}">Fruits</label><br/>
+							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageId}}" th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}">
 						        <img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" th:alt="${imageCommand.fileName}" class="img-responsive"/>
-						    </a>						    
+						    </a>
 						</div>												
 					</div>
 					
