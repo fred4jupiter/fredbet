@@ -54,4 +54,8 @@ public class ImageUploadService {
 
 		return image.getImageBinary();
 	}
+
+	public void deleteImageById(Long imageId) {
+		fileStorageRepository.delete(imageId);		
+	}
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,6 +64,15 @@ public class ImageUploadController {
 			messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
 		}
 
+		return new ModelAndView(REDIRECT_SHOW_PAGE);
+	}
+	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public ModelAndView deleteImage(@PathVariable("id") Long imageId, RedirectAttributes redirect) {
+		imageUploadService.deleteImageById(imageId);
+
+		messageUtil.addInfoMsg(redirect, "image.gallery.msg.deleted");
+		
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
 }

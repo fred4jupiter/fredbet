@@ -60,4 +60,5 @@ public class ImageGalleryController {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 	}
+
 }

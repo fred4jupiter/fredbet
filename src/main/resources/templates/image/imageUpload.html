@@ -19,6 +19,7 @@
 					   				<th>File Name</th>					   				
 					   				<th>Description</th>
 					   				<th>Thumbnail</th>
+					   				<th>Delete image</th>
 					   			</tr>
 				   			</thead>
 				   			<tbody>
@@ -31,6 +32,9 @@
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
 					   						<img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/>
 					   					</a>
+					   				</td>
+					   				<td>
+					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageId}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
 					   				</td>
 					   			</tr>
 				   			</tbody>
