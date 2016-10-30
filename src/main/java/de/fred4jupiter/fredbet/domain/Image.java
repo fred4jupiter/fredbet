@@ -12,8 +12,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "FILE_STORAGE")
-public class FileStorage {
+@Table(name = "IMAGE_STORE")
+public class Image {
 
 	@Id
 	@GeneratedValue
@@ -23,21 +23,33 @@ public class FileStorage {
 	@Column(name = "FILE_NAME")
 	private String fileName;
 	
+	@Column(name = "GALLERY_GROUP")
+	private String galleryGroup;
+	
 	@Lob
 	@Column(name = "IMAGE_BINARY")
 	private byte[] imageBinary;
+	
+	@Lob
+	@Column(name = "THUMB_IMAGE_BINARY")
+	private byte[] thumbImageBinary;
+	
+	@Column(name = "DESCRIPTION")
+	private String description;
 	
 	@Version
 	@Column(name = "VERSION")
 	private Integer version;
 	
-	protected FileStorage() {
+	protected Image() {
 		// for hibernate
 	}
 	
-	public FileStorage(String fileName, byte[] imageBinary) {
+	public Image(String fileName, byte[] imageBinary,  String galleryGroup, byte[] thumbImageBinary) {
 		this.fileName = fileName;
 		this.imageBinary = imageBinary;
+		this.galleryGroup = galleryGroup;
+		this.thumbImageBinary = thumbImageBinary;
 	}
 
 	public byte[] getImageBinary() {
@@ -73,6 +85,31 @@ public class FileStorage {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("id", id);
 		builder.append("fileName", fileName);
+		builder.append("galleryGroup", galleryGroup);
 		return builder.toString();
+	}
+
+	public String getGalleryGroup() {
+		return galleryGroup;
+	}
+
+	public void setGalleryGroup(String galleryGroup) {
+		this.galleryGroup = galleryGroup;
+	}
+
+	public byte[] getThumbImageBinary() {
+		return thumbImageBinary;
+	}
+
+	public void setThumbImageBinary(byte[] thumbImageBinary) {
+		this.thumbImageBinary = thumbImageBinary;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

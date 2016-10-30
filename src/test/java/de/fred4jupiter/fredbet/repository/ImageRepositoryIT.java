@@ -12,26 +12,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
-import de.fred4jupiter.fredbet.domain.FileStorage;
+import de.fred4jupiter.fredbet.domain.Image;
 
-public class FileStorageRepositoryIT extends AbstractIntegrationTest {
+public class ImageRepositoryIT extends AbstractIntegrationTest {
 
-	private static final Logger log = LoggerFactory.getLogger(FileStorageRepositoryIT.class);
+	private static final Logger log = LoggerFactory.getLogger(ImageRepositoryIT.class);
 
 	@Autowired
-	private FileStorageRepository fileStorageRepository;
+	private ImageRepository imageRepository;
 
 	@Test
 	public void saveImageInDatabase() throws IOException {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		FileStorage fileStorage = new FileStorage("kitten.jpg", fileAsByteArray);
-		FileStorage saved = fileStorageRepository.save(fileStorage);
+		Image fileStorage = new Image("kitten.jpg", fileAsByteArray, "sampleGallery", fileAsByteArray);
+		Image saved = imageRepository.save(fileStorage);
 		assertNotNull(saved);
 		assertNotNull(saved.getId());
 
-		FileStorage retrievedFromDb = fileStorageRepository.findOne(saved.getId());
+		Image retrievedFromDb = imageRepository.findOne(saved.getId());
 		assertNotNull(retrievedFromDb);
 		assertEquals(saved.getId(), retrievedFromDb.getId());
 		assertNotNull(retrievedFromDb.getImageBinary());

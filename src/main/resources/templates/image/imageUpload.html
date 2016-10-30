@@ -9,18 +9,43 @@
 			<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
 			
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="availableImage : ${availableImages}">
-					<img th:src="@{'data:image/jpeg;base64,'+${availableImage}}" class="img-responsive"/>
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<div class="table-responsive">
+				   		<table class="table table-condensed table-striped">
+				   			<thead>
+					   			<tr>
+					   				<th>Group</th>
+					   				<th>File Name</th>					   				
+					   				<th>Description</th>
+					   				<th>Thumbnail</th>
+					   			</tr>
+				   			</thead>
+				   			<tbody>
+					   			<tr th:each="imageCommand : ${availableImages}">
+					   				<td th:text="${imageCommand.galleryGroup}"></td>
+					   				<td th:text="${imageCommand.fileName}"></td>
+					   				<td th:text="${imageCommand.description}"></td>
+					   				<td><img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive"/></td>
+					   			</tr>
+				   			</tbody>
+				   		</table>
+			   	   </div>
 				</div>
 			</div>
 			<br/>
 			<div class="row">
-				<form th:action="@{/image/upload}" method="post" enctype="multipart/form-data" role="form">
-				    <label class="btn btn-default btn-file">
-				       <input type="file" name="myFile"  />
-				   </label>
-			       <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
-			    </form>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<form th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form">
+						<label>Gallery Group:</label><br/>
+						<input type="text" th:field="*{galleryGroup}" class="form-control" />
+						<label>Description:</label><br/>
+						<input type="text" th:field="*{description}" class="form-control" />
+					    <label class="btn btn-default btn-file">
+					       <input type="file" th:field="*{myFile}"  />
+					   </label>
+				       <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
+				    </form>
+			    </div>
 			</div>
 		</div>
 	</body>
