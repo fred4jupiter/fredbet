@@ -44,8 +44,7 @@ public class ImageUploadController {
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showUploadPage() {
-		ModelAndView modelAndView = new ModelAndView("image/imageUpload");
-		return modelAndView;
+		return new ModelAndView("image/imageUpload");
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)

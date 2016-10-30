@@ -46,7 +46,6 @@ public class ImageGalleryController {
 	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> showImage(@PathVariable("id") Long imageId, HttpServletResponse response) {
 		response.setHeader("Content-Type", MediaType.IMAGE_JPEG_VALUE);
-
 		byte[] imageByte = imageUploadService.loadImageById(imageId);
 		if (imageByte == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);

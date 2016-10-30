@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.service;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,29 +24,15 @@ public class ImageUploadService {
 
 	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description) {
 		byte[] thumbnail = imageResizingService.createThumbnail(binary);
-		Image image = new Image(fileName, binary, galleryGroup, thumbnail);
+		byte[] imageByte = imageResizingService.createDefaultSizedImage(binary);
+
+		Image image = new Image(fileName, imageByte, galleryGroup, thumbnail);
 		image.setDescription(description);
 		fileStorageRepository.save(image);
 	}
 
-	@Deprecated
-	public List<String> fetchAllImagesAsBase64() {
-		List<Image> allSavedImages = fileStorageRepository.findAll();
-
-		List<String> allImagesAsBase64 = new ArrayList<>();
-
-		for (Image fileStorage : allSavedImages) {
-			byte[] imageBinary = fileStorage.getImageBinary();
-			String encodeToString = Base64.getEncoder().encodeToString(imageBinary);
-			allImagesAsBase64.add(encodeToString);
-		}
-
-		return allImagesAsBase64;
-	}
-
 	public List<ImageCommand> fetchAllImages() {
 		List<Image> allSavedImages = fileStorageRepository.findAll();
-
 		return allSavedImages.stream().map(image -> toImageCommand(image)).collect(Collectors.toList());
 	}
 
@@ -60,13 +45,13 @@ public class ImageUploadService {
 		imageCommand.setThumbImageAsBase64(Base64.getEncoder().encodeToString(image.getThumbImageBinary()));
 		return imageCommand;
 	}
-	
+
 	public byte[] loadImageById(Long imageId) {
 		Image image = fileStorageRepository.findOne(imageId);
 		if (image == null) {
 			return null;
 		}
-		
+
 		return image.getImageBinary();
 	}
 }

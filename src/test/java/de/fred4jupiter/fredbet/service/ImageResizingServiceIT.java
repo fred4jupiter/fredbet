@@ -23,20 +23,6 @@ public class ImageResizingServiceIT {
 	private ImageResizingService imageResizingService;
 
 	@Test
-	public void resizeImage() {
-		File file = new File("src/test/resources/sample_images/sampeImage.jpg");
-		assertNotNull(file);
-		assertTrue(file.exists());
-
-		String tempDir = System.getProperty("java.io.tmpdir");
-		File outputFile = new File(tempDir + File.separator + file.getName());
-		imageResizingService.createThumbnail(file, outputFile);
-
-		log.debug("written file to: {}", outputFile);
-		assertTrue(outputFile.exists());
-	}
-
-	@Test
 	public void resizeImageWithByteArray() throws IOException {
 		File file = new File("src/test/resources/sample_images/sampeImage.jpg");
 		assertNotNull(file);
