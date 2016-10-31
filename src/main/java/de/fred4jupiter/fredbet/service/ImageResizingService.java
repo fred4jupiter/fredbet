@@ -16,7 +16,7 @@ import net.coobird.thumbnailator.Thumbnails;
 public class ImageResizingService {
 
 	// TODO: make configurable
-	private static final int THUMBNAIL_SIZE = 40;
+	private static final int THUMBNAIL_SIZE = 75;
 
 	private static final int DEFAULT_MAX_SIZE = 1920;
 
