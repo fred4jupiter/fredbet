@@ -1,10 +1,12 @@
 package de.fred4jupiter.fredbet.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -23,18 +25,62 @@ public class ImageResizingServiceIT {
 	private ImageResizingService imageResizingService;
 
 	@Test
-	public void resizeImageWithByteArray() throws IOException {
-		File file = new File("src/test/resources/sample_images/sampeImage.jpg");
+	public void createThumbnail() throws IOException {
+		File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");
 		assertNotNull(file);
 		assertTrue(file.exists());
 
 		byte[] thumbByteArray = imageResizingService.createThumbnail(FileUtils.readFileToByteArray(file));
 
-		String tempDir = System.getProperty("java.io.tmpdir");
-		File outputFile = new File(tempDir + File.separator + file.getName());
+		File outputFile = createOutputFile(file);
 
 		FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
 		log.debug("written file to: {}", outputFile);
 		assertTrue(outputFile.exists());
+		
+		BufferedImage bufferedImage = ImageIO.read(outputFile);
+		assertEquals(40, bufferedImage.getWidth());
+	}
+	
+	@Test
+	public void createDefaultSizedImageNoSizeReduction() throws IOException {
+		File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");
+		assertNotNull(file);
+		assertTrue(file.exists());
+
+		byte[] thumbByteArray = imageResizingService.minimizeToDefaultSize(FileUtils.readFileToByteArray(file));
+
+		File outputFile = createOutputFile(file);
+
+		FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
+		log.debug("written file to: {}", outputFile);
+		assertTrue(outputFile.exists());
+		
+		BufferedImage bufferedImage = ImageIO.read(outputFile);
+		assertEquals(800, bufferedImage.getWidth());
+	}
+	
+	@Test
+	public void createDefaultSizedImage() throws IOException {
+		File file = new File("src/test/resources/sample_images/sampleImage_2560.jpg");
+		assertNotNull(file);
+		assertTrue(file.exists());
+
+		byte[] thumbByteArray = imageResizingService.minimizeToDefaultSize(FileUtils.readFileToByteArray(file));
+
+		File outputFile = createOutputFile(file);
+
+		FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
+		log.debug("written file to: {}", outputFile);
+		assertTrue(outputFile.exists());
+		
+		BufferedImage bufferedImage = ImageIO.read(outputFile);
+		assertEquals(1920, bufferedImage.getWidth());
+	}
+
+	private File createOutputFile(File file) {
+		String tempDir = System.getProperty("java.io.tmpdir");
+		File outputFile = new File(tempDir + File.separator + file.getName());
+		return outputFile;
 	}
 }

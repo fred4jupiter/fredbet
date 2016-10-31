@@ -24,7 +24,7 @@ public class ImageUploadService {
 
 	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description) {
 		byte[] thumbnail = imageResizingService.createThumbnail(binary);
-		byte[] imageByte = imageResizingService.createDefaultSizedImage(binary);
+		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary);
 
 		Image image = new Image(fileName, imageByte, galleryGroup, thumbnail);
 		image.setDescription(description);
