@@ -46,6 +46,10 @@ public class ExtraBetCommand {
 	}
 
 	public Integer getPoints() {
+		if (finalMatch == null) {
+			return 0;
+		}
+		
 		if (finalMatch.hasResultSet() && points == null) {
 			return 0;
 		}
