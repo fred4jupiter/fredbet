@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.Image;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageRepository;
 import de.fred4jupiter.fredbet.web.image.ImageCommand;
 
@@ -17,22 +19,32 @@ import de.fred4jupiter.fredbet.web.image.ImageCommand;
 public class ImageUploadService {
 
 	@Autowired
-	private ImageRepository fileStorageRepository;
+	private ImageRepository imageRepository;
+
+	@Autowired
+	private ImageGroupRepository imageGroupRepository;
 
 	@Autowired
 	private ImageResizingService imageResizingService;
 
 	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description) {
+		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroup);
+
+		if (imageGroup == null) {
+			imageGroup = new ImageGroup(galleryGroup);
+			imageGroupRepository.save(imageGroup);
+		}
+
 		byte[] thumbnail = imageResizingService.createThumbnail(binary);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary);
 
-		Image image = new Image(fileName, imageByte, galleryGroup, thumbnail);
+		Image image = new Image(fileName, imageByte, imageGroup, thumbnail);
 		image.setDescription(description);
-		fileStorageRepository.save(image);
+		imageRepository.save(image);
 	}
 
 	public List<ImageCommand> fetchAllImages() {
-		List<Image> allSavedImages = fileStorageRepository.findAll();
+		List<Image> allSavedImages = imageRepository.findAll();
 		return allSavedImages.stream().map(image -> toImageCommand(image)).collect(Collectors.toList());
 	}
 
@@ -40,14 +52,14 @@ public class ImageUploadService {
 		ImageCommand imageCommand = new ImageCommand();
 		imageCommand.setDescription(image.getDescription());
 		imageCommand.setFileName(image.getFileName());
-		imageCommand.setGalleryGroup(image.getGalleryGroup());
+		imageCommand.setGalleryGroup(image.getImageGroup().getName());
 		imageCommand.setImageId(image.getId());
 		imageCommand.setThumbImageAsBase64(Base64.getEncoder().encodeToString(image.getThumbImageBinary()));
 		return imageCommand;
 	}
 
 	public byte[] loadImageById(Long imageId) {
-		Image image = fileStorageRepository.findOne(imageId);
+		Image image = imageRepository.findOne(imageId);
 		if (image == null) {
 			return null;
 		}
@@ -56,6 +68,6 @@ public class ImageUploadService {
 	}
 
 	public void deleteImageById(Long imageId) {
-		fileStorageRepository.delete(imageId);		
+		imageRepository.delete(imageId);
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Image;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
 
 public class ImageRepositoryIT extends AbstractIntegrationTest {
 
@@ -20,13 +21,19 @@ public class ImageRepositoryIT extends AbstractIntegrationTest {
 
 	@Autowired
 	private ImageRepository imageRepository;
+	
+	@Autowired
+	private ImageGroupRepository imageGroupRepository;
 
 	@Test
 	public void saveImageInDatabase() throws IOException {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		Image fileStorage = new Image("kitten.jpg", fileAsByteArray, "sampleGallery", fileAsByteArray);
+		ImageGroup imageGroup = new ImageGroup("sampleGallery");
+		imageGroupRepository.save(imageGroup);
+		
+		Image fileStorage = new Image("kitten.jpg", fileAsByteArray, imageGroup, fileAsByteArray);
 		Image saved = imageRepository.save(fileStorage);
 		assertNotNull(saved);
 		assertNotNull(saved.getId());

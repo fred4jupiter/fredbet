@@ -4,7 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -19,36 +21,37 @@ public class Image {
 	@GeneratedValue
 	@Column(name = "IMAGE_ID")
 	private Long id;
-	
+
 	@Column(name = "FILE_NAME")
 	private String fileName;
-	
-	@Column(name = "GALLERY_GROUP")
-	private String galleryGroup;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "IMAGE_GROUP_ID")
+	private ImageGroup imageGroup;
+
 	@Lob
 	@Column(name = "IMAGE_BINARY")
 	private byte[] imageBinary;
-	
+
 	@Lob
 	@Column(name = "THUMB_IMAGE_BINARY")
 	private byte[] thumbImageBinary;
-	
+
 	@Column(name = "DESCRIPTION")
 	private String description;
-	
+
 	@Version
 	@Column(name = "VERSION")
 	private Integer version;
-	
+
 	protected Image() {
 		// for hibernate
 	}
-	
-	public Image(String fileName, byte[] imageBinary,  String galleryGroup, byte[] thumbImageBinary) {
+
+	public Image(String fileName, byte[] imageBinary, ImageGroup imageGroup, byte[] thumbImageBinary) {
 		this.fileName = fileName;
 		this.imageBinary = imageBinary;
-		this.galleryGroup = galleryGroup;
+		this.imageGroup = imageGroup;
 		this.thumbImageBinary = thumbImageBinary;
 	}
 
@@ -68,10 +71,6 @@ public class Image {
 		return version;
 	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
 	public String getFileName() {
 		return fileName;
 	}
@@ -79,22 +78,14 @@ public class Image {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
+
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("id", id);
 		builder.append("fileName", fileName);
-		builder.append("galleryGroup", galleryGroup);
+		builder.append("imageGroup", imageGroup);
 		return builder.toString();
-	}
-
-	public String getGalleryGroup() {
-		return galleryGroup;
-	}
-
-	public void setGalleryGroup(String galleryGroup) {
-		this.galleryGroup = galleryGroup;
 	}
 
 	public byte[] getThumbImageBinary() {
@@ -111,5 +102,13 @@ public class Image {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public ImageGroup getImageGroup() {
+		return imageGroup;
+	}
+
+	public void setImageGroup(ImageGroup imageGroup) {
+		this.imageGroup = imageGroup;
 	}
 }
