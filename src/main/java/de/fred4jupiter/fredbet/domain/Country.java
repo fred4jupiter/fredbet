@@ -22,7 +22,7 @@ public enum Country {
 
 	CROATIA("hr"),
 
-	NORTH_IRLAND("north_irland"),
+	NORTH_IRELAND("north_ireland"),
 
 	AUSTRIA("at"),
 

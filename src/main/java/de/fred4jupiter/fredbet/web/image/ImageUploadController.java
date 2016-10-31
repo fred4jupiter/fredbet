@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,12 +33,12 @@ public class ImageUploadController {
 
 	@Autowired
 	private MessageUtil messageUtil;
-	
+
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
 		return imageUploadService.fetchAllImages();
 	}
-	
+
 	@ModelAttribute("imageUploadCommand")
 	public ImageUploadCommand initImageUploadCommand() {
 		return new ImageUploadCommand();
@@ -49,15 +50,22 @@ public class ImageUploadController {
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ModelAndView importParse(ImageUploadCommand imageUploadCommand, BindingResult result, RedirectAttributes redirect) {
+	public ModelAndView importParse(ImageUploadCommand imageUploadCommand, BindingResult result,
+			RedirectAttributes redirect) {
 		try {
 			MultipartFile myFile = imageUploadCommand.getMyFile();
 			if (myFile == null || myFile.getBytes() == null || myFile.getBytes().length == 0) {
 				messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
-			
-			imageUploadService.saveImageInDatabase(myFile.getOriginalFilename(), myFile.getBytes(), imageUploadCommand.getGalleryGroup(), imageUploadCommand.getDescription());
+
+			if (!myFile.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
+				messageUtil.addErrorMsg(redirect, "image.upload.msg.noJpegImage");
+				return new ModelAndView(REDIRECT_SHOW_PAGE);
+			}
+
+			imageUploadService.saveImageInDatabase(myFile.getOriginalFilename(), myFile.getBytes(),
+					imageUploadCommand.getGalleryGroup(), imageUploadCommand.getDescription());
 			messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
@@ -66,13 +74,13 @@ public class ImageUploadController {
 
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
-	
+
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteImage(@PathVariable("id") Long imageId, RedirectAttributes redirect) {
 		imageUploadService.deleteImageById(imageId);
 
 		messageUtil.addInfoMsg(redirect, "image.gallery.msg.deleted");
-		
+
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
 }

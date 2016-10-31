@@ -64,7 +64,7 @@ public class DataBasePopulator {
 		}
 	}
 
-	private void createRandomMatches() {
+	public void createRandomMatches() {
 		createRandomForGroup(Group.GROUP_A);
 		createRandomForGroup(Group.GROUP_B);
 		createRandomForGroup(Group.GROUP_C);
@@ -206,13 +206,13 @@ public class DataBasePopulator {
 	}
 
 	private void createGroupC() {
-		matchService.save(MatchBuilder.create().withTeams(Country.POLAND, Country.NORTH_IRLAND).withGroup(Group.GROUP_C)
+		matchService.save(MatchBuilder.create().withTeams(Country.POLAND, Country.NORTH_IRELAND).withGroup(Group.GROUP_C)
 				.withStadium("Nizza").withKickOffDate(12, 6, 18).build());
 
 		matchService.save(MatchBuilder.create().withTeams(Country.GERMANY, Country.UKRAINE).withGroup(Group.GROUP_C)
 				.withStadium("Lille").withKickOffDate(12, 6, 21).build());
 
-		matchService.save(MatchBuilder.create().withTeams(Country.UKRAINE, Country.NORTH_IRLAND)
+		matchService.save(MatchBuilder.create().withTeams(Country.UKRAINE, Country.NORTH_IRELAND)
 				.withGroup(Group.GROUP_C).withStadium("Lyon").withKickOffDate(16, 6, 18).build());
 
 		matchService.save(MatchBuilder.create().withTeams(Country.GERMANY, Country.POLAND).withGroup(Group.GROUP_C)
@@ -221,7 +221,7 @@ public class DataBasePopulator {
 		matchService.save(MatchBuilder.create().withTeams(Country.UKRAINE, Country.POLAND).withGroup(Group.GROUP_C)
 				.withStadium("Marseille").withKickOffDate(21, 6, 18).build());
 
-		matchService.save(MatchBuilder.create().withTeams(Country.NORTH_IRLAND, Country.GERMANY)
+		matchService.save(MatchBuilder.create().withTeams(Country.NORTH_IRELAND, Country.GERMANY)
 				.withGroup(Group.GROUP_C).withStadium("Parc de Princes").withKickOffDate(21, 6, 18).build());
 	}
 

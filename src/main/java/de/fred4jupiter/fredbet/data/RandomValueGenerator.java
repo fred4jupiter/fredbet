@@ -14,7 +14,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 @Component
 public class RandomValueGenerator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RandomValueGenerator.class);
+	private static final Logger log = LoggerFactory.getLogger(RandomValueGenerator.class);
 
 	private final List<Country> availableCountries;
 
@@ -35,9 +35,7 @@ public class RandomValueGenerator {
 
 	public Country generateRandomCountry() {
 		Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
-		Country country = availableCountries.get(randomVal);
-		LOG.debug("random country: {}", country);
-		return country;
+		return availableCountries.get(randomVal);
 	}
 
 	public Country getOtherCountryThan(Country alreadyUsedCountry) {
@@ -48,13 +46,16 @@ public class RandomValueGenerator {
 		}
 		throw new IllegalArgumentException("Could not found other country than given one: " + alreadyUsedCountry);
 	}
-	
+
 	public List<Country> generateTeamPair() {
 		Country countryOne = generateRandomCountry();
 		Country countryTwo = generateRandomCountry();
-		if (countryOne.equals(countryTwo)) {
+
+		while (countryOne.equals(countryTwo)) {
 			countryTwo = getOtherCountryThan(countryOne);
 		}
-		return Arrays.asList(countryOne, countryTwo);  
+
+		log.debug("countryOne: {}, countryTwo: {}", countryOne, countryTwo);
+		return Arrays.asList(countryOne, countryTwo);
 	}
 }
