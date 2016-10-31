@@ -14,12 +14,12 @@
 				   		<table class="table table-condensed table-striped">
 				   			<thead>
 					   			<tr>
-					   				<th>ImageId</th>
-					   				<th>Group</th>
-					   				<th>File Name</th>					   				
-					   				<th>Description</th>
-					   				<th>Thumbnail</th>
-					   				<th>Delete image</th>
+					   				<th th:text="#{image.upload.id}"></th>
+					   				<th th:text="#{image.upload.groupName}"></th>
+					   				<th th:text="#{image.upload.fileName}"></th>					   				
+					   				<th th:text="#{image.upload.description}"></th>
+					   				<th th:text="#{image.upload.thumbnail}"></th>
+					   				<th th:text="#{image.upload.deleteImage}"></th>
 					   			</tr>
 				   			</thead>
 				   			<tbody>
@@ -47,21 +47,21 @@
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<form th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form">
 						<div class="form-group">
-							<label>Gallery Group:</label><br/>
+							<label th:text="#{image.upload.groupName}"></label><br/>
 							<select th:field="*{galleryGroup}" class="form-control">
 							  <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
 							</select>
 						</div>
 						<div class="form-group">
-							<label>Gruppe bearbeiten:</label><br/>
+							<label th:text="#{image.upload.editGroup}"></label><br/>
 							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
 						</div>
 						<div class="form-group">
-							<label>Description:</label><br/>
+							<label th:text="#{image.upload.description}"></label><br/>
 							<input type="text" th:field="*{description}" class="form-control" />
 						</div>
 						<div class="form-group">
-							<label>Datei:</label><br/>
+							<label th:text="#{image.upload.fileName}"></label><br/>
 					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
 						</div>
 						<div class="form-group">

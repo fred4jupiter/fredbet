@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 	<head>
-		<title th:text="#{image.upload.title}"></title>
+		<title th:text="#{image.group.title}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -14,9 +14,9 @@
 				   		<table class="table table-condensed table-striped">
 				   			<thead>
 					   			<tr>
-					   				<th>Image Group Id</th>
-					   				<th>Name</th>
-					   				<th>Delete group</th>
+					   				<th th:text="#{image.group.id}"></th>
+					   				<th th:text="#{image.group.name}"></th>
+					   				<th th:text="#{image.group.button.delete}"></th>
 					   			</tr>
 				   			</thead>
 				   			<tbody>
@@ -36,7 +36,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<form th:action="@{/imagegroup/add}" th:object="${imageGroupCommand}" method="post" role="form">
-						<label>Gallery Group Name:</label><br/>
+						<label th:text="#{image.group.name}"></label><br/>
 						<input type="text" th:field="*{name}" class="form-control" />
 					    <br/>
 				        <input type="submit" class="btn btn-primary" th:value="#{button.save}" />
