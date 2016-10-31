@@ -39,7 +39,7 @@ public class ImageResizingServiceIT {
 		assertTrue(outputFile.exists());
 		
 		BufferedImage bufferedImage = ImageIO.read(outputFile);
-		assertEquals(40, bufferedImage.getWidth());
+		assertEquals(75, bufferedImage.getWidth());
 	}
 	
 	@Test
