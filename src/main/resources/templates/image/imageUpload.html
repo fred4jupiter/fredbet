@@ -24,16 +24,16 @@
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageCommand : ${availableImages}">
-					   				<td th:text="${imageCommand.imageId}"></td>
-					   				<td th:text="${imageCommand.galleryGroup}"></td>
-					   				<td th:text="${imageCommand.fileName}"></td>
-					   				<td th:text="${imageCommand.description}"></td>
-					   				<td>
+					   				<td th:text="${imageCommand.imageId}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.fileName}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.description}" class="vert-align"></td>
+					   				<td class="vert-align">
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
 					   						<img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/>
 					   					</a>
 					   				</td>
-					   				<td>
+					   				<td class="vert-align">
 					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageId}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
 					   				</td>
 					   			</tr>

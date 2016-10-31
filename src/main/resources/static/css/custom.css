@@ -191,6 +191,10 @@ button.vote {
 	display: inline;
 }
 
+.table tbody>tr>td.vert-align {
+	vertical-align: middle;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {

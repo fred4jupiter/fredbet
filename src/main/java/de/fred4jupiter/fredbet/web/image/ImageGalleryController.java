@@ -15,12 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.service.ImageUploadService;
+import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
 @RequestMapping("/gallery")
@@ -29,17 +31,26 @@ public class ImageGalleryController {
 	private static final Logger log = LoggerFactory.getLogger(ImageGalleryController.class);
 
 	@Autowired
+	private MessageUtil messageUtil;
+
+	@Autowired
 	private ImageUploadService imageUploadService;
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
-	public ModelAndView showGallery() {
+	public ModelAndView showGallery(ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView("image/gallery");
+
 		List<ImageCommand> images = imageUploadService.fetchAllImages();
 
 		Map<String, List<ImageCommand>> grouped = images.stream()
 				.collect(Collectors.groupingBy(ImageCommand::getGalleryGroup));
 
 		modelAndView.addObject("groupedImageCommands", grouped);
+
+		if (grouped.isEmpty()) {
+			messageUtil.addInfoMsg(modelMap, "image.gallery.msg.noImages");
+		}
+
 		return modelAndView;
 	}
 
