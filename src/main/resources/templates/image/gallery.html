@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 	<head>
-		<title>Gallery</title>
+		<title th:text="#{image.gallery.title}"></title>
 		<link rel="stylesheet" th:href="@{/blueimpgallery/css/blueimp-gallery.min.css}" />
 	</head>
 	<body>
