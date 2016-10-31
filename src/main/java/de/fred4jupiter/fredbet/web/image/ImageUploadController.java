@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.image;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.service.ImageUploadService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -29,6 +31,9 @@ public class ImageUploadController {
 	private static final Logger log = LoggerFactory.getLogger(ImageUploadController.class);
 
 	@Autowired
+	private ImageGroupRepository imageGroupRepository;
+
+	@Autowired
 	private ImageUploadService imageUploadService;
 
 	@Autowired
@@ -37,6 +42,12 @@ public class ImageUploadController {
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
 		return imageUploadService.fetchAllImages();
+	}
+
+	@ModelAttribute("availableImageGroups")
+	public List<String> availableImageGroups() {
+		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName())
+				.collect(Collectors.toList());
 	}
 
 	@ModelAttribute("imageUploadCommand")

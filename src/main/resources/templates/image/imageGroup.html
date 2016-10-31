@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+	<head>
+		<title th:text="#{image.upload.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content" class="container">
+			<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+			
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<div class="table-responsive">
+				   		<table class="table table-condensed table-striped">
+				   			<thead>
+					   			<tr>
+					   				<th>Image Group Id</th>
+					   				<th>Name</th>
+					   				<th>Delete group</th>
+					   			</tr>
+				   			</thead>
+				   			<tbody>
+					   			<tr th:each="imageGroupCommand : ${availableImageGroups}">
+					   				<td th:text="${imageGroupCommand.id}" class="vert-align"></td>
+					   				<td th:text="${imageGroupCommand.name}" class="vert-align"></td>
+					   				<td class="vert-align">
+					   					<a href="#" th:href="@{'/imagegroup/delete/' + ${imageGroupCommand.id}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
+					   				</td>
+					   			</tr>
+				   			</tbody>
+				   		</table>
+			   	   </div>
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<form th:action="@{/imagegroup/add}" th:object="${imageGroupCommand}" method="post" role="form">
+						<label>Gallery Group Name:</label><br/>
+						<input type="text" th:field="*{name}" class="form-control" />
+					    <br/>
+				        <input type="submit" class="btn btn-primary" th:value="#{button.save}" />
+				        <a href="#" th:href="@{/image/show/}" class="btn btn-info" role="button" th:text="#{button.backToImageUpload}"></a>
+				    </form>
+			    </div>
+			</div>
+		</div>
+	</body>
+</html>
