@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.Thumbnails.Builder;
+import net.coobird.thumbnailator.geometry.Positions;
 
 @Service
 public class ImageResizingService {
@@ -23,7 +25,7 @@ public class ImageResizingService {
 	private static final Logger log = LoggerFactory.getLogger(ImageResizingService.class);
 
 	public byte[] createThumbnail(byte[] imageBinary) {
-		return minimizeToSize(imageBinary, THUMBNAIL_SIZE);
+		return minimizeToSize(imageBinary, THUMBNAIL_SIZE, builder -> builder.crop(Positions.CENTER).size(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
 	}
 
 	public byte[] minimizeToDefaultSize(byte[] imageBinary) {
@@ -31,6 +33,10 @@ public class ImageResizingService {
 	}
 
 	public byte[] minimizeToSize(byte[] imageBinary, int size) {
+		return minimizeToSize(imageBinary, size, builder -> builder.size(size, size));
+	}
+	
+	public byte[] minimizeToSize(byte[] imageBinary, int size, ThumbnailsBuilderCallback byteArrayConverter) {
 		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(imageBinary);
 				ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
 
@@ -42,11 +48,19 @@ public class ImageResizingService {
 				return imageBinary;
 			}
 
-			Thumbnails.of(bufferedImage).size(size, size).outputFormat("JPEG").toOutputStream(byteOut);
+			Builder<BufferedImage> builder = Thumbnails.of(bufferedImage);
+			byteArrayConverter.doWithBuilder(builder);
+			builder.outputFormat("JPEG").toOutputStream(byteOut);
 			return byteOut.toByteArray();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return null;
 		}
+	}
+	
+	@FunctionalInterface
+	private static interface ThumbnailsBuilderCallback {
+		
+		void doWithBuilder(Builder<BufferedImage> builder);
 	}
 }
