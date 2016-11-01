@@ -3,6 +3,7 @@
 .classpath
 .project
 .springBeans
+.factorypath
 target/
 
 # IntelliJ IDEA
