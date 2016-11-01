@@ -29,4 +29,7 @@ public interface FredBetPermission {
 	String PERM_EDIT_INFOS = "PERM_EDIT_INFOS";
 	
 	String PERM_SHOW_ACTIVE_USERS = "PERM_SHOW_ACTIVE_USERS";
+	
+	// image group
+	String PERM_EDIT_IMAGE_GROUP = "PERM_EDIT_IMAGE_GROUP";
 }

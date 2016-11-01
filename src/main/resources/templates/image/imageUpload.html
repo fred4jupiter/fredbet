@@ -11,12 +11,12 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="table-responsive">
-				   		<table class="table table-condensed table-striped">
+				   		<table class="table table-condensed table-striped table-responsive">
 				   			<thead>
 					   			<tr>
-					   				<th th:text="#{image.upload.id}"></th>
+					   				<th th:text="#{image.upload.id}" class="hidden-xs"></th>
 					   				<th th:text="#{image.upload.groupName}"></th>
-					   				<th th:text="#{image.upload.fileName}"></th>					   				
+					   				<th th:text="#{image.upload.fileName}" class="hidden-xs"></th>					   				
 					   				<th th:text="#{image.upload.description}"></th>
 					   				<th th:text="#{image.upload.thumbnail}"></th>
 					   				<th th:text="#{image.upload.deleteImage}"></th>
@@ -24,9 +24,9 @@
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageCommand : ${availableImages}">
-					   				<td th:text="${imageCommand.imageId}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.imageId}" class="vert-align hidden-xs"></td>
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
-					   				<td th:text="${imageCommand.fileName}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.fileName}" class="vert-align hidden-xs"></td>
 					   				<td th:text="${imageCommand.description}" class="vert-align"></td>
 					   				<td class="vert-align">
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
@@ -52,7 +52,7 @@
 							  <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
 							</select>
 						</div>
-						<div class="form-group">
+						<div class="form-group" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
 							<label th:text="#{image.upload.editGroup}"></label><br/>
 							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
 						</div>
