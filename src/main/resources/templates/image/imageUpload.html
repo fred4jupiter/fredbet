@@ -21,12 +21,29 @@
 							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
 						</div>
 						<div class="form-group">
+							<label th:text="#{image.upload.fileName}"></label><br/>
+					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
+						</div>
+						<div class="form-group">
 							<label th:text="#{image.upload.description}"></label><br/>
 							<input type="text" th:field="*{description}" class="form-control" />
 						</div>
 						<div class="form-group">
-							<label th:text="#{image.upload.fileName}"></label><br/>
-					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
+							<label th:text="#{image.upload.rotate}"></label><br/>
+							<div class="row center">
+								<div class="col-xs-4">
+									<i class="fa fa-user" aria-hidden="true"></i>
+									<input type="radio" th:field="*{rotation}" value="NONE"/>
+								</div>
+								<div class="col-xs-4">
+									<i class="fa fa-undo" aria-hidden="true"></i>
+									<input type="radio" th:field="*{rotation}" value="LEFT"/>
+								</div>
+								<div class="col-xs-4">
+									<i class="fa fa-repeat" aria-hidden="true"></i>
+									<input type="radio" th:field="*{rotation}" value="RIGHT"/>
+								</div>								
+							</div>		
 						</div>
 						<div class="form-group">
 							<input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />

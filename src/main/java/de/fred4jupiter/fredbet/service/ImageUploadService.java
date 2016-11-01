@@ -13,6 +13,7 @@ import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageRepository;
 import de.fred4jupiter.fredbet.web.image.ImageCommand;
+import de.fred4jupiter.fredbet.web.image.Rotation;
 
 @Service
 @Transactional
@@ -27,7 +28,8 @@ public class ImageUploadService {
 	@Autowired
 	private ImageResizingService imageResizingService;
 
-	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description) {
+	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description,
+			Rotation rotation) {
 		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroup);
 
 		if (imageGroup == null) {
@@ -35,8 +37,8 @@ public class ImageUploadService {
 			imageGroupRepository.save(imageGroup);
 		}
 
-		byte[] thumbnail = imageResizingService.createThumbnail(binary);
-		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary);
+		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
+		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
 
 		Image image = new Image(fileName, imageByte, imageGroup, thumbnail);
 		image.setDescription(description);

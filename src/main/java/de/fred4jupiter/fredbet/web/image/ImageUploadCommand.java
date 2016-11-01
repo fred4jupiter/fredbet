@@ -10,6 +10,8 @@ public class ImageUploadCommand {
 
 	private MultipartFile myFile;
 
+	private Rotation rotation = Rotation.NONE;
+
 	public MultipartFile getMyFile() {
 		return myFile;
 	}
@@ -33,4 +35,13 @@ public class ImageUploadCommand {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Rotation getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(Rotation rotation) {
+		this.rotation = rotation;
+	}
+
 }

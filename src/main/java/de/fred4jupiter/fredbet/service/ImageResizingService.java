@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.FredbetProperties;
+import de.fred4jupiter.fredbet.web.image.Rotation;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
@@ -30,20 +31,30 @@ public class ImageResizingService {
 		this.thumbnailSize = fredbetProperties.getThumbnailSize();
 		this.imageSize = fredbetProperties.getImageSize();
 	}
-	
+
 	public byte[] createThumbnail(byte[] imageBinary) {
-		return minimizeToSize(imageBinary, thumbnailSize, builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
+		return createThumbnail(imageBinary, Rotation.NONE);
+	}
+
+	public byte[] createThumbnail(byte[] imageBinary, Rotation rotation) {
+		return minimizeToSize(imageBinary, thumbnailSize, rotation,
+				builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
 	}
 
 	public byte[] minimizeToDefaultSize(byte[] imageBinary) {
-		return minimizeToSize(imageBinary, imageSize);
+		return minimizeToDefaultSize(imageBinary, Rotation.NONE);
 	}
 
-	public byte[] minimizeToSize(byte[] imageBinary, int size) {
-		return minimizeToSize(imageBinary, size, builder -> builder.size(size, size));
+	public byte[] minimizeToDefaultSize(byte[] imageBinary, Rotation rotation) {
+		return minimizeToSize(imageBinary, imageSize, rotation);
 	}
-	
-	public byte[] minimizeToSize(byte[] imageBinary, int size, ThumbnailsBuilderCallback byteArrayConverter) {
+
+	public byte[] minimizeToSize(byte[] imageBinary, int size, Rotation rotation) {
+		return minimizeToSize(imageBinary, size, rotation, builder -> builder.size(size, size));
+	}
+
+	public byte[] minimizeToSize(byte[] imageBinary, int size, Rotation rotation,
+			ThumbnailsBuilderCallback byteArrayConverter) {
 		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(imageBinary);
 				ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
 
@@ -57,6 +68,13 @@ public class ImageResizingService {
 
 			Builder<BufferedImage> builder = Thumbnails.of(bufferedImage);
 			byteArrayConverter.doWithBuilder(builder);
+
+			if (Rotation.LEFT.equals(rotation)) {
+				builder.rotate(-90);
+			} else if (Rotation.RIGHT.equals(rotation)) {
+				builder.rotate(90);
+			}
+
 			builder.outputFormat("JPEG").toOutputStream(byteOut);
 			return byteOut.toByteArray();
 		} catch (Exception e) {
@@ -64,10 +82,10 @@ public class ImageResizingService {
 			return null;
 		}
 	}
-	
+
 	@FunctionalInterface
 	private static interface ThumbnailsBuilderCallback {
-		
+
 		void doWithBuilder(Builder<BufferedImage> builder);
 	}
 }
