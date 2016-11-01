@@ -33,9 +33,20 @@ public class FredbetProperties {
 	public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
 	/**
-	 * Sum points per user for selected country that will be shown in points statistics.
+	 * Sum points per user for selected country that will be shown in points
+	 * statistics.
 	 */
 	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
+
+	/**
+	 * Image size of the generated thumbnails.
+	 */
+	private int thumbnailSize;
+
+	/**
+	 * Image size for the uploaded images.
+	 */
+	private int imageSize;
 
 	public String getDatabaseUrl() {
 		return databaseUrl;
@@ -83,6 +94,22 @@ public class FredbetProperties {
 
 	public void setFavouriteCountry(Country favouriteCountry) {
 		this.favouriteCountry = favouriteCountry;
+	}
+
+	public int getThumbnailSize() {
+		return thumbnailSize;
+	}
+
+	public void setThumbnailSize(int thumbnailSize) {
+		this.thumbnailSize = thumbnailSize;
+	}
+
+	public int getImageSize() {
+		return imageSize;
+	}
+
+	public void setImageSize(int imageSize) {
+		this.imageSize = imageSize;
 	}
 
 }

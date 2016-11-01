@@ -8,8 +8,10 @@ import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.fred4jupiter.fredbet.FredbetProperties;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
@@ -17,19 +19,24 @@ import net.coobird.thumbnailator.geometry.Positions;
 @Service
 public class ImageResizingService {
 
-	// TODO: make configurable
-	private static final int THUMBNAIL_SIZE = 75;
+	private final int thumbnailSize;
 
-	private static final int DEFAULT_MAX_SIZE = 1920;
+	private final int imageSize;
 
 	private static final Logger log = LoggerFactory.getLogger(ImageResizingService.class);
 
+	@Autowired
+	public ImageResizingService(FredbetProperties fredbetProperties) {
+		this.thumbnailSize = fredbetProperties.getThumbnailSize();
+		this.imageSize = fredbetProperties.getImageSize();
+	}
+	
 	public byte[] createThumbnail(byte[] imageBinary) {
-		return minimizeToSize(imageBinary, THUMBNAIL_SIZE, builder -> builder.crop(Positions.CENTER).size(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
+		return minimizeToSize(imageBinary, thumbnailSize, builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
 	}
 
 	public byte[] minimizeToDefaultSize(byte[] imageBinary) {
-		return minimizeToSize(imageBinary, DEFAULT_MAX_SIZE);
+		return minimizeToSize(imageBinary, imageSize);
 	}
 
 	public byte[] minimizeToSize(byte[] imageBinary, int size) {
