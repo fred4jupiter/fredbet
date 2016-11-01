@@ -7,7 +7,34 @@
 	<body>
 		<div layout:fragment="content" class="container">
 			<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
-			
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<form th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form">
+						<div class="form-group">
+							<label th:text="#{image.upload.groupName}"></label><br/>
+							<select th:field="*{galleryGroup}" class="form-control">
+							  <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
+							</select>
+						</div>
+						<div class="form-group" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
+							<label th:text="#{image.upload.editGroup}"></label><br/>
+							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
+						</div>
+						<div class="form-group">
+							<label th:text="#{image.upload.description}"></label><br/>
+							<input type="text" th:field="*{description}" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label th:text="#{image.upload.fileName}"></label><br/>
+					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
+						</div>
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
+						</div>				        
+				    </form>
+			    </div>
+			</div>
+			<br/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="table-responsive">
@@ -41,34 +68,6 @@
 				   		</table>
 			   	   </div>
 				</div>
-			</div>
-			<br/>
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<form th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form">
-						<div class="form-group">
-							<label th:text="#{image.upload.groupName}"></label><br/>
-							<select th:field="*{galleryGroup}" class="form-control">
-							  <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
-							</select>
-						</div>
-						<div class="form-group" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
-							<label th:hidden="#{image.upload.editGroup}"></label><br/>
-							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
-						</div>
-						<div class="form-group">
-							<label th:text="#{image.upload.description}"></label><br/>
-							<input type="text" th:field="*{description}" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label th:text="#{image.upload.fileName}"></label><br/>
-					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
-						</div>
-						<div class="form-group">
-							<input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
-						</div>				        
-				    </form>
-			    </div>
 			</div>
 		</div>
 	</body>
