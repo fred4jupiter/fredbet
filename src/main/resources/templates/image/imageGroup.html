@@ -14,14 +14,14 @@
 				   		<table class="table table-condensed table-striped">
 				   			<thead>
 					   			<tr>
-					   				<th th:text="#{image.group.id}"></th>
+					   				<th th:text="#{image.group.id}" class="hidden-xs"></th>
 					   				<th th:text="#{image.group.name}"></th>
 					   				<th th:text="#{image.group.button.delete}"></th>
 					   			</tr>
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageGroupCommand : ${availableImageGroups}">
-					   				<td th:text="${imageGroupCommand.id}" class="vert-align"></td>
+					   				<td th:text="${imageGroupCommand.id}" class="vert-align hidden-xs"></td>
 					   				<td th:text="${imageGroupCommand.name}" class="vert-align"></td>
 					   				<td class="vert-align">
 					   					<a href="#" th:href="@{'/imagegroup/delete/' + ${imageGroupCommand.id}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	

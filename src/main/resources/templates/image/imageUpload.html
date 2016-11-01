@@ -17,7 +17,7 @@
 					   				<th th:text="#{image.upload.id}" class="hidden-xs"></th>
 					   				<th th:text="#{image.upload.groupName}"></th>
 					   				<th th:text="#{image.upload.fileName}" class="hidden-xs"></th>					   				
-					   				<th th:text="#{image.upload.description}"></th>
+					   				<th th:text="#{image.upload.description}" class="hidden-xs"></th>
 					   				<th th:text="#{image.upload.thumbnail}"></th>
 					   				<th th:text="#{image.upload.deleteImage}"></th>
 					   			</tr>
@@ -27,7 +27,7 @@
 					   				<td th:text="${imageCommand.imageId}" class="vert-align hidden-xs"></td>
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
 					   				<td th:text="${imageCommand.fileName}" class="vert-align hidden-xs"></td>
-					   				<td th:text="${imageCommand.description}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
 					   				<td class="vert-align">
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
 					   						<img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/>
@@ -53,7 +53,7 @@
 							</select>
 						</div>
 						<div class="form-group" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
-							<label th:text="#{image.upload.editGroup}"></label><br/>
+							<label th:hidden="#{image.upload.editGroup}"></label><br/>
 							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
 						</div>
 						<div class="form-group">
