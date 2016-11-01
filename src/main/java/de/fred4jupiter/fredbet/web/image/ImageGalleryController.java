@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.image;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +46,7 @@ public class ImageGalleryController {
 		Map<String, List<ImageCommand>> grouped = images.stream()
 				.collect(Collectors.groupingBy(ImageCommand::getGalleryGroup));
 
-		modelAndView.addObject("groupedImageCommands", grouped);
+		modelAndView.addObject("groupedImageCommands", new TreeMap<String, List<ImageCommand>>(grouped));
 
 		if (grouped.isEmpty()) {
 			messageUtil.addInfoMsg(modelMap, "image.gallery.msg.noImages");
