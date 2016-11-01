@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,21 +12,38 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fred4jupiter.fredbet.FredbetProperties;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ImageResizingServiceIT {
 
+	private static final int IMAGE_SIZE = 1920;
+
+	private static final int THUMB_SIZE = 75;
+
 	private static final Logger log = LoggerFactory.getLogger(ImageResizingServiceIT.class);
 
-	@InjectMocks
 	private ImageResizingService imageResizingService;
+	
+	@Mock
+	private FredbetProperties fredbetProperties;
 
+	@Before
+	public void setUp() {
+		when(fredbetProperties.getThumbnailSize()).thenReturn(THUMB_SIZE);
+		when(fredbetProperties.getImageSize()).thenReturn(IMAGE_SIZE);
+		
+		this.imageResizingService = new ImageResizingService(fredbetProperties);
+	}
+	
 	@Test
 	public void createThumbnail() throws IOException {
 		File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");
@@ -31,7 +51,8 @@ public class ImageResizingServiceIT {
 		assertTrue(file.exists());
 
 		byte[] thumbByteArray = imageResizingService.createThumbnail(FileUtils.readFileToByteArray(file));
-
+		assertNotNull(thumbByteArray);
+		
 		File outputFile = createOutputFile(file);
 
 		FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
@@ -39,7 +60,7 @@ public class ImageResizingServiceIT {
 		assertTrue(outputFile.exists());
 		
 		BufferedImage bufferedImage = ImageIO.read(outputFile);
-		assertEquals(75, bufferedImage.getWidth());
+		assertEquals(THUMB_SIZE, bufferedImage.getWidth());
 	}
 	
 	@Test
@@ -49,7 +70,8 @@ public class ImageResizingServiceIT {
 		assertTrue(file.exists());
 
 		byte[] thumbByteArray = imageResizingService.minimizeToDefaultSize(FileUtils.readFileToByteArray(file));
-
+		assertNotNull(thumbByteArray);
+		
 		File outputFile = createOutputFile(file);
 
 		FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
@@ -67,15 +89,17 @@ public class ImageResizingServiceIT {
 		assertTrue(file.exists());
 
 		byte[] thumbByteArray = imageResizingService.minimizeToDefaultSize(FileUtils.readFileToByteArray(file));
-
+		assertNotNull(thumbByteArray);
+		
 		File outputFile = createOutputFile(file);
+		assertNotNull(outputFile);
 
 		FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
 		log.debug("written file to: {}", outputFile);
 		assertTrue(outputFile.exists());
 		
 		BufferedImage bufferedImage = ImageIO.read(outputFile);
-		assertEquals(1920, bufferedImage.getWidth());
+		assertEquals(IMAGE_SIZE, bufferedImage.getWidth());
 	}
 
 	private File createOutputFile(File file) {

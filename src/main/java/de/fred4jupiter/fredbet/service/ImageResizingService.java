@@ -55,6 +55,9 @@ public class ImageResizingService {
 
 	public byte[] minimizeToSize(byte[] imageBinary, int size, Rotation rotation,
 			ThumbnailsBuilderCallback byteArrayConverter) {
+		if (size == 0) {
+			throw new IllegalArgumentException("Given size must be greather than 0!");
+		}
 		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(imageBinary);
 				ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
 
