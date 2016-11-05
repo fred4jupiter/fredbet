@@ -1,14 +1,18 @@
 package de.fred4jupiter.fredbet.data;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +23,11 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.Info;
+import de.fred4jupiter.fredbet.domain.InfoPK;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.repository.InfoRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
@@ -51,16 +58,36 @@ public class DataBasePopulator {
 
 	@Autowired
 	private FredbetProperties fredbetProperties;
+	
+	@Autowired
+	private InfoRepository infoRepository;
 
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
 		if (!environment.acceptsProfiles(FredBetProfile.INTEGRATION_TEST)) {
 			createDefaultUsers();
+			addRulesIfEmpty();
 		}
 
 		if (fredbetProperties.isCreateDemoData()) {
 			createAdditionalUsers();
 			createRandomMatches();
+		}
+	}
+
+	private void addRulesIfEmpty() {
+		ClassPathResource classPathResource = new ClassPathResource("content/rules_de.txt");
+		try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
+			IOUtils.copyLarge(classPathResource.getInputStream(), byteOut);
+			String rulesInGerman = byteOut.toString("UTF-8");
+			
+			InfoPK infoPK = new InfoPK(FredbetConstants.INFO_CONTEXT_RULES, "de");
+			if (infoRepository.findOne(infoPK) == null) {
+				Info info = new Info(infoPK,rulesInGerman);
+				infoRepository.save(info);
+			}
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
 		}
 	}
 

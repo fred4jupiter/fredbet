@@ -9,4 +9,10 @@ public interface FredbetConstants {
 	 * function has been applied.
 	 */
 	String DEFAULT_PASSWORD_ON_RESET = "em2016";
+
+	String INFO_CONTEXT_RULES = "rules";
+
+	String INFO_CONTEXT_PRICES = "prices";
+
+	String INFO_CONTEXT_MISC = "misc";
 }

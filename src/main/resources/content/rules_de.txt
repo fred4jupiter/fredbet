@@ -1,0 +1,63 @@
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-md-12">
+<h2>Wer kann teilnehmen?</h2>
+
+<p>Dies ist kein &ouml;ffentliches Tippspiel mit kommerziellen Absichten. Teilnehmen k&ouml;nnen nur Freunde und Bekannte.</p>
+
+<h2>Wie hoch ist der Einsatz und was kann ich gewinnen?</h2>
+
+<p>Der Einsatz betr&auml;gt 3 &euro; pro Mitspieler. Dieser Einsatz geht in den Jackpot und wird unter den 5 bestplatzierten Tippern aufgeteilt. Au&szlig;erdem gibt es noch Sachpreise zu gewinnen.</p>
+
+<h2>Wie gebe ich meinen Tipp ab?</h2>
+
+<p>Abgeben k&ouml;nnt ihr die Tipps dank der Arbeit von Michael St&auml;hler &uuml;ber <a href="http://www.fredbet.de">www.fredbet.de</a></p>
+
+<h2>Bis wann kann ich tippen?</h2>
+
+<p>Ihr k&ouml;nnt den Spieltipp bis unmittelbar vor Beginn einer Partie abgeben. Genauso gut ist es aber m&ouml;glich, alle Gruppenspiele schon im Vorfeld zu tippen. Der Bonustipp f&uuml;r den Europa- und Vizeeuropameister ist in jedem Fall bis zu Beginn des Er&ouml;ffnungsspiels abzugeben.</p>
+
+<h2>Wann werden die Tipps ver&ouml;ffentlicht?</h2>
+
+<p>Die Tipps sind ab Spielbeginn f&uuml;r alle sichtbar.</p>
+
+<h2>Wo ist die sch&ouml;ne Quatschecke hin?</h2>
+
+<p>Es gibt nun eine Whattsapp Gruppe, in der wir uns unterhalten k&ouml;nnen. Falls ihr noch nicht Mitglied der Gruppe seid, bitte bei mir J&ouml;rn Fick 01520 1626209 melden.</p>
+
+<h2>Wie werden die Tipps gewertet?</h2>
+
+<ul>
+	<li>F&uuml;r einen korrekten Tipp werden 3 Punkte gutgeschrieben.</li>
+	<li>Wenn das Ergebnis nicht korrekt, aber die Tendenz richtig getippt wurde (z. B. man tippt 3:1, das Spiel geht aber 1:0 aus) wird 1 Punkt gutgeschrieben.</li>
+	<li>Wenn zus&auml;tzlich zur richtigen Tendenz, auch die richtige Tordifferenz getippt wurde, gibt es 2 Punkte. Diese Regelung gilt auch bei Unentschieden. Beispiele: Tipp 3:1 und Ergebnis 2:0 =&gt; 2 Punkte. Tipp 1:1 und Ergebnis 2:2 =&gt; 2 Punkte</li>
+	<li>Wird in der K. O. Runde der korrekte Sieger des Elfmeterschie&szlig;ens vorhergesagt, erh&auml;lt man einen Extrapunkt.</li>
+	<li>Es gibt keine Negativpunkte f&uuml;r falsch getippte Spiele oder nicht abgegebene Tipps.</li>
+</ul>
+
+<p>F&uuml;r die Bonustipps gilt folgendes:</p>
+
+<ul>
+	<li>F&uuml;r den vor Beginn der EM richtig vorhergesagten Europameister werden 10 Extrapunkte gutgeschrieben.</li>
+	<li>F&uuml;r den vor Beginn der EM richtig vorhergesagten Vizeeuropameister werden 5 Extrapunkte gutgeschrieben.</li>
+</ul>
+
+<h2>Wie laufen die Tipps in der K-O Runde?</h2>
+
+<p>Auch in der K. O. Runde (also ab dem Achtelfinale) gelten die &uuml;blichen Regeln zur Punktevergabe. Es ist dabei unerheblich, ob ein Spiel nach 90 oder nach 120 Minuten endet. Der Tipp eines Unentschiedens ist somit m&ouml;glich. Bei einem Tipp auf Unentschieden, ist zus&auml;tzlich ein Tipp &uuml;ber den Sieger des Elfmeterschie&szlig;ens abzugeben. Da ein konkretes Ergebnis im Elfmeterschie&szlig;en schwer vorherzusagen ist, bezieht sich der Elfmetertipp ausschlie&szlig;lich auf den Gewinner. Ist der Gewinner richtig vorhergesagt, wird ein Extrapunkt gutgeschrieben. Der Tipp sieht also z. B. so aus:</p>
+
+<p>Deutschland-Italien 1:1 / Sieger im 11m Schie&szlig;en Deutschland</p>
+
+<h2>Wer gewinnt?</h2>
+
+<p>Der Tipper mit der h&ouml;chsten Anzahl an Punkten nach der EM.</p>
+
+<h2>Und was geschieht bei Punktgleichheit?</h2>
+
+<ol>
+	<li>Haben 2 oder mehr Spieler die gleiche Gesamtpunktzahl, entscheidet die h&ouml;here Anzahl an korrekt abgegebenen Einzeltipps.</li>
+	<li>Ist dann immer noch keine Entscheidung zu treffen, wird die kleinere Gesamtabweichung berechnet. Dies geschieht folgenderma&szlig;en: F&uuml;r jedes Spiel wird errechnet um wieviel Tore der Tipp vom tats&auml;chlichen Ergebnis abweicht. (z. B. wenn der Tipp 3:1 lautet und das Spiel 0:0 ausgeht, ist die Abweichung 3+1=4). Diese Abweichung wird dann f&uuml;r alle Spiele aufsummiert. Derjenige mit der geringsten Abweichung gewinnt den Vergleich.</li>
+</ol>
+
+<p>Sollten noch Fragen offen sein, bitte einfach in die WhatsApp Gruppe schreiben.</p>
+</div>
+</div>

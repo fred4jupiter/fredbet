@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.Info;
 import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -26,11 +27,7 @@ public class InfoController {
 
 	private static final String PAGE_EDIT_INFO = "info/edit_info";
 
-	private static final String INFO_CONTEXT_RULES = "rules";
-
-	private static final String INFO_CONTEXT_PRICES = "prices";
-
-	private static final String INFO_CONTEXT_MISC = "misc";
+	
 
 	@Autowired
 	private MessageUtil messageUtil;
@@ -44,9 +41,9 @@ public class InfoController {
 	@RequestMapping("/rules")
 	public ModelAndView showRules() {
 		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(INFO_CONTEXT_RULES, locale);
+		Info info = infoService.findBy(FredbetConstants.INFO_CONTEXT_RULES, locale);
 		if (info == null) {
-			info = infoService.saveInfoContent(INFO_CONTEXT_RULES, "", locale);
+			info = infoService.saveInfoContent(FredbetConstants.INFO_CONTEXT_RULES, "", locale);
 		}
 
 		ModelAndView modelAndView = new ModelAndView("info/rules");
@@ -57,9 +54,9 @@ public class InfoController {
 	@RequestMapping("/prices")
 	public ModelAndView showPrices() {
 		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(INFO_CONTEXT_PRICES, locale);
+		Info info = infoService.findBy(FredbetConstants.INFO_CONTEXT_PRICES, locale);
 		if (info == null) {
-			info = infoService.saveInfoContent(INFO_CONTEXT_PRICES, "", locale);
+			info = infoService.saveInfoContent(FredbetConstants.INFO_CONTEXT_PRICES, "", locale);
 		}
 
 		ModelAndView modelAndView = new ModelAndView("info/prices");
@@ -70,9 +67,9 @@ public class InfoController {
 	@RequestMapping("/misc")
 	public ModelAndView showMiscellaneous() {
 		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(INFO_CONTEXT_MISC, locale);
+		Info info = infoService.findBy(FredbetConstants.INFO_CONTEXT_MISC, locale);
 		if (info == null) {
-			info = infoService.saveInfoContent(INFO_CONTEXT_MISC, "", locale);
+			info = infoService.saveInfoContent(FredbetConstants.INFO_CONTEXT_MISC, "", locale);
 		}
 
 		ModelAndView modelAndView = new ModelAndView("info/misc");
