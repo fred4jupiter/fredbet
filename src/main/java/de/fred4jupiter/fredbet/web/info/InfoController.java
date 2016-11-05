@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.domain.Info;
 import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -25,9 +24,9 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/info")
 public class InfoController {
 
-	private static final String PAGE_EDIT_INFO = "info/edit_info";
+	private static final String TEXT_CONTENT = "textContent";
 
-	
+	private static final String PAGE_EDIT_INFO = "info/edit_info";
 
 	@Autowired
 	private MessageUtil messageUtil;
@@ -40,40 +39,34 @@ public class InfoController {
 
 	@RequestMapping("/rules")
 	public ModelAndView showRules() {
-		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(FredbetConstants.INFO_CONTEXT_RULES, locale);
-		if (info == null) {
-			info = infoService.saveInfoContent(FredbetConstants.INFO_CONTEXT_RULES, "", locale);
-		}
+		final String content = loadContentFor(InfoType.RULES);
 
 		ModelAndView modelAndView = new ModelAndView("info/rules");
-		modelAndView.addObject("textContent", info.getContent());
+		modelAndView.addObject(TEXT_CONTENT, content);
 		return modelAndView;
+	}
+
+	private String loadContentFor(InfoType infoType) {
+		Locale locale = LocaleContextHolder.getLocale();
+		Info info = infoService.findBy(infoType, locale);
+		return info.getContent();
 	}
 
 	@RequestMapping("/prices")
 	public ModelAndView showPrices() {
-		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(FredbetConstants.INFO_CONTEXT_PRICES, locale);
-		if (info == null) {
-			info = infoService.saveInfoContent(FredbetConstants.INFO_CONTEXT_PRICES, "", locale);
-		}
+		final String content = loadContentFor(InfoType.PRICES);
 
 		ModelAndView modelAndView = new ModelAndView("info/prices");
-		modelAndView.addObject("textContent", info.getContent());
+		modelAndView.addObject(TEXT_CONTENT, content);
 		return modelAndView;
 	}
 
 	@RequestMapping("/misc")
 	public ModelAndView showMiscellaneous() {
-		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(FredbetConstants.INFO_CONTEXT_MISC, locale);
-		if (info == null) {
-			info = infoService.saveInfoContent(FredbetConstants.INFO_CONTEXT_MISC, "", locale);
-		}
+		final String content = loadContentFor(InfoType.MISC);
 
 		ModelAndView modelAndView = new ModelAndView("info/misc");
-		modelAndView.addObject("textContent", info.getContent());
+		modelAndView.addObject(TEXT_CONTENT, content);
 		return modelAndView;
 	}
 
@@ -81,10 +74,7 @@ public class InfoController {
 	@RequestMapping("/editinfo/{name}")
 	public ModelAndView editInfo(@PathVariable("name") String name) {
 		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(name, locale);
-		if (info == null) {
-			info = infoService.saveInfoContent(name, "", locale);
-		}
+		Info info = infoService.findBy(InfoType.valueOf(name.toUpperCase()), locale);
 
 		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
 		InfoCommand infoCommand = new InfoCommand();
@@ -98,7 +88,7 @@ public class InfoController {
 	@RequestMapping(value = "/editinfo", method = RequestMethod.POST)
 	public ModelAndView saveEditedInfo(InfoCommand infoCommand, ModelMap modelMap) {
 		Locale locale = LocaleContextHolder.getLocale();
-		infoService.saveInfoContent(infoCommand.getName(), infoCommand.getTextContent(), locale);
+		infoService.saveInfoContent(InfoType.valueOf(infoCommand.getName().toUpperCase()), infoCommand.getTextContent(), locale);
 
 		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
 		modelAndView.addObject("infoCommand", infoCommand);

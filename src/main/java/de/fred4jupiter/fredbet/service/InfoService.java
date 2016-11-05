@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import de.fred4jupiter.fredbet.domain.Info;
 import de.fred4jupiter.fredbet.domain.InfoPK;
 import de.fred4jupiter.fredbet.repository.InfoRepository;
+import de.fred4jupiter.fredbet.web.info.InfoType;
 
 @Service
 @Transactional
@@ -17,20 +18,35 @@ public class InfoService {
 	@Autowired
 	private InfoRepository infoRepository;
 
-	public Info saveInfoContent(String name, String content, Locale locale) {
-		Info foundInfo = infoRepository.findOne(new InfoPK(name, locale.toString()));
+	public Info saveInfoContent(InfoType infoType, String content, Locale locale) {
+		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
+		Info foundInfo = infoRepository.findOne(infoPK);
 		if (foundInfo == null) {
-			foundInfo = new Info(name, content, locale.toString());
-		}
-		else {
+			foundInfo = new Info(infoPK, content);
+		} else {
 			foundInfo.setContent(content);
 		}
 
 		return infoRepository.save(foundInfo);
 	}
+	
+	public Info saveInfoContentIfNotPresent(InfoType infoType, String content, Locale locale) {
+		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
+		Info foundInfo = infoRepository.findOne(infoPK);
+		if (foundInfo == null) {
+			foundInfo = new Info(infoPK, content);
+			infoRepository.save(foundInfo);
+		} 
+		return foundInfo;
+	}
 
-	public Info findBy(String name, Locale locale) {
-		return infoRepository.findOne(new InfoPK(name, locale.toString()));
+	public Info findBy(InfoType infoType, Locale locale) {
+		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
+		Info info = infoRepository.findOne(infoPK);
+		if (info == null) {
+			info = saveInfoContent(infoType, "", locale);
+		}
+		return info;
 	}
 
 }
