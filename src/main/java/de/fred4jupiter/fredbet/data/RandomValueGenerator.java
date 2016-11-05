@@ -33,13 +33,13 @@ public class RandomValueGenerator {
 		return rn.nextInt(range) + min;
 	}
 
-	public Country generateRandomCountry() {
+	private Country generateRandomCountry() {
 		Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
 		return availableCountries.get(randomVal);
 	}
 
-	public Country getOtherCountryThan(Country alreadyUsedCountry) {
-		for (Country country : Country.values()) {
+	private Country getOtherCountryThan(Country alreadyUsedCountry) {
+		for (Country country : this.availableCountries) {
 			if (!country.equals(alreadyUsedCountry)) {
 				return country;
 			}

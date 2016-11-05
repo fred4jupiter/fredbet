@@ -2,24 +2,22 @@ package de.fred4jupiter.fredbet.data;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.fred4jupiter.fredbet.domain.Country;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RandomValueGeneratorUT {
-
-	private static final Logger LOG = LoggerFactory.getLogger(RandomValueGeneratorUT.class);
 
 	@InjectMocks
 	private RandomValueGenerator randomValueGenerator;
@@ -31,21 +29,18 @@ public class RandomValueGeneratorUT {
 	}
 
 	@Test
-	public void generateRandomCountry() {
-		List<Country> countryList = Arrays.asList(Country.values());
-		Country country = randomValueGenerator.generateRandomCountry();
-		assertNotNull(country);
-		assertTrue(countryList.contains(country));
-		LOG.debug("country={}", country);
-	}
-
-	@Test
 	public void generateTeamPair() {
-		List<Country> countries = randomValueGenerator.generateTeamPair();
-		assertEquals(2, countries.size());
-		assertNotEquals(countries.get(0), countries.get(1));
-		assertNotNull(countries.get(0));
-		assertNotNull(countries.get(1));
+		for (int i = 0; i < 100; i++) {
+			List<Country> countries = randomValueGenerator.generateTeamPair();
+			assertEquals(2, countries.size());
+			Country countryOne = countries.get(0);
+			Country countryTwo = countries.get(1);
+			assertNotNull(countryOne);
+			assertNotNull(countryTwo);
+			assertNotEquals(countryOne, countryTwo);
+			assertNotEquals(Country.NONE, countryOne);
+			assertNotEquals(Country.NONE, countryTwo);
+		}
 	}
 
 }
