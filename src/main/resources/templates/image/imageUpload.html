@@ -21,7 +21,7 @@
 							<a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
 						</div>
 						<div class="form-group">
-							<label th:text="#{image.upload.fileName}"></label><br/>
+							<label th:text="#{image.upload.file}"></label><br/>
 					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
 						</div>
 						<div class="form-group">
@@ -65,7 +65,6 @@
 					   			<tr>
 					   				<th th:text="#{image.upload.id}" class="hidden-xs"></th>
 					   				<th th:text="#{image.upload.groupName}"></th>
-					   				<th th:text="#{image.upload.fileName}" class="hidden-xs"></th>					   				
 					   				<th th:text="#{image.upload.description}" class="hidden-xs"></th>
 					   				<th th:text="#{image.upload.thumbnail}"></th>
 					   				<th th:text="#{image.upload.deleteImage}"></th>
@@ -75,7 +74,6 @@
 					   			<tr th:each="imageCommand : ${availableImages}">
 					   				<td th:text="${imageCommand.imageId}" class="vert-align hidden-xs"></td>
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
-					   				<td th:text="${imageCommand.fileName}" class="vert-align hidden-xs"></td>
 					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
 					   				<td class="vert-align">
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">

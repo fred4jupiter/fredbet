@@ -33,7 +33,7 @@ public class ImageRepositoryIT extends AbstractIntegrationTest {
 		ImageGroup imageGroup = new ImageGroup("sampleGallery");
 		imageGroupRepository.save(imageGroup);
 		
-		Image fileStorage = new Image("kitten.jpg", fileAsByteArray, imageGroup, fileAsByteArray);
+		Image fileStorage = new Image(fileAsByteArray, imageGroup, fileAsByteArray);
 		Image saved = imageRepository.save(fileStorage);
 		assertNotNull(saved);
 		assertNotNull(saved.getId());

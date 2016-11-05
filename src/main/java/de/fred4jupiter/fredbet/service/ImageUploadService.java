@@ -28,8 +28,7 @@ public class ImageUploadService {
 	@Autowired
 	private ImageResizingService imageResizingService;
 
-	public void saveImageInDatabase(String fileName, byte[] binary, String galleryGroup, String description,
-			Rotation rotation) {
+	public void saveImageInDatabase(byte[] binary, String galleryGroup, String description, Rotation rotation) {
 		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroup);
 
 		if (imageGroup == null) {
@@ -40,7 +39,7 @@ public class ImageUploadService {
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
 
-		Image image = new Image(fileName, imageByte, imageGroup, thumbnail);
+		Image image = new Image(imageByte, imageGroup, thumbnail);
 		image.setDescription(description);
 		imageRepository.save(image);
 	}
@@ -53,7 +52,6 @@ public class ImageUploadService {
 	private ImageCommand toImageCommand(Image image) {
 		ImageCommand imageCommand = new ImageCommand();
 		imageCommand.setDescription(image.getDescription());
-		imageCommand.setFileName(image.getFileName());
 		imageCommand.setGalleryGroup(image.getImageGroup().getName());
 		imageCommand.setImageId(image.getId());
 		imageCommand.setThumbImageAsBase64(Base64.getEncoder().encodeToString(image.getThumbImageBinary()));

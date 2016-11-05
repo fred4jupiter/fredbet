@@ -3,13 +3,11 @@ package de.fred4jupiter.fredbet.web.image;
 public class ImageCommand {
 
 	private Long imageId;
-	
-	private String fileName;
-	
+
 	private String galleryGroup;
-	
+
 	private String thumbImageAsBase64;
-	
+
 	private String description;
 
 	public Long getImageId() {
@@ -18,14 +16,6 @@ public class ImageCommand {
 
 	public void setImageId(Long imageId) {
 		this.imageId = imageId;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public String getGalleryGroup() {

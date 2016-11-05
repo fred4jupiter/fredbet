@@ -24,9 +24,6 @@ public class Image {
 	@Column(name = "IMAGE_ID")
 	private Long id;
 
-	@Column(name = "FILE_NAME")
-	private String fileName;
-
 	@ManyToOne
 	@JoinColumn(name = "IMAGE_GROUP_ID")
 	private ImageGroup imageGroup;
@@ -51,8 +48,7 @@ public class Image {
 		// for hibernate
 	}
 
-	public Image(String fileName, byte[] imageBinary, ImageGroup imageGroup, byte[] thumbImageBinary) {
-		this.fileName = fileName;
+	public Image(byte[] imageBinary, ImageGroup imageGroup, byte[] thumbImageBinary) {
 		this.imageBinary = imageBinary;
 		this.imageGroup = imageGroup;
 		this.thumbImageBinary = thumbImageBinary;
@@ -74,19 +70,10 @@ public class Image {
 		return version;
 	}
 
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("id", id);
-		builder.append("fileName", fileName);
 		builder.append("imageGroup", imageGroup);
 		return builder.toString();
 	}
