@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import de.fred4jupiter.fredbet.service.DownloadService;
 import de.fred4jupiter.fredbet.service.ImageUploadService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -36,6 +37,9 @@ public class ImageGalleryController {
 
 	@Autowired
 	private ImageUploadService imageUploadService;
+	
+	@Autowired
+	private DownloadService downloadService;
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showGallery(ModelMap modelMap) {
@@ -64,6 +68,28 @@ public class ImageGalleryController {
 		}
 
 		try (ByteArrayInputStream in = new ByteArrayInputStream(imageByte)) {
+			IOUtils.copy(in, response.getOutputStream());
+			response.flushBuffer();
+			return new ResponseEntity<byte[]>(HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@RequestMapping(value = "/download/all", method = RequestMethod.GET, produces = "application/zip")
+	public ResponseEntity<byte[]> downloadAllImagesAsZip(HttpServletResponse response) {
+		response.setHeader("Content-Type", "application/zip");
+		final String zipFileName = "allImages.zip";
+		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + zipFileName +"\""));
+		
+		byte[] zipFile = downloadService.downloadAllImagesAsZipFile();
+		
+		if (zipFile == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+
+		try (ByteArrayInputStream in = new ByteArrayInputStream(zipFile)) {
 			IOUtils.copy(in, response.getOutputStream());
 			response.flushBuffer();
 			return new ResponseEntity<byte[]>(HttpStatus.OK);
