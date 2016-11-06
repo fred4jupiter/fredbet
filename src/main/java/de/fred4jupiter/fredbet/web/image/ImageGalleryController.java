@@ -37,7 +37,7 @@ public class ImageGalleryController {
 
 	@Autowired
 	private ImageUploadService imageUploadService;
-	
+
 	@Autowired
 	private DownloadService downloadService;
 
@@ -63,33 +63,25 @@ public class ImageGalleryController {
 	public ResponseEntity<byte[]> showImage(@PathVariable("id") Long imageId, HttpServletResponse response) {
 		response.setHeader("Content-Type", MediaType.IMAGE_JPEG_VALUE);
 		byte[] imageByte = imageUploadService.loadImageById(imageId);
-		if (imageByte == null) {
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-		}
-
-		try (ByteArrayInputStream in = new ByteArrayInputStream(imageByte)) {
-			IOUtils.copy(in, response.getOutputStream());
-			response.flushBuffer();
-			return new ResponseEntity<byte[]>(HttpStatus.OK);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-		}
+		return copyIntoResponse(response, imageByte);
 	}
-	
-	@RequestMapping(value = "/download/all", method = RequestMethod.GET, produces = "application/zip")
+
+	@RequestMapping(value = "/download/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> downloadAllImagesAsZip(HttpServletResponse response) {
-		response.setHeader("Content-Type", "application/zip");
+		response.setHeader("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
 		final String zipFileName = "allImages.zip";
-		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + zipFileName +"\""));
-		
+		response.setHeader("Content-Disposition", "inline; filename=\"" + zipFileName + "\"");
+
 		byte[] zipFile = downloadService.downloadAllImagesAsZipFile();
-		
-		if (zipFile == null) {
+		return copyIntoResponse(response, zipFile);
+	}
+
+	private ResponseEntity<byte[]> copyIntoResponse(HttpServletResponse response, byte[] byteArray) {
+		if (byteArray == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 
-		try (ByteArrayInputStream in = new ByteArrayInputStream(zipFile)) {
+		try (ByteArrayInputStream in = new ByteArrayInputStream(byteArray)) {
 			IOUtils.copy(in, response.getOutputStream());
 			response.flushBuffer();
 			return new ResponseEntity<byte[]>(HttpStatus.OK);
@@ -98,5 +90,4 @@ public class ImageGalleryController {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 	}
-
 }
