@@ -38,6 +38,10 @@ public class FredbetProperties {
 	 */
 	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
 
+	public static final DatabaseType DEFAULT_DB_TYPE =  DatabaseType.H2;
+	
+	private DatabaseType databaseType = DEFAULT_DB_TYPE;
+	
 	/**
 	 * Image size of the generated thumbnails.
 	 */
@@ -110,6 +114,14 @@ public class FredbetProperties {
 
 	public void setImageSize(int imageSize) {
 		this.imageSize = imageSize;
+	}
+
+	public DatabaseType getDatabaseType() {
+		return databaseType;
+	}
+
+	public void setDatabaseType(DatabaseType databaseType) {
+		this.databaseType = databaseType;
 	}
 
 }

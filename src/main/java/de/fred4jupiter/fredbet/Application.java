@@ -5,12 +5,11 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
@@ -30,9 +29,6 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableConfigurationProperties(FredbetProperties.class)
 public class Application {
 
-	@Autowired
-	private Environment environment;
-
 	static {
 		// to avoid warning 'Unable to instantiate
 		// org.fusesource.jansi.WindowsAnsiOutputStream'
@@ -51,7 +47,7 @@ public class Application {
 	}
 
 	@Bean(destroyMethod = "close")
-	public DataSource dataSource(FredbetProperties fredbetProperties) {
+	public DataSource dataSource(FredbetProperties fredbetProperties, DataSourceProperties properties) {
 		HikariConfig config = new HikariConfig();
 		config.setPoolName("FredBetCP");
 		config.setConnectionTestQuery("SELECT 1");
@@ -61,11 +57,9 @@ public class Application {
 		config.setMaximumPoolSize(20);
 		config.setIdleTimeout(30000);
 
-		if (environment.acceptsProfiles("dev", "default")) {
-			config.setDriverClassName(org.h2.Driver.class.getName());
-		} else {
-			config.setDriverClassName(org.mariadb.jdbc.Driver.class.getName());
-		}
+		final DatabaseType databaseType = fredbetProperties.getDatabaseType();
+		config.setDriverClassName(databaseType.getDriverClassName());
+		config.addDataSourceProperty("hibernate.dialect", databaseType.getDatabasePlatform());
 
 		return new HikariDataSource(config);
 	}
