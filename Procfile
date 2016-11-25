@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=dev -jar target/fredbet.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/fredbet.jar
