@@ -30,12 +30,12 @@ public class Image {
 	private ImageGroup imageGroup;
 
 	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "IMAGE_BINARY", length = 1000000)
 	@Lob
-	@Column(name = "IMAGE_BINARY")
 	private byte[] imageBinary;
 
+	@Column(name = "THUMB_IMAGE_BINARY", length = 1000000)
 	@Lob
-	@Column(name = "THUMB_IMAGE_BINARY")
 	private byte[] thumbImageBinary;
 
 	@Column(name = "DESCRIPTION")
