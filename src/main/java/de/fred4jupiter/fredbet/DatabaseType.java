@@ -14,7 +14,7 @@ public enum DatabaseType {
 
 	MARIA_DB("org.mariadb.jdbc.Driver", "org.hibernate.dialect.MySQLDialect"),
 
-	POSTGRES("org.postgresql.Driver", "org.hibernate.dialect.ProgressDialect");
+	POSTGRES("org.postgresql.Driver", "org.hibernate.dialect.PostgreSQL9Dialect");
 
 	private final String driverClassName;
 	

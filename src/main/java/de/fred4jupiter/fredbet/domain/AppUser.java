@@ -15,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -48,10 +49,13 @@ public class AppUser implements UserDetails {
 	@Column(name = "USER_NAME", unique = true)
 	private String username;
 
+	@Column(name = "PASSWORD")
 	private String password;
 
+	@Column(name = "CREATED_AT")
 	private Date createdAt;
 
+	@Column(name = "DELETABLE")	
 	private boolean deletable = true;
 
 	@PersistenceConstructor
@@ -190,5 +194,12 @@ public class AppUser implements UserDetails {
 
 	public LocalDateTime getCreatedAt() {
 		return DateUtils.toLocalDateTime(createdAt);
+	}
+	
+	@PrePersist
+	private void prePersist() {
+		if (this.createdAt == null) {
+			this.createdAt = new Date();
+		}
 	}
 }
