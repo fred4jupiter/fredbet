@@ -69,7 +69,31 @@ services:
        - FREDBET_DATABASE-PASSWORD=fred
 ```
 
-## FredBet Properties
+## Database Properties
+
+You can ajust some properties by overriding it as JVM parameters. The properties are located in class `FredbetProperties`.
+
+- `fredbet.database-url`
+	- The database jdbc connection url, e.g. jdbc:mariadb://localhost:3306/fredbetdb.
+- `fredbet.database-username`
+	- The database username.
+- `fredbet.database-password`
+	- The database password.
+- `fredbet.database-type=h2`
+	- The used database type. Choose one of these values: `h2, maria-db, mysql, postgres`
+
+NOTE: For overriding these properties as JVM parameters you have to apply the Spring Boot Externalize Properties Convention, e.g. for setting the property `fredbet.favourite-country` you will write `-DFREDBET_FAVOURITE-COUNTRY=ireland`.
+
+For setting up the database you use e.g.
+
+```bash
+-DFREDBET_DATABASE-URL=jdbc:postgresql://127.0.0.1:5432/testdb
+-DFREDBET_DATABASE-USERNAME=someuser
+-DFREDBET_DATABASE-PASSWORD=somepass
+-DFREDBET_DATABASE-TYPE=postgres
+```
+
+## Additional Properties
 
 You can ajust some properties by overriding it as JVM parameters. The properties are located in class `FredbetProperties`.
 
@@ -79,21 +103,13 @@ You can ajust some properties by overriding it as JVM parameters. The properties
 	- Disables the navigation entry for (re)creating the matches and demo results.
 - `fredbet.favourite-country`
 	- Sum points per user for selected country that will be shown in points statistics.
-- `fredbet.database-url`
-	- The database jdbc connection url, e.g. jdbc:mariadb://localhost:3306/fredbetdb.
-- `fredbet.database-username`
-	- The database username.
-- `fredbet.database-password`
-	- The database password.
-
-NOTE: For overriding these properties as JVM parameters you have to apply the Spring Boot Externalize Properties Convention, e.g. for setting the property `fredbet.favourite-country` you will write `-DFREDBET_FAVOURITE-COUNTRY=ireland`.
 
 ## Hints
 
 ```bash
--Dflyway.enabled=false
+-Dliquibase.enabled=false
 ```
-Disabling Flyway database migration at all. This may be useful if you have an already populated database schema.
+Disabling Liquibase database migration at all. This may be useful if you have an already populated database schema.
 
 ## Screenshot
 
