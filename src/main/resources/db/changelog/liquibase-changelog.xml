@@ -137,10 +137,10 @@
 			<column name="image_group_id" type="BIGINT">
 				<constraints nullable="false" />
 			</column>
-			<column name="image_binary" type="LONGVARBINARY">
+			<column name="image_binary" type="BLOB">
 				<constraints nullable="false" />
 			</column>
-			<column name="thumb_image_binary" type="LONGVARBINARY">
+			<column name="thumb_image_binary" type="BLOB">
 				<constraints nullable="false" />
 			</column>
 			<column name="description" type="varchar(400)" />
@@ -150,12 +150,12 @@
 		</createTable>
 		<addForeignKeyConstraint baseTableName="image_store" baseColumnNames="image_group_id" constraintName="FK_img_group_id"
 			referencedTableName="image_group" referencedColumnNames="image_group_id" />
-		<modifySql dbms="mysql">
-			<regExpReplace replace="LONGVARBINARY" with="LONGBLOB" />
-		</modifySql>
-		<modifySql dbms="postgresql">
-			<regExpReplace replace="LONGVARBINARY" with="BYTEA" />
-		</modifySql>
+<!-- 		<modifySql dbms="mysql"> -->
+<!-- 			<regExpReplace replace="BLOB" with="LONGBLOB" /> -->
+<!-- 		</modifySql> -->
+<!-- 		<modifySql dbms="postgresql"> -->
+<!-- 			<regExpReplace replace="BLOB" with="OID" /> -->
+<!-- 		</modifySql> -->
 
 	</changeSet>
 
