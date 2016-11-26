@@ -150,13 +150,9 @@
 		</createTable>
 		<addForeignKeyConstraint baseTableName="image_store" baseColumnNames="image_group_id" constraintName="FK_img_group_id"
 			referencedTableName="image_group" referencedColumnNames="image_group_id" />
-<!-- 		<modifySql dbms="mysql"> -->
-<!-- 			<regExpReplace replace="BLOB" with="LONGBLOB" /> -->
-<!-- 		</modifySql> -->
-<!-- 		<modifySql dbms="postgresql"> -->
-<!-- 			<regExpReplace replace="BLOB" with="OID" /> -->
-<!-- 		</modifySql> -->
-
+		<modifySql dbms="mysql">
+			<regExpReplace replace="BLOB" with="LONGBLOB" />
+		</modifySql>
 	</changeSet>
 
 </databaseChangeLog>
