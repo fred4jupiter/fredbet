@@ -13,12 +13,12 @@ dependencies:
 test:
   override:
   - mvn verify  
-  post:
-  - git config user.name "fred4jupiter"
-  - git config user.email "hamsterhase@gmx.de"
+#  post:
+#  - git config user.name "fred4jupiter"
+#  - git config user.email "hamsterhase@gmx.de"
 
-deployment:
-  hub:
-    branch: master
-    commands:
-      - ./release.sh
+#deployment:
+#  hub:
+#    branch: master
+#    commands:
+#      - ./release.sh
