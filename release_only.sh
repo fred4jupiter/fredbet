@@ -27,7 +27,7 @@ NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.versio
 
 git add .
 git commit -m "released version $PROJECT_REL_VERSION"
-git push origin master
+# git push origin master
 
 echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
