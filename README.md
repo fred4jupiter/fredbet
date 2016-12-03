@@ -131,4 +131,3 @@ You should have received a copy of the license along with this work. If not, see
 ## CircleCI Build Status
 
 [![Circle CI](https://circleci.com/gh/fred4jupiter/fredbet.svg?style=shield)](https://circleci.com/gh/fred4jupiter/fredbet)
-
