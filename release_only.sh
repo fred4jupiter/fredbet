@@ -23,11 +23,9 @@ mvn package -DskipTests
 PROJECT_REL_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
 
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT versions:commit
-NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+mvn scm:checkin -Dbasedir=. -Dmessage="next dev version" -Dusername=$1 -Dpassword=$2
 
-git add .
-git commit -m "released version $PROJECT_REL_VERSION"
-# git push origin master
+NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
 
 echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
