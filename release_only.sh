@@ -23,7 +23,7 @@ mvn package -DskipTests
 PROJECT_REL_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
 
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT versions:commit
-mvn scm:checkin -Dbasedir=. -Dmessage="next dev version" -Dusername=$1 -Dpassword=$2
+# mvn scm:checkin -Dbasedir=. -Dmessage="next dev version" -Dusername=$1 -Dpassword=$2
 
 NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
 
