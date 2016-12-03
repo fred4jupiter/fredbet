@@ -2,20 +2,20 @@
 
 # call script like so: source ./release_only.sh
 
-if [ -z "$GITHUB_USERNAME" ]
+if [ -z "$1" ]
   then
-    echo "The GITHUB username has to be set in variable 'GITHUB_USERNAME'."
+    echo "The GITHUB username has to be given as first parameter."
     exit 1
 fi
 
-if [ -z "$GITHUB_PASSWORD" ]
+if [ -z "$2" ]
   then
-    echo "The GITHUB password has to be set in variable 'GITHUB_PASSWORD'."
+    echo "The GITHUB password has to be given as second parameter."
     exit 1
 fi
 
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} versions:commit
-mvn build-helper:parse-version scm:tag -Dbasedir=. -Dtag=release_\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} -Dusername=$GITHUB_USERNAME -Dpassword=$GITHUB_PASSWORD
+mvn build-helper:parse-version scm:tag -Dbasedir=. -Dtag=release_\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} -Dusername=$1 -Dpassword=$2
 mvn package -DskipTests
 PROJECT_REL_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
 
