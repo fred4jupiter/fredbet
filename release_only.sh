@@ -14,6 +14,9 @@ if [ -z "$2" ]
     exit 1
 fi
 
+git config user.name "fred4jupiter"
+git config user.email "hamsterhase@gmx.de"
+
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} versions:commit
 mvn build-helper:parse-version scm:tag -Dbasedir=. -Dtag=release_\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} -Dusername=$1 -Dpassword=$2
 mvn package -DskipTests
@@ -21,6 +24,10 @@ PROJECT_REL_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.ver
 
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT versions:commit
 NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+
+git add .
+git commit -m "released version $PROJECT_REL_VERSION"
+git push origin master
 
 echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
