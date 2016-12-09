@@ -63,3 +63,4 @@ docker tag fred4jupiter/fredbet hamsterhase/fredbet:latest
 docker push hamsterhase/fredbet:latest
 
 docker logout
+
