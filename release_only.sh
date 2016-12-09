@@ -46,9 +46,11 @@ PROJECT_REL_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.ver
 docker build -t fred4jupiter/fredbet .
 
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT versions:commit
-mvn -Dmessage="next dev version $NEXT_DEV_VERSION" -Dbasedir=. scm:checkin -DpushChanges=true
-
 NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
+
+mvn -Dmessage="next dev version $NEXT_DEV_VERSION" -Dbasedir=. scm:checkin -DpushChanges=true
+git push https://github.com/fred4jupiter/fredbet.git master
+
 
 echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
