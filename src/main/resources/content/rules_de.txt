@@ -49,7 +49,5 @@
 	<li>Haben 2 oder mehr Spieler die gleiche Gesamtpunktzahl, entscheidet die h&ouml;here Anzahl an korrekt abgegebenen Einzeltipps.</li>
 	<li>Ist dann immer noch keine Entscheidung zu treffen, wird die kleinere Gesamtabweichung berechnet. Dies geschieht folgenderma&szlig;en: F&uuml;r jedes Spiel wird errechnet um wieviel Tore der Tipp vom tats&auml;chlichen Ergebnis abweicht. (z. B. wenn der Tipp 3:1 lautet und das Spiel 0:0 ausgeht, ist die Abweichung 3+1=4). Diese Abweichung wird dann f&uuml;r alle Spiele aufsummiert. Derjenige mit der geringsten Abweichung gewinnt den Vergleich.</li>
 </ol>
-
-<p>Sollten noch Fragen offen sein, bitte einfach in die WhatsApp Gruppe schreiben.</p>
 </div>
 </div>
