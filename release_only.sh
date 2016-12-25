@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# call script like so: source ./release_only.sh
-
 if [ $# -eq 0 ]; then
     echo "No arguments provided. Usage: /release_only.sh GITHUB_USERNAME GITHUB_PASSWORD DOCKER_EMAIL DOCKER_USERNAME DOCKER_PASSWORD"
     exit 1
