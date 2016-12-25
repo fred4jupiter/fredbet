@@ -11,7 +11,7 @@
 
 	<name>Fredbet</name>
 
-	<description>Simple football betting application.</description>
+	<description>Simple football betting application. </description>
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/fred4jupiter/fredbet.git</developerConnection>
