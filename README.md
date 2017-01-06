@@ -64,9 +64,22 @@ services:
         - "8080:8080"
       environment:
        - spring.profiles.active=prod
+       - fredbet.database-type=maria-db
        - FREDBET_DATABASE-URL=jdbc:mariadb://mariadb:3306/fredbetdb
        - FREDBET_DATABASE-USERNAME=fred
        - FREDBET_DATABASE-PASSWORD=fred
+```
+
+### Running with Docker Compose and a Load Balancer (HAProxy)
+
+There is also a sample docker compose file running FredBet with HAProxy for scaling up the application instances.
+
+The file is located at `src/docker/docker-compose/mariadb_haproxy/docker-compose.yml`.
+
+Scaling up the docker instance will be achieved by issuing the command:
+
+```bash
+docker-compose scale fredbet=2
 ```
 
 ## Database Properties
