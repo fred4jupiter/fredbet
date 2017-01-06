@@ -32,7 +32,9 @@ services:
     links:
      - mariadb    
     environment:
-    - spring.profiles.active=docker
-    - JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
-    - JDBC_USERNAME=fred
-    - JDBC_PASSWORD=fred   
+    - spring.profiles.active=prod
+    - fredbet.database-type=maria-db
+    - FREDBET_DATABASE-URL=jdbc:mariadb://mariadb:3306/fredbetdb
+    - FREDBET_DATABASE-USERNAME=fred
+    - FREDBET_DATABASE-PASSWORD=fred
+    
