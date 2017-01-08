@@ -24,6 +24,9 @@ git config user.name "fred4jupiter"
 git config user.email "hamsterhase@gmx.de"
 git config --global push.default matching
 
+# You can lookup your origin url by issing 'git config -l'
+git config remote.origin.url https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/fred4jupiter/fredbet.git
+
 mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} versions:commit
 mvn build-helper:parse-version scm:tag -Dbasedir=. -Dtag=release_\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion} -Dusername=$GITHUB_USERNAME -Dpassword=$GITHUB_PASSWORD
 mvn clean package -DskipTests
@@ -33,7 +36,7 @@ mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorV
 NEXT_DEV_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
 
 git commit -a -m "next dev version $NEXT_DEV_VERSION"
-git push --repo https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/fred4jupiter/fredbet.git origin master
+git push origin master
 
 echo "release version is: $PROJECT_REL_VERSION"
 echo $PROJECT_REL_VERSION > release_version.txt
