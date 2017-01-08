@@ -5,6 +5,7 @@
 .springBeans
 .factorypath
 target/
+release_version.txt
 
 # IntelliJ IDEA
 .idea/
