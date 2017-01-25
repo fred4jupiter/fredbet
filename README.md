@@ -124,6 +124,14 @@ You can ajust some properties by overriding it as JVM parameters. The properties
 ```
 Disabling Liquibase database migration at all. This may be useful if you have an already populated database schema.
 
+## Health Check
+
+You can call this URL for a health check:
+
+[http://localhost:8080/manage/health](http://localhost:8080/manage/health).
+
+You will see a response of `{"status":"UP"}`. The health check URL is callable without authentication.
+
 ## Screenshot
 
 ![FredBet Screenshot](src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot")
