@@ -50,7 +50,7 @@
 				</div>	
 			</div>
 			<br/>
-			<div class="row">
+			<div class="row" th:if="${!groupedImageCommands.isEmpty()}">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<a href="#" th:href="@{/gallery/download/all}" th:text="#{image.gallery.downloadAll}"></a>
 				</div>	

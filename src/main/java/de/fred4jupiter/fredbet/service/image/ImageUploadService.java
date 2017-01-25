@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,9 @@ public class ImageUploadService {
 
 	public List<ImageCommand> fetchAllImages() {
 		List<Image> allSavedImages = imageRepository.findAll();
+		if (allSavedImages.isEmpty()) {
+			return Collections.emptyList();
+		}
 		return allSavedImages.stream().map(image -> toImageCommand(image)).collect(Collectors.toList());
 	}
 
