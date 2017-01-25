@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.MetricsEndpoint;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,15 +36,13 @@ public class BuildInfoController {
 	@Autowired
 	private MetricsEndpoint metricsEndpoint;
 
+	@Autowired
+	private Environment environment;
+
 	@PostConstruct
 	private void postProcessBuildProperties() {
-		String buildTimestamp = buildProperties.getProperty("build.timestamp");
-		buildTimestamp = buildTimestamp + " +0000";
-
-		ZonedDateTime parsed = ZonedDateTime.parse(buildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z"));
-		String formattedDateTime = parsed.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault())
-				.withZone(ZoneId.of("Europe/Berlin")));
-		buildProperties.put("build.timestamp", formattedDateTime);
+		addBuildTimestamp();
+		addSpringProfiles();
 	}
 
 	@RequestMapping
@@ -52,10 +52,24 @@ public class BuildInfoController {
 		return modelAndView;
 	}
 
+	private void addBuildTimestamp() {
+		String buildTimestamp = buildProperties.getProperty("build.timestamp");
+		buildTimestamp = buildTimestamp + " +0000";
+		ZonedDateTime parsed = ZonedDateTime.parse(buildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z"));
+		String formattedDateTime = parsed.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault())
+				.withZone(ZoneId.of("Europe/Berlin")));
+		buildProperties.put("build.timestamp", formattedDateTime);
+	}
+
 	private void addDynamicInfoProperties() {
 		addCurrentDateTime();
 		addHostName();
 		addMetrics();
+	}
+
+	private void addSpringProfiles() {
+		String[] activeProfiles = environment.getActiveProfiles();
+		buildProperties.put("Active Profiles", activeProfiles != null ? Arrays.asList(activeProfiles) : "");
 	}
 
 	private void addMetrics() {
@@ -66,8 +80,8 @@ public class BuildInfoController {
 	}
 
 	private String formatUptime(Long millis) {
-		return String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-				TimeUnit.MILLISECONDS.toMinutes(millis), TimeUnit.MILLISECONDS.toSeconds(millis));
+		return String.format("%02d:%02d [HH:mm]", TimeUnit.MILLISECONDS.toHours(millis),
+				TimeUnit.MILLISECONDS.toMinutes(millis));
 	}
 
 	private void addHostName() {
