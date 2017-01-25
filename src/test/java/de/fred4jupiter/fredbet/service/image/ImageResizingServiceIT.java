@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service;
+package de.fred4jupiter.fredbet.service.image;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fred4jupiter.fredbet.FredbetProperties;
+import de.fred4jupiter.fredbet.service.image.ImageResizingService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImageResizingServiceIT {

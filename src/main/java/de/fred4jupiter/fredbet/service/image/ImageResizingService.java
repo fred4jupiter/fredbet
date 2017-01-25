@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service;
+package de.fred4jupiter.fredbet.service.image;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

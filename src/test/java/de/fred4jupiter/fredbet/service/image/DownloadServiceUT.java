@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service;
+package de.fred4jupiter.fredbet.service.image;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import de.fred4jupiter.fredbet.domain.Image;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.service.image.DownloadService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloadServiceUT {
