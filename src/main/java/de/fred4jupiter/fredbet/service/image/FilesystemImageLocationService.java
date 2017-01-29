@@ -32,7 +32,7 @@ public class FilesystemImageLocationService implements ImageLocationService {
 	public FilesystemImageLocationService() {
 		this(null);
 	}
-	
+
 	public FilesystemImageLocationService(String basePath) {
 		if (StringUtils.isBlank(basePath)) {
 			this.basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet_images";
@@ -83,8 +83,7 @@ public class FilesystemImageLocationService implements ImageLocationService {
 		Map<String, byte[]> imagesMap = new HashMap<>();
 		Map<String, byte[]> thumbsMap = new HashMap<>();
 
-		readImages(imageFolder, imagesMap, IMAGE_PREFIX);
-		readImages(imageFolder, thumbsMap, THUMBNAIL_PREFIX);
+		readImages(imageFolder, imagesMap, thumbsMap);
 
 		for (String imageKey : imagesMap.keySet()) {
 			resultList.add(new BinaryImageData(imageKey, imagesMap.get(imageKey), thumbsMap.get(imageKey)));
@@ -93,16 +92,22 @@ public class FilesystemImageLocationService implements ImageLocationService {
 		return resultList;
 	}
 
-	private void readImages(File imageFolder, Map<String, byte[]> someMap, String filePrefix) {
+	private void readImages(final File imageFolder, final Map<String, byte[]> imagesMap,
+			final Map<String, byte[]> thumbsMap) {
 		try {
 			Files.walkFileTree(Paths.get(imageFolder.getAbsolutePath()), new SimpleFileVisitor<Path>() {
+
 				@Override
 				public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
 					final File file = path.toFile();
-					if (!attrs.isDirectory() && file.getName().startsWith(filePrefix)) {
+					if (!attrs.isDirectory()) {
 						String imageKey = toImageKey(file.getName());
 						byte[] imageBytes = readToByteArray(file);
-						someMap.put(imageKey, imageBytes);
+						if (file.getName().startsWith(IMAGE_PREFIX)) {
+							imagesMap.put(imageKey, imageBytes);
+						} else if (file.getName().startsWith(THUMBNAIL_PREFIX)) {
+							thumbsMap.put(imageKey, imageBytes);
+						}
 					}
 					return FileVisitResult.CONTINUE;
 				}
