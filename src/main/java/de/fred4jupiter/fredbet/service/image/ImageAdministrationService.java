@@ -42,12 +42,7 @@ public class ImageAdministrationService {
 	private ImageKeyGenerator imageKeyGenerator;
 
 	public void saveImageInDatabase(byte[] binary, String galleryGroup, String description, Rotation rotation) {
-		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroup);
-
-		if (imageGroup == null) {
-			imageGroup = new ImageGroup(galleryGroup);
-			imageGroupRepository.save(imageGroup);
-		}
+		ImageGroup imageGroup = createImageGroup(galleryGroup);
 
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
@@ -59,6 +54,16 @@ public class ImageAdministrationService {
 		imageMetaDataRepository.save(image);
 
 		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
+	}
+
+	public ImageGroup createImageGroup(String galleryGroup) {
+		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroup);
+
+		if (imageGroup == null) {
+			imageGroup = new ImageGroup(galleryGroup);
+			imageGroupRepository.save(imageGroup);
+		}
+		return imageGroup;
 	}
 
 	public List<ImageCommand> fetchAllImages() {

@@ -33,6 +33,7 @@ import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 
 @Component
@@ -62,6 +63,9 @@ public class DataBasePopulator {
 
 	@Autowired
 	private InfoService infoService;
+	
+	@Autowired
+	private ImageAdministrationService imageAdministrationService;
 
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
@@ -73,6 +77,13 @@ public class DataBasePopulator {
 		if (fredbetProperties.isCreateDemoData()) {
 			createAdditionalUsers();
 			createRandomMatches();
+			createImageGroups("Misk");
+		}
+	}
+
+	private void createImageGroups(String... imageGroups) {
+		for (String imageGroup : imageGroups) {
+			imageAdministrationService.createImageGroup(imageGroup);
 		}
 	}
 
