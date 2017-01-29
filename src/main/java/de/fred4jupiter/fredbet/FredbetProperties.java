@@ -38,10 +38,10 @@ public class FredbetProperties {
 	 */
 	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
 
-	public static final DatabaseType DEFAULT_DB_TYPE =  DatabaseType.H2;
-	
+	public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
+
 	private DatabaseType databaseType = DEFAULT_DB_TYPE;
-	
+
 	/**
 	 * Image size of the generated thumbnails.
 	 */
@@ -51,6 +51,16 @@ public class FredbetProperties {
 	 * Image size for the uploaded images.
 	 */
 	private int imageSize;
+
+	/**
+	 * Selection of possible image storage locations.
+	 */
+	private ImageLocation imageLocation;
+	
+	/**
+	 * Path in file system to store images in case of image location is set to 'file-system'
+	 */
+	private String imageFileSytemBaseFolder;
 
 	public String getDatabaseUrl() {
 		return databaseUrl;
@@ -122,6 +132,22 @@ public class FredbetProperties {
 
 	public void setDatabaseType(DatabaseType databaseType) {
 		this.databaseType = databaseType;
+	}
+
+	public ImageLocation getImageLocation() {
+		return imageLocation;
+	}
+
+	public void setImageLocation(ImageLocation imageLocation) {
+		this.imageLocation = imageLocation;
+	}
+
+	public String getImageFileSytemBaseFolder() {
+		return imageFileSytemBaseFolder;
+	}
+
+	public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
+		this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
 	}
 
 }

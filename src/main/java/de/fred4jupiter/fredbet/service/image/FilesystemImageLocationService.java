@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory;
 
 public class FilesystemImageLocationService implements ImageLocationService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationService.class);
+
 	private static final String THUMBNAIL_PREFIX = "TN_";
 
 	private static final String IMAGE_PREFIX = "IM_";
-
-	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationService.class);
 
 	private final String basePath;
 
@@ -39,6 +39,7 @@ public class FilesystemImageLocationService implements ImageLocationService {
 		} else {
 			this.basePath = basePath;
 		}
+		LOG.info("Storing images at location: {}", this.basePath);
 	}
 
 	@Override
