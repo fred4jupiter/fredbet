@@ -12,11 +12,11 @@ public interface ImageLocationService {
 
 	void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary);
 
-	ImageData getImageDataByKey(String imageKey);
+	ImageData getImageDataByKey(String imageKey, String imageGroup);
 
 	List<ImageData> findImagesInGroup(String imageGroup);
-	
+
 	List<ImageData> findAllImages();
-	
-	void deleteImage(String imageKey);
+
+	void deleteImage(String imageKey, String imageGroup);
 }

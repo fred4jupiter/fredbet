@@ -105,7 +105,7 @@ public class ImageAdministrationService {
 			return null;
 		}
 
-		ImageData imageData = imageLocationService.getImageDataByKey(imageMetaData.getImageKey());
+		ImageData imageData = imageLocationService.getImageDataByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 		return imageData.getBinary();
 	}
 
@@ -117,7 +117,7 @@ public class ImageAdministrationService {
 		}
 
 		imageMetaDataRepository.delete(imageId);
-		imageLocationService.deleteImage(imageMetaData.getImageKey());
+		imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
 	@FunctionalInterface

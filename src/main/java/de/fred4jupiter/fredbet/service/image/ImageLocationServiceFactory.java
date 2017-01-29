@@ -33,7 +33,8 @@ public class ImageLocationServiceFactory implements FactoryBean<ImageLocationSer
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// TODO: make configurable
-		this.imageLocationService = new DatabaseImageLocationService(imageBinaryRepository);
+//		this.imageLocationService = new DatabaseImageLocationService(imageBinaryRepository);
+		this.imageLocationService = new FilesystemImageLocationService();
 	}
 
 }

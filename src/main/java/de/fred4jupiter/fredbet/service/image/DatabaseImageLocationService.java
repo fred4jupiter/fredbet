@@ -16,16 +16,6 @@ public class DatabaseImageLocationService implements ImageLocationService {
 		this.imageBinaryRepository = imageBinaryRepository;
 	}
 
-	@Override
-	public ImageData getImageDataByKey(String imageKey) {
-		ImageBinary imageBinary = imageBinaryRepository.findOne(imageKey);
-		if (imageBinary == null) {
-			return null;
-		}
-
-		return toImageData(imageBinary);
-	}
-
 	private ImageData toImageData(ImageBinary imageBinary) {
 		return new BinaryImageData(imageBinary.getKey(), imageBinary.getImageBinary(),
 				imageBinary.getThumbImageBinary());
@@ -53,7 +43,17 @@ public class DatabaseImageLocationService implements ImageLocationService {
 	}
 
 	@Override
-	public void deleteImage(String imageKey) {
+	public ImageData getImageDataByKey(String imageKey, String imageGroup) {
+		ImageBinary imageBinary = imageBinaryRepository.findOne(imageKey);
+		if (imageBinary == null) {
+			return null;
+		}
+
+		return toImageData(imageBinary);
+	}
+
+	@Override
+	public void deleteImage(String imageKey, String imageGroup) {
 		imageBinaryRepository.delete(imageKey);
 	}
 
