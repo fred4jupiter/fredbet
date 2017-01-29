@@ -32,4 +32,5 @@ public interface FredBetPermission {
 	
 	// image group
 	String PERM_EDIT_IMAGE_GROUP = "PERM_EDIT_IMAGE_GROUP";
+	String PERM_DOWNLOAD_IMAGES = "PERM_DOWNLOAD_IMAGES";
 }

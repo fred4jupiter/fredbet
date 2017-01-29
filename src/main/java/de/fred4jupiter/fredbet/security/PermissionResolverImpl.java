@@ -7,6 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * Implementing class for resolving roles to permissions.
+ * 
+ * @author michael
+ *
+ */
 @Component
 public class PermissionResolverImpl implements PermissionResolver {
 

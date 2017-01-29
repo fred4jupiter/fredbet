@@ -18,7 +18,7 @@ import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
 
 @Service
-public class ImageResizingService {
+class ImageResizingService {
 
 	private final int thumbnailSize;
 
