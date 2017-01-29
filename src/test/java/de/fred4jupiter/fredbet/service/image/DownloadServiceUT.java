@@ -30,7 +30,6 @@ public class DownloadServiceUT {
 	@Mock
 	private DownloadDto downloadDto;
 
-
 	@Test
 	public void compressFile() throws IOException {
 		File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");

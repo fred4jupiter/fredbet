@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
+
 @Service
 public class DownloadService {
 
@@ -24,8 +26,8 @@ public class DownloadService {
 
 	public byte[] downloadAllImagesAsZipFile() {
 		List<DownloadDto> allImages = new ArrayList<>();
-		imageAdministrationService.fetchAllImages((byte[] binary, String groupName) -> {
-			allImages.add(new DownloadDto(groupName, binary));
+		imageAdministrationService.fetchAllImages((ImageMetaData imageMetaData, ImageData imageData) -> {
+			allImages.add(new DownloadDto(imageMetaData.getImageGroup().getName(), imageData.getBinary()));
 		});
 
 		return compressToZipFile(allImages);

@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.service.image;
 
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -62,25 +62,15 @@ public class ImageAdministrationService {
 	}
 
 	public List<ImageCommand> fetchAllImages() {
-		List<ImageMetaData> all = imageMetaDataRepository.findAll();
-		if (all.isEmpty()) {
-			return Collections.emptyList();
-		}
+		List<ImageCommand> allImages = new ArrayList<>();
+		fetchAllImages((ImageMetaData imageMetaData, ImageData imageData) -> {
+			allImages.add(toImageCommand(imageMetaData, imageData));
+		});
 
-		List<? extends ImageData> allImages = imageLocationService.findAllImages();
-		if (allImages.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		Map<String, ImageData> binaryMap = allImages.stream()
-				.collect(Collectors.toMap(ImageData::getKey, Function.identity()));
-
-		return all.stream()
-				.map(imageMetaData -> toImageCommand(imageMetaData, binaryMap.get(imageMetaData.getImageKey())))
-				.collect(Collectors.toList());
+		return allImages;
 	}
-	
-	public void fetchAllImages(ImageCallback imageCallback) {
+
+	void fetchAllImages(ImageCallback imageCallback) {
 		List<ImageMetaData> all = imageMetaDataRepository.findAll();
 		if (all.isEmpty()) {
 			return;
@@ -96,7 +86,7 @@ public class ImageAdministrationService {
 
 		for (ImageMetaData imageMetaData : all) {
 			ImageData imageData = binaryMap.get(imageMetaData.getImageKey());
-			imageCallback.doWithImage(imageData.getBinary(), imageMetaData.getImageGroup().getName());
+			imageCallback.doWithImage(imageMetaData, imageData);
 		}
 	}
 
@@ -125,14 +115,14 @@ public class ImageAdministrationService {
 			LOG.warn("Could not found image with id: {}", imageId);
 			return;
 		}
-		
+
 		imageMetaDataRepository.delete(imageId);
 		imageLocationService.deleteImage(imageMetaData.getImageKey());
 	}
-	
+
 	@FunctionalInterface
-	public interface ImageCallback{
-		
-		void doWithImage(byte[] binary, String groupName);
+	public interface ImageCallback {
+
+		void doWithImage(ImageMetaData imageMetaData, ImageData imageData);
 	}
 }

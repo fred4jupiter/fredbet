@@ -28,11 +28,12 @@ public class ImageBinaryRepositoryIT extends AbstractIntegrationTest {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		ImageBinary imageBinary = new ImageBinary("12345", fileAsByteArray, "group1", fileAsByteArray);
+		final String key = "12345";
+		ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, "group1", fileAsByteArray);
 
 		ImageBinary saved = imageBinaryRepository.save(imageBinary);
 		assertNotNull(saved);
-		assertEquals("12345", saved.getKey());
+		assertEquals(key, saved.getKey());
 
 		ImageBinary retrievedFromDb = imageBinaryRepository.findOne(saved.getKey());
 		assertNotNull(retrievedFromDb);

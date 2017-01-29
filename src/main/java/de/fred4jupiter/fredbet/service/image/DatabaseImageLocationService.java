@@ -4,17 +4,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.fred4jupiter.fredbet.domain.ImageBinary;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
 
-@Service
 public class DatabaseImageLocationService implements ImageLocationService {
 
-	@Autowired
-	private ImageBinaryRepository imageBinaryRepository;
+	private final ImageBinaryRepository imageBinaryRepository;
+
+	public DatabaseImageLocationService(ImageBinaryRepository imageBinaryRepository) {
+		super();
+		this.imageBinaryRepository = imageBinaryRepository;
+	}
 
 	@Override
 	public ImageData getImageDataByKey(String imageKey) {
@@ -22,12 +22,13 @@ public class DatabaseImageLocationService implements ImageLocationService {
 		if (imageBinary == null) {
 			return null;
 		}
-		
+
 		return toImageData(imageBinary);
 	}
 
 	private ImageData toImageData(ImageBinary imageBinary) {
-		return new BinaryImageData(imageBinary.getKey(), imageBinary.getImageBinary(), imageBinary.getThumbImageBinary());
+		return new BinaryImageData(imageBinary.getKey(), imageBinary.getImageBinary(),
+				imageBinary.getThumbImageBinary());
 	}
 
 	@Override
