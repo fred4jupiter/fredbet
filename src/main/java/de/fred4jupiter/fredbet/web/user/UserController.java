@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,7 @@ import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -53,7 +53,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@Valid UserCommand userCommand, RedirectAttributes redirect, ModelMap modelMap) {
-        if (CollectionUtils.isEmpty(userCommand.getRoles())) {
+        if (Validator.isEmpty(userCommand.getRoles())) {
             messageUtil.addErrorMsg(modelMap, "user.edited.noRole");
             return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
         }

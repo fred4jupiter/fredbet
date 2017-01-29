@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web.ranking;
 
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.RankingService;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -26,7 +26,7 @@ public class RankingController {
 	@RequestMapping
 	public ModelAndView list(ModelMap modelMap) {
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking();
-		if (CollectionUtils.isEmpty(rankings)) {
+		if (Validator.isEmpty(rankings)) {
 		    messageUtil.addInfoMsg(modelMap, "ranking.noRankings");
             return new ModelAndView("ranking/list", "rankings", rankings);
 		}

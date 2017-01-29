@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchResultCommand;
@@ -131,7 +131,7 @@ public class MatchService {
 
 	private Map<Long, Bet> findBetsForMatchIds(String username) {
 		List<Bet> allUserBets = bettingService.findAllByUsername(username);
-		if (CollectionUtils.isEmpty(allUserBets)) {
+		if (Validator.isEmpty(allUserBets)) {
 			LOG.debug("Could not found any bets for user: {}", username);
 			return Collections.emptyMap();
 		}

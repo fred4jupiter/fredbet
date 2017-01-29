@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +26,7 @@ import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.RedirectViewName;
@@ -72,7 +72,7 @@ public class BetController {
 	@RequestMapping("/open")
 	public ModelAndView listStillOpen(ModelMap modelMap) {
 		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
-		if (CollectionUtils.isEmpty(matchesToBet)) {
+		if (Validator.isEmpty(matchesToBet)) {
 			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
 		}
 

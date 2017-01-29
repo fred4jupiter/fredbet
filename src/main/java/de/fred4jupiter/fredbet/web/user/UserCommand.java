@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class UserCommand {
@@ -87,7 +88,7 @@ public class UserCommand {
             messageUtil.addErrorMsg(modelMap, "user.validation.password");
             return true;
         }
-        if (CollectionUtils.isEmpty(this.roles)) {
+        if (Validator.isEmpty(this.roles)) {
             messageUtil.addErrorMsg(modelMap, "user.validation.roles");
             return true;
         }
