@@ -63,16 +63,13 @@ public class ImageAdministrationService {
 
 	public List<ImageCommand> fetchAllImages() {
 		List<ImageCommand> allImages = new ArrayList<>();
-		fetchAllImages((ImageMetaData imageMetaData, ImageData imageData) -> {
-			allImages.add(toImageCommand(imageMetaData, imageData));
-		});
-
+		fetchAllImages((ImageMetaData imageMetaData, ImageData imageData) -> allImages.add(toImageCommand(imageMetaData, imageData)));
 		return allImages;
 	}
 
 	void fetchAllImages(ImageCallback imageCallback) {
-		List<ImageMetaData> all = imageMetaDataRepository.findAll();
-		if (all.isEmpty()) {
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
+		if (imageMetaDataList.isEmpty()) {
 			return;
 		}
 
@@ -84,7 +81,7 @@ public class ImageAdministrationService {
 		Map<String, ImageData> binaryMap = allImages.stream()
 				.collect(Collectors.toMap(ImageData::getKey, Function.identity()));
 
-		for (ImageMetaData imageMetaData : all) {
+		for (ImageMetaData imageMetaData : imageMetaDataList) {
 			ImageData imageData = binaryMap.get(imageMetaData.getImageKey());
 			imageCallback.doWithImage(imageMetaData, imageData);
 		}

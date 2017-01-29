@@ -14,8 +14,6 @@ public interface ImageLocationService {
 
 	ImageData getImageDataByKey(String imageKey, String imageGroup);
 
-	List<ImageData> findImagesInGroup(String imageGroup);
-
 	List<ImageData> findAllImages();
 
 	void deleteImage(String imageKey, String imageGroup);

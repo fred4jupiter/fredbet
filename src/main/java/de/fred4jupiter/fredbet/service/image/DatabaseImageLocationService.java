@@ -16,17 +16,6 @@ public class DatabaseImageLocationService implements ImageLocationService {
 		this.imageBinaryRepository = imageBinaryRepository;
 	}
 
-	private ImageData toImageData(ImageBinary imageBinary) {
-		return new BinaryImageData(imageBinary.getKey(), imageBinary.getImageBinary(),
-				imageBinary.getThumbImageBinary());
-	}
-
-	@Override
-	public List<ImageData> findImagesInGroup(String imageGroup) {
-		List<ImageBinary> result = imageBinaryRepository.findByImageGroup(imageGroup);
-		return result.stream().map(imageBinary -> toImageData(imageBinary)).collect(Collectors.toList());
-	}
-
 	@Override
 	public void saveImage(String imageKey, String imageGroup, byte[] imageBytes, byte[] thumbImageBinary) {
 		ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, imageGroup, thumbImageBinary);
@@ -57,4 +46,8 @@ public class DatabaseImageLocationService implements ImageLocationService {
 		imageBinaryRepository.delete(imageKey);
 	}
 
+	private ImageData toImageData(ImageBinary imageBinary) {
+		return new BinaryImageData(imageBinary.getKey(), imageBinary.getImageBinary(),
+				imageBinary.getThumbImageBinary());
+	}
 }
