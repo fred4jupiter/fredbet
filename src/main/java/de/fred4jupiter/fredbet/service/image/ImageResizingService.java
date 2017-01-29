@@ -17,6 +17,12 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
 
+/**
+ * For resizing images and thumbnail generation.
+ * 
+ * @author michael
+ *
+ */
 @Service
 class ImageResizingService {
 

@@ -1,14 +1,11 @@
 package de.fred4jupiter.fredbet.domain;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -17,8 +14,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "IMAGE_STORE")
-public class Image {
+@Table(name = "IMAGE_METADATA")
+public class ImageMetaData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +26,8 @@ public class Image {
 	@JoinColumn(name = "IMAGE_GROUP_ID")
 	private ImageGroup imageGroup;
 
-	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "IMAGE_BINARY")
-	@Lob
-	private byte[] imageBinary;
-
-	@Column(name = "THUMB_IMAGE_BINARY")
-	@Lob
-	private byte[] thumbImageBinary;
+	@Column(name = "IMAGE_KEY")
+	private String imageKey;
 
 	@Column(name = "DESCRIPTION")
 	private String description;
@@ -45,22 +36,13 @@ public class Image {
 	@Column(name = "VERSION")
 	private Integer version;
 
-	protected Image() {
+	protected ImageMetaData() {
 		// for hibernate
 	}
 
-	public Image(byte[] imageBinary, ImageGroup imageGroup, byte[] thumbImageBinary) {
-		this.imageBinary = imageBinary;
+	public ImageMetaData(String imageKey, ImageGroup imageGroup) {
+		this.imageKey = imageKey;
 		this.imageGroup = imageGroup;
-		this.thumbImageBinary = thumbImageBinary;
-	}
-
-	public byte[] getImageBinary() {
-		return imageBinary;
-	}
-
-	public void setImageBinary(byte[] imageBinary) {
-		this.imageBinary = imageBinary;
 	}
 
 	public Long getId() {
@@ -79,14 +61,6 @@ public class Image {
 		return builder.toString();
 	}
 
-	public byte[] getThumbImageBinary() {
-		return thumbImageBinary;
-	}
-
-	public void setThumbImageBinary(byte[] thumbImageBinary) {
-		this.thumbImageBinary = thumbImageBinary;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -101,5 +75,9 @@ public class Image {
 
 	public void setImageGroup(ImageGroup imageGroup) {
 		this.imageGroup = imageGroup;
+	}
+
+	public String getImageKey() {
+		return imageKey;
 	}
 }

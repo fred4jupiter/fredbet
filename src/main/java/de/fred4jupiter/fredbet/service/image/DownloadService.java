@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.service.image;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -13,32 +14,33 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.fred4jupiter.fredbet.domain.Image;
-import de.fred4jupiter.fredbet.repository.ImageRepository;
-
 @Service
 public class DownloadService {
 
-	private static final Logger log = LoggerFactory.getLogger(DownloadService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DownloadService.class);
 
 	@Autowired
-	private ImageRepository imageRepository;
+	private ImageAdministrationService imageAdministrationService;
 
 	public byte[] downloadAllImagesAsZipFile() {
-		List<Image> images = imageRepository.findAll();
-		return compressToZipFile(images);
+		List<DownloadDto> allImages = new ArrayList<>();
+		imageAdministrationService.fetchAllImages((byte[] binary, String groupName) -> {
+			allImages.add(new DownloadDto(groupName, binary));
+		});
+
+		return compressToZipFile(allImages);
 	}
 
-	byte[] compressToZipFile(List<Image> images) {
+	byte[] compressToZipFile(List<DownloadDto> allImages) {
 		try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 				ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream(byteOut);) {
 
 			zipOutput.setEncoding("UTF-8");
 
-			for (int i = 0; i < images.size(); i++) {
-				Image image = images.get(i);
+			for (int i = 0; i < allImages.size(); i++) {
+				DownloadDto image = allImages.get(i);
 				ZipArchiveEntry entry = new ZipArchiveEntry(createEntryFileName(image, i + 1));
-				entry.setSize(image.getImageBinary().length);
+				entry.setSize(image.getBinary().length);
 				zipOutput.putArchiveEntry(entry);
 				copyToOutputStream(zipOutput, image);
 				zipOutput.closeArchiveEntry();
@@ -46,24 +48,44 @@ public class DownloadService {
 			zipOutput.close();
 			return byteOut.toByteArray();
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 			return null;
 		}
 	}
 
-	private void copyToOutputStream(ZipArchiveOutputStream zipOutput, Image image) throws IOException {
-		try (ByteArrayInputStream entryInputStream = new ByteArrayInputStream(image.getImageBinary())) {
+	private void copyToOutputStream(ZipArchiveOutputStream zipOutput, DownloadDto image) throws IOException {
+		try (ByteArrayInputStream entryInputStream = new ByteArrayInputStream(image.getBinary())) {
 			IOUtils.copy(entryInputStream, zipOutput);
 		}
 	}
 
-	private String createEntryFileName(Image image, int index) {
+	private String createEntryFileName(DownloadDto image, int index) {
 		return getGroupNameNoSpaces(image) + "_" + index + ".jpg";
 	}
 
-	private String getGroupNameNoSpaces(Image image) {
-		String groupName = image.getImageGroup().getName();
+	private String getGroupNameNoSpaces(DownloadDto image) {
+		String groupName = image.getGroupName();
 		return groupName.replaceAll(" ", "_");
+	}
+
+	static class DownloadDto {
+		private String groupName;
+
+		private byte[] binary;
+
+		public DownloadDto(String groupName, byte[] binary) {
+			super();
+			this.groupName = groupName;
+			this.binary = binary;
+		}
+
+		public String getGroupName() {
+			return groupName;
+		}
+
+		public byte[] getBinary() {
+			return binary;
+		}
 	}
 
 }

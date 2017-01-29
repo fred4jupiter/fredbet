@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
-import de.fred4jupiter.fredbet.service.image.ImageUploadService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -34,7 +34,7 @@ public class ImageUploadController {
 	private ImageGroupRepository imageGroupRepository;
 
 	@Autowired
-	private ImageUploadService imageUploadService;
+	private ImageAdministrationService imageUploadService;
 
 	@Autowired
 	private MessageUtil messageUtil;

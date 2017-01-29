@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,42 +14,36 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
-import de.fred4jupiter.fredbet.domain.Image;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.ImageBinary;
 
-public class ImageRepositoryIT extends AbstractIntegrationTest {
+public class ImageBinaryRepositoryIT extends AbstractIntegrationTest {
 
-	private static final Logger log = LoggerFactory.getLogger(ImageRepositoryIT.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ImageBinaryRepositoryIT.class);
 
 	@Autowired
-	private ImageRepository imageRepository;
-	
-	@Autowired
-	private ImageGroupRepository imageGroupRepository;
+	private ImageBinaryRepository imageBinaryRepository;
 
 	@Test
 	public void saveImageInDatabase() throws IOException {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		ImageGroup imageGroup = new ImageGroup("sampleGallery");
-		imageGroupRepository.save(imageGroup);
-		
-		Image fileStorage = new Image(fileAsByteArray, imageGroup, fileAsByteArray);
-		Image saved = imageRepository.save(fileStorage);
-		assertNotNull(saved);
-		assertNotNull(saved.getId());
+		ImageBinary imageBinary = new ImageBinary("12345", fileAsByteArray, "group1", fileAsByteArray);
 
-		Image retrievedFromDb = imageRepository.findOne(saved.getId());
+		ImageBinary saved = imageBinaryRepository.save(imageBinary);
+		assertNotNull(saved);
+		assertEquals("12345", saved.getKey());
+
+		ImageBinary retrievedFromDb = imageBinaryRepository.findOne(saved.getKey());
 		assertNotNull(retrievedFromDb);
-		assertEquals(saved.getId(), retrievedFromDb.getId());
+		assertEquals(saved.getKey(), retrievedFromDb.getKey());
 		assertNotNull(retrievedFromDb.getImageBinary());
 
 		String tempDir = System.getProperty("java.io.tmpdir");
 
 		File targetFile = new File(tempDir + File.separator + "kitten_from_db.jpg");
 		FileUtils.writeByteArrayToFile(targetFile, retrievedFromDb.getImageBinary());
-		log.debug("written file to: {}", targetFile);
+		LOG.debug("written file to: {}", targetFile);
 		assertTrue(targetFile.exists());
 	}
 }

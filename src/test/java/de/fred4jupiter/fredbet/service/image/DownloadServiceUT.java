@@ -17,9 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fred4jupiter.fredbet.domain.Image;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.service.image.DownloadService;
+import de.fred4jupiter.fredbet.service.image.DownloadService.DownloadDto;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloadServiceUT {
@@ -30,10 +28,8 @@ public class DownloadServiceUT {
 	private DownloadService downloadService;
 
 	@Mock
-	private Image image;
+	private DownloadDto downloadDto;
 
-	@Mock
-	private ImageGroup imageGroup;
 
 	@Test
 	public void compressFile() throws IOException {
@@ -43,11 +39,10 @@ public class DownloadServiceUT {
 
 		byte[] imageAsByteArray = FileUtils.readFileToByteArray(file);
 
-		when(image.getImageBinary()).thenReturn(imageAsByteArray);
-		when(image.getImageGroup()).thenReturn(imageGroup);
-		when(imageGroup.getName()).thenReturn("Gallery 1");
+		when(downloadDto.getBinary()).thenReturn(imageAsByteArray);
+		when(downloadDto.getGroupName()).thenReturn("Gallery 1");
 
-		byte[] zipFileAsByteArray = downloadService.compressToZipFile(Arrays.asList(image));
+		byte[] zipFileAsByteArray = downloadService.compressToZipFile(Arrays.asList(downloadDto));
 		assertNotNull(zipFileAsByteArray);
 
 		File outputFile = createOutputFile(new File("result.zip"));

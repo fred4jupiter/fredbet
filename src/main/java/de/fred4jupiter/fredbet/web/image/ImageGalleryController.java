@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.service.image.DownloadService;
-import de.fred4jupiter.fredbet.service.image.ImageUploadService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -36,7 +36,7 @@ public class ImageGalleryController {
 	private MessageUtil messageUtil;
 
 	@Autowired
-	private ImageUploadService imageUploadService;
+	private ImageAdministrationService imageUploadService;
 
 	@Autowired
 	private DownloadService downloadService;
