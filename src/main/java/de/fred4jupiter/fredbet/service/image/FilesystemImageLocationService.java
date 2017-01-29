@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,19 @@ public class FilesystemImageLocationService implements ImageLocationService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationService.class);
 
-	private final String basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet";
+	private final String basePath;
+
+	public FilesystemImageLocationService() {
+		this(null);
+	}
+	
+	public FilesystemImageLocationService(String basePath) {
+		if (StringUtils.isBlank(basePath)) {
+			this.basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet_images";
+		} else {
+			this.basePath = basePath;
+		}
+	}
 
 	@Override
 	public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
@@ -59,7 +72,7 @@ public class FilesystemImageLocationService implements ImageLocationService {
 	private File getThumbnailFileForGroup(String imageGroup, String imageKey) {
 		return getFileFor(imageGroup, imageKey, THUMBNAIL_PREFIX);
 	}
-	
+
 	private File getFileFor(String imageGroup, String imageKey, String filePrefix) {
 		return new File(basePath + File.separator + imageGroup + File.separator + filePrefix + imageKey + ".jpg");
 	}
