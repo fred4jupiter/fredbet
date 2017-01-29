@@ -77,7 +77,7 @@ public class DataBasePopulator {
 		if (fredbetProperties.isCreateDemoData()) {
 			createAdditionalUsers();
 			createRandomMatches();
-			createImageGroups("Misk");
+			createImageGroups("Misc");
 		}
 	}
 

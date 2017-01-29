@@ -15,7 +15,7 @@
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/fred4jupiter/fredbet.git</developerConnection>
-		<connection>scm:git:https://github.com/fred4jupiter/fredbet.git</connection>		
+		<connection>scm:git:https://github.com/fred4jupiter/fredbet.git</connection>
 	</scm>
 
 	<parent>
@@ -186,6 +186,11 @@
 			<artifactId>commons-compress</artifactId>
 			<version>1.12</version>
 		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>com.google.guava</groupId> -->
+		<!-- <artifactId>guava</artifactId> -->
+		<!-- <version>21.0</version> -->
+		<!-- </dependency> -->
 
 		<!-- for form validation -->
 		<!-- <dependency> -->
