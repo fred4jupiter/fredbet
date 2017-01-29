@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.service.image.DownloadService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.service.image.ImageData;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -62,8 +63,21 @@ public class ImageGalleryController {
 	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> showImage(@PathVariable("id") Long imageId, HttpServletResponse response) {
 		response.setHeader("Content-Type", MediaType.IMAGE_JPEG_VALUE);
-		byte[] imageByte = imageUploadService.loadImageById(imageId);
-		return copyIntoResponse(response, imageByte);
+		ImageData imageData = imageUploadService.loadImageById(imageId);
+		if (imageData == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+		return copyIntoResponse(response, imageData.getBinary());
+	}
+	
+	@RequestMapping(value = "/showthumb/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> showThumbnail(@PathVariable("id") Long imageId, HttpServletResponse response) {
+		response.setHeader("Content-Type", MediaType.IMAGE_JPEG_VALUE);
+		ImageData imageData = imageUploadService.loadImageById(imageId);
+		if (imageData == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+		return copyIntoResponse(response, imageData.getThumbnailBinary());
 	}
 
 	@RequestMapping(value = "/download/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

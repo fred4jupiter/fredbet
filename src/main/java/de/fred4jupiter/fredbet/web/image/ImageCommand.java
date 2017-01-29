@@ -6,8 +6,6 @@ public class ImageCommand {
 
 	private String galleryGroup;
 
-	private String thumbImageAsBase64;
-
 	private String description;
 
 	public Long getImageId() {
@@ -24,14 +22,6 @@ public class ImageCommand {
 
 	public void setGalleryGroup(String galleryGroup) {
 		this.galleryGroup = galleryGroup;
-	}
-
-	public String getThumbImageAsBase64() {
-		return thumbImageAsBase64;
-	}
-
-	public void setThumbImageAsBase64(String thumbImageAsBase64) {
-		this.thumbImageAsBase64 = thumbImageAsBase64;
 	}
 
 	public String getDescription() {

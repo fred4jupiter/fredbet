@@ -1,10 +1,8 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,47 +64,29 @@ public class ImageAdministrationService {
 	}
 
 	public List<ImageCommand> fetchAllImages() {
-		List<ImageCommand> allImages = new ArrayList<>();
-		fetchAllImages((ImageMetaData imageMetaData, ImageData imageData) -> allImages
-				.add(toImageCommand(imageMetaData, imageData)));
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
+		if (imageMetaDataList.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		final List<ImageCommand> allImages = new ArrayList<>();
+
+		for (ImageMetaData imageMetaData : imageMetaDataList) {
+			allImages.add(toImageCommand(imageMetaData));
+		}
+
 		return allImages;
 	}
 
-	void fetchAllImages(ImageCallback imageCallback) {
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
-		if (imageMetaDataList.isEmpty()) {
-			return;
-		}
-
-		List<ImageData> allImages = imageLocationService.findAllImages();
-		if (allImages.isEmpty()) {
-			return;
-		}
-
-		Map<String, ImageData> binaryMap = convertToMap(allImages);
-
-		for (ImageMetaData imageMetaData : imageMetaDataList) {
-			ImageData imageData = binaryMap.get(imageMetaData.getImageKey());
-			imageCallback.doWithImage(imageMetaData, imageData);
-		}
-	}
-
-	private Map<String, ImageData> convertToMap(List<ImageData> allImages) {
-		Map<String, ImageData> resultMap = new HashMap<>();
-		allImages.forEach(imageData -> resultMap.put(imageData.getKey(), imageData));
-		return resultMap;
-	}
-
-	private ImageCommand toImageCommand(ImageMetaData imageMetaData, ImageData imageData) {
+	private ImageCommand toImageCommand(ImageMetaData imageMetaData) {
 		ImageCommand imageCommand = new ImageCommand();
 		imageCommand.setDescription(imageMetaData.getDescription());
 		imageCommand.setGalleryGroup(imageMetaData.getImageGroup().getName());
 		imageCommand.setImageId(imageMetaData.getId());
-		imageCommand.setThumbImageAsBase64(Base64.getEncoder().encodeToString(imageData.getThumbnailBinary()));
 		return imageCommand;
 	}
 
-	public byte[] loadImageById(Long imageId) {
+	public ImageData loadImageById(Long imageId) {
 		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
 		if (imageMetaData == null) {
 			return null;
@@ -114,7 +94,7 @@ public class ImageAdministrationService {
 
 		ImageData imageData = imageLocationService.getImageDataByKey(imageMetaData.getImageKey(),
 				imageMetaData.getImageGroup().getName());
-		return imageData.getBinary();
+		return imageData;
 	}
 
 	public void deleteImageById(Long imageId) {

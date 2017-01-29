@@ -77,7 +77,7 @@
 					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
 					   				<td class="vert-align">
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
-					   						<img th:src="@{'data:image/jpeg;base64,'+${imageCommand.thumbImageAsBase64}}" class="img-responsive displayed"/>
+					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageId}}" class="img-responsive displayed"/>
 					   					</a>
 					   				</td>
 					   				<td class="vert-align">

@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -15,22 +17,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 
 @Service
 public class DownloadService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DownloadService.class);
 
+
 	@Autowired
-	private ImageAdministrationService imageAdministrationService;
+	private ImageMetaDataRepository imageMetaDataRepository;
+
+	@Autowired
+	private ImageLocationService imageLocationService;
 
 	public byte[] downloadAllImagesAsZipFile() {
-		List<DownloadDto> allImages = new ArrayList<>();
-		imageAdministrationService.fetchAllImages((ImageMetaData imageMetaData, ImageData imageData) -> {
-			allImages.add(new DownloadDto(imageMetaData.getImageGroup().getName(), imageData.getBinary()));
-		});
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
+		if (imageMetaDataList.isEmpty()) {
+			return null;
+		}
 
-		return compressToZipFile(allImages);
+		List<ImageData> allImages = imageLocationService.findAllImages();
+		if (allImages.isEmpty()) {
+			return null;
+		}
+
+		final List<DownloadDto> downloadDtos = new ArrayList<>();
+
+		Map<String, ImageData> binaryMap = convertToMap(allImages);
+
+		for (ImageMetaData imageMetaData : imageMetaDataList) {
+			ImageData imageData = binaryMap.get(imageMetaData.getImageKey());
+			downloadDtos.add(new DownloadDto(imageMetaData.getImageGroup().getName(), imageData.getBinary()));
+		}
+
+		return compressToZipFile(downloadDtos);
+	}
+
+	private Map<String, ImageData> convertToMap(List<ImageData> allImages) {
+		Map<String, ImageData> resultMap = new HashMap<>();
+		allImages.forEach(imageData -> resultMap.put(imageData.getKey(), imageData));
+		return resultMap;
 	}
 
 	byte[] compressToZipFile(List<DownloadDto> allImages) {
