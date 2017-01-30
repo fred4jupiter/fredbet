@@ -101,6 +101,9 @@ public class DataBasePopulator {
 	}
 
 	public void createRandomMatches() {
+		bettingService.deleteAllBets();
+		matchService.deleteAllMatches();
+		
 		createRandomForGroup(Group.GROUP_A);
 		createRandomForGroup(Group.GROUP_B);
 		createRandomForGroup(Group.GROUP_C);
@@ -344,6 +347,8 @@ public class DataBasePopulator {
 	@Transactional
 	public void createDemoBetsForAllUsers() {
 		log.info("createDemoBetsForAllUsers...");
+		bettingService.deleteAllBets();
+		
 		List<Match> allMatches = matchService.findAll();
 		List<AppUser> users = userService.findAll();
 		users.forEach(appUser -> {
@@ -362,6 +367,7 @@ public class DataBasePopulator {
 	@Transactional
 	public void createDemoResultsForAllMatches() {
 		log.info("createDemoResultsForAllUsers...");
+		
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
 			if (match.getCountryOne() == null) {
