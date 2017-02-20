@@ -63,7 +63,7 @@ public class DataBasePopulator {
 
 	@Autowired
 	private InfoService infoService;
-	
+
 	@Autowired
 	private ImageAdministrationService imageAdministrationService;
 
@@ -78,54 +78,6 @@ public class DataBasePopulator {
 			createAdditionalUsers();
 			createRandomMatches();
 			createImageGroups("Misc");
-		}
-	}
-
-	private void createImageGroups(String... imageGroups) {
-		for (String imageGroup : imageGroups) {
-			imageAdministrationService.createImageGroup(imageGroup);
-		}
-	}
-
-	private void addRulesIfEmpty() {
-		ClassPathResource classPathResource = new ClassPathResource("content/rules_de.txt");
-		try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
-			IOUtils.copyLarge(classPathResource.getInputStream(), byteOut);
-			String rulesInGerman = byteOut.toString("UTF-8");
-
-			Locale locale = LocaleContextHolder.getLocale();
-			infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, locale);
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
-		}
-	}
-
-	public void createRandomMatches() {
-		bettingService.deleteAllBets();
-		matchService.deleteAllMatches();
-		
-		createRandomForGroup(Group.GROUP_A);
-		createRandomForGroup(Group.GROUP_B);
-		createRandomForGroup(Group.GROUP_C);
-		createRandomForGroup(Group.GROUP_D);
-		createRandomForGroup(Group.GROUP_E);
-		createRandomForGroup(Group.GROUP_F);
-	}
-
-	private void createRandomForGroup(Group group) {
-		for (int i = 0; i < 4; i++) {
-			List<Country> teamPair = randomValueGenerator.generateTeamPair();
-			matchService.save(MatchBuilder.create().withTeams(teamPair.get(0), teamPair.get(1)).withGroup(group)
-					.withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build());
-		}
-	}
-
-	private void createAdditionalUsers() {
-		log.info("createAdditionalUsers: creating additional demo users ...");
-
-		for (int i = 1; i <= 5; i++) {
-			saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i)
-					.withRole(FredBetRole.ROLE_USER).build());
 		}
 	}
 
@@ -149,6 +101,93 @@ public class DataBasePopulator {
 		createQuarterFinal();
 		createSemiFinal();
 		createFinal();
+	}
+
+	@Transactional
+	public void createRandomMatches() {
+		bettingService.deleteAllBets();
+		matchService.deleteAllMatches();
+
+		createRandomForGroup(Group.GROUP_A);
+		createRandomForGroup(Group.GROUP_B);
+		createRandomForGroup(Group.GROUP_C);
+		createRandomForGroup(Group.GROUP_D);
+		createRandomForGroup(Group.GROUP_E);
+		createRandomForGroup(Group.GROUP_F);
+	}
+
+	@Transactional
+	public void createDemoBetsForAllUsers() {
+		log.info("createDemoBetsForAllUsers...");
+		bettingService.deleteAllBets();
+
+		List<Match> allMatches = matchService.findAll();
+		List<AppUser> users = userService.findAll();
+		users.forEach(appUser -> {
+			allMatches.forEach(match -> {
+				Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
+				Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
+				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
+			});
+
+			List<Country> countries = randomValueGenerator.generateTeamPair();
+			bettingService.saveExtraBet(countries.get(0), countries.get(1), appUser.getUsername());
+		});
+
+	}
+
+	@Transactional
+	public void createDemoResultsForAllMatches() {
+		log.info("createDemoResultsForAllUsers...");
+
+		List<Match> allMatches = matchService.findAll();
+		allMatches.forEach(match -> {
+			if (match.getCountryOne() == null) {
+				List<Country> countries = randomValueGenerator.generateTeamPair();
+				match.setCountryOne(countries.get(0));
+				match.setCountryTwo(countries.get(1));
+				match.setTeamNameOne(null);
+				match.setTeamNameTwo(null);
+			}
+			match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
+			matchService.save(match);
+		});
+	}
+
+	private void createImageGroups(String... imageGroups) {
+		for (String imageGroup : imageGroups) {
+			imageAdministrationService.createImageGroup(imageGroup);
+		}
+	}
+
+	private void addRulesIfEmpty() {
+		ClassPathResource classPathResource = new ClassPathResource("content/rules_de.txt");
+		try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
+			IOUtils.copyLarge(classPathResource.getInputStream(), byteOut);
+			String rulesInGerman = byteOut.toString("UTF-8");
+
+			Locale locale = LocaleContextHolder.getLocale();
+			infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, locale);
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	private void createRandomForGroup(Group group) {
+		for (int i = 0; i < 4; i++) {
+			List<Country> teamPair = randomValueGenerator.generateTeamPair();
+			matchService.save(MatchBuilder.create().withTeams(teamPair.get(0), teamPair.get(1)).withGroup(group)
+					.withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build());
+		}
+	}
+
+	private void createAdditionalUsers() {
+		log.info("createAdditionalUsers: creating additional demo users ...");
+
+		for (int i = 1; i <= 5; i++) {
+			saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i)
+					.withRole(FredBetRole.ROLE_USER).build());
+		}
 	}
 
 	private void createFinal() {
@@ -344,41 +383,4 @@ public class DataBasePopulator {
 		}
 	}
 
-	@Transactional
-	public void createDemoBetsForAllUsers() {
-		log.info("createDemoBetsForAllUsers...");
-		bettingService.deleteAllBets();
-		
-		List<Match> allMatches = matchService.findAll();
-		List<AppUser> users = userService.findAll();
-		users.forEach(appUser -> {
-			allMatches.forEach(match -> {
-				Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
-				Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
-				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
-			});
-
-			List<Country> countries = randomValueGenerator.generateTeamPair();
-			bettingService.saveExtraBet(countries.get(0), countries.get(1), appUser.getUsername());
-		});
-
-	}
-
-	@Transactional
-	public void createDemoResultsForAllMatches() {
-		log.info("createDemoResultsForAllUsers...");
-		
-		List<Match> allMatches = matchService.findAll();
-		allMatches.forEach(match -> {
-			if (match.getCountryOne() == null) {
-				List<Country> countries = randomValueGenerator.generateTeamPair();
-				match.setCountryOne(countries.get(0));
-				match.setCountryTwo(countries.get(1));
-				match.setTeamNameOne(null);
-				match.setTeamNameTwo(null);
-			}
-			match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
-			matchService.save(match);
-		});
-	}
 }

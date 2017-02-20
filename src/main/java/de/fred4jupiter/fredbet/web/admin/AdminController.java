@@ -36,7 +36,7 @@ public class AdminController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 	@RequestMapping(path = "/createEmMatches", method = RequestMethod.GET)
-	public ModelAndView createDemoMatches(ModelMap modelMap) {
+	public ModelAndView createEM2016Matches(ModelMap modelMap) {
 		dataBasePopulator.createEM2016Matches();
 
 		ModelAndView modelAndView = new ModelAndView("admin/administration");
