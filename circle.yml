@@ -13,7 +13,7 @@ dependencies:
 test:
   override:
   - mvn verify
-  - docker build --rm=false -t hamsterhase/fredbet  
+  - docker build --rm=false -t hamsterhase/fredbet . 
 #  post:
 #  - git config user.name "fred4jupiter"
 #  - git config user.email "hamsterhase@gmx.de"
@@ -22,5 +22,5 @@ deployment:
   hub:
     branch: master
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - docker push hamsterhase/fredbet
