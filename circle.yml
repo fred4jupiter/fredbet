@@ -17,8 +17,9 @@ test:
 #  - git config user.name "fred4jupiter"
 #  - git config user.email "hamsterhase@gmx.de"
 
-#deployment:
-#  hub:
-#    branch: master
-#    commands:
-#      - ./release.sh
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - docker push hamsterhase/fredbet
