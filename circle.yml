@@ -12,7 +12,8 @@ dependencies:
         
 test:
   override:
-  - mvn verify  
+  - mvn verify
+  - docker build --rm=false -t hamsterhase/fredbet  
 #  post:
 #  - git config user.name "fred4jupiter"
 #  - git config user.email "hamsterhase@gmx.de"
