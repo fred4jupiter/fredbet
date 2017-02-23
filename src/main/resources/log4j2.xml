@@ -5,7 +5,7 @@
 		<!-- <GELF name="gelfAppender" server="graylog" port="12202" hostName="fredbet_docker" protocol="UDP" additionalFields="environment=TEST,application=fredbet" 
 			/> -->
 
-		<RollingFile name="rollingFileAppender" fileName="${sys:user.home}/fredbet.log" filePattern="fredbet-%d{yyyy-MM-dd}-%i.log">
+		<RollingFile name="rollingFileAppender" fileName="${sys:user.home}/fredbet.log" filePattern="${sys:user.home}/fredbet-%d{yyyy-MM-dd}-%i.log.gz">
 			<PatternLayout>
 				<pattern>%d %p %c{1.} [%t] %m%n</pattern>
 			</PatternLayout>
