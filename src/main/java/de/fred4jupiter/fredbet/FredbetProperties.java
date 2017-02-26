@@ -61,6 +61,11 @@ public class FredbetProperties {
 	 * Path in file system to store images in case of image location is set to 'file-system'
 	 */
 	private String imageFileSytemBaseFolder;
+	
+	/**
+	 * Password used if the user password has been reset.
+	 */
+	private String passwordForReset;
 
 	public String getDatabaseUrl() {
 		return databaseUrl;
@@ -149,5 +154,15 @@ public class FredbetProperties {
 	public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
 		this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
 	}
+
+    public String getPasswordForReset() {
+        return passwordForReset;
+    }
+
+    public void setPasswordForReset(String passwordForReset) {
+        this.passwordForReset = passwordForReset;
+    }
+
+  
 
 }

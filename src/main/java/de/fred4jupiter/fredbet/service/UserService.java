@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import de.fred4jupiter.fredbet.FredbetConstants;
+import de.fred4jupiter.fredbet.FredbetProperties;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
@@ -35,6 +35,9 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private FredbetProperties fredbetProperties;
+	
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
 	}
@@ -97,7 +100,7 @@ public class UserService {
 		}
 
 		if (userCommand.isResetPassword()) {
-			appUser.setPassword(passwordEncoder.encode(FredbetConstants.DEFAULT_PASSWORD_ON_RESET));
+			appUser.setPassword(passwordEncoder.encode(fredbetProperties.getPasswordForReset()));
 		}
 
 		updateAppUser(appUser);
