@@ -17,6 +17,10 @@ public enum Group {
 	GROUP_E("group.title.E"),
 
 	GROUP_F("group.title.F"),
+	
+	GROUP_G("group.title.G"),
+	
+	GROUP_H("group.title.H"),
 
 	ROUND_OF_SIXTEEN("group.title.roundOfSixteen"), // Achtelfinale
 
@@ -24,7 +28,9 @@ public enum Group {
 
 	SEMI_FINAL("group.title.semiFinal"), // Halbfinale
 
-	FINAL("group.title.final"); // Finale
+	FINAL("group.title.final"), // Finale
+    
+    GAME_FOR_THIRD("group.title.gameForThird"); // Finale
 
 	private String titleMsgKey;
 
