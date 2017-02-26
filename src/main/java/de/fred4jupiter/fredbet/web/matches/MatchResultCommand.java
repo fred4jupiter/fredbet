@@ -6,132 +6,136 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class MatchResultCommand {
 
-	private Long matchId;
+    private Long matchId;
 
-	private Country countryTeamOne;
-	private Country countryTeamTwo;
+    private Country countryTeamOne;
+    private Country countryTeamTwo;
 
-	private String nameTeamOne;
-	private String nameTeamTwo;
+    private String nameTeamOne;
+    private String nameTeamTwo;
 
-	private Integer teamResultOne;
+    private Integer teamResultOne;
 
-	private Integer teamResultTwo;
+    private Integer teamResultTwo;
 
-	private final MessageUtil messageUtil;
-	
-	private boolean penaltyWinnerOne;
+    private final MessageUtil messageUtil;
 
-	private Match match;
+    private boolean penaltyWinnerOne;
 
-	public MatchResultCommand(MessageUtil messageUtil) {
-		this.messageUtil = messageUtil;
-	}
-	
-	public MatchResultCommand(MessageUtil messageUtil, Match match) {
-		this.messageUtil = messageUtil;
-		this.match = match;
-		this.matchId = match.getId();
-		this.countryTeamOne = match.getCountryOne();
-		this.countryTeamTwo = match.getCountryTwo();
-		this.nameTeamOne = match.getTeamNameOne();
-		this.nameTeamTwo = match.getTeamNameTwo();
-		this.teamResultOne = match.getGoalsTeamOne();
-		this.teamResultTwo = match.getGoalsTeamTwo();
-		this.penaltyWinnerOne = match.isPenaltyWinnerOne();
-	}
+    private boolean groupMatch;
 
-	public Long getMatchId() {
-		return matchId;
-	}
+    public MatchResultCommand(MessageUtil messageUtil) {
+        this.messageUtil = messageUtil;
+    }
 
-	public void setMatchId(Long matchId) {
-		this.matchId = matchId;
-	}
+    public MatchResultCommand(MessageUtil messageUtil, Match match) {
+        this.messageUtil = messageUtil;
+        this.matchId = match.getId();
+        this.countryTeamOne = match.getCountryOne();
+        this.countryTeamTwo = match.getCountryTwo();
+        this.nameTeamOne = match.getTeamNameOne();
+        this.nameTeamTwo = match.getTeamNameTwo();
+        this.teamResultOne = match.getGoalsTeamOne();
+        this.teamResultTwo = match.getGoalsTeamTwo();
+        this.penaltyWinnerOne = match.isPenaltyWinnerOne();
+        this.groupMatch = match.isGroupMatch();
+    }
 
-	public String getTeamNameOne() {
-		if (this.countryTeamOne == null) {
-			return nameTeamOne;
-		}
-		return isNotBlank(countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
-	}
+    public Long getMatchId() {
+        return matchId;
+    }
 
-	public String getTeamNameTwo() {
-		if (this.countryTeamTwo == null) {
-			return nameTeamTwo;
-		}
-		return isNotBlank(countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
-	}
+    public void setMatchId(Long matchId) {
+        this.matchId = matchId;
+    }
 
-	private boolean isNotBlank(Country country) {
-		if (country == null) {
-			return false;
-		}
+    public String getTeamNameOne() {
+        if (this.countryTeamOne == null) {
+            return nameTeamOne;
+        }
+        return isNotBlank(countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
+    }
 
-		if (Country.NONE.equals(country)) {
-			return false;
-		}
+    public String getTeamNameTwo() {
+        if (this.countryTeamTwo == null) {
+            return nameTeamTwo;
+        }
+        return isNotBlank(countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
+    }
 
-		return true;
-	}
+    private boolean isNotBlank(Country country) {
+        if (country == null) {
+            return false;
+        }
 
-	public boolean hasValidGoals() {
-		return (getTeamResultOne() != null && getTeamResultOne().intValue() < 0)
-				|| (getTeamResultTwo() != null && getTeamResultTwo().intValue() < 0);
-	}
+        if (Country.NONE.equals(country)) {
+            return false;
+        }
 
-	public Integer getTeamResultOne() {
-		return teamResultOne;
-	}
+        return true;
+    }
 
-	public void setTeamResultOne(Integer teamResultOne) {
-		this.teamResultOne = teamResultOne;
-	}
+    public boolean hasInvalidGoals() {
+        return (getTeamResultOne() != null && getTeamResultOne().intValue() < 0)
+                || (getTeamResultTwo() != null && getTeamResultTwo().intValue() < 0);
+    }
 
-	public Integer getTeamResultTwo() {
-		return teamResultTwo;
-	}
+    public Integer getTeamResultOne() {
+        return teamResultOne;
+    }
 
-	public void setTeamResultTwo(Integer teamResultTwo) {
-		this.teamResultTwo = teamResultTwo;
-	}
+    public void setTeamResultOne(Integer teamResultOne) {
+        this.teamResultOne = teamResultOne;
+    }
 
-	public boolean isOnlyOneResultSet() {
-		return (getTeamResultOne() == null && getTeamResultTwo() != null) || (getTeamResultOne() != null && getTeamResultTwo() == null);
-	}
+    public Integer getTeamResultTwo() {
+        return teamResultTwo;
+    }
 
-	public boolean isShowCountryIcons() {
-		if (this.countryTeamOne == null || this.countryTeamTwo == null) {
-			return false;
-		}
-		return isNotBlank(countryTeamOne) && isNotBlank(countryTeamTwo);
-	}
+    public void setTeamResultTwo(Integer teamResultTwo) {
+        this.teamResultTwo = teamResultTwo;
+    }
 
-	public String getIconPathTeamOne() {
-		if (this.countryTeamOne == null) {
-			return "";
-		}
+    public boolean isOnlyOneResultSet() {
+        return (getTeamResultOne() == null && getTeamResultTwo() != null) || (getTeamResultOne() != null && getTeamResultTwo() == null);
+    }
 
-		return this.countryTeamOne.getIconPath();
-	}
+    public boolean isShowCountryIcons() {
+        if (this.countryTeamOne == null || this.countryTeamTwo == null) {
+            return false;
+        }
+        return isNotBlank(countryTeamOne) && isNotBlank(countryTeamTwo);
+    }
 
-	public String getIconPathTeamTwo() {
-		if (this.countryTeamTwo == null) {
-			return "";
-		}
+    public String getIconPathTeamOne() {
+        if (this.countryTeamOne == null) {
+            return "";
+        }
 
-		return this.countryTeamTwo.getIconPath();
-	}
+        return this.countryTeamOne.getIconPath();
+    }
 
-	public boolean isPenaltyWinnerOne() {
-		return penaltyWinnerOne;
-	}
+    public String getIconPathTeamTwo() {
+        if (this.countryTeamTwo == null) {
+            return "";
+        }
 
-	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
-		this.penaltyWinnerOne = penaltyWinnerOne;
-	}
-	
-	public boolean isGroupMatch() {
-		return this.match.isGroupMatch();
-	}
+        return this.countryTeamTwo.getIconPath();
+    }
+
+    public boolean isPenaltyWinnerOne() {
+        return penaltyWinnerOne;
+    }
+
+    public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+        this.penaltyWinnerOne = penaltyWinnerOne;
+    }
+
+    public boolean isGroupMatch() {
+        return this.groupMatch;
+    }
+
+    public void setGroupMatch(boolean groupMatch) {
+        this.groupMatch = groupMatch;
+    }
 }
