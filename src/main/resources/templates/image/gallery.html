@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
-			<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+			<div th:replace="fragments/alert :: alert_headline"></div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div id="links" class="gallery-images">

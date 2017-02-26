@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">		
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+		<div th:replace="fragments/alert :: alert_headline"></div>
 		<form id="matchesForm" th:action="@{/matches}" th:object="${matchCommand}" action="#" method="post" role="form">				
 			<ul>
 	            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">

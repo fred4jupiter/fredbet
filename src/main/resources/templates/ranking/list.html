@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="alert" th:classappend="${globalMessage.cssClass}" th:if="${globalMessage}" th:text="${globalMessage.text}"></div>
+		<div th:replace="fragments/alert :: alert_headline"></div>
 		<h1 th:text="#{ranking.list.title}"></h1>
 		<div class="row" th:each="ranking,status : ${rankings}">
 			<div class="col-xs-12 col-sm-6 col-md-4">
