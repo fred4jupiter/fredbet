@@ -10,5 +10,7 @@ public enum ImageLocation {
 
 	FILE_SYSTEM,
 	
-	DATABASE;
+	DATABASE,
+	
+	AWS_S3;
 }

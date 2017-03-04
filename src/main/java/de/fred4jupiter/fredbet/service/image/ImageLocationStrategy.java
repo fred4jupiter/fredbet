@@ -10,6 +10,10 @@ import java.util.List;
  */
 public interface ImageLocationStrategy {
 
+    String THUMBNAIL_PREFIX = "TN_";
+
+    String IMAGE_PREFIX = "IM_";
+    
 	void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary);
 
 	ImageData getImageDataByKey(String imageKey, String imageGroup);

@@ -27,133 +27,127 @@ import org.slf4j.LoggerFactory;
  */
 public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 
-	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationStrategy.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationStrategy.class);
 
-	private static final String THUMBNAIL_PREFIX = "TN_";
+    private final String basePath;
 
-	private static final String IMAGE_PREFIX = "IM_";
+    public FilesystemImageLocationStrategy() {
+        this(null);
+    }
 
-	private final String basePath;
+    public FilesystemImageLocationStrategy(String basePath) {
+        if (StringUtils.isBlank(basePath)) {
+            this.basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet_images";
+        } else {
+            this.basePath = basePath;
+        }
+        LOG.info("Storing images at location: {}", this.basePath);
+    }
 
-	public FilesystemImageLocationStrategy() {
-		this(null);
-	}
+    @Override
+    public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
+        writeByteArrayToFile(getImageFileForGroup(imageGroup, imageKey), imageBinary);
+        writeByteArrayToFile(getThumbnailFileForGroup(imageGroup, imageKey), thumbImageBinary);
+    }
 
-	public FilesystemImageLocationStrategy(String basePath) {
-		if (StringUtils.isBlank(basePath)) {
-			this.basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet_images";
-		} else {
-			this.basePath = basePath;
-		}
-		LOG.info("Storing images at location: {}", this.basePath);
-	}
+    @Override
+    public List<ImageData> findAllImages() {
+        File imageFolder = new File(basePath);
+        return readFilesToImageData(imageFolder);
+    }
 
-	@Override
-	public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
-		writeByteArrayToFile(getImageFileForGroup(imageGroup, imageKey), imageBinary);
-		writeByteArrayToFile(getThumbnailFileForGroup(imageGroup, imageKey), thumbImageBinary);
-	}
+    @Override
+    public ImageData getImageDataByKey(String imageKey, String imageGroup) {
+        return readToBinaryImageData(imageKey, getImageFileForGroup(imageGroup, imageKey), getThumbnailFileForGroup(imageGroup, imageKey));
+    }
 
-	@Override
-	public List<ImageData> findAllImages() {
-		File imageFolder = new File(basePath);
-		return readFilesToImageData(imageFolder);
-	}
+    @Override
+    public void deleteImage(String imageKey, String imageGroup) {
+        getImageFileForGroup(imageGroup, imageKey).delete();
+        getThumbnailFileForGroup(imageGroup, imageKey).delete();
+    }
 
-	@Override
-	public ImageData getImageDataByKey(String imageKey, String imageGroup) {
-		return readToBinaryImageData(imageKey, getImageFileForGroup(imageGroup, imageKey),
-				getThumbnailFileForGroup(imageGroup, imageKey));
-	}
+    private File getImageFileForGroup(String imageGroup, String imageKey) {
+        return getFileFor(imageGroup, imageKey, IMAGE_PREFIX);
+    }
 
-	@Override
-	public void deleteImage(String imageKey, String imageGroup) {
-		getImageFileForGroup(imageGroup, imageKey).delete();
-		getThumbnailFileForGroup(imageGroup, imageKey).delete();
-	}
+    private File getThumbnailFileForGroup(String imageGroup, String imageKey) {
+        return getFileFor(imageGroup, imageKey, THUMBNAIL_PREFIX);
+    }
 
-	private File getImageFileForGroup(String imageGroup, String imageKey) {
-		return getFileFor(imageGroup, imageKey, IMAGE_PREFIX);
-	}
+    private File getFileFor(String imageGroup, String imageKey, String filePrefix) {
+        return new File(basePath + File.separator + imageGroup + File.separator + filePrefix + imageKey + ".jpg");
+    }
 
-	private File getThumbnailFileForGroup(String imageGroup, String imageKey) {
-		return getFileFor(imageGroup, imageKey, THUMBNAIL_PREFIX);
-	}
+    private List<ImageData> readFilesToImageData(File imageFolder) {
+        List<ImageData> resultList = new ArrayList<>();
 
-	private File getFileFor(String imageGroup, String imageKey, String filePrefix) {
-		return new File(basePath + File.separator + imageGroup + File.separator + filePrefix + imageKey + ".jpg");
-	}
+        Map<String, byte[]> imagesMap = new HashMap<>();
+        Map<String, byte[]> thumbsMap = new HashMap<>();
 
-	private List<ImageData> readFilesToImageData(File imageFolder) {
-		List<ImageData> resultList = new ArrayList<>();
+        readImages(imageFolder, imagesMap, thumbsMap);
 
-		Map<String, byte[]> imagesMap = new HashMap<>();
-		Map<String, byte[]> thumbsMap = new HashMap<>();
+        for (String imageKey : imagesMap.keySet()) {
+            resultList.add(new BinaryImageData(imageKey, imagesMap.get(imageKey), thumbsMap.get(imageKey)));
+        }
 
-		readImages(imageFolder, imagesMap, thumbsMap);
+        return resultList;
+    }
 
-		for (String imageKey : imagesMap.keySet()) {
-			resultList.add(new BinaryImageData(imageKey, imagesMap.get(imageKey), thumbsMap.get(imageKey)));
-		}
+    private void readImages(final File imageFolder, final Map<String, byte[]> imagesMap, final Map<String, byte[]> thumbsMap) {
+        try {
+            Files.walkFileTree(Paths.get(imageFolder.getAbsolutePath()), new SimpleFileVisitor<Path>() {
 
-		return resultList;
-	}
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+                    final File file = path.toFile();
+                    if (!attrs.isDirectory()) {
+                        String imageKey = toImageKey(file.getName());
+                        byte[] imageBytes = readToByteArray(file);
+                        if (file.getName().startsWith(IMAGE_PREFIX)) {
+                            imagesMap.put(imageKey, imageBytes);
+                        } else if (file.getName().startsWith(THUMBNAIL_PREFIX)) {
+                            thumbsMap.put(imageKey, imageBytes);
+                        }
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new FileReadWriteExcpetion(e.getMessage(), e);
+        }
+    }
 
-	private void readImages(final File imageFolder, final Map<String, byte[]> imagesMap,
-			final Map<String, byte[]> thumbsMap) {
-		try {
-			Files.walkFileTree(Paths.get(imageFolder.getAbsolutePath()), new SimpleFileVisitor<Path>() {
+    private String toImageKey(String fileName) {
+        String fileNameWithoutExtension = FilenameUtils.removeExtension(fileName);
+        return fileNameWithoutExtension.substring(3);
+    }
 
-				@Override
-				public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-					final File file = path.toFile();
-					if (!attrs.isDirectory()) {
-						String imageKey = toImageKey(file.getName());
-						byte[] imageBytes = readToByteArray(file);
-						if (file.getName().startsWith(IMAGE_PREFIX)) {
-							imagesMap.put(imageKey, imageBytes);
-						} else if (file.getName().startsWith(THUMBNAIL_PREFIX)) {
-							thumbsMap.put(imageKey, imageBytes);
-						}
-					}
-					return FileVisitResult.CONTINUE;
-				}
-			});
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			throw new FileReadWriteExcpetion(e.getMessage(), e);
-		}
-	}
+    private byte[] readToByteArray(File file) {
+        try {
+            LOG.debug("try to read file: {}", file);
+            return FileUtils.readFileToByteArray(file);
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new FileReadWriteExcpetion("Could not read file: " + file);
+        }
+    }
 
-	private String toImageKey(String fileName) {
-		String fileNameWithoutExtension = FilenameUtils.removeExtension(fileName);
-		return fileNameWithoutExtension.substring(3);
-	}
+    private void writeByteArrayToFile(File file, byte[] byteArray) {
+        try {
+            FileUtils.writeByteArrayToFile(file, byteArray);
+            LOG.debug("Written file: {}", file);
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new FileReadWriteExcpetion("Could not write file: " + file);
+        }
+    }
 
-	private byte[] readToByteArray(File file) {
-		try {
-			LOG.debug("try to read file: {}", file);
-			return FileUtils.readFileToByteArray(file);
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			throw new FileReadWriteExcpetion("Could not read file: " + file);
-		}
-	}
-
-	private void writeByteArrayToFile(File file, byte[] byteArray) {
-		try {
-			FileUtils.writeByteArrayToFile(file, byteArray);
-			LOG.debug("Written file: {}", file);
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			throw new FileReadWriteExcpetion("Could not write file: " + file);
-		}
-	}
-
-	private BinaryImageData readToBinaryImageData(String imageKey, File imageFile, File thumbFile) {
-		byte[] imageBytes = readToByteArray(imageFile);
-		byte[] thumbBytes = readToByteArray(thumbFile);
-		return new BinaryImageData(imageKey, imageBytes, thumbBytes);
-	}
+    private BinaryImageData readToBinaryImageData(String imageKey, File imageFile, File thumbFile) {
+        byte[] imageBytes = readToByteArray(imageFile);
+        byte[] thumbBytes = readToByteArray(thumbFile);
+        return new BinaryImageData(imageKey, imageBytes, thumbBytes);
+    }
 
 }

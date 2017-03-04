@@ -66,6 +66,14 @@ public class FredbetProperties {
 	 * Password used if the user password has been reset.
 	 */
 	private String passwordForReset;
+	
+	private String accessKey;
+	
+	private String secretAccessKey;
+	
+	private String region;
+	
+	private String bucket;
 
 	public String getDatabaseUrl() {
 		return databaseUrl;
@@ -161,6 +169,38 @@ public class FredbetProperties {
 
     public void setPasswordForReset(String passwordForReset) {
         this.passwordForReset = passwordForReset;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String getSecretAccessKey() {
+        return secretAccessKey;
+    }
+
+    public void setSecretAccessKey(String secretAccessKey) {
+        this.secretAccessKey = secretAccessKey;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
     }
 
   

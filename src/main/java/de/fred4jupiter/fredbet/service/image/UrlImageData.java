@@ -1,5 +1,12 @@
 package de.fred4jupiter.fredbet.service.image;
 
+/**
+ * @deprecated not used
+ * 
+ * @author michael
+ *
+ */
+@Deprecated
 public class UrlImageData implements ImageData {
 
 	private String fileUrl;
