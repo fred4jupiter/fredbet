@@ -19,6 +19,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Storing images of the image gallery in file system.
+ * 
+ * @author michael
+ *
+ */
 public class FilesystemImageLocationService implements ImageLocationService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationService.class);

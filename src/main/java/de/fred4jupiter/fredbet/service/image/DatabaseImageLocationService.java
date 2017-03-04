@@ -7,6 +7,12 @@ import java.util.stream.Collectors;
 import de.fred4jupiter.fredbet.domain.ImageBinary;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
 
+/**
+ * Storing images of the image gallery in database.
+ * 
+ * @author michael
+ *
+ */
 public class DatabaseImageLocationService implements ImageLocationService {
 
 	private final ImageBinaryRepository imageBinaryRepository;
