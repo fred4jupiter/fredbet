@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
  * @author michael
  *
  */
-public class FilesystemImageLocationService implements ImageLocationService {
+public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 
-	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationStrategy.class);
 
 	private static final String THUMBNAIL_PREFIX = "TN_";
 
@@ -35,11 +35,11 @@ public class FilesystemImageLocationService implements ImageLocationService {
 
 	private final String basePath;
 
-	public FilesystemImageLocationService() {
+	public FilesystemImageLocationStrategy() {
 		this(null);
 	}
 
-	public FilesystemImageLocationService(String basePath) {
+	public FilesystemImageLocationStrategy(String basePath) {
 		if (StringUtils.isBlank(basePath)) {
 			this.basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet_images";
 		} else {

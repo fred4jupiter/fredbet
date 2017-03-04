@@ -8,10 +8,16 @@ import org.springframework.context.annotation.Configuration;
 
 import de.fred4jupiter.fredbet.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
-import de.fred4jupiter.fredbet.service.image.DatabaseImageLocationService;
-import de.fred4jupiter.fredbet.service.image.FilesystemImageLocationService;
-import de.fred4jupiter.fredbet.service.image.ImageLocationService;
+import de.fred4jupiter.fredbet.service.image.DatabaseImageLocationStrategy;
+import de.fred4jupiter.fredbet.service.image.FilesystemImageLocationStrategy;
+import de.fred4jupiter.fredbet.service.image.ImageLocationStrategy;
 
+/**
+ * Auto configures the beans in repect to their configuration in the config properties.
+ * 
+ * @author michael
+ *
+ */
 @Configuration
 public class ImageLocationAutoConfiguration {
 
@@ -19,14 +25,14 @@ public class ImageLocationAutoConfiguration {
 
     @ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "file-system", matchIfMissing = true)
     @Bean
-    public ImageLocationService filesystemImageLocationService(FredbetProperties fredbetProperties) {
-        return new FilesystemImageLocationService(fredbetProperties.getImageFileSytemBaseFolder());
+    public ImageLocationStrategy filesystemImageLocationService(FredbetProperties fredbetProperties) {
+        return new FilesystemImageLocationStrategy(fredbetProperties.getImageFileSytemBaseFolder());
     }
 
     @ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "database", matchIfMissing = false)
     @Bean
-    public ImageLocationService databaseImageLocationService(ImageBinaryRepository imageBinaryRepository) {
+    public ImageLocationStrategy databaseImageLocationService(ImageBinaryRepository imageBinaryRepository) {
         LOG.info("Storing images in database.");
-        return new DatabaseImageLocationService(imageBinaryRepository);
+        return new DatabaseImageLocationStrategy(imageBinaryRepository);
     }
 }

@@ -29,7 +29,7 @@ public class DownloadService {
 	private ImageMetaDataRepository imageMetaDataRepository;
 
 	@Autowired
-	private ImageLocationService imageLocationService;
+	private ImageLocationStrategy imageLocationService;
 
 	public byte[] downloadAllImagesAsZipFile() {
 		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();

@@ -33,7 +33,7 @@ public class ImageAdministrationService {
 	private ImageResizingService imageResizingService;
 
 	@Autowired
-	private ImageLocationService imageLocationService;
+	private ImageLocationStrategy imageLocationService;
 
 	@Autowired
 	private ImageKeyGenerator imageKeyGenerator;

@@ -13,11 +13,11 @@ import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
  * @author michael
  *
  */
-public class DatabaseImageLocationService implements ImageLocationService {
+public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 
 	private final ImageBinaryRepository imageBinaryRepository;
 
-	public DatabaseImageLocationService(ImageBinaryRepository imageBinaryRepository) {
+	public DatabaseImageLocationStrategy(ImageBinaryRepository imageBinaryRepository) {
 		super();
 		this.imageBinaryRepository = imageBinaryRepository;
 	}

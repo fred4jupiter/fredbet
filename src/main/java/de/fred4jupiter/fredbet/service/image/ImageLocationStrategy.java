@@ -8,7 +8,7 @@ import java.util.List;
  * @author michael
  *
  */
-public interface ImageLocationService {
+public interface ImageLocationStrategy {
 
 	void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary);
 
