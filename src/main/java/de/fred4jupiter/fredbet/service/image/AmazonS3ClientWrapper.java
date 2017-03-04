@@ -15,6 +15,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.transfer.TransferManager;
 
@@ -61,6 +62,16 @@ public class AmazonS3ClientWrapper {
 
         try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
             transferManager.upload(bucketName, key, byteIn, objectMetadata);
+        }
+    }
+    
+    public void uploadFile(String key, byte[] fileContent, String contentType) throws IOException {
+        try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength(fileContent.length);
+            meta.setContentType(contentType);
+            this.amazonS3.putObject(bucketName, key, byteIn, meta);
+            this.amazonS3.setObjectAcl(bucketName, key, CannedAccessControlList.PublicRead);
         }
     }
 

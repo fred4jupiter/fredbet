@@ -24,6 +24,7 @@
 	<loggers>
 		<logger name="org.springframework" level="WARN" />
 		<logger name="org.springframework.security" level="WARN" />
+		<logger name="com.amazonaws" level="DEBUG" />
 
 		<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
 

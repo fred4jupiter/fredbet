@@ -13,155 +13,150 @@ import de.fred4jupiter.fredbet.domain.Country;
 @ConfigurationProperties(prefix = "fredbet")
 public class FredbetProperties {
 
-	/**
-	 * Creates demo data with additional users and matches.
-	 */
-	private boolean createDemoData;
+    /**
+     * Creates demo data with additional users and matches.
+     */
+    private boolean createDemoData;
 
-	private String databaseUrl;
+    private String databaseUrl;
 
-	private String databaseUsername;
+    private String databaseUsername;
 
-	private String databasePassword;
+    private String databasePassword;
 
-	/**
-	 * Adds or removes the navigation entry for demo data creation in
-	 * administration menu.
-	 */
-	private boolean enableDemoDataCreationNavigationEntry;
+    /**
+     * Adds or removes the navigation entry for demo data creation in
+     * administration menu.
+     */
+    private boolean enableDemoDataCreationNavigationEntry;
 
-	public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
+    public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
-	/**
-	 * Sum points per user for selected country that will be shown in points
-	 * statistics.
-	 */
-	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
+    /**
+     * Sum points per user for selected country that will be shown in points
+     * statistics.
+     */
+    private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
 
-	public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
+    public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
 
-	private DatabaseType databaseType = DEFAULT_DB_TYPE;
+    private DatabaseType databaseType = DEFAULT_DB_TYPE;
 
-	/**
-	 * Image size of the generated thumbnails.
-	 */
-	private int thumbnailSize;
+    /**
+     * Image size of the generated thumbnails.
+     */
+    private int thumbnailSize;
 
-	/**
-	 * Image size for the uploaded images.
-	 */
-	private int imageSize;
+    /**
+     * Image size for the uploaded images.
+     */
+    private int imageSize;
 
-	/**
-	 * Selection of possible image storage locations.
-	 */
-	private ImageLocation imageLocation;
-	
-	/**
-	 * Path in file system to store images in case of image location is set to 'file-system'
-	 */
-	private String imageFileSytemBaseFolder;
-	
-	/**
-	 * Password used if the user password has been reset.
-	 */
-	private String passwordForReset;
-	
-	private String accessKey;
-	
-	private String secretAccessKey;
-	
-	private String region;
-	
-	private String bucket;
+    /**
+     * Selection of possible image storage locations.
+     */
+    private ImageLocation imageLocation;
 
-	public String getDatabaseUrl() {
-		return databaseUrl;
-	}
+    /**
+     * Path in file system to store images in case of image location is set to
+     * 'file-system'
+     */
+    private String imageFileSytemBaseFolder;
 
-	public void setDatabaseUrl(String databaseUrl) {
-		this.databaseUrl = databaseUrl;
-	}
+    /**
+     * Password used if the user password has been reset.
+     */
+    private String passwordForReset;
 
-	public String getDatabaseUsername() {
-		return databaseUsername;
-	}
+    private String bucket;
 
-	public void setDatabaseUsername(String databaseUsername) {
-		this.databaseUsername = databaseUsername;
-	}
+    public String getDatabaseUrl() {
+        return databaseUrl;
+    }
 
-	public String getDatabasePassword() {
-		return databasePassword;
-	}
+    public void setDatabaseUrl(String databaseUrl) {
+        this.databaseUrl = databaseUrl;
+    }
 
-	public void setDatabasePassword(String databasePassword) {
-		this.databasePassword = databasePassword;
-	}
+    public String getDatabaseUsername() {
+        return databaseUsername;
+    }
 
-	public boolean isCreateDemoData() {
-		return createDemoData;
-	}
+    public void setDatabaseUsername(String databaseUsername) {
+        this.databaseUsername = databaseUsername;
+    }
 
-	public void setCreateDemoData(boolean createDemoData) {
-		this.createDemoData = createDemoData;
-	}
+    public String getDatabasePassword() {
+        return databasePassword;
+    }
 
-	public boolean isEnableDemoDataCreationNavigationEntry() {
-		return enableDemoDataCreationNavigationEntry;
-	}
+    public void setDatabasePassword(String databasePassword) {
+        this.databasePassword = databasePassword;
+    }
 
-	public void setEnableDemoDataCreationNavigationEntry(boolean enableDemoDataCreationNavigationEntry) {
-		this.enableDemoDataCreationNavigationEntry = enableDemoDataCreationNavigationEntry;
-	}
+    public boolean isCreateDemoData() {
+        return createDemoData;
+    }
 
-	public Country getFavouriteCountry() {
-		return favouriteCountry;
-	}
+    public void setCreateDemoData(boolean createDemoData) {
+        this.createDemoData = createDemoData;
+    }
 
-	public void setFavouriteCountry(Country favouriteCountry) {
-		this.favouriteCountry = favouriteCountry;
-	}
+    public boolean isEnableDemoDataCreationNavigationEntry() {
+        return enableDemoDataCreationNavigationEntry;
+    }
 
-	public int getThumbnailSize() {
-		return thumbnailSize;
-	}
+    public void setEnableDemoDataCreationNavigationEntry(boolean enableDemoDataCreationNavigationEntry) {
+        this.enableDemoDataCreationNavigationEntry = enableDemoDataCreationNavigationEntry;
+    }
 
-	public void setThumbnailSize(int thumbnailSize) {
-		this.thumbnailSize = thumbnailSize;
-	}
+    public Country getFavouriteCountry() {
+        return favouriteCountry;
+    }
 
-	public int getImageSize() {
-		return imageSize;
-	}
+    public void setFavouriteCountry(Country favouriteCountry) {
+        this.favouriteCountry = favouriteCountry;
+    }
 
-	public void setImageSize(int imageSize) {
-		this.imageSize = imageSize;
-	}
+    public int getThumbnailSize() {
+        return thumbnailSize;
+    }
 
-	public DatabaseType getDatabaseType() {
-		return databaseType;
-	}
+    public void setThumbnailSize(int thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
+    }
 
-	public void setDatabaseType(DatabaseType databaseType) {
-		this.databaseType = databaseType;
-	}
+    public int getImageSize() {
+        return imageSize;
+    }
 
-	public ImageLocation getImageLocation() {
-		return imageLocation;
-	}
+    public void setImageSize(int imageSize) {
+        this.imageSize = imageSize;
+    }
 
-	public void setImageLocation(ImageLocation imageLocation) {
-		this.imageLocation = imageLocation;
-	}
+    public DatabaseType getDatabaseType() {
+        return databaseType;
+    }
 
-	public String getImageFileSytemBaseFolder() {
-		return imageFileSytemBaseFolder;
-	}
+    public void setDatabaseType(DatabaseType databaseType) {
+        this.databaseType = databaseType;
+    }
 
-	public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
-		this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
-	}
+    public ImageLocation getImageLocation() {
+        return imageLocation;
+    }
+
+    public void setImageLocation(ImageLocation imageLocation) {
+        this.imageLocation = imageLocation;
+    }
+
+    public String getImageFileSytemBaseFolder() {
+        return imageFileSytemBaseFolder;
+    }
+
+    public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
+        this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
+    }
 
     public String getPasswordForReset() {
         return passwordForReset;
@@ -171,30 +166,6 @@ public class FredbetProperties {
         this.passwordForReset = passwordForReset;
     }
 
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public String getSecretAccessKey() {
-        return secretAccessKey;
-    }
-
-    public void setSecretAccessKey(String secretAccessKey) {
-        this.secretAccessKey = secretAccessKey;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
     public String getBucket() {
         return bucket;
     }
@@ -202,7 +173,5 @@ public class FredbetProperties {
     public void setBucket(String bucket) {
         this.bucket = bucket;
     }
-
-  
 
 }
