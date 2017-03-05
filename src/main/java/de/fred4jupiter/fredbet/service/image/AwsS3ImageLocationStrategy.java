@@ -24,12 +24,8 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 
     @Override
     public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
-        try {
-            amazonS3ClientWrapper.uploadFile(createKeyForImage(imageKey, imageGroup), imageBinary);
-            amazonS3ClientWrapper.uploadFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+    	amazonS3ClientWrapper.uploadFile(createKeyForImage(imageKey, imageGroup), imageBinary);
+        amazonS3ClientWrapper.uploadFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
     }
 
     private String createKeyForThumbnail(String imageKey, String imageGroup) {
@@ -42,14 +38,9 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 
     @Override
     public ImageData getImageDataByKey(String imageKey, String imageGroup) {
-        try {
-            byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroup));
-            byte[] thumbByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroup));
-            return new BinaryImageData(imageKey, imageByte, thumbByte);
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-            return null;
-        }
+    	byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroup));
+        byte[] thumbByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroup));
+        return new BinaryImageData(imageKey, imageByte, thumbByte);
     }
 
     @Override
