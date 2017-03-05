@@ -7,11 +7,9 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
 	<aws-context:context-credentials>
-		<aws-context:simple-credentials access-key="${cloud.aws.credentials.accessKey}" secret-key="${cloud.aws.credentials.secretKey}" />
+		<aws-context:simple-credentials access-key="${access.key}" secret-key="${secret.key}"/>
 	</aws-context:context-credentials>
 	
-	<context:property-placeholder location="file:///d:/Temp2/access.properties" />
-
 	<aws-context:context-resource-loader />
 
 	<aws-context:context-region region="eu-central-1" />
