@@ -126,8 +126,7 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	private String toImageKey(String fileName) {
-		String fileNameWithoutExtension = FilenameUtils.removeExtension(fileName);
-		return fileNameWithoutExtension.substring(3);
+		return FilenameUtils.removeExtension(fileName).substring(3);
 	}
 
 	private byte[] readToByteArray(File file) {
