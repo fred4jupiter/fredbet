@@ -18,7 +18,6 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
-import de.fred4jupiter.fredbet.web.filter.HeaderLogHandlerInterceptor;
 
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
@@ -36,7 +35,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		// registry.addInterceptor(new ExecutionTimeInterceptor());
 
 		// for logging request header
-		registry.addInterceptor(new HeaderLogHandlerInterceptor());
+		// registry.addInterceptor(new HeaderLogHandlerInterceptor());
 	}
 
 	@Bean

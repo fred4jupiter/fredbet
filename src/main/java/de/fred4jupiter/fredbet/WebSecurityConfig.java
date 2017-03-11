@@ -69,6 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// we do not use CSRF in this app (by now)
 		http.csrf().disable();
+		
+		// disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
+		http.headers().cacheControl().disable();
 
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			// this is for the embedded h2 console
