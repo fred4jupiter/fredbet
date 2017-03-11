@@ -87,8 +87,7 @@ public class ImageGalleryController {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS)).eTag(etag)
-				.header("Content-Type", MediaType.IMAGE_JPEG_VALUE).body(binaryImage.getImageBinary());
+		return ResponseEntity.ok().eTag(etag).header("Content-Type", MediaType.IMAGE_JPEG_VALUE).body(binaryImage.getImageBinary());
 	}
 
 	@RequestMapping(value = "/download/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
