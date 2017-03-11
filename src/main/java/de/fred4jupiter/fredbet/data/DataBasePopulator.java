@@ -41,7 +41,7 @@ public class DataBasePopulator {
 
 	private static final String DEFAULT_PASSWORD_ADMIN_USER = FredbetConstants.TECHNICAL_USERNAME;
 
-	private static final Logger log = LoggerFactory.getLogger(DataBasePopulator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
 
 	@Autowired
 	private MatchService matchService;
@@ -86,11 +86,11 @@ public class DataBasePopulator {
 	 */
 	@Transactional
 	public void createEM2016Matches() {
-		log.info("createEM2016Matches: deleting all existend bets and matches ...");
+		LOG.info("createEM2016Matches: deleting all existend bets and matches ...");
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
 
-		log.info("creating EM 2016 matches ...");
+		LOG.info("creating EM 2016 matches ...");
 		createGroupA();
 		createGroupB();
 		createGroupC();
@@ -118,7 +118,7 @@ public class DataBasePopulator {
 
 	@Transactional
 	public void createDemoBetsForAllUsers() {
-		log.info("createDemoBetsForAllUsers...");
+		LOG.info("createDemoBetsForAllUsers...");
 		bettingService.deleteAllBets();
 
 		List<Match> allMatches = matchService.findAll();
@@ -138,7 +138,7 @@ public class DataBasePopulator {
 
 	@Transactional
 	public void createDemoResultsForAllMatches() {
-		log.info("createDemoResultsForAllUsers...");
+		LOG.info("createDemoResultsForAllUsers...");
 
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
@@ -169,7 +169,7 @@ public class DataBasePopulator {
 			Locale locale = LocaleContextHolder.getLocale();
 			infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, locale);
 		} catch (IOException e) {
-			log.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -182,7 +182,7 @@ public class DataBasePopulator {
 	}
 
 	private void createAdditionalUsers() {
-		log.info("createAdditionalUsers: creating additional demo users ...");
+		LOG.info("createAdditionalUsers: creating additional demo users ...");
 
 		for (int i = 1; i <= 5; i++) {
 			saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i)
@@ -364,7 +364,7 @@ public class DataBasePopulator {
 	}
 
 	private void createDefaultUsers() {
-		log.info("createDefaultUsers: creating default users ...");
+		LOG.info("createDefaultUsers: creating default users ...");
 
 		// admin user will also be used for remote shell login
 		saveIfNotPresent(AppUserBuilder.create()
@@ -379,7 +379,7 @@ public class DataBasePopulator {
 		try {
 			userService.insertAppUser(appUser);
 		} catch (UserAlreadyExistsException e) {
-			log.info(e.getMessage());
+			LOG.debug(e.getMessage());
 		}
 	}
 

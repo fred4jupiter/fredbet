@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -30,11 +32,13 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/gallery")
 public class ImageGalleryController {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ImageGalleryController.class);
+
 	@Autowired
 	private MessageUtil messageUtil;
 
 	@Autowired
-	private ImageAdministrationService imageUploadService;
+	private ImageAdministrationService imageAdministrationService;
 
 	@Autowired
 	private DownloadService downloadService;
@@ -43,7 +47,7 @@ public class ImageGalleryController {
 	public ModelAndView showGallery(ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView("image/gallery");
 
-		List<ImageCommand> images = imageUploadService.fetchAllImages();
+		List<ImageCommand> images = imageAdministrationService.fetchAllImages();
 
 		Map<String, List<ImageCommand>> grouped = images.stream().collect(Collectors.groupingBy(ImageCommand::getGalleryGroup));
 
@@ -58,27 +62,26 @@ public class ImageGalleryController {
 
 	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> showImage(@PathVariable("id") Long imageId, WebRequest webRequest) {
-		return createResponseEntityForImageId(imageId, webRequest, true);
+		return createResponseEntityForImageId(imageId, webRequest,
+				imageAdministrationService -> imageAdministrationService.loadImageById(imageId));
 	}
 
 	@RequestMapping(value = "/showthumb/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> showThumbnail(@PathVariable("id") Long imageId, WebRequest webRequest) {
-		return createResponseEntityForImageId(imageId, webRequest, false);
+		return createResponseEntityForImageId(imageId, webRequest,
+				imageAdministrationService -> imageAdministrationService.loadThumbnailById(imageId));
 	}
 
-	private ResponseEntity<byte[]> createResponseEntityForImageId(Long imageId, WebRequest webRequest, boolean imageOnly) {
+	private ResponseEntity<byte[]> createResponseEntityForImageId(Long imageId, WebRequest webRequest,
+			ImageLoadingCallback imageLoadingCallback) {
 		final String etag = "" + imageId;
 		boolean notModified = webRequest.checkNotModified(etag);
 		if (notModified) {
+			LOG.debug("image with id={} and etag={} has not been modified.", imageId, etag);
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS)).eTag(etag).body(null);
 		}
 
-		BinaryImage binaryImage = null;
-		if (imageOnly) {
-			binaryImage = imageUploadService.loadImageById(imageId);
-		} else {
-			binaryImage = imageUploadService.loadThumbnailById(imageId);
-		}
+		final BinaryImage binaryImage = imageLoadingCallback.loadImage(imageAdministrationService);
 
 		if (binaryImage == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
@@ -98,5 +101,11 @@ public class ImageGalleryController {
 
 		return ResponseEntity.ok().header("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE)
 				.header("Content-Disposition", "inline; filename=\"" + zipFileName + "\"").body(zipFile);
+	}
+
+	@FunctionalInterface
+	interface ImageLoadingCallback {
+
+		BinaryImage loadImage(ImageAdministrationService imageAdministrationService);
 	}
 }
