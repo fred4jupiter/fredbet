@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -75,7 +76,7 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 		final Map<String, byte[]> imagesMap = new HashMap<>();
 
 		for (Resource resource : allImagesInBucket) {
-			String filename = resource.getFilename();
+			String filename = extractFileName(resource);
 			String imageKey = toImageKey(filename);
 			byte[] fileContent = toByteArray(resource);
 			if (fileContent != null && fileContent.length > 0) {
@@ -90,6 +91,15 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 			resultList.add(new BinaryImage(imageKey, imagesMap.get(imageKey)));
 		}
 		return resultList;
+	}
+
+	private String extractFileName(Resource resource) {
+		String[] splitted = StringUtils.split(resource.getFilename(), "/");
+		if (splitted.length == 0) {
+			return "";
+		}
+
+		return splitted[splitted.length - 1];
 	}
 
 	@Override
