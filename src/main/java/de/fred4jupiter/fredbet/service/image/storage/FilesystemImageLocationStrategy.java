@@ -39,7 +39,7 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 
 	public FilesystemImageLocationStrategy(String basePath) {
 		if (StringUtils.isBlank(basePath)) {
-			this.basePath = System.getProperty("java.io.tmpdir") + File.separator + "fredbet_images";
+			this.basePath = System.getProperty("user.home") + File.separator + "fredbet_images";
 		} else {
 			this.basePath = basePath;
 		}
