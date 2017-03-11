@@ -61,40 +61,40 @@ public class AmazonS3ClientWrapper {
 		this.amazonS3.deleteObject(bucketName, key);
 	}
 
-//	public void uploadFile(String key, byte[] fileContent)  {
-//		TransferManager transferManager = new TransferManager(this.amazonS3);
-//
-//		ObjectMetadata objectMetadata = new ObjectMetadata();
-//		objectMetadata.setContentLength(fileContent.length);
-//
-//		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
-//			transferManager.upload(bucketName, key, byteIn, objectMetadata);
-//		}
-//		catch (IOException e) {
-//			throw new AwsS3AccessException(e.getMessage(), e);
-//		}
-//	}
+	// public void uploadFile(String key, byte[] fileContent) {
+	// TransferManager transferManager = new TransferManager(this.amazonS3);
+	//
+	// ObjectMetadata objectMetadata = new ObjectMetadata();
+	// objectMetadata.setContentLength(fileContent.length);
+	//
+	// try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent))
+	// {
+	// transferManager.upload(bucketName, key, byteIn, objectMetadata);
+	// }
+	// catch (IOException e) {
+	// throw new AwsS3AccessException(e.getMessage(), e);
+	// }
+	// }
 
 	public void uploadImageFile(String key, byte[] fileContent) {
 		uploadFile(key, fileContent, "image/jpeg");
 	}
-	
-	public void uploadFile(String key, byte[] fileContent, String contentType)  {
+
+	public void uploadFile(String key, byte[] fileContent, String contentType) {
 		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentLength(fileContent.length);
 			meta.setContentType(contentType);
 			this.amazonS3.putObject(bucketName, key, byteIn, meta);
 			this.amazonS3.setObjectAcl(bucketName, key, CannedAccessControlList.PublicRead);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new AwsS3AccessException(e.getMessage(), e);
 		}
 	}
 
-	public List<Resource> readAllImagesInBucket() {
+	public List<Resource> readAllImagesInBucketWithPrefix(String prefix) {
 		try {
-			Resource[] resources = this.resourcePatternResolver.getResources(S3_PREFIX + bucketName + "/**/*.jpg");
+			Resource[] resources = this.resourcePatternResolver.getResources(S3_PREFIX + bucketName + "/" + prefix + "*");
 			return resources != null ? Arrays.asList(resources) : Collections.emptyList();
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);

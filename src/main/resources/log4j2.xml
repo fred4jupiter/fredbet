@@ -25,6 +25,7 @@
 		<logger name="org.springframework" level="WARN" />
 		<logger name="org.springframework.security" level="WARN" />
 		<logger name="com.amazonaws" level="INFO" />
+		<logger name="org.hibernate" level="WARN" />
 
 		<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
 
