@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
-import de.fred4jupiter.fredbet.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 
 class BetRepositoryImpl implements BetRepositoryCustom {
 

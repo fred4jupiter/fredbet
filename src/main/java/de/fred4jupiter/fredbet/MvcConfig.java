@@ -16,6 +16,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
+import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 
 @Configuration

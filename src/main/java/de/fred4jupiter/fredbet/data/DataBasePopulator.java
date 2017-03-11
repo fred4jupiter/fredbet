@@ -18,15 +18,15 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.fred4jupiter.fredbet.FredBetProfile;
-import de.fred4jupiter.fredbet.FredbetConstants;
-import de.fred4jupiter.fredbet.FredbetProperties;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.props.FredBetProfile;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.InfoService;

@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 
 @Configuration

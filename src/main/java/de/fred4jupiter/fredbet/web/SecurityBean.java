@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import de.fred4jupiter.fredbet.FredbetProperties;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 
 @Component
 public class SecurityBean {

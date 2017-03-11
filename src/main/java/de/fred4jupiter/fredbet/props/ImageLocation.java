@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet;
+package de.fred4jupiter.fredbet.props;
 
 /**
  * Options for storing the gallery images to.

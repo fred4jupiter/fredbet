@@ -20,7 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fred4jupiter.fredbet.FredbetProperties;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.service.image.ImageResizingService;
 
 @RunWith(MockitoJUnitRunner.class)

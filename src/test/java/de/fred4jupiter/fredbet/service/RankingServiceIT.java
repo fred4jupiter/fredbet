@@ -14,9 +14,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.FredbetConstants;
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 
 public class RankingServiceIT extends AbstractTransactionalIntegrationTest {

@@ -16,6 +16,9 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import de.fred4jupiter.fredbet.props.DatabaseType;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
+
 /**
  * Main application start.
  * 
@@ -48,7 +51,7 @@ public class Application {
 
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource(FredbetProperties fredbetProperties, DataSourceProperties properties) {
-		HikariConfig config = new HikariConfig();
+		final HikariConfig config = new HikariConfig();
 		config.setPoolName("FredBetCP");
 		config.setConnectionTestQuery("SELECT 1");
 		config.setJdbcUrl(fredbetProperties.getDatabaseUrl());
