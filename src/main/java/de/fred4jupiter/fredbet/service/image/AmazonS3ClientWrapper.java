@@ -19,6 +19,12 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.transfer.TransferManager;
 
+/**
+ * Wrapper class for the native Amazon S3 client.
+ * 
+ * @author michael
+ *
+ */
 public class AmazonS3ClientWrapper {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ClientWrapper.class);

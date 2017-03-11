@@ -54,7 +54,7 @@ public class ImageGalleryConfig {
 	@Bean
 	public AmazonS3ClientWrapper amazonS3ClientWrapper(AmazonS3 amazonS3, ResourceLoader resourceLoader,
 			ResourcePatternResolver resourcePatternResolver, FredbetProperties fredbetProperties) {
-		return new AmazonS3ClientWrapper(amazonS3, fredbetProperties.getBucket(), resourceLoader, resourcePatternResolver);
+		return new AmazonS3ClientWrapper(amazonS3, fredbetProperties.getAwsS3bucketName(), resourceLoader, resourcePatternResolver);
 	}
 
 }

@@ -36,25 +36,25 @@ public class DownloadService {
             return null;
         }
 
-        List<ImageData> allImages = imageLocationService.findAllImages();
+        List<BinaryImage> allImages = imageLocationService.findAllImages();
         if (allImages.isEmpty()) {
             return null;
         }
 
         final List<DownloadDto> downloadDtos = new ArrayList<>();
 
-        Map<String, ImageData> binaryMap = convertToMap(allImages);
+        Map<String, BinaryImage> binaryMap = convertToMap(allImages);
 
         for (ImageMetaData imageMetaData : imageMetaDataList) {
-            ImageData imageData = binaryMap.get(imageMetaData.getImageKey());
-            downloadDtos.add(new DownloadDto(imageMetaData.getImageGroup().getName(), imageData.getBinary()));
+        	BinaryImage binaryImage = binaryMap.get(imageMetaData.getImageKey());
+            downloadDtos.add(new DownloadDto(imageMetaData.getImageGroup().getName(), binaryImage.getImageBinary()));
         }
 
         return compressToZipFile(downloadDtos);
     }
 
-    private Map<String, ImageData> convertToMap(List<ImageData> allImages) {
-        Map<String, ImageData> resultMap = new HashMap<>();
+    private Map<String, BinaryImage> convertToMap(List<BinaryImage> allImages) {
+        Map<String, BinaryImage> resultMap = new HashMap<>();
         allImages.forEach(imageData -> resultMap.put(imageData.getKey(), imageData));
         return resultMap;
     }

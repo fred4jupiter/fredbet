@@ -86,13 +86,23 @@ public class ImageAdministrationService {
 		return imageCommand;
 	}
 
-	public ImageData loadImageById(Long imageId) {
+	public BinaryImage loadImageById(Long imageId) {
 		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
 		if (imageMetaData == null) {
 			return null;
 		}
 
-		ImageData imageData = imageLocationService.getImageDataByKey(imageMetaData.getImageKey(),
+		BinaryImage imageData = imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
+		return imageData;
+	}
+
+	public BinaryImage loadThumbnailById(Long imageId) {
+		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
+		if (imageMetaData == null) {
+			return null;
+		}
+
+		BinaryImage imageData = imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(),
 				imageMetaData.getImageGroup().getName());
 		return imageData;
 	}
@@ -108,9 +118,4 @@ public class ImageAdministrationService {
 		imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
-	@FunctionalInterface
-	public interface ImageCallback {
-
-		void doWithImage(ImageMetaData imageMetaData, ImageData imageData);
-	}
 }

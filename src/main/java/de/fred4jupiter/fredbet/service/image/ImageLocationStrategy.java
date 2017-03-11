@@ -10,15 +10,28 @@ import java.util.List;
  */
 public interface ImageLocationStrategy {
 
-    String THUMBNAIL_PREFIX = "TN_";
+	String THUMBNAIL_PREFIX = "TN_";
 
-    String IMAGE_PREFIX = "IM_";
-    
+	String IMAGE_PREFIX = "IM_";
+
 	void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary);
 
-	ImageData getImageDataByKey(String imageKey, String imageGroup);
+	/**
+	 * For downloading all images as zip file.
+	 * 
+	 * @return
+	 */
+	List<BinaryImage> findAllImages();
 
-	List<ImageData> findAllImages();
-
+	/**
+	 * Delete image and thumbnail by given key.
+	 * 
+	 * @param imageKey
+	 * @param imageGroup
+	 */
 	void deleteImage(String imageKey, String imageGroup);
+
+	BinaryImage getImageByKey(String imageKey, String imageGroup);
+
+	BinaryImage getThumbnailByKey(String imageKey, String imageGroup);
 }

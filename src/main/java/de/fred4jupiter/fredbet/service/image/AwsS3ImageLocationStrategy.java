@@ -14,86 +14,88 @@ import org.springframework.core.io.Resource;
 
 public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AwsS3ImageLocationStrategy.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AwsS3ImageLocationStrategy.class);
 
-    private final AmazonS3ClientWrapper amazonS3ClientWrapper;
+	private final AmazonS3ClientWrapper amazonS3ClientWrapper;
 
-    public AwsS3ImageLocationStrategy(AmazonS3ClientWrapper amazonS3ClientWrapper) {
-        this.amazonS3ClientWrapper = amazonS3ClientWrapper;
-    }
+	public AwsS3ImageLocationStrategy(AmazonS3ClientWrapper amazonS3ClientWrapper) {
+		this.amazonS3ClientWrapper = amazonS3ClientWrapper;
+	}
 
-    @Override
-    public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
-    	amazonS3ClientWrapper.uploadFile(createKeyForImage(imageKey, imageGroup), imageBinary);
-        amazonS3ClientWrapper.uploadFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
-    }
+	@Override
+	public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
+		amazonS3ClientWrapper.uploadFile(createKeyForImage(imageKey, imageGroup), imageBinary);
+		amazonS3ClientWrapper.uploadFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
+	}
 
-    private String createKeyForThumbnail(String imageKey, String imageGroup) {
-        return imageGroup + "/" + THUMBNAIL_PREFIX + imageKey;
-    }
+	private String createKeyForThumbnail(String imageKey, String imageGroup) {
+		return imageGroup + "/" + THUMBNAIL_PREFIX + imageKey;
+	}
 
-    private String createKeyForImage(String imageKey, String imageGroup) {
-        return imageGroup + "/" + IMAGE_PREFIX + imageKey;
-    }
+	private String createKeyForImage(String imageKey, String imageGroup) {
+		return imageGroup + "/" + IMAGE_PREFIX + imageKey;
+	}
 
-    @Override
-    public ImageData getImageDataByKey(String imageKey, String imageGroup) {
-    	byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroup));
-        byte[] thumbByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroup));
-        return new BinaryImageData(imageKey, imageByte, thumbByte);
-    }
+	@Override
+	public BinaryImage getImageByKey(String imageKey, String imageGroup) {
+		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroup));
+		return new BinaryImage(imageKey, imageByte);
+	}
 
-    @Override
-    public List<ImageData> findAllImages() {
-        List<ImageData> resultList = new ArrayList<>();
+	@Override
+	public BinaryImage getThumbnailByKey(String imageKey, String imageGroup) {
+		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroup));
+		return new BinaryImage(imageKey, imageByte);
+	}
 
-        List<Resource> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucket();
+	@Override
+	public List<BinaryImage> findAllImages() {
+		List<BinaryImage> resultList = new ArrayList<>();
 
-        Map<String, byte[]> imagesMap = new HashMap<>();
-        Map<String, byte[]> thumbsMap = new HashMap<>();
+		List<Resource> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucket();
 
-        readImages(allImagesInBucket, imagesMap, thumbsMap);
+		Map<String, byte[]> imagesMap = new HashMap<>();
 
-        for (String imageKey : imagesMap.keySet()) {
-            resultList.add(new BinaryImageData(imageKey, imagesMap.get(imageKey), thumbsMap.get(imageKey)));
-        }
+		readImages(allImagesInBucket, imagesMap);
 
-        return resultList;
-    }
+		for (String imageKey : imagesMap.keySet()) {
+			resultList.add(new BinaryImage(imageKey, imagesMap.get(imageKey)));
+		}
 
-    private void readImages(List<Resource> allImagesInBucket, Map<String, byte[]> imagesMap, Map<String, byte[]> thumbsMap) {
-        for (Resource resource : allImagesInBucket) {
-            String filename = resource.getFilename();
-            String imageKey = toImageKey(filename);
-            byte[] fileContent = toByteArray(resource);
-            if (fileContent != null && fileContent.length > 0) {
-                if (filename.startsWith(IMAGE_PREFIX)) {
-                    imagesMap.put(imageKey, fileContent);
-                } else if (filename.startsWith(THUMBNAIL_PREFIX)) {
-                    thumbsMap.put(imageKey, fileContent);
-                }
-            }
-        }
-    }
+		return resultList;
+	}
 
-    private byte[] toByteArray(Resource resource) {
-        try {
-            return IOUtils.toByteArray(resource.getInputStream());
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-            return null;
-        }
-    }
+	private void readImages(List<Resource> allImagesInBucket, Map<String, byte[]> imagesMap) {
+		for (Resource resource : allImagesInBucket) {
+			String filename = resource.getFilename();
+			String imageKey = toImageKey(filename);
+			byte[] fileContent = toByteArray(resource);
+			if (fileContent != null && fileContent.length > 0) {
+				if (filename.startsWith(IMAGE_PREFIX)) {
+					imagesMap.put(imageKey, fileContent);
+				}
+			}
+		}
+	}
 
-    private String toImageKey(String fileName) {
-        String fileNameWithoutExtension = FilenameUtils.removeExtension(fileName);
-        return fileNameWithoutExtension.substring(3);
-    }
+	private byte[] toByteArray(Resource resource) {
+		try {
+			return IOUtils.toByteArray(resource.getInputStream());
+		} catch (IOException e) {
+			LOG.error(e.getMessage(), e);
+			return null;
+		}
+	}
 
-    @Override
-    public void deleteImage(String imageKey, String imageGroup) {
-        amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroup));
-        amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroup));
-    }
+	private String toImageKey(String fileName) {
+		String fileNameWithoutExtension = FilenameUtils.removeExtension(fileName);
+		return fileNameWithoutExtension.substring(3);
+	}
+
+	@Override
+	public void deleteImage(String imageKey, String imageGroup) {
+		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroup));
+		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroup));
+	}
 
 }

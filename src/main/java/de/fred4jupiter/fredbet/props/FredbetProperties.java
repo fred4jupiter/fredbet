@@ -68,7 +68,10 @@ public class FredbetProperties {
      */
     private String passwordForReset;
 
-    private String bucket;
+    /**
+     * The AWS S3 bucket name to use to store images in.
+     */
+    private String awsS3bucketName;
 
     public String getDatabaseUrl() {
         return databaseUrl;
@@ -166,12 +169,14 @@ public class FredbetProperties {
         this.passwordForReset = passwordForReset;
     }
 
-    public String getBucket() {
-        return bucket;
-    }
+	public String getAwsS3bucketName() {
+		return awsS3bucketName;
+	}
 
-    public void setBucket(String bucket) {
-        this.bucket = bucket;
-    }
+	public void setAwsS3bucketName(String awsS3bucketName) {
+		this.awsS3bucketName = awsS3bucketName;
+	}
+
+    
 
 }

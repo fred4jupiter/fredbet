@@ -29,7 +29,7 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public List<ImageData> findAllImages() {
+	public List<BinaryImage> findAllImages() {
 		List<ImageBinary> allImages = imageBinaryRepository.findAll();
 		if (allImages.isEmpty()) {
 			return Collections.emptyList();
@@ -38,13 +38,23 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public ImageData getImageDataByKey(String imageKey, String imageGroup) {
+	public BinaryImage getImageByKey(String imageKey, String imageGroup) {
 		ImageBinary imageBinary = imageBinaryRepository.findOne(imageKey);
 		if (imageBinary == null) {
 			return null;
 		}
 
-		return toImageData(imageBinary);
+		return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
+	}
+
+	@Override
+	public BinaryImage getThumbnailByKey(String imageKey, String imageGroup) {
+		ImageBinary imageBinary = imageBinaryRepository.findOne(imageKey);
+		if (imageBinary == null) {
+			return null;
+		}
+
+		return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
 	}
 
 	@Override
@@ -52,8 +62,8 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 		imageBinaryRepository.delete(imageKey);
 	}
 
-	private ImageData toImageData(ImageBinary imageBinary) {
-		return new BinaryImageData(imageBinary.getKey(), imageBinary.getImageBinary(),
-				imageBinary.getThumbImageBinary());
+	private BinaryImage toImageData(ImageBinary imageBinary) {
+		return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
 	}
+
 }
