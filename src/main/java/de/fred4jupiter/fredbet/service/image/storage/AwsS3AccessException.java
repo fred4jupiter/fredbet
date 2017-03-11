@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.image;
+package de.fred4jupiter.fredbet.service.image.storage;
 
 public class AwsS3AccessException extends RuntimeException {
 

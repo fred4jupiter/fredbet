@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.image;
+package de.fred4jupiter.fredbet.service.image.storage;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

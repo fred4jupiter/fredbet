@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.image;
+package de.fred4jupiter.fredbet.service.image.storage;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import de.fred4jupiter.fredbet.domain.ImageBinary;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 /**
  * Storing images of the image gallery in database.

@@ -14,6 +14,7 @@ import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.web.image.ImageCommand;
 import de.fred4jupiter.fredbet.web.image.Rotation;
 

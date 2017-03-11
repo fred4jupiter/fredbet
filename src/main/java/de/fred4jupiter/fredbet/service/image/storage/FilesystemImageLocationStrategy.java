@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.image;
+package de.fred4jupiter.fredbet.service.image.storage;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +18,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 /**
  * Storing images of the image gallery in file system.

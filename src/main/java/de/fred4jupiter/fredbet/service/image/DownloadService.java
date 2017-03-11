@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 
 @Service
 public class DownloadService {

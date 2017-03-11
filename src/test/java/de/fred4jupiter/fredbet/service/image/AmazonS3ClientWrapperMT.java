@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.service.image.storage.AmazonS3ClientWrapper;
 
 public class AmazonS3ClientWrapperMT extends AbstractIntegrationTest {
 

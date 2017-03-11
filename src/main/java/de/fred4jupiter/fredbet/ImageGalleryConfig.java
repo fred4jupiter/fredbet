@@ -12,11 +12,11 @@ import com.amazonaws.services.s3.AmazonS3;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
-import de.fred4jupiter.fredbet.service.image.AmazonS3ClientWrapper;
-import de.fred4jupiter.fredbet.service.image.AwsS3ImageLocationStrategy;
-import de.fred4jupiter.fredbet.service.image.DatabaseImageLocationStrategy;
-import de.fred4jupiter.fredbet.service.image.FilesystemImageLocationStrategy;
-import de.fred4jupiter.fredbet.service.image.ImageLocationStrategy;
+import de.fred4jupiter.fredbet.service.image.storage.AmazonS3ClientWrapper;
+import de.fred4jupiter.fredbet.service.image.storage.AwsS3ImageLocationStrategy;
+import de.fred4jupiter.fredbet.service.image.storage.DatabaseImageLocationStrategy;
+import de.fred4jupiter.fredbet.service.image.storage.FilesystemImageLocationStrategy;
+import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 
 /**
  * Auto configures the beans in repect to their configuration in the config

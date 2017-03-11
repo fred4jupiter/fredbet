@@ -1,6 +1,8 @@
-package de.fred4jupiter.fredbet.service.image;
+package de.fred4jupiter.fredbet.service.image.storage;
 
 import java.util.List;
+
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 /**
  * Locator strategy for maintaining image storage.

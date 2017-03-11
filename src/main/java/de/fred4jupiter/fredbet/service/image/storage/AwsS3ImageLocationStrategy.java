@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.image;
+package de.fred4jupiter.fredbet.service.image.storage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 
