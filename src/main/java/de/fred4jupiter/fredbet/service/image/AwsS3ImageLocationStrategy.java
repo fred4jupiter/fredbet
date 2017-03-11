@@ -24,8 +24,9 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 
 	@Override
 	public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
-		amazonS3ClientWrapper.uploadFile(createKeyForImage(imageKey, imageGroup), imageBinary);
-		amazonS3ClientWrapper.uploadFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
+		LOG.debug("saving image in S3. imageKey={}, imageGroup={}", imageKey, imageGroup);
+		amazonS3ClientWrapper.uploadImageFile(createKeyForImage(imageKey, imageGroup), imageBinary);
+		amazonS3ClientWrapper.uploadImageFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
 	}
 
 	private String createKeyForThumbnail(String imageKey, String imageGroup) {
@@ -38,18 +39,21 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 
 	@Override
 	public BinaryImage getImageByKey(String imageKey, String imageGroup) {
+		LOG.debug("loading image from S3. imageKey={}, imageGroup={}", imageKey, imageGroup);
 		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroup));
 		return new BinaryImage(imageKey, imageByte);
 	}
 
 	@Override
 	public BinaryImage getThumbnailByKey(String imageKey, String imageGroup) {
+		LOG.debug("loading thumbnail from S3. imageKey={}, imageGroup={}", imageKey, imageGroup);
 		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroup));
 		return new BinaryImage(imageKey, imageByte);
 	}
 
 	@Override
 	public List<BinaryImage> findAllImages() {
+		LOG.debug("loading all images from S3.");
 		List<BinaryImage> resultList = new ArrayList<>();
 
 		List<Resource> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucket();
@@ -65,6 +69,13 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 		return resultList;
 	}
 
+	@Override
+	public void deleteImage(String imageKey, String imageGroup) {
+		LOG.debug("deleteting image and thumbnail for imageKey={}, imageGroup={}", imageKey, imageGroup);
+		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroup));
+		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroup));
+	}
+	
 	private void readImages(List<Resource> allImagesInBucket, Map<String, byte[]> imagesMap) {
 		for (Resource resource : allImagesInBucket) {
 			String filename = resource.getFilename();
@@ -92,10 +103,6 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 		return fileNameWithoutExtension.substring(3);
 	}
 
-	@Override
-	public void deleteImage(String imageKey, String imageGroup) {
-		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroup));
-		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroup));
-	}
+	
 
 }

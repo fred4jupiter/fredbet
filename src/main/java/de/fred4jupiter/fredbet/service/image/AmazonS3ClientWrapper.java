@@ -17,7 +17,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.transfer.TransferManager;
 
 /**
  * Wrapper class for the native Amazon S3 client.
@@ -62,20 +61,24 @@ public class AmazonS3ClientWrapper {
 		this.amazonS3.deleteObject(bucketName, key);
 	}
 
-	public void uploadFile(String key, byte[] fileContent)  {
-		TransferManager transferManager = new TransferManager(this.amazonS3);
+//	public void uploadFile(String key, byte[] fileContent)  {
+//		TransferManager transferManager = new TransferManager(this.amazonS3);
+//
+//		ObjectMetadata objectMetadata = new ObjectMetadata();
+//		objectMetadata.setContentLength(fileContent.length);
+//
+//		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
+//			transferManager.upload(bucketName, key, byteIn, objectMetadata);
+//		}
+//		catch (IOException e) {
+//			throw new AwsS3AccessException(e.getMessage(), e);
+//		}
+//	}
 
-		ObjectMetadata objectMetadata = new ObjectMetadata();
-		objectMetadata.setContentLength(fileContent.length);
-
-		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
-			transferManager.upload(bucketName, key, byteIn, objectMetadata);
-		}
-		catch (IOException e) {
-			throw new AwsS3AccessException(e.getMessage(), e);
-		}
+	public void uploadImageFile(String key, byte[] fileContent) {
+		uploadFile(key, fileContent, "image/jpeg");
 	}
-
+	
 	public void uploadFile(String key, byte[] fileContent, String contentType)  {
 		try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent)) {
 			ObjectMetadata meta = new ObjectMetadata();
