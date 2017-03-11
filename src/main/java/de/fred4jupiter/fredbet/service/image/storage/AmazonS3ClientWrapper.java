@@ -61,21 +61,6 @@ public class AmazonS3ClientWrapper {
 		this.amazonS3.deleteObject(bucketName, key);
 	}
 
-	// public void uploadFile(String key, byte[] fileContent) {
-	// TransferManager transferManager = new TransferManager(this.amazonS3);
-	//
-	// ObjectMetadata objectMetadata = new ObjectMetadata();
-	// objectMetadata.setContentLength(fileContent.length);
-	//
-	// try (ByteArrayInputStream byteIn = new ByteArrayInputStream(fileContent))
-	// {
-	// transferManager.upload(bucketName, key, byteIn, objectMetadata);
-	// }
-	// catch (IOException e) {
-	// throw new AwsS3AccessException(e.getMessage(), e);
-	// }
-	// }
-
 	public void uploadImageFile(String key, byte[] fileContent) {
 		uploadFile(key, fileContent, "image/jpeg");
 	}
@@ -94,75 +79,17 @@ public class AmazonS3ClientWrapper {
 
 	public List<Resource> readAllImagesInBucketWithPrefix(String prefix) {
 		try {
-			Resource[] resources = this.resourcePatternResolver.getResources(S3_PREFIX + bucketName + "/" + prefix + "*");
-			return resources != null ? Arrays.asList(resources) : Collections.emptyList();
+			String locationPattern = S3_PREFIX + bucketName + "/**/" + prefix + "*";
+			Resource[] resources = this.resourcePatternResolver.getResources(locationPattern);
+			if (resources == null || resources.length == 0) {
+				LOG.warn("Could not find any images at locationPattern={} in S3.", locationPattern);
+				return Collections.emptyList();
+			}
+			return Arrays.asList(resources);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 			return Collections.emptyList();
 		}
 	}
 
-	// public List<PutObjectResult> upload(MultipartFile[] multipartFiles) {
-	//
-	// List<PutObjectResult> putObjectResults = new ArrayList<>();
-	// Stream<MultipartFile> filter = Arrays.stream(multipartFiles)
-	// .filter(multipartFile ->
-	// !StringUtils.isEmpty(multipartFile.getOriginalFilename()));
-	// filter.forEach(multipartFile -> {
-	// try {
-	// putObjectResults.add(upload(multipartFile.getInputStream(),
-	// multipartFile.getOriginalFilename()));
-	// } catch (IOException e) {
-	// LOG.error(e.getMessage(), e);
-	// }
-	// });
-	//
-	// return putObjectResults;
-	// }
-
-	// public ResponseEntity<byte[]> download(String key) throws IOException {
-	// GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName,
-	// key);
-	//
-	// S3Object s3Object = amazonS3.getObject(getObjectRequest);
-	//
-	// S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
-	//
-	// byte[] bytes = IOUtils.toByteArray(objectInputStream);
-	//
-	// String fileName = URLEncoder.encode(key, "UTF-8").replaceAll("\\+",
-	// "%20");
-	//
-	// HttpHeaders httpHeaders = new HttpHeaders();
-	// httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	// httpHeaders.setContentLength(bytes.length);
-	// httpHeaders.setContentDispositionFormData("attachment", fileName);
-	//
-	// return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-	// }
-
-	// public List<S3ObjectSummary> list() {
-	// ObjectListing objectListing = amazonS3.listObjects(new
-	// ListObjectsRequest().withBucketName(bucketName));
-	// return objectListing.getObjectSummaries();
-	// }
-
-	// private PutObjectResult upload(String filePath, String uploadKey) throws
-	// FileNotFoundException {
-	// return upload(new FileInputStream(filePath), uploadKey);
-	// }
-	//
-	// private PutObjectResult upload(InputStream inputStream, String uploadKey)
-	// {
-	// PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,
-	// uploadKey, inputStream, new ObjectMetadata());
-	//
-	// putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
-	//
-	// PutObjectResult putObjectResult = amazonS3.putObject(putObjectRequest);
-	//
-	// IOUtils.closeQuietly(inputStream);
-	//
-	// return putObjectResult;
-	// }
 }
