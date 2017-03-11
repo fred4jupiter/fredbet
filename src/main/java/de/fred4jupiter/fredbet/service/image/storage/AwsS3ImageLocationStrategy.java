@@ -79,10 +79,8 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 			String filename = extractFileName(resource);
 			String imageKey = toImageKey(filename);
 			byte[] fileContent = toByteArray(resource);
-			if (fileContent != null && fileContent.length > 0) {
-				if (filename.startsWith(IMAGE_PREFIX)) {
-					imagesMap.put(imageKey, fileContent);
-				}
+			if (fileContent != null && fileContent.length > 0 && filename.startsWith(IMAGE_PREFIX)) {
+				imagesMap.put(imageKey, fileContent);
 			}
 		}
 
@@ -119,8 +117,7 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	private String toImageKey(String fileName) {
-		String fileNameWithoutExtension = FilenameUtils.removeExtension(fileName);
-		return fileNameWithoutExtension.substring(3);
+		return FilenameUtils.removeExtension(fileName).substring(3);
 	}
 
 }
