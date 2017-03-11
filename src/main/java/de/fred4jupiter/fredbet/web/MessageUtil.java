@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
@@ -17,6 +20,8 @@ import de.fred4jupiter.fredbet.domain.Country;
  */
 @Component
 public class MessageUtil {
+
+	private static final Logger LOG = LoggerFactory.getLogger(MessageUtil.class);
 
 	private static final String MSG_ATTRIBUTE_NAME = "globalMessage";
 
@@ -64,7 +69,13 @@ public class MessageUtil {
 	}
 
 	public String getMessageFor(String msgKey, Object... params) {
-		return messageSource.getMessage(msgKey, params, LocaleContextHolder.getLocale());
+		try {
+			return messageSource.getMessage(msgKey, params, LocaleContextHolder.getLocale());
+		} catch (NoSuchMessageException e) {
+			LOG.error(e.getMessage());
+		}
+
+		return msgKey;
 	}
 
 	public String getCountryName(Country country) {

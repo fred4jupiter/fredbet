@@ -10,7 +10,11 @@ public enum Country {
 
     RUSSIA("ru"), SWEDEN("se"), SWITZERLAND("ch"), SLOVAKIA("sk"), SPAIN("es"), CZECH_REPUBLIC("cz"), TURKEY("tr"),
 
-    UKRAINE("ua"), HUNGARY("hu"), WALES("wales"), AUSTRALIA("au");
+    UKRAINE("ua"), HUNGARY("hu"), WALES("wales"), AUSTRALIA("au"), EGYPT("eg"), ALGERIA("dz"), ANGOLA("ao"), EQUATORIAL_GUINEA("eqg"),
+    
+    ETHIOPIA("et"), BENIN(""), BOTSUANA(""), BURKINA_FASO(""), BURUNDI(""), DSCHIBUTI(""), IVORY_COAST(""), ERITREA(""), GABUN(""),
+    
+    GAMBIA(""), GHANA(""), GUINEA(""), GUINEA_BISSEAU("");
 
     private static final String ICON_BASE_PATH = "/images/flags/";
 
