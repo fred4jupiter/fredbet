@@ -10,9 +10,9 @@ public enum Country {
 
 	RUSSIA("ru"), SWEDEN("se"), SWITZERLAND("ch"), SLOVAKIA("sk"), SPAIN("es"), CZECH_REPUBLIC("cz"), TURKEY("tr"),
 
-	UKRAINE("ua"), HUNGARY("hu"), WALES("wales"), AUSTRALIA("au"), EGYPT("eg"), ALGERIA("alg"), ANGOLA("ang"), EQUATORIAL_GUINEA("eqg"),
+	UKRAINE("ua"), HUNGARY("hu"), WALES("wales"), AUSTRALIA("au"), EGYPT("egy"), ALGERIA("alg"), ANGOLA("ang"), EQUATORIAL_GUINEA("eqg"),
 
-	ETHIOPIA("et"), BENIN("ben"), BURKINA_FASO("bfa"), BURUNDI("bdi"), DJIBOUTI("dji"), IVORY_COAST("civ"),
+	ETHIOPIA("eth"), BENIN("ben"), BURKINA_FASO("bfa"), BURUNDI("bdi"), DJIBOUTI("dji"), IVORY_COAST("civ"),
 
 	ERITREA("eri"), GABON("gab"), GAMBIA("gam"), GHANA("gha"), GUINEA("gui"), GUINEA_BISSEAU("gnb"), BOTSWANA("bot"),
 
