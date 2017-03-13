@@ -52,7 +52,7 @@ public class MatchService {
 	}
 
 	public MatchCommand findByMatchId(Long matchId) {
-		Assert.notNull(matchId);
+		Assert.notNull(matchId, "matchId must be given");
 		Match match = matchRepository.findOne(matchId);
 		Long numberOfBetsForThisMatch = betRepository.countByMatch(match);
 		MatchCommand matchCommand = matchConverter.toMatchCommand(match);

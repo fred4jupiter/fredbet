@@ -25,7 +25,7 @@ public class StatisticService {
 	public StatisticService(StatisticRepository statisticRepository, FredbetProperties fredbetProperties) {
 		this.statisticRepository = statisticRepository;
 		this.favoriteCountry = fredbetProperties.getFavouriteCountry();
-		Assert.notNull(this.favoriteCountry);
+		Assert.notNull(this.favoriteCountry, "favoriteCountry must be given");
 	}
 
 	public List<Statistic> createStatistic() {

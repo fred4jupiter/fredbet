@@ -15,7 +15,7 @@ public class MatchConverter {
 	private MessageUtil messageUtil;
 	
 	public MatchCommand toMatchCommand(Match match) {
-		Assert.notNull(match);
+		Assert.notNull(match, "Match must be given");
 		MatchCommand matchCommand = new MatchCommand(messageUtil);
 		matchCommand.setMatchId(match.getId());
 		matchCommand.setCountryTeamOne(match.getCountryOne());

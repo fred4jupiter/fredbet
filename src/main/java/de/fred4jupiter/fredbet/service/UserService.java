@@ -91,7 +91,7 @@ public class UserService {
 	}
 
 	public AppUser updateUser(UserCommand userCommand) {
-		Assert.notNull(userCommand.getUserId());
+		Assert.notNull(userCommand.getUserId(), "userCommand.getUserId() must be given");
 		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
 		if (userCommand.isRoleSelectionDisabled()) {
 			LOG.debug("Role selection is disabled for user {}. Do not update roles.", userCommand.getUsername());
