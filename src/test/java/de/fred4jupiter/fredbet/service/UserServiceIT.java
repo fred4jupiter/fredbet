@@ -25,7 +25,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Test
 	public void avoidDuplicateUser() {
-		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_USER).build();
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER).build();
 
 		userService.insertAppUser(appUser);
 
