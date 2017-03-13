@@ -1,16 +1,13 @@
 package de.fred4jupiter.fredbet.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 
 /**
  * Helper class for preparing messages.
@@ -21,8 +18,6 @@ import de.fred4jupiter.fredbet.domain.Country;
 @Component
 public class MessageUtil {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MessageUtil.class);
-
 	private static final String MSG_ATTRIBUTE_NAME = "globalMessage";
 
 	private static final String CSS_ALERT_ERROR = "alert-danger";
@@ -32,7 +27,7 @@ public class MessageUtil {
 	private static final String CSS_ALT_SUCCESS = "alert-success";
 
 	@Autowired
-	private MessageSource messageSource;
+	private MessageSourceUtil messageSourceUtil;
 
 	public void addInfoMsg(RedirectAttributes redirect, String msgKey, Object... params) {
 		String message = getMessageFor(msgKey, params);
@@ -69,20 +64,11 @@ public class MessageUtil {
 	}
 
 	public String getMessageFor(String msgKey, Object... params) {
-		try {
-			return messageSource.getMessage(msgKey, params, LocaleContextHolder.getLocale());
-		} catch (NoSuchMessageException e) {
-			LOG.error(e.getMessage());
-		}
-
-		return msgKey;
+		return messageSourceUtil.getMessageFor(msgKey, LocaleContextHolder.getLocale(), params);
 	}
-
+	
 	public String getCountryName(Country country) {
-		if (country == null) {
-			return null;
-		}
-		return getMessageFor("country." + country.getIsoCode());
+		return messageSourceUtil.getCountryName(country, LocaleContextHolder.getLocale());
 	}
 
 	public static final class WebMessage {

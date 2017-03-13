@@ -16,11 +16,11 @@ public enum Country {
 
 	ERITREA("eri"), GABON("gab"), GAMBIA("gam"), GHANA("gha"), GUINEA("gui"), GUINEA_BISSEAU("gnb"), BOTSWANA("bot"),
 
-	CAMEROON("cmr"), CAPE_VERDE_ISLANDS("cpv"), CENTRAL_AFRICAN_REPUBLIC("cta"), CHAD("cha"), COMOROS("com"), CONGO("cgo"), CONGO_DR(
-			"cod"), GUINEA_BISSAU("gnb"),
+	CAMEROON("cmr"), CAPE_VERDE_ISLANDS("cpv"), CENTRAL_AFRICAN_REPUBLIC("cta"), CHAD("cha"), COMOROS("com"), CONGO("cgo"),
 
-	KENYA("ken"), LESOTHO("les"), LIBERIA("lbr"), LIBYA("lby"), MADAGASCAR("mad"), MALAWI("mwi"), MALI("mli"), MAURITANIA("mtn"), MAURITIUS(
-			"mri"),
+	CONGO_DR("cod"), GUINEA_BISSAU("gnb"), KENYA("ken"), LESOTHO("les"), LIBERIA("lbr"), LIBYA("lby"), MADAGASCAR("mad"),
+
+	MALAWI("mwi"), MALI("mli"), MAURITANIA("mtn"), MAURITIUS("mri"),
 
 	MOROCCO("mar"), MOZAMBIQUE("moz"), NAMIBIA("nam"), NIGER("nig"), NIGERIA("nga"), RWANDA("rwa"), SAO_TOME_E_PRINCIPE("stp"), SENEGAL(
 			"sen"),

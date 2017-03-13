@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -61,7 +62,7 @@ public class BetController {
 
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
-		return countryService.getAvailableCountries();
+		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
 	}
 
 	@ModelAttribute("betCommand")
