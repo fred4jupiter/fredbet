@@ -45,7 +45,7 @@ public class RankingServiceIT extends AbstractTransactionalIntegrationTest {
 		final String username = FredbetConstants.TECHNICAL_USERNAME;
 		saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword(username, "test").build());
 
-		dataBasePopulator.createEM2016Matches();
+		dataBasePopulator.createRandomMatches();
 		dataBasePopulator.createDemoBetsForAllUsers();
 		dataBasePopulator.createDemoResultsForAllMatches();
 

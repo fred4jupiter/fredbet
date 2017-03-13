@@ -35,17 +35,6 @@ public class AdminController {
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
-	@RequestMapping(path = "/createEmMatches", method = RequestMethod.GET)
-	public ModelAndView createEM2016Matches(ModelMap modelMap) {
-		dataBasePopulator.createEM2016Matches();
-
-		ModelAndView modelAndView = new ModelAndView("admin/administration");
-
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoMatchesCreated");
-		return modelAndView;
-	}
-	
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 	@RequestMapping(path = "/createRandomMatches", method = RequestMethod.GET)
 	public ModelAndView createRandomMatches(ModelMap modelMap) {
 		dataBasePopulator.createRandomMatches();
