@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class ImageBinaryRepositoryIT extends AbstractIntegrationTest {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		final String key = "12345";
+		final String key = UUID.randomUUID().toString();
 		ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, "group1", fileAsByteArray);
 
 		ImageBinary saved = imageBinaryRepository.save(imageBinary);
