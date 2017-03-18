@@ -85,12 +85,20 @@ public class DataBasePopulator {
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
 
-		createRandomForGroup(Group.GROUP_A);
-		createRandomForGroup(Group.GROUP_B);
-		createRandomForGroup(Group.GROUP_C);
-		createRandomForGroup(Group.GROUP_D);
-		createRandomForGroup(Group.GROUP_E);
-		createRandomForGroup(Group.GROUP_F);
+		createRandomForGroup(Group.GROUP_A, 4);
+		createRandomForGroup(Group.GROUP_B, 4);
+		createRandomForGroup(Group.GROUP_C, 4);
+		createRandomForGroup(Group.GROUP_D, 4);
+		createRandomForGroup(Group.GROUP_E, 4);
+		createRandomForGroup(Group.GROUP_F, 4);
+		createRandomForGroup(Group.GROUP_G, 4);
+		createRandomForGroup(Group.GROUP_H, 4);
+
+		createRandomForGroup(Group.ROUND_OF_SIXTEEN, 8);
+		createRandomForGroup(Group.QUARTER_FINAL, 4);
+		createRandomForGroup(Group.SEMI_FINAL, 2);
+		createRandomForGroup(Group.FINAL, 1);
+		createRandomForGroup(Group.GAME_FOR_THIRD, 1);
 	}
 
 	public void createDemoBetsForAllUsers() {
@@ -148,11 +156,12 @@ public class DataBasePopulator {
 		}
 	}
 
-	private void createRandomForGroup(Group group) {
-		for (int i = 0; i < 4; i++) {
+	private void createRandomForGroup(Group group, int numberOfMatches) {
+		for (int i = 0; i < numberOfMatches; i++) {
 			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
-			matchService.save(MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
-					.withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build());
+			Match match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
+					.withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build();
+			matchService.save(match);
 		}
 	}
 
