@@ -72,7 +72,7 @@ public enum Country {
 
 	CHILE("chi"), COLOMBIA("col"), ECUADOR("ecu"), PARAGUAY("par"), PERU("per"), URUGUAY("uru"), VENEZUELA("ven");
 
-	private static final String ICON_BASE_PATH = "/images/flags/";
+	public static final String ICON_BASE_PATH = "/images/flags/";
 
 	private String isoCode;
 
