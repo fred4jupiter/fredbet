@@ -9,6 +9,7 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,8 +106,8 @@ public class DataBasePopulator {
 				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
 			});
 
-			List<Country> countries = randomValueGenerator.generateTeamPair();
-			bettingService.saveExtraBet(countries.get(0), countries.get(1), appUser.getUsername());
+			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
+			bettingService.saveExtraBet(teamPair.getLeft(), teamPair.getRight(), appUser.getUsername());
 		});
 
 	}
@@ -117,9 +118,9 @@ public class DataBasePopulator {
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
 			if (match.getCountryOne() == null) {
-				List<Country> countries = randomValueGenerator.generateTeamPair();
-				match.setCountryOne(countries.get(0));
-				match.setCountryTwo(countries.get(1));
+				ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
+				match.setCountryOne(teamPair.getLeft());
+				match.setCountryTwo(teamPair.getRight());
 				match.setTeamNameOne(null);
 				match.setTeamNameTwo(null);
 			}
@@ -149,8 +150,8 @@ public class DataBasePopulator {
 
 	private void createRandomForGroup(Group group) {
 		for (int i = 0; i < 4; i++) {
-			List<Country> teamPair = randomValueGenerator.generateTeamPair();
-			matchService.save(MatchBuilder.create().withTeams(teamPair.get(0), teamPair.get(1)).withGroup(group).withStadium("Somewhere")
+			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
+			matchService.save(MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
 					.withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build());
 		}
 	}

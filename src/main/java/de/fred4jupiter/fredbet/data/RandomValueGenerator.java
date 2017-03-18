@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Component;
 
 import de.fred4jupiter.fredbet.domain.Country;
@@ -43,7 +44,7 @@ public class RandomValueGenerator {
         throw new IllegalArgumentException("Could not found other country than given one: " + alreadyUsedCountry);
     }
 
-    public List<Country> generateTeamPair() {
+    public ImmutablePair<Country,Country> generateTeamPair() {
         Country countryOne = generateRandomCountry();
         Country countryTwo = generateRandomCountry();
 
@@ -51,6 +52,6 @@ public class RandomValueGenerator {
             countryTwo = getOtherCountryThan(countryOne);
         }
 
-        return Arrays.asList(countryOne, countryTwo);
+        return ImmutablePair.of(countryOne, countryTwo);
     }
 }

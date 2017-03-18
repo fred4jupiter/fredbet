@@ -2,13 +2,11 @@ package de.fred4jupiter.fredbet.data;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
-
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,10 +29,9 @@ public class RandomValueGeneratorUT {
 	@Test
 	public void generateTeamPair() {
 		for (int i = 0; i < 100; i++) {
-			List<Country> countries = randomValueGenerator.generateTeamPair();
-			assertEquals(2, countries.size());
-			Country countryOne = countries.get(0);
-			Country countryTwo = countries.get(1);
+			ImmutablePair<Country, Country> teeamPair = randomValueGenerator.generateTeamPair();
+			Country countryOne = teeamPair.getLeft();
+			Country countryTwo = teeamPair.getRight();
 			assertNotNull(countryOne);
 			assertNotNull(countryTwo);
 			assertNotEquals(countryOne, countryTwo);
