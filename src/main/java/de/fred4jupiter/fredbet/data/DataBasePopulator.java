@@ -16,7 +16,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
@@ -81,7 +80,6 @@ public class DataBasePopulator {
 		}
 	}
 
-	@Transactional
 	public void createRandomMatches() {
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
@@ -94,7 +92,6 @@ public class DataBasePopulator {
 		createRandomForGroup(Group.GROUP_F);
 	}
 
-	@Transactional
 	public void createDemoBetsForAllUsers() {
 		LOG.info("createDemoBetsForAllUsers...");
 		bettingService.deleteAllBets();
@@ -114,7 +111,6 @@ public class DataBasePopulator {
 
 	}
 
-	@Transactional
 	public void createDemoResultsForAllMatches() {
 		LOG.info("createDemoResultsForAllUsers...");
 
