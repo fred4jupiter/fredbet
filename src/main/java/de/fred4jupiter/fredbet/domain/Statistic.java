@@ -11,17 +11,17 @@ public class Statistic {
 	private Integer pointsSemiFinal = Integer.valueOf(0);
 
 	private Integer pointsFinal = Integer.valueOf(0);
-	
+
 	private Integer pointsFavoriteCountry = Integer.valueOf(0);
-	
+
 	private boolean minPointsCandidate;
-	
+
 	private boolean maxPointsCandidate;
-	
+
 	private boolean maxFavoriteCountryCandidate;
-	
+
 	private boolean maxGroupPointsCandidate;
-	
+
 	private Country favoriteCountry;
 
 	private final String username;
@@ -35,7 +35,7 @@ public class Statistic {
 	}
 
 	public void setPointsGroup(Integer pointsGroup) {
-		this.pointsGroup = pointsGroup;
+		this.pointsGroup = pointsGroup != null ? pointsGroup : Integer.valueOf(0);
 	}
 
 	public Integer getPointsRoundOfSixteen() {
@@ -43,7 +43,7 @@ public class Statistic {
 	}
 
 	public void setPointsRoundOfSixteen(Integer pointsRoundOfSixteen) {
-		this.pointsRoundOfSixteen = pointsRoundOfSixteen;
+		this.pointsRoundOfSixteen = pointsRoundOfSixteen != null ? pointsRoundOfSixteen : Integer.valueOf(0);
 	}
 
 	public Integer getPointsQuarterFinal() {
@@ -51,7 +51,7 @@ public class Statistic {
 	}
 
 	public void setPointsQuarterFinal(Integer pointsQuarterFinal) {
-		this.pointsQuarterFinal = pointsQuarterFinal;
+		this.pointsQuarterFinal = pointsQuarterFinal != null ? pointsQuarterFinal : Integer.valueOf(0);
 	}
 
 	public Integer getPointsSemiFinal() {
@@ -59,7 +59,7 @@ public class Statistic {
 	}
 
 	public void setPointsSemiFinal(Integer pointsSemiFinal) {
-		this.pointsSemiFinal = pointsSemiFinal;
+		this.pointsSemiFinal = pointsSemiFinal != null ? pointsSemiFinal : Integer.valueOf(0);
 	}
 
 	public Integer getPointsFinal() {
@@ -67,7 +67,7 @@ public class Statistic {
 	}
 
 	public void setPointsFinal(Integer pointsFinal) {
-		this.pointsFinal = pointsFinal;
+		this.pointsFinal = pointsFinal != null ? pointsFinal : Integer.valueOf(0);
 	}
 
 	public String getUsername() {
@@ -88,10 +88,8 @@ public class Statistic {
 	}
 
 	public void setPointsFavoriteCountry(Integer pointsFavoriteCountry) {
-		this.pointsFavoriteCountry = pointsFavoriteCountry;
+		this.pointsFavoriteCountry = pointsFavoriteCountry != null ? pointsFavoriteCountry : Integer.valueOf(0);
 	}
-
-	
 
 	public Country getFavoriteCountry() {
 		return favoriteCountry;
