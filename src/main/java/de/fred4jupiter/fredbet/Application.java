@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
@@ -50,7 +49,7 @@ public class Application {
 	}
 
 	@Bean(destroyMethod = "close")
-	public DataSource dataSource(FredbetProperties fredbetProperties, DataSourceProperties properties) {
+	public DataSource dataSource(FredbetProperties fredbetProperties) {
 		final HikariConfig config = new HikariConfig();
 		config.setPoolName("FredBetCP");
 		config.setConnectionTestQuery("SELECT 1");
