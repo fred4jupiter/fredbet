@@ -78,6 +78,7 @@
 					  		<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
 					  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')"><a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a></li>
 					  		<li th:if="${@securityBean.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a></li>
+					  		<li th:class="${pageState_excelimport}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#excelimport" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a></li>
 			        	</ul>
 			        </li>
 				</ul>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+<head>
+	<title th:text="#{excel.import.title}"></title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div th:replace="fragments/alert :: alert_headline"></div>
+		<div class="row">			
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<form th:action="@{/excelimport/upload}" th:object="${excelUploadCommand}" method="post" enctype="multipart/form-data" role="form">
+					<div class="form-group">
+						<label th:text="#{excel.upload.file}"></label><br/>
+				    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" th:value="#{excel.upload.button}" />
+					</div>		
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
