@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web.image;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
@@ -32,9 +30,6 @@ public class ImageUploadController {
 	private static final String REDIRECT_SHOW_PAGE = "redirect:/image/show";
 
 	private static final Logger log = LoggerFactory.getLogger(ImageUploadController.class);
-
-	@Autowired
-	private ImageGroupRepository imageGroupRepository;
 
 	@Autowired
 	private ImageAdministrationService imageAdministrationService;
@@ -56,7 +51,7 @@ public class ImageUploadController {
 
 	@ModelAttribute("availableImageGroups")
 	public List<String> availableImageGroups() {
-		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
+		return imageAdministrationService.findAvailableImageGroups();
 	}
 
 	@ModelAttribute("imageUploadCommand")
@@ -100,7 +95,7 @@ public class ImageUploadController {
 			messageUtil.addErrorMsg(redirect, "image.gallery.msg.delete.perm.denied");
 			return new ModelAndView(REDIRECT_SHOW_PAGE);
 		}
-		
+
 		imageAdministrationService.deleteImageById(imageId);
 
 		messageUtil.addInfoMsg(redirect, "image.gallery.msg.deleted");
@@ -113,11 +108,11 @@ public class ImageUploadController {
 		if (appUser.hasPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
 			return true;
 		}
-		
+
 		if (imageAdministrationService.isImageOfUser(imageId, appUser)) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

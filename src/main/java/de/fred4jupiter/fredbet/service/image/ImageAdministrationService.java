@@ -143,4 +143,7 @@ public class ImageAdministrationService {
 		return false;
 	}
 
+	public List<String> findAvailableImageGroups() {
+		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
+	}
 }
