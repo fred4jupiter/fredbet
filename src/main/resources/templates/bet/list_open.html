@@ -27,7 +27,8 @@
 							<div class="col-xs-9">
 								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 								<br/>
-								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
+								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span>
+								<br/>
 								<span th:text="${matchCommand.stadium}"></span>
 							</div>
 							<div class="col-xs-3">
