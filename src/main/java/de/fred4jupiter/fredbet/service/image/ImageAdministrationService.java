@@ -120,8 +120,6 @@ public class ImageAdministrationService {
 	}
 
 	public void deleteImageById(Long imageId) {
-		// TODO: add permission check
-		
 		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
 		if (imageMetaData == null) {
 			LOG.warn("Could not found image with id: {}", imageId);
@@ -130,6 +128,19 @@ public class ImageAdministrationService {
 
 		imageMetaDataRepository.delete(imageId);
 		imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
+	}
+
+	public boolean isImageOfUser(Long imageId, AppUser appUser) {
+		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
+		if (imageMetaData == null) {
+			return false;
+		}
+		
+		if (imageMetaData.getOwner().getUsername().equals(appUser.getUsername())) {
+			return true;
+		}
+		
+		return false;
 	}
 
 }

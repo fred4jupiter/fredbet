@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
@@ -36,7 +37,7 @@ public class ImageUploadController {
 	private ImageGroupRepository imageGroupRepository;
 
 	@Autowired
-	private ImageAdministrationService imageUploadService;
+	private ImageAdministrationService imageAdministrationService;
 
 	@Autowired
 	private MessageUtil messageUtil;
@@ -47,10 +48,10 @@ public class ImageUploadController {
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
 		if (securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
-			return imageUploadService.fetchAllImages();
+			return imageAdministrationService.fetchAllImages();
 		}
 
-		return imageUploadService.fetchImagesOfUser(securityService.getCurrentUserName());
+		return imageAdministrationService.fetchImagesOfUser(securityService.getCurrentUserName());
 	}
 
 	@ModelAttribute("availableImageGroups")
@@ -82,7 +83,7 @@ public class ImageUploadController {
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
 
-			imageUploadService.saveImageInDatabase(myFile.getBytes(), imageUploadCommand.getGalleryGroup(),
+			imageAdministrationService.saveImageInDatabase(myFile.getBytes(), imageUploadCommand.getGalleryGroup(),
 					imageUploadCommand.getDescription(), imageUploadCommand.getRotation());
 			messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 		} catch (IOException e) {
@@ -95,10 +96,28 @@ public class ImageUploadController {
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteImage(@PathVariable("id") Long imageId, RedirectAttributes redirect) {
-		imageUploadService.deleteImageById(imageId);
+		if (!isAllowedToDeleteImageWithId(imageId)) {
+			messageUtil.addErrorMsg(redirect, "image.gallery.msg.delete.perm.denied");
+			return new ModelAndView(REDIRECT_SHOW_PAGE);
+		}
+		
+		imageAdministrationService.deleteImageById(imageId);
 
 		messageUtil.addInfoMsg(redirect, "image.gallery.msg.deleted");
 
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
+	}
+
+	private boolean isAllowedToDeleteImageWithId(Long imageId) {
+		final AppUser appUser = securityService.getCurrentUser();
+		if (appUser.hasPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
+			return true;
+		}
+		
+		if (imageAdministrationService.isImageOfUser(imageId, appUser)) {
+			return true;
+		}
+		
+		return false;
 	}
 }

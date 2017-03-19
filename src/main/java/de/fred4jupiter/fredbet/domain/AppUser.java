@@ -129,6 +129,17 @@ public class AppUser implements UserDetails {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
 	}
 
+	public boolean hasPermission(String permission) {
+    	Collection<? extends GrantedAuthority> authorities = this.getAuthorities();
+    	for (GrantedAuthority grantedAuthority : authorities) {
+			if (grantedAuthority.getAuthority().equals(permission)) {
+				return true;
+			}
+		}
+    	
+    	return false;
+    }
+	
 	public boolean isDeletable() {
 		return deletable;
 	}
