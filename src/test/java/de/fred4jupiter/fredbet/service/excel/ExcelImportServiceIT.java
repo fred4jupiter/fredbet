@@ -8,16 +8,15 @@ import java.io.File;
 import java.util.List;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 public class ExcelImportServiceIT extends AbstractIntegrationTest {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ExcelImportServiceIT.class);
 
 	@Autowired
 	private ExcelImportService excelImportService;
@@ -29,10 +28,19 @@ public class ExcelImportServiceIT extends AbstractIntegrationTest {
 		assertFalse(matches.isEmpty());
 		assertEquals(2, matches.size());
 
-		for (Match match : matches) {
-			assertNotNull(match);
-			LOG.debug("match: {}", match);
-		}
+		Match match1 = matches.get(0);
+		assertEquals(Country.GERMANY, match1.getCountryOne());
+		assertEquals(Country.BELGIUM, match1.getCountryTwo());
+		assertEquals(Group.GROUP_B, match1.getGroup());
+		assertEquals(DateUtils.parseDate("01.06.2017 18:00", "dd.MM.yyyy HH:mm"), match1.getKickOffDate());
+		assertEquals("Westfalenstadion, Dortmund", match1.getStadium());
+
+		Match match2 = matches.get(1);
+		assertEquals(Country.ANDORRA, match2.getCountryOne());
+		assertEquals(Country.ISRAEL, match2.getCountryTwo());
+		assertEquals(Group.GROUP_E, match2.getGroup());
+		assertEquals(DateUtils.parseDate("05.02.2018 20:00", "dd.MM.yyyy HH:mm"), match2.getKickOffDate());
+		assertEquals("Allianz Arena, München", match2.getStadium());
 	}
 
 }
