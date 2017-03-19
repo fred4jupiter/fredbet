@@ -2,9 +2,13 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +26,8 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/excelimport")
 public class ExcelImportController {
 
+	private static final String CONTENT_TYPE_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
 	private static final Logger LOG = LoggerFactory.getLogger(ExcelImportController.class);
 
 	private static final String REDIRECT_SHOW_PAGE = "redirect:/excelimport/show";
@@ -31,7 +37,7 @@ public class ExcelImportController {
 
 	@Autowired
 	private MessageUtil messageUtil;
-	
+
 	@ModelAttribute("excelUploadCommand")
 	public ExcelUploadCommand initExcelUploadCommand() {
 		return new ExcelUploadCommand();
@@ -40,6 +46,18 @@ public class ExcelImportController {
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showUploadPage() {
 		return new ModelAndView("admin/excel_import");
+	}
+
+	@RequestMapping(value = "/download/template", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
+	public ResponseEntity<byte[]> downloadTemplate(HttpServletResponse response) {
+		final String fileName = "ImportTemplate.xlsx";
+		byte[] templateFile = excelImportService.downloadTemplate();
+		if (templateFile == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+
+		return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
+				.header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(templateFile);
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -51,7 +69,7 @@ public class ExcelImportController {
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
 
-			if (!myFile.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+			if (!myFile.getContentType().equals(CONTENT_TYPE_EXCEL)) {
 				messageUtil.addErrorMsg(redirect, "excel.upload.msg.noExcelFile");
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
