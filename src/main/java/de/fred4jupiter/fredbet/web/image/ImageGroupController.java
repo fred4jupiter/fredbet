@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.web.image;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.service.image.ImageGroupExistsException;
+import de.fred4jupiter.fredbet.service.image.ImageGroupService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -25,7 +24,7 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 public class ImageGroupController {
 
 	@Autowired
-	private ImageGroupRepository imageGroupRepository;
+	private ImageGroupService imageGroupService;
 
 	@Autowired
 	private MessageUtil messageUtil;
@@ -37,9 +36,7 @@ public class ImageGroupController {
 
 	@ModelAttribute("availableImageGroups")
 	public List<ImageGroupCommand> availableImages() {
-		List<ImageGroup> imageGroups = imageGroupRepository.findAll();
-
-		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).collect(Collectors.toList());
+		return imageGroupService.findAvailableImages();
 	}
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -50,7 +47,7 @@ public class ImageGroupController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteImage(@PathVariable("id") Long imageGroupId, RedirectAttributes redirect) {
 		try {
-			imageGroupRepository.delete(imageGroupId);
+			imageGroupService.deleteImageGroup(imageGroupId);
 			messageUtil.addInfoMsg(redirect, "image.group.msg.deleted");
 		} catch (DataIntegrityViolationException e) {
 			messageUtil.addErrorMsg(redirect, "image.group.msg.deletionHasReferences");
@@ -61,24 +58,16 @@ public class ImageGroupController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_IMAGE_GROUP + "')")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView addImageGroup(@ModelAttribute("imageGroupCommand") ImageGroupCommand imageGroupCommand,
-			BindingResult result, RedirectAttributes redirect) {
+	public ModelAndView addImageGroup(@ModelAttribute("imageGroupCommand") ImageGroupCommand imageGroupCommand, BindingResult result,
+			RedirectAttributes redirect) {
 
-		ImageGroup foundImageGroup = imageGroupRepository.findByName(imageGroupCommand.getName());
-		if (foundImageGroup != null) {
-			messageUtil.addErrorMsg(redirect, "image.group.msg.groupExist", imageGroupCommand.getName());
-		} else {
-			imageGroupRepository.save(new ImageGroup(imageGroupCommand.getName()));
+		try {
+			imageGroupService.addImageGroup(imageGroupCommand.getName());
 			messageUtil.addInfoMsg(redirect, "image.group.msg.added", imageGroupCommand.getName());
+		} catch (ImageGroupExistsException e) {
+			messageUtil.addErrorMsg(redirect, "image.group.msg.groupExist", imageGroupCommand.getName());
 		}
 
 		return new ModelAndView("redirect:/imagegroup/show");
-	}
-
-	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
-		ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
-		imageGroupCommand.setId(imageGroup.getId());
-		imageGroupCommand.setName(imageGroup.getName());
-		return imageGroupCommand;
 	}
 }
