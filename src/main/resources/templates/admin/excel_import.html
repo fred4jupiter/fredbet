@@ -7,12 +7,14 @@
 <body>
 	<div layout:fragment="content">
 		<div th:replace="fragments/alert :: alert_headline"></div>
-		<div class="row">			
+		<h1 th:text="#{excel.import.title}"></h1>
+		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4">
-				<a href="#" th:href="@{/excelimport/download/template}" th:text="#{excel.download.template}"></a>
+				<a href="#" th:href="@{/excelimport/download/template}" th:text="#{excel.download.template}" class="btn btn-primary"></a>
 			</div>
 		</div>
-		<div class="row">			
+		<br/>
+		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<form th:action="@{/excelimport/upload}" th:object="${excelUploadCommand}" method="post" enctype="multipart/form-data" role="form">
 					<div class="form-group">
