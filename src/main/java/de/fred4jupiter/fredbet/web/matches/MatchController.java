@@ -25,10 +25,10 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
-import de.fred4jupiter.fredbet.web.SecurityBean;
 
 @Controller
 @RequestMapping("/matches")
@@ -46,7 +46,7 @@ public class MatchController {
     private MatchService matchService;
 
     @Autowired
-    private SecurityBean securityBean;
+    private SecurityService securityBean;
 
     @Autowired
     private MessageUtil messageUtil;

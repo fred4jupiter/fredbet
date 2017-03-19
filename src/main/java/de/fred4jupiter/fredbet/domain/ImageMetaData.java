@@ -35,14 +35,19 @@ public class ImageMetaData {
 	@Version
 	@Column(name = "VERSION")
 	private Integer version;
+	
+	@ManyToOne
+	@JoinColumn(name = "USER_ID")
+	private AppUser owner;
 
 	protected ImageMetaData() {
 		// for hibernate
 	}
 
-	public ImageMetaData(String imageKey, ImageGroup imageGroup) {
+	public ImageMetaData(String imageKey, ImageGroup imageGroup, AppUser owner) {
 		this.imageKey = imageKey;
 		this.imageGroup = imageGroup;
+		this.owner = owner;
 	}
 
 	public Long getId() {
@@ -79,5 +84,13 @@ public class ImageMetaData {
 
 	public String getImageKey() {
 		return imageKey;
+	}
+
+	public AppUser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(AppUser owner) {
+		this.owner = owner;
 	}
 }

@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,7 +124,7 @@ public class AppUser implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if (CollectionUtils.isEmpty(roles)) {
-			return null;
+			return Collections.emptyList();
 		}
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
 	}

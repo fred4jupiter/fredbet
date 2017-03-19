@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -39,15 +41,21 @@ public class ImageUploadController {
 	@Autowired
 	private MessageUtil messageUtil;
 
+	@Autowired
+	private SecurityService securityService;
+
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
-		return imageUploadService.fetchAllImages();
+		if (securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
+			return imageUploadService.fetchAllImages();
+		}
+
+		return imageUploadService.fetchImagesOfUser(securityService.getCurrentUserName());
 	}
 
 	@ModelAttribute("availableImageGroups")
 	public List<String> availableImageGroups() {
-		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted()
-				.collect(Collectors.toList());
+		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
 	}
 
 	@ModelAttribute("imageUploadCommand")
@@ -61,8 +69,7 @@ public class ImageUploadController {
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ModelAndView importParse(ImageUploadCommand imageUploadCommand, BindingResult result,
-			RedirectAttributes redirect) {
+	public ModelAndView uploadImage(ImageUploadCommand imageUploadCommand, BindingResult result, RedirectAttributes redirect) {
 		try {
 			MultipartFile myFile = imageUploadCommand.getMyFile();
 			if (myFile == null || myFile.getBytes() == null || myFile.getBytes().length == 0) {

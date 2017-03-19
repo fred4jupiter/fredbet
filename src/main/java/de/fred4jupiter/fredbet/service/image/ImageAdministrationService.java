@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.service.image;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.web.image.ImageCommand;
 import de.fred4jupiter.fredbet.web.image.Rotation;
@@ -39,6 +42,9 @@ public class ImageAdministrationService {
 	@Autowired
 	private ImageKeyGenerator imageKeyGenerator;
 
+	@Autowired
+	private AppUserRepository appUserRepository;
+
 	public void saveImageInDatabase(byte[] binary, String galleryGroup, String description, Rotation rotation) {
 		ImageGroup imageGroup = createImageGroup(galleryGroup);
 
@@ -47,7 +53,7 @@ public class ImageAdministrationService {
 
 		final String key = imageKeyGenerator.generateKey();
 
-		ImageMetaData image = new ImageMetaData(key, imageGroup);
+		ImageMetaData image = new ImageMetaData(key, imageGroup, SecurityUtils.getCurrentUser());
 		image.setDescription(description);
 		imageMetaDataRepository.save(image);
 
@@ -66,17 +72,22 @@ public class ImageAdministrationService {
 
 	public List<ImageCommand> fetchAllImages() {
 		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
+		return toListOfImageCommand(imageMetaDataList);
+	}
+
+	public List<ImageCommand> fetchImagesOfUser(String currentUserName) {
+		LOG.debug("fetching images of user={}", currentUserName);
+		AppUser appUser = appUserRepository.findByUsername(currentUserName);
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
+		return toListOfImageCommand(imageMetaDataList);
+	}
+
+	private List<ImageCommand> toListOfImageCommand(List<ImageMetaData> imageMetaDataList) {
 		if (imageMetaDataList.isEmpty()) {
 			return Collections.emptyList();
 		}
 
-		final List<ImageCommand> allImages = new ArrayList<>();
-
-		for (ImageMetaData imageMetaData : imageMetaDataList) {
-			allImages.add(toImageCommand(imageMetaData));
-		}
-
-		return allImages;
+		return imageMetaDataList.stream().map(imageMetaData -> toImageCommand(imageMetaData)).collect(Collectors.toList());
 	}
 
 	private ImageCommand toImageCommand(ImageMetaData imageMetaData) {
@@ -109,6 +120,8 @@ public class ImageAdministrationService {
 	}
 
 	public void deleteImageById(Long imageId) {
+		// TODO: add permission check
+		
 		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
 		if (imageMetaData == null) {
 			LOG.warn("Could not found image with id: {}", imageId);

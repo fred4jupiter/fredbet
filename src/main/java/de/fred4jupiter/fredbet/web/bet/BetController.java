@@ -22,6 +22,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
@@ -31,7 +32,6 @@ import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.RedirectViewName;
-import de.fred4jupiter.fredbet.web.SecurityBean;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Controller
@@ -46,7 +46,7 @@ public class BetController {
 	private BettingService bettingService;
 
 	@Autowired
-	private SecurityBean securityBean;
+	private SecurityService securityBean;
 
 	@Autowired
 	private MessageUtil messageUtil;

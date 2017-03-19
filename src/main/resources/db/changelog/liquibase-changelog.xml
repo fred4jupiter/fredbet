@@ -139,7 +139,7 @@
 			</column>
 			<column name="image_key" type="varchar(100)">
 				<constraints nullable="false" unique="true" />
-			</column>			
+			</column>
 			<column name="description" type="varchar(400)" />
 			<column name="version" type="int">
 				<constraints nullable="false" />
@@ -147,11 +147,11 @@
 		</createTable>
 		<addForeignKeyConstraint baseTableName="image_metadata" baseColumnNames="image_group_id" constraintName="FK_image_group"
 			referencedTableName="image_group" referencedColumnNames="image_group_id" />
-		
+
 		<createTable tableName="image_binary">
 			<column name="key" type="varchar(100)">
 				<constraints primaryKey="true" nullable="false" />
-			</column>			
+			</column>
 			<column name="image_bytes" type="BLOB">
 				<constraints nullable="false" />
 			</column>
@@ -164,10 +164,20 @@
 			<column name="version" type="int">
 				<constraints nullable="false" />
 			</column>
-		</createTable>		
+		</createTable>
 		<modifySql dbms="mysql">
 			<regExpReplace replace="BLOB" with="LONGBLOB" />
 		</modifySql>
+	</changeSet>
+
+	<changeSet id="2" author="michael">
+		<addColumn tableName="image_metadata">
+			<column name="user_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="image_metadata" constraintName="FK_image_user_id"
+			referencedColumnNames="user_id" referencedTableName="app_user" />
 	</changeSet>
 
 </databaseChangeLog>
