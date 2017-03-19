@@ -27,10 +27,12 @@ public class ExcelImportServiceIT extends AbstractIntegrationTest {
 		List<Match> matches = excelImportService.importFromExcel(new File("src/test/resources/excelimport/MatchesImportTemplate.xlsx"));
 		assertNotNull(matches);
 		assertFalse(matches.isEmpty());
-		assertEquals(1, matches.size());
+		assertEquals(2, matches.size());
 
-		Match match = matches.get(0);
-		LOG.debug("match: {}", match);
+		for (Match match : matches) {
+			assertNotNull(match);
+			LOG.debug("match: {}", match);
+		}
 	}
 
 }

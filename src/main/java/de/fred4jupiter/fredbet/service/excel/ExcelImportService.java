@@ -36,7 +36,9 @@ public class ExcelImportService {
 					continue;
 				}
 				Match match = convertRowToMatch(row);
-				matches.add(match);
+				if (match != null) {
+					matches.add(match);	
+				}
 			}
 		} catch (IOException | EncryptedDocumentException | InvalidFormatException e) {
 			throw new ExcelReadingException(e.getMessage(), e);
@@ -46,6 +48,10 @@ public class ExcelImportService {
 	}
 
 	private Match convertRowToMatch(Row row) {
+		if (row == null || row.getCell(0) == null) {
+			return null;
+		}
+		
 		String country1 = row.getCell(0).getStringCellValue();
 		String country2 = row.getCell(1).getStringCellValue();
 		String group = row.getCell(2).getStringCellValue();

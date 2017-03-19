@@ -13,8 +13,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 
-public class DemoTest {
+public class MiscMT {
 
 	@Test
 	public void printFiles() throws IOException {
@@ -38,7 +39,20 @@ public class DemoTest {
 			}
 
 		});
-
+	}
+	
+	@Test
+	public void printAllCountries() {
+		for (Country country : Country.values()) {
+			System.out.println(country.name());
+		}
+	}
+	
+	@Test
+	public void printAllGroups() {
+		for (Group group : Group.values()) {
+			System.out.println(group.name());
+		}
 	}
 
 	private String toCountryNameEnglish(String name) {
