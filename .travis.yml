@@ -11,6 +11,6 @@ install:
   - mvn verify
 script:  
   - docker build -t fred4jupiter/fredbet .
-  - docker tag fred4jupiter/fredbet registry.heroku.com/fred4jupiter/fredbet
+  - docker tag fred4jupiter/fredbet registry.heroku.com/fredbet2/web
   - docker login --username=_ --password="$HEROKU_AUTH_TOKEN" registry.heroku.com
-  - docker push registry.heroku.com/fred4jupiter/fredbet
+  - docker push registry.heroku.com/fredbet2/web
