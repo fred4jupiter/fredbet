@@ -1,3 +1,14 @@
+sudo: required
 language: java
 jdk:
   - oraclejdk8
+services:
+  - docker
+install: true
+script:  
+  - docker build -t fred4jupiter/fredbet build
+  - docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
+  - docker push fred4jupiter/fredbet
+  - docker tag fred4jupiter/fredbet registry.heroku.com/fred4jupiter/fredbet
+  - docker login --username=_ --password="$HEROKU_AUTH_TOKEN" registry.heroku.com
+  - docker push registry.heroku.com/fred4jupiter/fredbet
