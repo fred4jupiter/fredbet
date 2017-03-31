@@ -4,7 +4,8 @@ jdk:
   - oraclejdk8
 services:
   - docker
-install: true
+install: 
+  - mvn verify
 script:  
   - docker build -t fred4jupiter/fredbet .
   - docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
