@@ -1,6 +1,6 @@
 # FredBet
 
-Simple football betting application using [Spring Boot](https://projects.spring.io/spring-boot/), [MariaDB](https://mariadb.org/), [Thymeleaf](http://www.thymeleaf.org/) and [Bootstrap](http://getbootstrap.com/). The web pages are constructed in responsive design for using on mobile devises.
+Simple football betting application using [Spring Boot](https://projects.spring.io/spring-boot/), [MariaDB](https://mariadb.org/), [Thymeleaf](http://www.thymeleaf.org/) and [Bootstrap](http://getbootstrap.com/). The web pages are constructed in responsive design for using on mobile devices.
 
 You can run the application by issuing the following command:
 
