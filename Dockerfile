@@ -13,6 +13,11 @@ ENV spring.profiles.active dev
 EXPOSE 8080
 EXPOSE 2000
 
-COPY target/fredbet.jar fredbet.jar
+# Run the image as a non-root user
+RUN useradd -ms /bin/bash freduser
+USER freduser
+WORKDIR /home/freduser
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/fredbet.jar"]
+COPY target/fredbet.jar /home/freduser/fredbet.jar
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/home/freduser/fredbet.jar"]
