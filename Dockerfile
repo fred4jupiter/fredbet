@@ -2,7 +2,7 @@ FROM java:8
 
 MAINTAINER Michael Staehler <hamsterhase@gmx.de>
 
-RUN echo 'Building docker image for fredbet application...'v
+VOLUME /tmp
 
 # Configure timezone
 RUN echo "Europe/Berlin" > /etc/timezone
@@ -15,9 +15,14 @@ EXPOSE 2000
 
 # Run the image as a non-root user
 RUN useradd -ms /bin/bash freduser
-USER freduser
-WORKDIR /home/freduser
 
 COPY target/fredbet.jar /home/freduser/fredbet.jar
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/home/freduser/fredbet.jar"]
+RUN sh -c 'touch /home/freduser/fredbet.jar'
+
+USER freduser
+WORKDIR /home/freduser
+
+ENV JAVA_OPTS=""
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /home/freduser/fredbet.jar" ]
+
