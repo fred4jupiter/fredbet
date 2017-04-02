@@ -56,11 +56,6 @@ echo "next development version is: $NEXT_DEV_VERSION"
 
 # docker image tagging and publishing in Docker Hub
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-docker build 
 docker tag fred4jupiter/fredbet hamsterhase/fredbet:$PROJECT_REL_VERSION
 docker push hamsterhase/fredbet:$PROJECT_REL_VERSION
-docker tag fred4jupiter/fredbet hamsterhase/fredbet:latest
-docker push hamsterhase/fredbet:latest
-
 docker logout
-
