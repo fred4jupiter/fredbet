@@ -46,7 +46,7 @@ public class BetController {
 	private BettingService bettingService;
 
 	@Autowired
-	private SecurityService securityBean;
+	private SecurityService securityService;
 
 	@Autowired
 	private MessageUtil messageUtil;
@@ -72,12 +72,12 @@ public class BetController {
 
 	@RequestMapping("/open")
 	public ModelAndView listStillOpen(ModelMap modelMap) {
-		List<Match> matchesToBet = bettingService.findMatchesToBet(securityBean.getCurrentUserName());
+		List<Match> matchesToBet = bettingService.findMatchesToBet(securityService.getCurrentUserName());
 		if (Validator.isEmpty(matchesToBet)) {
 			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
 		}
 
-		if (bettingService.hasOpenExtraBet(securityBean.getCurrentUserName())) {
+		if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName())) {
 			messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
 		}
 
@@ -135,14 +135,14 @@ public class BetController {
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
 	public ModelAndView showExtraBets() {
-		ExtraBetCommand extraBetCommand = bettingService.loadExtraBetForUser(securityBean.getCurrentUserName());
+		ExtraBetCommand extraBetCommand = bettingService.loadExtraBetForUser(securityService.getCurrentUserName());
 		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
 	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
 		bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
-				securityBean.getCurrentUserName());
+				securityService.getCurrentUserName());
 
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		return new ModelAndView("redirect:/bet/extra_bets");

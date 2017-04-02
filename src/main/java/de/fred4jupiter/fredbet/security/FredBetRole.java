@@ -35,7 +35,7 @@ public enum FredBetRole {
 	/**
 	 * All permissions.
 	 */
-	ROLE_ADMIN("msg.ROLE_ADMIN", PERM_CREATE_MATCH, PERM_EDIT_MATCH, PERM_EDIT_MATCH_RESULT, PERM_DELETE_MATCH, PERM_CREATE_USER, PERM_EDIT_USER, PERM_DELETE_USER, PERM_PASSWORD_RESET, PERM_USER_ADMINISTRATION, PERM_BUILD_INFO, PERM_ADMINISTRATION, PERM_CHANGE_USER_ROLE, PERM_EDIT_INFOS, PERM_SHOW_ACTIVE_USERS, PERM_EDIT_IMAGE_GROUP, PERM_DOWNLOAD_IMAGES, PERM_DELETE_ALL_IMAGES);
+	ROLE_ADMIN("msg.ROLE_ADMIN", PERM_CREATE_MATCH, PERM_EDIT_MATCH, PERM_EDIT_MATCH_RESULT, PERM_DELETE_MATCH, PERM_CREATE_USER, PERM_EDIT_USER, PERM_DELETE_USER, PERM_PASSWORD_RESET, PERM_USER_ADMINISTRATION, PERM_BUILD_INFO, PERM_ADMINISTRATION, PERM_CHANGE_USER_ROLE, PERM_EDIT_INFOS, PERM_SHOW_ACTIVE_USERS, PERM_EDIT_IMAGE_GROUP, PERM_DOWNLOAD_IMAGES, PERM_DELETE_ALL_IMAGES, "ACTUATOR");
 
 	private String[] permissions = new String[] {};
 
@@ -51,7 +51,8 @@ public enum FredBetRole {
 	}
 
 	public Collection<? extends GrantedAuthority> getPermissions() {
-		return Arrays.asList(permissions).stream().map(permission -> new SimpleGrantedAuthority(permission)).collect(Collectors.toList());
+		return Arrays.asList(permissions).stream().map(permission -> new SimpleGrantedAuthority(permission))
+				.collect(Collectors.toList());
 	}
 
 	public static FredBetRole fromRole(String roleName) {
