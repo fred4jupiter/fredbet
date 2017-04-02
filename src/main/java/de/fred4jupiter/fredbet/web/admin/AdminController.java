@@ -18,6 +18,7 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
 @RequestMapping("/administration")
+@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class AdminController {
 
 	@Autowired
@@ -34,7 +35,6 @@ public class AdminController {
 		return "admin/administration";
 	}
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 	@RequestMapping(path = "/createRandomMatches", method = RequestMethod.GET)
 	public ModelAndView createRandomMatches(ModelMap modelMap) {
 		dataBasePopulator.createRandomMatches();
@@ -45,7 +45,6 @@ public class AdminController {
 		return modelAndView;
 	}
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 	@RequestMapping(path = "/createDemoBets", method = RequestMethod.GET)
 	public ModelAndView createDemoBets(ModelMap modelMap) {
 		dataBasePopulator.createDemoBetsForAllUsers();
@@ -56,7 +55,6 @@ public class AdminController {
 		return modelAndView;
 	}
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 	@RequestMapping(path = "/createDemoResults", method = RequestMethod.GET)
 	public ModelAndView createDemoResults(ModelMap modelMap) {
 		dataBasePopulator.createDemoResultsForAllMatches();
