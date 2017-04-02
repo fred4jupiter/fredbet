@@ -74,4 +74,14 @@ public class AdminController {
 		modelAndView.addObject("userList", userList);
 		return modelAndView;
 	}
+	
+	@RequestMapping(path = "/deleteAllBetsAndMatches", method = RequestMethod.GET)
+	public ModelAndView deleteAllBetsAndMatches(ModelMap modelMap) {
+		dataBasePopulator.deleteAllBetsAndMatches();
+
+		ModelAndView modelAndView = new ModelAndView("admin/administration");
+
+		messageUtil.addInfoMsg(modelMap, "administration.msg.info.allBetsAndMatchesDeleted");
+		return modelAndView;
+	}
 }

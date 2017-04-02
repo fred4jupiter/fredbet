@@ -38,10 +38,10 @@ public class UserService {
 
 	@Autowired
 	private FredbetProperties fredbetProperties;
-	
+
 	@Autowired
 	private SecurityService securityService;
-	
+
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
 	}
@@ -74,7 +74,8 @@ public class UserService {
 				userCommand.getPassword());
 
 		if (isRoleSelectionDisabled(userCommand)) {
-			LOG.debug("Role selection is disabled for user {}. Using default role {}", userCommand.getUsername(), FredBetRole.ROLE_USER);
+			LOG.debug("Role selection is disabled for user {}. Using default role {}", userCommand.getUsername(),
+					FredBetRole.ROLE_USER);
 			appUserBuilder.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name()));
 		} else {
 			appUserBuilder.withRoles(userCommand.getRoles());
@@ -87,7 +88,7 @@ public class UserService {
 	private boolean isRoleSelectionDisabled(UserCommand userCommand) {
 		return securityService.isRoleSelectionDisabledForUser(userCommand.getUsername());
 	}
-	
+
 	public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
 		AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
 		if (foundUser != null) {
@@ -134,7 +135,8 @@ public class UserService {
 		}
 
 		if (!appUser.isDeletable()) {
-			throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
+			throw new UserNotDeletableException(
+					"Could not delete user with name={}, because its marked as not deletable");
 		}
 
 		appUserRepository.delete(userId);
@@ -156,5 +158,4 @@ public class UserService {
 		appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
 		appUserRepository.save(appUser);
 	}
-
 }

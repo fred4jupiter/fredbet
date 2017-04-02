@@ -17,6 +17,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
@@ -190,6 +191,12 @@ public class DataBasePopulator {
 		} catch (UserAlreadyExistsException e) {
 			LOG.debug(e.getMessage());
 		}
+	}
+
+	@Transactional
+	public void deleteAllBetsAndMatches() {
+		bettingService.deleteAllBets();
+		matchService.deleteAllMatches();
 	}
 
 }
