@@ -17,12 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.SecurityWebUtils;
 
 @Controller
 @RequestMapping("/user")
@@ -68,7 +68,7 @@ public class UserController {
     public ModelAndView delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
         UserCommand userCommand = userService.findByUserId(userId);
 
-        if (SecurityUtils.getCurrentUser().getId().equals(userId)) {
+        if (SecurityWebUtils.getCurrentUser().getId().equals(userId)) {
             messageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
             return new ModelAndView("redirect:/user");
         }

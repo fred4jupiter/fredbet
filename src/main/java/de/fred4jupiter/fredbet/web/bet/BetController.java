@@ -23,7 +23,6 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.security.SecurityUtils;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.MatchService;
@@ -101,7 +100,7 @@ public class BetController {
 			Match match = matchService.findMatchById(betCommand.getMatchId());
 			bet = new Bet();
 			bet.setMatch(match);
-			bet.setUserName(SecurityUtils.getCurrentUser().getUsername());
+			bet.setUserName(securityService.getCurrentUserName());
 		} else {
 			bet = bettingService.findBetById(betCommand.getBetId());
 		}

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.security.SecurityUtils;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -21,40 +21,43 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @RequestMapping("/profile")
 public class UserProfileController {
 
-    private static final String CHANGE_PASSWORD_PAGE = "profile/change_password";
+	private static final String CHANGE_PASSWORD_PAGE = "profile/change_password";
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private MessageUtil messageUtil;
-    
-    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-    public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
-        return CHANGE_PASSWORD_PAGE;
-    }
+	@Autowired
+	private MessageUtil messageUtil;
 
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, RedirectAttributes redirect,
-            ModelMap modelMap) {
-        if (changePasswordCommand.validate(messageUtil, modelMap)) {
-            return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
-        }
+	@Autowired
+	private SecurityService securityService;
 
-        if (changePasswordCommand.isPasswordRepeatMismatch()) {
-            messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.passwordMismatch");
-            return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
-        }
+	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+	public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
+		return CHANGE_PASSWORD_PAGE;
+	}
 
-        try {
-            AppUser currentUser = SecurityUtils.getCurrentUser();
-            userService.changePassword(currentUser.getId(), changePasswordCommand);
-        } catch (OldPasswordWrongException e) {
-            messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.oldPasswordWrong");
-            return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
-        }
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand,
+			RedirectAttributes redirect, ModelMap modelMap) {
+		if (changePasswordCommand.validate(messageUtil, modelMap)) {
+			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
+		}
 
-        messageUtil.addInfoMsg(redirect, "msg.user.profile.info.passwordChanged");
-        return new ModelAndView("redirect:/matches");
-    }
+		if (changePasswordCommand.isPasswordRepeatMismatch()) {
+			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.passwordMismatch");
+			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
+		}
+
+		try {
+			AppUser currentUser = securityService.getCurrentUser();
+			userService.changePassword(currentUser.getId(), changePasswordCommand);
+		} catch (OldPasswordWrongException e) {
+			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.oldPasswordWrong");
+			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
+		}
+
+		messageUtil.addInfoMsg(redirect, "msg.user.profile.info.passwordChanged");
+		return new ModelAndView("redirect:/matches");
+	}
 }

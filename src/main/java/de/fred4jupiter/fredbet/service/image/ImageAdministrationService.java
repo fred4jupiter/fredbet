@@ -16,7 +16,7 @@ import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
-import de.fred4jupiter.fredbet.security.SecurityUtils;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.web.image.ImageCommand;
 import de.fred4jupiter.fredbet.web.image.Rotation;
@@ -44,6 +44,9 @@ public class ImageAdministrationService {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
+	
+	@Autowired
+	private SecurityService securityService;
 
 	public void saveImageInDatabase(byte[] binary, String galleryGroup, String description, Rotation rotation) {
 		ImageGroup imageGroup = createImageGroup(galleryGroup);
@@ -53,7 +56,7 @@ public class ImageAdministrationService {
 
 		final String key = imageKeyGenerator.generateKey();
 
-		ImageMetaData image = new ImageMetaData(key, imageGroup, SecurityUtils.getCurrentUser());
+		ImageMetaData image = new ImageMetaData(key, imageGroup, securityService.getCurrentUser());
 		image.setDescription(description);
 		imageMetaDataRepository.save(image);
 

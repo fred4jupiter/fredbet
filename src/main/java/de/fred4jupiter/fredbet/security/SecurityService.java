@@ -1,8 +1,6 @@
 package de.fred4jupiter.fredbet.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +46,6 @@ public class SecurityService {
 	}
 
 	public AppUser getCurrentUser() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null || !authentication.isAuthenticated()) {
-			throw new UsernameNotFoundException("User is not logged in!");
-		}
-
-		return (AppUser) authentication.getPrincipal();
+		return UserAccessor.getCurrentUser();
 	}
 }
