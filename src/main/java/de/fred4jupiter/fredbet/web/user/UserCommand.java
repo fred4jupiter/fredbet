@@ -11,11 +11,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.ui.ModelMap;
 
-import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MessageUtil;
-import de.fred4jupiter.fredbet.web.SecurityWebUtils;
 
 public class UserCommand {
 
@@ -120,13 +118,5 @@ public class UserCommand {
     public void setResetPassword(boolean resetPassword) {
         this.resetPassword = resetPassword;
     }
-    
-    public boolean isRoleSelectionDisabled() {
-    	return isUserItself() || !SecurityWebUtils.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE);
-    }
-    
-    private boolean isUserItself() {
-    	String loggedInUser = SecurityWebUtils.getCurrentUser().getUsername();
-    	return loggedInUser.equals(username);
-    }
+
 }

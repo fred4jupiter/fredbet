@@ -48,4 +48,10 @@ public class SecurityService {
 	public AppUser getCurrentUser() {
 		return UserAccessor.getCurrentUser();
 	}
+	
+	public boolean isRoleSelectionDisabledForUser(String username) {
+		final AppUser currentUser = getCurrentUser();
+    	return currentUser.getUsername().equals(username) || !(currentUser.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE));
+    }
+	
 }

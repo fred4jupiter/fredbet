@@ -20,6 +20,7 @@ import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
 
@@ -37,6 +38,9 @@ public class UserService {
 
 	@Autowired
 	private FredbetProperties fredbetProperties;
+	
+	@Autowired
+	private SecurityService securityService;
 	
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -69,7 +73,7 @@ public class UserService {
 		AppUserBuilder appUserBuilder = AppUserBuilder.create().withUsernameAndPassword(userCommand.getUsername(),
 				userCommand.getPassword());
 
-		if (userCommand.isRoleSelectionDisabled()) {
+		if (isRoleSelectionDisabled(userCommand)) {
 			LOG.debug("Role selection is disabled for user {}. Using default role {}", userCommand.getUsername(), FredBetRole.ROLE_USER);
 			appUserBuilder.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name()));
 		} else {
@@ -80,6 +84,10 @@ public class UserService {
 		return;
 	}
 
+	private boolean isRoleSelectionDisabled(UserCommand userCommand) {
+		return securityService.isRoleSelectionDisabledForUser(userCommand.getUsername());
+	}
+	
 	public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
 		AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
 		if (foundUser != null) {
@@ -93,7 +101,7 @@ public class UserService {
 	public AppUser updateUser(UserCommand userCommand) {
 		Assert.notNull(userCommand.getUserId(), "userCommand.getUserId() must be given");
 		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
-		if (userCommand.isRoleSelectionDisabled()) {
+		if (isRoleSelectionDisabled(userCommand)) {
 			LOG.debug("Role selection is disabled for user {}. Do not update roles.", userCommand.getUsername());
 		} else {
 			appUser.setRoles(userCommand.getRoles());

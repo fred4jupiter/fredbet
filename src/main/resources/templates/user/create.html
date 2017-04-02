@@ -21,7 +21,7 @@
 					</div>
 					<ul class="list-group">
 						<li class="list-group-item" th:each="role : ${userCommand.availableRoles}">
-							<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${userCommand.isRoleSelectionDisabled()}" />
+							<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@securityService.isRoleSelectionDisabledForUser(userCommand.username)}" />
 							<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
 						</li>
 					</ul>
