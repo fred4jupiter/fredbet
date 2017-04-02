@@ -29,6 +29,9 @@
 		</div>
 	
 		<p th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">Cause unknown (no exception details available)</p>
+		
+		<br/>
+		<a href="#" th:href="@{/matches/upcoming}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
 	</div>
 </body>
 </html>
