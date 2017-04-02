@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +24,7 @@ import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
@@ -49,6 +49,9 @@ public class BettingService {
 
 	@Autowired
 	private ExtraBetRepository extraBetRepository;
+
+	@Autowired
+	private SecurityService securityService;
 
 	public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		AppUser appUser = appUserRepository.findByUsername(username);
@@ -108,28 +111,26 @@ public class BettingService {
 	public Long save(Bet bet) {
 		Match match = matchRepository.findOne(bet.getMatch().getId());
 		if (match.hasStarted()) {
-			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
+			throw new NoBettingAfterMatchStartedAllowedException(
+					"The match has already been started! You are to late!");
 		}
 
 		if (StringUtils.isBlank(bet.getUserName())) {
-			bet.setUserName(getCurrentUsername());
+			bet.setUserName(securityService.getCurrentUserName());
 		}
 
 		Bet saved = betRepository.save(bet);
 		return saved.getId();
 	}
 
-	private String getCurrentUsername() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}
-
 	public BetCommand findOrCreateBetForMatch(Long matchId) {
-		Match match = matchRepository.findOne(matchId);
-		Bet bet = betRepository.findByUserNameAndMatch(getCurrentUsername(), match);
+		final Match match = matchRepository.findOne(matchId);
+		final String currentUserName = securityService.getCurrentUserName();
+		Bet bet = betRepository.findByUserNameAndMatch(currentUserName, match);
 		if (bet == null) {
 			bet = new Bet();
 			bet.setMatch(match);
-			bet.setUserName(getCurrentUsername());
+			bet.setUserName(currentUserName);
 		}
 
 		return toBetCommand(bet);
@@ -143,7 +144,8 @@ public class BettingService {
 	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
 		Match match = matchRepository.findOne(matchId);
 		List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
-		List<Bet> filtered = allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+		List<Bet> filtered = allBets.stream()
+				.filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
 				.collect(Collectors.toList());
 
 		return new AllBetsCommand(filtered, match, messageUtil);
@@ -224,7 +226,8 @@ public class BettingService {
 
 	public List<ExtraBet> loadExtraBetDataOthers() {
 		List<ExtraBet> allExtraBets = extraBetRepository.findAll(new Sort(Direction.ASC, "userName"));
-		return allExtraBets.stream().filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+		return allExtraBets.stream()
+				.filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
 				.collect(Collectors.toList());
 	}
 
