@@ -36,6 +36,9 @@ public class ExcelImportService {
 
 	@Value("classpath:/excelimport/ImportTemplate.xlsx")
 	private Resource excelTemplateFile;
+	
+	@Value("classpath:/excelimport/ConfederationsCup2017.xlsx")
+	private Resource confCup2017File;
 
 	public List<Match> importFromExcel(File file) {
 		try (InputStream inp = new FileInputStream(file)) {
@@ -99,6 +102,14 @@ public class ExcelImportService {
 	public byte[] downloadTemplate() {
 		try {
 			return IOUtils.toByteArray(excelTemplateFile.getInputStream());
+		} catch (IOException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		}
+	}
+	
+	public byte[] downloadConfCup2017() {
+		try {
+			return IOUtils.toByteArray(confCup2017File.getInputStream());
 		} catch (IOException e) {
 			throw new IllegalStateException(e.getMessage(), e);
 		}

@@ -59,6 +59,18 @@ public class ExcelImportController {
 		return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
 				.header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(templateFile);
 	}
+	
+	@RequestMapping(value = "/download/confcup2017", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
+	public ResponseEntity<byte[]> downloadConferderationsCup2017(HttpServletResponse response) {
+		final String fileName = "ConfederationsCup2017.xlsx";
+		byte[] fileContent = excelImportService.downloadConfCup2017();
+		if (fileContent == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+
+		return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
+				.header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(fileContent);
+	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public ModelAndView uploadExcelFile(ExcelUploadCommand excelUploadCommand, BindingResult result, RedirectAttributes redirect) {
