@@ -48,7 +48,7 @@ public class ImageAdministrationService {
 	@Autowired
 	private SecurityService securityService;
 
-	public void saveImageInDatabase(byte[] binary, String galleryGroup, String description, Rotation rotation) {
+	public void saveImage(byte[] binary, String galleryGroup, String description, Rotation rotation) {
 		ImageGroup imageGroup = createImageGroup(galleryGroup);
 
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);

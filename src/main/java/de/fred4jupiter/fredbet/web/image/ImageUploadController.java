@@ -78,7 +78,7 @@ public class ImageUploadController {
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
 
-			imageAdministrationService.saveImageInDatabase(myFile.getBytes(), imageUploadCommand.getGalleryGroup(),
+			imageAdministrationService.saveImage(myFile.getBytes(), imageUploadCommand.getGalleryGroup(),
 					imageUploadCommand.getDescription(), imageUploadCommand.getRotation());
 			messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 		} catch (IOException e) {
