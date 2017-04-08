@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	checkPenalty();
-	$('.my-image').croppie();	 
+	$('#cropImage').croppie();	 
 });
 
 function checkPenalty() {

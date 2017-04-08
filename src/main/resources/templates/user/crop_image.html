@@ -2,20 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title th:text="#{user.create.title}"></title>
+	<title th:text="#{user.create.title}"></title>	
 </head>
 <body>
 	<div layout:fragment="content" class="container">
 		<div th:replace="fragments/alert :: alert_headline"></div>
-		<form id="userForm" th:action="@{/cropping}" method="post" enctype="multipart/form-data" role="form">
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div style="width: 300px; height: 300px">
-						<img class="my-image" th:src="@{/images/bild1.jpg}"/>
-					</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<form th:action="@{/cropping/upload}" th:object="${imageCroppingCommand}" method="post" enctype="multipart/form-data" role="form">
+					<div class="form-group">
+						<label th:text="#{image.upload.file}"></label><br/>
+				    	<input type="file" th:field="*{newUserImageFile}" class="btn btn-default btn-file" />
+					</div>					
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
+					</div>				        
+			    </form>
+		    </div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<div style="width: 300px; height: 300px">
+					<img id="cropImage" th:src="@{/images/bild1.jpg}"/>
+					<img th:src="@{'/cropping/show/' + ${imageCroppingCommand.imageId}}" th:alt="${imageCroppingCommand.imageId}" class="img-responsive"/>
 				</div>
 			</div>
-		</form>
+		</div>		
 	</div>
 </body>
 </html>

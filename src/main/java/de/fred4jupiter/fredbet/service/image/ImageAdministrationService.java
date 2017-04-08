@@ -149,4 +149,11 @@ public class ImageAdministrationService {
 	public List<String> findAvailableImageGroups() {
 		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
 	}
+
+	public Long loadImageOfUser(String currentUserName, String galleryName) {
+		
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
