@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<body>
 		<div th:fragment="profile_image(imageId)" th:remove="tag">
-			<img th:if="${imageId}" th:src="@{'/gallery/showthumb/' + ${imageId}}" width="25" height="25"/>
+			<img th:if="${imageId}" th:src="@{'/gallery/showthumb/' + ${imageId}}" width="21" height="21"/>
 	        <span th:if="!${imageId}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
 		</div>
 	</body>
