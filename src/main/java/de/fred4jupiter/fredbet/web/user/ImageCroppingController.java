@@ -78,7 +78,7 @@ public class ImageCroppingController {
 
 		if (StringUtils.isBlank(imageBase64)) {
 			LOG.error("No base64 image given");
-			messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
+			messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
 			return new ModelAndView(REDIRECT_SHOW_PAGE);
 		}
 

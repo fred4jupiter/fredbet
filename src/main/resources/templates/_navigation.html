@@ -96,7 +96,7 @@
                         </a>
 						<ul class="dropdown-menu">
 							<li th:class="${pageState_profile_changePassword}"><a href="#changePassword" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a></li>
-							<li th:class="${pageState_cropping_show}"><a th:href="@{/cropping/show}">Select profile image</a></li>
+							<li th:class="${pageState_cropping_show}"><a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a></li>
 						</ul>						
 					</li>
 					<li th:if="${@securityService.isUserLoggedIn()}">
