@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	checkPenalty();
-	$('#cropImage').croppie();	 
+	
+	demoUpload();
 });
 
 function checkPenalty() {
@@ -44,4 +45,52 @@ function twoCountDown() {
 		$('#goalsTeamTwo, #teamResultTwo').val((val*1)-1); 
 		checkPenalty();
 	}
+}
+
+function demoUpload() {
+	var $uploadCrop;
+
+	function readFile(input) {
+			if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+				$('#cropImage').addClass('ready');
+            	$uploadCrop.croppie('bind', {
+            		url: e.target.result
+            	}).then(function(){
+            		console.log('jQuery bind complete');
+            	});
+            	
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+	        swal("Sorry - you're browser doesn't support the FileReader API");
+	    }
+	}
+
+	$uploadCrop = $('#upload-demo').croppie({
+		viewport: {
+			width: 150,
+			height: 150,			
+		},
+		enableExif: true,
+		enableOrientation: true,
+		format: 'jpg'		
+	});
+
+	$('#upload').on('change', function () { readFile(this); });
+	
+	$('.upload-result').on('click', function (ev) {
+		$uploadCrop.croppie('result', {
+			type: 'canvas',
+			size: 'viewport'
+		}).then(function (resp) {
+			console.log('response: '+ resp);
+			$("#resultImage").attr("src", resp);
+			$("#croppedFileBase64").attr("value", resp);
+		});
+	});
 }
