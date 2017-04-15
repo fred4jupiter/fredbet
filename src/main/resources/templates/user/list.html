@@ -14,8 +14,7 @@
 						<div class="panel-body user-panel-body">
 							<div class="row">
 								<div class="col-xs-7 user-label">
-									<img th:if="${user.userProfileImageId}" th:src="@{'/gallery/showthumb/' + ${user.userProfileImageId}}" width="25" height="25"/>
-									<span th:if="!${user.userProfileImageId}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+									<span th:replace="fragments/profileImage :: profile_image(${user.userProfileImageId})"></span>									
 									<span th:text="${user.username}"></span>							  		
 					  			</div>
 					  			<div class="col-xs-5">
