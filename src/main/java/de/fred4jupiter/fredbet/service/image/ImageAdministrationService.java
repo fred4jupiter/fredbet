@@ -51,23 +51,20 @@ public class ImageAdministrationService {
 	public void saveImage(byte[] binary, Long imageGroupId, String description, Rotation rotation) {
 		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
 
-		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
-		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
-
 		final String key = imageKeyGenerator.generateKey();
 
 		ImageMetaData image = new ImageMetaData(key, imageGroup, securityService.getCurrentUser());
 		image.setDescription(description);
 		imageMetaDataRepository.save(image);
 
+		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
+		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
+
 		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
 	}
 
 	public void saveUserProfileImage(byte[] binary, Long imageGroupId) {
 		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
-
-		byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
-		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
 
 		final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 		final String key = imageKeyGenerator.generateKey();
@@ -83,6 +80,8 @@ public class ImageAdministrationService {
 
 		imageMetaDataRepository.save(imageMetaData);
 
+		byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
+		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
 		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
 	}
 
