@@ -78,7 +78,7 @@ function demoUpload() {
 		},
 		enableExif: true,
 		enableOrientation: true,
-		format: 'jpg'		
+		format: 'jpeg'		
 	});
 
 	$('#upload').on('change', function () { readFile(this); });
@@ -86,7 +86,10 @@ function demoUpload() {
 	$('.upload-result').on('click', function (ev) {
 		$uploadCrop.croppie('result', {
 			type: 'canvas',
-			size: 'viewport'
+			size: 'viewport',
+			enableExif: true,
+			enableOrientation: true,
+			format: 'jpeg'
 		}).then(function (resp) {
 			console.log('response: '+ resp);
 			$("#resultImage").attr("src", resp);

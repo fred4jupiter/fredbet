@@ -88,7 +88,7 @@ public class ImageCroppingController {
 		byte[] imageByte = Base64.getDecoder().decode(splitted[1]);
 
 		try {
-			FileUtils.writeByteArrayToFile(new File("d://Temp2/image.png"), imageByte);
+			FileUtils.writeByteArrayToFile(new File("d://Temp2/image.jpg"), imageByte);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}
