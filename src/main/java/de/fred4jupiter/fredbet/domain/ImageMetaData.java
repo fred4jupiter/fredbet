@@ -26,7 +26,7 @@ public class ImageMetaData {
 	@JoinColumn(name = "IMAGE_GROUP_ID")
 	private ImageGroup imageGroup;
 
-	@Column(name = "IMAGE_KEY")
+	@Column(name = "IMAGE_KEY", unique = true)
 	private String imageKey;
 
 	@Column(name = "DESCRIPTION")

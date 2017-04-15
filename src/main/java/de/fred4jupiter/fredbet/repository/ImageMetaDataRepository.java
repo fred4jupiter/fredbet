@@ -10,5 +10,7 @@ import de.fred4jupiter.fredbet.domain.ImageMetaData;
 public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Long> {
 
 	List<ImageMetaData> findByOwner(AppUser appUser);
+	
+	ImageMetaData findByImageKey(String imageKey);
 
 }
