@@ -77,8 +77,9 @@ public class ImageAdministrationService {
 			// create new user profile image
 			imageMetaData = new ImageMetaData(key, imageGroup, appUser);
 			imageMetaData.setDescription(appUser.getUsername());
+		} else {
+			imageMetaData.setImageKey(key);
 		}
-		imageMetaData.setImageKey(key);
 
 		imageMetaDataRepository.save(imageMetaData);
 
