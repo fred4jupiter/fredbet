@@ -140,7 +140,7 @@ public class DataBasePopulator {
 
 	private void createImageGroups(String... imageGroups) {
 		for (String imageGroup : imageGroups) {
-			imageAdministrationService.createImageGroup(imageGroup);
+			imageAdministrationService.createOrFetchImageGroup(imageGroup);
 		}
 	}
 

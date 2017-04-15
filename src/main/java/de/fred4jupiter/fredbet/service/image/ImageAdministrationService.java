@@ -44,12 +44,12 @@ public class ImageAdministrationService {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
-	
+
 	@Autowired
 	private SecurityService securityService;
 
-	public void saveImage(byte[] binary, String galleryGroup, String description, Rotation rotation) {
-		ImageGroup imageGroup = createImageGroup(galleryGroup);
+	public void saveImage(byte[] binary, Long imageGroupId, String description, Rotation rotation) {
+		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
 
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
@@ -63,11 +63,11 @@ public class ImageAdministrationService {
 		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
 	}
 
-	public ImageGroup createImageGroup(String galleryGroup) {
-		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroup);
+	public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
+		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroupName);
 
 		if (imageGroup == null) {
-			imageGroup = new ImageGroup(galleryGroup);
+			imageGroup = new ImageGroup(galleryGroupName);
 			imageGroupRepository.save(imageGroup);
 		}
 		return imageGroup;
@@ -107,8 +107,7 @@ public class ImageAdministrationService {
 			return null;
 		}
 
-		BinaryImage imageData = imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
-		return imageData;
+		return imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
 	public BinaryImage loadThumbnailById(Long imageId) {
@@ -117,9 +116,7 @@ public class ImageAdministrationService {
 			return null;
 		}
 
-		BinaryImage imageData = imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(),
-				imageMetaData.getImageGroup().getName());
-		return imageData;
+		return imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
 	public void deleteImageById(Long imageId) {
@@ -138,22 +135,15 @@ public class ImageAdministrationService {
 		if (imageMetaData == null) {
 			return false;
 		}
-		
+
 		if (imageMetaData.getOwner().getUsername().equals(appUser.getUsername())) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	public List<String> findAvailableImageGroups() {
 		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
-	}
-
-	public Long loadImageOfUser(String currentUserName, String galleryName) {
-		
-		
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
@@ -78,8 +79,9 @@ public class ImageUploadController {
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
 
-			imageAdministrationService.saveImage(myFile.getBytes(), imageUploadCommand.getGalleryGroup(),
-					imageUploadCommand.getDescription(), imageUploadCommand.getRotation());
+			final ImageGroup imageGroup = imageAdministrationService.createOrFetchImageGroup(imageUploadCommand.getGalleryGroup());
+			imageAdministrationService.saveImage(myFile.getBytes(), imageGroup.getId(), imageUploadCommand.getDescription(),
+					imageUploadCommand.getRotation());
 			messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
