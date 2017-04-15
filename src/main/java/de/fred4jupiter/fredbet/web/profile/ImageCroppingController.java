@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web.user;
+package de.fred4jupiter.fredbet.web.profile;
 
 import java.util.Base64;
 
@@ -32,7 +32,7 @@ public class ImageCroppingController {
 
 	@RequestMapping("/show")
 	public ModelAndView show() {
-		return new ModelAndView("user/crop_image");
+		return new ModelAndView("profile/crop_image");
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
