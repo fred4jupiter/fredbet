@@ -12,6 +12,16 @@ import javax.persistence.Version;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
+
+/**
+ * Will only be used if the images are stored within the database.
+ * 
+ * @see ImageLocationStrategy
+ * 
+ * @author michael
+ *
+ */
 @Entity
 @Table(name = "IMAGE_BINARY")
 public class ImageBinary {
