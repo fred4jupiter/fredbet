@@ -63,6 +63,28 @@ public class ImageAdministrationService {
 		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
 	}
 
+	public void saveUserProfileImage(byte[] binary, Long imageGroupId) {
+		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
+
+		byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
+		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
+
+		final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
+		final String key = imageKeyGenerator.generateKey();
+
+		ImageMetaData imageMetaData = appUser.getUserProfileImageMetaData();
+		if (imageMetaData == null) {
+			// create new user profile image
+			imageMetaData = new ImageMetaData(key, imageGroup, appUser);
+			imageMetaData.setDescription(appUser.getUsername());
+		}
+		imageMetaData.setImageKey(key);
+
+		imageMetaDataRepository.save(imageMetaData);
+
+		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
+	}
+
 	public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
 		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroupName);
 
