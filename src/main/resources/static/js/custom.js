@@ -54,8 +54,7 @@ function imageCroppingUpload() {
 			if (input.files && input.files[0]) {
             var reader = new FileReader();
             
-            reader.onload = function (e) {
-				$('#cropImage').addClass('ready');
+            reader.onload = function (e) {				
             	$uploadCrop.croppie('bind', {
             		url: e.target.result
             	}).then(function(){
@@ -71,7 +70,7 @@ function imageCroppingUpload() {
 
 	$('#upload').on('change', function () { readFile(this); });
 	
-	$uploadCrop = $('#upload-demo').croppie({
+	$uploadCrop = $('#croppie-container').croppie({
 		viewport: {
 			width: 150,
 			height: 150,			
