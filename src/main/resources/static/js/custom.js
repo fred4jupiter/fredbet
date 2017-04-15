@@ -88,7 +88,6 @@ function imageCroppingUpload() {
 			enableOrientation: true,
 			format: 'jpeg'
 		}).then(function (resp) {
-			console.log('response: '+ resp);
 			$("#resultImage").attr("src", resp);
 			$("#croppedFileBase64").attr("value", resp);
 		});
