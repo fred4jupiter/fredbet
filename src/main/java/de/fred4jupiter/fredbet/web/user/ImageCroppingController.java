@@ -1,11 +1,8 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +24,7 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.image.Rotation;
 
 @Controller
 @RequestMapping("/cropping")
@@ -80,41 +78,20 @@ public class ImageCroppingController {
 
 		if (StringUtils.isBlank(imageBase64)) {
 			LOG.error("No base64 image given");
+			messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
 			return new ModelAndView(REDIRECT_SHOW_PAGE);
 		}
 
-		String[] splitted = imageBase64.split(",");
+		byte[] imageByte = Base64.getDecoder().decode(imageBase64.split(",")[1]);
 
-		byte[] imageByte = Base64.getDecoder().decode(splitted[1]);
-
-		try {
-			FileUtils.writeByteArrayToFile(new File("d://Temp2/image.jpg"), imageByte);
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+		if (imageByte.length == 0) {
+			messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+			return new ModelAndView(REDIRECT_SHOW_PAGE);
 		}
 
-		// try {
-		// if (multipartFile == null || multipartFile.getBytes() == null ||
-		// multipartFile.getBytes().length == 0) {
-		// messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
-		// return new ModelAndView(REDIRECT_SHOW_PAGE);
-		// }
-		//
-		// if
-		// (!multipartFile.getContentType().equals(MediaType.IMAGE_JPEG_VALUE))
-		// {
-		// messageUtil.addErrorMsg(redirect, "image.upload.msg.noJpegImage");
-		// return new ModelAndView(REDIRECT_SHOW_PAGE);
-		// }
-		//
-		// String currentUserName = securityService.getCurrentUserName();
-		// imageAdministrationService.saveImage(multipartFile.getBytes(),
-		// GALLERY_NAME, currentUserName, Rotation.NONE);
-		// messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
-		// } catch (IOException e) {
-		// LOG.error(e.getMessage(), e);
-		// messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
-		// }
+		String currentUserName = securityService.getCurrentUserName();
+		imageAdministrationService.saveImage(imageByte, GALLERY_NAME, currentUserName, Rotation.NONE);
+		messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
