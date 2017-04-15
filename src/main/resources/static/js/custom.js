@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	checkPenalty();
 	
-	demoUpload();
+	imageCroppingUpload();
 });
 
 function checkPenalty() {
@@ -47,7 +47,7 @@ function twoCountDown() {
 	}
 }
 
-function demoUpload() {
+function imageCroppingUpload() {
 	var $uploadCrop;
 
 	function readFile(input) {
@@ -61,16 +61,16 @@ function demoUpload() {
             	}).then(function(){
             		console.log('jQuery bind complete');
             	});
-            	
             }
-            
             reader.readAsDataURL(input.files[0]);
         }
         else {
-	        swal("Sorry - you're browser doesn't support the FileReader API");
+	        console.log("Sorry - you're browser doesn't support the FileReader API");
 	    }
 	}
 
+	$('#upload').on('change', function () { readFile(this); });
+	
 	$uploadCrop = $('#upload-demo').croppie({
 		viewport: {
 			width: 150,
@@ -80,10 +80,8 @@ function demoUpload() {
 		enableOrientation: true,
 		format: 'jpeg'		
 	});
-
-	$('#upload').on('change', function () { readFile(this); });
 	
-	$('.upload-result').on('click', function (ev) {
+	$('#crop-image').on('click', function (ev) {
 		$uploadCrop.croppie('result', {
 			type: 'canvas',
 			size: 'viewport',
