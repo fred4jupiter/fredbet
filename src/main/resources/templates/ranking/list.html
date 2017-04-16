@@ -12,9 +12,18 @@
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<div class="panel panel-default">
 				  <div class="panel-body">
-				  	<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="#{ranking.list.order} + ' ' + ${status.count}"></span>
-				  	<span class="ranking-name" th:text="${ranking.userName}"></span>
-				  	<span class="badge success pull-right" th:text="${ranking.totalPoints}"></span> 	
+				  	<div class="col-xs-3 no-left-right-padding">
+				  		<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="#{ranking.list.order} + ' ' + ${status.count}"></span>
+				  	</div>
+				  	<div class="col-xs-1 no-left-right-padding">
+				  		<span th:replace="fragments/profileImage :: profile_image_small(${@securityService.getUserProfileImageKeyFor(ranking.userName)})"></span>
+				  	</div>
+				  	<div class="col-xs-6 no-left-right-padding">
+				  		<span class="ranking-name" th:text="${ranking.userName}"></span>
+				  	</div>
+				  	<div class="col-xs-2 no-left-right-padding">
+				  		<span class="badge success pull-right" th:text="${ranking.totalPoints}"></span>
+				  	</div> 	
 				  </div>					  
 				</div>
 			</div>				
