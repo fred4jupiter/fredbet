@@ -44,10 +44,10 @@ public class ImageUploadController {
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
 		if (securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
-			return imageAdministrationService.fetchAllImages();
+			return imageAdministrationService.fetchAllImagesExceptUserProfileImages();
 		}
 
-		return imageAdministrationService.fetchImagesOfUser(securityService.getCurrentUserName());
+		return imageAdministrationService.fetchImagesOfUserExceptUserProfileImages(securityService.getCurrentUserName());
 	}
 
 	@ModelAttribute("availableImageGroups")

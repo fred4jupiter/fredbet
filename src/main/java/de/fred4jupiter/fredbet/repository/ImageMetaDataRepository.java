@@ -20,4 +20,10 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
 	@Query("select a from ImageMetaData a where a.imageGroup.id = :imageGroupId")
 	List<ImageMetaData> loadImageMetaDataOfUserProfileImageSet(@Param("imageGroupId") Long imageGroupId);
+
+	List<ImageMetaData> findByImageGroupIdNot(Long userImageGroupId);
+
+	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.id <> :imageGroupId")
+	List<ImageMetaData> findMetaDataOfUserWithUsernameAndNoProfileImages(@Param("username") String username,
+			@Param("imageGroupId") Long imageGroupId);
 }

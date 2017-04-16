@@ -118,11 +118,15 @@ public class ImageAdministrationService {
 		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
 		return toListOfImageCommand(imageMetaDataList);
 	}
+	
+	public List<ImageCommand> fetchAllImagesExceptUserProfileImages() {
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByImageGroupIdNot(getUserImageGroupId());
+		return toListOfImageCommand(imageMetaDataList);
+	}
 
-	public List<ImageCommand> fetchImagesOfUser(String currentUserName) {
+	public List<ImageCommand> fetchImagesOfUserExceptUserProfileImages(String currentUserName) {
 		LOG.debug("fetching images of user={}", currentUserName);
-		AppUser appUser = appUserRepository.findByUsername(currentUserName);
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findMetaDataOfUserWithUsernameAndNoProfileImages(currentUserName, getUserImageGroupId());
 		return toListOfImageCommand(imageMetaDataList);
 	}
 
