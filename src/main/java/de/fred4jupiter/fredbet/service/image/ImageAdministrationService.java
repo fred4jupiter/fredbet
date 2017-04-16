@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,25 @@ public class ImageAdministrationService {
 	@Autowired
 	private SecurityService securityService;
 
+	private static final String GALLERY_NAME = "Mitstreiter";
+
+	private Long userImageGroupId;
+
+	@PostConstruct
+	private void initUserProfileImageGroup() {
+		ImageGroup imageGroup = createOrFetchImageGroup(GALLERY_NAME);
+		this.userImageGroupId = imageGroup.getId();
+	}
+
+	/**
+	 * Image groupd ID of the user profile image group.
+	 * 
+	 * @return
+	 */
+	public Long getUserImageGroupId() {
+		return userImageGroupId;
+	}
+
 	public void saveImage(byte[] binary, Long imageGroupId, String description, Rotation rotation) {
 		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
 
@@ -63,12 +84,12 @@ public class ImageAdministrationService {
 		imageLocationService.saveImage(key, imageGroup.getId(), imageByte, thumbnail);
 	}
 
-	public void saveUserProfileImage(byte[] binary, Long imageGroupId) {
+	public void saveUserProfileImage(byte[] binary) {
 		final String key = imageKeyGenerator.generateKey();
 		ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
 		if (imageMetaData == null) {
 			// create new user profile image
-			final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
+			final ImageGroup imageGroup = imageGroupRepository.findOne(getUserImageGroupId());
 			final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 			imageMetaData = new ImageMetaData(key, imageGroup, appUser);
 			imageMetaData.setDescription(appUser.getUsername());
@@ -165,6 +186,7 @@ public class ImageAdministrationService {
 	}
 
 	public List<String> findAvailableImageGroups() {
-		return imageGroupRepository.findAll().stream().map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
+		return imageGroupRepository.findAll().stream().filter(imageGroup -> !(imageGroup.getId().equals(getUserImageGroupId())))
+				.map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
 	}
 }

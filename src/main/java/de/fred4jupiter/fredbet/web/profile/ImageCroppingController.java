@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.service.ImageCroppingService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
@@ -28,7 +28,7 @@ public class ImageCroppingController {
 	private MessageUtil messageUtil;
 
 	@Autowired
-	private ImageCroppingService imageCroppingService;
+	private ImageAdministrationService imageAdministrationService;
 
 	@RequestMapping("/show")
 	public ModelAndView show() {
@@ -52,7 +52,7 @@ public class ImageCroppingController {
 			return new ModelAndView(REDIRECT_SHOW_PAGE);
 		}
 
-		imageCroppingService.saveUserProfileImage(imageByte);
+		imageAdministrationService.saveUserProfileImage(imageByte);
 
 		messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 
