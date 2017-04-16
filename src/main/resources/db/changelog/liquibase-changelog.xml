@@ -155,7 +155,7 @@
 			<column name="image_bytes" type="BLOB">
 				<constraints nullable="false" />
 			</column>
-			<column name="image_group" type="varchar(100)">
+			<column name="image_group_id" type="BIGINT">
 				<constraints nullable="false" />
 			</column>
 			<column name="thumb_image_bytes" type="BLOB">

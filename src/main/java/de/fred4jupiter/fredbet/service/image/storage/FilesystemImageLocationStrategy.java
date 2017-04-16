@@ -47,9 +47,9 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
-		writeByteArrayToFile(getImageFileForGroup(imageGroup, imageKey), imageBinary);
-		writeByteArrayToFile(getThumbnailFileForGroup(imageGroup, imageKey), thumbImageBinary);
+	public void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary) {
+		writeByteArrayToFile(getImageFileForGroup(imageGroupId, imageKey), imageBinary);
+		writeByteArrayToFile(getThumbnailFileForGroup(imageGroupId, imageKey), thumbImageBinary);
 	}
 
 	@Override
@@ -59,33 +59,33 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public BinaryImage getImageByKey(String imageKey, String imageGroup) {
-		byte[] imageBytes = readToByteArray(getImageFileForGroup(imageGroup, imageKey));
+	public BinaryImage getImageByKey(String imageKey, Long imageGroupId) {
+		byte[] imageBytes = readToByteArray(getImageFileForGroup(imageGroupId, imageKey));
 		return new BinaryImage(imageKey, imageBytes);
 	}
 
 	@Override
-	public BinaryImage getThumbnailByKey(String imageKey, String imageGroup) {
-		byte[] imageBytes = readToByteArray(getThumbnailFileForGroup(imageGroup, imageKey));
+	public BinaryImage getThumbnailByKey(String imageKey, Long imageGroupId) {
+		byte[] imageBytes = readToByteArray(getThumbnailFileForGroup(imageGroupId, imageKey));
 		return new BinaryImage(imageKey, imageBytes);
 	}
 
 	@Override
-	public void deleteImage(String imageKey, String imageGroup) {
-		getImageFileForGroup(imageGroup, imageKey).delete();
-		getThumbnailFileForGroup(imageGroup, imageKey).delete();
+	public void deleteImage(String imageKey, Long imageGroupId) {
+		getImageFileForGroup(imageGroupId, imageKey).delete();
+		getThumbnailFileForGroup(imageGroupId, imageKey).delete();
 	}
 
-	private File getImageFileForGroup(String imageGroup, String imageKey) {
-		return getFileFor(imageGroup, imageKey, IMAGE_PREFIX);
+	private File getImageFileForGroup(Long imageGroupId, String imageKey) {
+		return getFileFor(imageGroupId, imageKey, IMAGE_PREFIX);
 	}
 
-	private File getThumbnailFileForGroup(String imageGroup, String imageKey) {
-		return getFileFor(imageGroup, imageKey, THUMBNAIL_PREFIX);
+	private File getThumbnailFileForGroup(Long imageGroupId, String imageKey) {
+		return getFileFor(imageGroupId, imageKey, THUMBNAIL_PREFIX);
 	}
 
-	private File getFileFor(String imageGroup, String imageKey, String filePrefix) {
-		return new File(basePath + File.separator + imageGroup + File.separator + filePrefix + imageKey + ".jpg");
+	private File getFileFor(Long imageGroupId, String imageKey, String filePrefix) {
+		return new File(basePath + File.separator + imageGroupId + File.separator + filePrefix + imageKey + ".jpg");
 	}
 
 	private List<BinaryImage> readFilesToImageData(File imageFolder) {

@@ -35,8 +35,8 @@ public class ImageBinary {
 	@Lob
 	private byte[] imageBinary;
 
-	@Column(name = "IMAGE_GROUP")
-	private String imageGroup;
+	@Column(name = "IMAGE_GROUP_ID")
+	private Long imageGroupId;
 
 	@Column(name = "THUMB_IMAGE_BYTES")
 	@Lob
@@ -50,10 +50,10 @@ public class ImageBinary {
 		// for hibernate
 	}
 
-	public ImageBinary(String key, byte[] imageBinary, String imageGroup, byte[] thumbImageBinary) {
+	public ImageBinary(String key, byte[] imageBinary, Long imageGroupId, byte[] thumbImageBinary) {
 		this.key = key;
 		this.imageBinary = imageBinary;
-		this.imageGroup = imageGroup;
+		this.imageGroupId = imageGroupId;
 		this.thumbImageBinary = thumbImageBinary;
 	}
 
@@ -69,15 +69,15 @@ public class ImageBinary {
 		return thumbImageBinary;
 	}
 
-	public String getImageGroup() {
-		return imageGroup;
+	public Long getImageGroupId() {
+		return imageGroupId;
 	}
 
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("key", key);
-		builder.append("imageGroup", imageGroup);
+		builder.append("imageGroupId", imageGroupId);
 		builder.append("image size", imageBinary != null ? imageBinary.length : 0);
 		builder.append("image thumb size", thumbImageBinary != null ? thumbImageBinary.length : 0);
 		return builder.toString();

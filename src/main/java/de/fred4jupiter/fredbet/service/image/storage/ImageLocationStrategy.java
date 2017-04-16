@@ -16,7 +16,7 @@ public interface ImageLocationStrategy {
 
 	String IMAGE_PREFIX = "IM_";
 
-	void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary);
+	void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary);
 
 	/**
 	 * For downloading all images as zip file.
@@ -31,9 +31,9 @@ public interface ImageLocationStrategy {
 	 * @param imageKey
 	 * @param imageGroup
 	 */
-	void deleteImage(String imageKey, String imageGroup);
+	void deleteImage(String imageKey, Long imageGroupId);
 
-	BinaryImage getImageByKey(String imageKey, String imageGroup);
+	BinaryImage getImageByKey(String imageKey, Long imageGroupId);
 
-	BinaryImage getThumbnailByKey(String imageKey, String imageGroup);
+	BinaryImage getThumbnailByKey(String imageKey, Long imageGroupId);
 }

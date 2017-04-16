@@ -60,7 +60,7 @@ public class ImageAdministrationService {
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
 
-		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
+		imageLocationService.saveImage(key, imageGroup.getId(), imageByte, thumbnail);
 	}
 
 	public void saveUserProfileImage(byte[] binary, Long imageGroupId) {
@@ -80,7 +80,7 @@ public class ImageAdministrationService {
 
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
-		imageLocationService.saveImage(key, imageMetaData.getImageGroup().getName(), imageByte, thumbnail);
+		imageLocationService.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
 	}
 
 	public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
@@ -128,7 +128,7 @@ public class ImageAdministrationService {
 			return null;
 		}
 
-		return imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
+		return imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
 	}
 
 	public BinaryImage loadThumbnailByImageKey(String imageKey) {
@@ -137,7 +137,7 @@ public class ImageAdministrationService {
 			return null;
 		}
 
-		return imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
+		return imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
 	}
 
 	public void deleteImageByImageKey(String imageKey) {
@@ -148,7 +148,7 @@ public class ImageAdministrationService {
 		}
 
 		imageMetaDataRepository.delete(imageMetaData);
-		imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
+		imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
 	}
 
 	public boolean isImageOfUser(String imageKey, AppUser appUser) {
