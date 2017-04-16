@@ -1,7 +1,9 @@
 package de.fred4jupiter.fredbet.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
@@ -44,6 +47,12 @@ public class UserService {
 
 	@Autowired
 	private SecurityService securityService;
+
+	@Autowired
+	private ImageMetaDataRepository imageMetaDataRepository;
+
+	@Autowired
+	private ImageCroppingService imageCroppingService;
 
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -161,13 +170,27 @@ public class UserService {
 	}
 
 	public List<UserDto> findAllAsUserDto() {
-		return findAll().stream().map(appUser -> toUserDto(appUser)).collect(Collectors.toList());
+		List<ImageMetaData> metaDataList = imageMetaDataRepository
+				.loadImageMetaDataOfUserProfileImageSet(imageCroppingService.getUserImageGroupId());
+
+		Map<String, ImageMetaData> map = toMap(metaDataList);
+
+		return findAll().stream().map(appUser -> toUserDto(appUser, map)).collect(Collectors.toList());
 	}
 
-	private UserDto toUserDto(AppUser appUser) {
-		ImageMetaData userProfileImageMetaData = appUser.getUserProfileImageMetaData();
+	private Map<String, ImageMetaData> toMap(List<ImageMetaData> metaDataList) {
+		Map<String, ImageMetaData> map = new HashMap<>();
+		for (ImageMetaData imageMetaData : metaDataList) {
+			map.put(imageMetaData.getOwner().getUsername(), imageMetaData);
+		}
+
+		return map;
+	}
+
+	private UserDto toUserDto(AppUser appUser, Map<String, ImageMetaData> map) {
+		ImageMetaData userProfileImageMetaData = map.get(appUser.getUsername());
 		if (userProfileImageMetaData != null) {
-			return new UserDto(appUser.getId(), appUser.getUsername(), userProfileImageMetaData.getId());
+			return new UserDto(appUser.getId(), appUser.getUsername(), userProfileImageMetaData.getImageKey());
 		} else {
 			return new UserDto(appUser.getId(), appUser.getUsername());
 		}

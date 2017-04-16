@@ -4,16 +4,16 @@ public class UserDto {
 
 	private final Long userId;
 	private final String username;
-	private Long userProfileImageId;
+	private String userProfileImageKey;
 
 	public UserDto(Long userId, String username) {
 		this.userId = userId;
 		this.username = username;
 	}
 
-	public UserDto(Long userId, String username, Long userProfileImageId) {
+	public UserDto(Long userId, String username, String userProfileImageKey) {
 		this(userId, username);
-		this.userProfileImageId = userProfileImageId;
+		this.userProfileImageKey = userProfileImageKey;
 	}
 
 	public Long getUserId() {
@@ -24,8 +24,8 @@ public class UserDto {
 		return username;
 	}
 
-	public Long getUserProfileImageId() {
-		return userProfileImageId;
+	public String getUserProfileImageKey() {
+		return userProfileImageKey;
 	}
 
 }

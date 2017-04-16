@@ -76,12 +76,12 @@
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
 					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
 					   				<td class="vert-align">
-					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
-					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageId}}" class="img-responsive displayed"/>
+					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}">
+					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" class="img-responsive displayed"/>
 					   					</a>
 					   				</td>
 					   				<td class="vert-align">
-					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageId}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
+					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
 					   				</td>
 					   			</tr>
 				   			</tbody>

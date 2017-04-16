@@ -9,17 +9,17 @@
 			<div th:replace="fragments/alert :: alert_headline"></div>
 			<h1 th:text="#{user.list.title} + ' (' + ${allUsers.size()} + ')'"></h1>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="user : ${allUsers}">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="userDto : ${allUsers}">
 					<div class="panel panel-default">					
 						<div class="panel-body user-panel-body">
 							<div class="row">
 								<div class="col-xs-7 user-label">
-									<span th:replace="fragments/profileImage :: profile_image_big(${user.userProfileImageId})"></span>									
-									<span th:text="${user.username}"></span>							  		
+									<span th:replace="fragments/profileImage :: profile_image_big(${userDto.userProfileImageKey})"></span>									
+									<span th:text="${userDto.username}"></span>							  		
 					  			</div>
 					  			<div class="col-xs-5">
 					  				<div class="row custom-button-group">
-					  					<a sec:authorize="hasAuthority('PERM_EDIT_USER')" th:href="@{'/user/' + ${user.userId}}" class="btn btn-primary" role="button">
+					  					<a sec:authorize="hasAuthority('PERM_EDIT_USER')" th:href="@{'/user/' + ${userDto.userId}}" class="btn btn-primary" role="button">
 					  						<span class="glyphicon glyphicon-pencil"></span>
 				  						</a>
 									</div>

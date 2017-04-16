@@ -91,27 +91,27 @@ public class ImageUploadController {
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
 
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ModelAndView deleteImage(@PathVariable("id") Long imageId, RedirectAttributes redirect) {
-		if (!isAllowedToDeleteImageWithId(imageId)) {
+	@RequestMapping(value = "/delete/{imageKey}", method = RequestMethod.GET)
+	public ModelAndView deleteImage(@PathVariable("imageKey") String imageKey, RedirectAttributes redirect) {
+		if (!isAllowedToDeleteImageWithImageKey(imageKey)) {
 			messageUtil.addErrorMsg(redirect, "image.gallery.msg.delete.perm.denied");
 			return new ModelAndView(REDIRECT_SHOW_PAGE);
 		}
 
-		imageAdministrationService.deleteImageById(imageId);
+		imageAdministrationService.deleteImageByImageKey(imageKey);
 
 		messageUtil.addInfoMsg(redirect, "image.gallery.msg.deleted");
 
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
 
-	private boolean isAllowedToDeleteImageWithId(Long imageId) {
+	private boolean isAllowedToDeleteImageWithImageKey(String imageKey) {
 		final AppUser appUser = securityService.getCurrentUser();
 		if (appUser.hasPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
 			return true;
 		}
 
-		if (imageAdministrationService.isImageOfUser(imageId, appUser)) {
+		if (imageAdministrationService.isImageOfUser(imageKey, appUser)) {
 			return true;
 		}
 

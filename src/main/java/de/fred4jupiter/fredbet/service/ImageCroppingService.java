@@ -18,12 +18,22 @@ public class ImageCroppingService {
 	@Autowired
 	public ImageCroppingService(ImageAdministrationService imageAdministrationService) {
 		this.imageAdministrationService = imageAdministrationService;
+
 		ImageGroup imageGroup = imageAdministrationService.createOrFetchImageGroup(GALLERY_NAME);
 		this.userImageGroupId = imageGroup.getId();
 	}
 
 	public void saveUserProfileImage(byte[] imageByte) {
 		imageAdministrationService.saveUserProfileImage(imageByte, userImageGroupId);
+	}
+
+	/**
+	 * Image groupd ID of the user profile image group.
+	 * 
+	 * @return
+	 */
+	public Long getUserImageGroupId() {
+		return userImageGroupId;
 	}
 
 }

@@ -17,7 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -60,9 +59,6 @@ public class AppUser implements UserDetails {
 
 	@Column(name = "DELETABLE")
 	private boolean deletable = true;
-
-	@OneToOne(mappedBy = "owner")
-	private ImageMetaData userProfileImageMetaData;
 
 	@PersistenceConstructor
 	protected AppUser() {
@@ -218,13 +214,5 @@ public class AppUser implements UserDetails {
 		if (this.createdAt == null) {
 			this.createdAt = new Date();
 		}
-	}
-
-	public ImageMetaData getUserProfileImageMetaData() {
-		return userProfileImageMetaData;
-	}
-
-	public void setUserProfileImageMetaData(ImageMetaData userProfileImageMetaData) {
-		this.userProfileImageMetaData = userProfileImageMetaData;
 	}
 }

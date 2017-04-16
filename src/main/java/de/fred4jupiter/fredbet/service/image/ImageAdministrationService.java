@@ -64,14 +64,12 @@ public class ImageAdministrationService {
 	}
 
 	public void saveUserProfileImage(byte[] binary, Long imageGroupId) {
-		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
-
-		final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 		final String key = imageKeyGenerator.generateKey();
-
-		ImageMetaData imageMetaData = appUser.getUserProfileImageMetaData();
+		ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
 		if (imageMetaData == null) {
 			// create new user profile image
+			final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
+			final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 			imageMetaData = new ImageMetaData(key, imageGroup, appUser);
 			imageMetaData.setDescription(appUser.getUsername());
 		} else {
@@ -82,7 +80,7 @@ public class ImageAdministrationService {
 
 		byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
 		byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
-		imageLocationService.saveImage(key, imageGroup.getName(), imageByte, thumbnail);
+		imageLocationService.saveImage(key, imageMetaData.getImageGroup().getName(), imageByte, thumbnail);
 	}
 
 	public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
@@ -117,14 +115,15 @@ public class ImageAdministrationService {
 
 	private ImageCommand toImageCommand(ImageMetaData imageMetaData) {
 		ImageCommand imageCommand = new ImageCommand();
+		imageCommand.setImageId(imageMetaData.getId());
+		imageCommand.setImageKey(imageMetaData.getImageKey());
 		imageCommand.setDescription(imageMetaData.getDescription());
 		imageCommand.setGalleryGroup(imageMetaData.getImageGroup().getName());
-		imageCommand.setImageId(imageMetaData.getId());
 		return imageCommand;
 	}
 
-	public BinaryImage loadImageById(Long imageId) {
-		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
+	public BinaryImage loadImageByImageKey(String imageKey) {
+		ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
 		if (imageMetaData == null) {
 			return null;
 		}
@@ -132,8 +131,8 @@ public class ImageAdministrationService {
 		return imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
-	public BinaryImage loadThumbnailById(Long imageId) {
-		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
+	public BinaryImage loadThumbnailByImageKey(String imageKey) {
+		ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
 		if (imageMetaData == null) {
 			return null;
 		}
@@ -141,19 +140,19 @@ public class ImageAdministrationService {
 		return imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
-	public void deleteImageById(Long imageId) {
-		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
+	public void deleteImageByImageKey(String imageKey) {
+		ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
 		if (imageMetaData == null) {
-			LOG.warn("Could not found image with id: {}", imageId);
+			LOG.warn("Could not found image with imageKey: {}", imageKey);
 			return;
 		}
 
-		imageMetaDataRepository.delete(imageId);
+		imageMetaDataRepository.delete(imageMetaData);
 		imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getName());
 	}
 
-	public boolean isImageOfUser(Long imageId, AppUser appUser) {
-		ImageMetaData imageMetaData = imageMetaDataRepository.findOne(imageId);
+	public boolean isImageOfUser(String imageKey, AppUser appUser) {
+		ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
 		if (imageMetaData == null) {
 			return false;
 		}

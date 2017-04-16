@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<body>
-		<div th:fragment="profile_image_small(imageId)" th:remove="tag">
-			<img th:if="${imageId}" th:src="@{'/gallery/showthumb/' + ${imageId}}" width="21" height="21" class="img-rounded"/>
-	        <span th:if="!${imageId}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+		<div th:fragment="profile_image_small(imageKey)" th:remove="tag">
+			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
+	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
 		</div>
 		
-		<div th:fragment="profile_image_big(imageId)" th:remove="tag">
-			<img th:if="${imageId}" th:src="@{'/gallery/showthumb/' + ${imageId}}" width="28" height="28" class="img-rounded"/>
-	        <span th:if="!${imageId}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+		<div th:fragment="profile_image_big(imageKey)" th:remove="tag">
+			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
+	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
 		</div>
 	</body>
 </html>

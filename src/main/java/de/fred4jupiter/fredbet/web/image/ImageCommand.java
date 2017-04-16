@@ -4,6 +4,8 @@ public class ImageCommand {
 
 	private Long imageId;
 
+	private String imageKey;
+	
 	private String galleryGroup;
 
 	private String description;
@@ -30,5 +32,13 @@ public class ImageCommand {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getImageKey() {
+		return imageKey;
+	}
+
+	public void setImageKey(String imageKey) {
+		this.imageKey = imageKey;
 	}
 }

@@ -5,12 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.service.ImageCroppingService;
 
 /**
  * Provides security informations of the current user.
@@ -25,7 +25,10 @@ public class SecurityService {
 	private FredbetProperties fredbetProperties;
 
 	@Autowired
-	private UserService userService;
+	private ImageMetaDataRepository imageMetaDataRepository;
+
+	@Autowired
+	private ImageCroppingService imageCroppingService;
 
 	public boolean isUserLoggedIn() {
 		try {
@@ -67,15 +70,12 @@ public class SecurityService {
 		return (AppUser) authentication.getPrincipal();
 	}
 
-	@Transactional(readOnly = true)
-	public Long getCurrentUserProfileImageId() {
-		AppUser currentUser = getCurrentUser();
-		if (currentUser == null) {
-			return null;
-		}
+	public String getCurrentUserProfileImageKey() {
+		ImageMetaData imageMetaData = getCurrentUserProfileImageMetaData();
+		return imageMetaData != null ? imageMetaData.getImageKey() : null;
+	}
 
-		AppUser appUser = userService.findByAppUserId(currentUser.getId());
-		ImageMetaData imageMetaData = appUser.getUserProfileImageMetaData();
-		return imageMetaData != null ? imageMetaData.getId() : null;
+	public ImageMetaData getCurrentUserProfileImageMetaData() {
+		return imageMetaDataRepository.findByUsernameAndImageGroupId(getCurrentUserName(), imageCroppingService.getUserImageGroupId());
 	}
 }

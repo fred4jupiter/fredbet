@@ -92,7 +92,7 @@
                     </li>
 					<li th:if="${@securityService.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
 						<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span th:replace="fragments/profileImage :: profile_image_small(${@securityService.getCurrentUserProfileImageId()})"></span>
+                            <span th:replace="fragments/profileImage :: profile_image_small(${@securityService.getCurrentUserProfileImageKey()})"></span>
                             <span sec:authentication="name"></span><span class="caret"></span>
                         </a>
 						<ul class="dropdown-menu">
