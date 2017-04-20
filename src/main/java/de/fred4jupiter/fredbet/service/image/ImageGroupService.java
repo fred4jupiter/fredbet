@@ -27,19 +27,8 @@ public class ImageGroupService {
 	}
 
 	public void addImageGroup(String imageGroupName) {
-		ImageGroup foundImageGroup = imageGroupRepository.findByName(imageGroupName);
-		if (foundImageGroup != null) {
-			throw new ImageGroupExistsException("An image with this group name still exists!");
-		} else {
-			imageGroupRepository.save(new ImageGroup(imageGroupName));
-		}
-	}
-
-	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
-		ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
-		imageGroupCommand.setId(imageGroup.getId());
-		imageGroupCommand.setName(imageGroup.getName());
-		return imageGroupCommand;
+		checkImageGroupName(imageGroupName);
+		imageGroupRepository.save(new ImageGroup(imageGroupName));
 	}
 
 	public void updateImageGroup(ImageGroupCommand imageGroupCommand) {
@@ -48,8 +37,24 @@ public class ImageGroupService {
 			throw new IllegalArgumentException("Image group with id=" + imageGroupCommand.getId() + " could not be found!");
 		}
 
+		checkImageGroupName(imageGroupCommand.getName());
+
 		imageGroup.setName(imageGroupCommand.getName());
 		imageGroupRepository.save(imageGroup);
+	}
+
+	private void checkImageGroupName(String imageGroupName) {
+		ImageGroup foundImageGroup = imageGroupRepository.findByName(imageGroupName);
+		if (foundImageGroup != null) {
+			throw new ImageGroupExistsException("An image with this group name still exists!");
+		}
+	}
+
+	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
+		ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
+		imageGroupCommand.setId(imageGroup.getId());
+		imageGroupCommand.setName(imageGroup.getName());
+		return imageGroupCommand;
 	}
 
 }
