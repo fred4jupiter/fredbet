@@ -9,40 +9,36 @@
 			<div th:replace="fragments/alert :: alert_headline"></div>
 			
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12">
-					<div class="table-responsive">
-				   		<table class="table table-condensed table-striped">
-				   			<thead>
-					   			<tr>
-					   				<th th:text="#{image.group.id}" class="hidden-xs"></th>
-					   				<th th:text="#{image.group.name}"></th>
-					   				<th th:text="#{image.group.button.delete}"></th>
-					   			</tr>
-				   			</thead>
-				   			<tbody>
-					   			<tr th:each="imageGroupCommand : ${availableImageGroups}">
-					   				<td th:text="${imageGroupCommand.id}" class="vert-align hidden-xs"></td>
-					   				<td th:text="${imageGroupCommand.name}" class="vert-align"></td>
-					   				<td class="vert-align">
-					   					<a href="#" th:href="@{'/imagegroup/delete/' + ${imageGroupCommand.id}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
-					   				</td>
-					   			</tr>
-				   			</tbody>
-				   		</table>
-			   	   </div>
-				</div>
-			</div>
-			<br/>
-			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<form th:action="@{/imagegroup/add}" th:object="${imageGroupCommand}" method="post" role="form">
-						<label th:text="#{image.group.name}"></label><br/>
-						<input type="text" th:field="*{name}" class="form-control" />
-					    <br/>
-				        <input type="submit" class="btn btn-primary" th:value="#{button.save}" />
-				        <a href="#" th:href="@{/image/show/}" class="btn btn-info" role="button" th:text="#{button.backToImageUpload}"></a>
-				    </form>
-			    </div>
+					<form th:action="@{/imagegroup/delete}" th:object="${imageGroupCommand}" method="post" role="form">
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<div class="form-group">
+									<select id="groupSelection" th:field="*{deleteId}" class="form-control">
+									  <option th:each="imageGroupCommand : ${availableImageGroups}" th:value="${imageGroupCommand.id}" th:text="${imageGroupCommand.name}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<button type="button" class="btn btn-info" onclick="editImageGroup()">edit</button>
+								<input type="submit" class="btn btn-danger" th:value="#{button.delete}" />
+							</div>
+						</div>
+					</form>
+					<form th:action="@{/imagegroup/save}" th:object="${imageGroupCommand}" method="post" role="form">
+						<div class="row">
+							<div class="form-group">
+								<input id="imageGroupId" type="hidden" th:field="*{id}" class="form-control" />
+								<label th:text="#{image.group.name}"></label>
+								<input id="imageGroupName" type="text" th:field="*{name}" class="form-control" />
+							</div>
+						</div>
+						<div class="row">
+							<input type="submit" class="btn btn-primary" th:value="#{button.save}" />							
+					    	<a href="#" th:href="@{/image/show/}" class="btn btn-default" role="button" th:text="#{button.backToImageUpload}"></a>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</body>

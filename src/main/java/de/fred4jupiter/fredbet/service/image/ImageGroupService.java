@@ -15,17 +15,17 @@ public class ImageGroupService {
 
 	@Autowired
 	private ImageGroupRepository imageGroupRepository;
-	
-	public List<ImageGroupCommand> findAvailableImages() {
+
+	public List<ImageGroupCommand> findAvailableImageGroups() {
 		List<ImageGroup> imageGroups = imageGroupRepository.findAll();
 
 		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).collect(Collectors.toList());
 	}
-	
+
 	public void deleteImageGroup(Long imageGroupId) {
 		imageGroupRepository.delete(imageGroupId);
 	}
-	
+
 	public void addImageGroup(String imageGroupName) {
 		ImageGroup foundImageGroup = imageGroupRepository.findByName(imageGroupName);
 		if (foundImageGroup != null) {
@@ -34,12 +34,22 @@ public class ImageGroupService {
 			imageGroupRepository.save(new ImageGroup(imageGroupName));
 		}
 	}
-	
+
 	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
 		ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
 		imageGroupCommand.setId(imageGroup.getId());
 		imageGroupCommand.setName(imageGroup.getName());
 		return imageGroupCommand;
+	}
+
+	public void updateImageGroup(ImageGroupCommand imageGroupCommand) {
+		ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupCommand.getId());
+		if (imageGroup == null) {
+			throw new IllegalArgumentException("Image group with id=" + imageGroupCommand.getId() + " could not be found!");
+		}
+
+		imageGroup.setName(imageGroupCommand.getName());
+		imageGroupRepository.save(imageGroup);
 	}
 
 }
