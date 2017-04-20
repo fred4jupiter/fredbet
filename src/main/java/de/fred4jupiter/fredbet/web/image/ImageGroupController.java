@@ -47,7 +47,7 @@ public class ImageGroupController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView deleteImage(@ModelAttribute("imageGroupCommand") ImageGroupCommand imageGroupCommand, RedirectAttributes redirect) {
 		try {
-			imageGroupService.deleteImageGroup(imageGroupCommand.getDeleteId());
+			imageGroupService.deleteImageGroup(imageGroupCommand.getId());
 			messageUtil.addInfoMsg(redirect, "image.group.msg.deleted");
 		} catch (DataIntegrityViolationException e) {
 			messageUtil.addErrorMsg(redirect, "image.group.msg.deletionHasReferences");
@@ -66,7 +66,7 @@ public class ImageGroupController {
 				messageUtil.addInfoMsg(redirect, "image.group.msg.added", imageGroupCommand.getName());
 			} else {
 				imageGroupService.updateImageGroup(imageGroupCommand);
-				messageUtil.addInfoMsg(redirect, "image.group.msg.updated");
+				messageUtil.addInfoMsg(redirect, "image.group.msg.updated", imageGroupCommand.getName());
 			}
 
 		} catch (ImageGroupExistsException e) {

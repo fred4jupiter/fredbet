@@ -5,8 +5,6 @@ public class ImageGroupCommand {
 	private Long id;
 
 	private String name;
-	
-	private Long deleteId;
 
 	public Long getId() {
 		return id;
@@ -22,13 +20,5 @@ public class ImageGroupCommand {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Long getDeleteId() {
-		return deleteId;
-	}
-
-	public void setDeleteId(Long deleteId) {
-		this.deleteId = deleteId;
 	}
 }

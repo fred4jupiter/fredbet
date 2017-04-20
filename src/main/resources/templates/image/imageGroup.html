@@ -12,15 +12,15 @@
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<form th:action="@{/imagegroup/delete}" th:object="${imageGroupCommand}" method="post" role="form">
 						<div class="row">
-							<div class="col-xs-6 col-sm-6 col-md-6">
+							<div class="col-xs-6 col-sm-6 col-md-6 no-left-padding">
 								<div class="form-group">
-									<select id="groupSelection" th:field="*{deleteId}" class="form-control">
+									<select id="groupSelection" th:field="*{id}" class="form-control">
 									  <option th:each="imageGroupCommand : ${availableImageGroups}" th:value="${imageGroupCommand.id}" th:text="${imageGroupCommand.name}"></option>
 									</select>
 								</div>
 							</div>
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<button type="button" class="btn btn-info" onclick="editImageGroup()">edit</button>
+								<button type="button" class="btn btn-info" onclick="editImageGroup()" th:text="#{button.edit}"></button>
 								<input type="submit" class="btn btn-danger" th:value="#{button.delete}" />
 							</div>
 						</div>
