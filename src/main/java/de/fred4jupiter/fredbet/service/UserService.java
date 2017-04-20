@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +20,16 @@ import org.springframework.util.CollectionUtils;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
+import de.fred4jupiter.fredbet.web.user.UserDto;
 
 @Service
 @Transactional
@@ -41,6 +48,12 @@ public class UserService {
 
 	@Autowired
 	private SecurityService securityService;
+
+	@Autowired
+	private ImageMetaDataRepository imageMetaDataRepository;
+
+	@Autowired
+	private ImageAdministrationService imageAdministrationService;
 
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -74,8 +87,7 @@ public class UserService {
 				userCommand.getPassword());
 
 		if (isRoleSelectionDisabled(userCommand)) {
-			LOG.debug("Role selection is disabled for user {}. Using default role {}", userCommand.getUsername(),
-					FredBetRole.ROLE_USER);
+			LOG.debug("Role selection is disabled for user {}. Using default role {}", userCommand.getUsername(), FredBetRole.ROLE_USER);
 			appUserBuilder.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name()));
 		} else {
 			appUserBuilder.withRoles(userCommand.getRoles());
@@ -135,8 +147,7 @@ public class UserService {
 		}
 
 		if (!appUser.isDeletable()) {
-			throw new UserNotDeletableException(
-					"Could not delete user with name={}, because its marked as not deletable");
+			throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
 		}
 
 		appUserRepository.delete(userId);
@@ -157,5 +168,32 @@ public class UserService {
 
 		appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
 		appUserRepository.save(appUser);
+	}
+
+	public List<UserDto> findAllAsUserDto() {
+		List<ImageMetaData> metaDataList = imageMetaDataRepository
+				.loadImageMetaDataOfUserProfileImageSet(imageAdministrationService.getUserImageGroupId());
+
+		Map<String, ImageMetaData> map = toMap(metaDataList);
+
+		return findAll().stream().map(appUser -> toUserDto(appUser, map)).collect(Collectors.toList());
+	}
+
+	private Map<String, ImageMetaData> toMap(List<ImageMetaData> metaDataList) {
+		Map<String, ImageMetaData> map = new HashMap<>();
+		for (ImageMetaData imageMetaData : metaDataList) {
+			map.put(imageMetaData.getOwner().getUsername(), imageMetaData);
+		}
+
+		return map;
+	}
+
+	private UserDto toUserDto(AppUser appUser, Map<String, ImageMetaData> map) {
+		ImageMetaData userProfileImageMetaData = map.get(appUser.getUsername());
+		if (userProfileImageMetaData != null) {
+			return new UserDto(appUser.getId(), appUser.getUsername(), userProfileImageMetaData.getImageKey());
+		} else {
+			return new UserDto(appUser.getId(), appUser.getUsername());
+		}
 	}
 }

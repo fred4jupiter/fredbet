@@ -60,24 +60,24 @@ public class ImageGalleryController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<byte[]> showImage(@PathVariable("id") Long imageId, WebRequest webRequest) {
-		return createResponseEntityForImageId(imageId, webRequest,
-				imageAdministrationService -> imageAdministrationService.loadImageById(imageId));
+	@RequestMapping(value = "/show/{imageKey}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> showImage(@PathVariable("imageKey") String imageKey, WebRequest webRequest) {
+		return createResponseEntityForImageId(imageKey, webRequest,
+				imageAdministrationService -> imageAdministrationService.loadImageByImageKey(imageKey));
 	}
 
-	@RequestMapping(value = "/showthumb/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<byte[]> showThumbnail(@PathVariable("id") Long imageId, WebRequest webRequest) {
-		return createResponseEntityForImageId(imageId, webRequest,
-				imageAdministrationService -> imageAdministrationService.loadThumbnailById(imageId));
+	@RequestMapping(value = "/showthumb/{imageKey}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> showThumbnail(@PathVariable("imageKey") String imageKey, WebRequest webRequest) {
+		return createResponseEntityForImageId(imageKey, webRequest,
+				imageAdministrationService -> imageAdministrationService.loadThumbnailByImageKey(imageKey));
 	}
 
-	private ResponseEntity<byte[]> createResponseEntityForImageId(Long imageId, WebRequest webRequest,
+	private ResponseEntity<byte[]> createResponseEntityForImageId(String imageKey, WebRequest webRequest,
 			ImageLoadingCallback imageLoadingCallback) {
-		final String etag = "" + imageId;
+		final String etag = "" + imageKey;
 		boolean notModified = webRequest.checkNotModified(etag);
 		if (notModified) {
-			LOG.debug("image with id={} and etag={} has not been modified.", imageId, etag);
+			LOG.debug("image with imageKey={} and etag={} has not been modified.", imageKey, etag);
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS)).eTag(etag).body(null);
 		}
 

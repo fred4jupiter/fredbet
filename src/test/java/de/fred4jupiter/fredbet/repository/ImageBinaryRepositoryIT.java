@@ -30,7 +30,7 @@ public class ImageBinaryRepositoryIT extends AbstractIntegrationTest {
 		assertNotNull(fileAsByteArray);
 
 		final String key = UUID.randomUUID().toString();
-		ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, "group1", fileAsByteArray);
+		ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, 1L, fileAsByteArray);
 
 		ImageBinary saved = imageBinaryRepository.save(imageBinary);
 		assertNotNull(saved);

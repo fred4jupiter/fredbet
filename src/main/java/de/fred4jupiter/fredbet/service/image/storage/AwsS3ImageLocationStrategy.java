@@ -27,35 +27,35 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public void saveImage(String imageKey, String imageGroup, byte[] imageBinary, byte[] thumbImageBinary) {
-		LOG.debug("saving image in S3. imageKey={}, imageGroup={}", imageKey, imageGroup);
-		amazonS3ClientWrapper.uploadImageFile(createKeyForImage(imageKey, imageGroup), imageBinary);
-		amazonS3ClientWrapper.uploadImageFile(createKeyForThumbnail(imageKey, imageGroup), thumbImageBinary);
+	public void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary) {
+		LOG.debug("saving image in S3. imageKey={}, imageGroupId={}", imageKey, imageGroupId);
+		amazonS3ClientWrapper.uploadImageFile(createKeyForImage(imageKey, imageGroupId), imageBinary);
+		amazonS3ClientWrapper.uploadImageFile(createKeyForThumbnail(imageKey, imageGroupId), thumbImageBinary);
 	}
 
-	private String createKeyForThumbnail(String imageKey, String imageGroup) {
-		return createFileKey(imageKey, imageGroup, THUMBNAIL_PREFIX);
+	private String createKeyForThumbnail(String imageKey, Long imageGroupId) {
+		return createFileKey(imageKey, imageGroupId, THUMBNAIL_PREFIX);
 	}
 
-	private String createKeyForImage(String imageKey, String imageGroup) {
-		return createFileKey(imageKey, imageGroup, IMAGE_PREFIX);
+	private String createKeyForImage(String imageKey, Long imageGroupId) {
+		return createFileKey(imageKey, imageGroupId, IMAGE_PREFIX);
 	}
 
-	private String createFileKey(String imageKey, String imageGroup, String prefix) {
-		return imageGroup + "/" + prefix + imageKey + ".jpg";
+	private String createFileKey(String imageKey, Long imageGroupId, String prefix) {
+		return imageGroupId + "/" + prefix + imageKey + ".jpg";
 	}
 
 	@Override
-	public BinaryImage getImageByKey(String imageKey, String imageGroup) {
-		LOG.debug("loading image from S3. imageKey={}, imageGroup={}", imageKey, imageGroup);
-		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroup));
+	public BinaryImage getImageByKey(String imageKey, Long imageGroupId) {
+		LOG.debug("loading image from S3. imageKey={}, imageGroup={}", imageKey, imageGroupId);
+		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForImage(imageKey, imageGroupId));
 		return new BinaryImage(imageKey, imageByte);
 	}
 
 	@Override
-	public BinaryImage getThumbnailByKey(String imageKey, String imageGroup) {
-		LOG.debug("loading thumbnail from S3. imageKey={}, imageGroup={}", imageKey, imageGroup);
-		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroup));
+	public BinaryImage getThumbnailByKey(String imageKey, Long imageGroupId) {
+		LOG.debug("loading thumbnail from S3. imageKey={}, imageGroup={}", imageKey, imageGroupId);
+		byte[] imageByte = amazonS3ClientWrapper.downloadFile(createKeyForThumbnail(imageKey, imageGroupId));
 		return new BinaryImage(imageKey, imageByte);
 	}
 
@@ -101,10 +101,10 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public void deleteImage(String imageKey, String imageGroup) {
-		LOG.debug("deleteting image and thumbnail for imageKey={}, imageGroup={}", imageKey, imageGroup);
-		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroup));
-		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroup));
+	public void deleteImage(String imageKey, Long imageGroupId) {
+		LOG.debug("deleteting image and thumbnail for imageKey={}, imageGroupId={}", imageKey, imageGroupId);
+		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroupId));
+		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroupId));
 	}
 
 	private byte[] toByteArray(Resource resource) {

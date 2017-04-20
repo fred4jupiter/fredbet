@@ -28,10 +28,13 @@
 					</div>
 					<div class="panel-body">
 						<div class="row" th:each="bet : ${allBetsCommand.allBetsForMatch}">
-							<div class="col-xs-5 top-bottom-space no-left-right-padding">
+							<div class="col-xs-2 top-bottom-space">
+								<span th:replace="fragments/profileImage :: profile_image_small(${@securityService.getUserProfileImageKeyFor(bet.userName)})"></span>
+							</div>
+							<div class="col-xs-4 top-bottom-space no-left-right-padding">
 								<span th:text="${bet.userName}" class="ranking-name"></span>			  									  		
 				  			</div>					
-				  			<div class="col-xs-5 top-bottom-space">
+				  			<div class="col-xs-4 top-bottom-space">
 				  				<span class="label label-as-badge big-badge label-success" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getCssClassPenaltyWinnerOne(bet)}" 
 				  					th:text="${bet.goalsTeamOne}"></span>
 							  	<span> : </span>

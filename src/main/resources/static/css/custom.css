@@ -62,6 +62,10 @@ h3 {
 	padding-right: 0px;
 }
 
+.no-left-padding {
+	padding-left: 0px;
+}
+
 .no-right-padding {
 	padding-right: 0px;
 }
@@ -193,6 +197,11 @@ button.vote {
 
 .table tbody>tr>td.vert-align {
 	vertical-align: middle;
+}
+
+.croppie-container {
+	width: 300px; 
+	height: 300px;
 }
 
 /** justified break point for navigation collapse on tablets */

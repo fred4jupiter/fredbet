@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+	<head>
+		<title th:text="#{user.image.cropping.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content" class="container">
+			<div th:replace="fragments/alert :: alert_headline"></div>
+
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="row">
+					<h2 th:text="#{user.image.cropping.upload}"></h2>
+					<input id="upload" value="Choose a file" accept="image/jpeg" type="file"/>
+					<div id="croppie-container" class="croppie-container"></div>					
+				</div>
+				<br/>
+				<br/>
+				<div class="row">
+					<button id="crop-image" th:text="#{user.image.cropping.select.range}" class="btn btn-info"></button>
+				</div>
+				<br/>
+				<form th:action="@{/cropping/upload}" method="post" enctype="multipart/form-data" role="form">
+					<div class="row">
+						<h2 th:text="#{user.image.cropping.result}"></h2>
+					</div>
+					<div class="row">
+						<input id="croppedFileBase64" type="hidden" name="croppedFileBase64" value="" />
+						<img id="resultImage" src="" class="img-rounded"></img>
+					</div>
+					<br/>
+					<div class="row">
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+					</div>
+				</form>				
+			</div>
+		</div>
+	</body>
+</html>

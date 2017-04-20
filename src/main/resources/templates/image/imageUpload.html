@@ -47,14 +47,10 @@
 						</div>
 						<div class="form-group">
 							<input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
+							<a href="#" th:href="@{/gallery/show}" class="btn btn-default" th:text="#{image.upload.toImageGallery}"></a>
 						</div>				        
 				    </form>
 			    </div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<a href="#" th:href="@{/gallery/show}" th:text="#{image.upload.toImageGallery}"></a>
-				</div>	
 			</div>
 			<br/>
 			<div class="row">
@@ -76,12 +72,12 @@
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
 					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
 					   				<td class="vert-align">
-					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageId}}">
-					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageId}}" class="img-responsive displayed"/>
+					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}">
+					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" class="img-responsive displayed"/>
 					   					</a>
 					   				</td>
 					   				<td class="vert-align">
-					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageId}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
+					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
 					   				</td>
 					   			</tr>
 				   			</tbody>

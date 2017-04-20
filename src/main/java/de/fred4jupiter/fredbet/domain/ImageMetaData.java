@@ -26,7 +26,7 @@ public class ImageMetaData {
 	@JoinColumn(name = "IMAGE_GROUP_ID")
 	private ImageGroup imageGroup;
 
-	@Column(name = "IMAGE_KEY")
+	@Column(name = "IMAGE_KEY", unique = true)
 	private String imageKey;
 
 	@Column(name = "DESCRIPTION")
@@ -35,7 +35,7 @@ public class ImageMetaData {
 	@Version
 	@Column(name = "VERSION")
 	private Integer version;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	private AppUser owner;
@@ -63,6 +63,10 @@ public class ImageMetaData {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("id", id);
 		builder.append("imageGroup", imageGroup);
+		builder.append("imageKey", imageKey);
+		builder.append("description", description);
+		builder.append("version", version);
+		builder.append("owner", owner);
 		return builder.toString();
 	}
 
@@ -84,6 +88,10 @@ public class ImageMetaData {
 
 	public String getImageKey() {
 		return imageKey;
+	}
+
+	public void setImageKey(String imageKey) {
+		this.imageKey = imageKey;
 	}
 
 	public AppUser getOwner() {

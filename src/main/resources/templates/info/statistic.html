@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
-<head>
-	<title th:text="#{statistics.title}"></title>
-</head>
-<body>
-	<div layout:fragment="content">
-		<div th:replace="fragments/alert :: alert_headline"></div>
-		<h1 th:text="#{statistics.title}"></h1>		
-		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
-						<span th:if="${statistic.minPointsCandidate}" class="glyphicon glyphicon-lamp red" aria-hidden="true"></span>
-						<span th:if="${statistic.maxPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
-						<span>,</span>
-						<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
-						<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-						<span th:if="${statistic.maxFavoriteCountryCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
-				   </div>
-				   <div class="panel-body">
-					   <div class="table-responsive">
-					   		<table class="table table-condensed">
-					   			<tr class="active">
-					   				<th><i class="fa fa-users" aria-hidden="true"></i></th>
-					   				<th>1/8</th>
-					   				<th>1/4</th>
-					   				<th>1/2</th>
-					   				<th>1/1</th>
-					   				<th>KO</th>
-					   			</tr>
-					   			<tr>
-					   				<td class="info">
-					   					<span th:text="${statistic.pointsGroup}"></span>
-					   					<span th:if="${statistic.maxGroupPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
-					   				</td>
-					   				<td class="success" th:text="${statistic.pointsRoundOfSixteen}"></td>
-					   				<td class="success" th:text="${statistic.pointsQuarterFinal}"></td>
-					   				<td class="success" th:text="${statistic.pointsSemiFinal}"></td>
-					   				<td class="success" th:text="${statistic.pointsFinal}"></td>
-					   				<td class="info" th:text="${statistic.getSumKOMatches()}"></td>
-					   			</tr>
-					   		</table>
-				   	   </div>
-				   </div>
-				</div>
-			</div>				
+	<head>
+		<title th:text="#{statistics.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div th:replace="fragments/alert :: alert_headline"></div>
+			<h1 th:text="#{statistics.title}"></h1>		
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<span th:replace="fragments/profileImage :: profile_image_small(${@securityService.getUserProfileImageKeyFor(statistic.username)})"></span>
+							<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
+							<span th:if="${statistic.minPointsCandidate}" class="glyphicon glyphicon-lamp red" aria-hidden="true"></span>
+							<span th:if="${statistic.maxPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+							<span>,</span>
+							<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
+							<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
+							<span th:if="${statistic.maxFavoriteCountryCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+					   </div>
+					   <div class="panel-body">
+						   <div class="table-responsive">
+						   		<table class="table table-condensed">
+						   			<tr class="active">
+						   				<th><i class="fa fa-users" aria-hidden="true"></i></th>
+						   				<th>1/8</th>
+						   				<th>1/4</th>
+						   				<th>1/2</th>
+						   				<th>1/1</th>
+						   				<th>KO</th>
+						   			</tr>
+						   			<tr>
+						   				<td class="info">
+						   					<span th:text="${statistic.pointsGroup}"></span>
+						   					<span th:if="${statistic.maxGroupPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+						   				</td>
+						   				<td class="success" th:text="${statistic.pointsRoundOfSixteen}"></td>
+						   				<td class="success" th:text="${statistic.pointsQuarterFinal}"></td>
+						   				<td class="success" th:text="${statistic.pointsSemiFinal}"></td>
+						   				<td class="success" th:text="${statistic.pointsFinal}"></td>
+						   				<td class="info" th:text="${statistic.getSumKOMatches()}"></td>
+						   			</tr>
+						   		</table>
+					   	   </div>
+					   </div>
+					</div>
+				</div>				
+			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>

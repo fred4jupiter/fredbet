@@ -45,7 +45,7 @@ public class AppUser implements UserDetails {
 	private Long id;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID") )
+	@CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
 	private List<String> roles;
 
 	@Column(name = "USER_NAME", unique = true)
@@ -57,12 +57,12 @@ public class AppUser implements UserDetails {
 	@Column(name = "CREATED_AT")
 	private Date createdAt;
 
-	@Column(name = "DELETABLE")	
+	@Column(name = "DELETABLE")
 	private boolean deletable = true;
 
 	@PersistenceConstructor
 	protected AppUser() {
-		// for mongodb
+		// for hibernate
 	}
 
 	public void addRole(FredBetRole... fredBetRoles) {
@@ -130,16 +130,16 @@ public class AppUser implements UserDetails {
 	}
 
 	public boolean hasPermission(String permission) {
-    	Collection<? extends GrantedAuthority> authorities = this.getAuthorities();
-    	for (GrantedAuthority grantedAuthority : authorities) {
+		Collection<? extends GrantedAuthority> authorities = this.getAuthorities();
+		for (GrantedAuthority grantedAuthority : authorities) {
 			if (grantedAuthority.getAuthority().equals(permission)) {
 				return true;
 			}
 		}
-    	
-    	return false;
-    }
-	
+
+		return false;
+	}
+
 	public boolean isDeletable() {
 		return deletable;
 	}
@@ -208,7 +208,7 @@ public class AppUser implements UserDetails {
 	public LocalDateTime getCreatedAt() {
 		return DateUtils.toLocalDateTime(createdAt);
 	}
-	
+
 	@PrePersist
 	private void prePersist() {
 		if (this.createdAt == null) {

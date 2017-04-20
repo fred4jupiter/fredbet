@@ -14,9 +14,9 @@
 						<div th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
 							<label th:text="${galleryGroup}"></label>
 							<br/>
-							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageId}}" 
+							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" 
 										th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}">
-						        <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageId}}" th:alt="${imageCommand.imageId}" class="img-responsive"/>
+						        <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="img-responsive"/>
 						    </a>
 						</div>												
 					</div>
@@ -46,7 +46,7 @@
 			<br/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<a href="#" th:href="@{/image/show}" th:text="#{image.gallery.toUploadImagePage}"></a>
+					<a href="#" th:href="@{/image/show}" class="btn btn-primary" th:text="#{image.gallery.toUploadImagePage}"></a>
 				</div>	
 			</div>
 			<br/>

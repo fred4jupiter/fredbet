@@ -24,8 +24,8 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public void saveImage(String imageKey, String imageGroup, byte[] imageBytes, byte[] thumbImageBinary) {
-		ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, imageGroup, thumbImageBinary);
+	public void saveImage(String imageKey, Long imageGroupId, byte[] imageBytes, byte[] thumbImageBinary) {
+		ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, imageGroupId, thumbImageBinary);
 		imageBinaryRepository.save(imageBinary);
 	}
 
@@ -38,8 +38,12 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 		return allImages.stream().map(imageBinary -> toImageData(imageBinary)).collect(Collectors.toList());
 	}
 
+	private BinaryImage toImageData(ImageBinary imageBinary) {
+		return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
+	}
+
 	@Override
-	public BinaryImage getImageByKey(String imageKey, String imageGroup) {
+	public BinaryImage getImageByKey(String imageKey, Long imageGroupId) {
 		ImageBinary imageBinary = imageBinaryRepository.findOne(imageKey);
 		if (imageBinary == null) {
 			return null;
@@ -49,7 +53,7 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public BinaryImage getThumbnailByKey(String imageKey, String imageGroup) {
+	public BinaryImage getThumbnailByKey(String imageKey, Long imageGroupId) {
 		ImageBinary imageBinary = imageBinaryRepository.findOne(imageKey);
 		if (imageBinary == null) {
 			return null;
@@ -59,12 +63,11 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	@Override
-	public void deleteImage(String imageKey, String imageGroup) {
-		imageBinaryRepository.delete(imageKey);
-	}
-
-	private BinaryImage toImageData(ImageBinary imageBinary) {
-		return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
+	public void deleteImage(String imageKey, Long imageGroupId) {
+		ImageBinary imageBinary = imageBinaryRepository.findByKeyAndImageGroupId(imageKey, imageGroupId);
+		if (imageBinary != null) {
+			imageBinaryRepository.delete(imageBinary);
+		}
 	}
 
 }
