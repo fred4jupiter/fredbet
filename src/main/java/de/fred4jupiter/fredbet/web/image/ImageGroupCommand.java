@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.image;
 
-public class ImageGroupCommand {
+public class ImageGroupCommand implements Comparable<ImageGroupCommand>{
 
 	private Long id;
 
@@ -20,5 +20,10 @@ public class ImageGroupCommand {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(ImageGroupCommand imageGroupCommand) {
+		return this.getName().compareTo(imageGroupCommand.getName());
 	}
 }

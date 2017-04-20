@@ -19,7 +19,7 @@ public class ImageGroupService {
 	public List<ImageGroupCommand> findAvailableImageGroups() {
 		List<ImageGroup> imageGroups = imageGroupRepository.findAll();
 
-		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).collect(Collectors.toList());
+		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).sorted().collect(Collectors.toList());
 	}
 
 	public void deleteImageGroup(Long imageGroupId) {
