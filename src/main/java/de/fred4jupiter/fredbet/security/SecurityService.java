@@ -75,15 +75,15 @@ public class SecurityService {
 	}
 	
 	public String getUserProfileImageKeyFor(String username) {
-		ImageMetaData imageMetaData = getCurrentUserProfileImageMetaData(username);
+		ImageMetaData imageMetaData = getProfileImageMetaDataFor(username);
 		return imageMetaData != null ? imageMetaData.getImageKey() : null;
 	}
 
 	public ImageMetaData getCurrentUserProfileImageMetaData() {
-		return getCurrentUserProfileImageMetaData(getCurrentUserName());
+		return getProfileImageMetaDataFor(getCurrentUserName());
 	}
 	
-	public ImageMetaData getCurrentUserProfileImageMetaData(String username) {
+	public ImageMetaData getProfileImageMetaDataFor(String username) {
 		return imageMetaDataRepository.findByUsernameAndImageGroupId(username, imageAdministrationService.getUserImageGroupId());
 	}
 }

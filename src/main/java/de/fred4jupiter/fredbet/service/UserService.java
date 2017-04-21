@@ -150,6 +150,11 @@ public class UserService {
 			throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
 		}
 
+		ImageMetaData imageMetaData = securityService.getProfileImageMetaDataFor(appUser.getUsername());
+		if (imageMetaData != null) {
+			imageMetaDataRepository.delete(imageMetaData);
+		}
+
 		appUserRepository.delete(userId);
 	}
 
