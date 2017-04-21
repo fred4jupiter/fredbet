@@ -3,6 +3,9 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 	<head>
 		<title th:text="#{user.image.cropping.title}"></title>
+		<script type="text/javascript" th:src="@{/js/croppie.min.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/exif.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/pages/crop_image.js}" charset="UTF-8"></script>
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
