@@ -89,6 +89,9 @@ public class StatisticRepository {
 			} else if (Group.FINAL.getName().equals(group)) {
 				statistic.setPointsFinal(points);
 			}
+			else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
+				statistic.setPointsGameForThird(points);
+			}
 			statisticsMap.put(username, statistic);
 		}
 

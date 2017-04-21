@@ -12,6 +12,8 @@ public class Statistic {
 
 	private Integer pointsFinal = Integer.valueOf(0);
 
+	private Integer pointsGameForThird = Integer.valueOf(0);
+
 	private Integer pointsFavoriteCountry = Integer.valueOf(0);
 
 	private boolean minPointsCandidate;
@@ -76,11 +78,7 @@ public class Statistic {
 
 	public Integer getSum() {
 		return pointsGroup.intValue() + pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue()
-				+ pointsFinal.intValue();
-	}
-
-	public Integer getSumKOMatches() {
-		return pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue() + pointsFinal.intValue();
+				+ pointsFinal.intValue() + pointsGameForThird.intValue();
 	}
 
 	public Integer getPointsFavoriteCountry() {
@@ -129,5 +127,13 @@ public class Statistic {
 
 	public void setMaxPointsCandidate(boolean maxPointsCandidate) {
 		this.maxPointsCandidate = maxPointsCandidate;
+	}
+
+	public Integer getPointsGameForThird() {
+		return pointsGameForThird;
+	}
+
+	public void setPointsGameForThird(Integer pointsGameForThird) {
+		this.pointsGameForThird = pointsGameForThird;
 	}
 }
