@@ -16,7 +16,7 @@
 					  		<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="#{ranking.list.order} + ' ' + ${status.count}"></span>
 					  	</div>
 					  	<div class="col-xs-1 no-left-right-padding">
-					  		<span th:replace="fragments/profileImage :: profile_image_big(${@securityService.getUserProfileImageKeyFor(ranking.userName)})"></span>
+					  		<span th:replace="fragments/profileImage :: profile_image_small(${@securityService.getUserProfileImageKeyFor(ranking.userName)})"></span>
 					  	</div>
 					  	<div class="col-xs-6 no-left-right-padding">
 					  		<span class="ranking-name" th:text="${ranking.userName}"></span>
