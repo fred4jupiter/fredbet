@@ -204,6 +204,10 @@ button.vote {
 	height: 250px;
 }
 
+.icon-user {
+	font-size: 1.2em;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {

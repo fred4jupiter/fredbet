@@ -4,12 +4,12 @@
 	<body>
 		<div th:fragment="profile_image_small(imageKey)" th:remove="tag">
 			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
-	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
 		</div>
 		
 		<div th:fragment="profile_image_big(imageKey)" th:remove="tag">
 			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
-	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
 		</div>
 	</body>
 </html>
