@@ -35,6 +35,10 @@ function imageCroppingUpload() {
 		format: 'jpeg'		
 	});
 	
+	$('.crop-image-rotate').on('click', function(ev) {
+		$uploadCrop.croppie('rotate', parseInt($(this).data('deg')));
+	});
+	
 	$('#crop-image').on('click', function (ev) {
 		$uploadCrop.croppie('result', {
 			type: 'canvas',
