@@ -18,6 +18,8 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
+import nz.net.ultraq.thymeleaf.LayoutDialect;
+import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
@@ -68,5 +70,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
 		registrationBean.addUrlMappings("/console/*");
 		return registrationBean;
+	}
+
+	@Bean
+	public LayoutDialect layoutDialect() {
+		// for grouping CSS and JS files together
+		return new LayoutDialect(new GroupingStrategy());
 	}
 }
