@@ -23,6 +23,8 @@ import de.fred4jupiter.fredbet.web.MessageUtil;
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_IMAGE_GROUP + "')")
 public class ImageGroupController {
 
+	private static final String REDIRECT_SHOW_IMAGEGROUP = "redirect:/imagegroup/show";
+
 	@Autowired
 	private ImageGroupService imageGroupService;
 
@@ -41,7 +43,7 @@ public class ImageGroupController {
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show() {
-		return new ModelAndView("image/imageGroup");
+		return new ModelAndView("image/image_group");
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -53,7 +55,7 @@ public class ImageGroupController {
 			messageUtil.addErrorMsg(redirect, "image.group.msg.deletionHasReferences");
 		}
 
-		return new ModelAndView("redirect:/imagegroup/show");
+		return new ModelAndView(REDIRECT_SHOW_IMAGEGROUP);
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -73,6 +75,6 @@ public class ImageGroupController {
 			messageUtil.addErrorMsg(redirect, "image.group.msg.groupExist", imageGroupCommand.getName());
 		}
 
-		return new ModelAndView("redirect:/imagegroup/show");
+		return new ModelAndView(REDIRECT_SHOW_IMAGEGROUP);
 	}
 }
