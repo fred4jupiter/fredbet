@@ -81,9 +81,21 @@ public class ExcelImportService {
 		String group = row.getCell(2).getStringCellValue();
 		Date kickOffDate = HSSFDateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
 		String stadium = row.getCell(4).getStringCellValue();
+
 		Match match = new Match();
-		match.setCountryOne(Country.fromName(country1));
-		match.setCountryTwo(Country.fromName(country2));
+
+		if (Country.fromName(country1) != null) {
+			match.setCountryOne(Country.fromName(country1));
+		} else {
+			match.setTeamNameOne(country1);
+		}
+
+		if (Country.fromName(country2) != null) {
+			match.setCountryTwo(Country.fromName(country2));
+		} else {
+			match.setTeamNameTwo(country2);
+		}
+
 		match.setGroup(Group.valueOf(group));
 		match.setKickOffDate(kickOffDate);
 		match.setStadium(stadium);

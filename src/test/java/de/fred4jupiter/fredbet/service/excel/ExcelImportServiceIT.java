@@ -26,7 +26,7 @@ public class ExcelImportServiceIT extends AbstractIntegrationTest {
 		List<Match> matches = excelImportService.importFromExcel(new File("src/test/resources/excelimport/MatchesImportTemplate.xlsx"));
 		assertNotNull(matches);
 		assertFalse(matches.isEmpty());
-		assertEquals(2, matches.size());
+		assertEquals(3, matches.size());
 
 		Match match1 = matches.get(0);
 		assertEquals(Country.GERMANY, match1.getCountryOne());
@@ -41,6 +41,13 @@ public class ExcelImportServiceIT extends AbstractIntegrationTest {
 		assertEquals(Group.GROUP_E, match2.getGroup());
 		assertEquals(DateUtils.parseDate("05.02.2018 20:00", "dd.MM.yyyy HH:mm"), match2.getKickOffDate());
 		assertEquals("Allianz Arena, München", match2.getStadium());
+		
+		Match match3 = matches.get(2);
+		assertEquals("Sieger Gruppe A", match3.getTeamNameOne());
+		assertEquals("Zweiter Gruppe B", match3.getTeamNameTwo());
+		assertEquals(Group.SEMI_FINAL, match3.getGroup());
+		assertEquals(DateUtils.parseDate("28.06.2017 20:00", "dd.MM.yyyy HH:mm"), match3.getKickOffDate());
+		assertEquals("Kasan", match3.getStadium());
 	}
 
 }
