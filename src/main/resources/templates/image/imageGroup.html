@@ -35,8 +35,10 @@
 							</div>
 						</div>
 						<div class="row">
-							<input type="submit" class="btn btn-primary" th:value="#{button.save}" />							
-					    	<a href="#" th:href="@{/image/show/}" class="btn btn-default" role="button" th:text="#{button.backToImageUpload}"></a>
+							<div class="form-group">
+								<input type="submit" class="btn btn-primary" th:value="#{button.save}" />							
+						    	<a href="#" th:href="@{/image/show/}" class="btn btn-default" role="button" th:text="#{button.backToImageUpload}"></a>
+					    	</div>
 						</div>
 					</form>
 				</div>
