@@ -40,10 +40,10 @@ public class ExcelImportController {
 
 	@Autowired
 	private MessageUtil messageUtil;
-	
+
 	@Value("classpath:/excelimport/ImportTemplate.xlsx")
 	private Resource excelTemplateFile;
-	
+
 	@Value("classpath:/excelimport/ConfederationsCup2017.xlsx")
 	private Resource confCup2017File;
 
@@ -61,18 +61,19 @@ public class ExcelImportController {
 	public ResponseEntity<byte[]> downloadTemplate(HttpServletResponse response) {
 		final String fileName = "ImportTemplate.xlsx";
 		byte[] templateFile = downloadTemplate();
-		if (templateFile == null) {
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-		}
 
-		return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
-				.header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(templateFile);
+		return createResponseEntityFor(templateFile, fileName);
 	}
-	
+
 	@RequestMapping(value = "/download/confcup2017", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
 	public ResponseEntity<byte[]> downloadConferderationsCup2017(HttpServletResponse response) {
 		final String fileName = "ConfederationsCup2017.xlsx";
 		byte[] fileContent = downloadConfCup2017();
+
+		return createResponseEntityFor(fileContent, fileName);
+	}
+
+	private ResponseEntity<byte[]> createResponseEntityFor(byte[] fileContent, String fileName) {
 		if (fileContent == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
@@ -105,7 +106,7 @@ public class ExcelImportController {
 
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
 	}
-	
+
 	private byte[] downloadTemplate() {
 		try {
 			return IOUtils.toByteArray(excelTemplateFile.getInputStream());
@@ -113,7 +114,7 @@ public class ExcelImportController {
 			throw new IllegalStateException(e.getMessage(), e);
 		}
 	}
-	
+
 	private byte[] downloadConfCup2017() {
 		try {
 			return IOUtils.toByteArray(confCup2017File.getInputStream());
