@@ -73,8 +73,7 @@ public class InfoController {
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
 	@RequestMapping("/editinfo/{name}")
 	public ModelAndView editInfo(@PathVariable("name") String name) {
-		Locale locale = LocaleContextHolder.getLocale();
-		Info info = infoService.findBy(InfoType.valueOf(name.toUpperCase()), locale);
+		Info info = infoService.findBy(InfoType.valueOf(name.toUpperCase()), LocaleContextHolder.getLocale());
 
 		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
 		InfoCommand infoCommand = new InfoCommand();
@@ -87,8 +86,7 @@ public class InfoController {
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
 	@RequestMapping(value = "/editinfo", method = RequestMethod.POST)
 	public ModelAndView saveEditedInfo(InfoCommand infoCommand, ModelMap modelMap) {
-		Locale locale = LocaleContextHolder.getLocale();
-		infoService.saveInfoContent(InfoType.valueOf(infoCommand.getName().toUpperCase()), infoCommand.getTextContent(), locale);
+		infoService.saveInfoContent(InfoType.valueOf(infoCommand.getName().toUpperCase()), infoCommand.getTextContent(), LocaleContextHolder.getLocale());
 
 		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
 		modelAndView.addObject("infoCommand", infoCommand);
