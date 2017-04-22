@@ -4,9 +4,12 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,6 +40,12 @@ public class ExcelImportController {
 
 	@Autowired
 	private MessageUtil messageUtil;
+	
+	@Value("classpath:/excelimport/ImportTemplate.xlsx")
+	private Resource excelTemplateFile;
+	
+	@Value("classpath:/excelimport/ConfederationsCup2017.xlsx")
+	private Resource confCup2017File;
 
 	@ModelAttribute("excelUploadCommand")
 	public ExcelUploadCommand initExcelUploadCommand() {
@@ -51,7 +60,7 @@ public class ExcelImportController {
 	@RequestMapping(value = "/download/template", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
 	public ResponseEntity<byte[]> downloadTemplate(HttpServletResponse response) {
 		final String fileName = "ImportTemplate.xlsx";
-		byte[] templateFile = excelImportService.downloadTemplate();
+		byte[] templateFile = downloadTemplate();
 		if (templateFile == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
@@ -63,7 +72,7 @@ public class ExcelImportController {
 	@RequestMapping(value = "/download/confcup2017", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
 	public ResponseEntity<byte[]> downloadConferderationsCup2017(HttpServletResponse response) {
 		final String fileName = "ConfederationsCup2017.xlsx";
-		byte[] fileContent = excelImportService.downloadConfCup2017();
+		byte[] fileContent = downloadConfCup2017();
 		if (fileContent == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
@@ -95,5 +104,21 @@ public class ExcelImportController {
 		}
 
 		return new ModelAndView(REDIRECT_SHOW_PAGE);
+	}
+	
+	private byte[] downloadTemplate() {
+		try {
+			return IOUtils.toByteArray(excelTemplateFile.getInputStream());
+		} catch (IOException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		}
+	}
+	
+	private byte[] downloadConfCup2017() {
+		try {
+			return IOUtils.toByteArray(confCup2017File.getInputStream());
+		} catch (IOException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		}
 	}
 }

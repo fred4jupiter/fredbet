@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -18,8 +17,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +30,6 @@ public class ExcelImportService {
 
 	@Autowired
 	private MatchRepository matchRepository;
-
-	@Value("classpath:/excelimport/ImportTemplate.xlsx")
-	private Resource excelTemplateFile;
-	
-	@Value("classpath:/excelimport/ConfederationsCup2017.xlsx")
-	private Resource confCup2017File;
 
 	public List<Match> importFromExcel(File file) {
 		try (InputStream inp = new FileInputStream(file)) {
@@ -97,22 +88,6 @@ public class ExcelImportService {
 		match.setKickOffDate(kickOffDate);
 		match.setStadium(stadium);
 		return match;
-	}
-
-	public byte[] downloadTemplate() {
-		try {
-			return IOUtils.toByteArray(excelTemplateFile.getInputStream());
-		} catch (IOException e) {
-			throw new IllegalStateException(e.getMessage(), e);
-		}
-	}
-	
-	public byte[] downloadConfCup2017() {
-		try {
-			return IOUtils.toByteArray(confCup2017File.getInputStream());
-		} catch (IOException e) {
-			throw new IllegalStateException(e.getMessage(), e);
-		}
 	}
 
 }
