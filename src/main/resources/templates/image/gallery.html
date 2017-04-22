@@ -12,6 +12,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div id="links" class="gallery-images">
 						<div th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
+							<br/>
 							<label th:text="${galleryGroup}"></label>
 							<br/>
 							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" 
@@ -31,16 +32,7 @@
 					    <ol class="indicator"></ol>
 					</div>					
 					<script type="text/javascript" th:src="@{/blueimpgallery/js/blueimp-gallery.min.js}"></script>
-					<script>
-					document.getElementById('links').onclick = function (event) {
-					    event = event || window.event;
-					    var target = event.target || event.srcElement,
-					        link = target.src ? target.parentNode : target,
-					        options = {index: link, event: event, fullScreen: true},
-					        links = this.getElementsByTagName('a');
-					    blueimp.Gallery(links, options);
-					};
-					</script>
+					<script type="text/javascript" th:src="@{/js/pages/gallery.js}"></script>
 				</div>
 			</div>
 			<br/>
