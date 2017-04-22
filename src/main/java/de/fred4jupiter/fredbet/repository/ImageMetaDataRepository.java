@@ -13,17 +13,17 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
 	List<ImageMetaData> findByOwner(AppUser appUser);
 
-	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.id = :imageGroupId")
-	ImageMetaData findByUsernameAndImageGroupId(@Param("username") String username, @Param("imageGroupId") Long imageGroupId);
+	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.userProfileImageGroup = true")
+	ImageMetaData findImageMetaDataOfUserProfileImage(@Param("username") String username);
 
 	ImageMetaData findByImageKey(String imageKey);
 
-	@Query("select a from ImageMetaData a where a.imageGroup.id = :imageGroupId")
-	List<ImageMetaData> loadImageMetaDataOfUserProfileImageSet(@Param("imageGroupId") Long imageGroupId);
+	@Query("select a from ImageMetaData a where a.imageGroup.userProfileImageGroup = true")
+	List<ImageMetaData> loadImageMetaDataOfUserProfileImageSet();
 
-	List<ImageMetaData> findByImageGroupIdNot(Long userImageGroupId);
+	@Query("select a from ImageMetaData a where a.imageGroup.userProfileImageGroup = false")
+	List<ImageMetaData> findImageMetaDataWithoutProfileImages();
 
-	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.id <> :imageGroupId")
-	List<ImageMetaData> findMetaDataOfUserWithUsernameAndNoProfileImages(@Param("username") String username,
-			@Param("imageGroupId") Long imageGroupId);
+	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.userProfileImageGroup = false")
+	List<ImageMetaData> findImageMetaDataForUser(@Param("username") String username);
 }

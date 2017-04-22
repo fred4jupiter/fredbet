@@ -50,23 +50,26 @@ public class ImageAdministrationService {
 	@Autowired
 	private SecurityService securityService;
 
-	private static final String GALLERY_NAME = "Mitstreiter";
-
-	private Long userImageGroupId;
+	private static final String GALLERY_NAME = "Users";
 
 	@PostConstruct
 	private void initUserProfileImageGroup() {
-		ImageGroup imageGroup = createOrFetchImageGroup(GALLERY_NAME);
-		this.userImageGroupId = imageGroup.getId();
+		ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
+
+		if (imageGroup == null) {
+			imageGroup = new ImageGroup(GALLERY_NAME, true);
+			imageGroupRepository.save(imageGroup);
+		}
 	}
 
-	/**
-	 * Image groupd ID of the user profile image group.
-	 * 
-	 * @return
-	 */
-	public Long getUserImageGroupId() {
-		return userImageGroupId;
+	public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
+		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroupName);
+
+		if (imageGroup == null) {
+			imageGroup = new ImageGroup(galleryGroupName);
+			imageGroupRepository.save(imageGroup);
+		}
+		return imageGroup;
 	}
 
 	public void saveImage(byte[] binary, Long imageGroupId, String description, Rotation rotation) {
@@ -89,7 +92,7 @@ public class ImageAdministrationService {
 		ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
 		if (imageMetaData == null) {
 			// create new user profile image
-			final ImageGroup imageGroup = imageGroupRepository.findOne(getUserImageGroupId());
+			final ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
 			final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 			imageMetaData = new ImageMetaData(key, imageGroup, appUser);
 			imageMetaData.setDescription(appUser.getUsername());
@@ -104,29 +107,19 @@ public class ImageAdministrationService {
 		imageLocationService.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
 	}
 
-	public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
-		ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroupName);
-
-		if (imageGroup == null) {
-			imageGroup = new ImageGroup(galleryGroupName);
-			imageGroupRepository.save(imageGroup);
-		}
-		return imageGroup;
-	}
-
 	public List<ImageCommand> fetchAllImages() {
 		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
 		return toListOfImageCommand(imageMetaDataList);
 	}
-	
+
 	public List<ImageCommand> fetchAllImagesExceptUserProfileImages() {
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByImageGroupIdNot(getUserImageGroupId());
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findImageMetaDataWithoutProfileImages();
 		return toListOfImageCommand(imageMetaDataList);
 	}
 
 	public List<ImageCommand> fetchImagesOfUserExceptUserProfileImages(String currentUserName) {
 		LOG.debug("fetching images of user={}", currentUserName);
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findMetaDataOfUserWithUsernameAndNoProfileImages(currentUserName, getUserImageGroupId());
+		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findImageMetaDataForUser(currentUserName);
 		return toListOfImageCommand(imageMetaDataList);
 	}
 
@@ -182,7 +175,7 @@ public class ImageAdministrationService {
 			return false;
 		}
 
-		if (imageMetaData.getOwner().getUsername().equals(appUser.getUsername())) {
+		if (imageMetaData.getOwner().getId().equals(appUser.getId())) {
 			return true;
 		}
 
@@ -190,7 +183,7 @@ public class ImageAdministrationService {
 	}
 
 	public List<String> findAvailableImageGroups() {
-		return imageGroupRepository.findAll().stream().filter(imageGroup -> !(imageGroup.getId().equals(getUserImageGroupId())))
-				.map(imageGroup -> imageGroup.getName()).sorted().collect(Collectors.toList());
+		return imageGroupRepository.findAllGroupsWithoutUserProfileImageGroup().stream().map(imageGroup -> imageGroup.getName()).sorted()
+				.collect(Collectors.toList());
 	}
 }

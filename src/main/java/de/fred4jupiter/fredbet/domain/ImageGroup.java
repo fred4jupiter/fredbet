@@ -26,6 +26,9 @@ public class ImageGroup {
 	@Version
 	@Column(name = "VERSION")
 	private Integer version;
+	
+	@Column(name = "USER_PROFILE_IMG_GROUP")
+	private boolean userProfileImageGroup;
 
 	protected ImageGroup() {
 		// for hibernate
@@ -33,6 +36,11 @@ public class ImageGroup {
 	
 	public ImageGroup(String name) {
 		this.name = name;
+	}
+	
+	public ImageGroup(String name, boolean userProfileImageGroup) {
+		this.name = name;
+		this.userProfileImageGroup = userProfileImageGroup;
 	}
 	
 	public Long getId() {
@@ -56,6 +64,15 @@ public class ImageGroup {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
 		builder.append("id", id);
 		builder.append("name", name);
+		builder.append("userProfileImageGroup", userProfileImageGroup);
 		return builder.toString();
+	}
+
+	public boolean isUserProfileImageGroup() {
+		return userProfileImageGroup;
+	}
+
+	public void setUserProfileImageGroup(boolean userProfileImageGroup) {
+		this.userProfileImageGroup = userProfileImageGroup;
 	}
 }

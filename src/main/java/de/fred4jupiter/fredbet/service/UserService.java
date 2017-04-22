@@ -26,7 +26,6 @@ import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.UserCommand;
 import de.fred4jupiter.fredbet.web.user.UserDto;
@@ -51,9 +50,6 @@ public class UserService {
 
 	@Autowired
 	private ImageMetaDataRepository imageMetaDataRepository;
-
-	@Autowired
-	private ImageAdministrationService imageAdministrationService;
 
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -176,8 +172,7 @@ public class UserService {
 	}
 
 	public List<UserDto> findAllAsUserDto() {
-		List<ImageMetaData> metaDataList = imageMetaDataRepository
-				.loadImageMetaDataOfUserProfileImageSet(imageAdministrationService.getUserImageGroupId());
+		List<ImageMetaData> metaDataList = imageMetaDataRepository.loadImageMetaDataOfUserProfileImageSet();
 
 		Map<String, ImageMetaData> map = toMap(metaDataList);
 

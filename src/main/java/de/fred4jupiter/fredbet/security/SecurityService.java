@@ -10,7 +10,6 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 
 /**
  * Provides security informations of the current user.
@@ -26,9 +25,6 @@ public class SecurityService {
 
 	@Autowired
 	private ImageMetaDataRepository imageMetaDataRepository;
-
-	@Autowired
-	private ImageAdministrationService imageAdministrationService;
 
 	public boolean isUserLoggedIn() {
 		try {
@@ -73,7 +69,7 @@ public class SecurityService {
 	public String getCurrentUserProfileImageKey() {
 		return getUserProfileImageKeyFor(getCurrentUserName());
 	}
-	
+
 	public String getUserProfileImageKeyFor(String username) {
 		ImageMetaData imageMetaData = getProfileImageMetaDataFor(username);
 		return imageMetaData != null ? imageMetaData.getImageKey() : null;
@@ -82,8 +78,8 @@ public class SecurityService {
 	public ImageMetaData getCurrentUserProfileImageMetaData() {
 		return getProfileImageMetaDataFor(getCurrentUserName());
 	}
-	
+
 	public ImageMetaData getProfileImageMetaDataFor(String username) {
-		return imageMetaDataRepository.findByUsernameAndImageGroupId(username, imageAdministrationService.getUserImageGroupId());
+		return imageMetaDataRepository.findImageMetaDataOfUserProfileImage(username);
 	}
 }

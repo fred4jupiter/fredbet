@@ -179,5 +179,13 @@
 		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="image_metadata" constraintName="FK_image_user_id"
 			referencedColumnNames="user_id" referencedTableName="app_user" />
 	</changeSet>
+	
+	<changeSet id="3" author="michael">
+		<addColumn tableName="image_group">
+			<column name="user_profile_img_group" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>
