@@ -12,11 +12,6 @@ function checkPenalty() {
 	}
 }
 
-function clearTeamNameFields() {
-	$('#nameTeamOne').val("");
-	$('#nameTeamTwo').val("");
-}
-
 function oneCountUp() {
 	var val = $('#goalsTeamOne, #teamResultOne').val();
 	$('#goalsTeamOne, #teamResultOne').val((val*1)+1); 

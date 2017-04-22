@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 <head>
-	<title th:text="#{matches.form.title}"></title>    
+	<title th:text="#{matches.form.title}"></title>
+	<script type="text/javascript" th:src="@{/js/pages/edit_match.js}" charset="UTF-8"></script>
 </head>
 <body>
 	<div layout:fragment="content" class="container">		
