@@ -56,19 +56,20 @@ public class ExcelImportService {
 	private List<Match> importFromInputStream(InputStream inp) throws IOException, InvalidFormatException {
 		final List<Match> matches = new ArrayList<>();
 
-		Workbook wb = WorkbookFactory.create(inp);
-		Sheet sheet = wb.getSheetAt(0);
-		for (Row row : sheet) {
-			if (row.getRowNum() == 0) {
-				continue;
+		try (Workbook wb = WorkbookFactory.create(inp)) {
+			Sheet sheet = wb.getSheetAt(0);
+			for (Row row : sheet) {
+				if (row.getRowNum() == 0) {
+					continue;
+				}
+				Match match = convertRowToMatch(row);
+				if (match != null) {
+					matches.add(match);
+				}
 			}
-			Match match = convertRowToMatch(row);
-			if (match != null) {
-				matches.add(match);
-			}
-		}
 
-		return matches;
+			return matches;
+		}
 	}
 
 	private Match convertRowToMatch(Row row) {
