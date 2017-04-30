@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,6 +36,8 @@ import de.fred4jupiter.fredbet.web.bet.ExtraBetCommand;
 @Service
 @Transactional
 public class BettingService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(BettingService.class);
 
 	@Autowired
 	private AppUserRepository appUserRepository;
@@ -111,8 +115,7 @@ public class BettingService {
 	public Long save(Bet bet) {
 		Match match = matchRepository.findOne(bet.getMatch().getId());
 		if (match.hasStarted()) {
-			throw new NoBettingAfterMatchStartedAllowedException(
-					"The match has already been started! You are to late!");
+			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
 		}
 
 		if (StringUtils.isBlank(bet.getUserName())) {
@@ -125,6 +128,9 @@ public class BettingService {
 
 	public BetCommand findOrCreateBetForMatch(Long matchId) {
 		final Match match = matchRepository.findOne(matchId);
+		if (match == null) {
+			return null;
+		}
 		final String currentUserName = securityService.getCurrentUserName();
 		Bet bet = betRepository.findByUserNameAndMatch(currentUserName, match);
 		if (bet == null) {
@@ -142,10 +148,16 @@ public class BettingService {
 	}
 
 	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
+		if (matchId == null) {
+			return null;
+		}
 		Match match = matchRepository.findOne(matchId);
+		if (match == null) {
+			LOG.warn("Match with matchId={} could not be found!", matchId);
+			return null;
+		}
 		List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
-		List<Bet> filtered = allBets.stream()
-				.filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+		List<Bet> filtered = allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
 				.collect(Collectors.toList());
 
 		return new AllBetsCommand(filtered, match, messageUtil);
@@ -226,8 +238,7 @@ public class BettingService {
 
 	public List<ExtraBet> loadExtraBetDataOthers() {
 		List<ExtraBet> allExtraBets = extraBetRepository.findAll(new Sort(Direction.ASC, "userName"));
-		return allExtraBets.stream()
-				.filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+		return allExtraBets.stream().filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
 				.collect(Collectors.toList());
 	}
 
