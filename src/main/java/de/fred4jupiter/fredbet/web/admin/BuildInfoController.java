@@ -28,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/buildinfo")
 public class BuildInfoController {
 
+	private static final String BUILDINFO_VIEW = "admin/buildinfo";
+
 	private static final Logger LOG = LoggerFactory.getLogger(BuildInfoController.class);
 
 	@Autowired
@@ -47,7 +49,7 @@ public class BuildInfoController {
 
 	@RequestMapping
 	public ModelAndView list() {
-		ModelAndView modelAndView = new ModelAndView("buildinfo", "buildInfoMap", buildProperties);
+		ModelAndView modelAndView = new ModelAndView(BUILDINFO_VIEW, "buildInfoMap", buildProperties);
 		addDynamicInfoProperties();
 		return modelAndView;
 	}
