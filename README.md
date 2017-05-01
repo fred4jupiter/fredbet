@@ -100,10 +100,10 @@ NOTE: For overriding these properties as JVM parameters you have to apply the Sp
 For setting up the database you use e.g.
 
 ```bash
--DFREDBET_DATABASE-URL=jdbc:postgresql://127.0.0.1:5432/testdb
--DFREDBET_DATABASE-USERNAME=someuser
--DFREDBET_DATABASE-PASSWORD=somepass
--DFREDBET_DATABASE-TYPE=postgres
+-DFREDBET_DATABASE-URL = jdbc:postgresql://127.0.0.1:5432/testdb
+-DFREDBET_DATABASE-USERNAME = someuser
+-DFREDBET_DATABASE-PASSWORD = somepass
+-DFREDBET_DATABASE-TYPE = postgres
 ```
 
 ## Additional Properties
@@ -121,15 +121,15 @@ You can ajust some properties by overriding it as JVM parameters. The properties
 
 FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. Typically you run the docker container in EC2 container service (ECS) with these environment properties with storing the images of the image gallery in S3:
 
-- `spring.profiles.active=prod`
-- `fredbet.image-location=aws-s3`
-- `fredbet.aws-s3bucket-name=fredbet`
+- `spring.profiles.active = prod`
+- `fredbet.image-location = aws-s3`
+- `fredbet.aws-s3bucket-name = fredbet`
   - or any other name for your S3 bucket
-- `fredbet.database-url=jdbc:mysql://<HOST>:3306/<DB_NAME>`
+- `fredbet.database-url = jdbc:mysql://<HOST>:3306/<DB_NAME>`
 	- for MySQL database
-- `fredbet.database-username=fredbet`
-- `fredbet.database-password=password`
-- `fredbet.database-type=mysql`
+- `fredbet.database-username = fredbet`
+- `fredbet.database-password = password`
+- `fredbet.database-type = mysql`
 
 Be sure to use an instance profile with sufficient privileges for S3. You can ajust these values with if following properties:
 
@@ -151,10 +151,16 @@ The policy to access your S3 bucket will look like this:
 }
 ```
 
+If you not want to use the instance profile for authorization (or you can´t, e.g. not running in AWS) you can set the access key and secret access key manually with these environment variables:
+
+- `cloud.aws.credentials.accessKey = XXX`
+- `cloud.aws.credentials.secretKey = XXX`
+- `cloud.aws.credentials.instanceProfile = false`
+
 ## Hints
 
 ```bash
--Dliquibase.enabled=false
+-Dliquibase.enabled = false
 ```
 Disabling Liquibase database migration at all. This may be useful if you have an already populated database schema.
 
