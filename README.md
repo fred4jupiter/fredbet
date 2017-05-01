@@ -117,6 +117,40 @@ You can ajust some properties by overriding it as JVM parameters. The properties
 - `fredbet.favourite-country`
 	- Sum points per user for selected country that will be shown in points statistics.
 
+## Production Environment
+
+FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. Typically you run the docker container in EC2 container service (ECS) with these environment properties with storing the images of the image gallery in S3:
+
+- `spring.profiles.active=prod`
+- `fredbet.image-location=aws-s3`
+- `fredbet.aws-s3bucket-name=fredbet`
+  - or any other name for your S3 bucket
+- `fredbet.database-url=jdbc:mysql://<HOST>:3306/<DB_NAME>`
+	- for MySQL database
+- `fredbet.database-username=fredbet`
+- `fredbet.database-password=password`
+- `fredbet.database-type=mysql`
+
+Be sure to use an instance profile with sufficient privileges for S3. You can ajust these values with if following properties:
+
+- `cloud.aws.credentials.profileName = ecsInstanceRole`
+	- name of the instance profile (this is the default name)
+
+The policy to access your S3 bucket will look like this:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "arn:aws:s3:::<BUCKET_NAME>/*"
+        }
+    ]
+}
+```
+
 ## Hints
 
 ```bash
