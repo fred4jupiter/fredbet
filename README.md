@@ -116,6 +116,10 @@ You can ajust some properties by overriding it as JVM parameters. The properties
 	- Disables the navigation entry for (re)creating the matches and demo results.
 - `fredbet.favourite-country`
 	- Sum points per user for selected country that will be shown in points statistics.
+- `fredbet.points-final-winner`
+	- Extra betting points for winner (defaults to 10).
+- `fredbet.points-semi-final-winner`
+	- Extra betting points for the semi final winner (defaults to 5).
 
 ## Production Environment
 
