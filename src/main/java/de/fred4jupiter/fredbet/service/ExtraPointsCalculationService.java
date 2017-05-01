@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 
 /**
@@ -23,12 +24,26 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
 
 	private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
-	public static final int POINTS_FINAL_WINNER = 10;
+	private final int pointsFinalWinner;
 
-	public static final int POINTS_SEMI_FINAL_WINNER = 5;
+	private final int pointsSemiFinalWinner;
+
+	private final ExtraBetRepository extraBetRepository;
 
 	@Autowired
-	private ExtraBetRepository extraBetRepository;
+	public ExtraPointsCalculationService(FredbetProperties fredbetProperties, ExtraBetRepository extraBetRepository) {
+		this.extraBetRepository = extraBetRepository;
+		this.pointsFinalWinner = fredbetProperties.getPointsFinalWinner();
+		this.pointsSemiFinalWinner = fredbetProperties.getPointsSemiFinalWinner();
+	}
+	
+	public int getPointsFinalWinner() {
+		return pointsFinalWinner;
+	}
+	
+	public int getPointsSemiFinalWinner() {
+		return pointsSemiFinalWinner;
+	}
 
 	@Override
 	public void onApplicationEvent(MatchGoalsChangedEvent event) {
@@ -51,15 +66,15 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
 		if (!finalMatch.hasResultSet()) {
 			return null;
 		}
-		
+
 		int points = 0;
 
 		if (extraBet.getFinalWinner().equals(finalMatch.getWinner())) {
-			points = points + POINTS_FINAL_WINNER;
+			points = points + pointsFinalWinner;
 		}
 
 		if (extraBet.getSemiFinalWinner().equals(finalMatch.getLooser())) {
-			points = points + POINTS_SEMI_FINAL_WINNER;
+			points = points + pointsSemiFinalWinner;
 		}
 
 		return points;

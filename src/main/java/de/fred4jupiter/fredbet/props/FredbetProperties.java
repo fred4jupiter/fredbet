@@ -13,161 +13,171 @@ import de.fred4jupiter.fredbet.domain.Country;
 @ConfigurationProperties(prefix = "fredbet")
 public class FredbetProperties {
 
-    /**
-     * Creates demo data with additional users and matches.
-     */
-    private boolean createDemoData;
+	/**
+	 * Creates demo data with additional users and matches.
+	 */
+	private boolean createDemoData;
 
-    private String databaseUrl;
+	private String databaseUrl;
 
-    private String databaseUsername;
+	private String databaseUsername;
 
-    private String databasePassword;
+	private String databasePassword;
 
-    /**
-     * Adds or removes the navigation entry for demo data creation in
-     * administration menu.
-     */
-    private boolean enableDemoDataCreationNavigationEntry;
+	/**
+	 * Adds or removes the navigation entry for demo data creation in
+	 * administration menu.
+	 */
+	private boolean enableDemoDataCreationNavigationEntry;
 
-    public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
+	public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
-    /**
-     * Sum points per user for selected country that will be shown in points
-     * statistics.
-     */
-    private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
+	/**
+	 * Sum points per user for selected country that will be shown in points
+	 * statistics.
+	 */
+	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
 
-    public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
+	public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
 
-    private DatabaseType databaseType = DEFAULT_DB_TYPE;
+	private DatabaseType databaseType = DEFAULT_DB_TYPE;
 
-    /**
-     * Image size of the generated thumbnails.
-     */
-    private int thumbnailSize;
+	/**
+	 * Image size of the generated thumbnails.
+	 */
+	private int thumbnailSize;
 
-    /**
-     * Image size for the uploaded images.
-     */
-    private int imageSize;
+	/**
+	 * Image size for the uploaded images.
+	 */
+	private int imageSize;
 
-    /**
-     * Selection of possible image storage locations.
-     */
-    private ImageLocation imageLocation;
+	/**
+	 * Selection of possible image storage locations.
+	 */
+	private ImageLocation imageLocation;
 
-    /**
-     * Path in file system to store images in case of image location is set to
-     * 'file-system'
-     */
-    private String imageFileSytemBaseFolder;
+	/**
+	 * Path in file system to store images in case of image location is set to
+	 * 'file-system'
+	 */
+	private String imageFileSytemBaseFolder;
 
-    /**
-     * Password used if the user password has been reset.
-     */
-    private String passwordForReset;
+	/**
+	 * Password used if the user password has been reset.
+	 */
+	private String passwordForReset;
 
-    /**
-     * The AWS S3 bucket name to use to store images in.
-     */
-    private String awsS3bucketName;
+	/**
+	 * The AWS S3 bucket name to use to store images in.
+	 */
+	private String awsS3bucketName;
 
-    public String getDatabaseUrl() {
-        return databaseUrl;
-    }
+	/**
+	 * Extra betting points for final winner.
+	 */
+	private int pointsFinalWinner;
 
-    public void setDatabaseUrl(String databaseUrl) {
-        this.databaseUrl = databaseUrl;
-    }
+	/**
+	 * Extra betting points for semi final winner.
+	 */
+	private int pointsSemiFinalWinner;
 
-    public String getDatabaseUsername() {
-        return databaseUsername;
-    }
+	public String getDatabaseUrl() {
+		return databaseUrl;
+	}
 
-    public void setDatabaseUsername(String databaseUsername) {
-        this.databaseUsername = databaseUsername;
-    }
+	public void setDatabaseUrl(String databaseUrl) {
+		this.databaseUrl = databaseUrl;
+	}
 
-    public String getDatabasePassword() {
-        return databasePassword;
-    }
+	public String getDatabaseUsername() {
+		return databaseUsername;
+	}
 
-    public void setDatabasePassword(String databasePassword) {
-        this.databasePassword = databasePassword;
-    }
+	public void setDatabaseUsername(String databaseUsername) {
+		this.databaseUsername = databaseUsername;
+	}
 
-    public boolean isCreateDemoData() {
-        return createDemoData;
-    }
+	public String getDatabasePassword() {
+		return databasePassword;
+	}
 
-    public void setCreateDemoData(boolean createDemoData) {
-        this.createDemoData = createDemoData;
-    }
+	public void setDatabasePassword(String databasePassword) {
+		this.databasePassword = databasePassword;
+	}
 
-    public boolean isEnableDemoDataCreationNavigationEntry() {
-        return enableDemoDataCreationNavigationEntry;
-    }
+	public boolean isCreateDemoData() {
+		return createDemoData;
+	}
 
-    public void setEnableDemoDataCreationNavigationEntry(boolean enableDemoDataCreationNavigationEntry) {
-        this.enableDemoDataCreationNavigationEntry = enableDemoDataCreationNavigationEntry;
-    }
+	public void setCreateDemoData(boolean createDemoData) {
+		this.createDemoData = createDemoData;
+	}
 
-    public Country getFavouriteCountry() {
-        return favouriteCountry;
-    }
+	public boolean isEnableDemoDataCreationNavigationEntry() {
+		return enableDemoDataCreationNavigationEntry;
+	}
 
-    public void setFavouriteCountry(Country favouriteCountry) {
-        this.favouriteCountry = favouriteCountry;
-    }
+	public void setEnableDemoDataCreationNavigationEntry(boolean enableDemoDataCreationNavigationEntry) {
+		this.enableDemoDataCreationNavigationEntry = enableDemoDataCreationNavigationEntry;
+	}
 
-    public int getThumbnailSize() {
-        return thumbnailSize;
-    }
+	public Country getFavouriteCountry() {
+		return favouriteCountry;
+	}
 
-    public void setThumbnailSize(int thumbnailSize) {
-        this.thumbnailSize = thumbnailSize;
-    }
+	public void setFavouriteCountry(Country favouriteCountry) {
+		this.favouriteCountry = favouriteCountry;
+	}
 
-    public int getImageSize() {
-        return imageSize;
-    }
+	public int getThumbnailSize() {
+		return thumbnailSize;
+	}
 
-    public void setImageSize(int imageSize) {
-        this.imageSize = imageSize;
-    }
+	public void setThumbnailSize(int thumbnailSize) {
+		this.thumbnailSize = thumbnailSize;
+	}
 
-    public DatabaseType getDatabaseType() {
-        return databaseType;
-    }
+	public int getImageSize() {
+		return imageSize;
+	}
 
-    public void setDatabaseType(DatabaseType databaseType) {
-        this.databaseType = databaseType;
-    }
+	public void setImageSize(int imageSize) {
+		this.imageSize = imageSize;
+	}
 
-    public ImageLocation getImageLocation() {
-        return imageLocation;
-    }
+	public DatabaseType getDatabaseType() {
+		return databaseType;
+	}
 
-    public void setImageLocation(ImageLocation imageLocation) {
-        this.imageLocation = imageLocation;
-    }
+	public void setDatabaseType(DatabaseType databaseType) {
+		this.databaseType = databaseType;
+	}
 
-    public String getImageFileSytemBaseFolder() {
-        return imageFileSytemBaseFolder;
-    }
+	public ImageLocation getImageLocation() {
+		return imageLocation;
+	}
 
-    public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
-        this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
-    }
+	public void setImageLocation(ImageLocation imageLocation) {
+		this.imageLocation = imageLocation;
+	}
 
-    public String getPasswordForReset() {
-        return passwordForReset;
-    }
+	public String getImageFileSytemBaseFolder() {
+		return imageFileSytemBaseFolder;
+	}
 
-    public void setPasswordForReset(String passwordForReset) {
-        this.passwordForReset = passwordForReset;
-    }
+	public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
+		this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
+	}
+
+	public String getPasswordForReset() {
+		return passwordForReset;
+	}
+
+	public void setPasswordForReset(String passwordForReset) {
+		this.passwordForReset = passwordForReset;
+	}
 
 	public String getAwsS3bucketName() {
 		return awsS3bucketName;
@@ -177,6 +187,20 @@ public class FredbetProperties {
 		this.awsS3bucketName = awsS3bucketName;
 	}
 
-    
+	public int getPointsFinalWinner() {
+		return pointsFinalWinner;
+	}
+
+	public void setPointsFinalWinner(int pointsFinalWinner) {
+		this.pointsFinalWinner = pointsFinalWinner;
+	}
+
+	public int getPointsSemiFinalWinner() {
+		return pointsSemiFinalWinner;
+	}
+
+	public void setPointsSemiFinalWinner(int pointsSemiFinalWinner) {
+		this.pointsSemiFinalWinner = pointsSemiFinalWinner;
+	}
 
 }
