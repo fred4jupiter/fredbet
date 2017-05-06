@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.domain;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +46,11 @@ public class AppUserBuilder {
 
     public AppUserBuilder withRole(FredBetRole fredBetRole) {
         this.appUser.addRole(fredBetRole);
+        return this;
+    }
+    
+    public AppUserBuilder withLastLogin(Date date) {
+        this.appUser.setLastLogin(date);
         return this;
     }
 

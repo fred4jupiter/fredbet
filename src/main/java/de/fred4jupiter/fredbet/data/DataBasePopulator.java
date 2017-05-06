@@ -70,16 +70,20 @@ public class DataBasePopulator {
 
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
-		if (!environment.acceptsProfiles(FredBetProfile.INTEGRATION_TEST)) {
+		if (!isRunInIntegrationTest()) {
 			createDefaultUsers();
 			addRulesIfEmpty();
 		}
 
-		if (fredbetProperties.isCreateDemoData()) {
+		if (!isRunInIntegrationTest() && fredbetProperties.isCreateDemoData()) {
 			createAdditionalUsers();
 			createRandomMatches();
 		}
 		createImageGroups("Misc");
+	}
+
+	private boolean isRunInIntegrationTest() {
+		return environment.acceptsProfiles(FredBetProfile.INTEGRATION_TEST);
 	}
 
 	public void createRandomMatches() {

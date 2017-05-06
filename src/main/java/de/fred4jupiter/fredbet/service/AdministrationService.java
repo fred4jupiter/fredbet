@@ -15,7 +15,7 @@ public class AdministrationService {
 	private AppUserRepository appUserRepository;
 	
 	public List<AppUser> fetchLastLoginUsers() {
-		return appUserRepository.findByLastLoginNotNull();
+		return appUserRepository.fetchLastLoginUsers();
 	}
 
 }

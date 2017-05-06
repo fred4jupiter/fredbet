@@ -13,7 +13,7 @@
 					<div class="panel panel-default">					
 						<div class="panel-heading">
 							<span th:text="${appUser.username}"></span>
-							<span class="right" th:text="${#dates.format(appUser.lastLogin, #messages.msg('app.dateformat'))}"></span>
+							<span class="right" th:text="${#dates.format(appUser.lastLogin, #messages.msg('app.dateformatWithSeconds'))}"></span>
 					   </div>					   
 					</div>			
 				</div>		
