@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -41,15 +43,25 @@ public class BuildInfoController {
 	@Autowired
 	private Environment environment;
 
+	private final SortedMap<String, Object> allProperties = new TreeMap<>();
+
 	@PostConstruct
-	private void postProcessBuildProperties() {
+	private void addStaticProperties() {
+		for (final String name : buildProperties.stringPropertyNames()) {
+			allProperties.put(name, buildProperties.getProperty(name));
+		}
 		addBuildTimestamp();
 		addSpringProfiles();
+		addEnvProperty("fredbet.database-type");
+	}
+
+	private void addEnvProperty(String envKey) {
+		allProperties.put(envKey, environment.getProperty(envKey));
 	}
 
 	@RequestMapping
 	public ModelAndView list() {
-		ModelAndView modelAndView = new ModelAndView(BUILDINFO_VIEW, "buildInfoMap", buildProperties);
+		ModelAndView modelAndView = new ModelAndView(BUILDINFO_VIEW, "buildInfoMap", allProperties);
 		addDynamicInfoProperties();
 		return modelAndView;
 	}
@@ -58,9 +70,9 @@ public class BuildInfoController {
 		String buildTimestamp = buildProperties.getProperty("build.timestamp");
 		buildTimestamp = buildTimestamp + " +0000";
 		ZonedDateTime parsed = ZonedDateTime.parse(buildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z"));
-		String formattedDateTime = parsed.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault())
-				.withZone(ZoneId.of("Europe/Berlin")));
-		buildProperties.put("build.timestamp", formattedDateTime);
+		String formattedDateTime = parsed
+				.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault()).withZone(ZoneId.of("Europe/Berlin")));
+		allProperties.put("build.timestamp", formattedDateTime);
 	}
 
 	private void addDynamicInfoProperties() {
@@ -71,26 +83,25 @@ public class BuildInfoController {
 
 	private void addSpringProfiles() {
 		String[] activeProfiles = environment.getActiveProfiles();
-		buildProperties.put("Active Profiles", activeProfiles != null ? Arrays.asList(activeProfiles) : "");
+		allProperties.put("Active Profiles", activeProfiles != null ? Arrays.asList(activeProfiles) : "");
 	}
 
 	private void addMetrics() {
 		Map<String, Object> metricsMap = metricsEndpoint.invoke();
 
-		buildProperties.put("system.uptime", formatUptime((Long) metricsMap.get("uptime")));
-		buildProperties.put("application.context.uptime", formatUptime((Long) metricsMap.get("instance.uptime")));
+		allProperties.put("system.uptime", formatUptime((Long) metricsMap.get("uptime")));
+		allProperties.put("application.context.uptime", formatUptime((Long) metricsMap.get("instance.uptime")));
 	}
 
 	private String formatUptime(Long millis) {
-		return String.format("%02d:%02d [HH:mm]", TimeUnit.MILLISECONDS.toHours(millis),
-				TimeUnit.MILLISECONDS.toMinutes(millis));
+		return String.format("%02d:%02d [HH:mm]", TimeUnit.MILLISECONDS.toHours(millis), TimeUnit.MILLISECONDS.toMinutes(millis));
 	}
 
 	private void addHostName() {
 		try {
 			InetAddress localHost = InetAddress.getLocalHost();
 			String hostName = localHost.getHostName();
-			buildProperties.put("hostName", hostName);
+			allProperties.put("hostName", hostName);
 		} catch (UnknownHostException e) {
 			LOG.error(e.getMessage(), e);
 		}
@@ -101,9 +112,8 @@ public class BuildInfoController {
 		DateTimeFormatter timeZoneFormatter = DateTimeFormatter.ofPattern("VV x");
 
 		final String key = "currentDateTime";
-		final String value = formatter.format(LocalDateTime.now()) + ", "
-				+ timeZoneFormatter.format(ZonedDateTime.now());
+		final String value = formatter.format(LocalDateTime.now()) + ", " + timeZoneFormatter.format(ZonedDateTime.now());
 
-		buildProperties.put(key, value);
+		allProperties.put(key, value);
 	}
 }

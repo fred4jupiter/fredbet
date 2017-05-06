@@ -13,3 +13,4 @@ release_version.txt
 
 *.log
 
+/.apt_generated/
