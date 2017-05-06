@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
-<head>
-	<title th:text="#{buildinfo.title}"></title>
-</head>
-<body>
-	<div layout:fragment="content">
-		<div class="row">			
-			<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
-				<div class="panel panel-default">
-					<div class="user panel-heading">
-						  <span th:text="${entry.key}"></span>
-					</div>
-					<div class="panel-body">
-						 <span th:text="${entry.value}"></span>
+	<head>
+		<title th:text="#{systeminfo.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div class="row">			
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
+					<div class="panel panel-default">
+						<div class="user panel-heading">
+							  <span th:text="${entry.key}"></span>
+						</div>
+						<div class="panel-body">
+							 <span th:text="${entry.value}"></span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>
