@@ -68,14 +68,14 @@
 				        	<li th:class="${pageState_image_show}"><a href="#misc" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
 			        	</ul>
 			        </li>			        
-			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_BUILD_INFO','PERM_ADMINISTRATION')">
+			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
 			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 			        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
 			        		<span class="caret"></span>
 			        	</a>
 			        	<ul class="dropdown-menu">
 				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
-					  		<li th:class="${pageState_buildinfo}" sec:authorize="hasAuthority('PERM_BUILD_INFO')"><a href="#buildinfo" th:href="@{/buildinfo}" th:text="#{navigation.buildInfo}"></a></li>
+					  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')"><a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a></li>
 					  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')"><a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a></li>
 					  		<li th:if="${@securityService.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a></li>
 					  		<li th:class="${pageState_excelimport}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#excelimport" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a></li>

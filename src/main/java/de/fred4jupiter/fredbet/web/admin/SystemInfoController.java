@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/buildinfo")
-public class BuildInfoController {
+@RequestMapping("/systeminfo")
+public class SystemInfoController {
 
-	private static final String BUILDINFO_VIEW = "admin/buildinfo";
+	private static final String BUILDINFO_VIEW = "admin/systeminfo";
 
-	private static final Logger LOG = LoggerFactory.getLogger(BuildInfoController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SystemInfoController.class);
 
 	@Autowired
 	private Properties buildProperties;
