@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
+import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.service.AdministrationService;
 import de.fred4jupiter.fredbet.service.SessionTrackingService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
@@ -29,6 +31,9 @@ public class AdminController {
 
 	@Autowired
 	private SessionTrackingService sessionTrackingService;
+	
+	@Autowired
+	private AdministrationService administrationService;
 
 	@RequestMapping
 	public String list() {
@@ -65,6 +70,16 @@ public class AdminController {
 		return modelAndView;
 	}
 
+	@RequestMapping(path = "/deleteAllBetsAndMatches", method = RequestMethod.GET)
+	public ModelAndView deleteAllBetsAndMatches(ModelMap modelMap) {
+		dataBasePopulator.deleteAllBetsAndMatches();
+
+		ModelAndView modelAndView = new ModelAndView("admin/administration");
+
+		messageUtil.addInfoMsg(modelMap, "administration.msg.info.allBetsAndMatchesDeleted");
+		return modelAndView;
+	}
+	
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
 	@RequestMapping(path = "/active/users", method = RequestMethod.GET)
 	public ModelAndView showActiveUsers(ModelMap modelMap) {
@@ -75,13 +90,15 @@ public class AdminController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(path = "/deleteAllBetsAndMatches", method = RequestMethod.GET)
-	public ModelAndView deleteAllBetsAndMatches(ModelMap modelMap) {
-		dataBasePopulator.deleteAllBetsAndMatches();
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_LAST_LOGINS + "')")
+	@RequestMapping(path = "/lastlogins", method = RequestMethod.GET)
+	public ModelAndView showLastLogins() {
+		List<AppUser> lastLoginUsers = administrationService.fetchLastLoginUsers();
 
-		ModelAndView modelAndView = new ModelAndView("admin/administration");
-
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.allBetsAndMatchesDeleted");
+		ModelAndView modelAndView = new ModelAndView("admin/lastlogins");
+		modelAndView.addObject("userList", lastLoginUsers);
 		return modelAndView;
 	}
+	
+	
 }
