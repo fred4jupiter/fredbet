@@ -187,5 +187,11 @@
 			</column>
 		</addColumn>
 	</changeSet>
+	
+	<changeSet id="4" author="michael">
+		<addColumn tableName="app_user">
+			<column name="last_login" type="DATETIME" />
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>

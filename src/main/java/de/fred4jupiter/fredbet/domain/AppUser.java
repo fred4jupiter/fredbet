@@ -56,6 +56,9 @@ public class AppUser implements UserDetails {
 
 	@Column(name = "CREATED_AT")
 	private Date createdAt;
+	
+	@Column(name = "LAST_LOGIN")
+	private Date lastLogin;
 
 	@Column(name = "DELETABLE")
 	private boolean deletable = true;
@@ -214,5 +217,13 @@ public class AppUser implements UserDetails {
 		if (this.createdAt == null) {
 			this.createdAt = new Date();
 		}
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
 	}
 }

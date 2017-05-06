@@ -1,20 +1,36 @@
 package de.fred4jupiter.fredbet.event;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
+
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.repository.AppUserRepository;
 
 @Component
 public class LoginSuccessHandler implements ApplicationListener<AuthenticationSuccessEvent> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginSuccessHandler.class);
 
+	@Autowired
+	private AppUserRepository appUserRepository;
+
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
-		String userName = event.getAuthentication().getName();
-		LOG.debug("User with name {} has logged in.", userName);
+		Object principal = event.getAuthentication().getPrincipal();
+		if (principal != null && principal instanceof AppUser) {
+			AppUser appUser = (AppUser) principal;
+			LOG.debug("User with name {} has logged in.", appUser.getUsername());
+			AppUser foundAppUser = appUserRepository.findOne(appUser.getId());
+			if (foundAppUser != null) {
+				foundAppUser.setLastLogin(new Date());
+				appUserRepository.save(foundAppUser);
+			}
+		}
 	}
-
 }
