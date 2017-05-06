@@ -97,6 +97,11 @@ h3 {
 	background-color: lavender;
 }
 
+.panel-text-responsive {
+	overflow-x: scroll;
+	white-space: nowrap;	
+}
+
 .custom-button-group {
 	float: right;
 	padding-right: 15px;
