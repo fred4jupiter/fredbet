@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -30,6 +31,9 @@ public class ExcelImportService {
 
 	@Autowired
 	private MatchRepository matchRepository;
+	
+	@Autowired
+	private DataBasePopulator dataBasePopulator;
 
 	public List<Match> importFromExcel(File file) {
 		try (InputStream inp = new FileInputStream(file)) {
@@ -49,6 +53,8 @@ public class ExcelImportService {
 
 	@Transactional
 	public void importMatchesFromExcelAndSave(byte[] bytes) {
+		dataBasePopulator.deleteAllBetsAndMatches();
+		
 		List<Match> matches = importFromExcel(bytes);
 		matchRepository.save(matches);
 	}

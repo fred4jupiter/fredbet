@@ -29,6 +29,9 @@
 					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
 						</div>
 						<div class="form-group">
+							<span class="label label-danger" th:text="#{excel.download.hint.allMatchesDeleted}"></span>
+						</div>						
+						<div class="form-group">
 							<input type="submit" class="btn btn-primary" th:value="#{excel.upload.button}" />
 						</div>		
 					</form>
