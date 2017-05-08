@@ -9,7 +9,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Helper class for date time convertion.
@@ -55,8 +54,11 @@ public final class DateUtils {
 	}
 
 	public static String formatMillis(Long millis) {
-		return String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(millis),
-				TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+		long seconds = millis / 1000;
+		long minutes = seconds / 60;
+		long hours = minutes / 60;
+		long days = hours / 24;
+		return  days + " days " + hours % 24 + " hours " + minutes % 60 + " min " + seconds % 60 +" sec"; 
 	}
 
 	private static ZoneId getZoneId() {
