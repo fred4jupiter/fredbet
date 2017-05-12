@@ -21,9 +21,11 @@
 								<br/>
 								<span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 								<div class="right">
-									<span class="label label-info label-as-badge big-badge" th:text="${allBetsCommand.match.goalsTeamOne}"></span>
+									<span class="label label-info label-as-badge big-badge" th:classappend="${allBetsCommand.match.isPenaltyWinnerOne()} ? badge-penalty-winner : ''" 
+									th:text="${allBetsCommand.match.goalsTeamOne}"></span>
 									<span> : </span>
-									<span class="label label-info label-as-badge big-badge" th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
+									<span class="label label-info label-as-badge big-badge" th:classappend="${!allBetsCommand.match.isPenaltyWinnerOne()} ? badge-penalty-winner : ''" 
+									th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
 								</div>
 								<br/> 
 								<span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
