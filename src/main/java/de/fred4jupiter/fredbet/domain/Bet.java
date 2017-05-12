@@ -14,6 +14,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+
 @Entity
 @Table(name = "BET")
 public class Bet {
@@ -168,4 +170,17 @@ public class Bet {
 		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
 
+	public String getCssClassPenaltyWinnerOne() {
+		if (this.isGroupMatch() || !this.isUndecidedBetting()) {
+			return "";
+		}
+		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+	}
+
+	public String getCssClassPenaltyWinnerTwo() {
+		if (this.isGroupMatch() || !this.isUndecidedBetting()) {
+			return "";
+		}
+		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+	}
 }

@@ -42,10 +42,10 @@
 								<span th:text="${bet.userName}" class="ranking-name"></span>			  									  		
 				  			</div>					
 				  			<div class="col-xs-4 top-bottom-space no-right-padding">
-				  				<span class="label label-as-badge big-badge label-success" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getCssClassPenaltyWinnerOne(bet)}" 
+				  				<span class="label label-as-badge big-badge label-success" th:classappend="${bet.getCssClassPenaltyWinnerOne()}" 
 				  					th:text="${bet.goalsTeamOne}"></span>
 							  	<span> : </span>
-						  		<span class="label label-as-badge big-badge label-success" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getCssClassPenaltyWinnerTwo(bet)}" 
+						  		<span class="label label-as-badge big-badge label-success" th:classappend="${bet.getCssClassPenaltyWinnerTwo()}" 
 						  			th:text="${bet.goalsTeamTwo}"></span>	  			
 				  			</div>  			
 				  			<div class="col-xs-2 top-bottom-space">
