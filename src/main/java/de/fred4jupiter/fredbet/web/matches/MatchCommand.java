@@ -4,10 +4,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 public class MatchCommand extends AbstractMatchHeaderCommand {
+
+	private static final String LABEL_INFO = "label-info";
+
+	private static final String LABEL_SUCCESS = "label-success";
+
+	private static final String LABEL_DEFAULT = "label-default";
+
+	private static final String LABEL_SUCCESS_PENALTY = LABEL_SUCCESS + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS;
+
+	private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS;
 
 	private Long matchId;
 
@@ -168,5 +179,37 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 			throw new IllegalStateException("No goals match set!");
 		}
 		return Math.abs(teamResultOne.intValue() - teamResultTwo.intValue());
+	}
+
+	public String getUserBetGoalsTeamOneCssClasses() {
+		if (this.getUserBetGoalsTeamOne() == null) {
+			return LABEL_DEFAULT;
+		}
+
+		return !this.isGroupMatch() && this.isUndecidedBetting() && this.isPenaltyWinnerOneBet() ? LABEL_SUCCESS_PENALTY : LABEL_SUCCESS;
+	}
+
+	public String getUserBetGoalsTeamTwoCssClasses() {
+		if (this.getUserBetGoalsTeamTwo() == null) {
+			return LABEL_DEFAULT;
+		}
+
+		return !this.isGroupMatch() && this.isUndecidedBetting() && !this.isPenaltyWinnerOneBet() ? LABEL_SUCCESS_PENALTY : LABEL_SUCCESS;
+	}
+
+	public String getTeamResultOneCssClasses() {
+		if (this.getTeamResultOne() == null) {
+			return LABEL_DEFAULT;
+		}
+
+		return !this.isGroupMatch() && this.isUndecidedResult() && this.isPenaltyWinnerOneMatch() ? LABEL_INFO_PENALTY : LABEL_INFO;
+	}
+
+	public String getTeamResultTwoCssClasses() {
+		if (this.getTeamResultTwo() == null) {
+			return LABEL_DEFAULT;
+		}
+
+		return !this.isGroupMatch() && this.isUndecidedResult() && !this.isPenaltyWinnerOneMatch() ? LABEL_INFO_PENALTY : LABEL_INFO;
 	}
 }

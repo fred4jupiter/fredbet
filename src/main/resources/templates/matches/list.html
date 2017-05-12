@@ -44,17 +44,17 @@
 					  			</div>					
 					  			<div class="col-xs-4 goal-badges center">				
 					  				<div class="short-div goal_padding_bigger">
-					  					<span class="label label-as-badge big-badge" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getUserBetGoalsTeamOneCssClasses(matchCommand)}" 
+					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamOneCssClasses()}" 
 					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}"></span>
 								  		<span> : </span>
-							  			<span class="label label-as-badge big-badge" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getUserBetGoalsTeamTwoCssClasses(matchCommand)}" 
+							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamTwoCssClasses()}" 
 							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
 					  				</div>	  				
 					  				<div class="short-div goal_padding">
-					  					<span class="label label-as-badge big-badge" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getTeamResultOneCssClasses(matchCommand)}" 
+					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}" 
 					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
 								  		<span> : </span>
-							  			<span class="label label-as-badge big-badge" th:classappend="${T(de.fred4jupiter.fredbet.web.CssHelper).getTeamResultTwoCssClasses(matchCommand)}" 
+							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getTeamResultTwoCssClasses()}" 
 							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
 					  				</div>
 					  			</div>  			
