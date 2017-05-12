@@ -19,7 +19,12 @@
 						  		<img class="flag" th:if="${allBetsCommand.isShowCountryIcons()}" th:src="@{${allBetsCommand.getIconPathTeamTwo()}}"/>
 						  		<span class="bold" th:text="${allBetsCommand.teamNameTwo}"></span>
 								<br/>
-								<span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>																  		
+								<span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+								<div class="right">
+									<span class="label label-info label-as-badge big-badge" th:text="${allBetsCommand.match.goalsTeamOne}"></span>
+									<span> : </span>
+									<span class="label label-info label-as-badge big-badge" th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
+								</div>
 								<br/> 
 								<span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
 								<span th:text="${allBetsCommand.stadium}"></span>
