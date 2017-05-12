@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Entity
@@ -297,5 +298,19 @@ public class Match {
 
 	public boolean isGroupMatch() {
 		return this.group.name().startsWith("GROUP");
+	}
+	
+	public String getCssClassPenaltyWinnerOne() {
+		if (this.isGroupMatch()) {
+			return "";
+		}
+		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+	}
+
+	public String getCssClassPenaltyWinnerTwo() {
+		if (this.isGroupMatch()) {
+			return "";
+		}
+		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
 	}
 }

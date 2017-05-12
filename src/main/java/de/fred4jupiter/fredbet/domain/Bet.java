@@ -162,7 +162,7 @@ public class Bet {
 		return penaltyWinnerOne;
 	}
 	
-	public boolean isGroupMatch() {
+	private boolean isGroupMatch() {
 		return this.match.isGroupMatch();
 	}
 
