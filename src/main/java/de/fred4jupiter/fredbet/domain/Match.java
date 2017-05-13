@@ -299,16 +299,16 @@ public class Match {
 	public boolean isGroupMatch() {
 		return this.group.name().startsWith("GROUP");
 	}
-	
+
 	public String getCssClassPenaltyWinnerOne() {
-		if (this.isGroupMatch()) {
+		if (this.isGroupMatch() || !this.isUndecidedResult()) {
 			return "";
 		}
 		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
 	}
 
 	public String getCssClassPenaltyWinnerTwo() {
-		if (this.isGroupMatch()) {
+		if (this.isGroupMatch() || !this.isUndecidedResult()) {
 			return "";
 		}
 		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
