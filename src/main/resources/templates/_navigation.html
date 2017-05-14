@@ -1,125 +1,127 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
-<head>
-	<title>Navigation page</title>
-</head>
-<body>
-	<nav th:fragment="menu" class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header" th:if="${@securityService.isUserLoggedIn()}">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span> 
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/matches/upcoming}"><span class="glyphicon glyphicon-home"></span></a>
+	<head>
+		<title>Navigation page</title>
+	</head>
+	<body>
+		<nav th:fragment="menu" class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header" th:if="${@securityService.isUserLoggedIn()}">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span> 
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#" th:href="@{/matches/upcoming}"><span class="glyphicon glyphicon-home"></span></a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul th:if="${@securityService.isUserLoggedIn()}" class="nav navbar-nav">
+						<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
+						<li class="dropdown" th:classappend="${pageState_betting}">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				        		<span th:text="#{navigation.betting}" th:remove="tag"></span>			        		
+				        		<span class="caret"></span>
+				        	</a>
+				        	<ul class="dropdown-menu">
+								<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
+								<li th:class="${pageState_bet_extra_bets}"><a href="#bet" th:href="@{/bet/extra_bets}" th:text="#{navigation.betting.extraBets}"></a></li>
+							</ul>
+						</li>
+						<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
+						<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
+						<li class="dropdown" th:classappend="${pageState_group}">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				        		<span th:text="#{groups}" th:remove="tag"></span>			        		
+				        		<span class="caret"></span>
+				        	</a>
+					        <ul class="dropdown-menu">
+					            <li th:class="${pageState_matches_group_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_G}"><a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a></li>
+					            <li th:class="${pageState_matches_group_GROUP_H}"><a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a></li>
+					            <li class="divider" role="separator"></li>
+					            <li th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
+					            <li th:class="${pageState_matches_group_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
+					            <li th:class="${pageState_matches_group_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
+					            <li th:class="${pageState_matches_group_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
+					            <li class="divider" role="separator"></li>
+					            <li th:class="${pageState_matches_group_GAME_FOR_THIRD}"><a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a></li>
+					        </ul>
+				        </li>
+				        <li class="dropdown" th:classappend="${pageState_info}">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				        		<span th:text="#{navigation.info}" th:remove="tag"></span>			        		
+				        		<span class="caret"></span>
+				        	</a>
+				        	<ul class="dropdown-menu">
+					        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
+					        	<li th:class="${pageState_info_prices}"><a href="#prices" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
+					        	<li th:class="${pageState_info_misc}"><a href="#misc" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
+					        	<li th:class="${pageState_info_statistic}"><a href="#misc" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
+					        	<li th:class="${pageState_gallery_show}"><a href="#misc" th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a></li>
+					        	<li th:class="${pageState_image_show}"><a href="#misc" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
+				        	</ul>
+				        </li>			        
+				        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
+				        		<span class="caret"></span>
+				        	</a>
+				        	<ul class="dropdown-menu">
+					        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
+					        		<a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a>
+				        		</li>
+						  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
+						  			<a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
+					  			</li>
+						  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
+						  			<a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
+					  			</li>
+						  		<li th:class="${pageState_administration_lastlogins}" sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
+						  			<a href="#lastlogin" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
+					  			</li>
+						  		<li th:if="${@securityService.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
+					  			</li>
+						  		<li th:class="${pageState_excelimport_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a href="#excelimport" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
+					  			</li>
+				        	</ul>
+				        </li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
+	                        <ul class="dropdown-menu" role="menu" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/flags/de.png" th:text="' '+#{language.de}" /></a></li>
+	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/flags/en.png" th:text="' '+#{language.en}" /></a></li>
+	                        </ul>
+	                    </li>
+						<li th:if="${@securityService.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
+							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+	                            <span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getCurrentUserProfileImageKey()})"></span>
+	                            <span sec:authentication="name"></span><span class="caret"></span>
+	                        </a>
+							<ul class="dropdown-menu">
+								<li th:class="${pageState_profile_changePassword}"><a href="#changePassword" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a></li>
+								<li th:class="${pageState_cropping_show}"><a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a></li>
+							</ul>						
+						</li>
+						<li th:if="${@securityService.isUserLoggedIn()}">
+							<a th:href="@{/logout}">
+								<span class="glyphicon glyphicon-log-out"></span>
+								<span th:text="#{navigation.logout}" th:remove="tag"></span>
+							</a>
+						</li>					
+					</ul>
+				</div>
 			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul th:if="${@securityService.isUserLoggedIn()}" class="nav navbar-nav">
-					<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
-					<li class="dropdown" th:classappend="${pageState_betting}">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			        		<span th:text="#{navigation.betting}" th:remove="tag"></span>			        		
-			        		<span class="caret"></span>
-			        	</a>
-			        	<ul class="dropdown-menu">
-							<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
-							<li th:class="${pageState_bet_extra_bets}"><a href="#bet" th:href="@{/bet/extra_bets}" th:text="#{navigation.betting.extraBets}"></a></li>
-						</ul>
-					</li>
-					<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
-					<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
-					<li class="dropdown" th:classappend="${pageState_group}">
-			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			        		<span th:text="#{groups}" th:remove="tag"></span>			        		
-			        		<span class="caret"></span>
-			        	</a>
-				        <ul class="dropdown-menu">
-				            <li th:class="${pageState_matches_group_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_G}"><a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a></li>
-				            <li th:class="${pageState_matches_group_GROUP_H}"><a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a></li>
-				            <li class="divider" role="separator"></li>
-				            <li th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
-				            <li th:class="${pageState_matches_group_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
-				            <li th:class="${pageState_matches_group_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
-				            <li th:class="${pageState_matches_group_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
-				            <li class="divider" role="separator"></li>
-				            <li th:class="${pageState_matches_group_GAME_FOR_THIRD}"><a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a></li>
-				        </ul>
-			        </li>
-			        <li class="dropdown" th:classappend="${pageState_info}">
-			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			        		<span th:text="#{navigation.info}" th:remove="tag"></span>			        		
-			        		<span class="caret"></span>
-			        	</a>
-			        	<ul class="dropdown-menu">
-				        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
-				        	<li th:class="${pageState_info_prices}"><a href="#prices" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
-				        	<li th:class="${pageState_info_misc}"><a href="#misc" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
-				        	<li th:class="${pageState_info_statistic}"><a href="#misc" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
-				        	<li th:class="${pageState_gallery_show}"><a href="#misc" th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a></li>
-				        	<li th:class="${pageState_image_show}"><a href="#misc" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
-			        	</ul>
-			        </li>			        
-			        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
-			        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
-			        		<span class="caret"></span>
-			        	</a>
-			        	<ul class="dropdown-menu">
-				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
-				        		<a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a>
-			        		</li>
-					  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
-					  			<a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
-				  			</li>
-					  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
-					  			<a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
-				  			</li>
-					  		<li th:class="${pageState_administration_lastlogins}" sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
-					  			<a href="#lastlogin" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
-				  			</li>
-					  		<li th:if="${@securityService.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-					  			<a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
-				  			</li>
-					  		<li th:class="${pageState_excelimport_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')"><a href="#excelimport" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a></li>
-			        	</ul>
-			        </li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
-                        <ul class="dropdown-menu" role="menu" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/flags/de.png" th:text="' '+#{language.de}" /></a></li>
-                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/flags/en.png" th:text="' '+#{language.en}" /></a></li>
-                        </ul>
-                    </li>
-					<li th:if="${@securityService.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
-						<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getCurrentUserProfileImageKey()})"></span>
-                            <span sec:authentication="name"></span><span class="caret"></span>
-                        </a>
-						<ul class="dropdown-menu">
-							<li th:class="${pageState_profile_changePassword}"><a href="#changePassword" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a></li>
-							<li th:class="${pageState_cropping_show}"><a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a></li>
-						</ul>						
-					</li>
-					<li th:if="${@securityService.isUserLoggedIn()}">
-						<a th:href="@{/logout}">
-							<span class="glyphicon glyphicon-log-out"></span>
-							<span th:text="#{navigation.logout}" th:remove="tag"></span>
-						</a>
-					</li>					
-				</ul>
-			</div>
-		</div>
-	</nav>
-</body>
+		</nav>
+	</body>
 </html>
