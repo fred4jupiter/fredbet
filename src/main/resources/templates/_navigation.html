@@ -74,10 +74,18 @@
 			        		<span class="caret"></span>
 			        	</a>
 			        	<ul class="dropdown-menu">
-				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')"><a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a></li>
-					  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')"><a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a></li>
-					  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')"><a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a></li>
-					  		<li th:class="${pageState_administration_lastlogins}" sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')"><a href="#lastlogin" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a></li>
+				        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
+				        		<a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a>
+			        		</li>
+					  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
+					  			<a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
+				  			</li>
+					  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
+					  			<a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
+				  			</li>
+					  		<li th:class="${pageState_administration_lastlogins}" sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
+					  			<a href="#lastlogin" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
+				  			</li>
 					  		<li th:if="${@securityService.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 					  			<a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
 				  			</li>
