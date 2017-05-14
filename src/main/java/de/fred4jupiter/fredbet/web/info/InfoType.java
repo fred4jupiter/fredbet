@@ -2,9 +2,19 @@ package de.fred4jupiter.fredbet.web.info;
 
 public enum InfoType {
 
-	RULES,
+	RULES("info/rules"),
 	
-	PRICES,
+	PRICES("info/prices"),
 	
-	MISC;
+	MISC("info/misc");
+	
+	private final String pageName;
+	
+	private InfoType(String pageName) {
+		this.pageName = pageName;
+	}
+	
+	public String getPageName() {
+		return pageName;
+	}
 }

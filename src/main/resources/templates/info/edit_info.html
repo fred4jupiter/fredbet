@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
-<head>
-	<title th:text="#{info.edit.title}"></title>
-	<script type="text/javascript" th:src="@{/js/ckeditor/ckeditor.js}"></script>
-</head>
-<body>
-	<div layout:fragment="content" class="container">
-		<div th:replace="fragments/alert :: alert_headline"></div>
-		<form id="editInfoForm" th:action="@{/info/editinfo}" th:object="${infoCommand}" method="post" role="form">
-			<div class="row">
-				<div class="col-xs-12">
-					<h1 th:text="#{${infoCommand.name} + '.title'}"></h1>
-					<input type="hidden" th:field="*{name}" class="form-control" />
-                    <textarea id="textContent" name="textContent" required="required" th:text="${infoCommand.textContent}">                       
-                    </textarea>
-                    <script>
-                        CKEDITOR.replace('textContent', {
-                            allowedContent : true,
-                            height: '400px'
-                        });
-                    </script>
-                    <br />
-                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-                    <a href="#" th:href="@{${'/info/' + infoCommand.name}}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
+	<head>
+		<title th:text="#{info.edit.title}"></title>
+		<script type="text/javascript" th:src="@{/js/ckeditor/ckeditor.js}"></script>
+	</head>
+	<body>
+		<div layout:fragment="content" class="container">
+			<div th:replace="fragments/alert :: alert_headline"></div>
+			<form id="editInfoForm" th:action="@{/info/editinfo}" th:object="${infoCommand}" method="post" role="form">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1 th:text="#{${infoCommand.name} + '.title'}"></h1>
+						<input type="hidden" th:field="*{name}" class="form-control" />
+	                    <textarea id="textContent" name="textContent" required="required" th:text="${infoCommand.textContent}">                       
+	                    </textarea>
+	                    <script>
+	                        CKEDITOR.replace('textContent', {
+	                            allowedContent : true,
+	                            height: '400px'
+	                        });
+	                    </script>
+	                    <br />
+	                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+	                    <a href="#" th:href="@{${'/info/' + infoCommand.name}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+					</div>
 				</div>
-			</div>
-		</form>
-	</div>
-</body>
+			</form>
+		</div>
+	</body>
 </html>
