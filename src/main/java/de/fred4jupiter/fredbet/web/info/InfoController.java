@@ -5,10 +5,10 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import de.fred4jupiter.fredbet.domain.Info;
 import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.StatisticService;
 import de.fred4jupiter.fredbet.web.MessageUtil;
@@ -36,41 +37,50 @@ public class InfoController {
 
 	@Autowired
 	private StatisticService statisticService;
+	
+	@Autowired
+	private SecurityService securityService;
 
 	@RequestMapping("/rules")
 	public ModelAndView showRules() {
-		final InfoType infoType = InfoType.RULES;
-		final String content = loadContentFor(infoType);
-
-		ModelAndView modelAndView = new ModelAndView(infoType.getPageName());
-		modelAndView.addObject(TEXT_CONTENT, content);
-		return modelAndView;
+		return prepareModelAndViewFor(InfoType.RULES);
 	}
 
 	@RequestMapping("/prices")
 	public ModelAndView showPrices() {
-		final InfoType infoType = InfoType.PRICES;
-		final String content = loadContentFor(infoType);
-
-		ModelAndView modelAndView = new ModelAndView(infoType.getPageName());
-		modelAndView.addObject(TEXT_CONTENT, content);
-		return modelAndView;
+		return prepareModelAndViewFor(InfoType.PRICES);
 	}
 
 	@RequestMapping("/misc")
 	public ModelAndView showMiscellaneous() {
-		final InfoType infoType = InfoType.MISC;
-		final String content = loadContentFor(infoType);
+		return prepareModelAndViewFor(InfoType.MISC);
+	}
 
+	private ModelAndView prepareModelAndViewFor(InfoType infoType) {
+		final String content = loadContentFor(infoType);
 		ModelAndView modelAndView = new ModelAndView(infoType.getPageName());
 		modelAndView.addObject(TEXT_CONTENT, content);
 		return modelAndView;
 	}
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
-	@RequestMapping("/editinfo/{name}")
-	public ModelAndView editInfo(@PathVariable("name") String name) {
-		final InfoType infoType = InfoType.valueOf(name.toUpperCase());
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS_RULES + "')")
+	@RequestMapping("/editinfo/rules")
+	public ModelAndView editInfoRules() {
+		return prepareShowEditInfoFor(InfoType.RULES);
+	}
+
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS_PRICES + "')")
+	@RequestMapping("/editinfo/prices")
+	public ModelAndView editInfoPrices() {
+		return prepareShowEditInfoFor(InfoType.PRICES);
+	}
+
+	@RequestMapping("/editinfo/misc")
+	public ModelAndView editInfoMisc() {
+		return prepareShowEditInfoFor(InfoType.MISC);
+	}
+
+	private ModelAndView prepareShowEditInfoFor(InfoType infoType) {
 		Info info = infoService.findBy(infoType, LocaleContextHolder.getLocale());
 
 		ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
@@ -81,10 +91,21 @@ public class InfoController {
 		return modelAndView;
 	}
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS + "')")
 	@RequestMapping(value = "/editinfo", method = RequestMethod.POST)
-	public ModelAndView saveEditedInfo(InfoCommand infoCommand, ModelMap modelMap) {
+	public ModelAndView saveEditedInfoMisc(InfoCommand infoCommand, ModelMap modelMap) {
 		final InfoType infoType = InfoType.valueOf(infoCommand.getName().toUpperCase());
+		if (InfoType.MISC.equals(infoType)) {
+			infoService.saveInfoContent(infoType, infoCommand.getTextContent(), LocaleContextHolder.getLocale());
+			return new ModelAndView("redirect:/" + infoType.getPageName());
+		}
+		
+		if (InfoType.RULES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_RULES)) {
+			throw new AccessDeniedException("No enough privileges!");
+		}
+		else if (InfoType.PRICES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
+			throw new AccessDeniedException("No enough privileges!");
+		}
+
 		infoService.saveInfoContent(infoType, infoCommand.getTextContent(), LocaleContextHolder.getLocale());
 		return new ModelAndView("redirect:/" + infoType.getPageName());
 	}

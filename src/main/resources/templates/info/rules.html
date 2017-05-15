@@ -12,7 +12,7 @@
 				<div th:remove="tag" th:utext="${textContent}"></div>
 			</div>
 		</div>
-		<a sec:authorize="hasAuthority('PERM_EDIT_INFOS')" href="#" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>		
+		<a sec:authorize="hasAuthority('PERM_EDIT_INFOS_RULES')" href="#" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>		
 	</div>
 </body>
 </html>
