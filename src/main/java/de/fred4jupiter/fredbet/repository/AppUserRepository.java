@@ -11,7 +11,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long>{
 
 	AppUser findByUsername(String username);
 
-	@Query("Select a from AppUser a where a.lastLogin is not null ORDER BY a.username ASC")
+	@Query("Select a from AppUser a where a.lastLogin is not null ORDER BY a.lastLogin DESC")
 	List<AppUser> fetchLastLoginUsers();
 
 }
