@@ -82,6 +82,10 @@ public class UserCommand {
             messageUtil.addErrorMsg(modelMap, "user.validation.emptyUsername");
             return true;
         }
+        if (this.username.contains(" ")) {
+            messageUtil.addErrorMsg(modelMap, "user.validation.username.containsBlanks");
+            return true;
+        }
         if (StringUtils.isEmpty(this.password)) {
             messageUtil.addErrorMsg(modelMap, "user.validation.password");
             return true;
