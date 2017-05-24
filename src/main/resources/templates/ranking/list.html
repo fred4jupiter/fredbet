@@ -11,22 +11,22 @@
 			<div class="row" th:each="ranking,status : ${rankings}">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="panel panel-default">
-					  <div class="panel-body">
-					  	<div class="col-xs-3 no-left-right-padding">
-					  		<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="#{ranking.list.order} + ' ' + ${status.count}"></span>
-					  	</div>
-					  	<div class="col-xs-1 no-left-right-padding">
-					  		<span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getUserProfileImageKeyFor(ranking.userName)})"></span>
-					  	</div>
-					  	<div class="col-xs-6 no-left-right-padding">
-					  		<span class="ranking-name" th:text="${ranking.userName}"></span>
-					  	</div>
-					  	<div class="col-xs-2 no-left-right-padding">
-					  		<span class="badge success pull-right" th:text="${ranking.totalPoints}"></span>
-					  	</div> 	
-					  </div>					  
+						<div class="panel-body">
+							<div class="col-xs-3 no-left-padding">
+								<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="'# ' + ${status.count}"></span>
+							</div>
+							<div class="col-xs-1 no-left-padding">
+								<span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getUserProfileImageKeyFor(ranking.userName)})"></span>
+							</div>
+							<div class="col-xs-6 no-left-padding">
+								<span class="ranking-name" th:text="${ranking.userName}"></span>
+							</div>
+							<div class="col-xs-2">
+								<span class="badge success pull-right" th:text="${ranking.totalPoints}"></span>
+							</div>
+						</div>
 					</div>
-				</div>				
+				</div>
 			</div>
 		</div>
 	</body>
