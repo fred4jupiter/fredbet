@@ -86,6 +86,11 @@ public class UserCommand {
             messageUtil.addErrorMsg(modelMap, "user.validation.username.containsBlanks");
             return true;
         }
+        final int fieldLength = 12;
+		if (this.username.length() > fieldLength) {
+            messageUtil.addErrorMsg(modelMap, "user.validation.username.tooLong", fieldLength);
+            return true;
+        }
         if (StringUtils.isEmpty(this.password)) {
             messageUtil.addErrorMsg(modelMap, "user.validation.password");
             return true;
