@@ -193,5 +193,11 @@
 			<column name="last_login" type="DATETIME" />
 		</addColumn>
 	</changeSet>
+	
+	<changeSet id="5" author="michael">
+		<addColumn tableName="extra_bet">
+			<column name="third_final_winner" type="varchar(255)" />			
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>

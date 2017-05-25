@@ -285,7 +285,7 @@ public class Match {
 	}
 
 	public boolean isFinal() {
-		return Group.FINAL.equals(this.group);
+		return isGroup(Group.FINAL);
 	}
 
 	public boolean isPenaltyWinnerOne() {
@@ -312,5 +312,9 @@ public class Match {
 			return "";
 		}
 		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+	}
+	
+	public boolean isGroup(Group group) {
+		return this.group.equals(group);
 	}
 }

@@ -83,6 +83,11 @@ public class FredbetProperties {
 	 */
 	private int pointsSemiFinalWinner;
 
+	/**
+	 * Extra betting points for third winner.
+	 */
+	private int pointsThirdFinalWinner;
+
 	public String getDatabaseUrl() {
 		return databaseUrl;
 	}
@@ -201,6 +206,14 @@ public class FredbetProperties {
 
 	public void setPointsSemiFinalWinner(int pointsSemiFinalWinner) {
 		this.pointsSemiFinalWinner = pointsSemiFinalWinner;
+	}
+
+	public int getPointsThirdFinalWinner() {
+		return pointsThirdFinalWinner;
+	}
+
+	public void setPointsThirdFinalWinner(int pointsThirdFinalWinner) {
+		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
 	}
 
 }

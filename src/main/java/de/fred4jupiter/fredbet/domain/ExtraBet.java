@@ -33,8 +33,12 @@ public class ExtraBet {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "SEMI_FINAL_WINNER")
 	private Country semiFinalWinner;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "THIRD_FINAL_WINNER")
+	private Country thirdFinalWinner;
 
-	private Integer points;
+	private Integer points = 0;
 	
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -52,6 +56,7 @@ public class ExtraBet {
 		builder.append(userName, extraBet.userName);
 		builder.append(finalWinner, extraBet.finalWinner);
 		builder.append(semiFinalWinner, extraBet.semiFinalWinner);
+		builder.append(thirdFinalWinner, extraBet.thirdFinalWinner);
 		builder.append(points, extraBet.points);
 
 		return builder.isEquals();
@@ -64,6 +69,7 @@ public class ExtraBet {
 		builder.append(userName);
 		builder.append(finalWinner);
 		builder.append(semiFinalWinner);
+		builder.append(thirdFinalWinner);
 		builder.append(points);
 		return builder.toHashCode();
 	}
@@ -75,6 +81,7 @@ public class ExtraBet {
 		builder.append("userName", userName);
 		builder.append("finalWinner", finalWinner);
 		builder.append("semiFinalWinner", semiFinalWinner);
+		builder.append("thirdFinalWinner", thirdFinalWinner);
 		builder.append("points", points);
 		return builder.toString();
 	}
@@ -106,6 +113,10 @@ public class ExtraBet {
 	public void setPoints(Integer points) {
 		this.points = points;
 	}
+	
+	public void addPoints(Integer points) {
+		this.points = this.points + points;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -113,5 +124,13 @@ public class ExtraBet {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Country getThirdFinalWinner() {
+		return thirdFinalWinner;
+	}
+
+	public void setThirdFinalWinner(Country thirdFinalWinner) {
+		this.thirdFinalWinner = thirdFinalWinner;
 	}
 }

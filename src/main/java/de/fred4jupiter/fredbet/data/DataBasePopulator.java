@@ -119,8 +119,11 @@ public class DataBasePopulator {
 				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
 			});
 
-			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
-			bettingService.saveExtraBet(teamPair.getLeft(), teamPair.getRight(), appUser.getUsername());
+			Country extraBetCountryFinalWinner = randomValueGenerator.generateRandomCountry();
+			Country extraBetCountrySemiFinalWinner = randomValueGenerator.generateRandomCountry();
+			Country extraBetCountryThirdFinalWinner = randomValueGenerator.generateRandomCountry();
+			bettingService.saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
+					appUser.getUsername());
 		});
 
 	}

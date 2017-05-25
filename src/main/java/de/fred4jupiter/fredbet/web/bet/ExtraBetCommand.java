@@ -9,6 +9,7 @@ public class ExtraBetCommand {
 
 	private Country finalWinner;
 	private Country semiFinalWinner;
+	private Country thirdFinalWinner;
 
 	private Integer points;
 
@@ -69,6 +70,14 @@ public class ExtraBetCommand {
 
 	public void setBettable(boolean bettable) {
 		this.bettable = bettable;
+	}
+
+	public Country getThirdFinalWinner() {
+		return thirdFinalWinner;
+	}
+
+	public void setThirdFinalWinner(Country thirdFinalWinner) {
+		this.thirdFinalWinner = thirdFinalWinner;
 	}
 
 }

@@ -30,7 +30,7 @@ public class RandomValueGenerator {
         return rn.nextInt(range) + min;
     }
 
-    private Country generateRandomCountry() {
+    public Country generateRandomCountry() {
         Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
         return availableCountries.get(randomVal);
     }

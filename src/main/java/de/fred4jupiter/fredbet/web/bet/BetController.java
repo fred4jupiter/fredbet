@@ -147,7 +147,7 @@ public class BetController {
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
 	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
 		bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
-				securityService.getCurrentUserName());
+				extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
 
 		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		return new ModelAndView("redirect:/bet/extra_bets");

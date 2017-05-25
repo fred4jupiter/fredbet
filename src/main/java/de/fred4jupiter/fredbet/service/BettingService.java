@@ -163,9 +163,10 @@ public class BettingService {
 		return new AllBetsCommand(filtered, match, messageUtil);
 	}
 
-	public void saveExtraBet(Country finalWinner, Country semiFinalWinner, String username) {
+	public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {
 		ExtraBet found = extraBetRepository.findByUserName(username);
-		if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && found != null) {
+		if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && Country.NONE.equals(thirdFinalWinner)
+				&& found != null) {
 			// reset/delete existing extra bet
 			extraBetRepository.delete(found);
 			return;
@@ -177,6 +178,7 @@ public class BettingService {
 
 		found.setFinalWinner(finalWinner);
 		found.setSemiFinalWinner(semiFinalWinner);
+		found.setThirdFinalWinner(thirdFinalWinner);
 		found.setUserName(username);
 
 		extraBetRepository.save(found);
@@ -197,6 +199,7 @@ public class BettingService {
 		extraBetCommand.setExtraBetId(extraBet.getId());
 		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
 		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
+		extraBetCommand.setThirdFinalWinner(extraBet.getThirdFinalWinner());
 
 		boolean firstMatchStarted = hasFirstMatchStarted();
 		if (firstMatchStarted) {
