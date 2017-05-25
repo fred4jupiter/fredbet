@@ -46,8 +46,7 @@ public class StatisticRepository {
 
 		return statisticsCollector.getResult();
 	}
-	
-	
+
 	public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Select a.user_name, sum(a.points) ");
@@ -68,7 +67,7 @@ public class StatisticRepository {
 		});
 		return userPoints;
 	}
-	
+
 	private static final class StatisticsCollector {
 
 		private TreeMap<String, Statistic> statisticsMap = new TreeMap<>();
@@ -88,8 +87,7 @@ public class StatisticRepository {
 				statistic.setPointsSemiFinal(points);
 			} else if (Group.FINAL.getName().equals(group)) {
 				statistic.setPointsFinal(points);
-			}
-			else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
+			} else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
 				statistic.setPointsGameForThird(points);
 			}
 			statisticsMap.put(username, statistic);
