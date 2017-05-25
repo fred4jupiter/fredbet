@@ -35,7 +35,7 @@ public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
 		appUserRepository.deleteAll();
 		
 		appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("robert", "robert").withLastLogin(DateUtils.toDate(LocalDateTime.now())).build());
-		appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("albert", "albert").withLastLogin(DateUtils.toDate(LocalDateTime.now())).build());
+		appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("albert", "albert").withLastLogin(DateUtils.toDate(LocalDateTime.now().plusHours(1))).build());
 		
 		List<AppUser> resultList = appUserRepository.fetchLastLoginUsers();
 		assertEquals(2, resultList.size());

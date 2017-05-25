@@ -31,7 +31,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Test
 	public void createMatchAndFindAgain() {
-		Match match = MatchBuilder.create().withTeams("A", "B").withGoals(1, 1).build();
+		Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withGoals(1, 1).build();
 		assertNotNull(match);
 		matchService.save(match);
 
@@ -42,7 +42,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Test
 	public void createMatchAndFindAgainByCountry() {
-		Match match = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGoals(1, 1).build();
+		Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGoals(1, 1).build();
 		assertNotNull(match);
 		matchService.save(match);
 
@@ -54,7 +54,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 	@Test
 	public void createMatchTwiceAndCheckIfOnlyOneIsPresent() {
 		final Country countryOne = Country.ALBANIA;
-		Match match = MatchBuilder.create().withTeams(countryOne, Country.SWITZERLAND).withGoals(1, 1).build();
+		Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams(countryOne, Country.SWITZERLAND).withGoals(1, 1).build();
 		assertNotNull(match);
 		matchService.save(match);
 		matchService.save(match);
