@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
-<head>
-	<title th:text="#{bet.extra.others.title}"></title>
-</head>
-<body>
-	<div layout:fragment="content">
-		<h1 th:text="#{bet.extra.others.title}"></h1>
-		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
-				<div class="panel panel-default">					
-					<div class="panel-heading">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span th:text="${extraBet.userName}"></span>	
-				   </div>
-				   <div class="panel-body">
-					   <div class="table-responsive">
-					   		<table class="table table-condensed">
-					   			<tr class="active">
-					   				<th th:title="#{extra_bets.finalWinner}">1. <span class="fa fa-trophy"></span></th>					   				
-					   				<th th:title="#{extra_bets.semiFinalWinner}">2. <span class="fa fa-trophy"></span></th>
-					   				<th th:text="#{bet.list.points}"></th>
-					   			</tr>
-					   			<tr>
-					   				<td class="info" th:text="#{${'country.' + extraBet.finalWinner.getIsoCode()}}"></td>
-					   				<td class="success" th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></td>
-					   				<td class="warning" th:text="${extraBet.points}"></td>
-					   			</tr>
-					   		</table>
-				   	   </div>
-				   </div>
-				</div>
-			</div>			
-		</div>
-		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<div class="form-group">
-					<a href="#" th:href="@{/bet/extra_bets}" class="btn btn-default" role="button" th:text="#{button.back}"></a>	
+	<head>
+		<title th:text="#{bet.extra.others.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<h1 th:text="#{bet.extra.others.title}"></h1>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
+					<div class="panel panel-default">					
+						<div class="panel-heading">
+							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+							<span th:text="${extraBet.userName}"></span>	
+					   </div>
+					   <div class="panel-body">
+						   <div class="table-responsive">
+						   		<table class="table table-condensed">
+						   			<tr>
+						   				<th th:title="#{extra_bets.finalWinner}">1. <span class="fa fa-trophy"></span></th>					   				
+						   				<td class="success" th:text="#{${'country.' + extraBet.finalWinner.getIsoCode()}}"></td>
+						   			</tr>
+						   			<tr>	
+						   				<th th:title="#{extra_bets.semiFinalWinner}">2. <span class="fa fa-trophy"></span></th>
+						   				<td class="warning" th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></td>
+						   			</tr>
+						   			<tr>	
+						   				<th th:title="#{extra_bets.thirdFinalWinner}">3. <span class="fa fa-trophy"></span></th>
+						   				<td class="info" th:text="#{${'country.' + extraBet.thirdFinalWinner.getIsoCode()}}"></td>
+						   			</tr>
+						   			<tr>
+						   				<th th:text="#{bet.list.points}"></th>
+						   				<td class="danger" th:text="${extraBet.points}"></td>
+						   			</tr>
+						   		</table>
+					   	   </div>
+					   </div>
+					</div>
+				</div>			
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="form-group">
+						<a href="#" th:href="@{/bet/extra_bets}" class="btn btn-default" role="button" th:text="#{button.back}"></a>	
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>
