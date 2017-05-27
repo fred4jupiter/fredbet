@@ -3,8 +3,10 @@ package de.fred4jupiter.fredbet.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
@@ -15,6 +17,11 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
 	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.userProfileImageGroup = true")
 	ImageMetaData findImageMetaDataOfUserProfileImage(@Param("username") String username);
+
+	@Query("delete from ImageMetaData a where a.owner.id = :userId")
+	@Modifying
+	@Transactional
+	void deleteMetaDataByOwner(@Param("userId") Long userId);
 
 	ImageMetaData findByImageKey(String imageKey);
 
