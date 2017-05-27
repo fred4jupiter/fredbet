@@ -8,12 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 
 public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Long> {
-
-	List<ImageMetaData> findByOwner(AppUser appUser);
 
 	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.userProfileImageGroup = true")
 	ImageMetaData findImageMetaDataOfUserProfileImage(@Param("username") String username);
