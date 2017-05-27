@@ -20,7 +20,7 @@
 							</div>
 							<div class="panel-body">
 								<select th:field="*{finalWinner}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+								  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 								</select>
 							</div>
 						</div>
@@ -37,7 +37,7 @@
 							</div>
 							<div class="panel-body">
 								<select th:field="*{semiFinalWinner}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+								  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 								</select>
 							</div>
 						</div>	
@@ -54,7 +54,7 @@
 							</div>
 							<div class="panel-body">
 								<select th:field="*{thirdFinalWinner}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+								  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 								</select>
 							</div>
 						</div>	

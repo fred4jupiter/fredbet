@@ -63,6 +63,11 @@ public class BetController {
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
 	}
+	
+	@ModelAttribute("availableCountriesExtraBets")
+	public List<Country> availableCountriesExtraBets() {
+		return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+	}
 
 	@ModelAttribute("betCommand")
 	public BetCommand betCommand() {
