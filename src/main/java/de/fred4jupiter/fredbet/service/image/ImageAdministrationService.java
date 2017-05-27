@@ -27,6 +27,8 @@ import de.fred4jupiter.fredbet.web.image.Rotation;
 @Transactional
 public class ImageAdministrationService {
 
+	private static final String DEFAULT_IMAGE_GROUP_NAME = "Misc";
+
 	private static final Logger LOG = LoggerFactory.getLogger(ImageAdministrationService.class);
 
 	@Autowired
@@ -185,5 +187,13 @@ public class ImageAdministrationService {
 	public List<String> findAvailableImageGroups() {
 		return imageGroupRepository.findAllGroupsWithoutUserProfileImageGroup().stream().map(imageGroup -> imageGroup.getName()).sorted()
 				.collect(Collectors.toList());
+	}
+
+	public void createDefaultImageGroup() {
+		long numberOfImageGroups = imageGroupRepository.count();
+		if (numberOfImageGroups == 1) {
+			// if there is only one image group then it is the users group
+			createOrFetchImageGroup(DEFAULT_IMAGE_GROUP_NAME);
+		}
 	}
 }

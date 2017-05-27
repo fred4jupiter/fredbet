@@ -79,7 +79,8 @@ public class DataBasePopulator {
 			createAdditionalUsers();
 			createRandomMatches();
 		}
-		createImageGroups("Misc");
+		
+		imageAdministrationService.createDefaultImageGroup();
 	}
 
 	private boolean isRunInIntegrationTest() {
@@ -143,12 +144,6 @@ public class DataBasePopulator {
 			match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
 			matchService.save(match);
 		});
-	}
-
-	private void createImageGroups(String... imageGroups) {
-		for (String imageGroup : imageGroups) {
-			imageAdministrationService.createOrFetchImageGroup(imageGroup);
-		}
 	}
 
 	private void addRulesIfEmpty() {
