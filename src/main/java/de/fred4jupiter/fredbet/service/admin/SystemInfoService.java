@@ -49,6 +49,7 @@ public class SystemInfoService {
 		addEnvProperty("fredbet.database-type", allProperties);
 		addEnvProperty("fredbet.points-final-winner", allProperties);
 		addEnvProperty("fredbet.points-semi-final-winner", allProperties);
+		addEnvProperty("fredbet.points-third-final-winner", allProperties);
 		addEnvProperty("fredbet.image-location", allProperties);
 		addEnvProperty("fredbet.image-size", allProperties);
 		addEnvProperty("fredbet.favourite-country", allProperties);
