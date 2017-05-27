@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,7 +23,7 @@ public class ExtraBet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "EXTRA_BET_ID")
 	private Long id;
-	
+
 	@Column(name = "USER_NAME")
 	private String userName;
 
@@ -33,13 +34,20 @@ public class ExtraBet {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "SEMI_FINAL_WINNER")
 	private Country semiFinalWinner;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "THIRD_FINAL_WINNER")
 	private Country thirdFinalWinner;
 
-	private Integer points = 0;
-	
+	@Column(name = "POINTS_ONE")
+	private Integer pointsOne = 0;
+
+	@Column(name = "POINTS_TWO")
+	private Integer pointsTwo = 0;
+
+	@Column(name = "POINTS_THREE")
+	private Integer pointsThree = 0;
+
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -57,7 +65,9 @@ public class ExtraBet {
 		builder.append(finalWinner, extraBet.finalWinner);
 		builder.append(semiFinalWinner, extraBet.semiFinalWinner);
 		builder.append(thirdFinalWinner, extraBet.thirdFinalWinner);
-		builder.append(points, extraBet.points);
+		builder.append(pointsOne, extraBet.pointsOne);
+		builder.append(pointsTwo, extraBet.pointsTwo);
+		builder.append(pointsThree, extraBet.pointsThree);
 
 		return builder.isEquals();
 	}
@@ -70,7 +80,9 @@ public class ExtraBet {
 		builder.append(finalWinner);
 		builder.append(semiFinalWinner);
 		builder.append(thirdFinalWinner);
-		builder.append(points);
+		builder.append(pointsOne);
+		builder.append(pointsTwo);
+		builder.append(pointsThree);
 		return builder.toHashCode();
 	}
 
@@ -82,10 +94,12 @@ public class ExtraBet {
 		builder.append("finalWinner", finalWinner);
 		builder.append("semiFinalWinner", semiFinalWinner);
 		builder.append("thirdFinalWinner", thirdFinalWinner);
-		builder.append("points", points);
+		builder.append("pointsOne", pointsOne);
+		builder.append("pointsTwo", pointsTwo);
+		builder.append("pointsThree", pointsThree);
 		return builder.toString();
 	}
-	
+
 	public Country getFinalWinner() {
 		return finalWinner;
 	}
@@ -106,18 +120,6 @@ public class ExtraBet {
 		return id;
 	}
 
-	public Integer getPoints() {
-		return points;
-	}
-
-	public void setPoints(Integer points) {
-		this.points = points;
-	}
-	
-	public void addPoints(Integer points) {
-		this.points = this.points + points;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
@@ -132,5 +134,34 @@ public class ExtraBet {
 
 	public void setThirdFinalWinner(Country thirdFinalWinner) {
 		this.thirdFinalWinner = thirdFinalWinner;
+	}
+
+	public Integer getPointsOne() {
+		return pointsOne;
+	}
+
+	public void setPointsOne(Integer pointsOne) {
+		this.pointsOne = pointsOne;
+	}
+
+	public Integer getPointsTwo() {
+		return pointsTwo;
+	}
+
+	public void setPointsTwo(Integer pointsTwo) {
+		this.pointsTwo = pointsTwo;
+	}
+
+	public Integer getPointsThree() {
+		return pointsThree;
+	}
+
+	public void setPointsThree(Integer pointsThree) {
+		this.pointsThree = pointsThree;
+	}
+
+	@Transient
+	public Integer getPoints() {
+		return pointsOne.intValue() + pointsTwo.intValue() + pointsThree.intValue();
 	}
 }

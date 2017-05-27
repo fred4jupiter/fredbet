@@ -20,7 +20,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
 		builder.append("Select user_name, sum(total) as sum_all from (");
 		builder.append("(Select user_name, sum(points) as total from bet where user_name not like :username group by user_name order by total desc) ");
 		builder.append("union all ");
-		builder.append("(Select user_name, sum(points) as total from extra_bet where user_name not like :username group by user_name order by total desc) ");
+		builder.append("(Select user_name, (points_one + points_two + points_three) as total from extra_bet where user_name not like :username group by user_name order by total desc) ");
 		builder.append(") as complete ");
 		builder.append("group by user_name order by sum_all desc");
 		

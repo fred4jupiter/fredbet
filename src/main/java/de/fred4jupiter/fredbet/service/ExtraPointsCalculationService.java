@@ -61,38 +61,47 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
 			List<ExtraBet> extraBets = extraBetRepository.findAll();
 
 			extraBets.forEach(extraBet -> {
-				boolean save = calculatePointsFor(match, extraBet);
-				if (save) {
+				if (match.isFinal() || match.isGroup(Group.GAME_FOR_THIRD)) {
+					calculatePointsFor(match, extraBet);
 					LOG.debug("User {} has {} points", extraBet.getUserName(), extraBet.getPoints());
-					extraBetRepository.save(extraBet);
+					return;
 				}
 			});
 		}
 	}
 
-	private boolean calculatePointsFor(Match match, ExtraBet extraBet) {
-		if (!match.hasResultSet()) {
-			return false;
-		}
-
+	private void calculatePointsFor(Match match, ExtraBet extraBet) {
 		if (match.isFinal()) {
+			if (!match.hasResultSet()) {
+				extraBet.setPointsOne(0);
+				extraBet.setPointsTwo(0);
+				extraBetRepository.save(extraBet);
+				return;
+			}
+
 			if (extraBet.getFinalWinner().equals(match.getWinner())) {
-				extraBet.addPoints(pointsFinalWinner);
+				extraBet.setPointsOne(pointsFinalWinner);
 			}
 
 			if (extraBet.getSemiFinalWinner().equals(match.getLooser())) {
-				extraBet.addPoints(pointsSemiFinalWinner);
+				extraBet.setPointsTwo(pointsSemiFinalWinner);
 			}
-			return true;
-		}
-		if (match.isGroup(Group.GAME_FOR_THIRD)) {
-			if (extraBet.getThirdFinalWinner().equals(match.getWinner())) {
-				extraBet.addPoints(pointsThirdFinalWinner);
-				return true;
-			}
-		}
 
-		return false;
+			extraBetRepository.save(extraBet);
+			return;
+		} else if (match.isGroup(Group.GAME_FOR_THIRD)) {
+			if (!match.hasResultSet()) {
+				extraBet.setPointsThree(0);
+				extraBetRepository.save(extraBet);
+				return;
+			}
+
+			if (extraBet.getThirdFinalWinner().equals(match.getWinner())) {
+				extraBet.setPointsThree(pointsThirdFinalWinner);
+				extraBetRepository.save(extraBet);
+				return;
+			}
+		}
 	}
 
 }
