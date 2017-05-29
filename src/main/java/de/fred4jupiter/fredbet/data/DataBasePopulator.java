@@ -163,7 +163,7 @@ public class DataBasePopulator {
 		for (int i = 0; i < numberOfMatches; i++) {
 			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
 			Match match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
-					.withKickOffDate(LocalDateTime.now().plusDays(1).plusMinutes(i)).build();
+					.withKickOffDate(LocalDateTime.now().plusDays(1).plusHours(i)).build();
 			matchService.save(match);
 		}
 	}

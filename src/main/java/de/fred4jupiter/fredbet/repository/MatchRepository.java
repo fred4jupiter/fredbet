@@ -15,7 +15,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	List<Match> findAllByOrderByKickOffDateAsc();
 
-	@Query("select m from Match m where m.kickOffDate > :someDate or (m.goalsTeamOne is null and m.goalsTeamTwo is null)")
+	@Query("select m from Match m where m.kickOffDate > :someDate or (m.goalsTeamOne is null and m.goalsTeamTwo is null) order by m.kickOffDate asc")
 	List<Match> findUpcomingMatches(@Param("someDate") Date someDate);
 
 	List<Match> findByGroupOrderByKickOffDateAsc(Group group);
