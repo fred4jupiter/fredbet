@@ -246,3 +246,10 @@ button.vote {
 		overflow: hidden !important;
 	}
 }
+
+@media ( max-width: 1200px) {
+	.nav > li >a {
+		padding-left: 10px;
+		padding-right: 10px
+	}
+}
