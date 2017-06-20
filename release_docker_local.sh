@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    echo "No arguments provided. Usage: /release_only.sh DOCKER_USERNAME DOCKER_PASSWORD"
+    echo "No arguments provided. Usage: ./release_docker_local.sh DOCKER_USERNAME DOCKER_PASSWORD"
     exit 1
 fi
 
