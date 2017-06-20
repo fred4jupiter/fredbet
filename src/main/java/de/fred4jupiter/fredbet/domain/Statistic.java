@@ -35,11 +35,19 @@ public class Statistic {
 	}
 
 	public Integer getPointsGroup() {
-		return pointsGroup;
+		return returnValueOf(pointsGroup);
+	}
+
+	private Integer returnValueOf(Integer value) {
+		return value != null ? value : Integer.valueOf(0);
+	}
+
+	private Integer getValueOrDefault(Integer value) {
+		return value != null ? value : Integer.valueOf(0);
 	}
 
 	public void setPointsGroup(Integer pointsGroup) {
-		this.pointsGroup = pointsGroup != null ? pointsGroup : Integer.valueOf(0);
+		this.pointsGroup = getValueOrDefault(pointsGroup);
 	}
 
 	public Integer getPointsRoundOfSixteen() {
@@ -47,7 +55,7 @@ public class Statistic {
 	}
 
 	public void setPointsRoundOfSixteen(Integer pointsRoundOfSixteen) {
-		this.pointsRoundOfSixteen = pointsRoundOfSixteen != null ? pointsRoundOfSixteen : Integer.valueOf(0);
+		this.pointsRoundOfSixteen = getValueOrDefault(pointsRoundOfSixteen);
 	}
 
 	public Integer getPointsQuarterFinal() {
@@ -55,7 +63,7 @@ public class Statistic {
 	}
 
 	public void setPointsQuarterFinal(Integer pointsQuarterFinal) {
-		this.pointsQuarterFinal = pointsQuarterFinal != null ? pointsQuarterFinal : Integer.valueOf(0);
+		this.pointsQuarterFinal = getValueOrDefault(pointsQuarterFinal);
 	}
 
 	public Integer getPointsSemiFinal() {
@@ -63,7 +71,7 @@ public class Statistic {
 	}
 
 	public void setPointsSemiFinal(Integer pointsSemiFinal) {
-		this.pointsSemiFinal = pointsSemiFinal != null ? pointsSemiFinal : Integer.valueOf(0);
+		this.pointsSemiFinal = getValueOrDefault(pointsSemiFinal);
 	}
 
 	public Integer getPointsFinal() {
@@ -71,7 +79,23 @@ public class Statistic {
 	}
 
 	public void setPointsFinal(Integer pointsFinal) {
-		this.pointsFinal = pointsFinal != null ? pointsFinal : Integer.valueOf(0);
+		this.pointsFinal = getValueOrDefault(pointsFinal);
+	}
+
+	public Integer getPointsGameForThird() {
+		return pointsGameForThird;
+	}
+
+	public void setPointsGameForThird(Integer pointsGameForThird) {
+		this.pointsGameForThird = getValueOrDefault(pointsGameForThird);
+	}
+
+	public void setPointsForExtraBets(Integer pointsForExtraBets) {
+		this.pointsForExtraBets = getValueOrDefault(pointsForExtraBets);
+	}
+
+	public Integer getPointsForExtraBets() {
+		return pointsForExtraBets;
 	}
 
 	public String getUsername() {
@@ -98,7 +122,7 @@ public class Statistic {
 	}
 
 	public void setPointsFavoriteCountry(Integer pointsFavoriteCountry) {
-		this.pointsFavoriteCountry = pointsFavoriteCountry != null ? pointsFavoriteCountry : Integer.valueOf(0);
+		this.pointsFavoriteCountry = getValueOrDefault(pointsFavoriteCountry);
 	}
 
 	public Country getFavoriteCountry() {
@@ -141,19 +165,4 @@ public class Statistic {
 		this.maxPointsCandidate = maxPointsCandidate;
 	}
 
-	public Integer getPointsGameForThird() {
-		return pointsGameForThird;
-	}
-
-	public void setPointsGameForThird(Integer pointsGameForThird) {
-		this.pointsGameForThird = pointsGameForThird;
-	}
-
-	public void setPointsForExtraBets(Integer pointsForExtraBets) {
-		this.pointsForExtraBets = pointsForExtraBets;
-	}
-
-	public Integer getPointsForExtraBets() {
-		return pointsForExtraBets;
-	}
 }
