@@ -15,7 +15,7 @@ public class Statistic {
 	private Integer pointsGameForThird = Integer.valueOf(0);
 
 	private Integer pointsFavoriteCountry = Integer.valueOf(0);
-	
+
 	private Integer pointsForExtraBets = Integer.valueOf(0);
 
 	private boolean minPointsCandidate;
@@ -79,8 +79,18 @@ public class Statistic {
 	}
 
 	public Integer getSum() {
-		return pointsGroup.intValue() + pointsRoundOfSixteen.intValue() + pointsQuarterFinal.intValue() + pointsSemiFinal.intValue()
-				+ pointsFinal.intValue() + pointsGameForThird.intValue() + pointsForExtraBets.intValue();
+		return nullSafeAdd(pointsGroup, pointsRoundOfSixteen, pointsQuarterFinal, pointsSemiFinal, pointsFinal, pointsGameForThird,
+				pointsForExtraBets);
+	}
+
+	private int nullSafeAdd(Integer... values) {
+		int result = 0;
+		for (Integer value : values) {
+			if (value != null) {
+				result = result + value.intValue();
+			}
+		}
+		return result;
 	}
 
 	public Integer getPointsFavoriteCountry() {
