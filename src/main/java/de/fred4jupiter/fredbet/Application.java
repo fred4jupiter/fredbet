@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -29,6 +30,7 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
  */
 @SpringBootApplication
 @EnableConfigurationProperties(FredbetProperties.class)
+@EnableCaching
 public class Application {
 
 	static {

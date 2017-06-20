@@ -79,7 +79,7 @@ public class DataBasePopulator {
 			createAdditionalUsers();
 			createRandomMatches();
 		}
-		
+
 		imageAdministrationService.createDefaultImageGroup();
 	}
 
@@ -105,6 +105,7 @@ public class DataBasePopulator {
 		createRandomForGroup(Group.SEMI_FINAL, 2);
 		createRandomForGroup(Group.FINAL, 1);
 		createRandomForGroup(Group.GAME_FOR_THIRD, 1);
+
 	}
 
 	public void createDemoBetsForAllUsers() {

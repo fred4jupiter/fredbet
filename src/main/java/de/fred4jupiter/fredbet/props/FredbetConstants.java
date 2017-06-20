@@ -11,4 +11,6 @@ public interface FredbetConstants {
     String INFO_CONTEXT_MISC = "misc";
     
     String BADGE_PENALTY_WINNER_CSS_CLASS = "badge-penalty-winner";
+    
+    
 }

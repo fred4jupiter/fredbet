@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	@Query("select min(a.kickOffDate) from Match a")
 	Date findStartDateOfFirstMatch();
+	
+	@Query("select a.group from Match a ")
+	Set<Group> fetchGroupsOfAllMatches();
 
 }

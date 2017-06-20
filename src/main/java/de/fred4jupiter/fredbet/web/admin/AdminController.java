@@ -31,10 +31,11 @@ public class AdminController {
 
 	@Autowired
 	private SessionTrackingService sessionTrackingService;
-	
+
 	@Autowired
 	private AdministrationService administrationService;
 
+	
 	@RequestMapping
 	public String list() {
 		return "admin/administration";
@@ -79,7 +80,7 @@ public class AdminController {
 		messageUtil.addInfoMsg(modelMap, "administration.msg.info.allBetsAndMatchesDeleted");
 		return modelAndView;
 	}
-	
+
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
 	@RequestMapping(path = "/active/users", method = RequestMethod.GET)
 	public ModelAndView showActiveUsers(ModelMap modelMap) {
@@ -89,7 +90,7 @@ public class AdminController {
 		modelAndView.addObject("userList", userList);
 		return modelAndView;
 	}
-	
+
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_LAST_LOGINS + "')")
 	@RequestMapping(path = "/lastlogins", method = RequestMethod.GET)
 	public ModelAndView showLastLogins() {
@@ -99,6 +100,5 @@ public class AdminController {
 		modelAndView.addObject("userList", lastLoginUsers);
 		return modelAndView;
 	}
-	
-	
+
 }

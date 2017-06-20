@@ -6,10 +6,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,7 @@ import org.springframework.util.Assert;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -69,6 +73,7 @@ public class MatchService {
 		return matchRepository.findOne(matchId);
 	}
 
+	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
 	public Match save(Match match) {
 		match = matchRepository.save(match);
 
@@ -80,6 +85,7 @@ public class MatchService {
 		return match;
 	}
 
+	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
 	public Long save(MatchCommand matchCommand) {
 		Match match = null;
 		if (matchCommand.getMatchId() != null) {
@@ -98,14 +104,24 @@ public class MatchService {
 		return match.getId();
 	}
 
+	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
+	public void save(MatchResultCommand matchResultCommand) {
+		Match match = findMatchById(matchResultCommand.getMatchId());
+		match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
+		match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
+		match.setPenaltyWinnerOne(matchResultCommand.isPenaltyWinnerOne());
+		save(match);
+	}
+
 	public List<MatchCommand> findAllMatches(String username) {
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 
 	public List<MatchCommand> findAllUpcomingMatches(String username) {
-	    // show current matches that has been finished since 2 hours after kick-off
-	    LocalDateTime kickOffBeginSelectionDate = LocalDateTime.now().minusHours(2);
+		// show current matches that has been finished since 2 hours after
+		// kick-off
+		LocalDateTime kickOffBeginSelectionDate = LocalDateTime.now().minusHours(2);
 		List<Match> allMatches = matchRepository.findUpcomingMatches(DateUtils.toDate(kickOffBeginSelectionDate));
 		return toMatchCommandsWithBets(username, allMatches);
 	}
@@ -119,7 +135,7 @@ public class MatchService {
 			if (bet != null) {
 				matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
 				matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
-				matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());				
+				matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
 				matchCommand.setPoints(bet.getPoints());
 			}
 			resultList.add(matchCommand);
@@ -153,10 +169,12 @@ public class MatchService {
 		return matchIdBetMap;
 	}
 
+	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
 	public void deleteAllMatches() {
 		matchRepository.deleteAll();
 	}
 
+	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
 	public void deleteMatch(Long matchId) {
 		matchRepository.delete(matchId);
 	}
@@ -165,12 +183,9 @@ public class MatchService {
 		return matchRepository.findOne(matchId);
 	}
 
-	public void save(MatchResultCommand matchResultCommand) {
-		Match match = findMatchById(matchResultCommand.getMatchId());
-		match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
-		match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
-		match.setPenaltyWinnerOne(matchResultCommand.isPenaltyWinnerOne());
-		save(match);
+	@Cacheable(CacheNames.AVAIL_GROUPS)
+	public Set<Group> availableGroups() {
+		LOG.info("Loading groups from DB...");
+		return this.matchRepository.fetchGroupsOfAllMatches();
 	}
-
 }

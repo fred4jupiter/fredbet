@@ -37,21 +37,47 @@
 				        		<span class="caret"></span>
 				        	</a>
 					        <ul class="dropdown-menu">
-					            <li th:class="${pageState_matches_group_GROUP_A}"><a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_B}"><a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_C}"><a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_D}"><a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_E}"><a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_F}"><a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_G}"><a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a></li>
-					            <li th:class="${pageState_matches_group_GROUP_H}"><a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a></li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}" th:class="${pageState_matches_group_GROUP_A}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}" th:class="${pageState_matches_group_GROUP_B}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}" th:class="${pageState_matches_group_GROUP_C}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}" th:class="${pageState_matches_group_GROUP_D}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}" th:class="${pageState_matches_group_GROUP_E}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
+					            </li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}" th:class="${pageState_matches_group_GROUP_F}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}" th:class="${pageState_matches_group_GROUP_G}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}" th:class="${pageState_matches_group_GROUP_H}">
+					            	<a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
+				            	</li>
 					            <li class="divider" role="separator"></li>
-					            <li th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}"><a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a></li>
-					            <li th:class="${pageState_matches_group_QUARTER_FINAL}"><a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a></li>
-					            <li th:class="${pageState_matches_group_SEMI_FINAL}"><a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a></li>
-					            <li th:class="${pageState_matches_group_FINAL}"><a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a></li>			
-					            <li class="divider" role="separator"></li>
-					            <li th:class="${pageState_matches_group_GAME_FOR_THIRD}"><a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a></li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}" th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}">
+					            	<a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('QUARTER_FINAL')}" th:class="${pageState_matches_group_QUARTER_FINAL}">
+					            	<a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}" th:class="${pageState_matches_group_SEMI_FINAL}">
+					            	<a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a>
+				            	</li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" th:class="${pageState_matches_group_FINAL}">
+					            	<a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
+				            	</li>
+				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider" role="separator"></li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" th:class="${pageState_matches_group_GAME_FOR_THIRD}">
+					            	<a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a>
+				            	</li>
 					        </ul>
 				        </li>
 				        <li class="dropdown" th:classappend="${pageState_info}">
@@ -91,6 +117,9 @@
 					  			</li>
 						  		<li th:class="${pageState_excelimport_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#excelimport" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
+					  			</li>
+					  			<li th:class="${pageState_cache_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a href="#clearCache" th:href="@{/cache/show}" th:text="#{navigation.clearCaches}"></a>
 					  			</li>
 				        	</ul>
 				        </li>
