@@ -14,6 +14,9 @@ function checkPenalty() {
 
 function oneCountUp() {
 	var val = $('#goalsTeamOne, #teamResultOne').val();
+	if (val === "") {
+		val = -1;
+	}
 	$('#goalsTeamOne, #teamResultOne').val((val*1)+1); 
 	checkPenalty();
 }
@@ -28,6 +31,9 @@ function oneCountDown() {
 
 function twoCountUp() {
 	var val = $('#goalsTeamTwo, #teamResultTwo').val();
+	if (val === "") {
+		val = -1;
+	}
 	$('#goalsTeamTwo, #teamResultTwo').val((val*1)+1);
 	checkPenalty();
 }
