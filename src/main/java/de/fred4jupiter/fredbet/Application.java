@@ -1,14 +1,22 @@
 package de.fred4jupiter.fredbet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.cache.support.SimpleCacheManager;
+import org.springframework.cloud.aws.autoconfigure.cache.ElastiCacheAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -16,6 +24,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.DatabaseType;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 
@@ -31,6 +40,7 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 @SpringBootApplication
 @EnableConfigurationProperties(FredbetProperties.class)
 @EnableCaching
+@EnableAutoConfiguration(exclude = ElastiCacheAutoConfiguration.class)
 public class Application {
 
 	static {
@@ -66,5 +76,14 @@ public class Application {
 		config.addDataSourceProperty("hibernate.dialect", databaseType.getDatabasePlatform());
 
 		return new HikariDataSource(config);
+	}
+	
+	@Bean
+	public CacheManager cacheManager() {
+	    SimpleCacheManager cacheManager = new SimpleCacheManager();
+	    List<Cache> caches = new ArrayList<Cache>();
+	    caches.add(new ConcurrentMapCache(CacheNames.AVAIL_GROUPS));
+	    cacheManager.setCaches(caches);
+	    return cacheManager;
 	}
 }
