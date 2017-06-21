@@ -23,7 +23,7 @@
 									<div class="right">
 										<span class="label label-info label-as-badge big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}" 
 										th:text="${allBetsCommand.match.goalsTeamOne}"></span>
-										<span> : </span>
+										<span th:if="${allBetsCommand.match.goalsTeamOne != null}"> : </span>
 										<span class="label label-info label-as-badge big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}" 
 										th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
 									</div>
