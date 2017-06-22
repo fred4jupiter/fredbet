@@ -17,7 +17,7 @@
 							<br/>
 							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" 
 										th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}">
-						        <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="img-responsive"/>
+						        <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="img-responsive gallery"/>
 						    </a>
 						</div>												
 					</div>
