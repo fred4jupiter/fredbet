@@ -43,34 +43,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// these matches will not go through the security filter (all above static folder)
-		web.ignoring().antMatchers("/blueimpgallery/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
+		// these matches will not go through the security filter (all above
+		// static folder)
+		web.ignoring().antMatchers("/blueimpgallery/**", "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**", "/console/*")
-				.permitAll();
+		http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**", "/console/*").permitAll();
 		http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO);
-		http.authorizeRequests().antMatchers("/administration/**")
-				.hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+		http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		// Spring Boot Actuator
 		http.authorizeRequests().antMatchers("/manage/health").permitAll();
 		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().anyRequest().authenticated();
 
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-				.invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me").permitAll();
-		http.rememberMe().tokenRepository(persistentTokenRepository())
-				.tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
+		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID", "remember-me").permitAll();
+		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 
 		// we do not use CSRF in this app (by now)
 		http.csrf().disable();
-		
-		// disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
+
+		// disable cache control to allow usage of ETAG headers (no image reload
+		// if the image has not been changed)
 		http.headers().cacheControl().disable();
 
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {

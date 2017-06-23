@@ -2,13 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<body>
-		<div th:fragment="profile_image_small(imageKey)" th:remove="tag">
-			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
+		<script>
+		    lightbox.option({
+		      'showImageNumberLabel': false,
+		      'imageFadeDuration': 0,
+		      'resizeDuration': 0
+		    })
+		</script>
+		
+		<div th:fragment="profile_image_small(imageKey)" th:remove="tag">			
+			<div th:if="${imageKey}" th:remove="tag">
+				<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
+			</div>						
+	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
+		</div>
+		
+		<div th:fragment="profile_image_small_with_popup(imageKey)" th:remove="tag">			
+			<div th:if="${imageKey}" th:remove="tag">
+				<a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" >
+					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
+				</a>
+			</div>						
 	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
 		</div>
 		
 		<div th:fragment="profile_image_big(imageKey)" th:remove="tag">
 			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
+	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
+		</div>
+		
+		<div th:fragment="profile_image_big_with_popup(imageKey)" th:remove="tag">			
+			<div th:if="${imageKey}" th:remove="tag">
+				<a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" >
+					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
+				</a>
+			</div>						
 	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
 		</div>
 	</body>

@@ -36,7 +36,7 @@
 						<div class="panel-body">
 							<div class="row" th:each="bet : ${allBetsCommand.allBetsForMatch}">
 								<div class="col-xs-2 top-bottom-space">
-									<span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getUserProfileImageKeyFor(bet.userName)})"></span>
+									<span th:replace="fragments/profile_image :: profile_image_small_with_popup(${@securityService.getUserProfileImageKeyFor(bet.userName)})"></span>
 								</div>
 								<div class="col-xs-4 top-bottom-space no-left-right-padding">
 									<span th:text="${bet.userName}" class="ranking-name"></span>			  									  		
