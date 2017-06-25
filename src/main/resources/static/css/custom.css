@@ -139,6 +139,10 @@ img.gallery {
 	vertical-align: baseline;
 }
 
+a.img-link  {
+	text-decoration: none !important;
+}
+
 .top-bottom-space {
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -209,7 +213,7 @@ button.vote {
 }
 
 .icon-user {
-	font-size: 1.2em;
+	font-size: 1.3em;
 }
 
 /** justified break point for navigation collapse on tablets */
