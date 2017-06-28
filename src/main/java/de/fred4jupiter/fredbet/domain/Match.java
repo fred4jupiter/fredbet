@@ -93,6 +93,9 @@ public class Match {
 	 * @return
 	 */
 	public boolean isUndecidedResult() {
+		if (goalsTeamOne == null || goalsTeamTwo == null) {
+			return false;
+		}
 		return getGoalDifference().intValue() == 0;
 	}
 
