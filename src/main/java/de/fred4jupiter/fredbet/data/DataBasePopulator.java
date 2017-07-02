@@ -177,7 +177,9 @@ public class DataBasePopulator {
 
 		final int numberOfDemoUsers = 12;
 		for (int i = 1; i <= numberOfDemoUsers; i++) {
-			AppUser user = AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i).withRole(FredBetRole.ROLE_USER).build();
+			String usernameAndPassword = "test" + i;
+			AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
+					.withRole(FredBetRole.ROLE_USER).build();
 			saveIfNotPresent(user);
 			if (numberOfDemoUsers % i == 0) {
 				this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);

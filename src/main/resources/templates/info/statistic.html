@@ -10,7 +10,7 @@
 			<h1 th:text="#{statistics.title}"></h1>		
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}" style="max-height: 176px;">
-					<div class="panel panel-default">
+					<div class="panel panel-default panel-statistic">
 						<div class="panel-heading">
 							<span th:replace="fragments/profile_image :: profile_image_small_with_popup(${@securityService.getUserProfileImageKeyFor(statistic.username)})"></span>
 							<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>

@@ -216,6 +216,14 @@ button.vote {
 	font-size: 1.1em;
 }
 
+.panel-statistic {
+	height: 140px;
+}
+
+.panel-extra-bets-others {
+	height: 200px;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {
