@@ -90,12 +90,16 @@ public class ImageAdministrationService {
 	}
 
 	public void saveUserProfileImage(byte[] binary) {
-		final String key = imageKeyGenerator.generateKey();
+		final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 		ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
+		saveUserProfileImage(binary, appUser, imageMetaData);
+	}
+
+	public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
+		final String key = imageKeyGenerator.generateKey();
 		if (imageMetaData == null) {
 			// create new user profile image
 			final ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
-			final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
 			imageMetaData = new ImageMetaData(key, imageGroup, appUser);
 			imageMetaData.setDescription(appUser.getUsername());
 		} else {

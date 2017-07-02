@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.data;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -76,7 +77,7 @@ public class DataBasePopulator {
 		}
 
 		if (!isRunInIntegrationTest() && fredbetProperties.isCreateDemoData()) {
-			createAdditionalUsers();
+			createDemoUsers();
 			createRandomMatches();
 		}
 
@@ -169,12 +170,27 @@ public class DataBasePopulator {
 		}
 	}
 
-	private void createAdditionalUsers() {
+	private void createDemoUsers() {
 		LOG.info("createAdditionalUsers: creating additional demo users ...");
 
-		for (int i = 1; i <= 5; i++) {
-			saveIfNotPresent(
-					AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i).withRole(FredBetRole.ROLE_USER).build());
+		final byte[] demoImage = loadDemoUserProfileImage();
+
+		final int numberOfDemoUsers = 12;
+		for (int i = 1; i <= numberOfDemoUsers; i++) {
+			AppUser user = AppUserBuilder.create().withUsernameAndPassword("test" + i, "test" + i).withRole(FredBetRole.ROLE_USER).build();
+			saveIfNotPresent(user);
+			if (numberOfDemoUsers % i == 0) {
+				this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);
+			}
+		}
+	}
+
+	private byte[] loadDemoUserProfileImage() {
+		ClassPathResource classPathResource = new ClassPathResource("static/images/profile_demo_image.jpg");
+		try (InputStream in = classPathResource.getInputStream()) {
+			return IOUtils.toByteArray(in);
+		} catch (IOException e) {
+			throw new IllegalStateException("Could not load demo image from classpath. " + e.getMessage());
 		}
 	}
 
