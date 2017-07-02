@@ -8,8 +8,8 @@
 		<div layout:fragment="content">
 			<div th:replace="fragments/alert :: alert_headline"></div>
 			<h1 th:text="#{ranking.list.title}"></h1>
-			<div class="row" th:each="ranking,status : ${rankings}">
-				<div class="col-xs-12 col-sm-6 col-md-4">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">				
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="col-xs-3 no-left-padding">
