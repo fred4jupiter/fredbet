@@ -31,10 +31,12 @@ public class Match {
 	@Column(name = "MATCH_ID")
 	private Long id;
 
+	// TODO: use @Enumerated(EnumType.STRING)
 	private Country countryOne;
 
 	private String teamNameOne;
 
+	// TODO: use @Enumerated(EnumType.STRING)
 	private Country countryTwo;
 
 	private String teamNameTwo;
