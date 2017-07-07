@@ -45,6 +45,17 @@ public class ReportService {
 		});
 	}
 
+	public byte[] exportNumberOfPointsInBets() {
+		// TODO: implement
+
+		/*
+		 * Something like that: select * from (select user_name, points,
+		 * count(points) as anzahl from bet group by user_name,points) as
+		 * result1 where result1.points = 3 order by result1.anzahl desc;
+		 */
+		return null;
+	}
+
 	private String format(Date kickOffDate) {
 		LocalDateTime localDateTime = DateUtils.toLocalDateTime(kickOffDate);
 		return localDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
