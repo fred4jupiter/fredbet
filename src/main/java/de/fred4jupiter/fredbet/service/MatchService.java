@@ -34,6 +34,16 @@ import de.fred4jupiter.fredbet.web.matches.MatchResultCommand;
 @Transactional
 public class MatchService {
 
+	/**
+	 * show current K.O. matches that has been finished since 3 hours after kick-off
+	 */
+	private static final int HOURS_SHOW_UPCOMING_OTHER_MATCHES = 3;
+
+	/**
+	 * show current group matches that has been finished since 2 hours after kick-off
+	 */
+	private static final int HOURS_SHOW_UPCOMING_GROUP_MATCHES = 2;
+
 	private static final Logger LOG = LoggerFactory.getLogger(MatchService.class);
 
 	@Autowired
@@ -118,11 +128,11 @@ public class MatchService {
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 
-	public List<MatchCommand> findAllUpcomingMatches(String username) {
-		// show current matches that has been finished since 2 hours after
-		// kick-off
-		LocalDateTime kickOffBeginSelectionDate = LocalDateTime.now().minusHours(2);
-		List<Match> allMatches = matchRepository.findUpcomingMatches(DateUtils.toDate(kickOffBeginSelectionDate));
+	public List<MatchCommand> findAllUpcomingMatches(String username) {		
+		LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
+		LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
+		List<Match> allMatches = matchRepository.findUpcomingMatches(DateUtils.toDate(groupKickOffBeginSelectionDate),
+				DateUtils.toDate(koKickOffBeginSelectionDate));
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 
