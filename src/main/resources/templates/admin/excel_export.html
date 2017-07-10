@@ -2,15 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 	<head>
-		<title th:text="#{administration.cache.title}"></title>
+		<title th:text="#{administration.excel.export.title}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<div th:replace="fragments/alert :: alert_headline"></div>
-			<h1 th:text="#{administration.cache.title}"></h1>
+			<h1 th:text="#{administration.excel.export.title}"></h1>
 			<div class="row">			
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<a class="btn btn-primary" role="button" th:href="@{/cache/clearCache}" th:text="#{administration.clearCache}"></a>					
+					<a class="btn btn-primary" role="button" th:href="@{/excelexport/allBets}" th:text="#{administration.excel.export.allBets}"></a>					
 				</div>
 			</div>					
 		</div>

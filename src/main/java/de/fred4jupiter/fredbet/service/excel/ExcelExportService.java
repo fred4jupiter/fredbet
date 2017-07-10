@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 @Service
-public class ExcelExportService {
+class ExcelExportService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ExcelExportService.class);
 

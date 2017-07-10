@@ -41,6 +41,8 @@ import de.fred4jupiter.fredbet.web.info.InfoType;
 @Component
 public class DataBasePopulator {
 
+	private static final int NUMBER_OF_DEMO_USERS = 12;
+
 	private static final String DEFAULT_PASSWORD_ADMIN_USER = FredbetConstants.TECHNICAL_USERNAME;
 
 	private static final Logger LOG = LoggerFactory.getLogger(DataBasePopulator.class);
@@ -175,13 +177,13 @@ public class DataBasePopulator {
 
 		final byte[] demoImage = loadDemoUserProfileImage();
 
-		final int numberOfDemoUsers = 12;
+		final int numberOfDemoUsers = NUMBER_OF_DEMO_USERS;
 		for (int i = 1; i <= numberOfDemoUsers; i++) {
 			String usernameAndPassword = "test" + i;
 			AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
 					.withRole(FredBetRole.ROLE_USER).build();
-			saveIfNotPresent(user);
-			if (numberOfDemoUsers % i == 0) {
+			boolean isNewUser = saveIfNotPresent(user);
+			if (isNewUser && (numberOfDemoUsers % i == 0)) {
 				this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);
 			}
 		}
@@ -206,11 +208,13 @@ public class DataBasePopulator {
 		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_ADMIN).build());
 	}
 
-	private void saveIfNotPresent(AppUser appUser) {
+	private boolean saveIfNotPresent(AppUser appUser) {
 		try {
 			userService.insertAppUser(appUser);
+			return true;
 		} catch (UserAlreadyExistsException e) {
 			LOG.debug(e.getMessage());
+			return false;
 		}
 	}
 

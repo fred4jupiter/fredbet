@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,12 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ExcelImportService;
 import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.web.MessageUtil;
 
 @Controller
 @RequestMapping("/excelimport")
+@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class ExcelImportController {
 
 	private static final String CONTENT_TYPE_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
