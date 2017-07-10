@@ -149,6 +149,7 @@ a.img-link  {
 }
 
 .badge-penalty-winner {
+	/*background: repeating-linear-gradient(-25deg, #5bc0de, #5bc0de 12px, #5bc0de 10px, green 20px);*/
 	border: 2px solid black;
 }
 
