@@ -13,7 +13,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 @Service
 class ExcelExportService {
@@ -21,10 +20,6 @@ class ExcelExportService {
 	private static final Logger LOG = LoggerFactory.getLogger(ExcelExportService.class);
 
 	public <T> byte[] exportEntriesToExcel(String sheetName, List<T> entries, EntryCallback<T> callback) {
-		if (CollectionUtils.isEmpty(entries)) {
-			return null;
-		}
-
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream(); XSSFWorkbook wb = new XSSFWorkbook();) {
 			XSSFSheet sheet = wb.createSheet(sheetName);
 
