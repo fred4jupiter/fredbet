@@ -122,4 +122,13 @@ public class BetRepositoryIT extends AbstractTransactionalIntegrationTest {
 		assertEquals(bet1, second);
 	}
 
+	@Test
+	public void countUserPoints() {
+		List<PointCountResult> resultList = betRepository.countNumberOfPointsByUser();
+		assertNotNull(resultList);
+		
+		for (PointCountResult pointCountResult : resultList) {
+			LOG.debug("pointCountResult: {}", pointCountResult);
+		}
+	}
 }

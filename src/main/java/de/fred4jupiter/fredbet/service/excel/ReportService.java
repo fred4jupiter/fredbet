@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.repository.PointCountResult;
 import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
@@ -55,14 +56,25 @@ public class ReportService {
 		});
 	}
 
-	public byte[] exportNumberOfPointsInBets() {
-		// TODO: implement
+	public byte[] exportNumberOfPointsInBets(final Locale locale) {
+		final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
 
-		/*
-		 * Something like that: select * from (select user_name, points,
-		 * count(points) as anzahl from bet group by user_name,points) as
-		 * result1 where result1.points = 3 order by result1.anzahl desc;
-		 */
-		return null;
+		return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<PointCountResult>() {
+
+			@Override
+			public String[] getHeaderRow() {
+				String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
+				String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
+				String pointsCount = messageSourceUtil.getMessageFor("excel.export.pointsCount", locale);
+				return new String[] { userName, points, pointsCount };
+			}
+
+			@Override
+			public String[] getRowValues(PointCountResult pointCountResult) {
+				return new String[] { pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
+						"" + pointCountResult.getNumberOfPointsCount() };
+			}
+
+		});
 	}
 }

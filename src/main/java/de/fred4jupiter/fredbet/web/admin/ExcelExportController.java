@@ -41,4 +41,16 @@ public class ExcelExportController {
 		return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
 				.header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(betsInExcel);
 	}
+	
+	@RequestMapping(value = "/pointsCount", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
+	public ResponseEntity<byte[]> exportPointsCountByUser(HttpServletResponse response) {
+		final String fileName = "numberOfReachedPointsCount.xlsx";
+		byte[] betsInExcel = this.reportService.exportNumberOfPointsInBets(LocaleContextHolder.getLocale());
+		if (betsInExcel == null) {
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}
+
+		return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
+				.header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(betsInExcel);
+	}
 }
