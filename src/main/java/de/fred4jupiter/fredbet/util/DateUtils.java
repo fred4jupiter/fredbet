@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Date;
 import java.util.Locale;
 
@@ -67,5 +68,18 @@ public final class DateUtils {
 
 	public static ZonedDateTime parseBuildTimestamp(String buildTimestamp) {
 		return parseToZonedDateTime(buildTimestamp + " +0000", "yyyy-MM-dd HH:mm Z");
+	}
+	
+	public static ZonedDateTime parseToZonedDateTime(Date date) {
+		return date.toInstant().atZone(getZoneId());
+	}
+	
+	public static String formatByLocale(Date date, Locale locale) {
+		return formatByLocale(parseToZonedDateTime(date), locale);
+	}
+	
+	public static String formatByLocale(ZonedDateTime zonedDateTime, Locale locale) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
+		return zonedDateTime.format(dateTimeFormatter);
 	}
 }

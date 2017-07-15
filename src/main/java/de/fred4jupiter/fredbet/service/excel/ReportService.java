@@ -1,8 +1,5 @@
 package de.fred4jupiter.fredbet.service.excel;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,8 +48,8 @@ public class ReportService {
 				String country1 = messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale);
 				String country2 = messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale);
 
-				return new String[] { bet.getUserName(), country1, country2, format(bet.getMatch().getKickOffDate()),
-						"" + bet.getPoints() };
+				String formatedDate = DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale);
+				return new String[] { bet.getUserName(), country1, country2, formatedDate, "" + bet.getPoints() };
 			}
 
 		});
@@ -67,10 +64,5 @@ public class ReportService {
 		 * result1 where result1.points = 3 order by result1.anzahl desc;
 		 */
 		return null;
-	}
-
-	private String format(Date kickOffDate) {
-		LocalDateTime localDateTime = DateUtils.toLocalDateTime(kickOffDate);
-		return localDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 	}
 }

@@ -208,7 +208,7 @@ public class DataBasePopulator {
 		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_ADMIN).build());
 	}
 
-	private boolean saveIfNotPresent(AppUser appUser) {
+	public boolean saveIfNotPresent(AppUser appUser) {
 		try {
 			userService.insertAppUser(appUser);
 			return true;

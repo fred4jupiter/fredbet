@@ -17,7 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import de.fred4jupiter.fredbet.Application;
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
+import de.fred4jupiter.fredbet.security.FredBetRole;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.NONE)
@@ -32,7 +35,9 @@ public class ReportServiceMT {
 
 	@Test
 	public void exportResultsToExcel() throws FileNotFoundException, IOException {
-		dataBasePopulator.deleteAllBetsAndMatches();
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("fred", "feuerstein").withRole(FredBetRole.ROLE_USER).build();
+		dataBasePopulator.saveIfNotPresent(appUser);
+		
 		dataBasePopulator.createRandomMatches();
 		dataBasePopulator.createDemoBetsForAllUsers();
 		dataBasePopulator.createDemoResultsForAllMatches();
