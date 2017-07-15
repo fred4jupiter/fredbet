@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class BetCommand {
 
@@ -18,7 +18,7 @@ public class BetCommand {
 
 	private Integer goalsTeamTwo;
 
-	private final MessageUtil messageUtil;
+	private final WebMessageUtil messageUtil;
 
 	private String redirectViewName;
 
@@ -26,11 +26,11 @@ public class BetCommand {
 
 	private boolean penaltyWinnerOne;
 
-	public BetCommand(MessageUtil messageUtil) {
+	public BetCommand(WebMessageUtil messageUtil) {
 		this.messageUtil = messageUtil;
 	}
 
-	public BetCommand(MessageUtil messageUtil, Bet bet) {
+	public BetCommand(WebMessageUtil messageUtil, Bet bet) {
 		this.messageUtil = messageUtil;
 		this.bet = bet;
 		setBetId(bet.getId());

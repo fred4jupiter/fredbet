@@ -13,7 +13,7 @@ import org.springframework.ui.ModelMap;
 
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.util.Validator;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class UserCommand {
 
@@ -77,7 +77,7 @@ public class UserCommand {
         this.username = username;
     }
 
-    public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
+    public boolean validate(WebMessageUtil messageUtil, ModelMap modelMap) {
         if (StringUtils.isEmpty(this.username)) {
             messageUtil.addErrorMsg(modelMap, "user.validation.emptyUsername");
             return true;

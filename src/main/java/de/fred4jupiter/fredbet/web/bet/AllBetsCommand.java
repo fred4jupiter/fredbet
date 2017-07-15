@@ -6,7 +6,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class AllBetsCommand extends AbstractMatchHeaderCommand {
 
@@ -14,7 +14,7 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 
 	private final Match match;
 
-	public AllBetsCommand(List<Bet> allBetsForMatch, Match match, MessageUtil messageUtil) {
+	public AllBetsCommand(List<Bet> allBetsForMatch, Match match, WebMessageUtil messageUtil) {
 		super(messageUtil);
 		this.allBetsForMatch = allBetsForMatch;
 		this.match = match;

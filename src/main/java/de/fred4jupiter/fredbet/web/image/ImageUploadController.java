@@ -22,7 +22,7 @@ import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/image")
@@ -36,7 +36,7 @@ public class ImageUploadController {
 	private ImageAdministrationService imageAdministrationService;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private SecurityService securityService;

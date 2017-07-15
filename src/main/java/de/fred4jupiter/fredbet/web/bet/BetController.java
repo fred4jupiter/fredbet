@@ -29,7 +29,7 @@ import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MatchConverter;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.RedirectViewName;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
@@ -48,7 +48,7 @@ public class BetController {
 	private SecurityService securityService;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private MatchConverter matchConverter;

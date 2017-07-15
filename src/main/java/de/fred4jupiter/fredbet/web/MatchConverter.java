@@ -12,7 +12,7 @@ import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 public class MatchConverter {
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 	
 	public MatchCommand toMatchCommand(Match match) {
 		Assert.notNull(match, "Match must be given");

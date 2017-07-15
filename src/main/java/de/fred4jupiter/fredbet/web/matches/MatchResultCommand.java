@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class MatchResultCommand {
 
@@ -18,17 +18,17 @@ public class MatchResultCommand {
 
     private Integer teamResultTwo;
 
-    private final MessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
     private boolean penaltyWinnerOne;
 
     private boolean groupMatch;
 
-    public MatchResultCommand(MessageUtil messageUtil) {
+    public MatchResultCommand(WebMessageUtil messageUtil) {
         this.messageUtil = messageUtil;
     }
 
-    public MatchResultCommand(MessageUtil messageUtil, Match match) {
+    public MatchResultCommand(WebMessageUtil messageUtil, Match match) {
         this.messageUtil = messageUtil;
         this.matchId = match.getId();
         this.countryTeamOne = match.getCountryOne();

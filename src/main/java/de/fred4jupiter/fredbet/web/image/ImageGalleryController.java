@@ -26,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.DownloadService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/gallery")
@@ -35,7 +35,7 @@ public class ImageGalleryController {
 	private static final Logger LOG = LoggerFactory.getLogger(ImageGalleryController.class);
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private ImageAdministrationService imageAdministrationService;

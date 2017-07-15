@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ExcelImportService;
 import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/excelimport")
@@ -42,7 +42,7 @@ public class ExcelImportController {
 	private ExcelImportService excelImportService;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Value("classpath:/excelimport/ImportTemplate.xlsx")
 	private Resource excelTemplateFile;

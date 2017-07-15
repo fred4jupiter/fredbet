@@ -15,7 +15,7 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.UserService;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/profile")
@@ -27,7 +27,7 @@ public class UserProfileController {
 	private UserService userService;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private SecurityService securityService;

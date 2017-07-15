@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class MatchCommand extends AbstractMatchHeaderCommand {
 
@@ -38,7 +38,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	private boolean penaltyWinnerOneMatch;
 
-	public MatchCommand(MessageUtil messageUtil) {
+	public MatchCommand(WebMessageUtil messageUtil) {
 		super(messageUtil);
 	}
 

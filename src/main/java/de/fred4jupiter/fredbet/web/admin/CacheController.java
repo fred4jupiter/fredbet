@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.admin.CacheAdministrationService;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/cache")
@@ -21,7 +21,7 @@ public class CacheController {
 	private CacheAdministrationService cacheAdministrationService;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 	
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showCachePage() {

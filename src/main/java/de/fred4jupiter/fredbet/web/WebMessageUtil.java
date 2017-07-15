@@ -16,7 +16,7 @@ import de.fred4jupiter.fredbet.util.MessageSourceUtil;
  *
  */
 @Component
-public class MessageUtil {
+public class WebMessageUtil {
 
 	private static final String MSG_ATTRIBUTE_NAME = "globalMessage";
 

@@ -28,7 +28,7 @@ import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.DateUtils;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
 import de.fred4jupiter.fredbet.web.bet.BetCommand;
 import de.fred4jupiter.fredbet.web.bet.ExtraBetCommand;
@@ -49,7 +49,7 @@ public class BettingService {
 	private BetRepository betRepository;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private ExtraBetRepository extraBetRepository;

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.image.ImageGroupExistsException;
 import de.fred4jupiter.fredbet.service.image.ImageGroupService;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/imagegroup")
@@ -29,7 +29,7 @@ public class ImageGroupController {
 	private ImageGroupService imageGroupService;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@ModelAttribute("imageGroupCommand")
 	public ImageGroupCommand init() {

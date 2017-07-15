@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.admin;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,7 +33,7 @@ public class ExcelExportController {
 	@RequestMapping(value = "/allBets", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
 	public ResponseEntity<byte[]> exportAllBets(HttpServletResponse response) {
 		final String fileName = "allBets.xlsx";
-		byte[] betsInExcel = this.reportService.exportBetsToExcel();
+		byte[] betsInExcel = this.reportService.exportBetsToExcel(LocaleContextHolder.getLocale());
 		if (betsInExcel == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}

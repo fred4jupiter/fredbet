@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
 import de.fred4jupiter.fredbet.util.DateUtils;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 
 @Service
 public class ReportService {
@@ -25,7 +27,10 @@ public class ReportService {
 	@Autowired
 	private BetRepository betRepository;
 
-	public byte[] exportBetsToExcel() {
+	@Autowired
+	private MessageSourceUtil messageSourceUtil;
+
+	public byte[] exportBetsToExcel(final Locale locale) {
 		final List<Bet> bets = this.betRepository
 				.findAll(new Sort(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName")));
 
@@ -33,13 +38,21 @@ public class ReportService {
 
 			@Override
 			public String[] getHeaderRow() {
-				return new String[] { "Benutzer", "Team 1", "Team 2", "Datum", "Punkte" };
+				String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
+				String team1 = messageSourceUtil.getMessageFor("excel.export.team1", locale);
+				String team2 = messageSourceUtil.getMessageFor("excel.export.team2", locale);
+				String date = messageSourceUtil.getMessageFor("excel.export.date", locale);
+				String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
+				return new String[] { userName, team1, team2, date, points };
 			}
 
 			@Override
 			public String[] getRowValues(Bet bet) {
-				return new String[] { bet.getUserName(), bet.getMatch().getCountryOne().name(), bet.getMatch().getCountryTwo().name(),
-						format(bet.getMatch().getKickOffDate()), "" + bet.getPoints() };
+				String country1 = messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale);
+				String country2 = messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale);
+
+				return new String[] { bet.getUserName(), country1, country2, format(bet.getMatch().getKickOffDate()),
+						"" + bet.getPoints() };
 			}
 
 		});

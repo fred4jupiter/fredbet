@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.web.profile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class ChangePasswordCommand {
 
@@ -41,7 +41,7 @@ public class ChangePasswordCommand {
         return !this.newPassword.equals(this.newPasswordRepeat);
     }
 
-	public boolean validate(MessageUtil messageUtil, ModelMap modelMap) {
+	public boolean validate(WebMessageUtil messageUtil, ModelMap modelMap) {
 		if (StringUtils.isBlank(this.oldPassword)) {
 			messageUtil.addErrorMsg(modelMap, "user.changePassword.oldPassword");
 			return true;

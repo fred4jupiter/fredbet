@@ -16,7 +16,7 @@ import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.AdministrationService;
 import de.fred4jupiter.fredbet.service.SessionTrackingService;
-import de.fred4jupiter.fredbet.web.MessageUtil;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
 @RequestMapping("/administration")
@@ -27,7 +27,7 @@ public class AdminController {
 	private DataBasePopulator dataBasePopulator;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private SessionTrackingService sessionTrackingService;

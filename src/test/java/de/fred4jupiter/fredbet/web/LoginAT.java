@@ -30,7 +30,7 @@ public class LoginAT extends FluentTest {
 	private int serverPort;
 
 	@Autowired
-	private MessageUtil messageUtil;
+	private WebMessageUtil messageUtil;
 
 	private String getURL() {
 		return "http://localhost:" + serverPort;
