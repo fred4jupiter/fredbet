@@ -39,7 +39,7 @@ public class MatchCommandUT {
 		matchCommand.setTeamResultTwo(1);
 		matchCommand.setPenaltyWinnerOneMatch(true);
 
-		assertEquals("label-info" + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS, matchCommand.getTeamResultOneCssClasses());
+		assertEquals("label-info" + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS, matchCommand.getTeamResultOneCssClasses());
 		assertEquals("label-info", matchCommand.getTeamResultTwoCssClasses());
 	}
 
@@ -51,7 +51,7 @@ public class MatchCommandUT {
 		matchCommand.setPenaltyWinnerOneMatch(false);
 
 		assertEquals("label-info", matchCommand.getTeamResultOneCssClasses());
-		assertEquals("label-info" + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS, matchCommand.getTeamResultTwoCssClasses());
+		assertEquals("label-info" + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS, matchCommand.getTeamResultTwoCssClasses());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class MatchCommandUT {
 		matchCommand.setUserBetGoalsTeamTwo(1);
 		matchCommand.setPenaltyWinnerOneBet(true);
 
-		assertEquals("label-success" + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS, matchCommand.getUserBetGoalsTeamOneCssClasses());
+		assertEquals("label-success" + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS, matchCommand.getUserBetGoalsTeamOneCssClasses());
 		assertEquals("label-success", matchCommand.getUserBetGoalsTeamTwoCssClasses());
 	}
 
@@ -100,6 +100,6 @@ public class MatchCommandUT {
 		matchCommand.setPenaltyWinnerOneBet(false);
 
 		assertEquals("label-success", matchCommand.getUserBetGoalsTeamOneCssClasses());
-		assertEquals("label-success" + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS, matchCommand.getUserBetGoalsTeamTwoCssClasses());
+		assertEquals("label-success" + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS, matchCommand.getUserBetGoalsTeamTwoCssClasses());
 	}
 }

@@ -16,9 +16,9 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	private static final String LABEL_DEFAULT = "label-default";
 
-	private static final String LABEL_SUCCESS_PENALTY = LABEL_SUCCESS + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS;
+	private static final String LABEL_SUCCESS_PENALTY = LABEL_SUCCESS + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
 
-	private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS;
+	private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS;
 
 	private Long matchId;
 

@@ -174,13 +174,13 @@ public class Bet {
 		if (this.isGroupMatch() || !this.isUndecidedBetting()) {
 			return "";
 		}
-		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS : "";
 	}
 
 	public String getCssClassPenaltyWinnerTwo() {
 		if (this.isGroupMatch() || !this.isUndecidedBetting()) {
 			return "";
 		}
-		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS : "";
 	}
 }

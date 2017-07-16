@@ -309,14 +309,14 @@ public class Match {
 		if (this.isGroupMatch() || !this.isUndecidedResult()) {
 			return "";
 		}
-		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
 	}
 
 	public String getCssClassPenaltyWinnerTwo() {
 		if (this.isGroupMatch() || !this.isUndecidedResult()) {
 			return "";
 		}
-		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_CSS_CLASS : "";
+		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
 	}
 	
 	public boolean isGroup(Group group) {
