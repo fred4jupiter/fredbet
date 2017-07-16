@@ -1,6 +1,27 @@
 # FredBet
 
-Simple football betting application using [Spring Boot](https://projects.spring.io/spring-boot/), [MariaDB](https://mariadb.org/), [Thymeleaf](http://www.thymeleaf.org/) and [Bootstrap](http://getbootstrap.com/). The web pages are constructed in responsive design for using on mobile devices.
+## What´s FredBet?
+
+Simple football betting application using [Spring Boot](https://projects.spring.io/spring-boot/), [Thymeleaf](http://www.thymeleaf.org/) and [Bootstrap](http://getbootstrap.com/). The web pages are constructed in responsive design for using on mobile devices.
+
+## Features
+
+- simple betting of football championchips
+- responsive design (mobile first design)
+- betting of 1st, 2nd and 3td winner
+- image gallery (image storage support: filesystem, databse, AWS S3)
+- user profile image
+- multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
+- integrated user administration
+- rich text editor for rules, prices and misc pages
+- points statistic
+- display other users bets after match kickoff
+- ranking page
+- Microsoft Excel match import
+- Microsoft Excel bets, statistic export
+- language switcher (supported languages: englisch, german (by now))
+
+## Testing it locally
 
 You can run the application by issuing the following command:
 
@@ -192,7 +213,3 @@ You should have received a copy of the license along with this work. If not, see
 
 ## Travis Build Status
 [![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
-
-## CircleCI Build Status
-
-[![Circle CI](https://circleci.com/gh/fred4jupiter/fredbet.svg?style=shield)](https://circleci.com/gh/fred4jupiter/fredbet)
