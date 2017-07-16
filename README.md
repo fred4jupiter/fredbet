@@ -8,7 +8,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 
 - simple betting of football championchips
 - responsive design (mobile first design)
-- betting of 1st, 2nd and 3td winner
+- betting of 1st, 2nd and 3rd winner
 - image gallery (image storage support: filesystem, databse, AWS S3)
 - user profile image
 - multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
