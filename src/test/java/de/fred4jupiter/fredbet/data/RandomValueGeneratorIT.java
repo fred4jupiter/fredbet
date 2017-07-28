@@ -7,18 +7,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RandomValueGeneratorUT {
+public class RandomValueGeneratorIT extends AbstractIntegrationTest {
 
-	@InjectMocks
+	@Autowired
 	private RandomValueGenerator randomValueGenerator;
+	
+	@Autowired
+	private DataBasePopulator dataBasePopulator;
 
 	@Test
 	public void valueFromOneToTen() {
@@ -37,6 +39,28 @@ public class RandomValueGeneratorUT {
 			assertNotEquals(countryOne, countryTwo);
 			assertNotEquals(Country.NONE, countryOne);
 			assertNotEquals(Country.NONE, countryTwo);
+		}
+	}
+	
+	@Test
+	public void generateTeamTriple() {
+		dataBasePopulator.createRandomMatches();
+		
+		for (int i = 0; i < 100; i++) {
+			ImmutableTriple<Country,Country,Country> triple = randomValueGenerator.generateTeamTriple();
+			assertNotNull(triple);
+			Country countryOne = triple.getLeft();
+			Country countryTwo = triple.getMiddle();
+			Country countryThree = triple.getRight();
+			assertNotNull(countryOne);
+			assertNotNull(countryTwo);
+			assertNotNull(countryThree);
+			assertNotEquals(countryOne, countryTwo);
+			assertNotEquals(countryTwo, countryThree);
+			assertNotEquals(countryThree, countryOne);
+			assertNotEquals(Country.NONE, countryOne);
+			assertNotEquals(Country.NONE, countryTwo);
+			assertNotEquals(Country.NONE, countryThree);
 		}
 	}
 

@@ -52,6 +52,14 @@ public class CountryService {
 	}
 
 	public List<Country> getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(Locale locale) {
+		final Set<Country> resultset = getAvailableCountriesExtraBetsWithoutNoneEntry();
+
+		LinkedList<Country> result = new LinkedList<>(getAvailableCountriesSortedWithoutNoneEntry(locale, new ArrayList<>(resultset)));
+		result.addFirst(Country.NONE);
+		return result;
+	}
+
+	public Set<Country> getAvailableCountriesExtraBetsWithoutNoneEntry() {
 		List<Match> allMatches = matchRepository.findAll();
 
 		final Set<Country> resultset = new HashSet<>();
@@ -59,9 +67,6 @@ public class CountryService {
 			resultset.add(match.getCountryOne());
 			resultset.add(match.getCountryTwo());
 		});
-
-		LinkedList<Country> result = new LinkedList<>(getAvailableCountriesSortedWithoutNoneEntry(locale, new ArrayList<>(resultset)));
-		result.addFirst(Country.NONE);
-		return result;
+		return resultset;
 	}
 }

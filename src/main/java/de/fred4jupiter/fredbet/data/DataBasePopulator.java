@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,13 +125,15 @@ public class DataBasePopulator {
 				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
 			});
 
-			Country extraBetCountryFinalWinner = randomValueGenerator.generateRandomCountry();
-			Country extraBetCountrySemiFinalWinner = randomValueGenerator.generateRandomCountry();
-			Country extraBetCountryThirdFinalWinner = randomValueGenerator.generateRandomCountry();
-			bettingService.saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
-					appUser.getUsername());
+			ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
+			if (triple != null) {
+				Country extraBetCountryFinalWinner = triple.getLeft();
+				Country extraBetCountrySemiFinalWinner = triple.getMiddle();
+				Country extraBetCountryThirdFinalWinner = triple.getRight();
+				bettingService.saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
+						appUser.getUsername());
+			}
 		});
-
 	}
 
 	public void createDemoResultsForAllMatches() {
