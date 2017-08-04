@@ -11,7 +11,6 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 ENV spring.profiles.active dev
 
 EXPOSE 8080
-EXPOSE 2000
 
 # Run the image as a non-root user
 RUN useradd -ms /bin/bash freduser
@@ -23,6 +22,6 @@ RUN sh -c 'touch /home/freduser/fredbet.jar'
 USER freduser
 WORKDIR /home/freduser
 
-ENV JAVA_OPTS=""
+ENV JAVA_OPTS="-Xmx2048m"
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /home/freduser/fredbet.jar" ]
 
