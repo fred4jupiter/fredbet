@@ -51,11 +51,11 @@ public class StatisticRepository {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Select a.user_name, sum(a.points) ");
 		builder.append("from bet a join matches b on a.match_id = b.match_id ");
-		builder.append("where b.country_one = :countryId or b.country_two = :countryId  ");
+		builder.append("where b.country_one = :country or b.country_two = :country ");
 		builder.append("group by a.user_name ");
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("countryId", favoriteCountry.ordinal());
+		params.addValue("country", favoriteCountry.name());
 
 		Map<String, Integer> userPoints = new HashMap<>();
 		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {

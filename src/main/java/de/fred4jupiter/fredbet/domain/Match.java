@@ -31,22 +31,28 @@ public class Match {
 	@Column(name = "MATCH_ID")
 	private Long id;
 
-	// TODO: use @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
+	@Column(name = "COUNTRY_ONE")
 	private Country countryOne;
 
+	@Column(name = "TEAM_NAME_ONE")
 	private String teamNameOne;
 
-	// TODO: use @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
+	@Column(name = "COUNTRY_TWO")
 	private Country countryTwo;
 
+	@Column(name = "TEAM_NAME_TWO")
 	private String teamNameTwo;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "MATCH_GROUP")
 	private Group group;
 
+	@Column(name = "GOALS_TEAM_ONE")
 	private Integer goalsTeamOne;
 
+	@Column(name = "GOALS_TEAM_TWO")
 	private Integer goalsTeamTwo;
 
 	@Column(name = "PENALTY_WINNER_ONE")
@@ -56,8 +62,10 @@ public class Match {
 	private boolean goalsChanged;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
+	@Column(name = "KICK_OFF_DATE")
 	private Date kickOffDate;
 
+	@Column(name = "STADIUM")
 	private String stadium;
 
 	public boolean hasGoalsChanged() {
@@ -318,7 +326,7 @@ public class Match {
 		}
 		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
 	}
-	
+
 	public boolean isGroup(Group group) {
 		return this.group.equals(group);
 	}

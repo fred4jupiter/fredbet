@@ -41,11 +41,11 @@
 			<column name="match_id" type="BIGINT" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="country_one" type="int" />
-			<column name="country_two" type="int" />
+			<column name="country_one" type="varchar(100)" />
+			<column name="country_two" type="varchar(100)" />
 			<column name="goals_team_one" type="int" />
 			<column name="goals_team_two" type="int" />
-			<column name="match_group" type="varchar(255)" />
+			<column name="match_group" type="varchar(100)" />
 			<column name="kick_off_date" type="DATETIME" />
 			<column name="stadium" type="varchar(100)" />
 			<column name="team_name_one" type="varchar(100)" />
