@@ -23,6 +23,8 @@ public class UserProfileController {
 
 	private static final String CHANGE_PASSWORD_PAGE = "profile/change_password";
 
+	private static final String CHANGE_USERNAME_PAGE = "profile/change_username";
+
 	@Autowired
 	private UserService userService;
 
@@ -37,9 +39,14 @@ public class UserProfileController {
 		return CHANGE_PASSWORD_PAGE;
 	}
 
+	@RequestMapping(value = "/changeUsername", method = RequestMethod.GET)
+	public String changeUsername(@ModelAttribute ChangeUsernameCommand changeUsernameCommand) {
+		return CHANGE_USERNAME_PAGE;
+	}
+
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand,
-			RedirectAttributes redirect, ModelMap modelMap) {
+	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, RedirectAttributes redirect,
+			ModelMap modelMap) {
 		if (changePasswordCommand.validate(messageUtil, modelMap)) {
 			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
 		}
@@ -59,5 +66,16 @@ public class UserProfileController {
 
 		messageUtil.addInfoMsg(redirect, "msg.user.profile.info.passwordChanged");
 		return new ModelAndView("redirect:/matches");
+	}
+
+	@RequestMapping(value = "/changeUsername", method = RequestMethod.POST)
+	public ModelAndView changeUsernamePost(@Valid ChangeUsernameCommand changeUsernameCommand, RedirectAttributes redirect,
+			ModelMap modelMap) {
+
+		userService.renameUser(securityService.getCurrentUserName(), changeUsernameCommand.getNewUsername());
+
+		messageUtil.addInfoMsg(redirect, "msg.user.profile.info.usernameChanged");
+		
+		return new ModelAndView("redirect:/profile/changeUsername");
 	}
 }

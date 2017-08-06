@@ -138,11 +138,18 @@
 						<li th:if="${@securityService.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
 							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 	                            <span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getCurrentUserProfileImageKey()})"></span>
-	                            <span sec:authentication="name"></span><span class="caret"></span>
+	                            <span th:text="${@securityService.getCurrentUser().getUsername()}"></span><span class="caret"></span>
 	                        </a>
 							<ul class="dropdown-menu">
-								<li th:class="${pageState_profile_changePassword}"><a href="#changePassword" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a></li>
-								<li th:class="${pageState_cropping_show}"><a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a></li>
+								<li th:class="${pageState_profile_changePassword}">
+									<a href="#changePassword" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
+								</li>
+								<li th:class="${pageState_cropping_show}">
+									<a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
+								</li>
+								<li th:class="${pageState_profile_changeUsername}">
+									<a href="#changeUsername" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
+								</li>
 							</ul>						
 						</li>
 						<li th:if="${@securityService.isUserLoggedIn()}">

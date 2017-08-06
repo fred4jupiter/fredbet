@@ -21,9 +21,14 @@ import org.springframework.util.CollectionUtils;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.repository.PersistentLoginRepository;
+import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
@@ -50,6 +55,18 @@ public class UserService {
 
 	@Autowired
 	private ImageMetaDataRepository imageMetaDataRepository;
+
+	@Autowired
+	private BetRepository betRepository;
+
+	@Autowired
+	private ExtraBetRepository extraBetRepository;
+
+	@Autowired
+	private SessionTrackingRepository sessionTrackingRepository;
+
+	@Autowired
+	private PersistentLoginRepository persistentLoginRepository;
 
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -192,5 +209,19 @@ public class UserService {
 		} else {
 			return new UserDto(appUser.getId(), appUser.getUsername());
 		}
+	}
+
+	public void renameUser(String oldUsername, String newUsername) {
+		if (FredbetConstants.TECHNICAL_USERNAME.equals(oldUsername)) {
+			throw new RenameUsernameNotAllowedException("This user is the default admin user which username cannot be renamed!");
+		}
+
+		this.appUserRepository.renameUser(oldUsername, newUsername);
+		this.betRepository.renameUser(oldUsername, newUsername);
+		this.extraBetRepository.renameUser(oldUsername, newUsername);
+		this.sessionTrackingRepository.renameUser(oldUsername, newUsername);
+		this.persistentLoginRepository.renameUser(oldUsername, newUsername);
+		
+		this.securityService.getCurrentUser().setUsername(newUsername);
 	}
 }

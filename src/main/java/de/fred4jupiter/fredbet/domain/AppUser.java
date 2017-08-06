@@ -198,7 +198,7 @@ public class AppUser implements UserDetails {
 		this.roles = roles;
 	}
 
-	void setUsername(String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
