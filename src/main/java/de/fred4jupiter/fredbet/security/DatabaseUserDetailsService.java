@@ -14,14 +14,14 @@ public class DatabaseUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		AppUser appUser = appUserRepository.findByUsername(username);
 		if (appUser == null) {
-			throw new UsernameNotFoundException("User with username="+username+" could not be found.");
+			throw new UsernameNotFoundException("User with username=" + username + " could not be found.");
 		}
-		
+
 		return appUser;
 	}
 

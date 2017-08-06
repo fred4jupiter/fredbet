@@ -33,6 +33,12 @@ import org.springframework.util.CollectionUtils;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
+/**
+ * TODO: change Date to java.time.LocalDateTime. see also Jsr310JpaConverters
+ * 
+ * @author michael
+ *
+ */
 @Entity
 @Table(name = "APP_USER")
 public class AppUser implements UserDetails {
