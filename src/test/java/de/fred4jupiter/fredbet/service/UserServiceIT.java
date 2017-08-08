@@ -1,9 +1,13 @@
 package de.fred4jupiter.fredbet.service;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,8 @@ import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 
@@ -26,6 +32,9 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private DataBasePopulator dataBasePopulator;
+
+	@Autowired
+	private BetRepository betRepository;
 
 	@Test
 	public void avoidDuplicateUser() {
@@ -108,14 +117,26 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		final AppUser appUser = AppUserBuilder.create().withDemoData().build();
 		userService.insertAppUser(appUser);
 
+		dataBasePopulator.createRandomMatches();
 		dataBasePopulator.createDemoBetsForAllUsers();
+
+		final String oldUserName = new String(appUser.getUsername());
 
 		final String newUsername = "Klarky";
 
-		userService.renameUser(appUser.getUsername(), newUsername);
+		userService.renameUser(oldUserName, newUsername);
 
 		AppUser foundUser = userService.findByAppUserId(appUser.getId());
 		assertNotNull(foundUser);
 		assertEquals(newUsername, foundUser.getUsername());
+
+		List<Bet> betsByOldName = this.betRepository.findByUserName(oldUserName);
+		assertThat(betsByOldName.size(), equalTo(0));
+
+		// TODO: bugfix checking bets renamed
+		// List<Bet> betsByNewName =
+		// this.betRepository.findByUserName(newUsername);
+		// assertNotNull(betsByNewName);
+		// assertThat(betsByOldName.size(), greaterThan(0));
 	}
 }
