@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,12 @@ import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserService;
 
+/**
+ * Convenient class for creating test data in integration tests.
+ * 
+ * @author michael
+ *
+ */
 @Component
 @Scope("prototype")
 public class FredBetUsageBuilder {
@@ -37,6 +44,7 @@ public class FredBetUsageBuilder {
 
 	private Bet bet;
 
+	@Autowired
 	private FredBetUsageBuilder(RandomValueGenerator randomValueGenerator, UserService userService, MatchService matchService,
 			BettingService bettingService) {
 		this.randomValueGenerator = randomValueGenerator;
