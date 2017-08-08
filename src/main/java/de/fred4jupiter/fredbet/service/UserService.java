@@ -215,6 +215,11 @@ public class UserService {
 		if (FredbetConstants.TECHNICAL_USERNAME.equals(oldUsername)) {
 			throw new RenameUsernameNotAllowedException("This user is the default admin user which username cannot be renamed!");
 		}
+		
+		AppUser foundUser = appUserRepository.findByUsername(newUsername);
+		if (foundUser != null) {
+			throw new UserAlreadyExistsException("User with username=" + newUsername + " already exists.");
+		}
 
 		this.appUserRepository.renameUser(oldUsername, newUsername);
 		this.betRepository.renameUser(oldUsername, newUsername);

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
+import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
@@ -72,10 +73,15 @@ public class UserProfileController {
 	public ModelAndView changeUsernamePost(@Valid ChangeUsernameCommand changeUsernameCommand, RedirectAttributes redirect,
 			ModelMap modelMap) {
 
-		userService.renameUser(securityService.getCurrentUserName(), changeUsernameCommand.getNewUsername());
+		try {
+			userService.renameUser(securityService.getCurrentUserName(), changeUsernameCommand.getNewUsername());
+		} catch (UserAlreadyExistsException e) {
+			messageUtil.addErrorMsg(modelMap, "user.username.duplicate");
+			return new ModelAndView("profile/change_username", "changeUsernameCommand", changeUsernameCommand);
+		}
 
 		messageUtil.addInfoMsg(redirect, "msg.user.profile.info.usernameChanged");
-		
+
 		return new ModelAndView("redirect:/profile/changeUsername");
 	}
 }
