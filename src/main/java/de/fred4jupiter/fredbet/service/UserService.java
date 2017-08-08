@@ -215,18 +215,28 @@ public class UserService {
 		if (FredbetConstants.TECHNICAL_USERNAME.equals(oldUsername)) {
 			throw new RenameUsernameNotAllowedException("This user is the default admin user which username cannot be renamed!");
 		}
-		
+
 		AppUser foundUser = appUserRepository.findByUsername(newUsername);
 		if (foundUser != null) {
 			throw new UserAlreadyExistsException("User with username=" + newUsername + " already exists.");
 		}
 
-		this.appUserRepository.renameUser(oldUsername, newUsername);
+		AppUser userToBeRenamed = appUserRepository.findByUsername(oldUsername);
+		if (userToBeRenamed == null) {
+			LOG.error("User with username={} could not be found.", oldUsername);
+			return;
+		}
+
+		userToBeRenamed.setUsername(newUsername);
+		this.appUserRepository.save(userToBeRenamed);
+		
 		this.betRepository.renameUser(oldUsername, newUsername);
 		this.extraBetRepository.renameUser(oldUsername, newUsername);
 		this.sessionTrackingRepository.renameUser(oldUsername, newUsername);
 		this.persistentLoginRepository.renameUser(oldUsername, newUsername);
-		
-		this.securityService.getCurrentUser().setUsername(newUsername);
+
+		if (this.securityService.isUserLoggedIn()) {
+			this.securityService.getCurrentUser().setUsername(newUsername);
+		}
 	}
 }

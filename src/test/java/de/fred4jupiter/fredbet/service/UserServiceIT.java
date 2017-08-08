@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetRole;
@@ -23,9 +24,13 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private DataBasePopulator dataBasePopulator;
+
 	@Test
 	public void avoidDuplicateUser() {
-		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER).build();
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+				.build();
 
 		userService.insertAppUser(appUser);
 
@@ -96,5 +101,21 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 		assertEquals(appUser.getUsername(), foundAppUser.getUsername());
 		assertEquals(appUser.getPassword(), foundAppUser.getPassword());
+	}
+
+	@Test
+	public void renameUser() {
+		final AppUser appUser = AppUserBuilder.create().withDemoData().build();
+		userService.insertAppUser(appUser);
+
+		dataBasePopulator.createDemoBetsForAllUsers();
+
+		final String newUsername = "Klarky";
+
+		userService.renameUser(appUser.getUsername(), newUsername);
+
+		AppUser foundUser = userService.findByAppUserId(appUser.getId());
+		assertNotNull(foundUser);
+		assertEquals(newUsername, foundUser.getUsername());
 	}
 }
