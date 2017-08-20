@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.props;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import de.fred4jupiter.fredbet.domain.Country;
@@ -61,7 +63,7 @@ public class FredbetProperties {
 	 * Path in file system to store images in case of image location is set to
 	 * 'file-system'
 	 */
-	private String imageFileSytemBaseFolder;
+	private String imageFileSystemBaseFolder;
 
 	/**
 	 * Password used if the user password has been reset.
@@ -168,13 +170,7 @@ public class FredbetProperties {
 		this.imageLocation = imageLocation;
 	}
 
-	public String getImageFileSytemBaseFolder() {
-		return imageFileSytemBaseFolder;
-	}
-
-	public void setImageFileSytemBaseFolder(String imageFileSytemBaseFolder) {
-		this.imageFileSytemBaseFolder = imageFileSytemBaseFolder;
-	}
+	
 
 	public String getPasswordForReset() {
 		return passwordForReset;
@@ -216,4 +212,32 @@ public class FredbetProperties {
 		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
 	}
 
+	@Override
+	public String toString() {
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+		builder.append("createDemoData", createDemoData);
+		builder.append("databaseUrl", databaseUrl);
+		builder.append("databasePassword", databasePassword != null ? "********" : "null");
+		builder.append("enableDemoDataCreationNavigationEntry", enableDemoDataCreationNavigationEntry);
+		builder.append("databaseType", databaseType);
+		builder.append("thumbnailSize", thumbnailSize);
+		builder.append("imageSize", imageSize);
+		builder.append("imageLocation", imageLocation);
+		
+		builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
+		builder.append("passwordForReset", passwordForReset);
+		builder.append("awsS3bucketName", awsS3bucketName);
+		builder.append("pointsFinalWinner", pointsFinalWinner);
+		builder.append("pointsSemiFinalWinner", pointsSemiFinalWinner);
+		builder.append("pointsThirdFinalWinner", pointsThirdFinalWinner);
+		return builder.toString();
+	}
+
+	public String getImageFileSystemBaseFolder() {
+		return imageFileSystemBaseFolder;
+	}
+
+	public void setImageFileSystemBaseFolder(String imageFileSystemBaseFolder) {
+		this.imageFileSystemBaseFolder = imageFileSystemBaseFolder;
+	}
 }

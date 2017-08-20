@@ -7,6 +7,8 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,11 +45,7 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 @EnableAutoConfiguration(exclude = ElastiCacheAutoConfiguration.class)
 public class Application {
 
-	static {
-		// to avoid warning 'Unable to instantiate
-		// org.fusesource.jansi.WindowsAnsiOutputStream'
-		System.setProperty("log4j.skipJansi", "true");
-	}
+	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
@@ -62,6 +60,7 @@ public class Application {
 
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource(FredbetProperties fredbetProperties) {
+		LOG.info("fredbetProperties: {}", fredbetProperties);
 		final HikariConfig config = new HikariConfig();
 		config.setPoolName("FredBetCP");
 		config.setConnectionTestQuery("SELECT 1");
@@ -77,13 +76,13 @@ public class Application {
 
 		return new HikariDataSource(config);
 	}
-	
+
 	@Bean
 	public CacheManager cacheManager() {
-	    SimpleCacheManager cacheManager = new SimpleCacheManager();
-	    List<Cache> caches = new ArrayList<Cache>();
-	    caches.add(new ConcurrentMapCache(CacheNames.AVAIL_GROUPS));
-	    cacheManager.setCaches(caches);
-	    return cacheManager;
+		SimpleCacheManager cacheManager = new SimpleCacheManager();
+		List<Cache> caches = new ArrayList<Cache>();
+		caches.add(new ConcurrentMapCache(CacheNames.AVAIL_GROUPS));
+		cacheManager.setCaches(caches);
+		return cacheManager;
 	}
 }

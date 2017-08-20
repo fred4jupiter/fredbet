@@ -33,7 +33,7 @@ public class ImageGalleryConfig {
 	@ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "file-system", matchIfMissing = true)
 	@Bean
 	public ImageLocationStrategy filesystemImageLocationService(FredbetProperties fredbetProperties) {
-		return new FilesystemImageLocationStrategy(fredbetProperties.getImageFileSytemBaseFolder());
+		return new FilesystemImageLocationStrategy(fredbetProperties.getImageFileSystemBaseFolder());
 	}
 
 	@ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "database", matchIfMissing = false)
