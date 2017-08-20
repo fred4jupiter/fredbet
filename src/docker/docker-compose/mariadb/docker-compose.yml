@@ -20,8 +20,8 @@ services:
       ports:
         - "8080:8080"
       environment:
-       - spring.profiles.active=prod
-       - fredbet.database-type=maria-db
-       - FREDBET_DATABASE-URL=jdbc:mariadb://mariadb:3306/fredbetdb
-       - FREDBET_DATABASE-USERNAME=fred
-       - FREDBET_DATABASE-PASSWORD=fred
+       - SPRING_PROFILES_ACTIVE=prod
+       - FREDBET_DATABASE_TYPE=maria-db
+       - FREDBET_DATABASE_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+       - FREDBET_DATABASE_USERNAME=fred
+       - FREDBET_DATABASE_PASSWORD=fred
