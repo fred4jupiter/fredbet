@@ -1,9 +1,9 @@
-version: '2'
+version: "3"
 services:
     mariadb:  
       image: mariadb:10.1.11
       volumes:
-        - /data/db
+        - ~/mariadb:/data/db
       ports:
         - "3306:3306"
       environment:
