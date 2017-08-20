@@ -11,7 +11,6 @@ RUN set -ex; \
 RUN echo "Europe/Berlin" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-ENV spring.profiles.active dev
 ENV JAVA_OPTS="-Xmx2048m"
 
 EXPOSE 8080
