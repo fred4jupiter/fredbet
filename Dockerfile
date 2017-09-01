@@ -1,11 +1,17 @@
-FROM java:8
+FROM openjdk:8-jre-slim
 
-MAINTAINER Michael Staehler <hamsterhase@gmx.de>
+LABEL maintainer="Michael Staehler"
+
+# Add custom user for running the image as a non-root user
+RUN useradd -ms /bin/bash freduser
 
 RUN set -ex; \
         apt-get update && apt-get install -y \
         less \
-        dos2unix
+        dos2unix \
+        && chown -R freduser:0 /home/freduser \
+        && chmod -R g+rw /home/freduser \
+        && chmod g+w /etc/passwd
 
 # Configure timezone
 RUN echo "Europe/Berlin" > /etc/timezone
@@ -14,9 +20,6 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 ENV JAVA_OPTS="-Xmx2048m"
 
 EXPOSE 8080
-
-# Run the image as a non-root user
-RUN useradd -ms /bin/bash freduser
 
 COPY target/fredbet.jar /home/freduser/fredbet.jar
 
