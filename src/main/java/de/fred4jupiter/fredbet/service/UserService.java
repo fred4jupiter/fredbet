@@ -233,7 +233,7 @@ public class UserService {
 		this.betRepository.renameUser(oldUsername, newUsername);
 		this.extraBetRepository.renameUser(oldUsername, newUsername);
 		this.sessionTrackingRepository.renameUser(oldUsername, newUsername);
-		this.persistentLoginRepository.renameUser(oldUsername, newUsername);
+		//this.persistentLoginRepository.renameUser(oldUsername, newUsername);
 
 		if (this.securityService.isUserLoggedIn()) {
 			this.securityService.getCurrentUser().setUsername(newUsername);
