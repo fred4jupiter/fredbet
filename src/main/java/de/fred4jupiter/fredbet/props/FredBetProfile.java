@@ -9,6 +9,8 @@ package de.fred4jupiter.fredbet.props;
 public interface FredBetProfile {
 
 	String DEV = "dev";
+	
+	String PROD = "prod";
 
 	String DOCKER = "docker";
 
