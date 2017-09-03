@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+	<head>
+		<title th:text="#{administration.config.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div th:replace="fragments/alert :: alert_headline"></div>
+			
+			<h1 th:text="#{administration.cache.title}"></h1>
+			<div class="row">			
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<a class="btn btn-primary" role="button" th:href="@{/config/clearCache}" th:text="#{administration.clearCache}"></a>					
+				</div>
+			</div>
+			<hr/>
+			<h1 th:text="#{administration.change.loglevel.title}"></h1>
+			<div class="row">			
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<form id="changeLogLevelForm" th:action="@{/config/changeLogLevel}" th:object="${configurationCommand}" action="#" method="post" role="form">
+						<ul class="list-group">
+							<li class="list-group-item" th:each="level : ${configurationCommand.logLevel}">
+								<input type="radio" th:field="*{level}" th:value="${level}" /> 
+								<label th:for="${#ids.prev('level')}" th:text="${level}"></label>
+							</li>
+						</ul>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+						</div>
+					</form>					
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
