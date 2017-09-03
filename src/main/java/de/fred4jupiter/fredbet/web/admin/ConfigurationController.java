@@ -50,7 +50,6 @@ public class ConfigurationController {
 
 	@RequestMapping(value = "/changeLogLevel", method = RequestMethod.POST)
 	public ModelAndView changeLogLevel(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect, ModelMap modelMap) {
-
 		LogLevel level = configurationCommand.getLevel();
 
 		LoggingUtil.setLogLevelTo(level);
