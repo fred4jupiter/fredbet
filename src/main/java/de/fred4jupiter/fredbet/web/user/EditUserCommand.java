@@ -8,15 +8,11 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.ui.ModelMap;
 
 import de.fred4jupiter.fredbet.security.FredBetRole;
-import de.fred4jupiter.fredbet.util.Validator;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class EditUserCommand {
 
@@ -70,29 +66,6 @@ public class EditUserCommand {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public boolean validate(WebMessageUtil messageUtil, ModelMap modelMap) {
-		if (StringUtils.isEmpty(this.username)) {
-			messageUtil.addErrorMsg(modelMap, "user.validation.emptyUsername");
-			return true;
-		}
-		if (this.username.contains(" ")) {
-			messageUtil.addErrorMsg(modelMap, "user.validation.username.containsBlanks");
-			return true;
-		}
-		final int fieldLength = 12;
-		if (this.username.length() > fieldLength) {
-			messageUtil.addErrorMsg(modelMap, "user.validation.username.tooLong", fieldLength);
-			return true;
-		}
-		
-		if (Validator.isEmpty(this.roles)) {
-			messageUtil.addErrorMsg(modelMap, "user.validation.roles");
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override

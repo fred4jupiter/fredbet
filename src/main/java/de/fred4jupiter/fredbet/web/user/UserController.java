@@ -79,11 +79,6 @@ public class UserController {
 			return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
 		}
 
-		// if (Validator.isEmpty(userCommand.getRoles())) {
-		// messageUtil.addErrorMsg(modelMap, "user.edited.noRole");
-		// return new ModelAndView(EDIT_USER_PAGE, "userCommand", userCommand);
-		// }
-
 		AppUser updateUser = userService.updateUser(editUserCommand);
 		messageUtil.addInfoMsg(redirect, "user.edited", updateUser.getUsername());
 		return new ModelAndView("redirect:/user");
@@ -118,11 +113,6 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView create(@Valid CreateUserCommand createUserCommand, BindingResult bindingResult, RedirectAttributes redirect,
 			ModelMap modelMap) {
-		// if (userCommand.validate(messageUtil, modelMap)) {
-		// return new ModelAndView(CREATE_USER_PAGE, "userCommand",
-		// userCommand);
-		// }
-
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
 		}
