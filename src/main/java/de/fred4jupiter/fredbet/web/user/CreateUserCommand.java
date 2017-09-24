@@ -25,8 +25,6 @@ public class CreateUserCommand {
 	@NotEmpty
 	private String password;
 
-	private boolean resetPassword;
-
 	@NotEmpty
 	private List<String> roles = new ArrayList<>();
 
@@ -84,14 +82,6 @@ public class CreateUserCommand {
 		builder.append("password", password != null ? "is set" : "is null");
 		builder.append("roles", roles);
 		return builder.toString();
-	}
-
-	public boolean isResetPassword() {
-		return resetPassword;
-	}
-
-	public void setResetPassword(boolean resetPassword) {
-		this.resetPassword = resetPassword;
 	}
 
 }
