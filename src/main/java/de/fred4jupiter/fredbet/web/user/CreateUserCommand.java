@@ -2,39 +2,46 @@ package de.fred4jupiter.fredbet.web.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.validation.constraints.Size;
 
 //import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.ui.ModelMap;
 
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
-public class UserCommand {
+public class CreateUserCommand {
 
     private Long userId;
 
+    @NotEmpty
+    @Size(min=2, max=12)
     private String username;
 
+    @NotEmpty
     private String password;
-
-    private boolean deletable;
+    
+//    private boolean deletable;
     
     private boolean resetPassword;
 
+    @NotEmpty
     private List<String> roles = new ArrayList<>();
 
-    private final List<String> availableRoles = new ArrayList<>();
+    private final List<String> availableRoles;
 
-    public UserCommand() {
+    public CreateUserCommand() {
         List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-        this.availableRoles.addAll(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
-        this.roles.add(FredBetRole.ROLE_USER.name());
+        this.availableRoles = Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
     }
 
     public List<String> getAvailableRoles() {
@@ -112,13 +119,13 @@ public class UserCommand {
         return builder.toString();
     }
 
-    public boolean isDeletable() {
-        return deletable;
-    }
-
-    public void setDeletable(boolean deletable) {
-        this.deletable = deletable;
-    }
+//    public boolean isDeletable() {
+//        return deletable;
+//    }
+//
+//    public void setDeletable(boolean deletable) {
+//        this.deletable = deletable;
+//    }
 
     public boolean isResetPassword() {
         return resetPassword;

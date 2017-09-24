@@ -7,28 +7,32 @@
 <body>
 	<div layout:fragment="content" class="container">
 		<div th:replace="fragments/alert :: alert_headline"></div>
-		<form id="userForm" th:action="@{/user/edit}" th:object="${userCommand}" action="#" method="post" role="form">
+		<form id="userForm" th:action="@{/user/edit}" th:object="${editUserCommand}" action="#" method="post" role="form">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{userId}" class="form-control" />
 					<div class="form-group">
 						<label for="username" th:text="#{user.edit.username} + ':'"></label> 
-						<input type="text" th:field="*{username}" class="form-control" disabled="disabled"/>
+						<input type="text" th:field="*{username}" class="form-control" readonly="readonly"/>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error</p>						
 					</div>					
 					<ul class="list-group">
-						<li class="list-group-item" th:each="role : ${userCommand.availableRoles}">
-							<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@securityService.isRoleSelectionDisabledForUser(userCommand.username)}" /> 
+						<li class="list-group-item" th:each="role : ${editUserCommand.availableRoles}">
+							<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@securityService.isRoleSelectionDisabledForUser(editUserCommand.username)}" /> 
 							<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
 						</li>
 					</ul>
+					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</p>
+					
 					<div class="form-group" sec:authorize="hasAuthority('PERM_PASSWORD_RESET')">
 						<input type="checkbox" th:field="*{resetPassword}" th:value="true" /> 
-						<label for="resetPassword" th:text="#{user.edit.passwordReset}"></label> 
+						<label for="resetPassword" th:text="#{user.edit.passwordReset}"></label>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('resetPassword')}" th:errors="*{resetPassword}">resetPassword Error</p> 
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<a sec:authorize="hasAuthority('PERM_DELETE_USER')" href="#" th:href="@{'/user/' + ${userCommand.userId} + '/delete'}" 
-							class="btn btn-danger" role="button" th:classappend="${!userCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>
+						<a sec:authorize="hasAuthority('PERM_DELETE_USER')" href="#" th:href="@{'/user/' + ${editUserCommand.userId} + '/delete'}" 
+							class="btn btn-danger" role="button" th:classappend="${!editUserCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>
 						<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>

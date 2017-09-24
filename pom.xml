@@ -15,7 +15,7 @@
 
 	<contributors>
 		<contributor>
-			<name>Michael Stähler</name>						
+			<name>Michael Stähler</name>
 		</contributor>
 	</contributors>
 
@@ -209,15 +209,14 @@
 		<!-- <version>21.0</version> -->
 		<!-- </dependency> -->
 
-		<!-- for form validation -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.hibernate</groupId> -->
-		<!-- <artifactId>hibernate-validator</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.tomcat.embed</groupId> -->
-		<!-- <artifactId>tomcat-embed-el</artifactId> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-el</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>

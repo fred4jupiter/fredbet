@@ -234,6 +234,10 @@ button.vote {
 	height: 200px;
 }
 
+.field-alert {
+	padding: 5px;
+}
+
 /** justified break point for navigation collapse on tablets */
 @media ( max-width : 991px) {
 	.navbar-header {
