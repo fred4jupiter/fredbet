@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,13 +30,18 @@ public class ConfigurationController {
 	private WebMessageUtil messageUtil;
 
 	@Autowired
-	private LoggingUtil LoggingUtil;
+	private LoggingUtil loggingUtil;
 
+	@ModelAttribute("configurationCommand")
+	public ConfigurationCommand initConfigurationCommand() {
+		ConfigurationCommand configurationCommand = new ConfigurationCommand();
+		configurationCommand.setLevel(loggingUtil.getCurrentLogLevel());
+		return configurationCommand;
+	}
+	
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showCachePage() {
-		ConfigurationCommand configurationCommand = new ConfigurationCommand();
-		configurationCommand.setLevel(LoggingUtil.getCurrentLogLevel());
-		return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
+		return new ModelAndView("admin/configuration");
 	}
 
 	@RequestMapping(path = "/clearCache", method = RequestMethod.GET)
@@ -52,7 +58,7 @@ public class ConfigurationController {
 	public ModelAndView changeLogLevel(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect, ModelMap modelMap) {
 		LogLevel level = configurationCommand.getLevel();
 
-		LoggingUtil.setLogLevelTo(level);
+		loggingUtil.setLogLevelTo(level);
 
 		messageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
 		
