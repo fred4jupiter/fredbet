@@ -33,7 +33,7 @@ public class EditUserCommand {
 
 	public EditUserCommand() {
 		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-		this.availableRoles = Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
+		this.availableRoles = Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));		
 	}
 
 	public List<String> getAvailableRoles() {

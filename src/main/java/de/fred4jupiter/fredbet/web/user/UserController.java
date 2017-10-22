@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -105,8 +104,8 @@ public class UserController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String create(@ModelAttribute CreateUserCommand createUserCommand) {
-		return CREATE_USER_PAGE;
+	public ModelAndView create() {
+		return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", new CreateUserCommand());
 	}
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")

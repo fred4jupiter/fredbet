@@ -16,14 +16,16 @@
 						<input type="text" th:field="*{username}" class="form-control" readonly="readonly"/>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error</p>						
 					</div>					
-					<ul class="list-group">
-						<li class="list-group-item" th:each="role : ${editUserCommand.availableRoles}">
-							<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@securityService.isRoleSelectionDisabledForUser(editUserCommand.username)}" /> 
-							<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
-						</li>
-					</ul>
-					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</p>
-					
+					<div class="form-group">
+						<label for="roles" th:text="#{user.create.roles} + ':'"></label>
+						<ul class="list-group">
+							<li class="list-group-item" th:each="role : ${editUserCommand.availableRoles}">
+								<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@securityService.isRoleSelectionDisabledForUser(editUserCommand.username)}" /> 
+								<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
+							</li>
+						</ul>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</p>
+					</div>					
 					<div class="form-group" sec:authorize="hasAuthority('PERM_PASSWORD_RESET')">
 						<input type="checkbox" th:field="*{resetPassword}" th:value="true" /> 
 						<label for="resetPassword" th:text="#{user.edit.passwordReset}"></label>
