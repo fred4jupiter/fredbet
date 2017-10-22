@@ -31,6 +31,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private BetRepository betRepository;
 
@@ -104,7 +105,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		// add role
 		appUser.addRole(FredBetRole.ROLE_USER_ENTER_RESULTS);
 		assertEquals(2, appUser.getRoles().size());
-		userService.updateAppUser(appUser);
+		userService.updateUser(appUser.getId(), false, appUser.getRoles(), false);
 
 		AppUser foundAppUser = userService.findByAppUserId(appUser.getId());
 		assertNotNull(foundAppUser);

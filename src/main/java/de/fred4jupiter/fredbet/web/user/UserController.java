@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +30,8 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
 	private static final String EDIT_USER_PAGE = "user/edit";
 
@@ -79,8 +83,15 @@ public class UserController {
 			return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
 		}
 
-		AppUser updateUser = userService.updateUser(editUserCommand);
-		messageUtil.addInfoMsg(redirect, "user.edited", updateUser.getUsername());
+		if (securityService.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
+			LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
+			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isResetPassword(), editUserCommand.isChild());
+		} else {
+			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isResetPassword(), editUserCommand.getRoles(),
+					editUserCommand.isChild());
+		}
+
+		messageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
 		return new ModelAndView("redirect:/user");
 	}
 

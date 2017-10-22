@@ -30,7 +30,6 @@ import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.CreateUserCommand;
-import de.fred4jupiter.fredbet.web.user.EditUserCommand;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 
 @Service
@@ -77,11 +76,13 @@ public class UserService {
 
 	public void createUser(CreateUserCommand createUserCommand) {
 		// create new user
-		AppUserBuilder appUserBuilder = AppUserBuilder.create().withUsernameAndPassword(createUserCommand.getUsername(),
-				createUserCommand.getPassword()).withIsChild(createUserCommand.isChild());
+		AppUserBuilder appUserBuilder = AppUserBuilder.create()
+				.withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
+				.withIsChild(createUserCommand.isChild());
 
-		if (isRoleSelectionDisabled(createUserCommand.getUsername())) {
-			LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(), FredBetRole.ROLE_USER);
+		if (securityService.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
+			LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
+					FredBetRole.ROLE_USER);
 			appUserBuilder.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name()));
 		} else {
 			appUserBuilder.withRoles(createUserCommand.getRoles());
@@ -89,10 +90,6 @@ public class UserService {
 
 		insertAppUser(appUserBuilder.build());
 		return;
-	}
-
-	private boolean isRoleSelectionDisabled(String username) {
-		return securityService.isRoleSelectionDisabledForUser(username);
 	}
 
 	public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
@@ -105,33 +102,27 @@ public class UserService {
 		appUserRepository.save(appUser);
 	}
 
-	public AppUser updateUser(EditUserCommand editUserCommand) {
-		Assert.notNull(editUserCommand.getUserId(), "userCommand.getUserId() must be given");
-		AppUser appUser = appUserRepository.findOne(editUserCommand.getUserId());
-		if (isRoleSelectionDisabled(editUserCommand.getUsername())) {
-			LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
-		} else {
-			appUser.setRoles(editUserCommand.getRoles());
+	public AppUser updateUser(Long userId, boolean passwordReset, boolean isChild) {
+		return updateUser(userId, passwordReset, null, isChild);
+	}
+
+	public AppUser updateUser(Long userId, boolean passwordReset, List<String> roles, boolean isChild) {
+		Assert.notNull(userId, "userCommand.getUserId() must be given");
+		AppUser appUser = appUserRepository.findOne(userId);
+		if (appUser == null) {
+			throw new IllegalArgumentException("Given user with userId=" + userId + " does not exists.");
+		}
+		if (roles != null && !roles.isEmpty()) {
+			appUser.setRoles(roles);
 		}
 
-		if (editUserCommand.isResetPassword()) {
+		if (passwordReset) {
 			appUser.setPassword(passwordEncoder.encode(fredbetProperties.getPasswordForReset()));
 		}
 
-		appUser.setChild(editUserCommand.isChild());
-		updateAppUser(appUser);
-		return appUser;
-	}
-
-	void updateAppUser(AppUser appUser) {
-		AppUser userToBeUpdated = appUserRepository.findOne(appUser.getId());
-		if (userToBeUpdated == null) {
-			throw new IllegalArgumentException(
-					"Given user with username=" + appUser.getUsername() + " does not exists. ID=" + appUser.getId());
-		}
-
-		userToBeUpdated.setRoles(appUser.getRoles());
+		appUser.setChild(isChild);
 		appUserRepository.save(appUser);
+		return appUser;
 	}
 
 	public void deleteUser(Long userId) {
