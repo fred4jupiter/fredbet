@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import org.springframework.util.Assert;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
@@ -74,6 +76,7 @@ public class UserService {
 		return appUserRepository.findOne(userId);
 	}
 
+	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public void createUser(CreateUserCommand createUserCommand) {
 		// create new user
 		AppUserBuilder appUserBuilder = AppUserBuilder.create()
@@ -92,6 +95,7 @@ public class UserService {
 		return;
 	}
 
+	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
 		AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
 		if (foundUser != null) {
@@ -102,10 +106,12 @@ public class UserService {
 		appUserRepository.save(appUser);
 	}
 
+	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public AppUser updateUser(Long userId, boolean passwordReset, boolean isChild) {
 		return updateUser(userId, passwordReset, null, isChild);
 	}
 
+	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public AppUser updateUser(Long userId, boolean passwordReset, List<String> roles, boolean isChild) {
 		Assert.notNull(userId, "userCommand.getUserId() must be given");
 		AppUser appUser = appUserRepository.findOne(userId);
@@ -125,6 +131,7 @@ public class UserService {
 		return appUser;
 	}
 
+	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public void deleteUser(Long userId) {
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {

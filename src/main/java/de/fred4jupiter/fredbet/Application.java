@@ -82,6 +82,7 @@ public class Application {
 		SimpleCacheManager cacheManager = new SimpleCacheManager();
 		List<Cache> caches = new ArrayList<Cache>();
 		caches.add(new ConcurrentMapCache(CacheNames.AVAIL_GROUPS));
+		caches.add(new ConcurrentMapCache(CacheNames.CHILD_RELATION));
 		cacheManager.setCaches(caches);
 		return cacheManager;
 	}
