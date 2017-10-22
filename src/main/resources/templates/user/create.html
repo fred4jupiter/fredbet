@@ -32,6 +32,11 @@
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</p>
 						</div>						
 						<div class="form-group">
+							<label for="child" th:text="#{user.create.child} + ':'"></label>		
+							<input type="checkbox" th:field="*{child}" th:value="${child}"/>
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child Error</p>
+						</div>
+						<div class="form-group">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 							<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 						</div>

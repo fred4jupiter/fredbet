@@ -62,6 +62,7 @@ public class UserController {
 		userCommand.setUserId(appUser.getId());
 		userCommand.setUsername(appUser.getUsername());
 		userCommand.setDeletable(appUser.isDeletable());
+		userCommand.setChild(appUser.isChild());
 		if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
 			for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
 				userCommand.addRole(grantedAuthority.getAuthority());

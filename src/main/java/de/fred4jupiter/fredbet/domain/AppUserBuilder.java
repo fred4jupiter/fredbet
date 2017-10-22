@@ -43,6 +43,11 @@ public class AppUserBuilder {
         this.appUser.setPassword(password);
         return this;
     }
+    
+    public AppUserBuilder withIsChild(boolean isChild) {
+        this.appUser.setChild(isChild);
+        return this;
+    }
 
     public AppUserBuilder withRole(FredBetRole fredBetRole) {
         this.appUser.addRole(fredBetRole);

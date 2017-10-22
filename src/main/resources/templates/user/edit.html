@@ -25,7 +25,12 @@
 							</li>
 						</ul>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</p>
-					</div>					
+					</div>
+					<div class="form-group">
+						<label for="child" th:text="#{user.create.child} + ':'"></label>		
+						<input type="checkbox" th:field="*{child}" th:value="${child}"/>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child Error</p>
+					</div>
 					<div class="form-group" sec:authorize="hasAuthority('PERM_PASSWORD_RESET')">
 						<input type="checkbox" th:field="*{resetPassword}" th:value="true" /> 
 						<label for="resetPassword" th:text="#{user.edit.passwordReset}"></label>

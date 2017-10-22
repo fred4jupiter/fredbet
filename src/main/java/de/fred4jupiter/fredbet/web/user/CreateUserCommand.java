@@ -29,6 +29,8 @@ public class CreateUserCommand {
 	private List<String> roles = new ArrayList<>();
 
 	private final List<String> availableRoles;
+		
+	private boolean child;
 
 	public CreateUserCommand() {
 		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
@@ -83,6 +85,14 @@ public class CreateUserCommand {
 		builder.append("password", password != null ? "is set" : "is null");
 		builder.append("roles", roles);
 		return builder.toString();
+	}
+
+	public boolean isChild() {
+		return child;
+	}
+
+	public void setChild(boolean child) {
+		this.child = child;
 	}
 
 }

@@ -68,6 +68,9 @@ public class AppUser implements UserDetails {
 
 	@Column(name = "DELETABLE")
 	private boolean deletable = true;
+	
+	@Column(name = "IS_CHILD")
+	private boolean child;
 
 	@PersistenceConstructor
 	protected AppUser() {
@@ -231,5 +234,13 @@ public class AppUser implements UserDetails {
 
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+
+	public boolean isChild() {
+		return child;
+	}
+
+	public void setChild(boolean child) {
+		this.child = child;
 	}
 }

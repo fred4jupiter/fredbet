@@ -75,16 +75,16 @@ public class UserService {
 		return appUserRepository.findOne(userId);
 	}
 
-	public void createUser(CreateUserCommand userCommand) {
+	public void createUser(CreateUserCommand createUserCommand) {
 		// create new user
-		AppUserBuilder appUserBuilder = AppUserBuilder.create().withUsernameAndPassword(userCommand.getUsername(),
-				userCommand.getPassword());
+		AppUserBuilder appUserBuilder = AppUserBuilder.create().withUsernameAndPassword(createUserCommand.getUsername(),
+				createUserCommand.getPassword()).withIsChild(createUserCommand.isChild());
 
-		if (isRoleSelectionDisabled(userCommand.getUsername())) {
-			LOG.debug("Role selection is disabled for user {}. Using default role {}", userCommand.getUsername(), FredBetRole.ROLE_USER);
+		if (isRoleSelectionDisabled(createUserCommand.getUsername())) {
+			LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(), FredBetRole.ROLE_USER);
 			appUserBuilder.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name()));
 		} else {
-			appUserBuilder.withRoles(userCommand.getRoles());
+			appUserBuilder.withRoles(createUserCommand.getRoles());
 		}
 
 		insertAppUser(appUserBuilder.build());
@@ -105,19 +105,20 @@ public class UserService {
 		appUserRepository.save(appUser);
 	}
 
-	public AppUser updateUser(EditUserCommand userCommand) {
-		Assert.notNull(userCommand.getUserId(), "userCommand.getUserId() must be given");
-		AppUser appUser = appUserRepository.findOne(userCommand.getUserId());
-		if (isRoleSelectionDisabled(userCommand.getUsername())) {
-			LOG.debug("Role selection is disabled for user {}. Do not update roles.", userCommand.getUsername());
+	public AppUser updateUser(EditUserCommand editUserCommand) {
+		Assert.notNull(editUserCommand.getUserId(), "userCommand.getUserId() must be given");
+		AppUser appUser = appUserRepository.findOne(editUserCommand.getUserId());
+		if (isRoleSelectionDisabled(editUserCommand.getUsername())) {
+			LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
 		} else {
-			appUser.setRoles(userCommand.getRoles());
+			appUser.setRoles(editUserCommand.getRoles());
 		}
 
-		if (userCommand.isResetPassword()) {
+		if (editUserCommand.isResetPassword()) {
 			appUser.setPassword(passwordEncoder.encode(fredbetProperties.getPasswordForReset()));
 		}
 
+		appUser.setChild(editUserCommand.isChild());
 		updateAppUser(appUser);
 		return appUser;
 	}

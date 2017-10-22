@@ -211,4 +211,12 @@
 		</dropColumn>
 	</changeSet>
 
+	<changeSet id="7" author="michael">
+		<addColumn tableName="app_user">
+			<column name="is_child" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>

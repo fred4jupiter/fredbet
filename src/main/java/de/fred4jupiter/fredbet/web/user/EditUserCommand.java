@@ -30,6 +30,8 @@ public class EditUserCommand {
 	private List<String> roles = new ArrayList<>();
 
 	private final List<String> availableRoles;
+	
+	private boolean child;
 
 	public EditUserCommand() {
 		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
@@ -90,6 +92,14 @@ public class EditUserCommand {
 
 	public void setResetPassword(boolean resetPassword) {
 		this.resetPassword = resetPassword;
+	}
+
+	public boolean isChild() {
+		return child;
+	}
+
+	public void setChild(boolean child) {
+		this.child = child;
 	}
 
 }
