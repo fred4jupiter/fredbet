@@ -19,6 +19,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
 	@Autowired
 	private NamedParameterJdbcOperations namedParameterJdbcOperations;
 
+	@Override
 	public List<UsernamePoints> calculateRanging() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Select user_name, sum(total) as sum_all from (");
@@ -42,4 +43,5 @@ class BetRepositoryImpl implements BetRepositoryCustom {
 			return usernamePoints;
 		});
 	}
+
 }

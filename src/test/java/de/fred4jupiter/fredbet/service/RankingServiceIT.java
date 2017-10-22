@@ -19,6 +19,7 @@ import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 
@@ -49,10 +50,42 @@ public class RankingServiceIT extends AbstractTransactionalIntegrationTest {
 		dataBasePopulator.createDemoBetsForAllUsers();
 		dataBasePopulator.createDemoResultsForAllMatches();
 
-		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking();
+		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.MIXED);
 		assertNotNull(rankings);
 		assertFalse(rankings.isEmpty());
 		assertThat(rankings, not(hasItem(hasProperty("userName", equalTo(username)))));
+	}
+
+	@Test
+	public void getRankingForAdultUsers() {
+		saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("fred", "fred").withIsChild(true).build());
+		saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("holger", "holger").withIsChild(false).build());
+
+		dataBasePopulator.createRandomMatches();
+		dataBasePopulator.createDemoBetsForAllUsers();
+		dataBasePopulator.createDemoResultsForAllMatches();
+
+		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.ONLY_ADULTS);
+		assertNotNull(rankings);
+		assertFalse(rankings.isEmpty());
+		assertThat(rankings, not(hasItem(hasProperty("userName", equalTo("fred")))));
+		assertThat(rankings, hasItem(hasProperty("userName", equalTo("holger"))));
+	}
+	
+	@Test
+	public void getRankingForChildUsers() {
+		saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("fred", "fred").withIsChild(true).build());
+		saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("holger", "holger").withIsChild(false).build());
+
+		dataBasePopulator.createRandomMatches();
+		dataBasePopulator.createDemoBetsForAllUsers();
+		dataBasePopulator.createDemoResultsForAllMatches();
+
+		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.ONLY_CHILDREN);
+		assertNotNull(rankings);
+		assertFalse(rankings.isEmpty());
+		assertThat(rankings, not(hasItem(hasProperty("userName", equalTo("holger")))));
+		assertThat(rankings, hasItem(hasProperty("userName", equalTo("fred"))));
 	}
 
 	private void saveIfNotPresent(AppUser appUser) {

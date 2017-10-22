@@ -1,7 +1,9 @@
 package de.fred4jupiter.fredbet.repository;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
