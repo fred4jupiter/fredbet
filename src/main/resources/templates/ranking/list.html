@@ -7,12 +7,18 @@
 	<body>
 		<div layout:fragment="content">
 			<div th:replace="fragments/alert :: alert_headline"></div>
-			<h1 th:text="#{ranking.list.title}"></h1>
-			<div class="row  pull-right">
-				<a href="#" th:href="@{/ranking/mixed}" class="btn btn-default"><i class="fa fa-user" aria-hidden="true"></i> <i class="fa fa-child" aria-hidden="true"></i></a>					
-				<a href="#" th:href="@{/ranking/adult}" class="btn btn-default"><i class="fa fa-user" aria-hidden="true"></i></a>
-				<a href="#" th:href="@{/ranking/child}" class="btn btn-default"><i class="fa fa-child" aria-hidden="true"></i></a>
-			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<h1 th:text="#{ranking.list.title}"></h1>
+				</div> 
+				<div class="col-xs-6">
+					<div class="row pull-right">
+						<a href="#" th:href="@{/ranking/mixed}" class="btn btn-default"><i class="fa fa-user" aria-hidden="true"></i> <i class="fa fa-child" aria-hidden="true"></i></a>					
+						<a href="#" th:href="@{/ranking/adult}" class="btn btn-default"><i class="fa fa-user" aria-hidden="true"></i></a>
+						<a href="#" th:href="@{/ranking/child}" class="btn btn-default"><i class="fa fa-child" aria-hidden="true"></i></a>
+					</div>
+				</div>
+			</div>			
 			<br/>
 			<br/>
 			<div class="row">
