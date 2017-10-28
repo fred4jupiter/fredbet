@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,4 +22,14 @@ public class GroupAvailabilityUtil {
 		return matchService.availableGroups().contains(group);
 	}
 
+	public boolean isKnockOutMatchesAvailable() {
+		Set<Group> availableGroups = matchService.availableGroups();
+		for (Group group : availableGroups) {
+			if (!group.getName().startsWith("GROUP")) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
