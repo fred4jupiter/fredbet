@@ -39,12 +39,14 @@ public class CountryService {
 	}
 
 	public List<Country> getAvailableCountriesSortedWithoutNoneEntry(Locale locale, List<Country> countriesWithoutNoneEntry) {
-		countriesWithoutNoneEntry.sort((Country country1, Country country2) -> {
+		List<Country> list = countriesWithoutNoneEntry.stream().filter(country -> country != null).collect(Collectors.toList());
+		
+		list.sort((Country country1, Country country2) -> {
 			String countryName1 = messageSourceUtil.getCountryName(country1, locale);
-			String countryName2 = messageSourceUtil.getCountryName(country2, locale);
+			String countryName2 = messageSourceUtil.getCountryName(country2, locale);			
 			return countryName1.compareTo(countryName2);
 		});
-		return countriesWithoutNoneEntry;
+		return list;
 	}
 
 	public List<Country> getAvailableCountriesWithoutNoneEntry() {

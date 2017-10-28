@@ -47,8 +47,8 @@ public class ExcelImportController {
 	@Value("classpath:/excelimport/ImportTemplate.xlsx")
 	private Resource excelTemplateFile;
 
-	@Value("classpath:/excelimport/ConfederationsCup2017.xlsx")
-	private Resource confCup2017File;
+	@Value("classpath:/excelimport/WM2018.xlsx")
+	private Resource file1;
 
 	@ModelAttribute("excelUploadCommand")
 	public ExcelUploadCommand initExcelUploadCommand() {
@@ -68,10 +68,10 @@ public class ExcelImportController {
 		return createResponseEntityFor(templateFile, fileName);
 	}
 
-	@RequestMapping(value = "/download/confcup2017", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
+	@RequestMapping(value = "/download/wm2018", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
 	public ResponseEntity<byte[]> downloadConferderationsCup2017(HttpServletResponse response) {
-		final String fileName = "ConfederationsCup2017.xlsx";
-		byte[] fileContent = downloadConfCup2017();
+		final String fileName = "WM2018.xlsx";
+		byte[] fileContent = downloadFile1();
 
 		return createResponseEntityFor(fileContent, fileName);
 	}
@@ -118,9 +118,9 @@ public class ExcelImportController {
 		}
 	}
 
-	private byte[] downloadConfCup2017() {
+	private byte[] downloadFile1() {
 		try {
-			return IOUtils.toByteArray(confCup2017File.getInputStream());
+			return IOUtils.toByteArray(file1.getInputStream());
 		} catch (IOException e) {
 			throw new IllegalStateException(e.getMessage(), e);
 		}
