@@ -22,12 +22,13 @@
 	<scm>
 		<developerConnection>scm:git:https://github.com/fred4jupiter/fredbet.git</developerConnection>
 		<connection>scm:git:https://github.com/fred4jupiter/fredbet.git</connection>
+		<url>https://github.com/fred4jupiter/fredbet</url>
 	</scm>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.7.RELEASE</version>
+		<version>1.5.8.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
