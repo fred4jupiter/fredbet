@@ -37,9 +37,16 @@ public class RandomValueGenerator {
 
 	public ImmutablePair<Country, Country> generateTeamPair() {
 		List<Country> availCountries = countryService.getAvailableCountriesWithoutNoneEntry();
+		if (CollectionUtils.isEmpty(availCountries)) {
+			return null;
+		}
 
 		Country countryOne = generateRandomCountry(availCountries);
 		availCountries.remove(countryOne);
+
+		if (CollectionUtils.isEmpty(availCountries)) {
+			return ImmutablePair.of(countryOne, countryOne);
+		}
 
 		Country countryTwo = generateRandomCountry(availCountries);
 		availCountries.remove(countryTwo);
@@ -57,8 +64,16 @@ public class RandomValueGenerator {
 		Country countryOne = generateRandomCountry(availCountries);
 		availCountries.remove(countryOne);
 
+		if (CollectionUtils.isEmpty(availCountries)) {
+			return ImmutableTriple.of(countryOne, countryOne, countryOne);
+		}
+
 		Country countryTwo = generateRandomCountry(availCountries);
 		availCountries.remove(countryTwo);
+
+		if (CollectionUtils.isEmpty(availCountries)) {
+			return ImmutableTriple.of(countryOne, countryTwo, countryTwo);
+		}
 
 		Country countryThree = generateRandomCountry(availCountries);
 
