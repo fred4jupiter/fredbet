@@ -28,6 +28,7 @@ public class CacheAdministrationService {
 		for (String cacheName : cacheNames) {
 			Cache cache = this.cacheManager.getCache(cacheName);
 			if (cache != null) {
+				LOG.info("Clearing cache: {}", cache.getName());
 				cache.clear();
 			}
 		}
