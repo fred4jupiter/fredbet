@@ -141,13 +141,6 @@ public class DataBasePopulator {
 
 		List<Match> allMatches = matchService.findAll();
 		allMatches.forEach(match -> {
-			if (match.getCountryOne() == null) {
-				ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
-				match.setCountryOne(teamPair.getLeft());
-				match.setCountryTwo(teamPair.getRight());
-				match.setTeamNameOne(null);
-				match.setTeamNameTwo(null);
-			}
 			match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
 			matchService.save(match);
 		});
