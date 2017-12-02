@@ -21,6 +21,8 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - Microsoft Excel bets, statistic export
 - language switcher (supported languages: englisch, german (by now))
 - ranking filter for adults and childs listing
+- integrated testing capabilities: create demo users, matches, bets...
+- configurable runtime configuration
 
 ## Testing it locally
 
@@ -70,9 +72,10 @@ docker-compose -f mariadb.yml up -d
 
 ## FredBet Properties
 
+These properties has to be set at application startup.
+
 | Key | Default Value | Description |
 |--------|--------|--------|
-| fredbet.create-demo-data | false | Creates demo data with additional users and matches. |
 | fredbet.favourite-country | germany | Sum points per user for selected country that will be shown in points statistics. |
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
