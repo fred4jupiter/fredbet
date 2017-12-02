@@ -28,7 +28,7 @@ services:
       - "COOKIE=SRV insert indirect nocache"
 
   fredbet:
-    image: hamsterhase/fredbet
+    image: fred4jupiter/fredbet
     links:
      - mariadb    
     environment:

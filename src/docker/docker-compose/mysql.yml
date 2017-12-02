@@ -1,9 +1,8 @@
-version: "3"
+version: '3'
+
 services:
-    mariadb:  
-      image: mariadb:10.1.11
-      volumes:
-        - ~/mariadb:/var/lib/mysql
+    mysqldb:  
+      image: mysql:8.0.2
       ports:
         - "3306:3306"
       environment:
@@ -12,16 +11,16 @@ services:
        - MYSQL_USER=fred
        - MYSQL_PASSWORD=fred
     fredbet:
-      image: hamsterhase/fredbet
+      image: fred4jupiter/fredbet:latest
       links:
-        - mariadb:mariadb
+        - mysqldb
       depends_on:
-        - mariadb
+        - mysqldb
       ports:
-        - "8080:8080"
+        - "8081:8080"
       environment:
        - SPRING_PROFILES_ACTIVE=prod
-       - FREDBET_DATABASE_TYPE=maria-db
-       - FREDBET_DATABASE_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+       - FREDBET_DATABASE_URL=jdbc:mysql://mysqldb:3306/fredbetdb
        - FREDBET_DATABASE_USERNAME=fred
        - FREDBET_DATABASE_PASSWORD=fred
+       - FREDBET_DATABASE_TYPE=mysql
