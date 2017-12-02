@@ -16,4 +16,9 @@ public class RuntimeConfigurationUtil {
 		RuntimeConfig config = runtimeConfigurationService.loadRuntimeConfig();
 		return config.isEnabledParentChildRanking();
 	}
+	
+	public boolean isEnableChangingUsername() {
+		RuntimeConfig config = runtimeConfigurationService.loadRuntimeConfig();
+		return config.isEnableChangingUsername();
+	}
 }

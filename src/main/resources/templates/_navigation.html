@@ -147,7 +147,7 @@
 								<li th:class="${pageState_cropping_show}">
 									<a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
 								</li>
-								<li th:class="${pageState_profile_changeUsername}">
+								<li th:if="${@runtimeConfigurationUtil.isEnableChangingUsername()}" th:class="${pageState_profile_changeUsername}">
 									<a href="#changeUsername" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
 								</li>
 							</ul>						
