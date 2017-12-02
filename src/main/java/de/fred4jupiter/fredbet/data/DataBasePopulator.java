@@ -29,13 +29,13 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 
@@ -64,13 +64,13 @@ public class DataBasePopulator {
 	private RandomValueGenerator randomValueGenerator;
 
 	@Autowired
-	private FredbetProperties fredbetProperties;
-
-	@Autowired
 	private InfoService infoService;
 
 	@Autowired
 	private ImageAdministrationService imageAdministrationService;
+
+	@Autowired
+	private RuntimeConfigurationService runtimeConfigurationService;
 
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
@@ -79,7 +79,7 @@ public class DataBasePopulator {
 			addRulesIfEmpty();
 		}
 
-		if (!isRunInIntegrationTest() && fredbetProperties.isCreateDemoData()) {
+		if (!isRunInIntegrationTest() && runtimeConfigurationService.loadRuntimeConfig().isCreateDemoData()) {
 			createDemoUsers();
 			createRandomMatches();
 		}

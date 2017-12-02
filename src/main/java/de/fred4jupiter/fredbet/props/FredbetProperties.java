@@ -17,11 +17,6 @@ public class FredbetProperties {
 
 	public static final String PROPS_PREFIX = "fredbet";
 
-	/**
-	 * Creates demo data with additional users and matches.
-	 */
-	private boolean createDemoData;
-
 	private String databaseUrl;
 
 	private String databaseUsername;
@@ -110,14 +105,6 @@ public class FredbetProperties {
 		this.databasePassword = databasePassword;
 	}
 
-	public boolean isCreateDemoData() {
-		return createDemoData;
-	}
-
-	public void setCreateDemoData(boolean createDemoData) {
-		this.createDemoData = createDemoData;
-	}
-
 	public Country getFavouriteCountry() {
 		return favouriteCountry;
 	}
@@ -201,7 +188,6 @@ public class FredbetProperties {
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-		builder.append("createDemoData", createDemoData);
 		builder.append("databaseUrl", databaseUrl);
 		builder.append("databasePassword", databasePassword != null ? "********" : "null");
 		builder.append("databaseType", databaseType);

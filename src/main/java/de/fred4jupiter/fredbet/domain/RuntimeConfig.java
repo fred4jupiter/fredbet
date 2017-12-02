@@ -7,6 +7,11 @@ public class RuntimeConfig {
 	private boolean enableChangingUsername;
 
 	private boolean showDemoDataNavigationEntry;
+	
+	/**
+	 * Creates demo data with additional users and matches.
+	 */
+	private boolean createDemoData;
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
@@ -30,6 +35,14 @@ public class RuntimeConfig {
 
 	public void setShowDemoDataNavigationEntry(boolean showDemoDataNavigationEntry) {
 		this.showDemoDataNavigationEntry = showDemoDataNavigationEntry;
+	}
+
+	public boolean isCreateDemoData() {
+		return createDemoData;
+	}
+
+	public void setCreateDemoData(boolean createDemoData) {
+		this.createDemoData = createDemoData;
 	}
 
 }
