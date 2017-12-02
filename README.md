@@ -71,7 +71,7 @@ docker-compose -f mariadb.yml up -d
 ## FredBet Properties
 
 | Key | Default Value | Description |
-|--------|--------|
+|--------|--------|--------|
 | fredbet.create-demo-data | false | Creates demo data with additional users and matches. |
 | fredbet.enable-demo-data-creation-navigation-entry | false | Disables the navigation entry for (re)creating the matches and demo results. |
 | fredbet.favourite-country | germany | Sum points per user for selected country that will be shown in points statistics. |
@@ -90,7 +90,7 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 ## Database Properties
 
 | Key | Default Value | Description |
-|--------|--------|
+|--------|--------|--------|
 | fredbet.database-url | | The database jdbc connection url, e.g. jdbc:mariadb://localhost:3306/fredbetdb. |
 | fredbet.database-username | | The database username. |
 | fredbet.database-password | | The database password. |
@@ -101,7 +101,7 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. Typically you run the docker container in EC2 container service (ECS) with these environment properties while storing the images of the image gallery in S3:
 
 | Key | Value | Description |
-|--------|--------|
+|--------|--------|--------|
 | spring.profiles.active | prod |  |
 | fredbet.image-location | AWS_S3 |  |
 | fredbet.aws-s3bucket-name | fredbet | Or any other name for your S3 bucket. |
