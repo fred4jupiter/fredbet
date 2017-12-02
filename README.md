@@ -73,7 +73,6 @@ docker-compose -f mariadb.yml up -d
 | Key | Default Value | Description |
 |--------|--------|--------|
 | fredbet.create-demo-data | false | Creates demo data with additional users and matches. |
-| fredbet.enable-demo-data-creation-navigation-entry | false | Disables the navigation entry for (re)creating the matches and demo results. |
 | fredbet.favourite-country | germany | Sum points per user for selected country that will be shown in points statistics. |
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
