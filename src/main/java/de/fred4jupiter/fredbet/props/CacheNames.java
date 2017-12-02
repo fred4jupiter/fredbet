@@ -10,4 +10,6 @@ public interface CacheNames {
 	String AVAIL_GROUPS = "availableGroups";
 	
 	String CHILD_RELATION = "childRelation";
+	
+	String RUNTIME_CONFIG = "runtimeConfig";
 }
