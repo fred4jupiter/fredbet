@@ -76,12 +76,11 @@ These properties has to be set at application startup.
 
 | Key | Default Value | Description |
 |--------|--------|--------|
-| fredbet.favourite-country | germany | Sum points per user for selected country that will be shown in points statistics. |
+| spring.profiles.active | dev | Active Spring profile at startup. Possible values: `dev,prod,localdb`. Use profile `prod` for real productive setup. |
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
 | fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE, AWS_S3` |
 | fredbet.image-file-sytem-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
-| fredbet.password-for-reset | fredbet | If the administrator resets the password of a user this password will be set as default password. The user should changed it after login. |
 | fredbet.aws-s3bucket-name | mis-demo | Name of the AWS bucket if the image location is set to AWS_S3. |
 | fredbet.points-final-winner | 10 | Extra points a user will get for betting the final winner correctly. |
 | fredbet.points-semi-final-winner | 5 | Extra points a user will get for betting the semi final winner correctly. |
