@@ -11,7 +11,7 @@
 				<div class="col-xs-6">
 					<h1 th:text="#{ranking.list.title}"></h1>
 				</div> 
-				<div th:if="${@runtimeConfigurationUtil.isEnabledParentChildRanking()}" class="col-xs-6">
+				<div th:if="${@runtimeConfigurationUtil.getConfig().isEnabledParentChildRanking()}" class="col-xs-6">
 					<div class="row pull-right btn-group" role="group">
 						<a href="#" th:href="@{/ranking/mixed}" class="btn btn-default"><i class="fa fa-user" aria-hidden="true"></i> <i class="fa fa-child" aria-hidden="true"></i></a>					
 						<a href="#" th:href="@{/ranking/adult}" class="btn btn-default"><i class="fa fa-user" aria-hidden="true"></i></a>

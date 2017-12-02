@@ -45,6 +45,10 @@
 								<input type="checkbox" th:field="*{runtimeConfig.enableChangingUsername}"/>
 								<label for="child" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>							
 							</li>
+							<li class="list-group-item">									
+								<input type="checkbox" th:field="*{runtimeConfig.showDemoDataNavigationEntry}"/>
+								<label for="child" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>							
+							</li>
 						</ul>
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>

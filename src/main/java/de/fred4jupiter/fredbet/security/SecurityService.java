@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 
 /**
  * Provides security informations of the current user.
@@ -21,10 +21,10 @@ import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 public class SecurityService {
 
 	@Autowired
-	private FredbetProperties fredbetProperties;
+	private ImageMetaDataRepository imageMetaDataRepository;
 
 	@Autowired
-	private ImageMetaDataRepository imageMetaDataRepository;
+	private RuntimeConfigurationService runtimeConfigurationService;
 
 	public boolean isUserLoggedIn() {
 		try {
@@ -45,7 +45,7 @@ public class SecurityService {
 	 * @return
 	 */
 	public boolean isDemoDataMenuEntryEnabled() {
-		return fredbetProperties.isEnableDemoDataCreationNavigationEntry();
+		return runtimeConfigurationService.loadRuntimeConfig().isShowDemoDataNavigationEntry();
 	}
 
 	public boolean isCurrentUserHavingPermission(String permission) {

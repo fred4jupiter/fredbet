@@ -16,7 +16,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 public class FredbetProperties {
 
 	public static final String PROPS_PREFIX = "fredbet";
-	
+
 	/**
 	 * Creates demo data with additional users and matches.
 	 */
@@ -27,12 +27,6 @@ public class FredbetProperties {
 	private String databaseUsername;
 
 	private String databasePassword;
-
-	/**
-	 * Adds or removes the navigation entry for demo data creation in
-	 * administration menu.
-	 */
-	private boolean enableDemoDataCreationNavigationEntry;
 
 	public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
@@ -124,14 +118,6 @@ public class FredbetProperties {
 		this.createDemoData = createDemoData;
 	}
 
-	public boolean isEnableDemoDataCreationNavigationEntry() {
-		return enableDemoDataCreationNavigationEntry;
-	}
-
-	public void setEnableDemoDataCreationNavigationEntry(boolean enableDemoDataCreationNavigationEntry) {
-		this.enableDemoDataCreationNavigationEntry = enableDemoDataCreationNavigationEntry;
-	}
-
 	public Country getFavouriteCountry() {
 		return favouriteCountry;
 	}
@@ -171,8 +157,6 @@ public class FredbetProperties {
 	public void setImageLocation(ImageLocation imageLocation) {
 		this.imageLocation = imageLocation;
 	}
-
-	
 
 	public String getPasswordForReset() {
 		return passwordForReset;
@@ -220,12 +204,11 @@ public class FredbetProperties {
 		builder.append("createDemoData", createDemoData);
 		builder.append("databaseUrl", databaseUrl);
 		builder.append("databasePassword", databasePassword != null ? "********" : "null");
-		builder.append("enableDemoDataCreationNavigationEntry", enableDemoDataCreationNavigationEntry);
 		builder.append("databaseType", databaseType);
 		builder.append("thumbnailSize", thumbnailSize);
 		builder.append("imageSize", imageSize);
 		builder.append("imageLocation", imageLocation);
-		
+
 		builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
 		builder.append("passwordForReset", passwordForReset);
 		builder.append("awsS3bucketName", awsS3bucketName);
