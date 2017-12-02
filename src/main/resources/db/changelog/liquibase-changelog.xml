@@ -1,5 +1,5 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
    http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
@@ -29,13 +29,15 @@
 			<column name="goals_team_one" type="int" />
 			<column name="goals_team_two" type="int" />
 			<column name="points" type="int" />
-			<column name="user_name" type="varchar(255)">
+			<column name="user_name" type="varchar(100)">
 				<constraints nullable="false" />
 			</column>
 			<column name="match_id" type="BIGINT" />
-			<column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false" />
+			<column name="PENALTY_WINNER_ONE" type="boolean"
+				defaultValueBoolean="false" />
 		</createTable>
-		<addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet" />
+		<addUniqueConstraint columnNames="user_name, match_id"
+			tableName="bet" constraintName="idx_bet" />
 
 		<createTable tableName="matches">
 			<column name="match_id" type="BIGINT" autoIncrement="true">
@@ -50,10 +52,12 @@
 			<column name="stadium" type="varchar(100)" />
 			<column name="team_name_one" type="varchar(100)" />
 			<column name="team_name_two" type="varchar(100)" />
-			<column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false" />
+			<column name="PENALTY_WINNER_ONE" type="boolean"
+				defaultValueBoolean="false" />
 		</createTable>
 
-		<addForeignKeyConstraint baseTableName="bet" baseColumnNames="match_id" constraintName="FK_match_id"
+		<addForeignKeyConstraint baseTableName="bet"
+			baseColumnNames="match_id" constraintName="FK_match_id"
 			referencedTableName="matches" referencedColumnNames="match_id" />
 
 		<createTable tableName="user_roles">
@@ -63,7 +67,8 @@
 			<column name="roles" type="varchar(255)" />
 		</createTable>
 
-		<addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id" constraintName="FK_user_id"
+		<addForeignKeyConstraint baseTableName="user_roles"
+			baseColumnNames="user_id" constraintName="FK_user_id"
 			referencedTableName="app_user" referencedColumnNames="user_id" />
 
 		<createTable tableName="persistent_logins">
@@ -85,8 +90,9 @@
 			<column name="extra_bet_id" type="BIGINT" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="user_name" type="varchar(255)">
-				<constraints nullable="false" unique="true" uniqueConstraintName="extra_bet_idx1" />
+			<column name="user_name" type="varchar(100)">
+				<constraints nullable="false" unique="true"
+					uniqueConstraintName="extra_bet_idx1" />
 			</column>
 			<column name="final_winner" type="varchar(255)" />
 			<column name="semi_final_winner" type="varchar(255)" />
@@ -104,7 +110,8 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		<addPrimaryKey columnNames="info_name, locale_string" tableName="info_content" />
+		<addPrimaryKey columnNames="info_name, locale_string"
+			tableName="info_content" />
 
 		<createTable tableName="session_tracking">
 			<column name="user_name" type="varchar(100)">
@@ -145,7 +152,8 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		<addForeignKeyConstraint baseTableName="image_metadata" baseColumnNames="image_group_id" constraintName="FK_image_group"
+		<addForeignKeyConstraint baseTableName="image_metadata"
+			baseColumnNames="image_group_id" constraintName="FK_image_group"
 			referencedTableName="image_group" referencedColumnNames="image_group_id" />
 
 		<createTable tableName="image_binary">
@@ -176,13 +184,15 @@
 				<constraints nullable="false" />
 			</column>
 		</addColumn>
-		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="image_metadata" constraintName="FK_image_user_id"
+		<addForeignKeyConstraint baseColumnNames="user_id"
+			baseTableName="image_metadata" constraintName="FK_image_user_id"
 			referencedColumnNames="user_id" referencedTableName="app_user" />
 	</changeSet>
 
 	<changeSet id="3" author="michael">
 		<addColumn tableName="image_group">
-			<column name="user_profile_img_group" type="boolean" defaultValueBoolean="false">
+			<column name="user_profile_img_group" type="boolean"
+				defaultValueBoolean="false">
 				<constraints nullable="false" />
 			</column>
 		</addColumn>
@@ -217,6 +227,18 @@
 				<constraints nullable="false" />
 			</column>
 		</addColumn>
+	</changeSet>
+
+	<changeSet id="8" author="michael">
+		<createTable tableName="runtime_config">
+			<column name="config_id" type="BIGINT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>			
+			<column name="json_config" type="varchar(2000)" />
+			<column name="version" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
 	</changeSet>
 
 </databaseChangeLog>

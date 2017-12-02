@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.admin.CacheAdministrationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 import de.fred4jupiter.fredbet.util.LoggingUtil;
 import de.fred4jupiter.fredbet.util.LoggingUtil.LogLevel;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -32,16 +33,19 @@ public class ConfigurationController {
 	@Autowired
 	private LoggingUtil loggingUtil;
 
+	@Autowired
+	private RuntimeConfigurationService runtimeConfigurationService;
+
 	@ModelAttribute("configurationCommand")
 	public ConfigurationCommand initConfigurationCommand() {
-		ConfigurationCommand configurationCommand = new ConfigurationCommand();
-		configurationCommand.setLevel(loggingUtil.getCurrentLogLevel());
-		return configurationCommand;
+		return new ConfigurationCommand();
 	}
-	
+
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
-	public ModelAndView showCachePage() {
-		return new ModelAndView("admin/configuration");
+	public ModelAndView showCachePage(ConfigurationCommand configurationCommand) {
+		configurationCommand.setLevel(loggingUtil.getCurrentLogLevel());
+		configurationCommand.setRuntimeConfig(runtimeConfigurationService.loadRuntimeConfig());
+		return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
 	}
 
 	@RequestMapping(path = "/clearCache", method = RequestMethod.GET)
@@ -61,7 +65,18 @@ public class ConfigurationController {
 		loggingUtil.setLogLevelTo(level);
 
 		messageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
-		
+
+		return new ModelAndView("redirect:/config/show");
+	}
+
+	@RequestMapping(value = "/saveRuntimeConfig", method = RequestMethod.POST)
+	public ModelAndView saveRuntimeConfig(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect,
+			ModelMap modelMap) {
+
+		runtimeConfigurationService.saveRuntimeConfig(configurationCommand.getRuntimeConfig());
+
+		messageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
+
 		return new ModelAndView("redirect:/config/show");
 	}
 }

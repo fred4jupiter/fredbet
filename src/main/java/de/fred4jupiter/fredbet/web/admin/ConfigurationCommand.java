@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.admin;
 import java.util.Arrays;
 import java.util.List;
 
+import de.fred4jupiter.fredbet.domain.RuntimeConfig;
 import de.fred4jupiter.fredbet.util.LoggingUtil.LogLevel;
 
 public class ConfigurationCommand {
@@ -10,6 +11,8 @@ public class ConfigurationCommand {
 	private List<LogLevel> logLevel = Arrays.asList(LogLevel.values());
 
 	private LogLevel level;
+	
+	private RuntimeConfig runtimeConfig;
 
 	public List<LogLevel> getLogLevel() {
 		return logLevel;
@@ -21,6 +24,14 @@ public class ConfigurationCommand {
 
 	public void setLevel(LogLevel level) {
 		this.level = level;
+	}
+
+	public RuntimeConfig getRuntimeConfig() {
+		return runtimeConfig;
+	}
+
+	public void setRuntimeConfig(RuntimeConfig runtimeConfig) {
+		this.runtimeConfig = runtimeConfig;
 	}
 
 }
