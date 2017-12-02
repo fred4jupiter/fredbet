@@ -12,9 +12,11 @@ import de.fred4jupiter.fredbet.domain.Country;
  * @author michael
  *
  */
-@ConfigurationProperties(prefix = "fredbet")
+@ConfigurationProperties(prefix = FredbetProperties.PROPS_PREFIX)
 public class FredbetProperties {
 
+	public static final String PROPS_PREFIX = "fredbet";
+	
 	/**
 	 * Creates demo data with additional users and matches.
 	 */

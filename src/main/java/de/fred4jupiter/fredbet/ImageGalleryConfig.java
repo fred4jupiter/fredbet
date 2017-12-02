@@ -28,29 +28,31 @@ import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 @Configuration
 public class ImageGalleryConfig {
 
+	private static final String IMAGE_LOCATION = "image-location";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ImageGalleryConfig.class);
 
-	@ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "file-system", matchIfMissing = true)
+	@ConditionalOnProperty(prefix = FredbetProperties.PROPS_PREFIX, name = IMAGE_LOCATION, havingValue = "file_system", matchIfMissing = true)
 	@Bean
 	public ImageLocationStrategy filesystemImageLocationService(FredbetProperties fredbetProperties) {
 		return new FilesystemImageLocationStrategy(fredbetProperties.getImageFileSystemBaseFolder());
 	}
 
-	@ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "database", matchIfMissing = false)
+	@ConditionalOnProperty(prefix = FredbetProperties.PROPS_PREFIX, name = IMAGE_LOCATION, havingValue = "database", matchIfMissing = false)
 	@Bean
 	public ImageLocationStrategy databaseImageLocationService(ImageBinaryRepository imageBinaryRepository) {
 		LOG.info("Storing images in database.");
 		return new DatabaseImageLocationStrategy(imageBinaryRepository);
 	}
 
-	@ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "aws-s3", matchIfMissing = false)
+	@ConditionalOnProperty(prefix = FredbetProperties.PROPS_PREFIX, name = IMAGE_LOCATION, havingValue = "aws_s3", matchIfMissing = false)
 	@Bean
 	public ImageLocationStrategy awsS3ImageLocationStrategy(AmazonS3ClientWrapper amazonS3ClientWrapper) {
 		LOG.info("Storing images in AWS S3.");
 		return new AwsS3ImageLocationStrategy(amazonS3ClientWrapper);
 	}
 
-	@ConditionalOnProperty(prefix = "fredbet", name = "image-location", havingValue = "aws-s3", matchIfMissing = false)
+	@ConditionalOnProperty(prefix = FredbetProperties.PROPS_PREFIX, name = IMAGE_LOCATION, havingValue = "aws_s3", matchIfMissing = false)
 	@Bean
 	public AmazonS3ClientWrapper amazonS3ClientWrapper(AmazonS3 amazonS3, ResourceLoader resourceLoader,
 			ResourcePatternResolver resourcePatternResolver, FredbetProperties fredbetProperties) {
