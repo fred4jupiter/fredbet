@@ -20,5 +20,5 @@ branches:
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker build -t fred4jupiter/fredbet .  
-  - docker tag fred4jupiter/fredbet hamsterhase/fredbet:latest  
-  - docker push hamsterhase/fredbet:latest
+  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest  
+  - docker push fred4jupiter/fredbet:latest
