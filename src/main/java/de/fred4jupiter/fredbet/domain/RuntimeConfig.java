@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * These properties are changable at runtime (via admin page).
  * 
@@ -28,6 +30,7 @@ public class RuntimeConfig {
 	/**
 	 * Password used if the user password has been reset.
 	 */
+	@NotEmpty
 	private String passwordForReset;
 
 	public boolean isEnabledParentChildRanking() {

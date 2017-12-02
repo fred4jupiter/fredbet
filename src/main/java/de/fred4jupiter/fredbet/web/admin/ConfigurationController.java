@@ -9,6 +9,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -83,8 +84,11 @@ public class ConfigurationController {
 	}
 
 	@RequestMapping(value = "/saveRuntimeConfig", method = RequestMethod.POST)
-	public ModelAndView saveRuntimeConfig(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect,
-			ModelMap modelMap) {
+	public ModelAndView saveRuntimeConfig(@Valid ConfigurationCommand configurationCommand, BindingResult bindingResult,
+			RedirectAttributes redirect, ModelMap modelMap) {
+		if (bindingResult.hasErrors()) {
+			return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
+		}
 
 		runtimeConfigurationService.saveRuntimeConfig(configurationCommand.getRuntimeConfig());
 
