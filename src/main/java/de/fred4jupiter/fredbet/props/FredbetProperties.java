@@ -4,8 +4,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import de.fred4jupiter.fredbet.domain.Country;
-
 /**
  * Contains all configuration properties for FredBet application.
  * 
@@ -22,14 +20,6 @@ public class FredbetProperties {
 	private String databaseUsername;
 
 	private String databasePassword;
-
-	public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
-
-	/**
-	 * Sum points per user for selected country that will be shown in points
-	 * statistics.
-	 */
-	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
 
 	public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
 
@@ -103,14 +93,6 @@ public class FredbetProperties {
 
 	public void setDatabasePassword(String databasePassword) {
 		this.databasePassword = databasePassword;
-	}
-
-	public Country getFavouriteCountry() {
-		return favouriteCountry;
-	}
-
-	public void setFavouriteCountry(Country favouriteCountry) {
-		this.favouriteCountry = favouriteCountry;
 	}
 
 	public int getThumbnailSize() {

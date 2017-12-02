@@ -8,38 +8,40 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Statistic;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.StatisticRepository;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 
 @Service
 public class StatisticService {
 
 	private final StatisticRepository statisticRepository;
 
-	private final Country favoriteCountry;
-
 	private final ExtraBetRepository extraBetRepository;
 
+	private final RuntimeConfigurationService runtimeConfigurationService;
+
 	@Autowired
-	public StatisticService(StatisticRepository statisticRepository, FredbetProperties fredbetProperties,
+	public StatisticService(StatisticRepository statisticRepository, RuntimeConfigurationService runtimeConfigurationService,
 			ExtraBetRepository extraBetRepository) {
 		this.statisticRepository = statisticRepository;
+		this.runtimeConfigurationService = runtimeConfigurationService;
 		this.extraBetRepository = extraBetRepository;
-		this.favoriteCountry = fredbetProperties.getFavouriteCountry();
-		Assert.notNull(this.favoriteCountry, "favoriteCountry must be given");
+	}
+
+	private Country getFavouriteCountry() {
+		return runtimeConfigurationService.loadRuntimeConfig().getFavouriteCountry();
 	}
 
 	public List<Statistic> createStatistic() {
 		final List<Statistic> statisticList = statisticRepository.createStatistic();
 
 		final Map<String, Integer> favoriteCountryPointsPerUserMap = statisticRepository
-				.sumPointsPerUserForFavoriteCountry(favoriteCountry);
+				.sumPointsPerUserForFavoriteCountry(getFavouriteCountry());
 		final Optional<Integer> maxFavoriteCountryPoints = favoriteCountryPointsPerUserMap.values().stream()
 				.max(Comparator.comparing(i -> i));
 
@@ -63,7 +65,7 @@ public class StatisticService {
 		}
 
 		for (Statistic statistic : statisticList) {
-			statistic.setFavoriteCountry(this.favoriteCountry);
+			statistic.setFavoriteCountry(getFavouriteCountry());
 
 			final Integer favoriteCountryPoints = favoriteCountryPointsPerUserMap.get(statistic.getUsername());
 			statistic.setPointsFavoriteCountry(favoriteCountryPoints);

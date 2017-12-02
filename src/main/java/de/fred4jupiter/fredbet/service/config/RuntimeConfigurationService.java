@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.RuntimeConfig;
 import de.fred4jupiter.fredbet.domain.RuntimeConfigDb;
 import de.fred4jupiter.fredbet.props.CacheNames;
@@ -52,6 +53,7 @@ public class RuntimeConfigurationService {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);
 			runtimeConfig.setEnableChangingUsername(true);
 			runtimeConfig.setCreateDemoData(true);
+			runtimeConfig.setFavouriteCountry(Country.GERMANY);
 			saveRuntimeConfig(runtimeConfig);
 		}
 

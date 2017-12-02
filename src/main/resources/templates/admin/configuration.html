@@ -33,9 +33,9 @@
 			</div>
 			<hr/>
 			<h2 th:text="#{administration.runtime.configuration}"></h2>
-			<div class="row">			
-				<div class="col-xs-12 col-sm-12 col-md-6">
-					<form id="saveRuntimeConfigForm" th:action="@{/config/saveRuntimeConfig}" th:object="${configurationCommand}" action="#" method="post" role="form">
+			<form id="saveRuntimeConfigForm" th:action="@{/config/saveRuntimeConfig}" th:object="${configurationCommand}" action="#" method="post" role="form">
+				<div class="row">			
+					<div class="col-xs-12 col-sm-12 col-md-6">					
 						<ul class="list-group">
 							<li class="list-group-item">								
 								<input type="checkbox" th:field="*{runtimeConfig.enabledParentChildRanking}"/>
@@ -48,14 +48,29 @@
 							<li class="list-group-item">									
 								<input type="checkbox" th:field="*{runtimeConfig.showDemoDataNavigationEntry}"/>
 								<label for="child" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>							
-							</li>
-						</ul>
+							</li>							
+						</ul>														
+					</div>
+				</div>
+				<div class="row">			
+					<div class="col-xs-12 col-sm-6 col-md-4">	
+						<div class="form-group">
+							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label> 
+							<select th:field="*{runtimeConfig.favouriteCountry}" class="form-control">
+							    <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+							</select>
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.favouriteCountry')}" th:errors="*{runtimeConfig.favouriteCountry}">favouriteCountry Error</p>						
+						</div>
+					</div>
+				</div>
+				<div class="row">			
+					<div class="col-xs-12 col-sm-12 col-md-6">	
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						</div>						
-					</form>
+						</div>	
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</body>
 </html>
