@@ -46,7 +46,7 @@ public class ConfigurationController {
 
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
-		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+		return countryService.getAvailableCountriesSortedWithoutNoneEntry(LocaleContextHolder.getLocale());
 	}
 
 	@ModelAttribute("configurationCommand")

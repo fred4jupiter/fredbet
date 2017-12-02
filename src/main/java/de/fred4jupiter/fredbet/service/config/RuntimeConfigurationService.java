@@ -49,11 +49,13 @@ public class RuntimeConfigurationService {
 
 	private RuntimeConfig createDefaultRuntimeConfig() {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
+		runtimeConfig.setFavouriteCountry(Country.GERMANY);
+
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);
 			runtimeConfig.setEnableChangingUsername(true);
 			runtimeConfig.setCreateDemoData(true);
-			runtimeConfig.setFavouriteCountry(Country.GERMANY);
+
 			saveRuntimeConfig(runtimeConfig);
 		}
 
