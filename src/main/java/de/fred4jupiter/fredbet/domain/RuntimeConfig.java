@@ -8,8 +8,6 @@ package de.fred4jupiter.fredbet.domain;
  */
 public class RuntimeConfig {
 
-	public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
-
 	private boolean enabledParentChildRanking;
 
 	private boolean enableChangingUsername;
@@ -25,7 +23,12 @@ public class RuntimeConfig {
 	 * Sum points per user for selected country that will be shown in points
 	 * statistics.
 	 */
-	private Country favouriteCountry = DEFAULT_FAVOURITE_COUNTRY;
+	private Country favouriteCountry;
+
+	/**
+	 * Password used if the user password has been reset.
+	 */
+	private String passwordForReset;
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
@@ -65,6 +68,14 @@ public class RuntimeConfig {
 
 	public void setFavouriteCountry(Country favouriteCountry) {
 		this.favouriteCountry = favouriteCountry;
+	}
+
+	public String getPasswordForReset() {
+		return passwordForReset;
+	}
+
+	public void setPasswordForReset(String passwordForReset) {
+		this.passwordForReset = passwordForReset;
 	}
 
 }

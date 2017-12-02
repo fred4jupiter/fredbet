@@ -47,11 +47,6 @@ public class FredbetProperties {
 	private String imageFileSystemBaseFolder;
 
 	/**
-	 * Password used if the user password has been reset.
-	 */
-	private String passwordForReset;
-
-	/**
 	 * The AWS S3 bucket name to use to store images in.
 	 */
 	private String awsS3bucketName;
@@ -127,14 +122,6 @@ public class FredbetProperties {
 		this.imageLocation = imageLocation;
 	}
 
-	public String getPasswordForReset() {
-		return passwordForReset;
-	}
-
-	public void setPasswordForReset(String passwordForReset) {
-		this.passwordForReset = passwordForReset;
-	}
-
 	public String getAwsS3bucketName() {
 		return awsS3bucketName;
 	}
@@ -178,7 +165,6 @@ public class FredbetProperties {
 		builder.append("imageLocation", imageLocation);
 
 		builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
-		builder.append("passwordForReset", passwordForReset);
 		builder.append("awsS3bucketName", awsS3bucketName);
 		builder.append("pointsFinalWinner", pointsFinalWinner);
 		builder.append("pointsSemiFinalWinner", pointsSemiFinalWinner);

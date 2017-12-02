@@ -22,7 +22,6 @@ import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
@@ -30,6 +29,7 @@ import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.CreateUserCommand;
 import de.fred4jupiter.fredbet.web.user.UserDto;
@@ -47,9 +47,6 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private FredbetProperties fredbetProperties;
-
-	@Autowired
 	private SecurityService securityService;
 
 	@Autowired
@@ -63,6 +60,9 @@ public class UserService {
 
 	@Autowired
 	private SessionTrackingRepository sessionTrackingRepository;
+
+	@Autowired
+	private RuntimeConfigurationService runtimeConfigurationService;
 
 	public List<AppUser> findAll() {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
@@ -123,7 +123,8 @@ public class UserService {
 		}
 
 		if (passwordReset) {
-			appUser.setPassword(passwordEncoder.encode(fredbetProperties.getPasswordForReset()));
+			String passwordForReset = runtimeConfigurationService.loadRuntimeConfig().getPasswordForReset();
+			appUser.setPassword(passwordEncoder.encode(passwordForReset));
 		}
 
 		appUser.setChild(isChild);

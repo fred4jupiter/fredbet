@@ -12,8 +12,6 @@ public interface FredBetProfile {
 	
 	String PROD = "prod";
 
-	String DOCKER = "docker";
-
 	String LOCALDB = "localdb";
 
 	String INTEGRATION_TEST = "integration_test";

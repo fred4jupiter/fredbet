@@ -61,6 +61,11 @@
 							</select>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.favouriteCountry')}" th:errors="*{runtimeConfig.favouriteCountry}">favouriteCountry Error</p>						
 						</div>
+						<div class="form-group">
+							<label for="passwordForReset" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label> 
+							<input type="text" th:field="*{runtimeConfig.passwordForReset}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.passwordForReset')}" th:errors="*{runtimeConfig.passwordForReset}">passwordForReset Error</p>						
+						</div>					
 					</div>
 				</div>
 				<div class="row">			

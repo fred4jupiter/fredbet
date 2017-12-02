@@ -12,13 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.RuntimeConfig;
 import de.fred4jupiter.fredbet.domain.RuntimeConfigDb;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.RuntimeConfigDbRepository;
 
+/**
+ * Service for loading runtime configuration settings.
+ *  
+ * @author michael
+ *
+ */
 @Service
 @Transactional
 public class RuntimeConfigurationService {
@@ -49,12 +55,14 @@ public class RuntimeConfigurationService {
 
 	private RuntimeConfig createDefaultRuntimeConfig() {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setFavouriteCountry(Country.GERMANY);
+		runtimeConfig.setFavouriteCountry(FredbetConstants.DEFAULT_FAVOURITE_COUNTRY);
+		runtimeConfig.setPasswordForReset(FredbetConstants.DEFAULT_REST_PASSWORT);
 
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);
 			runtimeConfig.setEnableChangingUsername(true);
 			runtimeConfig.setCreateDemoData(true);
+			runtimeConfig.setEnabledParentChildRanking(true);
 
 			saveRuntimeConfig(runtimeConfig);
 		}
