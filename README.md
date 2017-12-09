@@ -17,7 +17,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - points statistic
 - display other users bets after match kickoff
 - ranking page
-- Microsoft Excel match import
+- Microsoft Excel match import (ready to use world championchip 2018 template available)
 - Microsoft Excel bets, statistic export
 - language switcher (supported languages: englisch, german (by now))
 - ranking filter for adults and childs listing
@@ -51,7 +51,7 @@ mvn clean install docker:build
 docker run -d -p 8080:8080 fred4jupiter/fredbet
 ```
 
-This will build (and run) an image with name `fred4jupiter/fredbet`. 
+This will build (and run) an image with name `fred4jupiter/fredbet`.
 
 ## Running with Docker Compose
 
@@ -111,10 +111,11 @@ FredBet is designed to run within the Amazon Web Services (AWS) cloud as product
 | fredbet.database-password | password | The database password. |
 | fredbet.database-type | mysql |  |
 
-Be sure to use an instance profile with sufficient privileges for S3. You can ajust these values with if following properties:
+Be sure to use an instance profile with sufficient privileges for S3. You can ajust these values with the following properties:
 
-- `cloud.aws.credentials.profileName = ecsInstanceRole`
-	- name of the instance profile (this is the default name)
+| Key | Default Value | Description |
+|--------|--------|--------|
+| cloud.aws.credentials.profileName |  ecsInstanceRole | name of the instance profile |
 
 The policy to access your S3 bucket will look like this:
 
@@ -133,9 +134,11 @@ The policy to access your S3 bucket will look like this:
 
 If you not want to use the instance profile for authorization (or you can´t, e.g. not running in AWS) you can set the access key and secret access key manually with these environment variables:
 
-- `cloud.aws.credentials.accessKey = XXX`
-- `cloud.aws.credentials.secretKey = XXX`
-- `cloud.aws.credentials.instanceProfile = false`
+| Key | Value |
+|--------|--------|
+| cloud.aws.credentials.accessKey |  XXX |
+| cloud.aws.credentials.secretKey |  XXX |
+| cloud.aws.credentials.instanceProfile |  false |
 
 ## Hints
 
