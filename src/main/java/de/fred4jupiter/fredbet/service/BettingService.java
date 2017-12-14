@@ -215,6 +215,9 @@ public class BettingService {
 	private boolean hasFirstMatchStarted() {
 		LocalDateTime dateTimeNow = LocalDateTime.now();
 		Date date = matchRepository.findStartDateOfFirstMatch();
+		if (date == null) {
+			return false;
+		}
 		LocalDateTime firstMatchKickOffDate = DateUtils.toLocalDateTime(date);
 		return dateTimeNow.isAfter(firstMatchKickOffDate);
 	}
