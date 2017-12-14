@@ -10,6 +10,8 @@ services:
        - MYSQL_ROOT_PASSWORD=secred
        - MYSQL_USER=fred
        - MYSQL_PASSWORD=fred
+      networks:
+       - default
     fredbet:
       image: fred4jupiter/fredbet:latest
       links:
@@ -24,3 +26,8 @@ services:
        - FREDBET_DATABASE_USERNAME=fred
        - FREDBET_DATABASE_PASSWORD=fred
        - FREDBET_DATABASE_TYPE=mysql
+      networks:
+       - default
+
+networks:
+ default:
