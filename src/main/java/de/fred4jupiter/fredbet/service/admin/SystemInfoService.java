@@ -51,8 +51,7 @@ public class SystemInfoService {
 		addEnvProperty("fredbet.points-semi-final-winner", allProperties);
 		addEnvProperty("fredbet.points-third-final-winner", allProperties);
 		addEnvProperty("fredbet.image-location", allProperties);
-		addEnvProperty("fredbet.image-size", allProperties);
-		addEnvProperty("fredbet.favourite-country", allProperties);
+		addEnvProperty("fredbet.image-size", allProperties);		
 		addEnvProperty("fredbet.aws-s3bucket-name", allProperties);
 		addEnvProperty("fredbet.database-url", allProperties);
 		
