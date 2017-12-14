@@ -1,0 +1,26 @@
+version: "3"
+services:
+    postgres:  
+      image: postgres
+      volumes:
+        - ~/pgdata:/var/lib/postgresql/data
+      ports:
+        - "5432:5432"
+      environment:
+       - POSTGRES_USER=fred
+       - POSTGRES_PASSWORD=fred
+       - POSTGRES_DB=fredbetdb
+    fredbet:
+      image: fred4jupiter/fredbet
+      links:
+        - postgres
+      depends_on:
+        - postgres
+      ports:
+        - "8080:8080"
+      environment:
+       - SPRING_PROFILES_ACTIVE=prod
+       - FREDBET_DATABASE_TYPE=postgres
+       - FREDBET_DATABASE_URL=jdbc:postgresql://postgres:5432/fredbetdb
+       - FREDBET_DATABASE_USERNAME=fred
+       - FREDBET_DATABASE_PASSWORD=fred
