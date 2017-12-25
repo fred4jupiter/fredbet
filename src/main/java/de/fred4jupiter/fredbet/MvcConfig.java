@@ -76,5 +76,5 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	public LayoutDialect layoutDialect() {
 		// for grouping CSS and JS files together
 		return new LayoutDialect(new GroupingStrategy());
-	}
+	}	
 }

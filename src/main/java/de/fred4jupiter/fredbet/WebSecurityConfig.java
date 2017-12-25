@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		// these matches will not go through the security filter (all above
 		// static folder)
-		web.ignoring().antMatchers("/blueimpgallery/**", "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
+		web.ignoring().antMatchers("/favicon.ico", "/blueimpgallery/**", "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
 	}
 
 	@Override
