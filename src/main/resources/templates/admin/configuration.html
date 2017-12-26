@@ -3,6 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
 	<head>
 		<title th:text="#{administration.config.title}"></title>
+		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -39,15 +40,21 @@
 						<ul class="list-group">
 							<li class="list-group-item">								
 								<input type="checkbox" th:field="*{runtimeConfig.enabledParentChildRanking}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>							
+								<label for="child" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+								th:title="#{administration.runtime.configuration.enabledParentChildRanking.tooltip}"></span>								
 							</li>
 							<li class="list-group-item">									
 								<input type="checkbox" th:field="*{runtimeConfig.enableChangingUsername}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>							
+								<label for="child" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+								th:title="#{administration.runtime.configuration.enableChangingUsername.tooltip}"></span>
 							</li>
 							<li class="list-group-item">									
 								<input type="checkbox" th:field="*{runtimeConfig.showDemoDataNavigationEntry}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>							
+								<label for="child" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+								th:title="#{administration.runtime.configuration.showDemoDataNavigationEntry.tooltip}"></span>
 							</li>							
 						</ul>														
 					</div>
@@ -72,6 +79,7 @@
 					<div class="col-xs-12 col-sm-12 col-md-6">	
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+							<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</button>
 						</div>	
 					</div>
 				</div>
