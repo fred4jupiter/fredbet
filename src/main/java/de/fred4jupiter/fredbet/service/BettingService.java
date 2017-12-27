@@ -201,7 +201,7 @@ public class BettingService {
 		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
 		extraBetCommand.setThirdFinalWinner(extraBet.getThirdFinalWinner());
 		extraBetCommand.setPoints(extraBet.getPoints());
-		
+
 		boolean firstMatchStarted = hasFirstMatchStarted();
 		if (firstMatchStarted) {
 			extraBetCommand.setBettable(false);

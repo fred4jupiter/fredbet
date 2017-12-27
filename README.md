@@ -82,9 +82,6 @@ These properties has to be set at application startup.
 | fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE, AWS_S3` |
 | fredbet.image-file-sytem-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
 | fredbet.aws-s3bucket-name | mis-demo | Name of the AWS bucket if the image location is set to AWS_S3. |
-| fredbet.points-final-winner | 10 | Extra points a user will get for betting the final winner correctly. |
-| fredbet.points-semi-final-winner | 5 | Extra points a user will get for betting the semi final winner correctly. |
-| fredbet.points-third-final-winner | 2 | Extra points a user will get for betting the third final winner correctly. |
 
 Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.
 
@@ -96,6 +93,19 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 | fredbet.database-username | | The database username. |
 | fredbet.database-password | | The database password. |
 | fredbet.database-type | h2 | The used database type. Choose one of these values: `h2, maria-db, mysql, postgres` |
+
+## Runtime Configuration
+
+Some configuration parameters are configurable at runtime. You has to be administrator to edit these values. Following settings can be changed at runtime:
+
+- Log Level
+- Clearing caches (for available navigation entries, user child relation on ranking page, runtime configuration parameters)
+- enable separate adults and children ranking
+- changeable usernames
+- menu entry for generating test data (for testing only!)
+- favourite country (will be used in points statistics)
+- used password on password reset
+- points for extra bets
 
 ## Production Environment
 
