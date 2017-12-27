@@ -1,5 +1,8 @@
 package de.fred4jupiter.fredbet.domain;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -32,6 +35,27 @@ public class RuntimeConfig {
 	 */
 	@NotEmpty
 	private String passwordForReset;
+
+	/**
+	 * Extra betting points for final winner.
+	 */
+	@NotNull
+	@Min(value = 0, message = "The value must be positive")
+	private Integer pointsFinalWinner = Integer.valueOf(10);
+
+	/**
+	 * Extra betting points for semi final winner.
+	 */
+	@NotNull
+	@Min(value = 0, message = "The value must be positive")
+	private Integer pointsSemiFinalWinner = Integer.valueOf(5);
+
+	/**
+	 * Extra betting points for third winner.
+	 */
+	@NotNull
+	@Min(value = 0, message = "The value must be positive")
+	private Integer pointsThirdFinalWinner = Integer.valueOf(2);
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
@@ -79,6 +103,30 @@ public class RuntimeConfig {
 
 	public void setPasswordForReset(String passwordForReset) {
 		this.passwordForReset = passwordForReset;
+	}
+
+	public Integer getPointsFinalWinner() {
+		return pointsFinalWinner;
+	}
+
+	public void setPointsFinalWinner(Integer pointsFinalWinner) {
+		this.pointsFinalWinner = pointsFinalWinner;
+	}
+
+	public Integer getPointsSemiFinalWinner() {
+		return pointsSemiFinalWinner;
+	}
+
+	public void setPointsSemiFinalWinner(Integer pointsSemiFinalWinner) {
+		this.pointsSemiFinalWinner = pointsSemiFinalWinner;
+	}
+
+	public Integer getPointsThirdFinalWinner() {
+		return pointsThirdFinalWinner;
+	}
+
+	public void setPointsThirdFinalWinner(Integer pointsThirdFinalWinner) {
+		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
 	}
 
 }

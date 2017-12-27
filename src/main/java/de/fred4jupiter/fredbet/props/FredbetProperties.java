@@ -51,21 +51,6 @@ public class FredbetProperties {
 	 */
 	private String awsS3bucketName;
 
-	/**
-	 * Extra betting points for final winner.
-	 */
-	private int pointsFinalWinner;
-
-	/**
-	 * Extra betting points for semi final winner.
-	 */
-	private int pointsSemiFinalWinner;
-
-	/**
-	 * Extra betting points for third winner.
-	 */
-	private int pointsThirdFinalWinner;
-
 	public String getDatabaseUrl() {
 		return databaseUrl;
 	}
@@ -130,30 +115,6 @@ public class FredbetProperties {
 		this.awsS3bucketName = awsS3bucketName;
 	}
 
-	public int getPointsFinalWinner() {
-		return pointsFinalWinner;
-	}
-
-	public void setPointsFinalWinner(int pointsFinalWinner) {
-		this.pointsFinalWinner = pointsFinalWinner;
-	}
-
-	public int getPointsSemiFinalWinner() {
-		return pointsSemiFinalWinner;
-	}
-
-	public void setPointsSemiFinalWinner(int pointsSemiFinalWinner) {
-		this.pointsSemiFinalWinner = pointsSemiFinalWinner;
-	}
-
-	public int getPointsThirdFinalWinner() {
-		return pointsThirdFinalWinner;
-	}
-
-	public void setPointsThirdFinalWinner(int pointsThirdFinalWinner) {
-		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
-	}
-
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
@@ -166,9 +127,6 @@ public class FredbetProperties {
 
 		builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
 		builder.append("awsS3bucketName", awsS3bucketName);
-		builder.append("pointsFinalWinner", pointsFinalWinner);
-		builder.append("pointsSemiFinalWinner", pointsSemiFinalWinner);
-		builder.append("pointsThirdFinalWinner", pointsThirdFinalWinner);
 		return builder.toString();
 	}
 

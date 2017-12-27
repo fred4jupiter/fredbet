@@ -16,7 +16,7 @@
 						<div class="panel panel-success">
 							<div class="panel-heading">
 								<label class="bold" th:text="#{extra_bets.finalWinner} + ':'"></label>
-								<span class="right" th:text="#{extra_bets.points(${@extraPointsCalculationService.getPointsFinalWinner()})}"></span>
+								<span class="right" th:text="#{extra_bets.points(${@runtimeConfigurationUtil.getConfig().getPointsFinalWinner()})}"></span>
 							</div>
 							<div class="panel-body">
 								<select th:field="*{finalWinner}" class="form-control">
@@ -24,7 +24,7 @@
 								</select>
 							</div>
 						</div>
-					</div>					
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -33,7 +33,7 @@
 						<div class="panel panel-warning">
 							<div class="panel-heading">
 								<span class="bold" th:text="#{extra_bets.semiFinalWinner} + ':'"></span>
-								<span class="right" th:text="#{extra_bets.points(${@extraPointsCalculationService.getPointsSemiFinalWinner()})}"></span>
+								<span class="right" th:text="#{extra_bets.points(${@runtimeConfigurationUtil.getConfig().getPointsSemiFinalWinner()})}"></span>
 							</div>
 							<div class="panel-body">
 								<select th:field="*{semiFinalWinner}" class="form-control">
@@ -50,7 +50,7 @@
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								<span class="bold" th:text="#{extra_bets.thirdFinalWinner} + ':'"></span>
-								<span class="right" th:text="#{extra_bets.points(${@extraPointsCalculationService.getPointsThirdFinalWinner()})}"></span>
+								<span class="right" th:text="#{extra_bets.points(${@runtimeConfigurationUtil.getConfig().getPointsThirdFinalWinner()})}"></span>
 							</div>
 							<div class="panel-body">
 								<select th:field="*{thirdFinalWinner}" class="form-control">

@@ -69,6 +69,23 @@
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.passwordForReset')}" th:errors="*{runtimeConfig.passwordForReset}">passwordForReset Error</p>						
 						</div>					
 					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label th:text="#{administration.runtime.configuration.extraBetPoints} + ':'"></label>
+						<table class="table table-responsive">
+			   				<tr>
+			   					<td th:text="#{administration.runtime.configuration.pointsFinalWinner.title}"></td>
+				   				<td><input type="text" th:field="*{runtimeConfig.pointsFinalWinner}"/></td>
+			   				</tr>
+			   				<tr>
+			   					<td th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title}"></td>
+			   					<td><input type="text" th:field="*{runtimeConfig.pointsSemiFinalWinner}"/></td>
+			   				</tr>
+			   				<tr>
+			   					<td th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title}"></td>
+			   					<td><input type="text" th:field="*{runtimeConfig.pointsThirdFinalWinner}"/></td>
+			   				</tr>
+				   		</table>
+					</div>
 				</div>				
 				<div class="row">			
 					<div class="col-xs-12 col-sm-12 col-md-6">	
