@@ -59,36 +59,71 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
 
 	private void calculatePointsFor(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
 		if (match.isFinal()) {
-			if (!match.hasResultSet()) {
-				extraBet.setPointsOne(0);
-				extraBet.setPointsTwo(0);
-				extraBetRepository.save(extraBet);
-				return;
-			}
-
-			if (extraBet.getFinalWinner().equals(match.getWinner())) {
-				extraBet.setPointsOne(runtimeConfig.getPointsFinalWinner());
-			}
-
-			if (extraBet.getSemiFinalWinner().equals(match.getLooser())) {
-				extraBet.setPointsTwo(runtimeConfig.getPointsSemiFinalWinner());
-			}
-
+			Integer pointsFinal = calculatePointsFinal(match, extraBet, runtimeConfig);
+			Integer pointsSemiFinal = calculatePointsSemiFinal(match, extraBet, runtimeConfig);
+			LOG.debug("User {} reached extra bets: pointsFinal={}, pointsSemiFinal={}", extraBet.getUserName(), pointsFinal,
+					pointsSemiFinal);
+			extraBet.setPointsOne(pointsFinal);
+			extraBet.setPointsTwo(pointsSemiFinal);
 			extraBetRepository.save(extraBet);
 			return;
-		} else if (match.isGroup(Group.GAME_FOR_THIRD)) {
-			if (!match.hasResultSet()) {
-				extraBet.setPointsThree(0);
-				extraBetRepository.save(extraBet);
-				return;
-			}
-
-			if (extraBet.getThirdFinalWinner().equals(match.getWinner())) {
-				extraBet.setPointsThree(runtimeConfig.getPointsThirdFinalWinner());
-				extraBetRepository.save(extraBet);
-				return;
-			}
 		}
+
+		if (match.isGroup(Group.GAME_FOR_THIRD)) {
+			Integer pointsGameOfThird = calculatePointsGameOfThird(match, extraBet, runtimeConfig);
+			LOG.debug("User {} reached extra bets: pointsGameOfThird={}", extraBet.getUserName(), pointsGameOfThird);
+
+			extraBet.setPointsThree(pointsGameOfThird);
+			extraBetRepository.save(extraBet);
+		}
+	}
+
+	private Integer calculatePointsFinal(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+		if (!match.isFinal()) {
+			return Integer.valueOf(0);
+		}
+
+		if (!match.hasResultSet()) {
+			return Integer.valueOf(0);
+		}
+
+		if (extraBet.getFinalWinner().equals(match.getWinner())) {
+			return runtimeConfig.getPointsFinalWinner();
+		}
+
+		return Integer.valueOf(0);
+	}
+
+	private Integer calculatePointsSemiFinal(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+		if (!match.isFinal()) {
+			return Integer.valueOf(0);
+		}
+
+		if (!match.hasResultSet()) {
+			return Integer.valueOf(0);
+		}
+
+		if (extraBet.getSemiFinalWinner().equals(match.getLooser())) {
+			return runtimeConfig.getPointsSemiFinalWinner();
+		}
+
+		return Integer.valueOf(0);
+	}
+
+	private Integer calculatePointsGameOfThird(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+		if (!match.isGroup(Group.GAME_FOR_THIRD)) {
+			return Integer.valueOf(0);
+		}
+
+		if (!match.hasResultSet()) {
+			return Integer.valueOf(0);
+		}
+
+		if (extraBet.getThirdFinalWinner().equals(match.getWinner())) {
+			return runtimeConfig.getPointsThirdFinalWinner();
+		}
+
+		return Integer.valueOf(0);
 	}
 
 }
