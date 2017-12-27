@@ -10,6 +10,14 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * Service for clearing all caches.
+ * 
+ * <p>See Application for configuring the caches.
+ * 
+ * @author michael
+ *
+ */
 @Service
 public class CacheAdministrationService {
 
