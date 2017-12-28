@@ -17,7 +17,7 @@ RUN set -ex; \
 RUN echo "Europe/Berlin" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-ENV JAVA_OPTS="-Xmx2048m"
+ENV JAVA_OPTS="-Xms256m -Xmx1024m"
 
 EXPOSE 8080
 
