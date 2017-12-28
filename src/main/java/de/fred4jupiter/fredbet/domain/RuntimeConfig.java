@@ -40,21 +40,21 @@ public class RuntimeConfig {
 	 * Extra betting points for final winner.
 	 */
 	@NotNull
-	@Min(value = 0, message = "The value must be positive")
+	@Min(value = 0)
 	private Integer pointsFinalWinner = Integer.valueOf(10);
 
 	/**
 	 * Extra betting points for semi final winner.
 	 */
 	@NotNull
-	@Min(value = 0, message = "The value must be positive")
+	@Min(value = 0)
 	private Integer pointsSemiFinalWinner = Integer.valueOf(5);
 
 	/**
 	 * Extra betting points for third winner.
 	 */
 	@NotNull
-	@Min(value = 0, message = "The value must be positive")
+	@Min(value = 0)
 	private Integer pointsThirdFinalWinner = Integer.valueOf(2);
 
 	public boolean isEnabledParentChildRanking() {

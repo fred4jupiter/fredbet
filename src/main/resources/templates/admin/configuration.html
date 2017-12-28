@@ -70,21 +70,22 @@
 						</div>					
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">
-						<label th:text="#{administration.runtime.configuration.extraBetPoints} + ':'"></label>
-						<table class="table table-responsive">
-			   				<tr>
-			   					<td th:text="#{administration.runtime.configuration.pointsFinalWinner.title}" class="text-left"></td>
-				   				<td class="col-md-6"><input type="text" size="5" th:field="*{runtimeConfig.pointsFinalWinner}"/></td>
-			   				</tr>
-			   				<tr>
-			   					<td th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title}" class="text-left"></td>
-			   					<td><input type="text" size="5" th:field="*{runtimeConfig.pointsSemiFinalWinner}"/></td>
-			   				</tr>
-			   				<tr>
-			   					<td th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title}" class="text-left"></td>
-			   					<td><input type="text" size="5" th:field="*{runtimeConfig.pointsThirdFinalWinner}"/></td>
-			   				</tr>
-				   		</table>
+						<label th:text="#{administration.runtime.configuration.extraBetPoints}"></label>
+						<div class="form-group">
+							<label for="runtimeConfig.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label> 
+							<input type="text" th:field="*{runtimeConfig.pointsFinalWinner}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsFinalWinner')}" th:errors="*{runtimeConfig.pointsFinalWinner}"></p>						
+						</div>
+						<div class="form-group">
+							<label for="runtimeConfig.pointsSemiFinalWinner" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label> 
+							<input type="text" th:field="*{runtimeConfig.pointsSemiFinalWinner}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsSemiFinalWinner')}" th:errors="*{runtimeConfig.pointsSemiFinalWinner}"></p>						
+						</div>	
+						<div class="form-group">
+							<label for="runtimeConfig.pointsThirdFinalWinner" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label> 
+							<input type="text" th:field="*{runtimeConfig.pointsThirdFinalWinner}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsThirdFinalWinner')}" th:errors="*{runtimeConfig.pointsThirdFinalWinner}"></p>						
+						</div>
 					</div>
 				</div>				
 				<div class="row">			
