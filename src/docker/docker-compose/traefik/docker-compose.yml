@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  proxy:
+    image: traefik
+    command: --web --docker --docker.domain=example.com --logLevel=DEBUG
+    networks:
+      - traefik-net
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    labels:
+      traefik.port: "8080"
+      traefik.frontend.rule: "Host:monitor.example.com"
+    domainname: example.com
+    hostname: example
+  fredbet:
+    image: fred4jupiter/fredbet
+    networks:
+      - traefik-net
+    labels:
+      traefik.backend: "fredbet"
+      traefik.frontend.rule: "Host:fredbet.example.com"
+      traefik.backend.loadbalancer.stickiness: "true"
+
+networks:
+  traefik-net:
+
