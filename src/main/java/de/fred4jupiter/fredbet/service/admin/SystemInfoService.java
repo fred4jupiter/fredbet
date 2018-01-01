@@ -47,14 +47,11 @@ public class SystemInfoService {
 		addBuildTimestamp(allProperties);
 		addSpringProfiles(allProperties);
 		addEnvProperty("fredbet.database-type", allProperties);
-		addEnvProperty("fredbet.points-final-winner", allProperties);
-		addEnvProperty("fredbet.points-semi-final-winner", allProperties);
-		addEnvProperty("fredbet.points-third-final-winner", allProperties);
 		addEnvProperty("fredbet.image-location", allProperties);
-		addEnvProperty("fredbet.image-size", allProperties);		
+		addEnvProperty("fredbet.image-size", allProperties);
 		addEnvProperty("fredbet.aws-s3bucket-name", allProperties);
 		addEnvProperty("fredbet.database-url", allProperties);
-		
+
 		addEnvProperty("cloud.aws.credentials.profileName", allProperties);
 		addEnvProperty("cloud.aws.region.static", allProperties);
 	}
