@@ -59,25 +59,21 @@ public final class DateUtils {
 		long minutes = seconds / 60;
 		long hours = minutes / 60;
 		long days = hours / 24;
-		return  days + " days " + hours % 24 + " hours " + minutes % 60 + " min " + seconds % 60 +" sec"; 
+		return days + " days " + hours % 24 + " hours " + minutes % 60 + " min " + seconds % 60 + " sec";
 	}
 
 	private static ZoneId getZoneId() {
 		return ZoneId.systemDefault();
 	}
 
-	public static ZonedDateTime parseBuildTimestamp(String buildTimestamp) {
-		return parseToZonedDateTime(buildTimestamp + " +0000", "yyyy-MM-dd HH:mm Z");
-	}
-	
 	public static ZonedDateTime parseToZonedDateTime(Date date) {
 		return date.toInstant().atZone(getZoneId());
 	}
-	
+
 	public static String formatByLocale(Date date, Locale locale) {
 		return formatByLocale(parseToZonedDateTime(date), locale);
 	}
-	
+
 	public static String formatByLocale(ZonedDateTime zonedDateTime, Locale locale) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
 		return zonedDateTime.format(dateTimeFormatter);

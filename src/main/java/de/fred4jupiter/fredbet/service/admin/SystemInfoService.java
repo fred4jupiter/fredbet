@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.service.admin;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -70,7 +71,15 @@ public class SystemInfoService {
 
 	private void addBuildTimestamp(SortedMap<String, Object> map) {
 		String buildTimestamp = buildProperties.getProperty("build.timestamp");
-		map.put("build.timestamp", buildTimestamp + " UTC");
+		String convertedTimestamp = convertToSystemLocale(buildTimestamp);
+		map.put("build.timestamp", convertedTimestamp);
+	}
+
+	private String convertToSystemLocale(String buildTimestamp) {
+		String tmpBuildTimestamp = buildTimestamp + " +00:00";
+		ZonedDateTime parseToZonedDateTime = ZonedDateTime.parse(tmpBuildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm ZZZZZ"));
+		ZonedDateTime converted = parseToZonedDateTime.withZoneSameInstant(ZoneOffset.systemDefault());
+		return converted.toString();
 	}
 
 	private void addSpringProfiles(SortedMap<String, Object> map) {
