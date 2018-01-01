@@ -49,6 +49,7 @@ public class SystemInfoService {
 		addEnvProperty("fredbet.database-type", allProperties);
 		addEnvProperty("fredbet.image-location", allProperties);
 		addEnvProperty("fredbet.image-size", allProperties);
+		addEnvProperty("fredbet.thumbnail-size", allProperties);
 		addEnvProperty("fredbet.aws-s3bucket-name", allProperties);
 		addEnvProperty("fredbet.database-url", allProperties);
 
