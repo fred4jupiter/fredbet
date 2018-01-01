@@ -2,11 +2,9 @@ package de.fred4jupiter.fredbet.service.admin;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
@@ -103,14 +101,8 @@ public class SystemInfoService {
 		}
 	}
 
-	private void addCurrentDateTime(SortedMap<String, Object> map) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
-		DateTimeFormatter timeZoneFormatter = DateTimeFormatter.ofPattern("VV x");
-
-		final String key = "currentDateTime";
-		final String value = formatter.format(LocalDateTime.now()) + ", " + timeZoneFormatter.format(ZonedDateTime.now());
-
-		map.put(key, value);
+	private void addCurrentDateTime(SortedMap<String, Object> map) {		
+		map.put("currentDateTime", ZonedDateTime.now());
 	}
 
 }
