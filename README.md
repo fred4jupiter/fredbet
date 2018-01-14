@@ -47,7 +47,8 @@ docker run -d -p 8080:8080 fred4jupiter/fredbet
 ## Building your own Docker image
 
 ```bash
-mvn clean install docker:build
+mvn clean install
+docker build -t fred4jupiter/fredbet .
 docker run -d -p 8080:8080 fred4jupiter/fredbet
 ```
 
