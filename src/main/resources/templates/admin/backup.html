@@ -11,9 +11,13 @@
 			<h1 th:text="#{administration.backup.title}"></h1>						
 			<div class="row">			
 				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="form-group">
+						<a th:href="@{/backup/execute}" class="btn btn-primary" role="button" th:text="#{administration.backup.executeBackupButton}"></a>
+					</div>
+					<hr/>
 					<form id="backupForm" th:action="@{/backup/save}" th:object="${backupCommand}" action="#" method="post" role="form">						
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+<!-- 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button> -->
 						</div>
 					</form>
 				</div>
