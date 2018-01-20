@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+	<head>
+		<title th:text="#{administration.backup.title}"></title>
+		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div th:replace="fragments/alert :: alert_headline"></div>
+			<h1 th:text="#{administration.backup.title}"></h1>						
+			<div class="row">			
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<form id="backupForm" th:action="@{/backup/save}" th:object="${backupCommand}" action="#" method="post" role="form">						
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
