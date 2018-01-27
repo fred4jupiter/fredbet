@@ -30,7 +30,7 @@ public class RuntimeConfigurationService {
 	private static final Long DEFAULT_CONFIG_ID = Long.valueOf(1);
 
 	@Autowired
-	private RuntimeConfigRepository runtimeConfigRepository;
+	private RuntimeConfigRepository<RuntimeConfig> runtimeConfigRepository;
 
 	@Autowired
 	private Environment environment;

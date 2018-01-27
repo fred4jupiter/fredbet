@@ -11,14 +11,14 @@ import com.google.gson.Gson;
 import de.fred4jupiter.fredbet.domain.RuntimeConfigDb;
 
 @Repository
-public class RuntimeConfigRepository {
+public class RuntimeConfigRepository<T> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RuntimeConfigRepository.class);
 
 	@Autowired
 	private RuntimeConfigDbRepository runtimeConfigDbRepository;
 
-	public <T> T loadRuntimeConfig(Long id, Class<T> targetType) {
+	public T loadRuntimeConfig(Long id, Class<T> targetType) {
 		RuntimeConfigDb runtimeConfigDb = runtimeConfigDbRepository.findOne(id);
 		if (runtimeConfigDb == null) {
 			runtimeConfigDb = new RuntimeConfigDb(id);
@@ -28,7 +28,7 @@ public class RuntimeConfigRepository {
 		return toRuntimeConfig(runtimeConfigDb, targetType);
 	}
 
-	private <T> T toRuntimeConfig(RuntimeConfigDb runtimeConfigDb, Class<T> targetType) {
+	private T toRuntimeConfig(RuntimeConfigDb runtimeConfigDb, Class<T> targetType) {
 		String jsonConfig = runtimeConfigDb.getJsonConfig();
 
 		if (StringUtils.isNotBlank(jsonConfig)) {
@@ -39,14 +39,14 @@ public class RuntimeConfigRepository {
 		return null;
 	}
 
-	public <T> void saveRuntimeConfig(Long id, T runtimeConfig) {
+	public void saveRuntimeConfig(Long id, T runtimeConfig) {
 		RuntimeConfigDb runtimeConfigDb = toRuntimeConfigDb(id, runtimeConfig);
 
 		runtimeConfigDbRepository.save(runtimeConfigDb);
 		LOG.info("saved runtime configuration.");
 	}
 
-	private <T> RuntimeConfigDb toRuntimeConfigDb(Long id, T runtimeConfig) {
+	private RuntimeConfigDb toRuntimeConfigDb(Long id, T runtimeConfig) {
 		Gson gson = new Gson();
 		String json = gson.toJson(runtimeConfig);
 		RuntimeConfigDb runtimeConfigDb = loadRuntimeConfigDb(id);
