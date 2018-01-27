@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.domain.DatabaseBackup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException;
 import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException.ErrorCode;
@@ -39,8 +40,8 @@ public class DatabaseBackupController {
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showPage(DatabaseBackupCommand databaseBackupCommand) {
-		String backupFolder = databaseBackupService.loadBackupFolder();
-		databaseBackupCommand.setBackupFolder(backupFolder);
+		DatabaseBackup databaseBackup = databaseBackupService.loadDatabaseBackup();
+		databaseBackupCommand.setBackupFolder(databaseBackup.getDatabaseBackupFolder());
 		return new ModelAndView("admin/backup", "databaseBackupCommand", databaseBackupCommand);
 	}
 

@@ -4,16 +4,15 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.fred4jupiter.fredbet.domain.RuntimeConfig;
+import de.fred4jupiter.fredbet.domain.DatabaseBackup;
 import de.fred4jupiter.fredbet.props.DatabaseType;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.DatabaseBackupRepository;
+import de.fred4jupiter.fredbet.repository.RuntimeConfigRepository;
 import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException.ErrorCode;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 
 @Service
 public class DatabaseBackupService {
@@ -22,7 +21,9 @@ public class DatabaseBackupService {
 	private DatabaseBackupRepository databaseBackupRepository;
 
 	@Autowired
-	private RuntimeConfigurationService runtimeConfigurationService;
+	private RuntimeConfigRepository<DatabaseBackup> runtimeConfigRepository;
+
+	private static final Long DATABASE_BACKUP_CONFIG_ID = Long.valueOf(2);
 
 	@Autowired
 	private FredbetProperties fredbetProperties;
@@ -42,12 +43,9 @@ public class DatabaseBackupService {
 
 		String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 
-		String backupFolder = loadBackupFolder();
-		if (StringUtils.isBlank(backupFolder)) {
-			backupFolder = determineDefaultBackupFolder();
-		}
+		DatabaseBackup databaseBackup = loadDatabaseBackup();
 		String fileName = formattedDateTime + "_fredbetdb_bkp.zip";
-		String pathFilename = backupFolder + File.separator + fileName;
+		String pathFilename = databaseBackup.getDatabaseBackupFolder() + File.separator + fileName;
 		databaseBackupRepository.executeBackup(pathFilename);
 		return pathFilename;
 	}
@@ -57,14 +55,18 @@ public class DatabaseBackupService {
 		return userHomeFolder + File.separator + "fredbet";
 	}
 
-	public String loadBackupFolder() {
-		RuntimeConfig runtimeConfig = runtimeConfigurationService.loadRuntimeConfig();
-		return runtimeConfig.getDatabaseBackupFolder();
+	public DatabaseBackup loadDatabaseBackup() {
+		DatabaseBackup databaseBackup = runtimeConfigRepository.loadRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
+		if (databaseBackup == null) {
+			databaseBackup = new DatabaseBackup();
+			databaseBackup.setDatabaseBackupFolder(determineDefaultBackupFolder());
+		}
+		return databaseBackup;
 	}
 
-	public void saveBackupFolder(String databaseBackupFolder) {
-		RuntimeConfig runtimeConfig = runtimeConfigurationService.loadRuntimeConfig();
-		runtimeConfig.setDatabaseBackupFolder(databaseBackupFolder);
-		runtimeConfigurationService.saveRuntimeConfig(runtimeConfig);
+	public void saveBackupFolder(String backupFolder) {
+		DatabaseBackup databaseBackup = loadDatabaseBackup();
+		databaseBackup.setDatabaseBackupFolder(backupFolder);
+		runtimeConfigRepository.saveRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
 	}
 }
