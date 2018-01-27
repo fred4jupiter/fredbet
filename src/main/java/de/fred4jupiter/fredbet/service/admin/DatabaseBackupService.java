@@ -18,8 +18,6 @@ import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 @Service
 public class DatabaseBackupService {
 
-	private static final String DEFAULT_BACKUP_FOLDER = "~/fredbet";
-
 	@Autowired
 	private DatabaseBackupRepository databaseBackupRepository;
 
@@ -46,12 +44,17 @@ public class DatabaseBackupService {
 
 		String backupFolder = loadBackupFolder();
 		if (StringUtils.isBlank(backupFolder)) {
-			backupFolder = DEFAULT_BACKUP_FOLDER;
+			backupFolder = determineDefaultBackupFolder();
 		}
-		String fileName = formattedDateTime + "_fredbetdb.zip";
+		String fileName = formattedDateTime + "_fredbetdb_bkp.zip";
 		String pathFilename = backupFolder + File.separator + fileName;
 		databaseBackupRepository.executeBackup(pathFilename);
 		return pathFilename;
+	}
+
+	private String determineDefaultBackupFolder() {
+		String userHomeFolder = System.getProperty("user.home");
+		return userHomeFolder + File.separator + "fredbet";
 	}
 
 	public String loadBackupFolder() {
