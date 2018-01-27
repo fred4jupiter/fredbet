@@ -15,9 +15,14 @@
 						<a th:href="@{/backup/execute}" class="btn btn-primary" role="button" th:text="#{administration.backup.executeBackupButton}"></a>
 					</div>
 					<hr/>
-					<form id="backupForm" th:action="@{/backup/save}" th:object="${backupCommand}" action="#" method="post" role="form">						
+					<form id="backupForm" th:action="@{/backup/save}" th:object="${databaseBackupCommand}" action="#" method="post" role="form">						
 						<div class="form-group">
-<!-- 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button> -->
+							<label for="backupFolder" th:text="#{backup.backupFolder} + ':'"></label> 
+							<input type="text" th:field="*{backupFolder}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('backupFolder')}" th:errors="*{backupFolder}">backupFolder error</p>						
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						</div>
 					</form>
 				</div>

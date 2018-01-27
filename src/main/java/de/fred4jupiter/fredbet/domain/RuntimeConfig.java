@@ -56,6 +56,11 @@ public class RuntimeConfig {
 	@NotNull
 	@Min(value = 0)
 	private Integer pointsThirdFinalWinner = Integer.valueOf(2);
+	
+	/**
+	 * Backup folder for H2 database backups.
+	 */
+	private String databaseBackupFolder;
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
@@ -127,6 +132,14 @@ public class RuntimeConfig {
 
 	public void setPointsThirdFinalWinner(Integer pointsThirdFinalWinner) {
 		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
+	}
+
+	public String getDatabaseBackupFolder() {
+		return databaseBackupFolder;
+	}
+
+	public void setDatabaseBackupFolder(String databaseBackupFolder) {
+		this.databaseBackupFolder = databaseBackupFolder;
 	}
 
 }

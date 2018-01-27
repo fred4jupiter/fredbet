@@ -34,7 +34,7 @@ public class ConfigurationController {
 	private CacheAdministrationService cacheAdministrationService;
 
 	@Autowired
-	private WebMessageUtil messageUtil;
+	private WebMessageUtil webMessageUtil;
 
 	@Autowired
 	private LoggingUtil loggingUtil;
@@ -68,7 +68,7 @@ public class ConfigurationController {
 
 		this.cacheAdministrationService.clearCaches();
 
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.cacheCleared");
+		webMessageUtil.addInfoMsg(modelMap, "administration.msg.info.cacheCleared");
 		return modelAndView;
 	}
 
@@ -78,7 +78,7 @@ public class ConfigurationController {
 
 		loggingUtil.setLogLevelTo(level);
 
-		messageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
+		webMessageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
 
 		return new ModelAndView("redirect:/config/show");
 	}
@@ -92,7 +92,7 @@ public class ConfigurationController {
 
 		runtimeConfigurationService.saveRuntimeConfig(configurationCommand.getRuntimeConfig());
 
-		messageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
+		webMessageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
 
 		return new ModelAndView("redirect:/config/show");
 	}
