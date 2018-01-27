@@ -6,4 +6,5 @@ import de.fred4jupiter.fredbet.domain.RuntimeConfigDb;
 
 public interface RuntimeConfigDbRepository extends JpaRepository<RuntimeConfigDb, Long> {
 
+	
 }
