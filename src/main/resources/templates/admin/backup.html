@@ -8,9 +8,13 @@
 	<body>
 		<div layout:fragment="content">
 			<div th:replace="fragments/alert :: alert_headline"></div>
+			
 			<h1 th:text="#{administration.backup.title}"></h1>						
 			<div class="row">			
 				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="form-group">
+						<span class="label label-danger" th:text="#{administration.backup.warning.hint}"></span>
+					</div>	
 					<div class="form-group">
 						<a th:href="@{/backup/execute}" class="btn btn-primary" role="button" th:text="#{administration.backup.executeBackupButton}"></a>
 					</div>
