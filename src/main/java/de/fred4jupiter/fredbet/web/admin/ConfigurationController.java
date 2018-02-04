@@ -1,9 +1,13 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +34,8 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class ConfigurationController {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigurationController.class);
+
 	@Autowired
 	private CacheAdministrationService cacheAdministrationService;
 
@@ -52,7 +58,9 @@ public class ConfigurationController {
 
 	@ModelAttribute("configurationCommand")
 	public ConfigurationCommand initConfigurationCommand() {
-		return new ConfigurationCommand();
+		ConfigurationCommand configurationCommand = new ConfigurationCommand();
+		configurationCommand.setTimeZone(TimeZone.getDefault().getID());
+		return configurationCommand;
 	}
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -88,6 +96,12 @@ public class ConfigurationController {
 			RedirectAttributes redirect, ModelMap modelMap) {
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
+		}
+
+		if (StringUtils.isNotBlank(configurationCommand.getTimeZone())) {
+			TimeZone timeZone = TimeZone.getTimeZone(configurationCommand.getTimeZone());
+			LOG.info("Setting timeZone to: {}", timeZone.getID());
+			TimeZone.setDefault(timeZone);
 		}
 
 		runtimeConfigurationService.saveRuntimeConfig(configurationCommand.getRuntimeConfig());

@@ -1,7 +1,9 @@
 package de.fred4jupiter.fredbet.web.admin;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -14,6 +16,8 @@ public class ConfigurationCommand {
 
 	private LogLevel level;
 	
+	private String timeZone;
+
 	@Valid
 	private RuntimeConfig runtimeConfig;
 
@@ -37,4 +41,15 @@ public class ConfigurationCommand {
 		this.runtimeConfig = runtimeConfig;
 	}
 
+	public List<String> getTimeZoneIds() {
+		return ZoneId.getAvailableZoneIds().stream().sorted().collect(Collectors.toList());
+	}
+
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
 }
