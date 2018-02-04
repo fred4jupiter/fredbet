@@ -1,13 +1,17 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import de.fred4jupiter.fredbet.domain.RuntimeConfig;
+import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.LoggingUtil.LogLevel;
 
 public class ConfigurationCommand {
@@ -15,7 +19,7 @@ public class ConfigurationCommand {
 	private List<LogLevel> logLevel = Arrays.asList(LogLevel.values());
 
 	private LogLevel level;
-	
+
 	private String timeZone;
 
 	@Valid
@@ -51,5 +55,9 @@ public class ConfigurationCommand {
 
 	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
+	}
+
+	public String getCurrentTime() {
+		return DateUtils.formatZonedDateTime(ZonedDateTime.now(), LocaleContextHolder.getLocale());
 	}
 }

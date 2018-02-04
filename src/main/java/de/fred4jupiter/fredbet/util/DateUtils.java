@@ -50,8 +50,12 @@ public final class DateUtils {
 	}
 
 	public static String formatZonedDateTime(ZonedDateTime zonedDateTime) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm zZ", Locale.getDefault());
-		return zonedDateTime.format(dateTimeFormatter.withZone(getZoneId()));
+		return formatZonedDateTime(zonedDateTime, Locale.getDefault());
+	}
+
+	public static String formatZonedDateTime(ZonedDateTime zonedDateTime, Locale locale) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm zZ").withLocale(locale).withZone(getZoneId());
+		return zonedDateTime.format(dateTimeFormatter);
 	}
 
 	public static String formatMillis(Long millis) {

@@ -75,7 +75,12 @@
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.passwordForReset')}" th:errors="*{runtimeConfig.passwordForReset}">passwordForReset Error</p>						
 						</div>	
 						<div class="form-group">
-							<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone} + ':'"></label> 
+							<label for="currentTime" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
+							<br/> 
+							<span th:text="${configurationCommand.currentTime}"></span>						
+						</div>
+						<div class="form-group">
+							<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone}"></label> 
 							<select th:field="*{timeZone}" class="form-control">
 							  <option th:each="timeZone : ${configurationCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
 							</select>
