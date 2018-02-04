@@ -90,7 +90,7 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 
 | Key | Default Value | Description |
 |--------|--------|--------|
-| fredbet.database-url | | The database jdbc connection url, e.g. jdbc:mariadb://localhost:3306/fredbetdb. |
+| fredbet.database-url | | The database jdbc connection url, e.g. `jdbc:mariadb://localhost:3306/fredbetdb`. |
 | fredbet.database-username | | The database username. |
 | fredbet.database-password | | The database password. |
 | fredbet.database-type | h2 | The used database type. Choose one of these values: `h2, maria-db, mysql, postgres` |
