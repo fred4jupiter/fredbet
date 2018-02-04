@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.service.admin;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,6 +61,7 @@ public class SystemInfoService {
 		addCurrentDateTime(allProperties);
 		addHostName(allProperties);
 		addMetrics(allProperties);
+		allProperties.put("system.timeZone", ZoneId.systemDefault().toString());
 		return allProperties;
 	}
 
