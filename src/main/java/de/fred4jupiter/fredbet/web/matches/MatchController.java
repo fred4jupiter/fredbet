@@ -36,7 +36,7 @@ public class MatchController {
 
     private static final String VIEW_LIST_MATCHES = "matches/list";
 
-    private static final String VIEW_EDIT_MATCH = "matches/form";
+    private static final String VIEW_EDIT_MATCH = "matches/edit";
 
     private static final String VIEW_EDIT_MATCHRESULT = "matches/matchresult";
 
