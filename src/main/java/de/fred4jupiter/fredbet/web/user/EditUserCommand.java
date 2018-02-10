@@ -1,19 +1,13 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import de.fred4jupiter.fredbet.security.FredBetRole;
 
 public class EditUserCommand {
 
@@ -30,18 +24,7 @@ public class EditUserCommand {
 	@NotEmpty
 	private Set<String> roles = new HashSet<>();
 
-	private final List<String> availableRoles;
-	
 	private boolean child;
-
-	public EditUserCommand() {
-		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-		this.availableRoles = Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));		
-	}
-
-	public List<String> getAvailableRoles() {
-		return availableRoles;
-	}
 
 	public Set<String> getRoles() {
 		return roles;

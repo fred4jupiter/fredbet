@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class HomeController {
 
 	@RequestMapping
-	public ModelAndView createOrUpdate(RedirectAttributes redirect) {
+	public ModelAndView home(RedirectAttributes redirect) {
 		return new ModelAndView("redirect:/matches");
 	}
 

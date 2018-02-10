@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import de.fred4jupiter.fredbet.security.FredBetRole;
@@ -59,7 +59,7 @@ public class AppUserBuilder {
         return this;
     }
 
-    public AppUserBuilder withRoles(List<String> roles) {
+    public AppUserBuilder withRoles(Set<String> roles) {
         for (String role : roles) {
             FredBetRole fredBetRole = FredBetRole.valueOf(role);
             this.appUser.addRole(fredBetRole);

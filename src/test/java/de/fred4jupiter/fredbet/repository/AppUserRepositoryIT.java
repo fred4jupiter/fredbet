@@ -1,11 +1,11 @@
 package de.fred4jupiter.fredbet.repository;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -50,8 +50,7 @@ public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 	@Test
 	public void appUserCanHaveMultipleRoles() {
-		AppUser appUser = AppUserBuilder.create().withDemoData()
-				.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name(), FredBetRole.ROLE_ADMIN.name())).build();
+		AppUser appUser = AppUserBuilder.create().withDemoData().withRole(FredBetRole.ROLE_USER).withRole(FredBetRole.ROLE_ADMIN).build();
 		appUser = appUserRepository.save(appUser);
 		appUserRepository.flush();
 		assertNotNull(appUser.getId());

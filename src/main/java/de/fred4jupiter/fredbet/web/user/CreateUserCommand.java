@@ -1,10 +1,7 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Size;
 
@@ -26,27 +23,19 @@ public class CreateUserCommand {
 	private String password;
 
 	@NotEmpty
-	private List<String> roles = new ArrayList<>();
+	private Set<String> roles = new HashSet<>();
 
-	private final List<String> availableRoles;
-		
 	private boolean child;
 
 	public CreateUserCommand() {
-		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-		this.availableRoles = Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
 		this.roles.add(FredBetRole.ROLE_USER.name());
 	}
 
-	public List<String> getAvailableRoles() {
-		return availableRoles;
-	}
-
-	public List<String> getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 

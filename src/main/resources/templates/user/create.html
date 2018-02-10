@@ -24,7 +24,7 @@
 						<div class="form-group">
 							<label for="roles" th:text="#{user.create.roles} + ':'"></label>			
 							<ul class="list-group">
-								<li class="list-group-item" th:each="role : ${createUserCommand.availableRoles}">
+								<li class="list-group-item" th:each="role : ${availableRoles}">
 									<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.username)}" />
 									<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>								
 								</li>							

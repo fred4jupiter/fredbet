@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.web.user;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,6 +55,12 @@ public class UserController {
 
 	@Autowired
 	private WebSecurityUtil webSecurityUtil;
+
+	@ModelAttribute("availableRoles")
+	public List<String> availableRoles() {
+		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
+		return Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
+	}
 
 	@RequestMapping
 	public ModelAndView list() {
