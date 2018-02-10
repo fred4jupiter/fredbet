@@ -52,6 +52,7 @@ public class AppUser implements UserDetails {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
+	@Column(name = "ROLE")
 	private Set<String> roles;
 
 	@Column(name = "USER_NAME", unique = true)
@@ -62,13 +63,13 @@ public class AppUser implements UserDetails {
 
 	@Column(name = "CREATED_AT")
 	private Date createdAt;
-	
+
 	@Column(name = "LAST_LOGIN")
 	private Date lastLogin;
 
 	@Column(name = "DELETABLE")
 	private boolean deletable = true;
-	
+
 	@Column(name = "IS_CHILD")
 	private boolean child;
 

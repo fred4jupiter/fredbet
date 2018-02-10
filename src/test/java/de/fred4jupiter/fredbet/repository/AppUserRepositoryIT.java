@@ -1,9 +1,11 @@
 package de.fred4jupiter.fredbet.repository;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.util.DateUtils;
 
 public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
@@ -43,6 +46,20 @@ public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
 		assertEquals(2, resultList.size());
 		assertEquals("albert", resultList.get(0).getUsername());
 		assertEquals("robert", resultList.get(1).getUsername());
+	}
+
+	@Test
+	public void appUserCanHaveMultipleRoles() {
+		AppUser appUser = AppUserBuilder.create().withDemoData()
+				.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name(), FredBetRole.ROLE_ADMIN.name())).build();
+		appUser = appUserRepository.save(appUser);
+		appUserRepository.flush();
+		assertNotNull(appUser.getId());
+
+		AppUser foundAppUser = appUserRepository.findOne(appUser.getId());
+		assertNotNull(foundAppUser);
+		assertEquals(appUser.getUsername(), foundAppUser.getUsername());
+		assertThat(appUser.getRoles().size(), equalTo(2));
 	}
 
 }

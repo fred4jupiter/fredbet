@@ -61,10 +61,8 @@
 			referencedTableName="matches" referencedColumnNames="match_id" />
 
 		<createTable tableName="user_roles">
-			<column name="user_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="roles" type="varchar(255)" />
+			<column name="user_id" type="BIGINT" />
+			<column name="role" type="varchar(100)" />
 		</createTable>
 
 		<addForeignKeyConstraint baseTableName="user_roles"
