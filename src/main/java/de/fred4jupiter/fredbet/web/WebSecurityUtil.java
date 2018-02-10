@@ -9,6 +9,12 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 
+/**
+ * Security utility class for access in Thymeleaf templates.
+ * 
+ * @author michael
+ *
+ */
 @Component
 public class WebSecurityUtil {
 
@@ -43,5 +49,9 @@ public class WebSecurityUtil {
 	 */
 	public boolean isDemoDataMenuEntryEnabled() {
 		return runtimeConfigurationService.loadRuntimeConfig().isShowDemoDataNavigationEntry();
+	}
+	
+	public String getCurrentUsername() {
+		return securityService.getCurrentUserName();
 	}
 }

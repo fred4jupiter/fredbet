@@ -30,7 +30,6 @@ import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedExceptio
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.RedirectViewName;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Controller

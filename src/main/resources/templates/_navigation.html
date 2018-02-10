@@ -141,7 +141,7 @@
 						<li th:if="${@webSecurityUtil.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
 							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 	                            <span th:replace="fragments/profile_image :: profile_image_small(${@webSecurityUtil.getCurrentUserProfileImageKey()})"></span>
-	                            <span th:text="${@securityService.getCurrentUser().getUsername()}"></span><span class="caret"></span>
+	                            <span th:text="${@webSecurityUtil.getCurrentUsername()}"></span><span class="caret"></span>
 	                        </a>
 							<ul class="dropdown-menu">
 								<li th:class="${pageState_profile_changePassword}">
