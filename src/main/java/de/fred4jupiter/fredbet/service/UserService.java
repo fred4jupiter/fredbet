@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
@@ -27,10 +25,8 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
-import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
-import de.fred4jupiter.fredbet.web.user.CreateUserCommand;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 
 @Service
@@ -76,26 +72,7 @@ public class UserService {
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-	public void createUser(CreateUserCommand createUserCommand) {
-		// create new user
-		AppUserBuilder appUserBuilder = AppUserBuilder.create()
-				.withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
-				.withIsChild(createUserCommand.isChild());
-
-		if (securityService.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
-			LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
-					FredBetRole.ROLE_USER);
-			appUserBuilder.withRoles(Arrays.asList(FredBetRole.ROLE_USER.name()));
-		} else {
-			appUserBuilder.withRoles(createUserCommand.getRoles());
-		}
-
-		insertAppUser(appUserBuilder.build());
-		return;
-	}
-
-	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-	public void insertAppUser(AppUser appUser) throws UserAlreadyExistsException {
+	public void createUser(AppUser appUser) throws UserAlreadyExistsException {
 		AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
 		if (foundUser != null) {
 			throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");

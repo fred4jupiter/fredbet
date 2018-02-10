@@ -96,7 +96,7 @@ public class FredBetUsageBuilder {
 			withBet();
 		}
 
-		this.userService.insertAppUser(this.appUser);
+		this.userService.createUser(this.appUser);
 		this.matchService.save(this.match);
 		this.bettingService.save(this.bet);
 

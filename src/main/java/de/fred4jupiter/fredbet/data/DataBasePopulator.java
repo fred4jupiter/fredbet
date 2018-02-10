@@ -206,7 +206,7 @@ public class DataBasePopulator {
 
 	public boolean saveIfNotPresent(AppUser appUser) {
 		try {
-			userService.insertAppUser(appUser);
+			userService.createUser(appUser);
 			return true;
 		} catch (UserAlreadyExistsException e) {
 			LOG.debug(e.getMessage());

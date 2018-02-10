@@ -22,7 +22,6 @@ import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
-import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 
 public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
@@ -31,7 +30,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private BetRepository betRepository;
 
@@ -43,10 +42,10 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
 				.build();
 
-		userService.insertAppUser(appUser);
+		userService.createUser(appUser);
 
 		try {
-			userService.insertAppUser(appUser);
+			userService.createUser(appUser);
 			fail("UserAlreadyExistsException should be thrown");
 		} catch (UserAlreadyExistsException e) {
 			// expected
@@ -59,15 +58,11 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		final String newPassword = "mega";
 
 		final AppUser appUser = AppUserBuilder.create().withDemoData().withPassword(oldPassword).build();
-		userService.insertAppUser(appUser);
+		userService.createUser(appUser);
 
 		assertNotNull(appUser.getId());
 
-		ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand();
-		changePasswordCommand.setOldPassword(oldPassword);
-		changePasswordCommand.setNewPassword(newPassword);
-		changePasswordCommand.setNewPasswordRepeat(newPassword);
-		userService.changePassword(appUser.getId(), changePasswordCommand);
+		userService.changePassword(appUser.getId(), oldPassword, newPassword);
 
 		AppUser found = userService.findByAppUserId(appUser.getId());
 		assertNotNull(found);
@@ -79,17 +74,12 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		final String plainPassword = "hans";
 		final String plainNewPassword = "mueller";
 		final AppUser appUser = AppUserBuilder.create().withDemoData().withPassword(plainPassword).build();
-		userService.insertAppUser(appUser);
+		userService.createUser(appUser);
 
 		assertNotNull(appUser.getId());
 
-		ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand();
-		changePasswordCommand.setOldPassword("wrongOldPassword");
-		changePasswordCommand.setNewPassword(plainNewPassword);
-		changePasswordCommand.setNewPasswordRepeat(plainNewPassword);
-
 		try {
-			userService.changePassword(appUser.getId(), changePasswordCommand);
+			userService.changePassword(appUser.getId(), "wrongOldPassword", plainNewPassword);
 			fail("OldPasswordWrongException should be thrown");
 		} catch (OldPasswordWrongException e) {
 			// OK
@@ -99,7 +89,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 	@Test
 	public void updatePrivilegesAndNotPassword() {
 		final AppUser appUser = AppUserBuilder.create().withDemoData().build();
-		userService.insertAppUser(appUser);
+		userService.createUser(appUser);
 		assertEquals(1, appUser.getRoles().size());
 
 		// add role

@@ -90,7 +90,7 @@ public class RankingServiceIT extends AbstractTransactionalIntegrationTest {
 
 	private void saveIfNotPresent(AppUser appUser) {
 		try {
-			userService.insertAppUser(appUser);
+			userService.createUser(appUser);
 		} catch (UserAlreadyExistsException e) {
 			LOG.debug(e.getMessage());
 		}

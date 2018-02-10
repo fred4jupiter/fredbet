@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserNotDeletableException;
@@ -129,7 +131,20 @@ public class UserController {
 		}
 
 		try {
-			userService.createUser(createUserCommand);
+			// create new user
+			AppUserBuilder appUserBuilder = AppUserBuilder.create()
+					.withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
+					.withIsChild(createUserCommand.isChild());
+
+			if (securityService.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
+				LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
+						FredBetRole.ROLE_USER);
+				appUserBuilder.withRole(FredBetRole.ROLE_USER);
+			} else {
+				appUserBuilder.withRoles(createUserCommand.getRoles());
+			}
+
+			userService.createUser(appUserBuilder.build());
 		} catch (UserAlreadyExistsException e) {
 			messageUtil.addErrorMsg(modelMap, "user.username.duplicate");
 			return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
