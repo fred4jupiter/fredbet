@@ -1,9 +1,10 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.Size;
@@ -27,7 +28,7 @@ public class EditUserCommand {
 	private boolean resetPassword;
 
 	@NotEmpty
-	private List<String> roles = new ArrayList<>();
+	private Set<String> roles = new HashSet<>();
 
 	private final List<String> availableRoles;
 	
@@ -42,11 +43,11 @@ public class EditUserCommand {
 		return availableRoles;
 	}
 
-	public List<String> getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 

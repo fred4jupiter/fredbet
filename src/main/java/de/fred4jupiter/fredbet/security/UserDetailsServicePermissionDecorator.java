@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.security;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -44,8 +44,8 @@ public class UserDetailsServicePermissionDecorator implements UserDetailsService
         return appUser;
     }
 
-    private List<String> toRoles(Collection<GrantedAuthority> permissions) {
-        return permissions.stream().map(grantedAuthority -> grantedAuthority.getAuthority()).collect(Collectors.toList());
+    private Set<String> toRoles(Collection<GrantedAuthority> permissions) {
+        return permissions.stream().map(grantedAuthority -> grantedAuthority.getAuthority()).collect(Collectors.toSet());
     }
 
 }

@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -88,7 +89,7 @@ public class UserService {
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-	public AppUser updateUser(Long userId, boolean passwordReset, List<String> roles, boolean isChild) {
+	public AppUser updateUser(Long userId, boolean passwordReset, Set<String> roles, boolean isChild) {
 		Assert.notNull(userId, "userCommand.getUserId() must be given");
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {

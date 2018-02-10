@@ -1,11 +1,11 @@
 package de.fred4jupiter.fredbet.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CollectionTable;
@@ -52,7 +52,7 @@ public class AppUser implements UserDetails {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
-	private List<String> roles;
+	private Set<String> roles;
 
 	@Column(name = "USER_NAME", unique = true)
 	private String username;
@@ -79,7 +79,7 @@ public class AppUser implements UserDetails {
 
 	public void addRole(FredBetRole... fredBetRoles) {
 		if (this.roles == null) {
-			this.roles = new ArrayList<>();
+			this.roles = new HashSet<>();
 		}
 		for (FredBetRole fredBetRole : fredBetRoles) {
 			this.roles.add(fredBetRole.name());
@@ -193,11 +193,11 @@ public class AppUser implements UserDetails {
 		return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
 	}
 
-	public List<String> getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 
