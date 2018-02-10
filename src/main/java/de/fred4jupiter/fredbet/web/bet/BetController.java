@@ -62,7 +62,7 @@ public class BetController {
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
 	}
-	
+
 	@ModelAttribute("availableCountriesExtraBets")
 	public List<Country> availableCountriesExtraBets() {
 		return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
@@ -113,8 +113,7 @@ public class BetController {
 		}
 		betCommand.setBet(bet);
 
-		if (!betCommand.hasGoalsSet()) {
-			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.empty");
+		if (result.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 

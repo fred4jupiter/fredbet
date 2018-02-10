@@ -30,9 +30,15 @@
 						<div class="row center">
 							<div class="col-xs-6">
 								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small color-vote bold" onchange="checkPenalty()"/>
+								<br/>
+								<br/>
+								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</p>
 							</div>
 							<div class="col-xs-6">
 								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small color-vote bold" onchange="checkPenalty()"/>
+								<br/>
+								<br/>
+								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamTwo')}" th:errors="*{goalsTeamTwo}">goalsTeamTwo error</p>
 							</div>
 						</div>
 						<div class="row center">

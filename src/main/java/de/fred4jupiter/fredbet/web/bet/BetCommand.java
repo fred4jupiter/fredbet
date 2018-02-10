@@ -1,5 +1,8 @@
 package de.fred4jupiter.fredbet.web.bet;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,8 +17,12 @@ public class BetCommand {
 
 	private Long matchId;
 
+	@NotNull
+	@Min(value = 0)
 	private Integer goalsTeamOne;
 
+	@NotNull
+	@Min(value = 0)
 	private Integer goalsTeamTwo;
 
 	private final WebMessageUtil messageUtil;
@@ -38,7 +45,7 @@ public class BetCommand {
 		setGoalsTeamOne(bet.getGoalsTeamOne());
 		setGoalsTeamTwo(bet.getGoalsTeamTwo());
 	}
-	
+
 	public Bet getBet() {
 		return bet;
 	}
@@ -60,18 +67,14 @@ public class BetCommand {
 		return builder.toString();
 	}
 
-	public boolean hasGoalsSet() {
-		return goalsTeamOne != null && goalsTeamTwo != null;
-	}
-
 	public String getTeamNameOne() {
 		Country countryOne = getCountryOne();
-		return hasContrySet(countryOne) ? messageUtil.getCountryName(countryOne) : getMatch().getTeamNameOne();
+		return hasContrySet(countryOne) ? messageUtil.getCountryName(countryOne) : getNameTeamOne();
 	}
 
 	public String getTeamNameTwo() {
 		Country countryTwo = getCountryTwo();
-		return hasContrySet(countryTwo) ? messageUtil.getCountryName(countryTwo) : getMatch().getTeamNameTwo();
+		return hasContrySet(countryTwo) ? messageUtil.getCountryName(countryTwo) : getNameTeamTwo();
 	}
 
 	private boolean hasContrySet(Country country) {
@@ -180,7 +183,7 @@ public class BetCommand {
 	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
 		this.penaltyWinnerOne = penaltyWinnerOne;
 	}
-	
+
 	public boolean isGroupMatch() {
 		return getMatch().isGroupMatch();
 	}
