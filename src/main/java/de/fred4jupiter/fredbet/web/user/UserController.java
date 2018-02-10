@@ -28,6 +28,7 @@ import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -47,6 +48,9 @@ public class UserController {
 
 	@Autowired
 	private SecurityService securityService;
+
+	@Autowired
+	private WebSecurityUtil webSecurityUtil;
 
 	@RequestMapping
 	public ModelAndView list() {
@@ -85,7 +89,7 @@ public class UserController {
 			return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
 		}
 
-		if (securityService.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
+		if (webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
 			LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
 			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isResetPassword(), editUserCommand.isChild());
 		} else {
@@ -136,7 +140,7 @@ public class UserController {
 					.withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
 					.withIsChild(createUserCommand.isChild());
 
-			if (securityService.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
+			if (webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
 				LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
 						FredBetRole.ROLE_USER);
 				appUserBuilder.withRole(FredBetRole.ROLE_USER);

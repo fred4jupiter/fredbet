@@ -29,7 +29,7 @@
 								<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="'# ' + ${status.count}"></span>
 							</div>
 							<div class="col-xs-1 no-left-padding">
-								<span th:replace="fragments/profile_image :: profile_image_small_with_popup(${@securityService.getUserProfileImageKeyFor(ranking.userName)})"></span>
+								<span th:replace="fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})"></span>
 							</div>
 							<div class="col-xs-6 no-left-padding">
 								<span class="ranking-name" th:text="${ranking.userName}"></span>

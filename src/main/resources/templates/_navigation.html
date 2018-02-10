@@ -7,7 +7,7 @@
 	<body>
 		<nav th:fragment="menu" class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
-				<div class="navbar-header" th:if="${@securityService.isUserLoggedIn()}">
+				<div class="navbar-header" th:if="${@webSecurityUtil.isUserLoggedIn()}">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
@@ -17,7 +17,7 @@
 					<a class="navbar-brand" href="#" th:href="@{/matches/upcoming}"><span class="glyphicon glyphicon-home"></span></a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
-					<ul th:if="${@securityService.isUserLoggedIn()}" class="nav navbar-nav">
+					<ul th:if="${@webSecurityUtil.isUserLoggedIn()}" class="nav navbar-nav">
 						<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
 						<li class="dropdown" th:classappend="${pageState_betting}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -112,7 +112,7 @@
 						  		<li th:class="${pageState_administration_lastlogins}" sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
 						  			<a href="#lastlogin" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
 					  			</li>
-						  		<li th:if="${@securityService.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  		<li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
 					  			</li>
 						  		<li th:class="${pageState_excelimport_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
@@ -138,9 +138,9 @@
 	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/flags/en.png" th:text="' '+#{language.en}" /></a></li>
 	                        </ul>
 	                    </li>
-						<li th:if="${@securityService.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
+						<li th:if="${@webSecurityUtil.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
 							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-	                            <span th:replace="fragments/profile_image :: profile_image_small(${@securityService.getCurrentUserProfileImageKey()})"></span>
+	                            <span th:replace="fragments/profile_image :: profile_image_small(${@webSecurityUtil.getCurrentUserProfileImageKey()})"></span>
 	                            <span th:text="${@securityService.getCurrentUser().getUsername()}"></span><span class="caret"></span>
 	                        </a>
 							<ul class="dropdown-menu">
@@ -155,7 +155,7 @@
 								</li>
 							</ul>						
 						</li>
-						<li th:if="${@securityService.isUserLoggedIn()}">
+						<li th:if="${@webSecurityUtil.isUserLoggedIn()}">
 							<a th:href="@{/logout}">
 								<span class="glyphicon glyphicon-log-out"></span>
 								<span th:text="#{navigation.logout}" th:remove="tag"></span>
