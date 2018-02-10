@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,14 +47,9 @@ public class UserProfileController {
 	}
 
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, RedirectAttributes redirect,
-			ModelMap modelMap) {
-		if (changePasswordCommand.validate(messageUtil, modelMap)) {
-			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
-		}
-
-		if (changePasswordCommand.isPasswordRepeatMismatch()) {
-			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.passwordMismatch");
+	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, BindingResult bindingResult,
+			RedirectAttributes redirect, ModelMap modelMap) {
+		if (bindingResult.hasErrors()) {
 			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
 		}
 
