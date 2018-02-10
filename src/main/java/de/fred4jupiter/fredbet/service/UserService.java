@@ -30,7 +30,6 @@ import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
-import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 import de.fred4jupiter.fredbet.web.user.CreateUserCommand;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 
@@ -149,20 +148,19 @@ public class UserService {
 		appUserRepository.delete(userId);
 	}
 
-	public void changePassword(Long userId, ChangePasswordCommand changePasswordCommand) {
+	public void changePassword(Long userId, String enteredOldPasswordPlain, String newPassword) {
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {
 			throw new IllegalArgumentException("Could not found user with userId=" + userId);
 		}
 
-		final String enteredOldPasswordPlain = changePasswordCommand.getOldPassword();
 		final String oldSavedEncryptedPassword = appUser.getPassword();
 
 		if (!passwordEncoder.matches(enteredOldPasswordPlain, oldSavedEncryptedPassword)) {
 			throw new OldPasswordWrongException("The old password is wrong!");
 		}
 
-		appUser.setPassword(passwordEncoder.encode(changePasswordCommand.getNewPassword()));
+		appUser.setPassword(passwordEncoder.encode(newPassword));
 		appUserRepository.save(appUser);
 	}
 

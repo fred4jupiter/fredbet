@@ -55,7 +55,7 @@ public class UserProfileController {
 
 		try {
 			AppUser currentUser = securityService.getCurrentUser();
-			userService.changePassword(currentUser.getId(), changePasswordCommand);
+			userService.changePassword(currentUser.getId(), changePasswordCommand.getOldPassword(), changePasswordCommand.getNewPassword());
 		} catch (OldPasswordWrongException e) {
 			messageUtil.addErrorMsg(modelMap, "msg.bet.betting.error.oldPasswordWrong");
 			return new ModelAndView(CHANGE_PASSWORD_PAGE, "changePasswordCommand", changePasswordCommand);
