@@ -93,15 +93,6 @@ public class BettingService {
 		return matchesToBet;
 	}
 
-	public BetCommand findByBetId(Long betId) {
-		Bet bet = betRepository.findOne(betId);
-		if (bet == null) {
-			throw new IllegalArgumentException("Could not find bet with betId=" + betId);
-		}
-		BetCommand betCommand = toBetCommand(bet);
-		return betCommand;
-	}
-
 	private BetCommand toBetCommand(Bet bet) {
 		BetCommand betCommand = new BetCommand(messageUtil, bet);
 		betCommand.setBetId(bet.getId());
