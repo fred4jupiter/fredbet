@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -39,8 +41,6 @@ public class MatchResultController {
 	private MatchResultCommand toMatchResultCommand(Match match) {
 		MatchResultCommand matchResultCommand = new MatchResultCommand();
 		matchResultCommand.setMatchId(match.getId());
-		matchResultCommand.setCountryTeamOne(match.getCountryOne());
-		matchResultCommand.setCountryTeamTwo(match.getCountryTwo());
 		matchResultCommand.setGroupMatch(match.isGroupMatch());
 
 		if (match.hasContriesSet()) {
@@ -60,15 +60,17 @@ public class MatchResultController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(MatchResultCommand matchResultCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
-		if (result.hasErrors()) {
-			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "formErrors", result.getAllErrors());
-		}
-
-		if (matchResultCommand.hasInvalidGoals()) {
-			messageUtil.addErrorMsg(modelMap, "msg.negative.values.not.allowed");
+	public ModelAndView save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
+		if (bindingResult.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
 		}
+		
+		
+
+//		if (matchResultCommand.hasInvalidGoals()) {
+//			messageUtil.addErrorMsg(modelMap, "msg.negative.values.not.allowed");
+//			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
+//		}
 
 		if (matchResultCommand.isOnlyOneResultSet()) {
 			messageUtil.addErrorMsg(modelMap, "msg.input.complete.result");

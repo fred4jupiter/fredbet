@@ -7,14 +7,22 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div th:replace="fragments/alert :: alert_headline"></div>		
+		<div th:replace="fragments/alert :: alert_headline"></div>
+		<h1 th:text="#{matchresult.heading}"></h1>		
 		
 		<form id="matchresultForm" th:action="@{/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form" class="goalsEnter">
+			<div class="alert alert-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<h1 th:text="#{matchresult.heading}"></h1>
+				<div class="col-xs-12 col-sm-6 col-md-4">					
 					<input type="hidden" th:field="*{matchId}" />
 					<input type="hidden" th:field="*{groupMatch}" />
+					<input type="hidden" th:field="*{teamNameOne}" />
+					<input type="hidden" th:field="*{teamNameTwo}" />
+					<input type="hidden" th:field="*{groupMatch}" />
+					<input type="hidden" th:field="*{penaltyWinnerOne}" />
+					<input type="hidden" th:field="*{iconPathTeamOne}" />
+					<input type="hidden" th:field="*{iconPathTeamTwo}" />
+					<input type="hidden" th:field="*{showCountryIcons}" />
 					<div class="form-group">
 						<div class="row center">
 							<div class="col-xs-6">
@@ -28,10 +36,16 @@
 						</div>
 						<div class="row center">
 							<div class="col-xs-6">
-								<input type="text" th:field="*{teamResultOne}" class="form-control form-size-small color-result bold" onchange="checkPenalty()"/>								
+								<input type="text" th:field="*{teamResultOne}" class="form-control form-size-small color-result bold" onchange="checkPenalty()"/>
+								<br/>
+								<br/>
+								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamResultOne')}" th:errors="*{teamResultOne}">teamResultOne error</p>
 							</div>
 							<div class="col-xs-6">
 								<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small color-result bold" onchange="checkPenalty()"/>
+								<br/>
+								<br/>
+								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamResultTwo')}" th:errors="*{teamResultTwo}">teamResultTwo error</p>
 							</div>
 						</div>
 						<div class="row center">

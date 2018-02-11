@@ -1,16 +1,17 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 
+@TeamResultConstraint(message = "{msg.invalidTeamResult}")
 public class MatchResultCommand {
 
 	private Long matchId;
 
-	private Country countryTeamOne;
-	private Country countryTeamTwo;
-
 	private String teamNameOne;
 	private String teamNameTwo;
+
+	private String iconPathTeamOne;
+	private String iconPathTeamTwo;
 
 	private Integer teamResultOne;
 	private Integer teamResultTwo;
@@ -27,11 +28,6 @@ public class MatchResultCommand {
 
 	public void setMatchId(Long matchId) {
 		this.matchId = matchId;
-	}
-
-	public boolean hasInvalidGoals() {
-		return (getTeamResultOne() != null && getTeamResultOne().intValue() < 0)
-				|| (getTeamResultTwo() != null && getTeamResultTwo().intValue() < 0);
 	}
 
 	public Integer getTeamResultOne() {
@@ -54,22 +50,6 @@ public class MatchResultCommand {
 		return (getTeamResultOne() == null && getTeamResultTwo() != null) || (getTeamResultOne() != null && getTeamResultTwo() == null);
 	}
 
-	public String getIconPathTeamOne() {
-		if (this.countryTeamOne == null) {
-			return "";
-		}
-
-		return this.countryTeamOne.getIconPath();
-	}
-
-	public String getIconPathTeamTwo() {
-		if (this.countryTeamTwo == null) {
-			return "";
-		}
-
-		return this.countryTeamTwo.getIconPath();
-	}
-
 	public boolean isPenaltyWinnerOne() {
 		return penaltyWinnerOne;
 	}
@@ -84,22 +64,6 @@ public class MatchResultCommand {
 
 	public void setGroupMatch(boolean groupMatch) {
 		this.groupMatch = groupMatch;
-	}
-
-	public Country getCountryTeamOne() {
-		return countryTeamOne;
-	}
-
-	public void setCountryTeamOne(Country countryTeamOne) {
-		this.countryTeamOne = countryTeamOne;
-	}
-
-	public Country getCountryTeamTwo() {
-		return countryTeamTwo;
-	}
-
-	public void setCountryTeamTwo(Country countryTeamTwo) {
-		this.countryTeamTwo = countryTeamTwo;
 	}
 
 	public boolean isShowCountryIcons() {
@@ -124,5 +88,21 @@ public class MatchResultCommand {
 
 	public void setTeamNameTwo(String teamNameTwo) {
 		this.teamNameTwo = teamNameTwo;
+	}
+
+	public void setIconPathTeamOne(String iconPathTeamOne) {
+		this.iconPathTeamOne = iconPathTeamOne;
+	}
+
+	public void setIconPathTeamTwo(String iconPathTeamTwo) {
+		this.iconPathTeamTwo = iconPathTeamTwo;
+	}
+
+	public String getIconPathTeamOne() {
+		return iconPathTeamOne;
+	}
+
+	public String getIconPathTeamTwo() {
+		return iconPathTeamTwo;
 	}
 }

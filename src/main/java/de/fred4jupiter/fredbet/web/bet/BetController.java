@@ -127,8 +127,8 @@ public class BetController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
-		if (result.hasErrors()) {
+	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
+		if (bindingResult.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
