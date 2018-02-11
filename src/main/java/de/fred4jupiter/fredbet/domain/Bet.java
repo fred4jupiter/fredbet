@@ -86,7 +86,7 @@ public class Bet {
 		builder.append(goalsTeamOne, bet.goalsTeamOne);
 		builder.append(goalsTeamTwo, bet.goalsTeamTwo);
 		builder.append(points, bet.points);
-
+		builder.append(penaltyWinnerOne, bet.penaltyWinnerOne);
 		return builder.isEquals();
 	}
 
@@ -99,6 +99,7 @@ public class Bet {
 		builder.append(goalsTeamOne);
 		builder.append(goalsTeamTwo);
 		builder.append(points);
+		builder.append(penaltyWinnerOne);
 		return builder.toHashCode();
 	}
 
@@ -111,6 +112,7 @@ public class Bet {
 		builder.append("goalsTeamOne", goalsTeamOne);
 		builder.append("goalsTeamTwo", goalsTeamTwo);
 		builder.append("points", points);
+		builder.append("penaltyWinnerOne", penaltyWinnerOne);
 		return builder.toString();
 	}
 
