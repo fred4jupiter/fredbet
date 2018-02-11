@@ -46,10 +46,6 @@ public class MatchResultCommand {
 		this.teamResultTwo = teamResultTwo;
 	}
 
-	public boolean isOnlyOneResultSet() {
-		return (getTeamResultOne() == null && getTeamResultTwo() != null) || (getTeamResultOne() != null && getTeamResultTwo() == null);
-	}
-
 	public boolean isPenaltyWinnerOne() {
 		return penaltyWinnerOne;
 	}

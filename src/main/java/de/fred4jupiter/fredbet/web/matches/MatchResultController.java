@@ -45,8 +45,10 @@ public class MatchResultController {
 
 		if (match.hasContriesSet()) {
 			matchResultCommand.setTeamNameOne(messageUtil.getCountryName(match.getCountryOne()));
+			matchResultCommand.setIconPathTeamOne(match.getCountryOne().getIconPath());
+			
 			matchResultCommand.setTeamNameTwo(messageUtil.getCountryName(match.getCountryTwo()));
-
+			matchResultCommand.setIconPathTeamTwo(match.getCountryTwo().getIconPath());
 			matchResultCommand.setShowCountryIcons(true);
 		} else {
 			matchResultCommand.setTeamNameOne(match.getTeamNameOne());
@@ -60,20 +62,9 @@ public class MatchResultController {
 
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
+	public ModelAndView save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult, RedirectAttributes redirect,
+			ModelMap modelMap) {
 		if (bindingResult.hasErrors()) {
-			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
-		}
-		
-		
-
-//		if (matchResultCommand.hasInvalidGoals()) {
-//			messageUtil.addErrorMsg(modelMap, "msg.negative.values.not.allowed");
-//			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
-//		}
-
-		if (matchResultCommand.isOnlyOneResultSet()) {
-			messageUtil.addErrorMsg(modelMap, "msg.input.complete.result");
 			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
 		}
 
