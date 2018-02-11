@@ -68,11 +68,6 @@ public class BetController {
 		return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
 	}
 
-	@ModelAttribute("betCommand")
-	public BetCommand betCommand() {
-		return new BetCommand();
-	}
-
 	@RequestMapping("/open")
 	public ModelAndView listStillOpen(ModelMap modelMap) {
 		List<Match> matchesToBet = bettingService.findMatchesToBet(securityService.getCurrentUserName());
@@ -112,11 +107,11 @@ public class BetController {
 
 		if (bet.getMatch().hasContriesSet()) {
 			betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getCountryOne()));
-			betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPath());			
+			betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPath());
 
 			betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getCountryTwo()));
 			betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPath());
-			
+
 			betCommand.setShowCountryIcons(true);
 		} else {
 			betCommand.setTeamNameOne(bet.getMatch().getTeamNameOne());
