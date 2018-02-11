@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -28,14 +26,10 @@ import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.DateUtils;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
 
 @Service
 @Transactional
 public class BettingService {
-
-	private static final Logger LOG = LoggerFactory.getLogger(BettingService.class);
 
 	@Autowired
 	private AppUserRepository appUserRepository;
@@ -45,9 +39,6 @@ public class BettingService {
 
 	@Autowired
 	private BetRepository betRepository;
-
-	@Autowired
-	private WebMessageUtil messageUtil;
 
 	@Autowired
 	private ExtraBetRepository extraBetRepository;
@@ -126,20 +117,12 @@ public class BettingService {
 		extraBetRepository.deleteAll();
 	}
 
-	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
+	public List<Bet> findAllBetsForMatchId(final Long matchId) {
 		if (matchId == null) {
 			return null;
 		}
-		Match match = matchRepository.findOne(matchId);
-		if (match == null) {
-			LOG.warn("Match with matchId={} could not be found!", matchId);
-			return null;
-		}
 		List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
-		List<Bet> filtered = allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
-				.collect(Collectors.toList());
-
-		return new AllBetsCommand(filtered, match, messageUtil);
+		return allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME)).collect(Collectors.toList());
 	}
 
 	public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {

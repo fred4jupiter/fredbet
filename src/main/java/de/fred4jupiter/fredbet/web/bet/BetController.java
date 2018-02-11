@@ -56,6 +56,9 @@ public class BetController {
 
 	@Autowired
 	private MatchService matchService;
+	
+	@Autowired
+	private AllBetsCommandMapper allBetsCommandMapper;
 
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
@@ -151,7 +154,7 @@ public class BetController {
 
 	@RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
 	public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId) {
-		AllBetsCommand allBetsCommand = bettingService.findAllBetsForMatchId(matchId);
+		AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
 		if (allBetsCommand == null) {
 			return new ModelAndView("redirect:/matches");
 		}
