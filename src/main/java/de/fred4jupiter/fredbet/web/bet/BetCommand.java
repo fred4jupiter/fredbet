@@ -6,11 +6,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
-
 public class BetCommand {
 
 	private Long betId;
@@ -25,60 +20,46 @@ public class BetCommand {
 	@Min(value = 0)
 	private Integer goalsTeamTwo;
 
-	private final WebMessageUtil messageUtil;
-
 	private String redirectViewName;
 
-	private Bet bet;
+	private String teamNameOne;
+
+	private String teamNameTwo;
+
+	private boolean groupMatch;
 
 	private boolean penaltyWinnerOne;
 
-	public BetCommand(WebMessageUtil messageUtil) {
-		this.messageUtil = messageUtil;
-	}
+	private String iconPathTeamOne;
 
-	public BetCommand(WebMessageUtil messageUtil, Bet bet) {
-		this.messageUtil = messageUtil;
-		this.bet = bet;
-		setBetId(bet.getId());
-		setMatchId(bet.getMatch().getId());
-		setGoalsTeamOne(bet.getGoalsTeamOne());
-		setGoalsTeamTwo(bet.getGoalsTeamTwo());
-	}
+	private String iconPathTeamTwo;
 
-	public Bet getBet() {
-		return bet;
-	}
-
-	public void setBet(Bet bet) {
-		this.bet = bet;
-		setBetId(bet.getId());
-		setMatchId(bet.getMatch().getId());
-	}
+	private boolean showCountryIcons;
 
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("matchId", matchId);
 		builder.append("betId", betId);
-		builder.append("bet", bet);
 		builder.append("goalsTeamOne", goalsTeamOne);
 		builder.append("goalsTeamTwo", goalsTeamTwo);
+		builder.append("redirectViewName", redirectViewName);
+		builder.append("teamNameOne", teamNameOne);
+		builder.append("teamNameTwo", teamNameTwo);
+		builder.append("groupMatch", groupMatch);
+		builder.append("penaltyWinnerOne", penaltyWinnerOne);
+		builder.append("iconPathTeamOne", iconPathTeamOne);
+		builder.append("iconPathTeamTwo", iconPathTeamTwo);
+		builder.append("showCountryIcons", showCountryIcons);
 		return builder.toString();
 	}
 
 	public String getTeamNameOne() {
-		Country countryOne = getCountryOne();
-		return hasContrySet(countryOne) ? messageUtil.getCountryName(countryOne) : getNameTeamOne();
+		return teamNameOne;
 	}
 
 	public String getTeamNameTwo() {
-		Country countryTwo = getCountryTwo();
-		return hasContrySet(countryTwo) ? messageUtil.getCountryName(countryTwo) : getNameTeamTwo();
-	}
-
-	private boolean hasContrySet(Country country) {
-		return country != null && !Country.NONE.equals(country);
+		return teamNameTwo;
 	}
 
 	public Integer getGoalsTeamOne() {
@@ -114,58 +95,15 @@ public class BetCommand {
 	}
 
 	public boolean isShowCountryIcons() {
-		return hasContrySet(this.getCountryOne()) && hasContrySet(this.getCountryTwo());
+		return showCountryIcons;
 	}
 
 	public String getIconPathTeamOne() {
-		if (this.getCountryOne() == null) {
-			return "";
-		}
-
-		return this.getCountryOne().getIconPath();
+		return iconPathTeamOne;
 	}
 
 	public String getIconPathTeamTwo() {
-		if (this.getCountryTwo() == null) {
-			return "";
-		}
-
-		return this.getCountryTwo().getIconPath();
-	}
-
-	private Country getCountryOne() {
-		if (getMatch() == null) {
-			return null;
-		}
-		return getMatch().getCountryOne();
-	}
-
-	private Match getMatch() {
-		if (this.bet == null) {
-			return null;
-		}
-		return this.bet.getMatch();
-	}
-
-	private Country getCountryTwo() {
-		if (getMatch() == null) {
-			return null;
-		}
-		return getMatch().getCountryTwo();
-	}
-
-	public String getNameTeamOne() {
-		if (getMatch() == null) {
-			return null;
-		}
-		return getMatch().getTeamNameOne();
-	}
-
-	public String getNameTeamTwo() {
-		if (getMatch() == null) {
-			return null;
-		}
-		return getMatch().getTeamNameTwo();
+		return iconPathTeamTwo;
 	}
 
 	public String getRedirectViewName() {
@@ -185,6 +123,30 @@ public class BetCommand {
 	}
 
 	public boolean isGroupMatch() {
-		return getMatch().isGroupMatch();
+		return groupMatch;
+	}
+
+	public void setTeamNameOne(String teamNameOne) {
+		this.teamNameOne = teamNameOne;
+	}
+
+	public void setTeamNameTwo(String teamNameTwo) {
+		this.teamNameTwo = teamNameTwo;
+	}
+
+	public void setGroupMatch(boolean groupMatch) {
+		this.groupMatch = groupMatch;
+	}
+
+	public void setIconPathTeamOne(String iconPathTeamOne) {
+		this.iconPathTeamOne = iconPathTeamOne;
+	}
+
+	public void setIconPathTeamTwo(String iconPathTeamTwo) {
+		this.iconPathTeamTwo = iconPathTeamTwo;
+	}
+
+	public void setShowCountryIcons(boolean showCountryIcons) {
+		this.showCountryIcons = showCountryIcons;
 	}
 }

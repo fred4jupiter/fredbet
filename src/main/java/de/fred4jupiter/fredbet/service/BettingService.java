@@ -30,7 +30,6 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
-import de.fred4jupiter.fredbet.web.bet.BetCommand;
 import de.fred4jupiter.fredbet.web.bet.ExtraBetCommand;
 
 @Service
@@ -93,16 +92,6 @@ public class BettingService {
 		return matchesToBet;
 	}
 
-	private BetCommand toBetCommand(Bet bet) {
-		BetCommand betCommand = new BetCommand(messageUtil, bet);
-		betCommand.setBetId(bet.getId());
-		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
-		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-		betCommand.setMatchId(bet.getMatch().getId());
-		betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
-		return betCommand;
-	}
-
 	public Long save(Bet bet) {
 		Match match = matchRepository.findOne(bet.getMatch().getId());
 		if (match.hasStarted()) {
@@ -117,7 +106,7 @@ public class BettingService {
 		return saved.getId();
 	}
 
-	public BetCommand findOrCreateBetForMatch(Long matchId) {
+	public Bet findOrCreateBetForMatch(Long matchId) {
 		final Match match = matchRepository.findOne(matchId);
 		if (match == null) {
 			return null;
@@ -130,7 +119,7 @@ public class BettingService {
 			bet.setUserName(currentUserName);
 		}
 
-		return toBetCommand(bet);
+		return bet;
 	}
 
 	public void deleteAllBets() {

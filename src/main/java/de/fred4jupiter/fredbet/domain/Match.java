@@ -75,6 +75,14 @@ public class Match {
 		return hasChanged;
 	}
 
+	public boolean hasContriesSet() {
+		return hasContrySet(countryOne) && hasContrySet(countryTwo);
+	}
+
+	private boolean hasContrySet(Country country) {
+		return country != null && !Country.NONE.equals(country);
+	}
+
 	public boolean hasResultSet() {
 		return goalsTeamOne != null && goalsTeamTwo != null;
 	}

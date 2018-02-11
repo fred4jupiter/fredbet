@@ -70,7 +70,7 @@ public class BetController {
 
 	@ModelAttribute("betCommand")
 	public BetCommand betCommand() {
-		return new BetCommand(messageUtil);
+		return new BetCommand();
 	}
 
 	@RequestMapping("/open")
@@ -91,17 +91,49 @@ public class BetController {
 
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
 	public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
-		BetCommand betCommand = bettingService.findOrCreateBetForMatch(matchId);
-		if (betCommand == null) {
+		Bet bet = bettingService.findOrCreateBetForMatch(matchId);
+		if (bet == null) {
 			return new ModelAndView("redirect:/matches");
 		}
+
+		BetCommand betCommand = toBetCommand(bet);
 		betCommand.setRedirectViewName(redirectViewName);
 
 		return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 	}
 
+	private BetCommand toBetCommand(Bet bet) {
+		BetCommand betCommand = new BetCommand();
+		betCommand.setBetId(bet.getId());
+		betCommand.setMatchId(bet.getMatch().getId());
+		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
+		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
+		betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
+
+		if (bet.getMatch().hasContriesSet()) {
+			betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getCountryOne()));
+			betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPath());			
+
+			betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getCountryTwo()));
+			betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPath());
+			
+			betCommand.setShowCountryIcons(true);
+		} else {
+			betCommand.setTeamNameOne(bet.getMatch().getTeamNameOne());
+			betCommand.setTeamNameTwo(bet.getMatch().getTeamNameTwo());
+		}
+
+		betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
+
+		return betCommand;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult result, RedirectAttributes redirect, ModelMap modelMap) {
+		if (result.hasErrors()) {
+			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+		}
+
 		Bet bet = null;
 		if (betCommand.getBetId() == null) {
 			Match match = matchService.findMatchById(betCommand.getMatchId());
@@ -110,11 +142,6 @@ public class BetController {
 			bet.setUserName(securityService.getCurrentUserName());
 		} else {
 			bet = bettingService.findBetById(betCommand.getBetId());
-		}
-		betCommand.setBet(bet);
-
-		if (result.hasErrors()) {
-			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
 		try {
