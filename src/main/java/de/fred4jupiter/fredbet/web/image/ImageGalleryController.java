@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.DownloadService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
@@ -43,13 +44,17 @@ public class ImageGalleryController {
 	@Autowired
 	private DownloadService downloadService;
 
+	@Autowired
+	private ImageCommandMapper imageCommandMapper;
+
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView showGallery(ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView("image/gallery");
 
-		List<ImageCommand> images = imageAdministrationService.fetchAllImages();
+		List<ImageMetaData> images = imageAdministrationService.fetchAllImages();
+		List<ImageCommand> imageCommands = imageCommandMapper.toListOfImageCommand(images);
 
-		Map<String, List<ImageCommand>> grouped = images.stream().collect(Collectors.groupingBy(ImageCommand::getGalleryGroup));
+		Map<String, List<ImageCommand>> grouped = imageCommands.stream().collect(Collectors.groupingBy(ImageCommand::getGalleryGroup));
 
 		modelAndView.addObject("groupedImageCommands", new TreeMap<String, List<ImageCommand>>(grouped));
 

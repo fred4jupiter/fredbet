@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.service.image;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,6 @@ import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
-import de.fred4jupiter.fredbet.web.image.ImageCommand;
 import de.fred4jupiter.fredbet.web.image.Rotation;
 
 @Service
@@ -113,37 +111,17 @@ public class ImageAdministrationService {
 		imageLocationService.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
 	}
 
-	public List<ImageCommand> fetchAllImages() {
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findAll();
-		return toListOfImageCommand(imageMetaDataList);
+	public List<ImageMetaData> fetchAllImages() {
+		return imageMetaDataRepository.findAll();
 	}
 
-	public List<ImageCommand> fetchAllImagesExceptUserProfileImages() {
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findImageMetaDataWithoutProfileImages();
-		return toListOfImageCommand(imageMetaDataList);
+	public List<ImageMetaData> fetchAllImagesExceptUserProfileImages() {
+		return imageMetaDataRepository.findImageMetaDataWithoutProfileImages();
 	}
 
-	public List<ImageCommand> fetchImagesOfUserExceptUserProfileImages(String currentUserName) {
+	public List<ImageMetaData> fetchImagesOfUserExceptUserProfileImages(String currentUserName) {
 		LOG.debug("fetching images of user={}", currentUserName);
-		List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findImageMetaDataForUser(currentUserName);
-		return toListOfImageCommand(imageMetaDataList);
-	}
-
-	private List<ImageCommand> toListOfImageCommand(List<ImageMetaData> imageMetaDataList) {
-		if (imageMetaDataList.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		return imageMetaDataList.stream().map(imageMetaData -> toImageCommand(imageMetaData)).collect(Collectors.toList());
-	}
-
-	private ImageCommand toImageCommand(ImageMetaData imageMetaData) {
-		ImageCommand imageCommand = new ImageCommand();
-		imageCommand.setImageId(imageMetaData.getId());
-		imageCommand.setImageKey(imageMetaData.getImageKey());
-		imageCommand.setDescription(imageMetaData.getDescription());
-		imageCommand.setGalleryGroup(imageMetaData.getImageGroup().getName());
-		return imageCommand;
+		return imageMetaDataRepository.findImageMetaDataForUser(currentUserName);
 	}
 
 	public BinaryImage loadImageByImageKey(String imageKey) {

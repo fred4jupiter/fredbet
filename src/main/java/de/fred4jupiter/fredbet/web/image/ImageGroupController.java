@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.image;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.image.ImageGroupExistsException;
 import de.fred4jupiter.fredbet.service.image.ImageGroupService;
@@ -38,7 +40,15 @@ public class ImageGroupController {
 
 	@ModelAttribute("availableImageGroups")
 	public List<ImageGroupCommand> availableImageGroups() {
-		return imageGroupService.findAvailableImageGroups();
+		List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
+		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).sorted().collect(Collectors.toList());
+	}
+
+	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
+		ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
+		imageGroupCommand.setId(imageGroup.getId());
+		imageGroupCommand.setName(imageGroup.getName());
+		return imageGroupCommand;
 	}
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -67,7 +77,7 @@ public class ImageGroupController {
 				imageGroupService.addImageGroup(imageGroupCommand.getName());
 				messageUtil.addInfoMsg(redirect, "image.group.msg.added", imageGroupCommand.getName());
 			} else {
-				imageGroupService.updateImageGroup(imageGroupCommand);
+				imageGroupService.updateImageGroup(imageGroupCommand.getId(), imageGroupCommand.getName());
 				messageUtil.addInfoMsg(redirect, "image.group.msg.updated", imageGroupCommand.getName());
 			}
 

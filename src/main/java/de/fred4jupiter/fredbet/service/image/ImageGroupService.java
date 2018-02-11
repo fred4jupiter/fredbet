@@ -1,14 +1,12 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
-import de.fred4jupiter.fredbet.web.image.ImageGroupCommand;
 
 @Service
 public class ImageGroupService {
@@ -16,10 +14,8 @@ public class ImageGroupService {
 	@Autowired
 	private ImageGroupRepository imageGroupRepository;
 
-	public List<ImageGroupCommand> findAvailableImageGroups() {
-		List<ImageGroup> imageGroups = imageGroupRepository.findAll();
-
-		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).sorted().collect(Collectors.toList());
+	public List<ImageGroup> findAvailableImageGroups() {
+		return imageGroupRepository.findAll();
 	}
 
 	public void deleteImageGroup(Long imageGroupId) {
@@ -31,15 +27,15 @@ public class ImageGroupService {
 		imageGroupRepository.save(new ImageGroup(imageGroupName));
 	}
 
-	public void updateImageGroup(ImageGroupCommand imageGroupCommand) {
-		ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupCommand.getId());
+	public void updateImageGroup(Long id, String name) {
+		ImageGroup imageGroup = imageGroupRepository.findOne(id);
 		if (imageGroup == null) {
-			throw new IllegalArgumentException("Image group with id=" + imageGroupCommand.getId() + " could not be found!");
+			throw new IllegalArgumentException("Image group with id=" + id + " could not be found!");
 		}
 
-		checkImageGroupName(imageGroupCommand.getName());
+		checkImageGroupName(name);
 
-		imageGroup.setName(imageGroupCommand.getName());
+		imageGroup.setName(name);
 		imageGroupRepository.save(imageGroup);
 	}
 
@@ -48,13 +44,6 @@ public class ImageGroupService {
 		if (foundImageGroup != null) {
 			throw new ImageGroupExistsException("An image with this group name still exists!");
 		}
-	}
-
-	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
-		ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
-		imageGroupCommand.setId(imageGroup.getId());
-		imageGroupCommand.setName(imageGroup.getName());
-		return imageGroupCommand;
 	}
 
 }

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.image;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
@@ -41,13 +43,19 @@ public class ImageUploadController {
 	@Autowired
 	private SecurityService securityService;
 
+	@Autowired
+	private ImageCommandMapper imageCommandMapper;
+
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
+		List<ImageMetaData> imageMetadataList = Collections.emptyList();
 		if (securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
-			return imageAdministrationService.fetchAllImagesExceptUserProfileImages();
+			imageMetadataList = imageAdministrationService.fetchAllImagesExceptUserProfileImages();
+		} else {
+			imageMetadataList = imageAdministrationService.fetchImagesOfUserExceptUserProfileImages(securityService.getCurrentUserName());
 		}
 
-		return imageAdministrationService.fetchImagesOfUserExceptUserProfileImages(securityService.getCurrentUserName());
+		return imageCommandMapper.toListOfImageCommand(imageMetadataList);
 	}
 
 	@ModelAttribute("availableImageGroups")
