@@ -30,7 +30,6 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.AllBetsCommand;
-import de.fred4jupiter.fredbet.web.bet.ExtraBetCommand;
 
 @Service
 @Transactional
@@ -164,35 +163,16 @@ public class BettingService {
 		extraBetRepository.save(found);
 	}
 
-	public ExtraBetCommand loadExtraBetForUser(String username) {
+	public ExtraBet loadExtraBetForUser(String username) {
 		ExtraBet extraBet = extraBetRepository.findByUserName(username);
 		if (extraBet == null) {
 			extraBet = new ExtraBet();
 		}
 
-		ExtraBetCommand extraBetCommand = new ExtraBetCommand();
-		Match finalMatch = findFinalMatch();
-		if (finalMatch != null) {
-			extraBetCommand.setFinalMatch(finalMatch);
-		}
-
-		extraBetCommand.setExtraBetId(extraBet.getId());
-		extraBetCommand.setFinalWinner(extraBet.getFinalWinner());
-		extraBetCommand.setSemiFinalWinner(extraBet.getSemiFinalWinner());
-		extraBetCommand.setThirdFinalWinner(extraBet.getThirdFinalWinner());
-		extraBetCommand.setPoints(extraBet.getPoints());
-
-		boolean firstMatchStarted = hasFirstMatchStarted();
-		if (firstMatchStarted) {
-			extraBetCommand.setBettable(false);
-		} else {
-			extraBetCommand.setBettable(true);
-		}
-
-		return extraBetCommand;
+		return extraBet;
 	}
 
-	private boolean hasFirstMatchStarted() {
+	public boolean hasFirstMatchStarted() {
 		LocalDateTime dateTimeNow = LocalDateTime.now();
 		Date date = matchRepository.findStartDateOfFirstMatch();
 		if (date == null) {
@@ -202,7 +182,7 @@ public class BettingService {
 		return dateTimeNow.isAfter(firstMatchKickOffDate);
 	}
 
-	private Match findFinalMatch() {
+	public Match findFinalMatch() {
 		List<Match> matches = matchRepository.findByGroup(Group.FINAL);
 		if (matches == null || matches.isEmpty()) {
 			return null;

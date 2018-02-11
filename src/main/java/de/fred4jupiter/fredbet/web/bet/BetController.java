@@ -58,6 +58,9 @@ public class BetController {
 	@Autowired
 	private MatchService matchService;
 
+	@Autowired
+	private ExtraBetCommandMapper extraBetCommandMapper;
+
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
@@ -165,7 +168,8 @@ public class BetController {
 
 	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
 	public ModelAndView showExtraBets() {
-		ExtraBetCommand extraBetCommand = bettingService.loadExtraBetForUser(securityService.getCurrentUserName());
+		ExtraBet extraBet = bettingService.loadExtraBetForUser(securityService.getCurrentUserName());
+		ExtraBetCommand extraBetCommand = extraBetCommandMapper.toExtraBetCommand(extraBet);
 		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
 	}
 
