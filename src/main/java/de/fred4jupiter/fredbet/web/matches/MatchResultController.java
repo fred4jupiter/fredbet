@@ -68,7 +68,12 @@ public class MatchResultController {
 			return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
 		}
 
-		matchService.save(matchResultCommand);
+		Match match = matchService.findMatchById(matchResultCommand.getMatchId());
+		match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
+		match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
+		match.setPenaltyWinnerOne(matchResultCommand.isPenaltyWinnerOne());
+		
+		matchService.save(match);
 		return new ModelAndView("redirect:/matches#" + matchResultCommand.getMatchId());
 	}
 

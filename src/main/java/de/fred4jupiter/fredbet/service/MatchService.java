@@ -28,19 +28,20 @@ import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
-import de.fred4jupiter.fredbet.web.matches.MatchResultCommand;
 
 @Service
 @Transactional
 public class MatchService {
 
 	/**
-	 * show current K.O. matches that has been finished since 3 hours after kick-off
+	 * show current K.O. matches that has been finished since 3 hours after
+	 * kick-off
 	 */
 	private static final int HOURS_SHOW_UPCOMING_OTHER_MATCHES = 3;
 
 	/**
-	 * show current group matches that has been finished since 2 hours after kick-off
+	 * show current group matches that has been finished since 2 hours after
+	 * kick-off
 	 */
 	private static final int HOURS_SHOW_UPCOMING_GROUP_MATCHES = 2;
 
@@ -114,21 +115,12 @@ public class MatchService {
 		return match.getId();
 	}
 
-	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-	public void save(MatchResultCommand matchResultCommand) {
-		Match match = findMatchById(matchResultCommand.getMatchId());
-		match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
-		match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
-		match.setPenaltyWinnerOne(matchResultCommand.isPenaltyWinnerOne());
-		save(match);
-	}
-
 	public List<MatchCommand> findAllMatches(String username) {
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
 		return toMatchCommandsWithBets(username, allMatches);
 	}
 
-	public List<MatchCommand> findAllUpcomingMatches(String username) {		
+	public List<MatchCommand> findAllUpcomingMatches(String username) {
 		LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
 		LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
 		List<Match> allMatches = matchRepository.findUpcomingMatches(DateUtils.toDate(groupKickOffBeginSelectionDate),
