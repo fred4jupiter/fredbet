@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
@@ -58,17 +57,9 @@ public class BetController {
 	@Autowired
 	private MatchService matchService;
 
-	@Autowired
-	private ExtraBetCommandMapper extraBetCommandMapper;
-
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
-	}
-
-	@ModelAttribute("availableCountriesExtraBets")
-	public List<Country> availableCountriesExtraBets() {
-		return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
 	}
 
 	@RequestMapping("/open")
@@ -127,7 +118,8 @@ public class BetController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
+	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect,
+			ModelMap modelMap) {
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
@@ -166,25 +158,4 @@ public class BetController {
 		return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
 	}
 
-	@RequestMapping(value = "/extra_bets", method = RequestMethod.GET)
-	public ModelAndView showExtraBets() {
-		ExtraBet extraBet = bettingService.loadExtraBetForUser(securityService.getCurrentUserName());
-		ExtraBetCommand extraBetCommand = extraBetCommandMapper.toExtraBetCommand(extraBet);
-		return new ModelAndView("bet/extra_bets", "extraBetCommand", extraBetCommand);
-	}
-
-	@RequestMapping(value = "/extra_bets", method = RequestMethod.POST)
-	public ModelAndView saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
-		bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
-				extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
-
-		messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
-		return new ModelAndView("redirect:/bet/extra_bets");
-	}
-
-	@RequestMapping(value = "/extra_others", method = RequestMethod.GET)
-	public ModelAndView showExtraBetResults() {
-		List<ExtraBet> allExtraBets = bettingService.loadExtraBetDataOthers();
-		return new ModelAndView("bet/extra_others", "allExtraBets", allExtraBets);
-	}
 }
