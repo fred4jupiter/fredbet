@@ -139,11 +139,11 @@ public class BetController {
 			bet = bettingService.findBetById(betCommand.getBetId());
 		}
 
-		try {
-			bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
-			bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
-			bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
+		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
+		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
+		bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
 
+		try {
 			bettingService.save(bet);
 			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
 		} catch (NoBettingAfterMatchStartedAllowedException e) {
