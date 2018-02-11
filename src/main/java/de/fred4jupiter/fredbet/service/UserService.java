@@ -90,7 +90,7 @@ public class UserService {
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public AppUser updateUser(Long userId, boolean passwordReset, Set<String> roles, boolean isChild) {
-		Assert.notNull(userId, "userCommand.getUserId() must be given");
+		Assert.notNull(userId, "userId must be given");
 		AppUser appUser = appUserRepository.findOne(userId);
 		if (appUser == null) {
 			throw new IllegalArgumentException("Given user with userId=" + userId + " does not exists.");
