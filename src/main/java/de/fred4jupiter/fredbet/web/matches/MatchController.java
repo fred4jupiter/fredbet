@@ -51,6 +51,9 @@ public class MatchController {
 	@Autowired
 	private CountryService countryService;
 
+	@Autowired
+	private MatchCommandMapper matchCommandMapper;
+	
 	@ModelAttribute("availableGroups")
 	public List<Group> availableGroups() {
 		return Group.getAllGroups();
@@ -68,7 +71,7 @@ public class MatchController {
 
 	@RequestMapping
 	public ModelAndView listAllMatches() {
-		List<MatchCommand> matches = matchService.findAllMatches(securityBean.getCurrentUserName());
+		List<MatchCommand> matches = matchCommandMapper.findAllMatches(securityBean.getCurrentUserName());
 		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("all.matches"));
 		return modelAndView;
@@ -76,7 +79,7 @@ public class MatchController {
 
 	@RequestMapping(value = "upcoming")
 	public ModelAndView upcomingMatches() {
-		List<MatchCommand> matches = matchService.findAllUpcomingMatches(securityBean.getCurrentUserName());
+		List<MatchCommand> matches = matchCommandMapper.findAllUpcomingMatches(securityBean.getCurrentUserName());
 		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		modelAndView.addObject("heading", messageUtil.getMessageFor("upcoming.matches"));
 		return modelAndView;
@@ -84,7 +87,7 @@ public class MatchController {
 
 	@RequestMapping(value = "/group/{groupName}")
 	public ModelAndView listByGroup(@PathVariable("groupName") String groupName) {
-		List<MatchCommand> matches = matchService.findMatchesByGroup(securityBean.getCurrentUserName(), Group.valueOf(groupName));
+		List<MatchCommand> matches = matchCommandMapper.findMatchesByGroup(securityBean.getCurrentUserName(), Group.valueOf(groupName));
 		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
 		String msgKey = "group.entry." + groupName;
 		modelAndView.addObject("heading", messageUtil.getMessageFor(msgKey));
@@ -94,7 +97,7 @@ public class MatchController {
 	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
 	@RequestMapping("{id}")
 	public ModelAndView edit(@PathVariable("id") Long matchId) {
-		MatchCommand matchCommand = matchService.findByMatchId(matchId);
+		MatchCommand matchCommand = matchCommandMapper.findByMatchId(matchId);
 		return new ModelAndView(VIEW_EDIT_MATCH, "matchCommand", matchCommand);
 	}
 
@@ -103,7 +106,7 @@ public class MatchController {
 	public ModelAndView deleteMatch(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
 		LOG.debug("deleted match with id={}", matchId);
 
-		MatchCommand matchCommand = matchService.findByMatchId(matchId);
+		MatchCommand matchCommand = matchCommandMapper.findByMatchId(matchId);
 
 		matchService.deleteMatch(matchId);
 
@@ -137,7 +140,7 @@ public class MatchController {
 			messageUtil.addInfoMsg(redirect, "msg.match.updated", matchCommand.getTeamNameOne(), matchCommand.getTeamNameTwo());
 		}
 
-		matchService.save(matchCommand);
+		matchCommandMapper.save(matchCommand);
 		return new ModelAndView("redirect:/matches#" + matchCommand.getMatchId());
 	}
 

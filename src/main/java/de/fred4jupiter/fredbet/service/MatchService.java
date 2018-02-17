@@ -1,11 +1,7 @@
 package de.fred4jupiter.fredbet.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -18,20 +14,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.props.CacheNames;
-import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
-import de.fred4jupiter.fredbet.util.Validator;
-import de.fred4jupiter.fredbet.web.MatchConverter;
-import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 
 @Service
 @Transactional
 public class MatchService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(MatchService.class);
 
 	/**
 	 * show current K.O. matches that has been finished since 3 hours after
@@ -45,19 +38,8 @@ public class MatchService {
 	 */
 	private static final int HOURS_SHOW_UPCOMING_GROUP_MATCHES = 2;
 
-	private static final Logger LOG = LoggerFactory.getLogger(MatchService.class);
-
 	@Autowired
 	private MatchRepository matchRepository;
-
-	@Autowired
-	private BettingService bettingService;
-
-	@Autowired
-	private BetRepository betRepository;
-
-	@Autowired
-	private MatchConverter matchConverter;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -66,18 +48,9 @@ public class MatchService {
 		return matchRepository.findAll();
 	}
 
-	public MatchCommand findByMatchId(Long matchId) {
+	public Match findByMatchId(Long matchId) {
 		Assert.notNull(matchId, "matchId must be given");
-		Match match = matchRepository.findOne(matchId);
-		if (match == null) {
-			return null;
-		}
-		Long numberOfBetsForThisMatch = betRepository.countByMatch(match);
-		MatchCommand matchCommand = matchConverter.toMatchCommand(match);
-		if (numberOfBetsForThisMatch == 0) {
-			matchCommand.setDeletable(true);
-		}
-		return matchCommand;
+		return matchRepository.findOne(matchId);
 	}
 
 	public Match findMatchByMatchId(Long matchId) {
@@ -96,79 +69,19 @@ public class MatchService {
 		return match;
 	}
 
-	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-	public Long save(MatchCommand matchCommand) {
-		Match match = null;
-		if (matchCommand.getMatchId() != null) {
-			match = matchRepository.findOne(matchCommand.getMatchId());
-		}
-
-		if (match == null) {
-			match = new Match();
-		}
-
-		matchConverter.toMatch(matchCommand, match);
-
-		match = save(match);
-		matchCommand.setMatchId(match.getId());
-
-		return match.getId();
+	public List<Match> findMatchesByGroup(Group group) {
+		return matchRepository.findByGroupOrderByKickOffDateAsc(group);
 	}
 
-	public List<MatchCommand> findAllMatches(String username) {
-		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
-		return toMatchCommandsWithBets(username, allMatches);
+	public List<Match> findAllMatches() {
+		return matchRepository.findAllByOrderByKickOffDateAsc();
 	}
 
-	public List<MatchCommand> findAllUpcomingMatches(String username) {
+	public List<Match> findUpcomingMatches() {
 		LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
 		LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
-		List<Match> allMatches = matchRepository.findUpcomingMatches(DateUtils.toDate(groupKickOffBeginSelectionDate),
+		return matchRepository.findUpcomingMatches(DateUtils.toDate(groupKickOffBeginSelectionDate),
 				DateUtils.toDate(koKickOffBeginSelectionDate));
-		return toMatchCommandsWithBets(username, allMatches);
-	}
-
-	private List<MatchCommand> toMatchCommandsWithBets(String username, List<Match> allMatches) {
-		final Map<Long, Bet> matchToBetMap = findBetsForMatchIds(username);
-		final List<MatchCommand> resultList = new ArrayList<>();
-		for (Match match : allMatches) {
-			MatchCommand matchCommand = matchConverter.toMatchCommand(match);
-			Bet bet = matchToBetMap.get(match.getId());
-			if (bet != null) {
-				matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
-				matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
-				matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
-				matchCommand.setPoints(bet.getPoints());
-			}
-			resultList.add(matchCommand);
-		}
-		return resultList;
-	}
-
-	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
-		List<Match> allMatches = matchRepository.findByGroupOrderByKickOffDateAsc(group);
-		return toMatchCommandsWithBets(currentUserName, allMatches);
-	}
-
-	private Map<Long, Bet> findBetsForMatchIds(String username) {
-		List<Bet> allUserBets = bettingService.findAllByUsername(username);
-		if (Validator.isEmpty(allUserBets)) {
-			LOG.debug("Could not found any bets for user: {}", username);
-			return Collections.emptyMap();
-		}
-		return toBetMap(allUserBets);
-	}
-
-	private Map<Long, Bet> toBetMap(List<Bet> allUserBets) {
-		Map<Long, Bet> matchIdBetMap = new HashMap<>();
-		for (Bet bet : allUserBets) {
-			if (bet.getMatch() == null) {
-				LOG.error("No referenced match found for bet={}", bet);
-				continue;
-			}
-			matchIdBetMap.put(bet.getMatch().getId(), bet);
-		}
-		return matchIdBetMap;
 	}
 
 	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)

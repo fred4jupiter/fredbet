@@ -193,4 +193,8 @@ public class BettingService {
 	public Bet findBetById(Long betId) {
 		return betRepository.findOne(betId);
 	}
+	
+	public Long countByMatch(Match match) {
+		return betRepository.countByMatch(match);
+	}
 }

@@ -27,9 +27,9 @@ import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.util.Validator;
-import de.fred4jupiter.fredbet.web.MatchConverter;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
+import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 
 @Controller
 @RequestMapping("/bet")
@@ -49,7 +49,7 @@ public class BetController {
 	private WebMessageUtil messageUtil;
 
 	@Autowired
-	private MatchConverter matchConverter;
+	private MatchCommandMapper matchCommandMapper;
 
 	@Autowired
 	private CountryService countryService;
@@ -76,7 +76,7 @@ public class BetController {
 			messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
 		}
 
-		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchConverter.toMatchCommand(match))
+		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchCommandMapper.toMatchCommand(match))
 				.collect(Collectors.toList());
 		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
 	}
