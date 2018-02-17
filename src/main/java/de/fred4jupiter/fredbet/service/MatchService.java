@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -42,7 +42,7 @@ public class MatchService {
 	private MatchRepository matchRepository;
 
 	@Autowired
-	private ApplicationContext applicationContext;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	public List<Match> findAll() {
 		return matchRepository.findAll();
@@ -63,7 +63,7 @@ public class MatchService {
 
 		if (match.hasGoalsChanged()) {
 			LOG.debug("fire MatchGoalsChangedEvent...");
-			applicationContext.publishEvent(new MatchGoalsChangedEvent(this, match));
+			applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(this, match));
 		}
 
 		return match;
