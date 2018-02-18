@@ -60,7 +60,7 @@
 					  			</div>  			
 					  			<div class="col-xs-6 button-bar">
 					  				<div class="row center">
-								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/matches/' + ${matchCommand.matchId}}" 
+								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/match/' + ${matchCommand.matchId}}" 
 								              class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
 				            				  <span class="glyphicon glyphicon-pencil"></span>
 				            			</a>				            			
@@ -79,7 +79,7 @@
 					</div>
 				</div>				
 			</div>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/matches/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>	
+			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>	
 	</div>
 </body>
 </html>
