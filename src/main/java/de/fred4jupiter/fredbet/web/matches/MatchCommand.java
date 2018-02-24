@@ -1,12 +1,10 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 public class MatchCommand extends AbstractMatchHeaderCommand {
 
@@ -35,10 +33,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	private boolean penaltyWinnerOneBet;
 
 	private boolean penaltyWinnerOneMatch;
-
-	public MatchCommand(WebMessageUtil messageUtil) {
-		super(messageUtil);
-	}
 
 	public boolean isBettable() {
 		if (hasMatchStarted() || hasMatchFinished()) {
@@ -122,11 +116,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	public boolean hasValidGoals() {
 		return (getTeamResultOne() != null && getTeamResultOne().intValue() < 0)
 				|| (getTeamResultTwo() != null && getTeamResultTwo().intValue() < 0);
-	}
-
-	public boolean isTeamNamesEmpty() {
-		return (isBlank(countryTeamOne) && isBlank(countryTeamTwo))
-				&& (StringUtils.isBlank(nameTeamOne) && StringUtils.isBlank(nameTeamTwo));
 	}
 
 	public boolean isGroupMatch() {

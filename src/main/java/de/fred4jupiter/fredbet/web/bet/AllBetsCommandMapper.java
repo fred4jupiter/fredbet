@@ -11,6 +11,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Component
@@ -25,7 +26,7 @@ public class AllBetsCommandMapper {
 	private BettingService bettingService;
 
 	@Autowired
-	private WebMessageUtil messageUtil;
+	private WebMessageUtil webMessageUtil;
 
 	public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
 		if (matchId == null) {
@@ -38,7 +39,26 @@ public class AllBetsCommandMapper {
 		}
 
 		List<Bet> filtered = bettingService.findAllBetsForMatchId(matchId);
-		return new AllBetsCommand(filtered, match, messageUtil);
+		return toAllBetsCommand(match, filtered);
+
 	}
+
+	private AllBetsCommand toAllBetsCommand(Match match, List<Bet> filtered) {
+		AllBetsCommand allBetsCommand = new AllBetsCommand();
+		allBetsCommand.setAllBetsForMatch(filtered);
+		allBetsCommand.setMatch(match);
+
+		allBetsCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
+		allBetsCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
+
+		allBetsCommand.setCountryTeamOne(match.getCountryOne());
+		allBetsCommand.setCountryTeamTwo(match.getCountryTwo());
+		allBetsCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
+		allBetsCommand.setStadium(match.getStadium());
+		allBetsCommand.setGroup(match.getGroup());
+		return allBetsCommand;
+	}
+
+	
 
 }

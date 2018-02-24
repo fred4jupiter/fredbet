@@ -19,18 +19,12 @@ public abstract class AbstractMatchHeaderCommand {
 
 	protected LocalDateTime kickOffDate;
 
-	protected String nameTeamOne;
-	protected String nameTeamTwo;
+	private String teamNameOne;
+	private String teamNameTwo;
 
 	protected Group group;
 
 	protected String stadium;
-
-	protected final WebMessageUtil messageUtil;
-
-	public AbstractMatchHeaderCommand(WebMessageUtil messageUtil) {
-		this.messageUtil = messageUtil;
-	}
 
 	public boolean hasMatchStarted() {
 		return LocalDateTime.now().isAfter(getKickOffDate());
@@ -59,20 +53,6 @@ public abstract class AbstractMatchHeaderCommand {
 		return this.countryTeamTwo.getIconPath();
 	}
 
-	public String getTeamNameOne() {
-		if (this.countryTeamOne == null) {
-			return nameTeamOne;
-		}
-		return isNotBlank(countryTeamOne) ? messageUtil.getCountryName(countryTeamOne) : nameTeamOne;
-	}
-
-	public String getTeamNameTwo() {
-		if (this.countryTeamTwo == null) {
-			return nameTeamTwo;
-		}
-		return isNotBlank(countryTeamTwo) ? messageUtil.getCountryName(countryTeamTwo) : nameTeamTwo;
-	}
-
 	protected boolean isBlank(Country country) {
 		return !isNotBlank(country);
 	}
@@ -94,8 +74,6 @@ public abstract class AbstractMatchHeaderCommand {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
 		builder.append("countryTeamOne", countryTeamOne);
 		builder.append("countryTeamTwo", countryTeamTwo);
-		builder.append("nameTeamOne", nameTeamOne);
-		builder.append("nameTeamTwo", nameTeamTwo);
 		return builder.toString();
 	}
 
@@ -161,40 +139,20 @@ public abstract class AbstractMatchHeaderCommand {
 		this.countryTeamTwo = countryTeamTwo;
 	}
 
-	public String getNameTeamOne() {
-		return nameTeamOne;
+	public String getTeamNameOne() {
+		return teamNameOne;
 	}
 
-	public void setNameTeamOne(String nameTeamOne) {
-		this.nameTeamOne = nameTeamOne;
+	public void setTeamNameOne(String teamNameOne) {
+		this.teamNameOne = teamNameOne;
 	}
 
-	public String getNameTeamTwo() {
-		return nameTeamTwo;
+	public String getTeamNameTwo() {
+		return teamNameTwo;
 	}
 
-	public void setNameTeamTwo(String nameTeamTwo) {
-		this.nameTeamTwo = nameTeamTwo;
+	public void setTeamNameTwo(String teamNameTwo) {
+		this.teamNameTwo = teamNameTwo;
 	}
 
-	public boolean hasCountriesAndTeamNamesEntered() {
-		return ((isNotBlank(countryTeamOne) || isNotBlank(countryTeamTwo))
-				&& (StringUtils.isNotBlank(nameTeamOne) || StringUtils.isNotBlank(nameTeamTwo)));
-	}
-
-	public boolean hasSameTeamsPlayingAgainstEachOther() {
-		if (isNotBlank(countryTeamOne) && isNotBlank(countryTeamTwo)) {
-			if (countryTeamOne.equals(countryTeamTwo)) {
-				return true;
-			}
-		}
-
-		if (StringUtils.isNotBlank(nameTeamOne) && StringUtils.isNotBlank(nameTeamTwo)) {
-			if (nameTeamOne.equals(nameTeamTwo)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 }

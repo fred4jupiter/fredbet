@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.matches.CreateEditMatchCommand;
 
 public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstraint, CreateEditMatchCommand> {
@@ -56,16 +57,16 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		String teamNameTwo = value.getTeamNameTwo();
 
 		// nothing selected
-		if ((isEmpty(countryTeamOne) && isEmpty(countryTeamTwo))
+		if ((Validator.isEmpty(countryTeamOne) && Validator.isEmpty(countryTeamTwo))
 				&& (StringUtils.isBlank(teamNameOne) && StringUtils.isBlank(teamNameTwo))) {
 			return true;
 		}
 
-		if (isEmpty(countryTeamOne) && isNotEmpty(countryTeamTwo)) {
+		if (Validator.isEmpty(countryTeamOne) && Validator.isNotEmpty(countryTeamTwo)) {
 			return true;
 		}
 
-		if (isNotEmpty(countryTeamOne) && isEmpty(countryTeamTwo)) {
+		if (Validator.isNotEmpty(countryTeamOne) && Validator.isEmpty(countryTeamTwo)) {
 			return true;
 		}
 
@@ -87,7 +88,7 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		String teamNameOne = value.getTeamNameOne();
 		String teamNameTwo = value.getTeamNameTwo();
 
-		return ((isNotEmpty(countryTeamOne) || isNotEmpty(countryTeamTwo))
+		return ((Validator.isNotEmpty(countryTeamOne) || Validator.isNotEmpty(countryTeamTwo))
 				&& (StringUtils.isNotBlank(teamNameOne) || StringUtils.isNotBlank(teamNameTwo)));
 	}
 
@@ -98,7 +99,7 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		String teamNameOne = value.getTeamNameOne();
 		String teamNameTwo = value.getTeamNameTwo();
 
-		if (isNotEmpty(countryTeamOne) && isNotEmpty(countryTeamTwo)) {
+		if (Validator.isNotEmpty(countryTeamOne) && Validator.isNotEmpty(countryTeamTwo)) {
 			if (countryTeamOne.equals(countryTeamTwo)) {
 				return true;
 			}
@@ -111,13 +112,5 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		}
 
 		return false;
-	}
-
-	private boolean isEmpty(Country country) {
-		return country == null || Country.NONE.equals(country);
-	}
-
-	private boolean isNotEmpty(Country country) {
-		return !isEmpty(country);
 	}
 }

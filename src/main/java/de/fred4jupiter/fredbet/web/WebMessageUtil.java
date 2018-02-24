@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.util.Validator;
 
 /**
  * Helper class for preparing messages.
@@ -67,7 +68,7 @@ public class WebMessageUtil {
 	public String getMessageFor(String msgKey, Object... params) {
 		return messageSourceUtil.getMessageFor(msgKey, LocaleContextHolder.getLocale(), params);
 	}
-	
+
 	public String getCountryName(Country country) {
 		return messageSourceUtil.getCountryName(country, LocaleContextHolder.getLocale());
 	}
@@ -76,16 +77,16 @@ public class WebMessageUtil {
 		if (match.getCountryOne() == null) {
 			return match.getTeamNameOne();
 		}
-		return getCountryName(match.getCountryOne());
+		return Validator.isNotEmpty(match.getCountryOne()) ? getCountryName(match.getCountryOne()) : match.getTeamNameOne();
 	}
 
 	public String getTeamNameTwo(Match match) {
 		if (match.getCountryTwo() == null) {
 			return match.getTeamNameTwo();
 		}
-		return getCountryName(match.getCountryTwo());
+		return Validator.isNotEmpty(match.getCountryTwo()) ? getCountryName(match.getCountryTwo()) : match.getTeamNameTwo();
 	}
-	
+
 	public static final class WebMessage {
 		private String cssClass;
 

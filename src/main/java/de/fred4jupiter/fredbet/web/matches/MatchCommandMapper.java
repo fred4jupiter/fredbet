@@ -31,9 +31,9 @@ public class MatchCommandMapper {
 
 	@Autowired
 	private MatchService matchService;
-
+	
 	@Autowired
-	private WebMessageUtil messageUtil;
+	private WebMessageUtil webMessageUtil;
 
 	public List<MatchCommand> findAllMatches(String username) {
 		List<Match> allMatches = matchService.findAllMatches();
@@ -90,12 +90,12 @@ public class MatchCommandMapper {
 
 	public MatchCommand toMatchCommand(Match match) {
 		Assert.notNull(match, "Match must be given");
-		MatchCommand matchCommand = new MatchCommand(messageUtil);
+		MatchCommand matchCommand = new MatchCommand();
 		matchCommand.setMatchId(match.getId());
 		matchCommand.setCountryTeamOne(match.getCountryOne());
 		matchCommand.setCountryTeamTwo(match.getCountryTwo());
-		matchCommand.setNameTeamOne(match.getTeamNameOne());
-		matchCommand.setNameTeamTwo(match.getTeamNameTwo());
+		matchCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
+		matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
 		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
 		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
