@@ -9,13 +9,7 @@
 <body>
 	<div layout:fragment="content" class="container">		
 		<div th:replace="fragments/alert :: alert_headline"></div>
-		<form id="matchesForm" th:action="@{/match}" th:object="${matchCommand}" action="#" method="post" role="form">				
-			<ul>
-	            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-	                <span th:text="${e.global}? '*' : ${e.fieldName}"></span> |
-	                <span th:text="${e.message}"></span>
-	            </li>
-	        </ul>		
+		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
@@ -25,14 +19,16 @@
 							<div class="col-xs-6">
 								<select th:field="*{countryTeamOne}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>
-							</div>
+								</select>								
+							</div>							
 							<div class="col-xs-6">
 								<select th:field="*{countryTeamTwo}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>
+								</select>								
 							</div>
 						</div>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('countryTeamOne')}" th:errors="*{countryTeamOne}">countryTeamOne error</p>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('countryTeamTwo')}" th:errors="*{countryTeamTwo}">countryTeamTwo error</p>
 					</div>
 					<div class="form-group">
 						<label th:text="#{matches.form.teamNames} + ':'"></label>
@@ -40,36 +36,41 @@
 						<br/>
 						<div class="row">							
 							<div class="col-xs-6">
-								<input type="text" th:field="*{nameTeamOne}" class="form-control" />
+								<input type="text" th:field="*{teamNameOne}" class="form-control" />								
 							</div>
 							<div class="col-xs-6">
-								<input type="text" th:field="*{nameTeamTwo}" class="form-control" />
+								<input type="text" th:field="*{teamNameTwo}" class="form-control" />								
 							</div>
 						</div>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamNameOne')}" th:errors="*{teamNameOne}">teamNameOne error</p>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamNameTwo')}" th:errors="*{teamNameTwo}">teamNameTwo error</p>
 					</div>												
 					<div class="form-group">
 		                <label for="kickOffDateString" th:text="#{matches.form.kickOff} + ':'"></label>
 		                <div class="input-group date form_datetime" data-link-field="kickOffDateString" data-date-format="dd.mm.yyyy hh:ii" data-link-format="dd.mm.yyyy hh:ii">
-		                    <input class="form-control" size="16" type="text" value="" th:value="${matchCommand.kickOffDateString}" readonly="readonly"/>
+		                    <input class="form-control" size="16" type="text" value="" th:value="${createEditMatchCommand.kickOffDateString}" readonly="readonly"/>
 							<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
 		                </div>
 						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" />
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('kickOffDateString')}" th:errors="*{kickOffDateString}">kickOffDateString error</p>
 		            </div>					
 					<div class="form-group">
 						<label for="teamResultTwo" th:text="#{matches.form.stadium} + ':'"></label>
 						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('stadium')}" th:errors="*{stadium}">stadium error</p>
 					</div>					
 					<div class="form-group">
 						<label for="teamResultTwo" th:text="#{matches.form.group} + ':'"></label>
 						<select th:field="*{group}" class="form-control">
 						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}"></option>
 						</select>						
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
 			        </div>					
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/match/delete/' + ${matchCommand.matchId}}" 
-							class="btn btn-danger" role="button" th:classappend="${!matchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>						
-						<a href="#" th:href="@{${'/matches#' + matchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/match/delete/' + ${createEditMatchCommand.matchId}}" 
+							class="btn btn-danger" role="button" th:classappend="${!createEditMatchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>						
+						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>
 			</div>

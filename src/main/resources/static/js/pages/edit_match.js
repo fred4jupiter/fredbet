@@ -1,4 +1,4 @@
 function clearTeamNameFields() {
-	$('#nameTeamOne').val("");
-	$('#nameTeamTwo').val("");
+	$('#teamNameOne').val("");
+	$('#teamNameTwo').val("");
 }

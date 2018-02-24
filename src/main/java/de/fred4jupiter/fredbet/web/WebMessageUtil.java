@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 
 /**
@@ -71,6 +72,20 @@ public class WebMessageUtil {
 		return messageSourceUtil.getCountryName(country, LocaleContextHolder.getLocale());
 	}
 
+	public String getTeamNameOne(Match match) {
+		if (match.getCountryOne() == null) {
+			return match.getTeamNameOne();
+		}
+		return getCountryName(match.getCountryOne());
+	}
+
+	public String getTeamNameTwo(Match match) {
+		if (match.getCountryTwo() == null) {
+			return match.getTeamNameTwo();
+		}
+		return getCountryName(match.getCountryTwo());
+	}
+	
 	public static final class WebMessage {
 		private String cssClass;
 
