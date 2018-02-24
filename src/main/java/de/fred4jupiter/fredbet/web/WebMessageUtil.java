@@ -74,17 +74,18 @@ public class WebMessageUtil {
 	}
 
 	public String getTeamNameOne(Match match) {
-		if (match.getCountryOne() == null) {
-			return match.getTeamNameOne();
-		}
-		return Validator.isNotEmpty(match.getCountryOne()) ? getCountryName(match.getCountryOne()) : match.getTeamNameOne();
+		return getTeamName(match.getCountryOne(), match.getTeamNameOne());
 	}
 
 	public String getTeamNameTwo(Match match) {
-		if (match.getCountryTwo() == null) {
-			return match.getTeamNameTwo();
+		return getTeamName(match.getCountryTwo(), match.getTeamNameTwo());
+	}
+
+	private String getTeamName(Country country, String teamName) {
+		if (country == null) {
+			return teamName;
 		}
-		return Validator.isNotEmpty(match.getCountryTwo()) ? getCountryName(match.getCountryTwo()) : match.getTeamNameTwo();
+		return Validator.isNotNull(country) ? getCountryName(country) : teamName;
 	}
 
 	public static final class WebMessage {

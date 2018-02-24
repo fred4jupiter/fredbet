@@ -28,12 +28,11 @@ public final class Validator {
 		return (collection == null || collection.isEmpty());
 	}
 
-	
-	public static boolean isEmpty(Country country) {
+	public static boolean isNull(Country country) {
 		return country == null || Country.NONE.equals(country);
 	}
 
-	public static boolean isNotEmpty(Country country) {
-		return !isEmpty(country);
+	public static boolean isNotNull(Country country) {
+		return !isNull(country);
 	}
 }

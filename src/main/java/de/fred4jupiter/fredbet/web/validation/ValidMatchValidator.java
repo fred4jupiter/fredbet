@@ -57,16 +57,16 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		String teamNameTwo = value.getTeamNameTwo();
 
 		// nothing selected
-		if ((Validator.isEmpty(countryTeamOne) && Validator.isEmpty(countryTeamTwo))
+		if ((Validator.isNull(countryTeamOne) && Validator.isNull(countryTeamTwo))
 				&& (StringUtils.isBlank(teamNameOne) && StringUtils.isBlank(teamNameTwo))) {
 			return true;
 		}
 
-		if (Validator.isEmpty(countryTeamOne) && Validator.isNotEmpty(countryTeamTwo)) {
+		if (Validator.isNull(countryTeamOne) && Validator.isNotNull(countryTeamTwo)) {
 			return true;
 		}
 
-		if (Validator.isNotEmpty(countryTeamOne) && Validator.isEmpty(countryTeamTwo)) {
+		if (Validator.isNotNull(countryTeamOne) && Validator.isNull(countryTeamTwo)) {
 			return true;
 		}
 
@@ -88,7 +88,7 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		String teamNameOne = value.getTeamNameOne();
 		String teamNameTwo = value.getTeamNameTwo();
 
-		return ((Validator.isNotEmpty(countryTeamOne) || Validator.isNotEmpty(countryTeamTwo))
+		return ((Validator.isNotNull(countryTeamOne) || Validator.isNotNull(countryTeamTwo))
 				&& (StringUtils.isNotBlank(teamNameOne) || StringUtils.isNotBlank(teamNameTwo)));
 	}
 
@@ -99,7 +99,7 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
 		String teamNameOne = value.getTeamNameOne();
 		String teamNameTwo = value.getTeamNameTwo();
 
-		if (Validator.isNotEmpty(countryTeamOne) && Validator.isNotEmpty(countryTeamTwo)) {
+		if (Validator.isNotNull(countryTeamOne) && Validator.isNotNull(countryTeamTwo)) {
 			if (countryTeamOne.equals(countryTeamTwo)) {
 				return true;
 			}
