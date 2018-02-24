@@ -32,8 +32,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	private Integer points;
 
-	private boolean deletable;
-
 	private boolean penaltyWinnerOneBet;
 
 	private boolean penaltyWinnerOneMatch;
@@ -129,14 +127,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	public boolean isTeamNamesEmpty() {
 		return (isBlank(countryTeamOne) && isBlank(countryTeamTwo))
 				&& (StringUtils.isBlank(nameTeamOne) && StringUtils.isBlank(nameTeamTwo));
-	}
-
-	public boolean isDeletable() {
-		return deletable;
-	}
-
-	public void setDeletable(boolean deletable) {
-		this.deletable = deletable;
 	}
 
 	public boolean isGroupMatch() {

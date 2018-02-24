@@ -35,20 +35,6 @@ public class MatchCommandMapper {
 	@Autowired
 	private WebMessageUtil messageUtil;
 
-	public MatchCommand findByMatchId(Long matchId) {
-		Match match = matchService.findByMatchId(matchId);
-		if (match == null) {
-			return null;
-		}
-
-		Long numberOfBetsForThisMatch = bettingService.countByMatch(match);
-		MatchCommand matchCommand = toMatchCommand(match);
-		if (numberOfBetsForThisMatch == 0) {
-			matchCommand.setDeletable(true);
-		}
-		return matchCommand;
-	}
-
 	public List<MatchCommand> findAllMatches(String username) {
 		List<Match> allMatches = matchService.findAllMatches();
 		return toMatchCommandsWithBets(username, allMatches);
@@ -102,23 +88,6 @@ public class MatchCommandMapper {
 		return toMatchCommandsWithBets(currentUserName, allMatches);
 	}
 
-	public Long save(MatchCommand matchCommand) {
-		Match match = null;
-		if (matchCommand.getMatchId() != null) {
-			match = matchService.findByMatchId(matchCommand.getMatchId());
-		}
-
-		if (match == null) {
-			match = new Match();
-		}
-
-		toMatch(matchCommand, match);
-
-		match = matchService.save(match);
-		matchCommand.setMatchId(match.getId());
-		return match.getId();
-	}
-
 	public MatchCommand toMatchCommand(Match match) {
 		Assert.notNull(match, "Match must be given");
 		MatchCommand matchCommand = new MatchCommand(messageUtil);
@@ -134,16 +103,6 @@ public class MatchCommandMapper {
 		matchCommand.setGroup(match.getGroup());
 		matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
 		return matchCommand;
-	}
-
-	public void toMatch(MatchCommand matchCommand, Match match) {
-		match.setCountryOne(matchCommand.getCountryTeamOne());
-		match.setCountryTwo(matchCommand.getCountryTeamTwo());
-		match.setTeamNameOne(matchCommand.getNameTeamOne());
-		match.setTeamNameTwo(matchCommand.getNameTeamTwo());
-		match.setKickOffDate(DateUtils.toDate(matchCommand.getKickOffDate()));
-		match.setGroup(matchCommand.getGroup());
-		match.setStadium(matchCommand.getStadium());
 	}
 
 }
