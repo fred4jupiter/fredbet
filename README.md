@@ -81,7 +81,7 @@ These properties has to be set at application startup.
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
 | fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE, AWS_S3` |
-| fredbet.image-file-sytem-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
+| fredbet.image-file-system-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
 | fredbet.aws-s3bucket-name | fredbet | Name of the AWS bucket if the image location is set to AWS_S3. |
 
 Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.
