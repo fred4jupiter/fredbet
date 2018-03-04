@@ -162,7 +162,7 @@ Disabling Liquibase database migration at all. This may be useful if you have an
 
 You can call this URL for a health check:
 
-[http://localhost:8080/manage/health](http://localhost:8080/manage/health).
+[http://localhost:8080/actuator/health](http://localhost:8080/actuator/health).
 
 You will see a response of `{"status":"UP"}`. The health check URL is callable without authentication.
 

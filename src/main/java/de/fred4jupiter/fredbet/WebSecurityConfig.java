@@ -56,11 +56,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 		http.authorizeRequests().antMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO);
 		http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
-		// Spring Boot Actuator
-		http.authorizeRequests().antMatchers("/manage/health").permitAll();
-		http.authorizeRequests().antMatchers("/manage/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
-		http.authorizeRequests().anyRequest().authenticated();
 
+		// Spring Boot Actuator
+		http.authorizeRequests().antMatchers("/actuator/health").permitAll();
+		http.authorizeRequests().antMatchers("/actuator/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+		
+		http.authorizeRequests().anyRequest().authenticated();
+		
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID", "remember-me").permitAll();
