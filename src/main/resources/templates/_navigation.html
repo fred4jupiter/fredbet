@@ -28,15 +28,17 @@
 								<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
 								<li th:class="${pageState_extra_bets}"><a href="#bet" th:href="@{/extra_bets}" th:text="#{navigation.betting.extraBets}"></a></li>
 							</ul>
-						</li>
-						<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
-						<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
+						</li>						
 						<li class="dropdown" th:classappend="${pageState_group}">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				        		<span th:text="#{groups}" th:remove="tag"></span>			        		
+				        		<span th:text="#{matches.title}" th:remove="tag">Spiele</span>			        		
 				        		<span class="caret"></span>
 				        	</a>
 					        <ul class="dropdown-menu">
+					        	<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
+					        	<li class="divider" role="separator"></li>
+								<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
+								<li class="divider" role="separator"></li>
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}" th:class="${pageState_matches_group_GROUP_A}">
 					            	<a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
 				            	</li>

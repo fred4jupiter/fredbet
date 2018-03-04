@@ -10,6 +10,10 @@ h3 {
 	font-size: 1.2em;
 }
 
+body { 
+    padding-top: 70px; 
+}
+
 .form-group input.form-size-small {
 	width: 45px;
 	text-align: center;
@@ -238,48 +242,4 @@ button.vote {
 	padding: 5px;
 }
 
-/** justified break point for navigation collapse on tablets */
-@media ( max-width : 991px) {
-	.navbar-header {
-		float: none;
-	}
-	.navbar-toggle {
-		display: block;
-	}
-	.navbar-collapse {
-		border-top: 1px solid transparent;
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-	}
-	.navbar-collapse.collapse {
-		display: none !important;
-	}
-	.navbar-nav {
-		float: none !important;
-		margin: 7.5px -15px;
-	}
-	.navbar-nav>li {
-		float: none;
-	}
-	.navbar-nav>li>a {
-		padding-top: 10px;
-		padding-bottom: 10px;
-	}
-	.navbar-text {
-		float: none;
-		margin: 15px 0;
-	}
-	/* since 3.1.0 */
-	.navbar-collapse.collapse.in {
-		display: block !important;
-	}
-	.collapsing {
-		overflow: hidden !important;
-	}
-}
 
-@media ( max-width: 1200px) {
-	.nav > li >a {
-		padding-left: 10px;
-		padding-right: 10px
-	}
-}
