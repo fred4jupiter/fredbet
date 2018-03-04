@@ -26,6 +26,9 @@ public class SessionTrackingService {
 		if (!sessionTrackingOpt.isPresent()) {
 			sessionTracking = new SessionTracking();
 		}
+		else {
+			sessionTracking = sessionTrackingOpt.get();
+		}
 
 		sessionTracking.setUserName(userName);
 		sessionTracking.setSessionId(sessionId);

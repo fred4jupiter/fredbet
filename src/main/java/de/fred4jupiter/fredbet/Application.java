@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,11 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import de.fred4jupiter.fredbet.props.CacheNames;
-import de.fred4jupiter.fredbet.props.DatabaseType;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 
 /**
@@ -45,8 +37,6 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 @EnableAutoConfiguration(exclude = ElastiCacheAutoConfiguration.class)
 public class Application {
 
-	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
 		app.addInitializers(new AppInitializer());
@@ -56,25 +46,6 @@ public class Application {
 	@Bean
 	public Properties buildProperties() throws IOException {
 		return PropertiesLoaderUtils.loadProperties(new ClassPathResource("build.properties"));
-	}
-
-	@Bean(destroyMethod = "close")
-	public DataSource dataSource(FredbetProperties fredbetProperties) {
-		LOG.info("fredbetProperties: {}", fredbetProperties);
-		final HikariConfig config = new HikariConfig();
-		config.setPoolName("FredBetCP");
-		config.setConnectionTestQuery("SELECT 1");
-		config.setJdbcUrl(fredbetProperties.getDatabaseUrl());
-		config.setUsername(fredbetProperties.getDatabaseUsername());
-		config.setPassword(fredbetProperties.getDatabasePassword());
-		config.setMaximumPoolSize(20);
-		config.setIdleTimeout(30000);
-
-		final DatabaseType databaseType = fredbetProperties.getDatabaseType();
-		config.setDriverClassName(databaseType.getDriverClassName());
-		config.addDataSourceProperty("hibernate.dialect", databaseType.getDatabasePlatform());
-
-		return new HikariDataSource(config);
 	}
 
 	@Bean

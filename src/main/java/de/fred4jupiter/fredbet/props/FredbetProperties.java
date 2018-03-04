@@ -15,16 +15,6 @@ public class FredbetProperties {
 
 	public static final String PROPS_PREFIX = "fredbet";
 
-	private String databaseUrl;
-
-	private String databaseUsername;
-
-	private String databasePassword;
-
-	public static final DatabaseType DEFAULT_DB_TYPE = DatabaseType.H2;
-
-	private DatabaseType databaseType = DEFAULT_DB_TYPE;
-
 	/**
 	 * Image size of the generated thumbnails.
 	 */
@@ -51,30 +41,6 @@ public class FredbetProperties {
 	 */
 	private String awsS3bucketName;
 
-	public String getDatabaseUrl() {
-		return databaseUrl;
-	}
-
-	public void setDatabaseUrl(String databaseUrl) {
-		this.databaseUrl = databaseUrl;
-	}
-
-	public String getDatabaseUsername() {
-		return databaseUsername;
-	}
-
-	public void setDatabaseUsername(String databaseUsername) {
-		this.databaseUsername = databaseUsername;
-	}
-
-	public String getDatabasePassword() {
-		return databasePassword;
-	}
-
-	public void setDatabasePassword(String databasePassword) {
-		this.databasePassword = databasePassword;
-	}
-
 	public int getThumbnailSize() {
 		return thumbnailSize;
 	}
@@ -89,14 +55,6 @@ public class FredbetProperties {
 
 	public void setImageSize(int imageSize) {
 		this.imageSize = imageSize;
-	}
-
-	public DatabaseType getDatabaseType() {
-		return databaseType;
-	}
-
-	public void setDatabaseType(DatabaseType databaseType) {
-		this.databaseType = databaseType;
 	}
 
 	public ImageLocation getImageLocation() {
@@ -118,9 +76,6 @@ public class FredbetProperties {
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-		builder.append("databaseUrl", databaseUrl);
-		builder.append("databasePassword", databasePassword != null ? "********" : "null");
-		builder.append("databaseType", databaseType);
 		builder.append("thumbnailSize", thumbnailSize);
 		builder.append("imageSize", imageSize);
 		builder.append("imageLocation", imageLocation);

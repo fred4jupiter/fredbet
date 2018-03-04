@@ -90,10 +90,10 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 
 | Key | Default Value | Description |
 |--------|--------|--------|
-| fredbet.database-url | | The database jdbc connection url, e.g. `jdbc:mariadb://localhost:3306/fredbetdb`. |
-| fredbet.database-username | | The database username. |
-| fredbet.database-password | | The database password. |
-| fredbet.database-type | h2 | The used database type. Choose one of these values: `h2, maria-db, mysql, postgres` |
+| spring.datasource.hikari.jdbc-url | | The database jdbc connection url, e.g. `jdbc:mariadb://localhost:3306/fredbetdb`. |
+| spring.datasource.hikari.username | | The database username. |
+| spring.datasource.hikari.password | | The database password. |
+| spring.datasource.hikari.driver-class-name |  | One of: `org.h2.Driver, com.mysql.jdbc.Driver, org.mariadb.jdbc.Driver, org.postgresql.Driver` |
 
 ## Runtime Configuration
 
