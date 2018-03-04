@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.service;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,33 +21,34 @@ public class InfoService {
 
 	public Info saveInfoContent(InfoType infoType, String content, Locale locale) {
 		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
-		Info foundInfo = infoRepository.findOne(infoPK);
-		if (foundInfo == null) {
-			foundInfo = new Info(infoPK, content);
-		} else {
-			foundInfo.setContent(content);
+		Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
+		if (foundInfoOpt.isPresent()) {
+			Info info = foundInfoOpt.get();
+			info.setContent(content);
+			return infoRepository.save(info);
 		}
 
-		return infoRepository.save(foundInfo);
+		Info info = new Info(infoPK, content);
+		return infoRepository.save(info);
 	}
-	
-	public Info saveInfoContentIfNotPresent(InfoType infoType, String content, Locale locale) {
+
+	public void saveInfoContentIfNotPresent(InfoType infoType, String content, Locale locale) {
 		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
-		Info foundInfo = infoRepository.findOne(infoPK);
-		if (foundInfo == null) {
-			foundInfo = new Info(infoPK, content);
-			infoRepository.save(foundInfo);
-		} 
-		return foundInfo;
+		Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
+		if (!foundInfoOpt.isPresent()) {
+			Info info = new Info(infoPK, content);
+			infoRepository.save(info);
+		}
 	}
 
 	public Info findBy(InfoType infoType, Locale locale) {
 		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
-		Info info = infoRepository.findOne(infoPK);
-		if (info == null) {
-			info = saveInfoContent(infoType, "", locale);
+		Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
+		if (foundInfoOpt.isPresent()) {
+			return foundInfoOpt.get();
 		}
-		return info;
+		
+		return saveInfoContent(infoType, "", locale);
 	}
 
 }

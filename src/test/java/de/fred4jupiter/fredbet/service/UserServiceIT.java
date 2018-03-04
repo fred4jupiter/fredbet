@@ -64,7 +64,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 		userService.changePassword(appUser.getId(), oldPassword, newPassword);
 
-		AppUser found = userService.findByAppUserId(appUser.getId());
+		AppUser found = userService.findByUserId(appUser.getId());
 		assertNotNull(found);
 		assertTrue(passwordEncoder.matches(newPassword, found.getPassword()));
 	}
@@ -97,7 +97,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		assertEquals(2, appUser.getRoles().size());
 		userService.updateUser(appUser.getId(), false, appUser.getRoles(), false);
 
-		AppUser foundAppUser = userService.findByAppUserId(appUser.getId());
+		AppUser foundAppUser = userService.findByUserId(appUser.getId());
 		assertNotNull(foundAppUser);
 
 		assertEquals(appUser.getUsername(), foundAppUser.getUsername());
@@ -116,7 +116,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
 		userService.renameUser(oldUserName, newUsername);
 
-		AppUser foundUser = userService.findByAppUserId(appUser.getId());
+		AppUser foundUser = userService.findByUserId(appUser.getId());
 		assertNotNull(foundUser);
 		assertEquals(newUsername, foundUser.getUsername());
 

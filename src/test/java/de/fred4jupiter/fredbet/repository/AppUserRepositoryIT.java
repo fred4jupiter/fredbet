@@ -28,7 +28,7 @@ public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
 		appUser = appUserRepository.save(appUser);
 		assertNotNull(appUser.getId());
 
-		AppUser foundAppUser = appUserRepository.findOne(appUser.getId());
+		AppUser foundAppUser = appUserRepository.getOne(appUser.getId());
 		assertNotNull(foundAppUser);
 		assertEquals(appUser.getUsername(), foundAppUser.getUsername());
 	}
@@ -55,7 +55,7 @@ public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
 		appUserRepository.flush();
 		assertNotNull(appUser.getId());
 
-		AppUser foundAppUser = appUserRepository.findOne(appUser.getId());
+		AppUser foundAppUser = appUserRepository.getOne(appUser.getId());
 		assertNotNull(foundAppUser);
 		assertEquals(appUser.getUsername(), foundAppUser.getUsername());
 		assertThat(appUser.getRoles().size(), equalTo(2));

@@ -35,7 +35,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 		assertNotNull(match);
 		matchService.save(match);
 
-		Match foundMatch = matchService.findMatchByMatchId(match.getId());
+		Match foundMatch = matchService.findByMatchId(match.getId());
 		assertNotNull(foundMatch);
 		assertEquals(match, foundMatch);
 	}
@@ -46,7 +46,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 		assertNotNull(match);
 		matchService.save(match);
 
-		Match foundMatch = matchService.findMatchByMatchId(match.getId());
+		Match foundMatch = matchService.findByMatchId(match.getId());
 		assertNotNull(foundMatch);
 		assertEquals(match, foundMatch);
 	}
@@ -80,7 +80,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 				.withKickOffDate(11, 6, 15).build();
 		matchService.save(match);
 
-		Match found = matchRepository.findOne(match.getId());
+		Match found = matchRepository.getOne(match.getId());
 		assertEquals(match, found);
 
 		final Country newCountry = Country.ENGLAND;
@@ -88,7 +88,7 @@ public class MatchServiceIT extends AbstractTransactionalIntegrationTest {
 
 		matchService.save(found);
 
-		Match found2 = matchRepository.findOne(found.getId());
+		Match found2 = matchRepository.getOne(found.getId());
 		assertEquals(newCountry, found2.getCountryOne());
 	}
 }

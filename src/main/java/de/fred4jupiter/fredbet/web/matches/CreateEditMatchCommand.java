@@ -3,10 +3,10 @@ package de.fred4jupiter.fredbet.web.matches;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;

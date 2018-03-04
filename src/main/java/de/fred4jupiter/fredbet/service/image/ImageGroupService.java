@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class ImageGroupService {
 	}
 
 	public void deleteImageGroup(Long imageGroupId) {
-		imageGroupRepository.delete(imageGroupId);
+		imageGroupRepository.deleteById(imageGroupId);
 	}
 
 	public void addImageGroup(String imageGroupName) {
@@ -28,13 +29,14 @@ public class ImageGroupService {
 	}
 
 	public void updateImageGroup(Long id, String name) {
-		ImageGroup imageGroup = imageGroupRepository.findOne(id);
-		if (imageGroup == null) {
+		Optional<ImageGroup> imageGroupOpt = imageGroupRepository.findById(id);
+		if (!imageGroupOpt.isPresent()) {
 			throw new IllegalArgumentException("Image group with id=" + id + " could not be found!");
 		}
 
 		checkImageGroupName(name);
 
+		ImageGroup imageGroup = imageGroupOpt.get();
 		imageGroup.setName(name);
 		imageGroupRepository.save(imageGroup);
 	}

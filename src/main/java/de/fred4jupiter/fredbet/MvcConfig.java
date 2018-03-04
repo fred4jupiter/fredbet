@@ -11,7 +11,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
@@ -22,7 +22,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 
 @Configuration
-public class MvcConfig extends WebMvcConfigurerAdapter {
+public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -66,8 +66,8 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	@Profile(FredBetProfile.DEV)
-	public ServletRegistrationBean h2servletRegistration() {
-		ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
+	public ServletRegistrationBean<WebServlet> h2servletRegistration() {
+		ServletRegistrationBean<WebServlet> registrationBean = new ServletRegistrationBean<WebServlet>(new WebServlet());
 		registrationBean.addUrlMappings("/console/*");
 		return registrationBean;
 	}

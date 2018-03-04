@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
-import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.web.image.Rotation;
 
@@ -45,10 +45,10 @@ public class ImageAdministrationService {
 	private ImageKeyGenerator imageKeyGenerator;
 
 	@Autowired
-	private AppUserRepository appUserRepository;
+	private SecurityService securityService;
 
 	@Autowired
-	private SecurityService securityService;
+	private UserService userService;
 
 	private static final String GALLERY_NAME = "Users";
 
@@ -73,7 +73,7 @@ public class ImageAdministrationService {
 	}
 
 	public void saveImage(byte[] binary, Long imageGroupId, String description, Rotation rotation) {
-		final ImageGroup imageGroup = imageGroupRepository.findOne(imageGroupId);
+		final ImageGroup imageGroup = imageGroupRepository.getOne(imageGroupId);
 
 		final String key = imageKeyGenerator.generateKey();
 
@@ -88,7 +88,7 @@ public class ImageAdministrationService {
 	}
 
 	public void saveUserProfileImage(byte[] binary) {
-		final AppUser appUser = appUserRepository.findOne(securityService.getCurrentUser().getId());
+		final AppUser appUser = userService.findByUserId(securityService.getCurrentUser().getId());
 		ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
 		saveUserProfileImage(binary, appUser, imageMetaData);
 	}

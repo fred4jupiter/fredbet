@@ -48,7 +48,7 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 			LOG.debug("User {} gets {} points", bet.getUserName(), bet.getPoints());
 		});
 
-		betRepository.save(allBetsForThisMatch);
+		betRepository.saveAll(allBetsForThisMatch);
 	}
 
 	int calculatePointsFor(Match match, Bet bet) {

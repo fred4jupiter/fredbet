@@ -1,9 +1,9 @@
 package de.fred4jupiter.fredbet.domain;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * These properties are changable at runtime (via admin page).

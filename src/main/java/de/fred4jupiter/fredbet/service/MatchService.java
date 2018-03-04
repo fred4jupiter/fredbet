@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -50,11 +51,7 @@ public class MatchService {
 
 	public Match findByMatchId(Long matchId) {
 		Assert.notNull(matchId, "matchId must be given");
-		return matchRepository.findOne(matchId);
-	}
-
-	public Match findMatchByMatchId(Long matchId) {
-		return matchRepository.findOne(matchId);
+		return matchRepository.getOne(matchId);
 	}
 
 	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
@@ -91,11 +88,12 @@ public class MatchService {
 
 	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
 	public void deleteMatch(Long matchId) {
-		matchRepository.delete(matchId);
+		matchRepository.deleteById(matchId);
 	}
 
 	public Match findMatchById(Long matchId) {
-		return matchRepository.findOne(matchId);
+		Optional<Match> matchOpt = matchRepository.findById(matchId);
+		return matchOpt.isPresent() ? matchOpt.get() : null;
 	}
 
 	@Cacheable(CacheNames.AVAIL_GROUPS)

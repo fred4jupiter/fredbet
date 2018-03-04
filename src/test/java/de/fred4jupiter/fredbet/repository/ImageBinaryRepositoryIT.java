@@ -14,10 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.ImageBinary;
 
-public class ImageBinaryRepositoryIT extends AbstractIntegrationTest {
+public class ImageBinaryRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ImageBinaryRepositoryIT.class);
 
@@ -36,7 +36,7 @@ public class ImageBinaryRepositoryIT extends AbstractIntegrationTest {
 		assertNotNull(saved);
 		assertEquals(key, saved.getKey());
 
-		ImageBinary retrievedFromDb = imageBinaryRepository.findOne(saved.getKey());
+		ImageBinary retrievedFromDb = imageBinaryRepository.getOne(saved.getKey());
 		assertNotNull(retrievedFromDb);
 		assertEquals(saved.getKey(), retrievedFromDb.getKey());
 		assertNotNull(retrievedFromDb.getImageBinary());

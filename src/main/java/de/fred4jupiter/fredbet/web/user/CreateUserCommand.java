@@ -3,11 +3,11 @@ package de.fred4jupiter.fredbet.web.user;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import de.fred4jupiter.fredbet.security.FredBetRole;
 

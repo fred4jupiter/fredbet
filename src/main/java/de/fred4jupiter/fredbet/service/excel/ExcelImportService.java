@@ -56,7 +56,7 @@ public class ExcelImportService {
 		dataBasePopulator.deleteAllBetsAndMatches();
 		
 		List<Match> matches = importFromExcel(bytes);
-		matchRepository.save(matches);
+		matchRepository.saveAll(matches);
 	}
 
 	private List<Match> importFromInputStream(InputStream inp) throws IOException, InvalidFormatException {

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.event;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,9 @@ public class LoginSuccessHandler implements ApplicationListener<AuthenticationSu
 		if (principal != null && principal instanceof AppUser) {
 			AppUser appUser = (AppUser) principal;
 			LOG.debug("User with name {} has logged in.", appUser.getUsername());
-			AppUser foundAppUser = appUserRepository.findOne(appUser.getId());
-			if (foundAppUser != null) {
+			Optional<AppUser> appUserOpt = appUserRepository.findById(appUser.getId());
+			if (appUserOpt.isPresent()) {
+				AppUser foundAppUser = appUserOpt.get();
 				foundAppUser.setLastLogin(new Date());
 				appUserRepository.save(foundAppUser);
 			}

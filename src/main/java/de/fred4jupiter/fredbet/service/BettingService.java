@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +50,7 @@ public class BettingService {
 	public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
 		AppUser appUser = appUserRepository.findByUsername(username);
 
-		Match match = matchRepository.findOne(matchId);
+		Match match = matchRepository.getOne(matchId);
 
 		createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
 	}
@@ -83,7 +84,7 @@ public class BettingService {
 	}
 
 	public Long save(Bet bet) {
-		Match match = matchRepository.findOne(bet.getMatch().getId());
+		Match match = matchRepository.getOne(bet.getMatch().getId());
 		if (match.hasStarted()) {
 			throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
 		}
@@ -97,11 +98,12 @@ public class BettingService {
 	}
 
 	public Bet findOrCreateBetForMatch(Long matchId) {
-		final Match match = matchRepository.findOne(matchId);
-		if (match == null) {
+		final Optional<Match> matchOpt = matchRepository.findById(matchId);
+		if (!matchOpt.isPresent()) {
 			return null;
 		}
 		final String currentUserName = securityService.getCurrentUserName();
+		Match match = matchOpt.get();
 		Bet bet = betRepository.findByUserNameAndMatch(currentUserName, match);
 		if (bet == null) {
 			bet = new Bet();
@@ -191,7 +193,7 @@ public class BettingService {
 	}
 
 	public Bet findBetById(Long betId) {
-		return betRepository.findOne(betId);
+		return betRepository.getOne(betId);
 	}
 	
 	public Long countByMatch(Match match) {

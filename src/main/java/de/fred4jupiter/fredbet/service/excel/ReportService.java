@@ -29,8 +29,8 @@ public class ReportService {
 	private MessageSourceUtil messageSourceUtil;
 
 	public byte[] exportBetsToExcel(final Locale locale) {
-		final List<Bet> bets = this.betRepository
-				.findAll(new Sort(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName")));
+		Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
+		final List<Bet> bets = this.betRepository.findAll(sort);
 
 		return excelExportService.exportEntriesToExcel("Bets export", bets, new EntryCallback<Bet>() {
 

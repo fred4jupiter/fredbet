@@ -7,7 +7,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -17,11 +16,8 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.MetricsEndpoint;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 public class SystemInfoService {
@@ -30,9 +26,6 @@ public class SystemInfoService {
 
 	@Autowired
 	private Properties buildProperties;
-
-	@Autowired
-	private MetricsEndpoint metricsEndpoint;
 
 	@Autowired
 	private Environment environment;
@@ -60,7 +53,6 @@ public class SystemInfoService {
 	public SortedMap<String, Object> fetchSystemInfo() {
 		addCurrentDateTime(allProperties);
 		addHostName(allProperties);
-		addMetrics(allProperties);
 		allProperties.put("system.timeZone", ZoneId.systemDefault().toString());
 		return allProperties;
 	}
@@ -87,12 +79,6 @@ public class SystemInfoService {
 		map.put("Active Profiles", activeProfiles != null ? Arrays.asList(activeProfiles) : "");
 	}
 
-	private void addMetrics(SortedMap<String, Object> map) {
-		Map<String, Object> metricsMap = metricsEndpoint.invoke();
-		Long systemUpdateMillis = (Long) metricsMap.get("uptime");
-		map.put("system.uptime", DateUtils.formatMillis(systemUpdateMillis));
-	}
-
 	private void addHostName(SortedMap<String, Object> map) {
 		try {
 			InetAddress localHost = InetAddress.getLocalHost();
@@ -103,7 +89,7 @@ public class SystemInfoService {
 		}
 	}
 
-	private void addCurrentDateTime(SortedMap<String, Object> map) {		
+	private void addCurrentDateTime(SortedMap<String, Object> map) {
 		map.put("currentDateTime", ZonedDateTime.now());
 	}
 

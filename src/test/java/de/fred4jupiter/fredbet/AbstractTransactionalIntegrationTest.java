@@ -1,8 +1,7 @@
 package de.fred4jupiter.fredbet;
 
-import javax.transaction.Transactional;
-
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 @Rollback(true)
 @Transactional

@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.profile;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 import de.fred4jupiter.fredbet.web.validation.PasswordChangeConstraint;
 

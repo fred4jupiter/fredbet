@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,12 +65,13 @@ public class UserService {
 		return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
 	}
 
-	public AppUser findByAppUserId(Long userId) {
-		return appUserRepository.findOne(userId);
-	}
-
 	public AppUser findByUserId(Long userId) {
-		return appUserRepository.findOne(userId);
+		Optional<AppUser> appUser = appUserRepository.findById(userId);
+		if (appUser.isPresent()) {
+			return appUser.get();
+		}
+
+		throw new IllegalArgumentException("Given user with userId=" + userId + " does not exists.");
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
@@ -91,10 +93,7 @@ public class UserService {
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public AppUser updateUser(Long userId, boolean passwordReset, Set<String> roles, boolean isChild) {
 		Assert.notNull(userId, "userId must be given");
-		AppUser appUser = appUserRepository.findOne(userId);
-		if (appUser == null) {
-			throw new IllegalArgumentException("Given user with userId=" + userId + " does not exists.");
-		}
+		AppUser appUser = findByUserId(userId);
 		if (roles != null && !roles.isEmpty()) {
 			appUser.setRoles(roles);
 		}
@@ -111,26 +110,18 @@ public class UserService {
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
 	public void deleteUser(Long userId) {
-		AppUser appUser = appUserRepository.findOne(userId);
-		if (appUser == null) {
-			LOG.info("Could not find user with id={}", userId);
-			return;
-		}
-
+		AppUser appUser = findByUserId(userId);
 		if (!appUser.isDeletable()) {
 			throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
 		}
 
 		imageMetaDataRepository.deleteMetaDataByOwner(appUser.getId());
 
-		appUserRepository.delete(userId);
+		appUserRepository.deleteById(userId);
 	}
 
 	public void changePassword(Long userId, String enteredOldPasswordPlain, String newPassword) {
-		AppUser appUser = appUserRepository.findOne(userId);
-		if (appUser == null) {
-			throw new IllegalArgumentException("Could not found user with userId=" + userId);
-		}
+		AppUser appUser = findByUserId(userId);
 
 		final String oldSavedEncryptedPassword = appUser.getPassword();
 
