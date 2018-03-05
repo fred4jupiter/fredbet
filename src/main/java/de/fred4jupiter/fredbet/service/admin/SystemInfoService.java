@@ -39,12 +39,12 @@ public class SystemInfoService {
 		}
 		addBuildTimestamp(allProperties);
 		addSpringProfiles(allProperties);
-		addEnvProperty("fredbet.database-type", allProperties);
+		addEnvProperty("spring.datasource.hikari.driver-class-name", allProperties);
+		addEnvProperty("spring.datasource.hikari.jdbc-url", allProperties);
 		addEnvProperty("fredbet.image-location", allProperties);
 		addEnvProperty("fredbet.image-size", allProperties);
 		addEnvProperty("fredbet.thumbnail-size", allProperties);
-		addEnvProperty("fredbet.aws-s3bucket-name", allProperties);
-		addEnvProperty("fredbet.database-url", allProperties);
+		addEnvProperty("fredbet.aws-s3bucket-name", allProperties);		
 
 		addEnvProperty("cloud.aws.credentials.profileName", allProperties);
 		addEnvProperty("cloud.aws.region.static", allProperties);
