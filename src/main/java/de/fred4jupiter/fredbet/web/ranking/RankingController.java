@@ -37,7 +37,7 @@ public class RankingController {
 
 	private ModelAndView queryRanking(ModelMap modelMap, RankingSelection rankingSelection) {
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(rankingSelection);
-		if (Validator.isEmpty(rankings)) {
+		if (Validator.isEmpty(rankings) && RankingSelection.MIXED.equals(rankingSelection)) {
 			messageUtil.addInfoMsg(modelMap, "ranking.noRankings");
 			return new ModelAndView("ranking/list", "rankings", rankings);
 		}
