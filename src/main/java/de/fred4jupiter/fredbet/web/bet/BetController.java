@@ -104,10 +104,10 @@ public class BetController {
 
 		if (bet.getMatch().hasContriesSet()) {
 			betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getCountryOne()));
-			betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPath());
+			betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPathBig());
 
 			betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getCountryTwo()));
-			betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPath());
+			betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPathBig());
 
 			betCommand.setShowCountryIcons(true);
 		} else {

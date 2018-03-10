@@ -1,16 +1,22 @@
 package de.fred4jupiter.fredbet.domain;
 
+/**
+ * Country ISO Code 3166 ALPHA-3
+ * 
+ * @author michael
+ *
+ */
 public enum Country {
 
 	NONE("none"), // non selected country placeholder
 
-	ALBANIA("al"), BELGIUM("be"), GERMANY("de"), ENGLAND("en"), FRANCE("fr"), IRELAND("ie"), ICELAND("is"),
+	ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), ENGLAND("eng"), FRANCE("fra"), IRELAND("irl"), ICELAND("isl"), ITALY("ita"),
 
-	ITALY("it"), CROATIA("hr"), NORTH_IRELAND("north_ireland"), AUSTRIA("at"), POLAND("pl"), PORTUGAL("pt"), ROMANIA("ro"),
+	CROATIA("hrv"), NORTH_IRELAND("north_ireland"), AUSTRIA("aut"), POLAND("pol"), PORTUGAL("prt"), ROMANIA("rou"), RUSSIA("rus"),
 
-	RUSSIA("ru"), SWEDEN("se"), SWITZERLAND("ch"), SLOVAKIA("sk"), SPAIN("es"), CZECH_REPUBLIC("cz"), TURKEY("tr"),
+	SWEDEN("swe"), SWITZERLAND("che"), SLOVAKIA("svk"), SPAIN("esp"), CZECH_REPUBLIC("cze"), TURKEY("tur"), UKRAINE("ukr"),
 
-	UKRAINE("ua"), HUNGARY("hu"), WALES("wales"), AUSTRALIA("au"), EGYPT("egy"), ALGERIA("alg"), ANGOLA("ang"), EQUATORIAL_GUINEA("eqg"),
+	HUNGARY("hun"), WALES("wales"), AUSTRALIA("aus"), EGYPT("egy"), ALGERIA("alg"), ANGOLA("ang"), EQUATORIAL_GUINEA("eqg"),
 
 	ETHIOPIA("eth"), BENIN("ben"), BURKINA_FASO("bfa"), BURUNDI("bdi"), DJIBOUTI("dji"), IVORY_COAST("civ"),
 
@@ -20,27 +26,25 @@ public enum Country {
 
 	CONGO_DR("cod"), GUINEA_BISSAU("gnb"), KENYA("ken"), LESOTHO("les"), LIBERIA("lbr"), LIBYA("lby"), MADAGASCAR("mad"),
 
-	MALAWI("mwi"), MALI("mli"), MAURITANIA("mtn"), MAURITIUS("mri"),
+	MALAWI("mwi"), MALI("mli"), MAURITANIA("mtn"), MAURITIUS("mus"),
 
-	MOROCCO("mar"), MOZAMBIQUE("moz"), NAMIBIA("nam"), NIGER("nig"), NIGERIA("nga"), RWANDA("rwa"), SAO_TOME_E_PRINCIPE("stp"), SENEGAL(
-			"sen"),
+	MOROCCO("mar"), MOZAMBIQUE("moz"), NAMIBIA("nam"), NIGER("nig"), NIGERIA("nga"), RWANDA("rwa"), SAO_TOME_E_PRINCIPE("stp"),
 
-	SEYCHELLES("sey"), SIERRA_LEONE("sle"), SOMALIA("som"), SOUTH_AFRICA("rsa"), SOUTH_SUDAN("ssd"), SUDAN("sdn"), SWAZILAND(
-			"swz"), TANZANIA("tan"),
+	SENEGAL("sen"), SEYCHELLES("sey"), SIERRA_LEONE("sle"), SOMALIA("som"), SOUTH_AFRICA("rsa"), SOUTH_SUDAN("ssd"), SUDAN("sdn"),
+
+	SWAZILAND("swz"), TANZANIA("tan"),
 
 	TOGO("tog"), TUNISIA("tun"), UGANDA("uga"), ZAMBIA("zam"), AFGHANISTAN("afg"), BAHRAIN("bhr"), BANGLADESH("ban"), BHUTAN("bhu"),
 
-	BRUNEI_DARUSSALAM("bru"), CAMBODIA("cam"), CHINA_PR("chn"), CHINESE_TAIPEI("tpe"), GUAM("gum"), HONG_KONG("hkg"), INDIA("ind"), IRAN(
-			"irn"),
+	BRUNEI_DARUSSALAM("bru"), CAMBODIA("cam"), CHINA_PR("chn"), CHINESE_TAIPEI("tpe"), GUAM("gum"), HONG_KONG("hkg"), INDIA("ind"),
 
-	IRAQ("irq"), JAPAN("jpn"), JORDAN("jor"), KOREA_DPR("prk"), KOREA_REPUBLIC("kor"), KUWAIT("kuw"), KYRGYZSTAN("kgz"), LAOS(
-			"lao"), LEBANON("lib"),
+	IRAN("irn"), IRAQ("irq"), JAPAN("jpn"), JORDAN("jor"), KOREA_DPR("prk"), KOREA_REPUBLIC("kor"), KUWAIT("kuw"),
 
-	MACAU("mac"), MALAYSIA("mas"), MALDIVES("mdv"), MONGOLIA("mng"), MYANMAR("mya"), NEPAL("nep"), OMAN("oma"), PAKISTAN("pak"), PALESTINE(
-			"ple"),
+	KYRGYZSTAN("kgz"), LAOS("lao"), LEBANON("lib"), MACAU("mac"), MALAYSIA("mas"), MALDIVES("mdv"), MONGOLIA("mng"), MYANMAR("mya"),
 
-	PHILIPPINES("phi"), QATAR("qat"), SAUDI_ARABIA("ksa"), SINGAPORE("sin"), SRI_LANKA("sri"), SYRIA("syr"), TAJIKISTAN("tjk"), THAILAND(
-			"tha"),
+	NEPAL("nep"), OMAN("oma"), PAKISTAN("pak"), PALESTINE("ple"), PHILIPPINES("phi"), QATAR("qat"), SAUDI_ARABIA("ksa"),
+
+	SINGAPORE("sin"), SRI_LANKA("sri"), SYRIA("syr"), TAJIKISTAN("tjk"), THAILAND("tha"),
 
 	TIMOR_LESTE("tls"), TURKMENISTAN("tkm"), UNITED_ARAB_EMIRATES("uae"), UZBEKISTAN("uzb"), VIETNAM("vie"), YEMEN("yem"), ANDORRA("and"),
 
@@ -74,6 +78,8 @@ public enum Country {
 
 	public static final String ICON_BASE_PATH = "/images/flags/";
 
+	private static final String ICON_BASE_PATH_BIG = "/images/flags/42_28/";
+
 	private String isoCode;
 
 	private Country(String isoCode) {
@@ -106,5 +112,9 @@ public enum Country {
 
 	public String getIconPath() {
 		return ICON_BASE_PATH + isoCode + ".png";
+	}
+
+	public String getIconPathBig() {
+		return ICON_BASE_PATH_BIG + isoCode + ".png";
 	}
 }

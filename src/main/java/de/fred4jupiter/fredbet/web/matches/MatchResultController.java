@@ -45,10 +45,10 @@ public class MatchResultController {
 
 		if (match.hasContriesSet()) {
 			matchResultCommand.setTeamNameOne(messageUtil.getCountryName(match.getCountryOne()));
-			matchResultCommand.setIconPathTeamOne(match.getCountryOne().getIconPath());
+			matchResultCommand.setIconPathTeamOne(match.getCountryOne().getIconPathBig());
 			
 			matchResultCommand.setTeamNameTwo(messageUtil.getCountryName(match.getCountryTwo()));
-			matchResultCommand.setIconPathTeamTwo(match.getCountryTwo().getIconPath());
+			matchResultCommand.setIconPathTeamTwo(match.getCountryTwo().getIconPathBig());
 			matchResultCommand.setShowCountryIcons(true);
 		} else {
 			matchResultCommand.setTeamNameOne(match.getTeamNameOne());
