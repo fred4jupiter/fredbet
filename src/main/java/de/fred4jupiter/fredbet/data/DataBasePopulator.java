@@ -95,21 +95,36 @@ public class DataBasePopulator {
 		bettingService.deleteAllBets();
 		matchService.deleteAllMatches();
 
-		createRandomForGroup(Group.GROUP_A, 4);
-		createRandomForGroup(Group.GROUP_B, 4);
-		createRandomForGroup(Group.GROUP_C, 4);
-		createRandomForGroup(Group.GROUP_D, 4);
-		createRandomForGroup(Group.GROUP_E, 4);
-		createRandomForGroup(Group.GROUP_F, 4);
-		createRandomForGroup(Group.GROUP_G, 4);
-		createRandomForGroup(Group.GROUP_H, 4);
+		LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
 
-		createRandomForGroup(Group.ROUND_OF_SIXTEEN, 8);
-		createRandomForGroup(Group.QUARTER_FINAL, 4);
-		createRandomForGroup(Group.SEMI_FINAL, 2);
-		createRandomForGroup(Group.FINAL, 1);
-		createRandomForGroup(Group.GAME_FOR_THIRD, 1);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_A, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_B, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_C, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_D, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_E, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_F, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_G, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_H, 4);
 
+		localDateTime = createRandomForGroup(localDateTime, Group.ROUND_OF_SIXTEEN, 8);
+		localDateTime = createRandomForGroup(localDateTime, Group.QUARTER_FINAL, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.SEMI_FINAL, 2);
+		localDateTime = createRandomForGroup(localDateTime, Group.FINAL, 1);
+		localDateTime = createRandomForGroup(localDateTime, Group.GAME_FOR_THIRD, 1);
+	}
+
+	private LocalDateTime createRandomForGroup(LocalDateTime localDateTime, Group group, int numberOfMatches) {
+		LocalDateTime tmpTime = localDateTime;
+		for (int i = 0; i < numberOfMatches; i++) {
+			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
+			Match match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
+					.withKickOffDate(tmpTime).build();
+			matchService.save(match);
+
+			tmpTime = tmpTime.plusDays(1).plusMinutes(10);
+		}
+
+		return tmpTime;
 	}
 
 	public void createDemoBetsForAllUsers() {
@@ -156,15 +171,6 @@ public class DataBasePopulator {
 			infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, locale);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
-		}
-	}
-
-	private void createRandomForGroup(Group group, int numberOfMatches) {
-		for (int i = 0; i < numberOfMatches; i++) {
-			ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
-			Match match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
-					.withKickOffDate(LocalDateTime.now().plusDays(1).plusHours(i)).build();
-			matchService.save(match);
 		}
 	}
 
