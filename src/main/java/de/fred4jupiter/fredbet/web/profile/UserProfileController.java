@@ -41,11 +41,6 @@ public class UserProfileController {
 		return CHANGE_PASSWORD_PAGE;
 	}
 
-	@RequestMapping(value = "/changeUsername", method = RequestMethod.GET)
-	public String changeUsername(@ModelAttribute ChangeUsernameCommand changeUsernameCommand) {
-		return CHANGE_USERNAME_PAGE;
-	}
-
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
 	public ModelAndView changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, BindingResult bindingResult,
 			RedirectAttributes redirect, ModelMap modelMap) {
@@ -65,9 +60,18 @@ public class UserProfileController {
 		return new ModelAndView("redirect:/matches");
 	}
 
+	@RequestMapping(value = "/changeUsername", method = RequestMethod.GET)
+	public String changeUsername(@ModelAttribute ChangeUsernameCommand changeUsernameCommand) {
+		return CHANGE_USERNAME_PAGE;
+	}
+
 	@RequestMapping(value = "/changeUsername", method = RequestMethod.POST)
-	public ModelAndView changeUsernamePost(@Valid ChangeUsernameCommand changeUsernameCommand, RedirectAttributes redirect,
-			ModelMap modelMap) {
+	public ModelAndView changeUsernamePost(@Valid ChangeUsernameCommand changeUsernameCommand, BindingResult bindingResult,
+			RedirectAttributes redirect, ModelMap modelMap) {
+
+		if (bindingResult.hasErrors()) {
+			return new ModelAndView(CHANGE_USERNAME_PAGE, "changeUsernameCommand", changeUsernameCommand);
+		}
 
 		try {
 			userService.renameUser(securityService.getCurrentUserName(), changeUsernameCommand.getNewUsername());

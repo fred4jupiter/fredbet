@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.security;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 
 /**
@@ -22,6 +25,9 @@ public class SecurityService {
 	@Autowired
 	private ImageMetaDataRepository imageMetaDataRepository;
 
+	@Autowired
+	private AppUserRepository appUserRepository;
+	
 	public boolean isUserLoggedIn() {
 		try {
 			getCurrentUser();
@@ -56,4 +62,18 @@ public class SecurityService {
 		return imageMetaDataRepository.findImageMetaDataOfUserProfileImage(username);
 	}
 
+	/**
+	 * This is the user which is created by default and cannot be renamed.
+	 * 
+	 * @return
+	 */
+	public boolean isTechnicalUser(Long userId) {
+		Optional<AppUser> appUserOpt = appUserRepository.findById(userId);
+		if (!appUserOpt.isPresent()) {
+			return true;
+		}
+		
+		AppUser appUser = appUserOpt.get();
+		return appUser.isTechnicalDefaultUser();		
+	}
 }

@@ -13,6 +13,7 @@
 						<div class="form-group">
 							<label for="newUsername" th:text="#{userprofile.changeUsername.newUsername} + ':'"></label> 
 							<input type="text" th:field="*{newUsername}" class="form-control" size="12" maxlength="12"/>
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}">newUsername error</p>
 						</div>					
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
