@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorator="_layout">
+	<head>
+		<title th:text="#{pointsfrequency.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content" class="container">
+			<div th:replace="fragments/alert :: alert_headline"></div>
+			<h1 th:text="#{pointsfrequency.title}"></h1>
+			<span class="label label-info" th:text="#{pointsfrequency.title2}"></span>
+			<br/>
+			<br/>
+			<div class="row">			
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="table-responsive">
+				   		<table class="table">
+				   			<tr class="active">
+				   				<th th:text="#{pointsfrequency.table.header.name}"></th>
+				   				<th><span class="label label-warning label-as-badge">4</span> <span th:text="#{pointsfrequency.points}"></span></th>
+				   			</tr>
+				   			<tr class="success" th:each="pointCountResult : ${fourPointsMap}">	
+				   				<td th:text="${pointCountResult.username}"></td>
+				   				<td th:text="${pointCountResult.numberOfPointsCount}"></td>			   									   				
+				   			</tr>				   			
+				   		</table>
+				   	</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="table-responsive">
+				   		<table class="table">
+				   			<tr class="active">
+				   				<th th:text="#{pointsfrequency.table.header.name}"></th>
+				   				<th><span class="label label-warning label-as-badge">3</span> <span th:text="#{pointsfrequency.points}"></span></th>
+				   			</tr>
+				   			<tr class="warning" th:each="pointCountResult : ${threePointsMap}">	
+				   				<td th:text="${pointCountResult.username}"></td>
+				   				<td th:text="${pointCountResult.numberOfPointsCount}"></td>			   									   				
+				   			</tr>				   			
+				   		</table>
+				   	</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="table-responsive">
+				   		<table class="table">
+				   			<tr class="active">
+				   				<th th:text="#{pointsfrequency.table.header.name}"></th>
+				   				<th><span class="label label-warning label-as-badge">2</span> <span th:text="#{pointsfrequency.points}"></span></th>
+				   			</tr>
+				   			<tr class="info" th:each="pointCountResult : ${twoPointsMap}">	
+				   				<td th:text="${pointCountResult.username}"></td>
+				   				<td th:text="${pointCountResult.numberOfPointsCount}"></td>			   									   				
+				   			</tr>				   			
+				   		</table>
+				   	</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="table-responsive">
+				   		<table class="table">
+				   			<tr class="active">
+				   				<th th:text="#{pointsfrequency.table.header.name}"></th>
+				   				<th><span class="label label-warning label-as-badge">1</span> <span th:text="#{pointsfrequency.points}"></span></th>
+				   			</tr>
+				   			<tr class="danger" th:each="pointCountResult : ${onePointsMap}">	
+				   				<td th:text="${pointCountResult.username}"></td>
+				   				<td th:text="${pointCountResult.numberOfPointsCount}"></td>			   									   				
+				   			</tr>				   			
+				   		</table>
+				   	</div>
+				</div>
+			</div>			
+		</div>
+	</body>
+</html>

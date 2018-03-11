@@ -3,6 +3,8 @@ package de.fred4jupiter.fredbet.service.excel;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -54,6 +56,17 @@ public class ReportService {
 			}
 
 		});
+	}
+
+	public MultiValuedMap<Integer, PointCountResult> reportPointsFrequency() {
+		MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
+
+		final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
+		for (PointCountResult pointCountResult : resultList) {
+			map.put(pointCountResult.getPoints(), pointCountResult);
+		}
+
+		return map;
 	}
 
 	public byte[] exportNumberOfPointsInBets(final Locale locale) {
