@@ -33,7 +33,7 @@ public class StatisticService {
 		this.extraBetRepository = extraBetRepository;
 	}
 
-	private Country getFavouriteCountry() {
+	public Country getFavouriteCountry() {
 		return runtimeConfigurationService.loadRuntimeConfig().getFavouriteCountry();
 	}
 

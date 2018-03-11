@@ -37,7 +37,7 @@ public class InfoController {
 
 	@Autowired
 	private StatisticService statisticService;
-	
+
 	@Autowired
 	private SecurityService securityService;
 
@@ -98,11 +98,11 @@ public class InfoController {
 			infoService.saveInfoContent(infoType, infoCommand.getTextContent(), LocaleContextHolder.getLocale());
 			return new ModelAndView("redirect:/" + infoType.getPageName());
 		}
-		
+
 		if (InfoType.RULES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_RULES)) {
 			throw new AccessDeniedException("No enough privileges!");
-		}
-		else if (InfoType.PRICES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
+		} else if (InfoType.PRICES.equals(infoType)
+				&& !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
 			throw new AccessDeniedException("No enough privileges!");
 		}
 
@@ -114,11 +114,14 @@ public class InfoController {
 	public ModelAndView showStatistics(ModelMap modelMap) {
 		List<Statistic> statisticList = statisticService.createStatistic();
 
-		ModelAndView modelAndView = new ModelAndView("info/statistic");
-		modelAndView.addObject("statisticList", statisticList);
+		final ModelAndView modelAndView = new ModelAndView("info/statistic");
+		modelAndView.addObject("favouriteCountry", statisticService.getFavouriteCountry());
 		if (statisticList.isEmpty()) {
 			messageUtil.addInfoMsg(modelMap, "msg.warn.no.statistics");
+			return modelAndView;
 		}
+
+		modelAndView.addObject("statisticList", statisticList);
 
 		return modelAndView;
 	}

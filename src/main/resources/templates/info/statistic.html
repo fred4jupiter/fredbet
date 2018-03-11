@@ -7,7 +7,16 @@
 	<body>
 		<div layout:fragment="content">
 			<div th:replace="fragments/alert :: alert_headline"></div>
-			<h1 th:text="#{statistics.title}"></h1>		
+			<h1 th:text="#{statistics.title}"></h1>
+			<div class="row" th:if="${not #lists.isEmpty(statisticList)}">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
+					<img class="flag" th:src="@{${favouriteCountry.getIconPath()}}"/> <span th:text="#{statistics.legend.favouriteCountry}"></span>,
+					<span class="fa fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>,
+					<span class="fa fa-star blue" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>,
+					<span class="glyphicon glyphicon-lamp red" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
+				</div>
+			</div>		
+			<br/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}" style="max-height: 176px;">
 					<div class="panel panel-default panel-statistic">
