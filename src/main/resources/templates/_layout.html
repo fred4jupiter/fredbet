@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">FredBet</title>
+		<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">FredBet</title>
 		
 		<link rel="shortcut icon" th:href="@{/favicon.ico}" />
 		
@@ -22,7 +22,7 @@
 		<script type="text/javascript" th:src="@{/lightbox/js/lightbox.min.js}"></script>		
 	</head>
 	<body>
-		<nav th:include="_navigation :: menu" class="navbar navbar-inverse navbar-fixed-top"></nav>
+		<nav th:insert="_navigation :: menu" class="navbar navbar-inverse navbar-fixed-top"></nav>
 		<div class="container" role="main">		
 			<div layout:fragment="content" class="container" role="main">Content Placeholder</div>
 		</div>
