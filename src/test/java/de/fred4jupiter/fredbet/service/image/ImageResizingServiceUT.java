@@ -24,13 +24,13 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.service.image.ImageResizingService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ImageResizingServiceIT {
+public class ImageResizingServiceUT {
 
 	private static final int IMAGE_SIZE = 1920;
 
 	private static final int THUMB_SIZE = 75;
 
-	private static final Logger log = LoggerFactory.getLogger(ImageResizingServiceIT.class);
+	private static final Logger log = LoggerFactory.getLogger(ImageResizingServiceUT.class);
 
 	private ImageResizingService imageResizingService;
 	
