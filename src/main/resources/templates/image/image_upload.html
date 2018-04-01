@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorate="_layout">
 	<head>
@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
-			<div th:replace="fragments/alert :: alert_headline"></div>
+			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<form th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form">

@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<div th:replace="fragments/alert :: alert_headline"></div>
+			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<h1 th:text="#{statistics.title}"></h1>
 			<div class="row" th:if="${not #lists.isEmpty(statisticList)}">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
@@ -21,7 +21,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}" style="max-height: 176px;">
 					<div class="panel panel-default panel-statistic">
 						<div class="panel-heading">
-							<span th:replace="fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(statistic.username)})"></span>
+							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(statistic.username)})}"></span>
 							<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
 							<span th:if="${statistic.minPointsCandidate}" class="glyphicon glyphicon-lamp red" aria-hidden="true"></span>
 							<span th:if="${statistic.maxPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>

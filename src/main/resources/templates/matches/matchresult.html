@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div th:replace="fragments/alert :: alert_headline"></div>
+		<div th:replace="~{fragments/alert :: alert_headline}"></div>
 		<h1 th:text="#{matchresult.heading}"></h1>		
 		
 		<form id="matchresultForm" th:action="@{/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form" class="goalsEnter">
