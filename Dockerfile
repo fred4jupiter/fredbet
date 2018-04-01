@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:9-jre-slim
 
 LABEL maintainer="Michael Staehler"
 
