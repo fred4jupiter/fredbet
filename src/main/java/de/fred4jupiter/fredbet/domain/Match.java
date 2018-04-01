@@ -69,7 +69,7 @@ public class Match {
 	private String stadium;
 
 	public boolean hasGoalsChanged() {
-		boolean hasChanged = new Boolean(goalsChanged);
+		boolean hasChanged = Boolean.valueOf(goalsChanged);
 		// reset flag
 		this.goalsChanged = false;
 		return hasChanged;
