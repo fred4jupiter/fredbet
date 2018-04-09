@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import java.util.TimeZone;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +34,7 @@ public class ConfigurationController {
 
 	@ModelAttribute("configurationCommand")
 	public ConfigurationCommand initConfigurationCommand() {
-		ConfigurationCommand configurationCommand = new ConfigurationCommand();
-		configurationCommand.setTimeZone(TimeZone.getDefault().getID());
-		return configurationCommand;
+		return new ConfigurationCommand();
 	}
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)

@@ -38,42 +38,42 @@ public class RuntimeConfigurationController {
 
 	@Autowired
 	private WebMessageUtil webMessageUtil;
-	
+
 	@Autowired
 	private CountryService countryService;
-	
+
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountriesSortedWithoutNoneEntry(LocaleContextHolder.getLocale());
 	}
 
-	@ModelAttribute("configurationCommand")
-	public ConfigurationCommand initConfigurationCommand() {
-		ConfigurationCommand configurationCommand = new ConfigurationCommand();
+	@ModelAttribute("runtimeConfigCommand")
+	public RuntimeConfigCommand initRuntimeConfigCommand() {
+		RuntimeConfigCommand configurationCommand = new RuntimeConfigCommand();
 		configurationCommand.setTimeZone(TimeZone.getDefault().getID());
 		return configurationCommand;
 	}
-	
+
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
-	public ModelAndView showCachePage(ConfigurationCommand configurationCommand) {
-		configurationCommand.setRuntimeConfig(runtimeConfigurationService.loadRuntimeConfig());
-		return new ModelAndView("admin/runtime_config", "configurationCommand", configurationCommand);
+	public ModelAndView showCachePage(RuntimeConfigCommand runtimeConfigCommand) {
+		runtimeConfigCommand.setRuntimeConfig(runtimeConfigurationService.loadRuntimeConfig());
+		return new ModelAndView("admin/runtime_config", "runtimeConfigCommand", runtimeConfigCommand);
 	}
 
 	@RequestMapping(value = "/saveRuntimeConfig", method = RequestMethod.POST)
-	public ModelAndView saveRuntimeConfig(@Valid ConfigurationCommand configurationCommand, BindingResult bindingResult,
-			RedirectAttributes redirect, ModelMap modelMap) {
+	public ModelAndView saveRuntimeConfig(@Valid RuntimeConfigCommand command, BindingResult bindingResult, RedirectAttributes redirect,
+			ModelMap modelMap) {
 		if (bindingResult.hasErrors()) {
-			return new ModelAndView("admin/runtime_config", "configurationCommand", configurationCommand);
+			return new ModelAndView("admin/runtime_config", "runtimeConfigCommand", command);
 		}
 
-		if (StringUtils.isNotBlank(configurationCommand.getTimeZone())) {
-			TimeZone timeZone = TimeZone.getTimeZone(configurationCommand.getTimeZone());
+		if (StringUtils.isNotBlank(command.getTimeZone())) {
+			TimeZone timeZone = TimeZone.getTimeZone(command.getTimeZone());
 			LOG.info("Setting timeZone to: {}", timeZone.getID());
 			TimeZone.setDefault(timeZone);
 		}
 
-		runtimeConfigurationService.saveRuntimeConfig(configurationCommand.getRuntimeConfig());
+		runtimeConfigurationService.saveRuntimeConfig(command.getRuntimeConfig());
 
 		webMessageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
 
