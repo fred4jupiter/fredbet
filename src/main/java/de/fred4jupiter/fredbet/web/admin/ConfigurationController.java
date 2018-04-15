@@ -44,10 +44,12 @@ public class ConfigurationController {
 	}
 
 	@RequestMapping(path = "/clearCache", method = RequestMethod.GET)
-	public ModelAndView clearCache(ModelMap modelMap) {
+	public ModelAndView clearCache(ConfigurationCommand configurationCommand, ModelMap modelMap) {
 		final ModelAndView modelAndView = new ModelAndView("admin/configuration");
 
 		this.cacheAdministrationService.clearCaches();
+
+		configurationCommand.setLevel(loggingUtil.getCurrentLogLevel());
 
 		webMessageUtil.addInfoMsg(modelMap, "administration.msg.info.cacheCleared");
 		return modelAndView;
