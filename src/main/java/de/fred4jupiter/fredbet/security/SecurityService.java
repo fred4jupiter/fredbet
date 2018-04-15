@@ -27,7 +27,7 @@ public class SecurityService {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
-	
+
 	public boolean isUserLoggedIn() {
 		try {
 			getCurrentUser();
@@ -72,8 +72,19 @@ public class SecurityService {
 		if (!appUserOpt.isPresent()) {
 			return true;
 		}
-		
+
 		AppUser appUser = appUserOpt.get();
-		return appUser.isTechnicalDefaultUser();		
+		return appUser.isTechnicalDefaultUser();
+	}
+
+	public void resetFirstLogin(AppUser appUser) {
+		appUser.setFirstLogin(false);
+
+		try {
+			AppUser currentUser = getCurrentUser();
+			currentUser.setFirstLogin(false);
+		} catch (UsernameNotFoundException e) {
+			// ignore if user is not logged in
+		}
 	}
 }
