@@ -133,6 +133,11 @@ img.flag {
 	vertical-align: baseline;
 }
 
+img.flag.big {
+	border: 1px solid;
+	border-color: grey;
+}
+
 img.displayed {
 	display: block;
 	margin-left: auto;

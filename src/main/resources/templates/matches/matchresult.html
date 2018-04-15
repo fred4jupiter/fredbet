@@ -25,12 +25,12 @@
 					<div class="form-group">
 						<div class="row center">
 							<div class="col-xs-6">
-								<img class="flag" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamOne()}}"/>
+								<img class="flag big" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamOne()}}"/>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-xs-6">
-								<img class="flag" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamTwo()}}"/>
+								<img class="flag big" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamTwo()}}"/>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
 							</div>
