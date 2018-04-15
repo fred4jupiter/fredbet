@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet;
 import java.util.Locale;
 
 import org.h2.server.web.WebServlet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +19,16 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
+import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
+import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+
+	@Autowired
+	private WebSecurityUtil webSecurityUtil;
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -34,10 +40,17 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new ActivePageHandlerInterceptor());
 		registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(changePasswordFirstLoginInterceptor());
+
 		// registry.addInterceptor(new ExecutionTimeInterceptor());
 
 		// for logging request header
 		// registry.addInterceptor(new HeaderLogHandlerInterceptor());
+	}
+
+	@Bean
+	public ChangePasswordFirstLoginInterceptor changePasswordFirstLoginInterceptor() {
+		return new ChangePasswordFirstLoginInterceptor(webSecurityUtil);
 	}
 
 	@Bean
@@ -76,5 +89,5 @@ public class MvcConfig implements WebMvcConfigurer {
 	public LayoutDialect layoutDialect() {
 		// for grouping CSS and JS files together
 		return new LayoutDialect(new GroupingStrategy());
-	}	
+	}
 }

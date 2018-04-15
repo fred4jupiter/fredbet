@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
@@ -38,6 +39,15 @@ public class WebSecurityUtil {
 		return currentUser.getUsername().equals(username) || !(currentUser.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE));
 	}
 
+	public boolean isUsersFirstLogin() {
+		try {
+			AppUser currentUser = securityService.getCurrentUser();
+			return currentUser.isFirstLogin();
+		} catch (UsernameNotFoundException e) {
+			return false;
+		}
+	}
+
 	public boolean isUserLoggedIn() {
 		return securityService.isUserLoggedIn();
 	}
@@ -50,7 +60,7 @@ public class WebSecurityUtil {
 	public boolean isDemoDataMenuEntryEnabled() {
 		return runtimeConfigurationService.loadRuntimeConfig().isShowDemoDataNavigationEntry();
 	}
-	
+
 	public String getCurrentUsername() {
 		return securityService.getCurrentUserName();
 	}

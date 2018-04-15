@@ -73,6 +73,9 @@ public class AppUser implements UserDetails {
 
 	@Column(name = "IS_CHILD")
 	private boolean child;
+	
+	@Column(name = "FIRST_LOGIN")
+	private boolean firstLogin;
 
 	@PersistenceConstructor
 	protected AppUser() {
@@ -106,6 +109,7 @@ public class AppUser implements UserDetails {
 		builder.append(password, other.password);
 		builder.append(roles, other.roles);
 		builder.append(deletable, other.deletable);
+		builder.append(firstLogin, other.firstLogin);
 		return builder.isEquals();
 	}
 
@@ -117,6 +121,7 @@ public class AppUser implements UserDetails {
 		builder.append(password);
 		builder.append(roles);
 		builder.append(deletable);
+		builder.append(firstLogin);
 		return builder.toHashCode();
 	}
 
@@ -128,6 +133,7 @@ public class AppUser implements UserDetails {
 		builder.append("password", password != null ? "is set" : "is null");
 		builder.append("roles", roles);
 		builder.append("deletable", deletable);
+		builder.append("firstLogin", firstLogin);
 		return builder.toString();
 	}
 
@@ -249,4 +255,14 @@ public class AppUser implements UserDetails {
 	public boolean isTechnicalDefaultUser() {
 		return FredbetConstants.TECHNICAL_USERNAME.equals(this.username);
 	}
+
+	public boolean isFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
+	
+	
 }

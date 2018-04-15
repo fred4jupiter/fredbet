@@ -18,6 +18,7 @@ import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 
 @Controller
 @RequestMapping("/profile")
@@ -36,8 +37,15 @@ public class UserProfileController {
 	@Autowired
 	private SecurityService securityService;
 
+	@Autowired
+	private WebSecurityUtil webSecurityUtil;
+
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-	public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand) {
+	public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand, ModelMap modelMap) {
+		if (webSecurityUtil.isUsersFirstLogin()) {
+			messageUtil.addWarnMsg(modelMap, "user.changePassword.firstLogin");
+		}
+
 		return CHANGE_PASSWORD_PAGE;
 	}
 

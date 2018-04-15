@@ -238,5 +238,13 @@
 			</column>
 		</createTable>
 	</changeSet>
+	
+	<changeSet id="9" author="michael">
+		<addColumn tableName="app_user">
+			<column name="first_login" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>

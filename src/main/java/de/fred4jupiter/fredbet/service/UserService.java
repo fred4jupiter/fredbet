@@ -130,6 +130,10 @@ public class UserService {
 		}
 
 		appUser.setPassword(passwordEncoder.encode(newPassword));
+		
+		// reset firstLogin flag
+		appUser.setFirstLogin(false);
+		securityService.getCurrentUser().setFirstLogin(false);
 		appUserRepository.save(appUser);
 	}
 
