@@ -9,9 +9,9 @@
 			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			
 			<h2 th:text="#{administration.runtime.configuration}"></h2>
-			<form id="saveRuntimeConfigForm" th:action="@{/runtimeconfig/saveRuntimeConfig}" th:object="${runtimeConfigCommand}" action="#" method="post" role="form">
+			<form id="saveRuntimeConfigForm" th:action="@{/runtimeconfig/saveRuntimeConfig}" th:object="${runtimeConfigCommand}" action="#" method="post" role="form">				
 				<div class="row">			
-					<div class="col-xs-12 col-sm-6 col-md-4">					
+					<div class="col-xs-12 col-sm-6 col-md-4">										
 						<ul class="list-group">
 							<li class="list-group-item">								
 								<input type="checkbox" th:field="*{runtimeConfig.enabledParentChildRanking}"/>
@@ -78,7 +78,7 @@
 						<hr/>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">
-						<label th:text="#{administration.runtime.configuration.extraBetPoints}"></label>
+						<h3 th:text="#{administration.runtime.configuration.extraBetPoints}"></h3>
 						<div class="form-group">
 							<label for="runtimeConfig.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label> 
 							<input type="text" th:field="*{runtimeConfig.pointsFinalWinner}" class="form-control" />
