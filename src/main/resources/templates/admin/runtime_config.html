@@ -2,8 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" layout:decorate="_layout">
 	<head>
-		<title th:text="#{administration.config.title}"></title>
-		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+		<title th:text="#{administration.config.title}"></title>		
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -97,6 +96,7 @@
 					</div>
 				</div>
 			</form>
-		</div>
+			<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+		</div>		
 	</body>
 </html>

@@ -23,6 +23,8 @@
 						<div class="form-group">
 							<input id="remember-me" data-toggle="toggle" data-size="small" data-onstyle="success" type="checkbox" name="remember-me" /> 
 							<label for="remember-me">Auto-Login</label>
+							<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+								th:title="#{login.autologin.tooltip}"></span>
 						</div>
 						<div class="form-group">
 							<button id="loginSubmitBtn" type="submit" class="btn btn-primary" th:text="#{login.button.login}"></button>
@@ -31,6 +33,7 @@
 				</div>
 			</form>
 			<script type="text/javascript" th:src="@{/js/bootstrap-toggle.min.js}"></script>
+			<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 		</div>		
 	</body>
 </html>
