@@ -45,6 +45,9 @@
 							</li>
 						</ul>														
 					</div>
+					<div class="visible-xs col-xs-12">
+						<hr/>
+					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">	
 						<div class="form-group">
 							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label> 
@@ -70,6 +73,9 @@
 							</select>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('timeZone')}" th:errors="*{timeZone}">timeZone Error</p>						
 						</div>					
+					</div>
+					<div class="visible-xs col-xs-12">
+						<hr/>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">
 						<label th:text="#{administration.runtime.configuration.extraBetPoints}"></label>
