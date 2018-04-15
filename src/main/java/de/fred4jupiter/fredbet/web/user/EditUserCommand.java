@@ -19,8 +19,6 @@ public class EditUserCommand {
 
 	private boolean deletable;
 
-	private boolean resetPassword;
-
 	@NotEmpty
 	private Set<String> roles = new HashSet<>();
 
@@ -68,14 +66,6 @@ public class EditUserCommand {
 
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
-	}
-
-	public boolean isResetPassword() {
-		return resetPassword;
-	}
-
-	public void setResetPassword(boolean resetPassword) {
-		this.resetPassword = resetPassword;
 	}
 
 	public boolean isChild() {

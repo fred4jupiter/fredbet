@@ -86,21 +86,16 @@ public class UserService {
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-	public AppUser updateUser(Long userId, boolean passwordReset, boolean isChild) {
-		return updateUser(userId, passwordReset, null, isChild);
+	public AppUser updateUser(Long userId, boolean isChild) {
+		return updateUser(userId, null, isChild);
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-	public AppUser updateUser(Long userId, boolean passwordReset, Set<String> roles, boolean isChild) {
+	public AppUser updateUser(Long userId, Set<String> roles, boolean isChild) {
 		Assert.notNull(userId, "userId must be given");
 		AppUser appUser = findByUserId(userId);
 		if (roles != null && !roles.isEmpty()) {
 			appUser.setRoles(roles);
-		}
-
-		if (passwordReset) {
-			String passwordForReset = runtimeConfigurationService.loadRuntimeConfig().getPasswordForReset();
-			appUser.setPassword(passwordEncoder.encode(passwordForReset));
 		}
 
 		appUser.setChild(isChild);
@@ -120,6 +115,14 @@ public class UserService {
 		appUserRepository.deleteById(userId);
 	}
 
+	public String resetPasswordForUser(Long userId) {
+		AppUser appUser = findByUserId(userId);
+		String passwordForReset = runtimeConfigurationService.loadRuntimeConfig().getPasswordForReset();
+		appUser.setPassword(passwordEncoder.encode(passwordForReset));
+		appUserRepository.save(appUser);
+		return appUser.getUsername();
+	}
+
 	public void changePassword(Long userId, String enteredOldPasswordPlain, String newPassword) {
 		AppUser appUser = findByUserId(userId);
 
@@ -130,10 +133,10 @@ public class UserService {
 		}
 
 		appUser.setPassword(passwordEncoder.encode(newPassword));
-		
+
 		// reset firstLogin flag
 		securityService.resetFirstLogin(appUser);
-		
+
 		appUserRepository.save(appUser);
 	}
 

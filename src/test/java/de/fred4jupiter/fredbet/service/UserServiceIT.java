@@ -95,7 +95,7 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 		// add role
 		appUser.addRole(FredBetRole.ROLE_USER_ENTER_RESULTS);
 		assertEquals(2, appUser.getRoles().size());
-		userService.updateUser(appUser.getId(), false, appUser.getRoles(), false);
+		userService.updateUser(appUser.getId(), appUser.getRoles(), false);
 
 		AppUser foundAppUser = userService.findByUserId(appUser.getId());
 		assertNotNull(foundAppUser);

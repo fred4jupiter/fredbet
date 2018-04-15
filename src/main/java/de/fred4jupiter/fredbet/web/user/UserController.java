@@ -101,10 +101,9 @@ public class UserController {
 
 		if (webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
 			LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
-			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isResetPassword(), editUserCommand.isChild());
+			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isChild());
 		} else {
-			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isResetPassword(), editUserCommand.getRoles(),
-					editUserCommand.isChild());
+			userService.updateUser(editUserCommand.getUserId(), editUserCommand.getRoles(), editUserCommand.isChild());
 		}
 
 		messageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
@@ -168,4 +167,11 @@ public class UserController {
 		return new ModelAndView("redirect:/user");
 	}
 
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
+	@RequestMapping("{id}/resetPwd")
+	public ModelAndView resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
+		String username = userService.resetPasswordForUser(userId);
+		messageUtil.addInfoMsg(redirect, "user.password.reset", username);
+		return new ModelAndView("redirect:/user");
+	}
 }
