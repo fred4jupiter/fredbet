@@ -167,7 +167,7 @@ public class UserController {
 		return new ModelAndView("redirect:/user");
 	}
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
+	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_PASSWORD_RESET + "')")
 	@RequestMapping("{id}/resetPwd")
 	public ModelAndView resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
 		String username = userService.resetPasswordForUser(userId);
