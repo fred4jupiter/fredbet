@@ -7,7 +7,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * This handler will redirect the user to the password change page if its the first login.
+ * This handler will redirect the user to the password change page if its the
+ * first login.
  * 
  * @author michael
  *
@@ -25,8 +26,12 @@ public class ChangePasswordFirstLoginInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
 			throws Exception {
-		final String requestURI = request.getRequestURI();
 
+		if (!webSecurityUtil.isChangePasswordOnFirstLogin()) {
+			return;
+		}
+
+		final String requestURI = request.getRequestURI();
 		if (requestURI.contains(CHANGE_PASSWORD_ENDPOINT)) {
 			return;
 		}

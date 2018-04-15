@@ -60,6 +60,10 @@ public class WebSecurityUtil {
 	public boolean isDemoDataMenuEntryEnabled() {
 		return runtimeConfigurationService.loadRuntimeConfig().isShowDemoDataNavigationEntry();
 	}
+	
+	public boolean isChangePasswordOnFirstLogin() {
+		return runtimeConfigurationService.loadRuntimeConfig().isChangePasswordOnFirstLogin();
+	}
 
 	public String getCurrentUsername() {
 		return securityService.getCurrentUserName();

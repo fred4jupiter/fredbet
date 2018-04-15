@@ -56,6 +56,11 @@ public class RuntimeConfig {
 	@NotNull
 	@Min(value = 0)
 	private Integer pointsThirdFinalWinner = Integer.valueOf(2);
+	
+	/**
+	 * If users have to change their password at first login.
+	 */
+	private boolean changePasswordOnFirstLogin;
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
@@ -127,6 +132,14 @@ public class RuntimeConfig {
 
 	public void setPointsThirdFinalWinner(Integer pointsThirdFinalWinner) {
 		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
+	}
+
+	public boolean isChangePasswordOnFirstLogin() {
+		return changePasswordOnFirstLogin;
+	}
+
+	public void setChangePasswordOnFirstLogin(boolean changePasswordOnFirstLogin) {
+		this.changePasswordOnFirstLogin = changePasswordOnFirstLogin;
 	}
 
 }

@@ -48,8 +48,10 @@ public class RuntimeConfigurationService {
 
 	private RuntimeConfig createDefaultRuntimeConfig() {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
+		// set defaults
 		runtimeConfig.setFavouriteCountry(FredbetConstants.DEFAULT_FAVOURITE_COUNTRY);
 		runtimeConfig.setPasswordForReset(FredbetConstants.DEFAULT_REST_PASSWORT);
+		runtimeConfig.setChangePasswordOnFirstLogin(true);
 
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);

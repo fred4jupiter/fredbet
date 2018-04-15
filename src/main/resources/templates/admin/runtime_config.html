@@ -37,7 +37,13 @@
 								<label for="child" th:text="#{administration.runtime.configuration.createDemoData}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.createDemoData.tooltip}"></span>
-							</li>								
+							</li>
+							<li class="list-group-item">								
+								<input type="checkbox" th:field="*{runtimeConfig.changePasswordOnFirstLogin}"/>
+								<label for="child" th:text="#{administration.runtime.configuration.changePasswordOnFirstLogin}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+								th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>								
+							</li>
 						</ul>														
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">	
