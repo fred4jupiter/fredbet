@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.event;
 
-import java.util.Date;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Component
 public class LoginSuccessHandler implements ApplicationListener<AuthenticationSuccessEvent> {
@@ -30,7 +30,7 @@ public class LoginSuccessHandler implements ApplicationListener<AuthenticationSu
 			Optional<AppUser> appUserOpt = appUserRepository.findById(appUser.getId());
 			if (appUserOpt.isPresent()) {
 				AppUser foundAppUser = appUserOpt.get();
-				foundAppUser.setLastLogin(new Date());
+				foundAppUser.setLastLogin(DateUtils.currentDate());
 				appUserRepository.save(foundAppUser);
 			}
 		}
