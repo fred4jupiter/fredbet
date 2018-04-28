@@ -68,9 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.deleteCookies("JSESSIONID", "remember-me").permitAll();
 		http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
 
-		// we do not use CSRF in this app (by now)
-		http.csrf().disable();
-
 		// disable cache control to allow usage of ETAG headers (no image reload
 		// if the image has not been changed)
 		http.headers().cacheControl().disable();
