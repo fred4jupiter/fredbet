@@ -11,6 +11,7 @@ import java.time.format.FormatStyle;
 import java.util.Date;
 import java.util.Locale;
 
+
 /**
  * Helper class for date time convertion.
  * 
@@ -81,5 +82,9 @@ public final class DateUtils {
 	public static String formatByLocale(ZonedDateTime zonedDateTime, Locale locale) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
 		return zonedDateTime.format(dateTimeFormatter);
+	}
+	
+	public static Date currentDate() {
+		return toDate(LocalDateTime.now(getZoneId()));		
 	}
 }

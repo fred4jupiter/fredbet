@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,7 @@ public class SessionTrackingService {
 
 		sessionTracking.setUserName(userName);
 		sessionTracking.setSessionId(sessionId);
-		sessionTracking.setLastLogin(new Date());
+		sessionTracking.setLastLogin(DateUtils.currentDate());
 		sessionTrackingRepository.save(sessionTracking);
 	}
 
