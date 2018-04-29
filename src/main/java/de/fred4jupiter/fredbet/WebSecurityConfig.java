@@ -44,7 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		/*
-		 * these matches will not go through the security filter (all above static folder)
+		 * these matches will not go through the security filter (all above
+		 * static folder)
 		 */
 		web.ignoring().antMatchers("favicon.ico", "/blueimpgallery/**", "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
 	}
@@ -60,9 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Spring Boot Actuator
 		http.authorizeRequests().antMatchers("/actuator/health").permitAll();
 		http.authorizeRequests().antMatchers("/actuator/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
-		
+
 		http.authorizeRequests().anyRequest().authenticated();
-		
+
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID", "remember-me").permitAll();
@@ -75,6 +76,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
 			// this is for the embedded h2 console
 			http.headers().frameOptions().disable();
+
+			// otherwise the H2 console will not work
+			http.csrf().disable();
 		}
 	}
 
