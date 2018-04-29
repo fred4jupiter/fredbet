@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -54,7 +54,7 @@ public class AppUserBuilder {
 		return this;
 	}
 
-	public AppUserBuilder withLastLogin(Date date) {
+	public AppUserBuilder withLastLogin(LocalDateTime date) {
 		this.appUser.setLastLogin(date);
 		return this;
 	}

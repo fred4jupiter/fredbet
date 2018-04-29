@@ -31,7 +31,7 @@ public class SessionTrackingService {
 
 		sessionTracking.setUserName(userName);
 		sessionTracking.setSessionId(sessionId);
-		sessionTracking.setLastLogin(DateUtils.currentDate());
+		sessionTracking.setLastLogin(LocalDateTime.now());
 		sessionTrackingRepository.save(sessionTracking);
 	}
 

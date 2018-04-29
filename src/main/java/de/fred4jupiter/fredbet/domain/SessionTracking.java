@@ -1,13 +1,11 @@
 package de.fred4jupiter.fredbet.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -26,8 +24,7 @@ public class SessionTracking {
 	private String sessionId;
 	
 	@Column(name = "LAST_LOGIN")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastLogin;
+	private LocalDateTime lastLogin;
 	
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -73,11 +70,11 @@ public class SessionTracking {
 		this.userName = userName;
 	}
 
-	public Date getLastLogin() {
+	public LocalDateTime getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Date lastLogin) {
+	public void setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 

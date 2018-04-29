@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.domain;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,8 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -34,10 +31,8 @@ import org.springframework.util.CollectionUtils;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetRole;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 /**
- * TODO: change Date to java.time.LocalDateTime. see also Jsr310JpaConverters
  * 
  * @author michael
  *
@@ -65,12 +60,10 @@ public class AppUser implements UserDetails {
 	private String password;
 
 	@Column(name = "CREATED_AT")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private LocalDateTime createdAt;
 
 	@Column(name = "LAST_LOGIN")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastLogin;
+	private LocalDateTime lastLogin;
 
 	@Column(name = "DELETABLE")
 	private boolean deletable = true;
@@ -230,21 +223,21 @@ public class AppUser implements UserDetails {
 	}
 
 	public LocalDateTime getCreatedAt() {
-		return DateUtils.toLocalDateTime(createdAt);
+		return createdAt;
 	}
 
 	@PrePersist
 	private void prePersist() {
 		if (this.createdAt == null) {
-			this.createdAt = new Date();
+			this.createdAt = LocalDateTime.now();
 		}
 	}
 
-	public Date getLastLogin() {
+	public LocalDateTime getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Date lastLogin) {
+	public void setLastLogin(LocalDateTime lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
