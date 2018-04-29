@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -24,6 +26,7 @@ public class SessionTracking {
 	private String sessionId;
 	
 	@Column(name = "LAST_LOGIN")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastLogin;
 	
 	public boolean equals(Object obj) {

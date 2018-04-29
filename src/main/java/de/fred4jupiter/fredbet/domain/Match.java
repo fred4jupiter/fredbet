@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -63,6 +65,7 @@ public class Match {
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
 	@Column(name = "KICK_OFF_DATE")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date kickOffDate;
 
 	@Column(name = "STADIUM")

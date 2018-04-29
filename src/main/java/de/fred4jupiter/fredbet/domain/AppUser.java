@@ -19,6 +19,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -63,9 +65,11 @@ public class AppUser implements UserDetails {
 	private String password;
 
 	@Column(name = "CREATED_AT")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
 	@Column(name = "LAST_LOGIN")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastLogin;
 
 	@Column(name = "DELETABLE")
