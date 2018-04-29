@@ -8,8 +8,8 @@ VOLUME /tmp
 RUN useradd -ms /bin/bash fred
 
 RUN set -ex; \
-        apt-get update 
-        && apt-get install -y less \        
+        apt-get update \
+        && apt-get install -y less \
         && chown -R fred:0 /home/fred \
         && chmod -R g+rw /home/fred \
         && chmod g+w /etc/passwd
