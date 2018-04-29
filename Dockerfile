@@ -2,7 +2,7 @@ FROM openjdk:9-jre-slim
 
 LABEL maintainer="Michael Staehler"
 
-VOLUME /tmp
+# VOLUME /tmp
 
 # Add custom user for running the image as a non-root user
 RUN useradd -ms /bin/bash fred
