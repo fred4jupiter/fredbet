@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			http.headers().frameOptions().disable();
 
 			// otherwise the H2 console will not work
-			http.csrf().disable();
+			http.csrf().ignoringAntMatchers("/console/*");
 		}
 	}
 
