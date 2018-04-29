@@ -2,31 +2,28 @@ FROM openjdk:9-jre-slim
 
 LABEL maintainer="Michael Staehler"
 
+VOLUME /tmp
+
 # Add custom user for running the image as a non-root user
-RUN useradd -ms /bin/bash freduser
+RUN useradd -ms /bin/bash fred
 
 RUN set -ex; \
-        apt-get update && apt-get install -y \
-        less \
-        dos2unix \
-        && chown -R freduser:0 /home/freduser \
-        && chmod -R g+rw /home/freduser \
+        apt-get update 
+        && apt-get install -y less \        
+        && chown -R fred:0 /home/fred \
+        && chmod -R g+rw /home/fred \
         && chmod g+w /etc/passwd
 
-# Configure timezone
-RUN echo "Europe/Berlin" > /etc/timezone
-RUN dpkg-reconfigure -f noninteractive tzdata
-
-ENV JAVA_OPTS="-Xms256m -Xmx1024m"
+ENV JAVA_OPTS="-Xms256m -Xmx1024m -Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
-COPY target/fredbet.jar /home/freduser/fredbet.jar
+COPY target/fredbet.jar /home/fred/fredbet.jar
 
-RUN sh -c 'touch /home/freduser/fredbet.jar'
+RUN sh -c 'touch /home/fred/fredbet.jar'
 
-USER freduser
+USER fred
 
-WORKDIR /home/freduser
+WORKDIR /home/fred
 
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /home/freduser/fredbet.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /home/fred/fredbet.jar" ]
