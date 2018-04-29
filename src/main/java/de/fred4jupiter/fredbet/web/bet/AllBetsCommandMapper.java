@@ -11,7 +11,6 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Component
@@ -53,7 +52,7 @@ public class AllBetsCommandMapper {
 
 		allBetsCommand.setCountryTeamOne(match.getCountryOne());
 		allBetsCommand.setCountryTeamTwo(match.getCountryTwo());
-		allBetsCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
+		allBetsCommand.setKickOffDate(match.getKickOffDate());
 		allBetsCommand.setStadium(match.getStadium());
 		allBetsCommand.setGroup(match.getGroup());
 		return allBetsCommand;

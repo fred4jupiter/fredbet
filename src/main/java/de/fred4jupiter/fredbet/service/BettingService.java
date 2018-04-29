@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,7 +25,6 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 @Transactional
@@ -159,11 +157,10 @@ public class BettingService {
 
 	public boolean hasFirstMatchStarted() {
 		LocalDateTime dateTimeNow = LocalDateTime.now();
-		Date date = matchRepository.findStartDateOfFirstMatch();
-		if (date == null) {
+		LocalDateTime firstMatchKickOffDate = matchRepository.findStartDateOfFirstMatch();
+		if (firstMatchKickOffDate == null) {
 			return false;
 		}
-		LocalDateTime firstMatchKickOffDate = DateUtils.toLocalDateTime(date);
 		return dateTimeNow.isAfter(firstMatchKickOffDate);
 	}
 
@@ -195,7 +192,7 @@ public class BettingService {
 	public Bet findBetById(Long betId) {
 		return betRepository.getOne(betId);
 	}
-	
+
 	public Long countByMatch(Match match) {
 		return betRepository.countByMatch(match);
 	}

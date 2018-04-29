@@ -87,4 +87,9 @@ public final class DateUtils {
 	public static Date currentDate() {
 		return toDate(LocalDateTime.now(getZoneId()));		
 	}
+
+	public static String formatByLocale(LocalDateTime localDateTime, Locale locale) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
+		return localDateTime.format(dateTimeFormatter);
+	}
 }

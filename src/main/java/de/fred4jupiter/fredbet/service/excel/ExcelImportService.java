@@ -25,6 +25,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 public class ExcelImportService {
@@ -104,7 +105,7 @@ public class ExcelImportService {
 		}
 
 		match.setGroup(Group.valueOf(group));
-		match.setKickOffDate(kickOffDate);
+		match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
 		match.setStadium(stadium);
 		return match;
 	}

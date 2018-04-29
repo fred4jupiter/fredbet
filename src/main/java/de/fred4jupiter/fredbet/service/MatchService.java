@@ -19,7 +19,6 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 @Transactional
@@ -77,8 +76,7 @@ public class MatchService {
 	public List<Match> findUpcomingMatches() {
 		LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
 		LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
-		return matchRepository.findUpcomingMatches(DateUtils.toDate(groupKickOffBeginSelectionDate),
-				DateUtils.toDate(koKickOffBeginSelectionDate));
+		return matchRepository.findUpcomingMatches(groupKickOffBeginSelectionDate, koKickOffBeginSelectionDate);
 	}
 
 	@CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)

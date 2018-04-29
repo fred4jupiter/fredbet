@@ -2,15 +2,13 @@ package de.fred4jupiter.fredbet.domain;
 
 import java.time.LocalDateTime;
 
-import de.fred4jupiter.fredbet.util.DateUtils;
-
 public class MatchBuilder {
 
 	private final Match match;
 
 	private MatchBuilder() {
 		match = new Match();
-		match.setKickOffDate(DateUtils.toDate(LocalDateTime.now()));
+		match.setKickOffDate(LocalDateTime.now());
 	}
 
 	public static MatchBuilder create() {
@@ -36,12 +34,12 @@ public class MatchBuilder {
 	}
 
 	public MatchBuilder withKickOffDate(LocalDateTime kickOffDate) {
-		match.setKickOffDate(DateUtils.toDate(kickOffDate));
+		match.setKickOffDate(kickOffDate);
 		return this;
 	}
 
 	public MatchBuilder withKickOffDate(int day, int month, int hour) {
-		match.setKickOffDate(DateUtils.toDate(LocalDateTime.of(2016, month, day, hour, 0)));
+		match.setKickOffDate(LocalDateTime.of(LocalDateTime.now().getYear(), month, day, hour, 0));
 		return this;
 	}
 

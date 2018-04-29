@@ -27,7 +27,6 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
 @Controller
@@ -93,7 +92,7 @@ public class CreateEditMatchController {
 		command.setTeamNameOne(match.getTeamNameOne());
 		command.setTeamNameTwo(match.getTeamNameTwo());
 		command.setGroup(match.getGroup());
-		command.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
+		command.setKickOffDate(match.getKickOffDate());
 		command.setMatchId(match.getId());
 		command.setStadium(match.getStadium());
 		return command;
@@ -142,7 +141,7 @@ public class CreateEditMatchController {
 		match.setCountryTwo(matchCommand.getCountryTeamTwo());
 		match.setTeamNameOne(matchCommand.getTeamNameOne());
 		match.setTeamNameTwo(matchCommand.getTeamNameTwo());
-		match.setKickOffDate(DateUtils.toDate(matchCommand.getKickOffDate()));
+		match.setKickOffDate(matchCommand.getKickOffDate());
 		match.setGroup(matchCommand.getGroup());
 		match.setStadium(matchCommand.getStadium());
 	}

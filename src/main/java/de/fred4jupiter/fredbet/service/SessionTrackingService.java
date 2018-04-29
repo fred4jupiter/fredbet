@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Service
 @Transactional
@@ -24,8 +23,7 @@ public class SessionTrackingService {
 		SessionTracking sessionTracking = null;
 		if (!sessionTrackingOpt.isPresent()) {
 			sessionTracking = new SessionTracking();
-		}
-		else {
+		} else {
 			sessionTracking = sessionTrackingOpt.get();
 		}
 
@@ -46,11 +44,5 @@ public class SessionTrackingService {
 
 	public List<SessionTracking> findLoggedInUsers() {
 		return sessionTrackingRepository.findAllByOrderByUserNameAsc();
-	}
-
-	public void purgeOldActiveUsers() {
-		LocalDateTime nowThirtyMinAgo = LocalDateTime.now().minusMinutes(30);
-		List<SessionTracking> sessions = sessionTrackingRepository.findByLastLoginLessThan(DateUtils.toDate(nowThirtyMinAgo));
-		sessionTrackingRepository.deleteAll(sessions);
-	}
+	}	
 }

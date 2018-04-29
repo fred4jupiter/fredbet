@@ -19,7 +19,6 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 
@@ -48,10 +47,10 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 		matchRepository.save(MatchBuilder.create().withTeams("Belgien", "England").withGroup(Group.GROUP_D)
 				.withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(15)).withGoals(1, 2).build());
-		
+
 		matchRepository.save(MatchBuilder.create().withTeams(Country.AFGHANISTAN, Country.ARMENIA).withGroup(Group.QUARTER_FINAL)
 				.withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(90)).withGoals(1, 2).build());
-		
+
 		matchRepository.save(MatchBuilder.create().withTeams(Country.BANGLADESH, Country.COLOMBIA).withGroup(Group.FINAL)
 				.withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().minusDays(8)).withGoals(1, 2).build());
 	}
@@ -65,8 +64,7 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 		LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusMinutes(10);
 		LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusMinutes(90);
 
-		List<Match> matches = matchRepository.findUpcomingMatches(DateUtils.toDate(groupKickOffBeginSelectionDate),
-				DateUtils.toDate(koKickOffBeginSelectionDate));
+		List<Match> matches = matchRepository.findUpcomingMatches(groupKickOffBeginSelectionDate, koKickOffBeginSelectionDate);
 		assertNotNull(matches);
 		assertEquals(4, matches.size());
 	}

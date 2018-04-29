@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +14,7 @@ public interface SessionTrackingRepository extends JpaRepository<SessionTracking
 
 	List<SessionTracking> findAllByOrderByUserNameAsc();
 
-	List<SessionTracking> findByLastLoginLessThan(Date lastLogin);
+	List<SessionTracking> findByLastLoginLessThan(LocalDateTime lastLogin);
 
 	SessionTracking findBySessionId(String sessionId);
 

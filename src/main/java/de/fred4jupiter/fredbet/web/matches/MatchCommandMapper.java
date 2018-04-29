@@ -17,7 +17,6 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 
@@ -98,7 +97,7 @@ public class MatchCommandMapper {
 		matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
 		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
-		matchCommand.setKickOffDate(DateUtils.toLocalDateTime(match.getKickOffDate()));
+		matchCommand.setKickOffDate(match.getKickOffDate());
 		matchCommand.setStadium(match.getStadium());
 		matchCommand.setGroup(match.getGroup());
 		matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());

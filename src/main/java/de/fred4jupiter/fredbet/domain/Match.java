@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.domain;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -22,7 +19,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.util.DateUtils;
 
 @Entity
 @Table(name = "MATCHES")
@@ -65,8 +61,7 @@ public class Match {
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
 	@Column(name = "KICK_OFF_DATE")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date kickOffDate;
+	private LocalDateTime kickOffDate;
 
 	@Column(name = "STADIUM")
 	private String stadium;
@@ -91,8 +86,7 @@ public class Match {
 	}
 
 	public boolean hasStarted() {
-		LocalDateTime kickOffLocalDateTime = DateUtils.toLocalDateTime(kickOffDate);
-		return LocalDateTime.now().isAfter(kickOffLocalDateTime);
+		return LocalDateTime.now().isAfter(kickOffDate);
 	}
 
 	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
@@ -264,11 +258,11 @@ public class Match {
 		this.stadium = stadium;
 	}
 
-	public Date getKickOffDate() {
+	public LocalDateTime getKickOffDate() {
 		return kickOffDate;
 	}
 
-	public void setKickOffDate(Date kickOffDate) {
+	public void setKickOffDate(LocalDateTime kickOffDate) {
 		this.kickOffDate = kickOffDate;
 	}
 
