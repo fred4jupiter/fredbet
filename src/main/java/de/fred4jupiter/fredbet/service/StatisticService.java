@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +41,47 @@ public class StatisticService {
 	public List<Statistic> createStatistic() {
 		final List<Statistic> statisticList = statisticRepository.createStatistic();
 
+		final Country favouriteCountry = getFavouriteCountry();
 		final Map<String, Integer> favoriteCountryPointsPerUserMap = statisticRepository
-				.sumPointsPerUserForFavoriteCountry(getFavouriteCountry());
+				.sumPointsPerUserForFavoriteCountry(favouriteCountry);
 		final Optional<Integer> maxFavoriteCountryPoints = favoriteCountryPointsPerUserMap.values().stream()
 				.max(Comparator.comparing(i -> i));
 
 		final Map<String, Integer> extraBetsPerUser = findExtraBetsPerUser();
 
+		final Triple<Integer, Integer, Integer> triple = calculateMinMax(statisticList);
+		final int minPoints = triple.getLeft();
+		final int maxPoints = triple.getMiddle();
+		final int maxGroupPoints = triple.getRight();
+
+		for (Statistic statistic : statisticList) {
+			statistic.setFavoriteCountry(favouriteCountry);
+
+			final Integer favoriteCountryPoints = favoriteCountryPointsPerUserMap.get(statistic.getUsername());
+			if (favoriteCountryPoints != null) {
+				statistic.setPointsFavoriteCountry(favoriteCountryPoints);
+				if (maxFavoriteCountryPoints.isPresent() && favoriteCountryPoints.equals(maxFavoriteCountryPoints.get())) {
+					statistic.setMaxFavoriteCountryCandidate(true);
+				}
+			}
+
+			statistic.setPointsForExtraBets(extraBetsPerUser.get(statistic.getUsername()));
+
+			if (statistic.getSum().intValue() == minPoints) {
+				statistic.setMinPointsCandidate(true);
+			}
+			if (statistic.getSum().intValue() == maxPoints) {
+				statistic.setMaxPointsCandidate(true);
+			}
+			if (statistic.getPointsGroup().intValue() == maxGroupPoints) {
+				statistic.setMaxGroupPointsCandidate(true);
+			}
+		}
+
+		return statisticList;
+	}
+
+	private Triple<Integer, Integer, Integer> calculateMinMax(List<Statistic> statisticList) {
 		int minPoints = Integer.MAX_VALUE;
 		int maxPoints = 0;
 		int maxGroupPoints = 0;
@@ -64,30 +99,7 @@ public class StatisticService {
 			}
 		}
 
-		for (Statistic statistic : statisticList) {
-			statistic.setFavoriteCountry(getFavouriteCountry());
-
-			final Integer favoriteCountryPoints = favoriteCountryPointsPerUserMap.get(statistic.getUsername());
-			statistic.setPointsFavoriteCountry(favoriteCountryPoints);
-
-			statistic.setPointsForExtraBets(extraBetsPerUser.get(statistic.getUsername()));
-
-			if (maxFavoriteCountryPoints.isPresent() && favoriteCountryPoints.equals(maxFavoriteCountryPoints.get())) {
-				statistic.setMaxFavoriteCountryCandidate(true);
-			}
-
-			if (statistic.getSum().intValue() == minPoints) {
-				statistic.setMinPointsCandidate(true);
-			}
-			if (statistic.getSum().intValue() == maxPoints) {
-				statistic.setMaxPointsCandidate(true);
-			}
-			if (statistic.getPointsGroup().intValue() == maxGroupPoints) {
-				statistic.setMaxGroupPointsCandidate(true);
-			}
-		}
-
-		return statisticList;
+		return Triple.of(minPoints, maxPoints, maxGroupPoints);
 	}
 
 	private Map<String, Integer> findExtraBetsPerUser() {
