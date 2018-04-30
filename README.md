@@ -117,10 +117,8 @@ FredBet is designed to run within the Amazon Web Services (AWS) cloud as product
 | spring.profiles.active | prod |  |
 | fredbet.image-location | AWS_S3 |  |
 | fredbet.aws-s3bucket-name | fredbet | Or any other name for your S3 bucket. |
-| fredbet.database-url | e.g. jdbc:mysql://HOST:3306/DB_NAME |  |
-| fredbet.database-username | fredbet | The database username. |
-| fredbet.database-password | password | The database password. |
-| fredbet.database-type | mysql |  |
+
+Add also the properties for your database connection (see above).
 
 Be sure to use an instance profile with sufficient privileges for S3. You can ajust these values with the following properties:
 
