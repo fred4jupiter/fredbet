@@ -3,6 +3,9 @@ package de.fred4jupiter.fredbet.web.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
 
 /**
@@ -12,6 +15,8 @@ import de.fred4jupiter.fredbet.web.profile.ChangePasswordCommand;
  *
  */
 public class PasswordChangeValidator implements ConstraintValidator<PasswordChangeConstraint, ChangePasswordCommand> {
+
+	private static final Logger LOG = LoggerFactory.getLogger(PasswordChangeValidator.class);
 
 	@Override
 	public void initialize(PasswordChangeConstraint passwordChangeConstraint) {
@@ -23,7 +28,21 @@ public class PasswordChangeValidator implements ConstraintValidator<PasswordChan
 			return true;
 		}
 
-		return value.getNewPassword().equals(value.getNewPasswordRepeat());
+		if (!value.getNewPassword().equals(value.getNewPasswordRepeat())) {
+			context.buildConstraintViolationWithTemplate("{msg.passwordChange.passwordMismatch}")
+					.addPropertyNode("newPassword").addConstraintViolation().disableDefaultConstraintViolation();
+			LOG.error("newPassword and newPasswordRepeat are different");
+			return false;
+		}
+		
+		if (value.getOldPassword().equals(value.getNewPassword())) {
+			context.buildConstraintViolationWithTemplate("{msg.passwordChange.oldAndNewPasswordAreSame}")
+					.addPropertyNode("newPassword").addConstraintViolation().disableDefaultConstraintViolation();
+			LOG.error("newPassword and newPasswordRepeat are different");
+			return false;
+		}
+
+		return true;
 	}
 
 }
