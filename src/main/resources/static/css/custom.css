@@ -134,8 +134,8 @@ img.flag {
 }
 
 img.flag.big {
-	border: 1px solid;
-	border-color: grey;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 img.displayed {
