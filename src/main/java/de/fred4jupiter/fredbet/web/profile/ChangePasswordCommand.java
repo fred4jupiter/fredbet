@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.profile;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import de.fred4jupiter.fredbet.web.validation.PasswordChangeConstraint;
 
@@ -11,9 +12,11 @@ public class ChangePasswordCommand {
 	private String oldPassword;
 
 	@NotEmpty
+	@Size(min = 4, max = 12)
 	private String newPassword;
 
 	@NotEmpty
+	@Size(min = 4, max = 12)
 	private String newPasswordRepeat;
 
 	public String getOldPassword() {
