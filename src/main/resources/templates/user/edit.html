@@ -23,6 +23,8 @@
 								<input type="hidden" th:field="*{roles}" th:value="${role}" th:if="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
 								<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/> 
 								<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+								th:title="#{'user.edit.tooltip.' + ${role}}"></span>
 							</li>
 						</ul>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles error</p>
@@ -44,6 +46,7 @@
 				</div>
 			</div>
 		</form>
+		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 	</div>
 </body>
 </html>
