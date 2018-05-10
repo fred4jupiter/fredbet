@@ -20,7 +20,6 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
@@ -29,9 +28,6 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 @Service
 @Transactional
 public class BettingService {
-
-	@Autowired
-	private AppUserRepository appUserRepository;
 
 	@Autowired
 	private MatchRepository matchRepository;
@@ -45,20 +41,13 @@ public class BettingService {
 	@Autowired
 	private SecurityService securityService;
 
-	public void createAndSaveBetting(String username, Long matchId, Integer goalsTeamOne, Integer goalsTeamTwo) {
-		AppUser appUser = appUserRepository.findByUsername(username);
-
-		Match match = matchRepository.getOne(matchId);
-
-		createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
-	}
-
-	public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo) {
+	public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
 		Bet bet = new Bet();
 		bet.setGoalsTeamOne(goalsTeamOne);
 		bet.setGoalsTeamTwo(goalsTeamTwo);
 		bet.setMatch(match);
 		bet.setUserName(appUser.getUsername());
+		bet.setJoker(withJoker);
 		return betRepository.save(bet);
 	}
 

@@ -30,6 +30,10 @@ public class RandomValueGenerator {
 		return rn.nextInt(range) + min;
 	}
 
+	public Boolean generateRandomBoolean() {
+		return Math.random() < 0.5;		
+	}
+
 	private Country generateRandomCountry(List<Country> availableCountries) {
 		Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
 		return availableCountries.get(randomVal);

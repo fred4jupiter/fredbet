@@ -137,7 +137,8 @@ public class DataBasePopulator {
 			allMatches.forEach(match -> {
 				Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
 				Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
-				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo);
+				Boolean joker = randomValueGenerator.generateRandomBoolean();
+				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo, joker);
 			});
 
 			ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
