@@ -61,6 +61,10 @@ public class RuntimeConfig {
 	 * If users have to change their password at first login.
 	 */
 	private boolean changePasswordOnFirstLogin;
+	
+	@NotNull
+	@Min(value = 0)
+	private Integer jokerMaxCount = Integer.valueOf(3);
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
@@ -142,4 +146,13 @@ public class RuntimeConfig {
 		this.changePasswordOnFirstLogin = changePasswordOnFirstLogin;
 	}
 
+	public Integer getJokerMaxCount() {
+		return jokerMaxCount;
+	}
+
+	public void setJokerMaxCount(Integer jokerMaxCount) {
+		this.jokerMaxCount = jokerMaxCount;
+	}
+
+	
 }

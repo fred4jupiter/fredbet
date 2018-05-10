@@ -94,6 +94,18 @@
 							<input type="text" th:field="*{runtimeConfig.pointsThirdFinalWinner}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsThirdFinalWinner')}" th:errors="*{runtimeConfig.pointsThirdFinalWinner}"></p>						
 						</div>
+						<br/>
+					</div>
+					<div class="visible-xs col-xs-12">
+						<hr/>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<h3 th:text="#{administration.runtime.configuration.joker}"></h3>
+						<div class="form-group">
+							<label for="runtimeConfig.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label> 
+							<input type="text" th:field="*{runtimeConfig.jokerMaxCount}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.jokerMaxCount')}" th:errors="*{runtimeConfig.jokerMaxCount}"></p>						
+						</div>						
 					</div>
 				</div>				
 				<div class="row">			
