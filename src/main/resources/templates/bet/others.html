@@ -41,8 +41,9 @@
 								<div class="col-xs-4 top-bottom-space no-left-right-padding">
 									<span th:text="${bet.userName}" class="ranking-name"></span>			  									  		
 					  			</div>	
-					  			<div class="col-xs-6 top-bottom-space">
-					  				<div class="right">
+					  			<div class="col-xs-6 top-bottom-space">					  				
+					  				<div class="right">					  	
+					  					<i th:if="${bet.isJoker()}" class="fa fa-rocket" aria-hidden="true" data-toggle="tooltip" data-placement="top" th:title="#{bet.others.joker.tooltip}"></i>					  									
 						  				<span class="label label-as-badge big-badge label-success" th:classappend="${bet.getCssClassPenaltyWinnerOne()}" 
 						  					th:text="${bet.goalsTeamOne}"></span>
 									  	<span> : </span>
@@ -62,6 +63,7 @@
 					<a href="#" th:href="@{${'/matches#' + allBetsCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
 				</div>
 			</div>
-		</div>
+			<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+		</div>		
 	</body>
 </html>

@@ -41,6 +41,9 @@ public class Bet {
 	@Column(name = "PENALTY_WINNER_ONE")
 	private boolean penaltyWinnerOne;
 
+	@Column(name = "JOKER")
+	private boolean joker;
+
 	public Integer getGoalDifference() {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
 			throw new IllegalStateException("Bet not finished! No goal bets set!");
@@ -63,7 +66,7 @@ public class Bet {
 
 		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
 	}
-	
+
 	public boolean isUndecidedBetting() {
 		return getGoalDifference().intValue() == 0;
 	}
@@ -87,6 +90,7 @@ public class Bet {
 		builder.append(goalsTeamTwo, bet.goalsTeamTwo);
 		builder.append(points, bet.points);
 		builder.append(penaltyWinnerOne, bet.penaltyWinnerOne);
+		builder.append(joker, bet.joker);
 		return builder.isEquals();
 	}
 
@@ -100,6 +104,7 @@ public class Bet {
 		builder.append(goalsTeamTwo);
 		builder.append(points);
 		builder.append(penaltyWinnerOne);
+		builder.append(joker);
 		return builder.toHashCode();
 	}
 
@@ -113,6 +118,7 @@ public class Bet {
 		builder.append("goalsTeamTwo", goalsTeamTwo);
 		builder.append("points", points);
 		builder.append("penaltyWinnerOne", penaltyWinnerOne);
+		builder.append("joker", joker);
 		return builder.toString();
 	}
 
@@ -163,7 +169,7 @@ public class Bet {
 	public boolean isPenaltyWinnerOne() {
 		return penaltyWinnerOne;
 	}
-	
+
 	private boolean isGroupMatch() {
 		return this.match.isGroupMatch();
 	}
@@ -185,4 +191,13 @@ public class Bet {
 		}
 		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS : "";
 	}
+
+	public boolean isJoker() {
+		return joker;
+	}
+
+	public void setJoker(boolean joker) {
+		this.joker = joker;
+	}
+
 }

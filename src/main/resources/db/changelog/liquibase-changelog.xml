@@ -241,5 +241,13 @@
 			</column>
 		</addColumn>
 	</changeSet>
+	
+	<changeSet id="10" author="michael">
+		<addColumn tableName="bet">
+			<column name="joker" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>

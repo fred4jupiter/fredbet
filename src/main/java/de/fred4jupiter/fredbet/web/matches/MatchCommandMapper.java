@@ -30,7 +30,7 @@ public class MatchCommandMapper {
 
 	@Autowired
 	private MatchService matchService;
-	
+
 	@Autowired
 	private WebMessageUtil webMessageUtil;
 
@@ -42,6 +42,28 @@ public class MatchCommandMapper {
 	public List<MatchCommand> findAllUpcomingMatches(String username) {
 		List<Match> allMatches = matchService.findUpcomingMatches();
 		return toMatchCommandsWithBets(username, allMatches);
+	}
+
+	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
+		List<Match> allMatches = matchService.findMatchesByGroup(group);
+		return toMatchCommandsWithBets(currentUserName, allMatches);
+	}
+
+	public MatchCommand toMatchCommand(Match match) {
+		Assert.notNull(match, "Match must be given");
+		MatchCommand matchCommand = new MatchCommand();
+		matchCommand.setMatchId(match.getId());
+		matchCommand.setCountryTeamOne(match.getCountryOne());
+		matchCommand.setCountryTeamTwo(match.getCountryTwo());
+		matchCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
+		matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
+		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
+		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
+		matchCommand.setKickOffDate(match.getKickOffDate());
+		matchCommand.setStadium(match.getStadium());
+		matchCommand.setGroup(match.getGroup());
+		matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
+		return matchCommand;
 	}
 
 	private Map<Long, Bet> findBetsForMatchIds(String username) {
@@ -76,32 +98,11 @@ public class MatchCommandMapper {
 				matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
 				matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
 				matchCommand.setPoints(bet.getPoints());
+				matchCommand.setJoker(bet.isJoker());
 			}
 			resultList.add(matchCommand);
 		}
 		return resultList;
-	}
-
-	public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
-		List<Match> allMatches = matchService.findMatchesByGroup(group);
-		return toMatchCommandsWithBets(currentUserName, allMatches);
-	}
-
-	public MatchCommand toMatchCommand(Match match) {
-		Assert.notNull(match, "Match must be given");
-		MatchCommand matchCommand = new MatchCommand();
-		matchCommand.setMatchId(match.getId());
-		matchCommand.setCountryTeamOne(match.getCountryOne());
-		matchCommand.setCountryTeamTwo(match.getCountryTwo());
-		matchCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
-		matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
-		matchCommand.setTeamResultOne(match.getGoalsTeamOne());
-		matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
-		matchCommand.setKickOffDate(match.getKickOffDate());
-		matchCommand.setStadium(match.getStadium());
-		matchCommand.setGroup(match.getGroup());
-		matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
-		return matchCommand;
 	}
 
 }

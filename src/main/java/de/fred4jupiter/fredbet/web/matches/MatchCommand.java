@@ -29,6 +29,8 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	private Integer userBetGoalsTeamTwo;
 
 	private Integer points;
+	
+	private boolean joker;
 
 	private boolean penaltyWinnerOneBet;
 
@@ -191,4 +193,14 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 		return !this.isGroupMatch() && this.isUndecidedResult() && !this.isPenaltyWinnerOneMatch() ? LABEL_INFO_PENALTY : LABEL_INFO;
 	}
+
+	public boolean isJoker() {
+		return joker;
+	}
+
+	public void setJoker(boolean joker) {
+		this.joker = joker;
+	}
+	
+	
 }

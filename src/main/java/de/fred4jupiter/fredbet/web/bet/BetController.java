@@ -20,10 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Joker;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
+import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
 import de.fred4jupiter.fredbet.util.Validator;
@@ -56,13 +58,25 @@ public class BetController {
 
 	@Autowired
 	private MatchService matchService;
-	
+
 	@Autowired
 	private AllBetsCommandMapper allBetsCommandMapper;
+
+	@Autowired
+	private JokerService jokerService;
 
 	@ModelAttribute("availableCountries")
 	public List<Country> availableCountries() {
 		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+	}
+
+	@ModelAttribute("betCommand")
+	public BetCommand initBetCommand() {
+		BetCommand betCommand = new BetCommand();
+		Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
+		betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
+		betCommand.setMaxJokers(joker.getMax());
+		return betCommand;
 	}
 
 	@RequestMapping("/open")
@@ -82,7 +96,7 @@ public class BetController {
 	}
 
 	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
-	public ModelAndView createOrUpdate(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
+	public ModelAndView showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
 		Bet bet = bettingService.findOrCreateBetForMatch(matchId);
 		if (bet == null) {
 			return new ModelAndView("redirect:/matches");
@@ -117,16 +131,42 @@ public class BetController {
 
 		betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 
+		Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
+		betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
+		betCommand.setMaxJokers(joker.getMax());
+		betCommand.setUseJoker(bet.isJoker());
+
 		return betCommand;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView createOrUpdate(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect,
-			ModelMap modelMap) {
+	public ModelAndView saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
+		if (betCommand.isUseJoker()) {
+			Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
+			if (joker.isMaximumReached()) {
+				messageUtil.addErrorMsg(modelMap, "msg.bet.betting.joker.maximum.reached");
+				return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+			}
+		}
+
+		Bet bet = toBet(betCommand);
+
+		try {
+			bettingService.save(bet);
+			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
+		} catch (NoBettingAfterMatchStartedAllowedException e) {
+			messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
+		}
+
+		String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
+		return new ModelAndView(view + "#" + betCommand.getMatchId());
+	}
+
+	private Bet toBet(BetCommand betCommand) {
 		Bet bet = null;
 		if (betCommand.getBetId() == null) {
 			Match match = matchService.findMatchById(betCommand.getMatchId());
@@ -140,16 +180,8 @@ public class BetController {
 		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
 		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
 		bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
-
-		try {
-			bettingService.save(bet);
-			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
-		} catch (NoBettingAfterMatchStartedAllowedException e) {
-			messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
-		}
-
-		String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
-		return new ModelAndView(view + "#" + betCommand.getMatchId());
+		bet.setJoker(betCommand.isUseJoker());
+		return bet;
 	}
 
 	@RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)

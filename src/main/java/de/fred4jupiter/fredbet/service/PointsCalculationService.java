@@ -14,7 +14,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 
 /**
- * Calculates the general betting points.
+ * Calculates the general betting points (but without extra bets points).
  * 
  * @author michael
  *
@@ -54,6 +54,11 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 	int calculatePointsFor(Match match, Bet bet) {
 		int standardPoints = calculateStandardPointsFor(match, bet);
 		int penaltyPoints = calculatePenaltyPointsFor(match, bet);
+		
+		if (bet.isJoker()) {
+			return (standardPoints + penaltyPoints) * 2;
+		}
+		
 		return standardPoints + penaltyPoints;
 	}
 

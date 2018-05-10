@@ -22,7 +22,10 @@
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>							  		
+									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
+									<span th:if="${matchCommand.isJoker() && matchCommand.hasMatchFinished()}">
+										<i class="fa fa-rocket right joker-icon" aria-hidden="true" data-toggle="tooltip" data-placement="top" th:title="#{bet.others.joker.tooltip}"></i>
+									</span>							  		
 									<br/> 
 									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
 									<span th:text="${matchCommand.stadium}"></span>
@@ -79,7 +82,8 @@
 					</div>
 				</div>				
 			</div>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>	
-	</div>
+			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
+			<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>	
+	</div>	
 </body>
 </html>

@@ -1,0 +1,73 @@
+package de.fred4jupiter.fredbet.service;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.Joker;
+import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.security.FredBetRole;
+
+public class JokerServiceIT extends AbstractTransactionalIntegrationTest {
+
+	@Autowired
+	private JokerService jokerService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private MatchService matchService;
+
+	@Autowired
+	private BetRepository betRepository;
+
+	@Test
+	public void newUserHasNoJokerUsed() {
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+				.build();
+
+		userService.createUser(appUser);
+
+		Joker joker = jokerService.getJokerForUser(appUser.getUsername());
+		assertNotNull(joker);
+		assertEquals(Integer.valueOf(0), joker.getNumberOfJokersUsed());
+		assertEquals(Integer.valueOf(3), joker.getMax());
+	}
+
+	@Test
+	public void oneBetWithJoker() {
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+				.build();
+
+		userService.createUser(appUser);
+
+		Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withGoals(1, 1).build();
+		assertNotNull(match);
+		matchService.save(match);
+
+		Bet bet = new Bet();
+		bet.setGoalsTeamOne(1);
+		bet.setGoalsTeamTwo(2);
+		bet.setMatch(match);
+		bet.setUserName(appUser.getUsername());
+		bet.setJoker(true);
+		
+		betRepository.save(bet);
+
+		Joker joker = jokerService.getJokerForUser(appUser.getUsername());
+		assertNotNull(joker);
+		assertEquals(Integer.valueOf(1), joker.getNumberOfJokersUsed());
+		assertEquals(Integer.valueOf(3), joker.getMax());
+	}
+
+}

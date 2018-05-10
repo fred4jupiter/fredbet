@@ -36,6 +36,10 @@ public class BetCommand {
 
 	private boolean showCountryIcons;
 
+	private boolean useJoker;
+	private Integer numberOfJokersUsed;
+	private Integer maxJokers;
+
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
@@ -51,6 +55,7 @@ public class BetCommand {
 		builder.append("iconPathTeamOne", iconPathTeamOne);
 		builder.append("iconPathTeamTwo", iconPathTeamTwo);
 		builder.append("showCountryIcons", showCountryIcons);
+		builder.append("useJoker", useJoker);
 		return builder.toString();
 	}
 
@@ -149,4 +154,36 @@ public class BetCommand {
 	public void setShowCountryIcons(boolean showCountryIcons) {
 		this.showCountryIcons = showCountryIcons;
 	}
+
+	public boolean isUseJoker() {
+		return useJoker;
+	}
+
+	public void setUseJoker(boolean useJoker) {
+		this.useJoker = useJoker;
+	}
+
+	public Integer getNumberOfJokersUsed() {
+		return numberOfJokersUsed;
+	}
+
+	public void setNumberOfJokersUsed(Integer numberOfJokersUsed) {
+		this.numberOfJokersUsed = numberOfJokersUsed;
+	}
+
+	public Integer getMaxJokers() {
+		return maxJokers;
+	}
+
+	public void setMaxJokers(Integer maxJokers) {
+		this.maxJokers = maxJokers;
+	}
+
+	public boolean isSettingJokerAllowed() {
+		if (numberOfJokersUsed == null || maxJokers == null) {
+			return true;
+		}
+		return numberOfJokersUsed.intValue() <= maxJokers.intValue();
+	}
+
 }
