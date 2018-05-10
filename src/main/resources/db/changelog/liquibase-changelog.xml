@@ -33,11 +33,14 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="match_id" type="BIGINT" />
-			<column name="PENALTY_WINNER_ONE" type="boolean"
-				defaultValueBoolean="false" />
+			<column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false" />
 		</createTable>
-		<addUniqueConstraint columnNames="user_name, match_id"
-			tableName="bet" constraintName="idx_bet" />
+		<addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet" />
+		<createIndex tableName="bet" indexName="idx_user_name">
+			<column name="user_name" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+		</createIndex>
 
 		<createTable tableName="matches">
 			<column name="match_id" type="BIGINT" autoIncrement="true">
@@ -52,22 +55,19 @@
 			<column name="stadium" type="varchar(100)" />
 			<column name="team_name_one" type="varchar(100)" />
 			<column name="team_name_two" type="varchar(100)" />
-			<column name="PENALTY_WINNER_ONE" type="boolean"
-				defaultValueBoolean="false" />
+			<column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false" />
 		</createTable>
 
-		<addForeignKeyConstraint baseTableName="bet"
-			baseColumnNames="match_id" constraintName="FK_match_id"
-			referencedTableName="matches" referencedColumnNames="match_id" />
+		<addForeignKeyConstraint baseTableName="bet" baseColumnNames="match_id"
+			constraintName="FK_match_id" referencedTableName="matches" referencedColumnNames="match_id" />
 
 		<createTable tableName="user_roles">
 			<column name="user_id" type="BIGINT" />
 			<column name="role" type="varchar(100)" />
 		</createTable>
 
-		<addForeignKeyConstraint baseTableName="user_roles"
-			baseColumnNames="user_id" constraintName="FK_user_id"
-			referencedTableName="app_user" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id"
+			constraintName="FK_user_id" referencedTableName="app_user" referencedColumnNames="user_id" />
 
 		<createTable tableName="persistent_logins">
 			<column name="series" type="varchar(64)">
@@ -89,8 +89,7 @@
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="user_name" type="varchar(100)">
-				<constraints nullable="false" unique="true"
-					uniqueConstraintName="extra_bet_idx1" />
+				<constraints nullable="false" unique="true" uniqueConstraintName="extra_bet_idx1" />
 			</column>
 			<column name="final_winner" type="varchar(255)" />
 			<column name="semi_final_winner" type="varchar(255)" />
@@ -108,8 +107,7 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		<addPrimaryKey columnNames="info_name, locale_string"
-			tableName="info_content" />
+		<addPrimaryKey columnNames="info_name, locale_string" tableName="info_content" />
 
 		<createTable tableName="session_tracking">
 			<column name="user_name" type="varchar(100)">
@@ -150,9 +148,8 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		<addForeignKeyConstraint baseTableName="image_metadata"
-			baseColumnNames="image_group_id" constraintName="FK_image_group"
-			referencedTableName="image_group" referencedColumnNames="image_group_id" />
+		<addForeignKeyConstraint baseTableName="image_metadata" baseColumnNames="image_group_id"
+			constraintName="FK_image_group" referencedTableName="image_group" referencedColumnNames="image_group_id" />
 
 		<createTable tableName="image_binary">
 			<column name="key" type="varchar(100)">
@@ -182,15 +179,13 @@
 				<constraints nullable="false" />
 			</column>
 		</addColumn>
-		<addForeignKeyConstraint baseColumnNames="user_id"
-			baseTableName="image_metadata" constraintName="FK_image_user_id"
-			referencedColumnNames="user_id" referencedTableName="app_user" />
+		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="image_metadata"
+			constraintName="FK_image_user_id" referencedColumnNames="user_id" referencedTableName="app_user" />
 	</changeSet>
 
 	<changeSet id="3" author="michael">
 		<addColumn tableName="image_group">
-			<column name="user_profile_img_group" type="boolean"
-				defaultValueBoolean="false">
+			<column name="user_profile_img_group" type="boolean" defaultValueBoolean="false">
 				<constraints nullable="false" />
 			</column>
 		</addColumn>
@@ -231,14 +226,14 @@
 		<createTable tableName="runtime_config">
 			<column name="config_id" type="BIGINT" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
-			</column>			
+			</column>
 			<column name="json_config" type="varchar(2000)" />
 			<column name="version" type="int">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 	</changeSet>
-	
+
 	<changeSet id="9" author="michael">
 		<addColumn tableName="app_user">
 			<column name="first_login" type="boolean" defaultValueBoolean="false">
