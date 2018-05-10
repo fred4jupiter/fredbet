@@ -134,21 +134,23 @@ public class DataBasePopulator {
 		List<Match> allMatches = matchService.findAll();
 		List<AppUser> users = userService.findAll();
 		users.forEach(appUser -> {
-			int count = 0;
 			for (Match match : allMatches) {
-				createBetForUser(appUser, match, count < 3);
-				count++;
+				createBetForUser(appUser, match, false);
 			}
 
-			ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
-			if (triple != null) {
-				Country extraBetCountryFinalWinner = triple.getLeft();
-				Country extraBetCountrySemiFinalWinner = triple.getMiddle();
-				Country extraBetCountryThirdFinalWinner = triple.getRight();
-				bettingService.saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
-						appUser.getUsername());
-			}
+			createExtraBetForUser(appUser);
 		});
+	}
+
+	private void createExtraBetForUser(AppUser appUser) {
+		ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
+		if (triple != null) {
+			Country extraBetCountryFinalWinner = triple.getLeft();
+			Country extraBetCountrySemiFinalWinner = triple.getMiddle();
+			Country extraBetCountryThirdFinalWinner = triple.getRight();
+			bettingService.saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
+					appUser.getUsername());
+		}
 	}
 
 	private void createBetForUser(AppUser appUser, Match match, boolean joker) {
