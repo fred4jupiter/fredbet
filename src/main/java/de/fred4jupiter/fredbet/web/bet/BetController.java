@@ -137,16 +137,6 @@ public class BetController {
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
-		// if (betCommand.isUseJoker()) {
-		// Joker joker =
-		// jokerService.getJokerForUser(securityService.getCurrentUserName());
-		// if (joker.isMaximumReached()) {
-		// messageUtil.addErrorMsg(modelMap,
-		// "msg.bet.betting.joker.maximum.reached");
-		// return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
-		// }
-		// }
-
 		Bet bet = toBet(betCommand);
 
 		try {
