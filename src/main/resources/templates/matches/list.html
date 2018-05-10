@@ -24,7 +24,7 @@
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
 									<span th:if="${matchCommand.isJoker()}">
-										<i class="fa fa-rocket right joker-icon" aria-hidden="true" data-toggle="tooltip" data-placement="top" th:title="#{bet.others.joker.tooltip}"></i>
+										<i class="fa fa-bell-o fa-lg right joker-icon" aria-hidden="true" data-toggle="tooltip" data-placement="top" th:title="#{match.joker.tooltip}"></i>
 									</span>							  		
 									<br/> 
 									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
