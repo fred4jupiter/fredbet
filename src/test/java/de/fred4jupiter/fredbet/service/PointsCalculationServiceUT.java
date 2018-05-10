@@ -106,6 +106,27 @@ public class PointsCalculationServiceUT {
 		assertEquals(4, pointsCalculationService.calculatePointsFor(match, bet));
 	}
 
+	@Test
+	public void pointsWithJokerDoublesPoints() {
+		Match match = MatchBuilder.create().withGroup(Group.GROUP_B).withTeams("Deutschland", "Italien").withGoals(0, 0).build();
+		Bet bet = createBet(0, 0);
+		bet.setPenaltyWinnerOne(false);
+		bet.setJoker(true);
+
+		assertEquals(6, pointsCalculationService.calculatePointsFor(match, bet));
+	}
+	
+	@Test
+	public void pointsWithJokerInPenaltyDoublesPoints() {
+		Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(1, 1).build();
+		match.setPenaltyWinnerOne(false);
+		Bet bet = createBet(1, 1);
+		bet.setPenaltyWinnerOne(false);
+		bet.setJoker(true);
+
+		assertEquals(8, pointsCalculationService.calculatePointsFor(match, bet));
+	}
+	
 	private Bet createBet(Integer goalsTeamOne, Integer goalsTeamTwo) {
 		Bet bet = new Bet();
 		bet.setGoalsTeamOne(goalsTeamOne);

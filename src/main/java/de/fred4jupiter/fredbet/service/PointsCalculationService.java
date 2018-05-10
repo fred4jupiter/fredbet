@@ -22,6 +22,8 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 @Service
 public class PointsCalculationService implements ApplicationListener<MatchGoalsChangedEvent> {
 
+	private static final int JOKER_MULTIPLIER = 2;
+
 	private static final Logger LOG = LoggerFactory.getLogger(PointsCalculationService.class);
 
 	@Autowired
@@ -52,14 +54,15 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 	}
 
 	int calculatePointsFor(Match match, Bet bet) {
-		int standardPoints = calculateStandardPointsFor(match, bet);
-		int penaltyPoints = calculatePenaltyPointsFor(match, bet);
+		final int standardPoints = calculateStandardPointsFor(match, bet);
+		final int penaltyPoints = calculatePenaltyPointsFor(match, bet);
 		
+		final int subtotal = standardPoints + penaltyPoints;
 		if (bet.isJoker()) {
-			return (standardPoints + penaltyPoints) * 2;
+			return subtotal * JOKER_MULTIPLIER;
 		}
 		
-		return standardPoints + penaltyPoints;
+		return subtotal;
 	}
 
 	private int calculatePenaltyPointsFor(Match match, Bet bet) {
