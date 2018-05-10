@@ -75,7 +75,7 @@ public class BetController {
 		BetCommand betCommand = new BetCommand();
 		Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
 		betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
-		betCommand.setMaxJokers(joker.getMax());
+		betCommand.setMaxJokers(joker.getMax());		
 		return betCommand;
 	}
 
@@ -135,6 +135,7 @@ public class BetController {
 		betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
 		betCommand.setMaxJokers(joker.getMax());
 		betCommand.setUseJoker(bet.isJoker());
+		betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
 
 		return betCommand;
 	}
@@ -145,13 +146,13 @@ public class BetController {
 			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
 		}
 
-		if (betCommand.isUseJoker()) {
-			Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
-			if (joker.isMaximumReached()) {
-				messageUtil.addErrorMsg(modelMap, "msg.bet.betting.joker.maximum.reached");
-				return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
-			}
-		}
+//		if (betCommand.isUseJoker()) {
+//			Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
+//			if (joker.isMaximumReached()) {
+//				messageUtil.addErrorMsg(modelMap, "msg.bet.betting.joker.maximum.reached");
+//				return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+//			}
+//		}
 
 		Bet bet = toBet(betCommand);
 

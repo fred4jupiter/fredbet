@@ -38,7 +38,12 @@ public class BetCommand {
 
 	private boolean useJoker;
 	private Integer numberOfJokersUsed;
-	private Integer maxJokers; // maximum jokers allowed to use (general setting)
+	
+	/*
+	 * maximum jokers allowed to use (general setting)
+	 */
+	private Integer maxJokers; 
+	private boolean jokerEditable;
 
 	@Override
 	public String toString() {
@@ -179,11 +184,12 @@ public class BetCommand {
 		this.maxJokers = maxJokers;
 	}
 
-	public boolean isSettingJokerAllowed() {
-		if (numberOfJokersUsed == null || maxJokers == null) {
-			return true;
-		}
-		return numberOfJokersUsed.intValue() <= maxJokers.intValue();
+	public boolean isJokerEditable() {
+		return jokerEditable;
+	}
+
+	public void setJokerEditable(boolean jokerEditable) {
+		this.jokerEditable = jokerEditable;
 	}
 
 }
