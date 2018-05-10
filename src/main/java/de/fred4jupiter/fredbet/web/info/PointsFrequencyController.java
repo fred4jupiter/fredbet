@@ -1,5 +1,10 @@
 package de.fred4jupiter.fredbet.web.info;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.commons.collections4.MultiValuedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,10 +38,16 @@ public class PointsFrequencyController {
 			return modelAndView;
 		}
 
-		modelAndView.addObject("fourPointsMap", map.get(4));
-		modelAndView.addObject("threePointsMap", map.get(3));
-		modelAndView.addObject("twoPointsMap", map.get(2));
-		modelAndView.addObject("onePointsMap", map.get(1));
+		List<Integer> collect = map.keySet().stream().collect(Collectors.toList());
+		Collections.reverse(collect);
+
+		PointsFrequencyCommand command = new PointsFrequencyCommand();
+
+		for (Integer points : collect) {
+			command.add(points, new ArrayList<>(map.get(points)));
+		}
+
+		modelAndView.addObject("pointsFrequencyCommand", command);
 		return modelAndView;
 	}
 
