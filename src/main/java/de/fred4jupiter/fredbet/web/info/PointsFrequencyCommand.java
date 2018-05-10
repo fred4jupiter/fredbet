@@ -14,11 +14,7 @@ public class PointsFrequencyCommand {
 	}
 
 	public void add(Integer points, List<PointCountResult> list) {
-		this.resultList.add(new PointsFrequency(points, list));		
-	}
-	
-	public boolean isEmpty() {
-		return this.resultList.isEmpty();
+		this.resultList.add(new PointsFrequency(points, list));
 	}
 
 }
