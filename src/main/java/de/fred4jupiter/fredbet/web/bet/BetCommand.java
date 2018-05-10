@@ -38,7 +38,7 @@ public class BetCommand {
 
 	private boolean useJoker;
 	private Integer numberOfJokersUsed;
-	private Integer maxJokers;
+	private Integer maxJokers; // maximum jokers allowed to use (general setting)
 
 	@Override
 	public String toString() {

@@ -73,14 +73,16 @@
 							</div>								
 						</div>
 						<br/>
-						<div class="row center">				
-							<input type="checkbox" th:field="*{useJoker}" th:value="${useJoker}" th:disabled="${!betCommand.isSettingJokerAllowed()}"/>
-							<label for="useJoker" th:text="#{betting.joker}"></label>
-							<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
-								th:title="#{betting.joker.tooltip}"></span>
-						</div>	
-						<div class="row center">
-							<span th:text="#{betting.joker.available(${betCommand.numberOfJokersUsed}, ${betCommand.maxJokers})}"></span>
+						<div class="center" th:if="${betCommand.maxJokers gt 0}">
+							<div class="row">
+								<input type="checkbox" th:field="*{useJoker}" th:value="${useJoker}" th:disabled="${!betCommand.isSettingJokerAllowed()}"/>
+								<label for="useJoker" th:text="#{betting.joker}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+									th:title="#{betting.joker.tooltip}"></span>
+							</div>	
+							<div class="row">
+								<span th:text="#{betting.joker.available(${betCommand.numberOfJokersUsed}, ${betCommand.maxJokers})}"></span>
+							</div>
 						</div>
 						<div class="row">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
