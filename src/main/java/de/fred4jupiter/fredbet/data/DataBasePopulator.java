@@ -134,12 +134,11 @@ public class DataBasePopulator {
 		List<Match> allMatches = matchService.findAll();
 		List<AppUser> users = userService.findAll();
 		users.forEach(appUser -> {
-			allMatches.forEach(match -> {
-				Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
-				Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
-				Boolean joker = randomValueGenerator.generateRandomBoolean();
-				bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo, joker);
-			});
+			int count = 0;
+			for (Match match : allMatches) {
+				createBetForUser(appUser, match, count < 3);
+				count++;
+			}
 
 			ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
 			if (triple != null) {
@@ -150,6 +149,12 @@ public class DataBasePopulator {
 						appUser.getUsername());
 			}
 		});
+	}
+
+	private void createBetForUser(AppUser appUser, Match match, boolean joker) {
+		Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
+		Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
+		bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo, joker);
 	}
 
 	public void createDemoResultsForAllMatches() {
