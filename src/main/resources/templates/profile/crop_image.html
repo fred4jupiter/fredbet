@@ -4,10 +4,7 @@
 	<head>
 		<title th:text="#{user.image.cropping.title}"></title>
 		<link rel="stylesheet" th:href="@{/css/croppie.css}" />
-		<link rel="stylesheet" th:href="@{/css/pages/crop_image.css}" />
-		<script type="text/javascript" th:src="@{/js/croppie.min.js}" charset="UTF-8"></script>
-		<script type="text/javascript" th:src="@{/js/exif.js}" charset="UTF-8"></script>
-		<script type="text/javascript" th:src="@{/js/pages/crop_image.js}" charset="UTF-8"></script>
+		<link rel="stylesheet" th:href="@{/css/pages/crop_image.css}" />		
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -49,6 +46,9 @@
 					</div>
 				</form>				
 			</div>
+			<script type="text/javascript" th:src="@{/js/croppie.min.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/js/exif.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/js/pages/crop_image.js}" charset="UTF-8"></script>
 		</div>
 	</body>
 </html>
