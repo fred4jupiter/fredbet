@@ -7,7 +7,7 @@
 <body>
 	<div layout:fragment="content">
 		<div th:replace="~{fragments/alert :: alert_headline}"></div>
-		<h1 th:text="${heading}"></h1>
+		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
 					<a class="anchor" th:id="${matchCommand.matchId}"></a>
