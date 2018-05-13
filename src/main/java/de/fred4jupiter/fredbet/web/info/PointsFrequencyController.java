@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,14 +37,10 @@ public class PointsFrequencyController {
 			return modelAndView;
 		}
 
-		List<Integer> collect = map.keySet().stream().collect(Collectors.toList());
-		Collections.reverse(collect);
+		List<Integer> pointsList = map.keySet().stream().collect(Collectors.toList());
+		Collections.reverse(pointsList);
 
-		PointsFrequencyCommand command = new PointsFrequencyCommand();
-
-		for (Integer points : collect) {
-			command.add(points, new ArrayList<>(map.get(points)));
-		}
+		PointsFrequencyCommand command = new PointsFrequencyCommand(map);
 
 		modelAndView.addObject("pointsFrequencyCommand", command);
 		return modelAndView;
