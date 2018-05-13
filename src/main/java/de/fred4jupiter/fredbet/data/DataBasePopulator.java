@@ -32,6 +32,7 @@ import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetRole;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.InfoService;
+import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.UserService;
@@ -71,6 +72,9 @@ public class DataBasePopulator {
 
 	@Autowired
 	private RuntimeConfigurationService runtimeConfigurationService;
+
+	@Autowired
+	private JokerService jokerService;
 
 	@PostConstruct
 	private void initDatabaseWithDemoData() {
@@ -135,7 +139,11 @@ public class DataBasePopulator {
 		List<AppUser> users = userService.findAll();
 		users.forEach(appUser -> {
 			for (Match match : allMatches) {
-				createBetForUser(appUser, match, false);
+				boolean jokerAllowed = false;
+				if (randomValueGenerator.generateRandomBoolean()) {
+					jokerAllowed = jokerService.isSettingJokerAllowed(appUser.getUsername(), match.getId());
+				}
+				createBetForUser(appUser, match, jokerAllowed);
 			}
 
 			createExtraBetForUser(appUser);
