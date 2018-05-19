@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.domain.BetBuilder;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -24,6 +25,9 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 
 	@Autowired
 	private MatchRepository matchRepository;
+
+	@Autowired
+	private BetRepository betRepository;
 
 	@Test
 	public void findAllOrderByKickOffDate() {
@@ -67,5 +71,28 @@ public class MatchRepositoryIT extends AbstractTransactionalIntegrationTest {
 		List<Match> matches = matchRepository.findUpcomingMatches(groupKickOffBeginSelectionDate, koKickOffBeginSelectionDate);
 		assertNotNull(matches);
 		assertEquals(4, matches.size());
+	}
+
+	@Test
+	public void findMatchesOfJokerBets() {
+		matchRepository.deleteAll();
+		
+		Match match1 = MatchBuilder.create().withTeams("Deutschland", "Frankfreich").withGroup(Group.GROUP_B)
+				.withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build();
+		matchRepository.save(match1);
+
+		Match match2 = MatchBuilder.create().withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
+				.withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build();
+		matchRepository.save(match2);
+
+		final String userName = "Albert";
+		betRepository.save(BetBuilder.create().withGoals(1, 2).withJoker(true).withMatch(match1).withUsername(userName).build());
+
+		betRepository.save(BetBuilder.create().withGoals(2, 6).withJoker(true).withMatch(match2).withUsername("Karl").build());
+
+		List<Match> matches = matchRepository.findMatchesOfJokerBetsForUser(userName);
+		assertNotNull(matches);
+
+		assertEquals(1, matches.size());
 	}
 }

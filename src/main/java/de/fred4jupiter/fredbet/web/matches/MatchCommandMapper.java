@@ -50,7 +50,7 @@ public class MatchCommandMapper {
 	}
 	
 	public List<MatchCommand> findJokerMatches(String currentUserName) {
-		List<Match> allMatches = matchService.findJokerMatches();
+		List<Match> allMatches = matchService.findJokerMatches(currentUserName);
 		return toMatchCommandsWithBets(currentUserName, allMatches);
 	}
 

@@ -100,7 +100,7 @@ public class MatchService {
 		return this.matchRepository.fetchGroupsOfAllMatches();
 	}
 
-	public List<Match> findJokerMatches() {
-		return matchRepository.findMatchesOfJokerBets();
+	public List<Match> findJokerMatches(String userName) {
+		return matchRepository.findMatchesOfJokerBetsForUser(userName);
 	}
 }

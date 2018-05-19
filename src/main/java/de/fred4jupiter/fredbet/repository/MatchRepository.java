@@ -32,6 +32,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 	@Query("select a.group from Match a ")
 	Set<Group> fetchGroupsOfAllMatches();
 
-	@Query("Select b.match from Bet b where b.joker = TRUE")
-	List<Match> findMatchesOfJokerBets();
+	@Query("Select b.match from Bet b where b.joker = TRUE and b.userName = :userName")
+	List<Match> findMatchesOfJokerBetsForUser(@Param("userName") String userName);
 }
