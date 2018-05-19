@@ -51,5 +51,13 @@ public class MatchController {
 		modelAndView.addObject("heading", messageUtil.getMessageFor(msgKey));
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/joker")
+	public ModelAndView jokerMatches() {
+		List<MatchCommand> matches = matchCommandMapper.findJokerMatches(securityBean.getCurrentUserName());
+		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
+		modelAndView.addObject("heading", messageUtil.getMessageFor("joker.matches"));
+		return modelAndView;
+	}
 
 }

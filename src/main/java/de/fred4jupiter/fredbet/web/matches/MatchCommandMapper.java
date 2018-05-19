@@ -48,6 +48,11 @@ public class MatchCommandMapper {
 		List<Match> allMatches = matchService.findMatchesByGroup(group);
 		return toMatchCommandsWithBets(currentUserName, allMatches);
 	}
+	
+	public List<MatchCommand> findJokerMatches(String currentUserName) {
+		List<Match> allMatches = matchService.findJokerMatches();
+		return toMatchCommandsWithBets(currentUserName, allMatches);
+	}
 
 	public MatchCommand toMatchCommand(Match match) {
 		Assert.notNull(match, "Match must be given");

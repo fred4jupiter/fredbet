@@ -28,10 +28,11 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
 	@Modifying
 	@Query("update Bet b set b.userName = :newUsername where b.userName = :oldUsername")
 	void renameUser(@Param("oldUsername") String oldUsername, @Param("newUsername") String newUsername);
-	
+
 	@Query("select count(joker) from Bet where joker = true and userName = :userName")
-	Integer countNumberOfJokerUsed( @Param("userName") String userName);
-	
+	Integer countNumberOfJokerUsed(@Param("userName") String userName);
+
 	@Query("select b from Bet b where joker = true and userName = :userName and b.match.id = :matchId")
 	Bet findBetsOfGivenMatchWithJokerSet(@Param("userName") String username, @Param("matchId") Long matchId);
+
 }

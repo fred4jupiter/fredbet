@@ -38,6 +38,10 @@
 					        	<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
 					        	<li class="divider" role="separator"></li>
 								<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
+								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" class="divider" role="separator"></li>
+								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" th:class="${pageState_matches_joker}">
+					            	<a href="#matches" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
+				            	</li>
 								<li class="divider" role="separator"></li>
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}" th:class="${pageState_matches_group_GROUP_A}">
 					            	<a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>

@@ -17,7 +17,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 	List<Match> findAllByOrderByKickOffDateAsc();
 
 	@Query("select m from Match m where (m.group like 'GROUP%' and m.kickOffDate > :groupKickOffDate) or (m.group not like 'GROUP%' and m.kickOffDate > :koKickOffDate) or (m.goalsTeamOne is null and m.goalsTeamTwo is null) order by m.kickOffDate asc")
-	List<Match> findUpcomingMatches(@Param("groupKickOffDate") LocalDateTime groupKickOffDate, @Param("koKickOffDate") LocalDateTime koKickOffDate);
+	List<Match> findUpcomingMatches(@Param("groupKickOffDate") LocalDateTime groupKickOffDate,
+			@Param("koKickOffDate") LocalDateTime koKickOffDate);
 
 	List<Match> findByGroupOrderByKickOffDateAsc(Group group);
 
@@ -27,8 +28,10 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	@Query("select min(a.kickOffDate) from Match a")
 	LocalDateTime findStartDateOfFirstMatch();
-	
+
 	@Query("select a.group from Match a ")
 	Set<Group> fetchGroupsOfAllMatches();
 
+	@Query("Select b.match from Bet b where b.joker = TRUE")
+	List<Match> findMatchesOfJokerBets();
 }

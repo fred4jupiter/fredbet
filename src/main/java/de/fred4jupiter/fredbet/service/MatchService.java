@@ -99,4 +99,8 @@ public class MatchService {
 		LOG.info("Loading groups from DB...");
 		return this.matchRepository.fetchGroupsOfAllMatches();
 	}
+
+	public List<Match> findJokerMatches() {
+		return matchRepository.findMatchesOfJokerBets();
+	}
 }
