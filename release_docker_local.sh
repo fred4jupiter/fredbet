@@ -7,13 +7,13 @@ fi
 
 if [ -z "$1" ]
   then
-    echo "The DOCKER_USERNAME has to be given fourth parameter."
+    echo "The DOCKER_USERNAME has to be given as 2nd parameter."
     exit 1
 fi
 
 if [ -z "$2" ]
   then
-    echo "The DOCKER_PASSWORD has to be given fourth parameter."
+    echo "The DOCKER_PASSWORD has to be given as 3td parameter."
     exit 1
 fi
 
@@ -35,7 +35,7 @@ git push
 echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
 
-# docker image tagging and publishing in Docker Hub
+# docker image tagging and publishing on Docker Hub
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 docker tag fred4jupiter/fredbet fred4jupiter/fredbet:$PROJECT_REL_VERSION
 docker push fred4jupiter/fredbet:$PROJECT_REL_VERSION
