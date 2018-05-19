@@ -179,17 +179,29 @@ public class Bet {
 	}
 
 	public String getCssClassPenaltyWinnerOne() {
-		if (this.isGroupMatch() || !this.isUndecidedBetting()) {
-			return "";
+		String cssClasses = "";
+		if (!this.isGroupMatch() && this.isUndecidedBetting() && this.isPenaltyWinnerOne()) {
+			cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
 		}
-		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS : "";
+
+		if (isJoker()) {
+			cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
+		}
+
+		return cssClasses;
 	}
 
 	public String getCssClassPenaltyWinnerTwo() {
-		if (this.isGroupMatch() || !this.isUndecidedBetting()) {
-			return "";
+		String cssClasses = "";
+		if (!this.isGroupMatch() && this.isUndecidedBetting() && !this.isPenaltyWinnerOne()) {
+			cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
 		}
-		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS : "";
+
+		if (isJoker()) {
+			cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
+		}
+
+		return cssClasses;
 	}
 
 	public boolean isJoker() {

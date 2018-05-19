@@ -14,7 +14,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	private static final String LABEL_DEFAULT = "label-default";
 
-	private static final String LABEL_SUCCESS_PENALTY = LABEL_SUCCESS + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
+//	private static final String LABEL_SUCCESS_PENALTY = LABEL_SUCCESS + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
 
 	private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS;
 
@@ -29,7 +29,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	private Integer userBetGoalsTeamTwo;
 
 	private Integer points;
-	
+
 	private boolean joker;
 
 	private boolean penaltyWinnerOneBet;
@@ -167,7 +167,16 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 			return LABEL_DEFAULT;
 		}
 
-		return !this.isGroupMatch() && this.isUndecidedBetting() && this.isPenaltyWinnerOneBet() ? LABEL_SUCCESS_PENALTY : LABEL_SUCCESS;
+		String cssClasses = LABEL_SUCCESS;
+		if (!this.isGroupMatch() && this.isUndecidedBetting() && this.isPenaltyWinnerOneBet()) {
+			cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
+		}
+
+		if (isJoker()) {
+			cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
+		}
+
+		return cssClasses;
 	}
 
 	public String getUserBetGoalsTeamTwoCssClasses() {
@@ -175,7 +184,16 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 			return LABEL_DEFAULT;
 		}
 
-		return !this.isGroupMatch() && this.isUndecidedBetting() && !this.isPenaltyWinnerOneBet() ? LABEL_SUCCESS_PENALTY : LABEL_SUCCESS;
+		String cssClasses = LABEL_SUCCESS;
+		if (!this.isGroupMatch() && this.isUndecidedBetting() && !this.isPenaltyWinnerOneBet()) {
+			cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
+		}
+
+		if (isJoker()) {
+			cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
+		}
+
+		return cssClasses;		
 	}
 
 	public String getTeamResultOneCssClasses() {
@@ -201,6 +219,5 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 	public void setJoker(boolean joker) {
 		this.joker = joker;
 	}
-	
-	
+
 }

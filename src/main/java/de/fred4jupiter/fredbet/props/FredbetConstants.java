@@ -21,6 +21,8 @@ public interface FredbetConstants {
 	String BADGE_PENALTY_WINNER_BET_CSS_CLASS = "badge-penalty-winner-bet";
 
 	String BADGE_PENALTY_WINNER_MATCH_CSS_CLASS = "badge-penalty-winner-match";
+	
+	String JOKER_CSS_CLASS = "joker-betting";
 
 	Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
