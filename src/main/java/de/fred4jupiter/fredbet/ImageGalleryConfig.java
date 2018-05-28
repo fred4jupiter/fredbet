@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-import com.amazonaws.services.s3.AmazonS3;
-
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.service.image.storage.AmazonS3ClientWrapper;
@@ -29,7 +27,7 @@ import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 public class ImageGalleryConfig {
 
 	private static final String IMAGE_LOCATION = "image-location";
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ImageGalleryConfig.class);
 
 	@ConditionalOnProperty(prefix = FredbetProperties.PROPS_PREFIX, name = IMAGE_LOCATION, havingValue = "FILE_SYSTEM", matchIfMissing = true)
@@ -54,9 +52,9 @@ public class ImageGalleryConfig {
 
 	@ConditionalOnProperty(prefix = FredbetProperties.PROPS_PREFIX, name = IMAGE_LOCATION, havingValue = "AWS_S3", matchIfMissing = false)
 	@Bean
-	public AmazonS3ClientWrapper amazonS3ClientWrapper(AmazonS3 amazonS3, ResourceLoader resourceLoader,
-			ResourcePatternResolver resourcePatternResolver, FredbetProperties fredbetProperties) {
-		return new AmazonS3ClientWrapper(amazonS3, fredbetProperties.getAwsS3bucketName(), resourceLoader, resourcePatternResolver);
+	public AmazonS3ClientWrapper amazonS3ClientWrapper(ResourceLoader resourceLoader, ResourcePatternResolver resourcePatternResolver,
+			FredbetProperties fredbetProperties) {
+		return new AmazonS3ClientWrapper(fredbetProperties);
 	}
 
 }

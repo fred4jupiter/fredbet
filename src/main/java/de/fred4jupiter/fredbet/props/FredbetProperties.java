@@ -40,6 +40,12 @@ public class FredbetProperties {
 	 * The AWS S3 bucket name to use to store images in.
 	 */
 	private String awsS3bucketName;
+	
+	private String awsAccessKey;
+	
+	private String awsSecretKey;
+	
+	private String awsRegion;
 
 	public int getThumbnailSize() {
 		return thumbnailSize;
@@ -91,5 +97,29 @@ public class FredbetProperties {
 
 	public void setImageFileSystemBaseFolder(String imageFileSystemBaseFolder) {
 		this.imageFileSystemBaseFolder = imageFileSystemBaseFolder;
+	}
+
+	public String getAwsAccessKey() {
+		return awsAccessKey;
+	}
+
+	public void setAwsAccessKey(String awsAccessKey) {
+		this.awsAccessKey = awsAccessKey;
+	}
+
+	public String getAwsSecretKey() {
+		return awsSecretKey;
+	}
+
+	public void setAwsSecretKey(String awsSecretKey) {
+		this.awsSecretKey = awsSecretKey;
+	}
+
+	public String getAwsRegion() {
+		return awsRegion;
+	}
+
+	public void setAwsRegion(String awsRegion) {
+		this.awsRegion = awsRegion;
 	}
 }

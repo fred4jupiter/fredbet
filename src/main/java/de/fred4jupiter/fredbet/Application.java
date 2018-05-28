@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.Cache;
@@ -14,7 +13,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
-import org.springframework.cloud.aws.autoconfigure.cache.ElastiCacheAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -34,7 +32,6 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 @SpringBootApplication
 @EnableConfigurationProperties(FredbetProperties.class)
 @EnableCaching
-@EnableAutoConfiguration(exclude = ElastiCacheAutoConfiguration.class)
 public class Application {
 
 	public static void main(String[] args) {

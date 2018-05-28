@@ -62,14 +62,18 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	@Override
 	public List<BinaryImage> findAllImages() {
 		LOG.debug("loading all images from S3.");
+		
+		LOG.warn("Function not available at the moment!");
+		return Collections.emptyList();
+		
 
-		List<Resource> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix(IMAGE_PREFIX);
-		if (allImagesInBucket.isEmpty()) {
-			LOG.warn("Could not find any images in S3.");
-			return Collections.emptyList();
-		}
-
-		return mapToBinaryImageList(allImagesInBucket);
+//		List<Resource> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix(IMAGE_PREFIX);
+//		if (allImagesInBucket.isEmpty()) {
+//			LOG.warn("Could not find any images in S3.");
+//			return Collections.emptyList();
+//		}
+//
+//		return mapToBinaryImageList(allImagesInBucket);
 	}
 
 	private List<BinaryImage> mapToBinaryImageList(List<Resource> allImagesInBucket) {
