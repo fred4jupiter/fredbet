@@ -1,18 +1,15 @@
 package de.fred4jupiter.fredbet.service.image.storage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
 
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
@@ -62,46 +59,33 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	@Override
 	public List<BinaryImage> findAllImages() {
 		LOG.debug("loading all images from S3.");
-		
-		LOG.warn("Function not available at the moment!");
-		return Collections.emptyList();
-		
 
-//		List<Resource> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix(IMAGE_PREFIX);
-//		if (allImagesInBucket.isEmpty()) {
-//			LOG.warn("Could not find any images in S3.");
-//			return Collections.emptyList();
-//		}
-//
-//		return mapToBinaryImageList(allImagesInBucket);
-	}
-
-	private List<BinaryImage> mapToBinaryImageList(List<Resource> allImagesInBucket) {
-		final Map<String, byte[]> imagesMap = new HashMap<>();
-
-		for (Resource resource : allImagesInBucket) {
-			String filename = extractFileName(resource);
-			String imageKey = toImageKey(filename);
-			byte[] fileContent = toByteArray(resource);
-			if (fileContent != null && fileContent.length > 0 && filename.startsWith(IMAGE_PREFIX)) {
-				imagesMap.put(imageKey, fileContent);
-			}
+		List<File> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix(IMAGE_PREFIX);
+		if (allImagesInBucket.isEmpty()) {
+			LOG.warn("Could not find any images in S3.");
+			return Collections.emptyList();
 		}
 
 		final List<BinaryImage> resultList = new ArrayList<>();
-		for (String imageKey : imagesMap.keySet()) {
-			resultList.add(new BinaryImage(imageKey, imagesMap.get(imageKey)));
+		for (File file : allImagesInBucket) {
+			String filename = file.getName();
+			String imageKey = toImageKey(filename);
+			BinaryImage binaryImage = createBinayImage(file, imageKey);
+			if (binaryImage != null) {
+				resultList.add(binaryImage);
+			}
 		}
+
 		return resultList;
 	}
 
-	private String extractFileName(Resource resource) {
-		String[] splitted = StringUtils.split(resource.getFilename(), "/");
-		if (splitted.length == 0) {
-			return "";
+	private BinaryImage createBinayImage(File file, String imageKey) {
+		try {
+			return new BinaryImage(imageKey, Files.readAllBytes(file.toPath()));
+		} catch (IOException e) {
+			LOG.error(e.getMessage(), e);
+			return null;
 		}
-
-		return splitted[splitted.length - 1];
 	}
 
 	@Override
@@ -109,15 +93,6 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 		LOG.debug("deleteting image and thumbnail for imageKey={}, imageGroupId={}", imageKey, imageGroupId);
 		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroupId));
 		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroupId));
-	}
-
-	private byte[] toByteArray(Resource resource) {
-		try {
-			return IOUtils.toByteArray(resource.getInputStream());
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			return null;
-		}
 	}
 
 	private String toImageKey(String fileName) {

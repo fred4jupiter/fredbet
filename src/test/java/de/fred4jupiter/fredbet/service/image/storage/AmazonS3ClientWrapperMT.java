@@ -14,16 +14,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
 
 public class AmazonS3ClientWrapperMT {
+
+	private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ClientWrapperMT.class);
 
 	private AmazonS3ClientWrapper amazonS3ClientWrapper;
 
 	@Before
 	public void setup() {
-		String accessKey = "";
-		String secretKey = "";
+		String accessKey = "XXX";
+		String secretKey = "XXX";
 		String region = "eu-central-1";
 		String bucketName = "fredbet";
 		this.amazonS3ClientWrapper = new AmazonS3ClientWrapper(accessKey, secretKey, region, bucketName);
@@ -37,7 +38,7 @@ public class AmazonS3ClientWrapperMT {
 	}
 
 	@Test
-	public void downloadFile() {
+	public void uploadAndDownloadFile() {
 		final String someString = "Hello World";
 		final String key = "demoFile.txt";
 		amazonS3ClientWrapper.uploadFile(key, someString.getBytes(), "text/plain");
@@ -46,28 +47,33 @@ public class AmazonS3ClientWrapperMT {
 		String downloaded = new String(fileContent);
 		assertEquals(someString, downloaded);
 	}
-	//
-	// @Test
-	// public void loadImageAtKey() throws IOException {
-	// String fileName = "Misc" + "/" +
-	// "IM_7a587208-5193-48fe-8168-74519f056be5.jpg";
-	// byte[] fileBinary = amazonS3ClientWrapper.downloadFile(fileName);
-	// assertNotNull(fileBinary);
-	// File file = new File("d://Temp1/" + fileName);
-	// FileUtils.writeByteArrayToFile(file, fileBinary);
-	// assertTrue(file.exists());
-	// }
-	//
-	// @Test
-	// public void downloadAllFiles() {
-	// List<Resource> resources =
-	// amazonS3ClientWrapper.readAllImagesInBucketWithPrefix("IM");
-	// assertFalse(resources.isEmpty());
-	// for (Resource resource : resources) {
-	// String filename = resource.getFilename();
-	// assertNotNull(filename);
-	// LOG.debug("filename: {}", filename);
-	// }
-	// }
+
+	@Test
+	public void loadImageAtKey() throws IOException {
+		String fileName = "Misc" + "/" + "IM_7a587208-5193-48fe-8168-74519f056be5.jpg";
+		byte[] fileBinary = amazonS3ClientWrapper.downloadFile(fileName);
+		assertNotNull(fileBinary);
+		File file = new File("d://Temp1/" + fileName);
+		FileUtils.writeByteArrayToFile(file, fileBinary);
+		assertTrue(file.exists());
+	}
+
+	@Test
+	public void downloadAllFiles() throws IOException {
+		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
+		assertNotNull(fileAsByteArray);
+
+		amazonS3ClientWrapper.uploadFile("IM_kitten1.jpg", fileAsByteArray, "image/jpeg");
+		amazonS3ClientWrapper.uploadFile("IM_kitten2.jpg", fileAsByteArray, "image/jpeg");
+
+		List<File> files = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix("IM");
+		assertFalse(files.isEmpty());
+		assertEquals(2, files.size());
+		for (File file : files) {
+			String filename = file.getName();
+			assertNotNull(filename);
+			LOG.debug("filename: {}", filename);
+		}
+	}
 
 }

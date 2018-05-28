@@ -5,11 +5,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -35,6 +40,8 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
  */
 public class AmazonS3ClientWrapper {
 
+	private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ClientWrapper.class);
+
 	private final AmazonS3 amazonS3;
 
 	private final String bucketName;
@@ -53,7 +60,8 @@ public class AmazonS3ClientWrapper {
 
 	public byte[] downloadFile(String key) {
 		S3Object object = this.amazonS3.getObject(new GetObjectRequest(bucketName, key));
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream(); InputStream objectData = object.getObjectContent()) {
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+				InputStream objectData = object.getObjectContent()) {
 			IOUtils.copy(objectData, out);
 			return out.toByteArray();
 		} catch (IOException e) {
@@ -81,32 +89,23 @@ public class AmazonS3ClientWrapper {
 		}
 	}
 
-	public List<Resource> readAllImagesInBucketWithPrefix(String prefix) {
+	public List<File> readAllImagesInBucketWithPrefix(String prefix) {
 		TransferManager transferManager = TransferManagerBuilder.standard().withS3Client(amazonS3).build();
-		File downloadDir = new File(System.getProperty("user.home"));
-		MultipleFileDownload multipleFileDownload = transferManager.downloadDirectory(bucketName, prefix, downloadDir);
+		File tempDir = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString());
+		MultipleFileDownload multipleFileDownload = transferManager.downloadDirectory(bucketName, prefix, tempDir);
 
-		while (multipleFileDownload.isDone()) {
-			// TODO: read files
+		LOG.debug("Downloading files to {}", tempDir.getAbsolutePath());
+		while (!multipleFileDownload.isDone()) {
+			// LOG.debug("Downloading... {}",
+			// multipleFileDownload.getProgress().getPercentTransferred());
 		}
 
-		return Collections.emptyList();
-
-		// try {
-		// String locationPattern = S3_PREFIX + bucketName + "/**/" + prefix +
-		// "*";
-		// Resource[] resources =
-		// this.resourcePatternResolver.getResources(locationPattern);
-		// if (resources == null || resources.length == 0) {
-		// LOG.warn("Could not find any images at locationPattern={} in S3.",
-		// locationPattern);
-		// return Collections.emptyList();
-		// }
-		// return Arrays.asList(resources);
-		// } catch (IOException e) {
-		// LOG.error(e.getMessage(), e);
-		// return Collections.emptyList();
-		// }
+		Path path = Paths.get(tempDir.getAbsolutePath());
+		File[] files = path.toFile().listFiles(file -> file.isFile() && file.getName().endsWith(".jpg"));
+		if (files == null || files.length == 0) {
+			return Collections.emptyList();
+		}
+		return Arrays.asList(files);
 	}
 
 }
