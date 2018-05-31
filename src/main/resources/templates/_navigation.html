@@ -77,13 +77,14 @@
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}" th:class="${pageState_matches_group_SEMI_FINAL}">
 					            	<a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" th:class="${pageState_matches_group_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
-				            	</li>
 				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider" role="separator"></li>
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" th:class="${pageState_matches_group_GAME_FOR_THIRD}">
 					            	<a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a>
 				            	</li>
+				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" class="divider" role="separator"></li>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" th:class="${pageState_matches_group_FINAL}">
+					            	<a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
+				            	</li>				            	
 					        </ul>
 				        </li>
 				        <li class="dropdown" th:classappend="${pageState_info}">
