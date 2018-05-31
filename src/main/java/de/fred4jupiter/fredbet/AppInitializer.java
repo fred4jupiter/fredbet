@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +16,13 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 public class AppInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-	private static final Logger log = LoggerFactory.getLogger(AppInitializer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AppInitializer.class);
 
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		final ConfigurableEnvironment environment = applicationContext.getEnvironment();
 
-		log.info("Active profiles: {}", Arrays.asList(environment.getActiveProfiles()));
-
-		Locale.setDefault(Locale.GERMANY);
-		log.info("Setting default locale to: {}", Locale.getDefault());
+		LOG.info("Active profiles: {}", Arrays.asList(environment.getActiveProfiles()));
 	}
 
 }

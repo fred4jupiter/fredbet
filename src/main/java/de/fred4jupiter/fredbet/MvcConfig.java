@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet;
 
-import java.util.Locale;
-
 import org.h2.server.web.WebServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
@@ -54,9 +53,9 @@ public class MvcConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public LocaleResolver localeResolver() {
+	public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
 		SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-		sessionLocaleResolver.setDefaultLocale(Locale.GERMAN);
+		sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
 		return sessionLocaleResolver;
 	}
 

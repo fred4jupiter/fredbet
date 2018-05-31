@@ -1,5 +1,8 @@
 package de.fred4jupiter.fredbet.props;
 
+import java.util.Locale;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -40,12 +43,14 @@ public class FredbetProperties {
 	 * The AWS S3 bucket name to use to store images in.
 	 */
 	private String awsS3bucketName;
-	
+
 	private String awsAccessKey;
-	
+
 	private String awsSecretKey;
-	
+
 	private String awsRegion;
+
+	private String defaultLanguage;
 
 	public int getThumbnailSize() {
 		return thumbnailSize;
@@ -121,5 +126,21 @@ public class FredbetProperties {
 
 	public void setAwsRegion(String awsRegion) {
 		this.awsRegion = awsRegion;
+	}
+
+	public Locale getDefaultLocale() {
+		if (StringUtils.isBlank(defaultLanguage)) {
+			return Locale.GERMAN;
+		}
+
+		return new Locale(defaultLanguage);
+	}
+
+	public String getDefaultLanguage() {
+		return defaultLanguage;
+	}
+
+	public void setDefaultLanguage(String defaultLanguage) {
+		this.defaultLanguage = defaultLanguage;
 	}
 }

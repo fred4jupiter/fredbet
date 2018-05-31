@@ -23,6 +23,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - ranking filter for adults and childs listing
 - integrated testing capabilities: create demo users, matches, bets...
 - configurable runtime configuration
+- use a joker to double your points of a bet
 
 ## Testing it locally
 
@@ -83,6 +84,10 @@ These properties has to be set at application startup.
 | fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE, AWS_S3` |
 | fredbet.image-file-system-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
 | fredbet.aws-s3bucket-name | fredbet | Name of the AWS bucket if the image location is set to AWS_S3. |
+| fredbet.aws-access-key | -- | Your AWS access key if the image location is set to AWS_S3. |
+| fredbet.aws-secret-key | -- | Your AWS secret key if the image location is set to AWS_S3. |
+| fredbet.aws-region | eu-central-1 | Name of the AWS bucket if the image location is set to AWS_S3. |
+| fredbet.default-language | de | The default language you prefer. |
 
 Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.
 
@@ -118,13 +123,7 @@ FredBet is designed to run within the Amazon Web Services (AWS) cloud as product
 | fredbet.image-location | AWS_S3 |  |
 | fredbet.aws-s3bucket-name | fredbet | Or any other name for your S3 bucket. |
 
-Add also the properties for your database connection (see above).
-
-Be sure to use an instance profile with sufficient privileges for S3. You can ajust these values with the following properties:
-
-| Key | Default Value | Description |
-|--------|--------|--------|
-| cloud.aws.credentials.profileName |  ecsInstanceRole | name of the instance profile |
+Other properties depend on your production setup (see possible properties above). Add also the properties for your database connection (see above).
 
 The policy to access your S3 bucket will look like this:
 
@@ -140,14 +139,6 @@ The policy to access your S3 bucket will look like this:
     ]
 }
 ```
-
-If you not want to use the instance profile for authorization (or you can´t, e.g. not running in AWS) you can set the access key and secret access key manually with these environment variables:
-
-| Key | Value |
-|--------|--------|
-| cloud.aws.credentials.accessKey |  XXX |
-| cloud.aws.credentials.secretKey |  XXX |
-| cloud.aws.credentials.instanceProfile |  false |
 
 ## Hints
 
