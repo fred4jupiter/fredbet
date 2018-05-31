@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -40,6 +42,10 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
  */
 public class AmazonS3ClientWrapper {
 
+	private static final String CONTENT_TYPE_TEXT = "text/plain";
+
+	private static final String CONTENT_TYPE_IMAGE = "image/jpeg";
+
 	private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ClientWrapper.class);
 
 	private final AmazonS3 amazonS3;
@@ -47,10 +53,18 @@ public class AmazonS3ClientWrapper {
 	private final String bucketName;
 
 	public AmazonS3ClientWrapper(String accessKey, String secretKey, String region, String bucketName) {
+		Assert.notNull(region, "region must not be null");
+		Assert.notNull(bucketName, "bucketName must not be null");
 		this.bucketName = bucketName;
-		AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-		AWSCredentialsProvider provider = new AWSStaticCredentialsProvider(credentials);
-		this.amazonS3 = AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(provider).build();
+
+		AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard().withRegion(region);
+		if (StringUtils.isNotBlank(accessKey) && StringUtils.isNotBlank(secretKey)) {
+			AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+			AWSCredentialsProvider provider = new AWSStaticCredentialsProvider(credentials);
+			builder.withCredentials(provider);
+		}
+
+		this.amazonS3 = builder.build();
 	}
 
 	public AmazonS3ClientWrapper(FredbetProperties fredbetProperties) {
@@ -60,8 +74,7 @@ public class AmazonS3ClientWrapper {
 
 	public byte[] downloadFile(String key) {
 		S3Object object = this.amazonS3.getObject(new GetObjectRequest(bucketName, key));
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-				InputStream objectData = object.getObjectContent()) {
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream(); InputStream objectData = object.getObjectContent()) {
 			IOUtils.copy(objectData, out);
 			return out.toByteArray();
 		} catch (IOException e) {
@@ -74,7 +87,11 @@ public class AmazonS3ClientWrapper {
 	}
 
 	public void uploadImageFile(String key, byte[] fileContent) {
-		uploadFile(key, fileContent, "image/jpeg");
+		uploadFile(key, fileContent, CONTENT_TYPE_IMAGE);
+	}
+	
+	public void uploadTextFile(String key, byte[] fileContent) {
+		uploadFile(key, fileContent, CONTENT_TYPE_TEXT);
 	}
 
 	public void uploadFile(String key, byte[] fileContent, String contentType) {

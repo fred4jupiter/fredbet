@@ -23,25 +23,24 @@ public class AmazonS3ClientWrapperMT {
 
 	@Before
 	public void setup() {
-		String accessKey = "XXX";
-		String secretKey = "XXX";
+		// we are using the ~/.aws/credetials in this case
 		String region = "eu-central-1";
 		String bucketName = "fredbet";
-		this.amazonS3ClientWrapper = new AmazonS3ClientWrapper(accessKey, secretKey, region, bucketName);
+		this.amazonS3ClientWrapper = new AmazonS3ClientWrapper(null, null, region, bucketName);
 	}
 
 	@Test
 	public void uploadFile() {
 		final String someString = "Hello World";
 		final String key = "demoFile.txt";
-		amazonS3ClientWrapper.uploadFile(key, someString.getBytes(), "text/plain");
+		amazonS3ClientWrapper.uploadTextFile(key, someString.getBytes());
 	}
 
 	@Test
 	public void uploadAndDownloadFile() {
 		final String someString = "Hello World";
 		final String key = "demoFile.txt";
-		amazonS3ClientWrapper.uploadFile(key, someString.getBytes(), "text/plain");
+		amazonS3ClientWrapper.uploadTextFile(key, someString.getBytes());
 
 		byte[] fileContent = amazonS3ClientWrapper.downloadFile(key);
 		String downloaded = new String(fileContent);
@@ -59,12 +58,12 @@ public class AmazonS3ClientWrapperMT {
 	}
 
 	@Test
-	public void downloadAllFiles() throws IOException {
+	public void uploadImagesAndDownloadAll() throws IOException {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		amazonS3ClientWrapper.uploadFile("IM_kitten1.jpg", fileAsByteArray, "image/jpeg");
-		amazonS3ClientWrapper.uploadFile("IM_kitten2.jpg", fileAsByteArray, "image/jpeg");
+		amazonS3ClientWrapper.uploadImageFile("IM_kitten1.jpg", fileAsByteArray);
+		amazonS3ClientWrapper.uploadImageFile("IM_kitten2.jpg", fileAsByteArray);
 
 		List<File> files = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix("IM");
 		assertFalse(files.isEmpty());

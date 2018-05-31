@@ -12,6 +12,7 @@
 		<logger name="com.gargoylesoftware.htmlunit.DefaultCssErrorHandler" level="ERROR" />
 		<logger name="org.hibernate" level="WARN" />
 		<logger name="liquibase" level="WARN" />
+		<logger name="com.amazonaws.services.s3" level="DEBUG" />		
 		
 		<logger name="de.fred4jupiter.fredbet" level="DEBUG" />
 
