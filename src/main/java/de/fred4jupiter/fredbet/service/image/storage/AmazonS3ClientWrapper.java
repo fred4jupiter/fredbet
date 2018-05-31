@@ -91,7 +91,6 @@ public class AmazonS3ClientWrapper {
 			meta.setContentLength(fileContent.length);
 			meta.setContentType(contentType);
 			this.amazonS3.putObject(bucketName, key, byteIn, meta);
-			this.amazonS3.setObjectAcl(bucketName, key, CannedAccessControlList.PublicRead);
 		} catch (IOException e) {
 			throw new AwsS3AccessException(e.getMessage(), e);
 		}
