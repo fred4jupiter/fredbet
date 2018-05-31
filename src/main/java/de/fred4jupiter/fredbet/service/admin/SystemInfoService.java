@@ -45,9 +45,7 @@ public class SystemInfoService {
 		addEnvProperty("fredbet.image-size", allProperties);
 		addEnvProperty("fredbet.thumbnail-size", allProperties);
 		addEnvProperty("fredbet.aws-s3bucket-name", allProperties);		
-
-		addEnvProperty("cloud.aws.credentials.profileName", allProperties);
-		addEnvProperty("cloud.aws.region.static", allProperties);
+		addEnvProperty("fredbet.aws-region", allProperties);
 	}
 
 	public SortedMap<String, Object> fetchSystemInfo() {
