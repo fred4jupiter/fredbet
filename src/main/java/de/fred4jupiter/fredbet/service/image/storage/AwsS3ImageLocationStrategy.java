@@ -56,7 +56,7 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	public List<BinaryImage> findAllImages() {
 		LOG.debug("loading all images from S3.");
 
-		List<String> listFiles = amazonS3ClientWrapper.listFiles(".jpg");
+		List<String> listFiles = amazonS3ClientWrapper.listFiles(FredbetConstants.IMAGE_JPG_EXTENSION);
 		List<BinaryImage> files = amazonS3ClientWrapper.downloadAllFiles(listFiles);
 
 		if (files.isEmpty()) {
