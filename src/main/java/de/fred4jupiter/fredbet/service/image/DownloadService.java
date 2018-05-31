@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 
 @Service
@@ -63,7 +64,11 @@ public class DownloadService {
 	}
 
 	private String createEntryFileName(BinaryImage image, int index) {
-		return FilenameUtils.getName(image.getKey());
+		String fileName = FilenameUtils.getName(image.getKey());
+		if (!FilenameUtils.isExtension(fileName, FredbetConstants.IMAGE_JPG_EXTENSION)) {
+			return fileName + FredbetConstants.IMAGE_JPG_EXTENSION;
+		}
+		return fileName;
 	}
 
 }

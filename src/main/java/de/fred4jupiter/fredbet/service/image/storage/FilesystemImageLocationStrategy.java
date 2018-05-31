@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 /**
@@ -85,7 +86,7 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	private File getFileFor(Long imageGroupId, String imageKey, String filePrefix) {
-		return new File(basePath + File.separator + imageGroupId + File.separator + filePrefix + imageKey + ".jpg");
+		return new File(basePath + File.separator + imageGroupId + File.separator + filePrefix + imageKey + FredbetConstants.IMAGE_JPG_EXTENSION);
 	}
 
 	private List<BinaryImage> readFilesToImageData(File imageFolder) {

@@ -27,5 +27,7 @@ public interface FredbetConstants {
 	Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
 	String DEFAULT_REST_PASSWORT = "fredbet";
+	
+	String IMAGE_JPG_EXTENSION = ".jpg";
 
 }

@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 public class AmazonS3ClientWrapperMT {
@@ -75,7 +76,7 @@ public class AmazonS3ClientWrapperMT {
 		 amazonS3ClientWrapper.uploadImageFile(key1, fileAsByteArray);
 		 amazonS3ClientWrapper.uploadImageFile(key2, fileAsByteArray);
 
-		List<String> listFiles = amazonS3ClientWrapper.listFiles(".jpg");
+		List<String> listFiles = amazonS3ClientWrapper.listFiles(FredbetConstants.IMAGE_JPG_EXTENSION);
 
 		List<BinaryImage> files = amazonS3ClientWrapper.downloadAllFiles(listFiles);
 		assertFalse(files.isEmpty());

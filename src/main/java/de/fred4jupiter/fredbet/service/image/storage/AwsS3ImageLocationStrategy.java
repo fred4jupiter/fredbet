@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
@@ -34,7 +35,7 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	private String createFileKey(String imageKey, Long imageGroupId, String prefix) {
-		return imageGroupId + "/" + prefix + imageKey + ".jpg";
+		return imageGroupId + "/" + prefix + imageKey + FredbetConstants.IMAGE_JPG_EXTENSION;
 	}
 
 	@Override
