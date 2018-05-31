@@ -62,8 +62,10 @@ public class AmazonS3ClientWrapperMT {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
-		amazonS3ClientWrapper.uploadImageFile("IM_kitten1.jpg", fileAsByteArray);
-		amazonS3ClientWrapper.uploadImageFile("IM_kitten2.jpg", fileAsByteArray);
+		final String key1 = "1/IM_kitten1.jpg";
+		final String key2 = "2/IM_kitten2.jpg";
+		amazonS3ClientWrapper.uploadImageFile(key1, fileAsByteArray);		
+		amazonS3ClientWrapper.uploadImageFile(key2, fileAsByteArray);
 
 		List<File> files = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix("IM");
 		assertFalse(files.isEmpty());

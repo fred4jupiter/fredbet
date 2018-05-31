@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -29,6 +30,7 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.transfer.MultipleFileDownload;
+import com.amazonaws.services.s3.transfer.Transfer;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 
@@ -89,7 +91,7 @@ public class AmazonS3ClientWrapper {
 	public void uploadImageFile(String key, byte[] fileContent) {
 		uploadFile(key, fileContent, CONTENT_TYPE_IMAGE);
 	}
-	
+
 	public void uploadTextFile(String key, byte[] fileContent) {
 		uploadFile(key, fileContent, CONTENT_TYPE_TEXT);
 	}
@@ -107,14 +109,17 @@ public class AmazonS3ClientWrapper {
 	}
 
 	public List<File> readAllImagesInBucketWithPrefix(String prefix) {
-		TransferManager transferManager = TransferManagerBuilder.standard().withS3Client(amazonS3).build();
-		File tempDir = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString());
-		MultipleFileDownload multipleFileDownload = transferManager.downloadDirectory(bucketName, prefix, tempDir);
+		final TransferManager transferManager = TransferManagerBuilder.standard().withS3Client(amazonS3).build();
+		final File tempDir = getDownloadDirectory();
+		MultipleFileDownload multipleFileDownload = transferManager.downloadDirectory(bucketName, "*", tempDir);
 
 		LOG.debug("Downloading files to {}", tempDir.getAbsolutePath());
-		while (!multipleFileDownload.isDone()) {
-			// LOG.debug("Downloading... {}",
-			// multipleFileDownload.getProgress().getPercentTransferred());
+
+		try {
+			multipleFileDownload.waitForCompletion();
+			transferManager.shutdownNow(false);
+		} catch (AmazonClientException | InterruptedException e) {
+			LOG.error(e.getMessage());
 		}
 
 		Path path = Paths.get(tempDir.getAbsolutePath());
@@ -123,6 +128,10 @@ public class AmazonS3ClientWrapper {
 			return Collections.emptyList();
 		}
 		return Arrays.asList(files);
+	}
+
+	private File getDownloadDirectory() {
+		return new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString());
 	}
 
 }
