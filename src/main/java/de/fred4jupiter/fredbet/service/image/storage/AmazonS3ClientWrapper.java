@@ -2,23 +2,15 @@ package de.fred4jupiter.fredbet.service.image.storage;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -27,14 +19,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.transfer.MultipleFileDownload;
-import com.amazonaws.services.s3.transfer.Transfer;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
 
 /**
  * Wrapper class for the native Amazon S3 client.
@@ -47,8 +38,6 @@ public class AmazonS3ClientWrapper {
 	private static final String CONTENT_TYPE_TEXT = "text/plain";
 
 	private static final String CONTENT_TYPE_IMAGE = "image/jpeg";
-
-	private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ClientWrapper.class);
 
 	private final AmazonS3 amazonS3;
 
@@ -108,30 +97,51 @@ public class AmazonS3ClientWrapper {
 		}
 	}
 
-	public List<File> readAllImagesInBucketWithPrefix(String prefix) {
-		final TransferManager transferManager = TransferManagerBuilder.standard().withS3Client(amazonS3).build();
-		final File tempDir = getDownloadDirectory();
-		MultipleFileDownload multipleFileDownload = transferManager.downloadDirectory(bucketName, "*", tempDir);
-
-		LOG.debug("Downloading files to {}", tempDir.getAbsolutePath());
-
-		try {
-			multipleFileDownload.waitForCompletion();
-			transferManager.shutdownNow(false);
-		} catch (AmazonClientException | InterruptedException e) {
-			LOG.error(e.getMessage());
-		}
-
-		Path path = Paths.get(tempDir.getAbsolutePath());
-		File[] files = path.toFile().listFiles(file -> file.isFile() && file.getName().endsWith(".jpg"));
-		if (files == null || files.length == 0) {
-			return Collections.emptyList();
-		}
-		return Arrays.asList(files);
+	public List<String> listFiles() {
+		return listFiles(null);
 	}
 
-	private File getDownloadDirectory() {
-		return new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString());
+	public List<String> listFiles(String fileExtension) {
+		List<String> keys = new ArrayList<>();
+		ObjectListing objectListing = amazonS3.listObjects(bucketName);
+		for (S3ObjectSummary s3ObjectSummary : objectListing.getObjectSummaries()) {
+			String key = s3ObjectSummary.getKey();
+			if (filter(key, fileExtension)) {
+				keys.add(key);
+			}
+		}
+		return keys;
+	}
+
+	private boolean filter(String key, String fileExtension) {
+		if (fileExtension == null) {
+			// no filtering
+			return true;
+		}
+
+		if (key.endsWith(fileExtension)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Prefix is like a directory name.
+	 * 
+	 * @param prefix
+	 * @return
+	 */
+	public List<BinaryImage> downloadAllFiles(List<String> keys) {
+		List<BinaryImage> resultList = new ArrayList<>();
+
+		for (String key : keys) {
+			byte[] downloadFile = downloadFile(key);
+			if (downloadFile != null) {
+				resultList.add(new BinaryImage(key, downloadFile));
+			}
+		}
+
+		return resultList;
 	}
 
 }

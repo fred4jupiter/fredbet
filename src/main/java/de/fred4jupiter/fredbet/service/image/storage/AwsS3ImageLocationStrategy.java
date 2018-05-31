@@ -1,13 +1,8 @@
 package de.fred4jupiter.fredbet.service.image.storage;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,32 +55,15 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	public List<BinaryImage> findAllImages() {
 		LOG.debug("loading all images from S3.");
 
-		List<File> allImagesInBucket = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix(IMAGE_PREFIX);
-		if (allImagesInBucket.isEmpty()) {
+		List<String> listFiles = amazonS3ClientWrapper.listFiles(".jpg");
+		List<BinaryImage> files = amazonS3ClientWrapper.downloadAllFiles(listFiles);
+
+		if (files.isEmpty()) {
 			LOG.warn("Could not find any images in S3.");
 			return Collections.emptyList();
 		}
 
-		final List<BinaryImage> resultList = new ArrayList<>();
-		for (File file : allImagesInBucket) {
-			String filename = file.getName();
-			String imageKey = toImageKey(filename);
-			BinaryImage binaryImage = createBinayImage(file, imageKey);
-			if (binaryImage != null) {
-				resultList.add(binaryImage);
-			}
-		}
-
-		return resultList;
-	}
-
-	private BinaryImage createBinayImage(File file, String imageKey) {
-		try {
-			return new BinaryImage(imageKey, Files.readAllBytes(file.toPath()));
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			return null;
-		}
+		return files;
 	}
 
 	@Override
@@ -93,10 +71,6 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 		LOG.debug("deleteting image and thumbnail for imageKey={}, imageGroupId={}", imageKey, imageGroupId);
 		amazonS3ClientWrapper.removeFile(createKeyForImage(imageKey, imageGroupId));
 		amazonS3ClientWrapper.removeFile(createKeyForThumbnail(imageKey, imageGroupId));
-	}
-
-	private String toImageKey(String fileName) {
-		return FilenameUtils.removeExtension(fileName).substring(3);
 	}
 
 }

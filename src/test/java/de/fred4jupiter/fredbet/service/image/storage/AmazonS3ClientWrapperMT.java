@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
+
 public class AmazonS3ClientWrapperMT {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ClientWrapperMT.class);
@@ -58,22 +60,33 @@ public class AmazonS3ClientWrapperMT {
 	}
 
 	@Test
+	public void listFiles() {
+		List<String> listFiles = amazonS3ClientWrapper.listFiles();
+		listFiles.stream().forEach(key -> LOG.info("file: {}", key));
+	}
+
+	@Test
 	public void uploadImagesAndDownloadAll() throws IOException {
 		byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
 		assertNotNull(fileAsByteArray);
 
 		final String key1 = "1/IM_kitten1.jpg";
 		final String key2 = "2/IM_kitten2.jpg";
-		amazonS3ClientWrapper.uploadImageFile(key1, fileAsByteArray);		
-		amazonS3ClientWrapper.uploadImageFile(key2, fileAsByteArray);
+		 amazonS3ClientWrapper.uploadImageFile(key1, fileAsByteArray);
+		 amazonS3ClientWrapper.uploadImageFile(key2, fileAsByteArray);
 
-		List<File> files = amazonS3ClientWrapper.readAllImagesInBucketWithPrefix("IM");
+		List<String> listFiles = amazonS3ClientWrapper.listFiles(".jpg");
+
+		List<BinaryImage> files = amazonS3ClientWrapper.downloadAllFiles(listFiles);
 		assertFalse(files.isEmpty());
 		assertEquals(2, files.size());
-		for (File file : files) {
-			String filename = file.getName();
-			assertNotNull(filename);
-			LOG.debug("filename: {}", filename);
+		for (BinaryImage binaryImage : files) {
+			String key = binaryImage.getKey();
+			assertNotNull(key);
+			LOG.debug("key: {}", key);
+			File file = new File("d://Temp1/" + key);
+			FileUtils.writeByteArrayToFile(file, binaryImage.getImageBinary());
+			assertTrue(file.exists());
 		}
 	}
 
