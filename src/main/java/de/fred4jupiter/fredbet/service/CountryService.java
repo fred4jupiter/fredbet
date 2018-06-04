@@ -1,12 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,18 +33,15 @@ public class CountryService {
 	}
 
 	public List<Country> getAvailableCountriesSortedWithoutNoneEntry(Locale locale, List<Country> countriesWithoutNoneEntry) {
-		List<Country> list = countriesWithoutNoneEntry.stream().filter(country -> country != null).collect(Collectors.toList());
-		
-		list.sort((Country country1, Country country2) -> {
-			String countryName1 = messageSourceUtil.getCountryName(country1, locale);
-			String countryName2 = messageSourceUtil.getCountryName(country2, locale);			
-			return countryName1.compareTo(countryName2);
-		});
-		return list;
+
+		return countriesWithoutNoneEntry.stream()
+				.filter(Objects::nonNull)
+				.sorted(Comparator.comparing((Country country) -> messageSourceUtil.getCountryName(country, locale)))
+				.collect(Collectors.toList());
 	}
 
 	public List<Country> getAvailableCountriesWithoutNoneEntry() {
-		return Arrays.asList(Country.values()).stream().filter(country -> !country.equals(Country.NONE)).collect(Collectors.toList());
+		return Arrays.stream(Country.values()).filter(country -> !country.equals(Country.NONE)).collect(Collectors.toList());
 	}
 
 	public List<Country> getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(Locale locale) {

@@ -78,7 +78,7 @@ public class StatisticRepository {
 				statistic = new Statistic(username);
 			}
 			if (group.startsWith("GROUP")) {
-				statistic.setPointsGroup(statistic.getPointsGroup().intValue() + points.intValue());
+				statistic.setPointsGroup(statistic.getPointsGroup() + points);
 			} else if (Group.ROUND_OF_SIXTEEN.getName().equals(group)) {
 				statistic.setPointsRoundOfSixteen(points);
 			} else if (Group.QUARTER_FINAL.getName().equals(group)) {
@@ -94,7 +94,7 @@ public class StatisticRepository {
 		}
 
 		public List<Statistic> getResult() {
-			return new ArrayList<Statistic>(statisticsMap.values());
+			return new ArrayList<>(statisticsMap.values());
 		}
 	}
 

@@ -72,7 +72,7 @@ public class ReportService {
 	public byte[] exportNumberOfPointsInBets(final Locale locale) {
 		final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
 
-		return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<PointCountResult>() {
+		return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<>() {
 
 			@Override
 			public String[] getHeaderRow() {

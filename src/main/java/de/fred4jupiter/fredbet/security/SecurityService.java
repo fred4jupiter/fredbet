@@ -69,12 +69,8 @@ public class SecurityService {
 	 */
 	public boolean isTechnicalUser(Long userId) {
 		Optional<AppUser> appUserOpt = appUserRepository.findById(userId);
-		if (!appUserOpt.isPresent()) {
-			return true;
-		}
+		return appUserOpt.map(AppUser::isTechnicalDefaultUser).orElse(true);
 
-		AppUser appUser = appUserOpt.get();
-		return appUser.isTechnicalDefaultUser();
 	}
 
 	public void resetFirstLogin(AppUser appUser) {

@@ -15,13 +15,13 @@ public class PointsFrequencyCommand {
 	private List<PointsFrequency> resultList = new ArrayList<>();
 
 	public PointsFrequencyCommand(MultiValuedMap<Integer, PointCountResult> map) {
-		List<Integer> pointsList = map.keySet().stream().collect(Collectors.toList());
+		List<Integer> pointsList = new ArrayList<>(map.keySet());
 		Collections.reverse(pointsList);
 
 		for (Integer points : pointsList) {
 			if (points > 0) {
 				Collection<PointCountResult> collection = map.get(points);
-				PointsFrequency pointsFrequency = new PointsFrequency(points, new ArrayList<PointCountResult>(collection));
+				PointsFrequency pointsFrequency = new PointsFrequency(points, new ArrayList<>(collection));
 				resultList.add(pointsFrequency);	
 			}			
 		}

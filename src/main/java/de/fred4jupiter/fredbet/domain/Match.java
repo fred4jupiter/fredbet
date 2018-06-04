@@ -67,7 +67,7 @@ public class Match {
 	private String stadium;
 
 	public boolean hasGoalsChanged() {
-		boolean hasChanged = Boolean.valueOf(goalsChanged);
+		boolean hasChanged = goalsChanged;
 		// reset flag
 		this.goalsChanged = false;
 		return hasChanged;
@@ -99,7 +99,7 @@ public class Match {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
 			throw new IllegalStateException("Match has not finished! No goal results set!");
 		}
-		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
+		return Math.abs(goalsTeamOne - goalsTeamTwo);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class Match {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
 			return false;
 		}
-		return getGoalDifference().intValue() == 0;
+		return getGoalDifference() == 0;
 	}
 
 	public boolean isTeamOneWinner() {
@@ -119,7 +119,7 @@ public class Match {
 			throw new IllegalStateException("Match has not finished! No goal results set!");
 		}
 
-		return goalsTeamOne.intValue() > goalsTeamTwo.intValue();
+		return goalsTeamOne > goalsTeamTwo;
 	}
 
 	public boolean isTeamTwoWinner() {
@@ -127,7 +127,7 @@ public class Match {
 			throw new IllegalStateException("Match has not finished! No goal results set!");
 		}
 
-		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
+		return goalsTeamTwo > goalsTeamOne;
 	}
 
 	public Country getWinner() {

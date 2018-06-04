@@ -143,7 +143,7 @@ public class AppUser implements UserDetails {
 		if (CollectionUtils.isEmpty(roles)) {
 			return Collections.emptyList();
 		}
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+		return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
 
 	public boolean hasPermission(String permission) {
@@ -195,7 +195,7 @@ public class AppUser implements UserDetails {
 		if (CollectionUtils.isEmpty(roles)) {
 			return null;
 		}
-		return roles.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
+		return roles.stream().collect(Collectors.joining(", "));
 	}
 
 	public Set<String> getRoles() {

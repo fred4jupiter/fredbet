@@ -11,7 +11,6 @@ public class PointsFrequency {
 	private final List<PointCountResult> list;
 
 	public PointsFrequency(Integer points, List<PointCountResult> list) {
-		super();
 		this.points = points;
 		this.list = list;
 	}

@@ -20,12 +20,7 @@ public class SessionTrackingService {
 
 	public void registerLogin(String userName, String sessionId) {
 		Optional<SessionTracking> sessionTrackingOpt = sessionTrackingRepository.findById(userName);
-		SessionTracking sessionTracking = null;
-		if (!sessionTrackingOpt.isPresent()) {
-			sessionTracking = new SessionTracking();
-		} else {
-			sessionTracking = sessionTrackingOpt.get();
-		}
+		SessionTracking sessionTracking = sessionTrackingOpt.orElseGet(SessionTracking::new);
 
 		sessionTracking.setUserName(userName);
 		sessionTracking.setSessionId(sessionId);

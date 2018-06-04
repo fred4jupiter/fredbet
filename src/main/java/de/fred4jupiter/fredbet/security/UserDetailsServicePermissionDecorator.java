@@ -45,7 +45,7 @@ public class UserDetailsServicePermissionDecorator implements UserDetailsService
     }
 
     private Set<String> toRoles(Collection<GrantedAuthority> permissions) {
-        return permissions.stream().map(grantedAuthority -> grantedAuthority.getAuthority()).collect(Collectors.toSet());
+        return permissions.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
     }
 
 }

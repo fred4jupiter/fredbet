@@ -16,7 +16,7 @@ public class ImageCommandMapper {
 			return Collections.emptyList();
 		}
 
-		return imageMetaDataList.stream().map(imageMetaData -> toImageCommand(imageMetaData)).collect(Collectors.toList());
+		return imageMetaDataList.stream().map(this::toImageCommand).collect(Collectors.toList());
 	}
 
 	private ImageCommand toImageCommand(ImageMetaData imageMetaData) {

@@ -41,7 +41,7 @@ public class ImageGroupController {
 	@ModelAttribute("availableImageGroups")
 	public List<ImageGroupCommand> availableImageGroups() {
 		List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
-		return imageGroups.stream().map(imageGroup -> mapToImageGroupCommand(imageGroup)).sorted().collect(Collectors.toList());
+		return imageGroups.stream().map(this::mapToImageGroupCommand).sorted().collect(Collectors.toList());
 	}
 
 	private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {

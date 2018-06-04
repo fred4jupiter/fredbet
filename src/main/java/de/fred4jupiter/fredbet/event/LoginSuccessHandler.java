@@ -24,7 +24,7 @@ public class LoginSuccessHandler implements ApplicationListener<AuthenticationSu
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
 		Object principal = event.getAuthentication().getPrincipal();
-		if (principal != null && principal instanceof AppUser) {
+		if (principal instanceof AppUser) {
 			AppUser appUser = (AppUser) principal;
 			LOG.debug("User with name {} has logged in.", appUser.getUsername());
 			Optional<AppUser> appUserOpt = appUserRepository.findById(appUser.getId());

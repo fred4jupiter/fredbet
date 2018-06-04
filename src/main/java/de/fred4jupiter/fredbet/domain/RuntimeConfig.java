@@ -41,21 +41,21 @@ public class RuntimeConfig {
 	 */
 	@NotNull
 	@Min(value = 0)
-	private Integer pointsFinalWinner = Integer.valueOf(10);
+	private Integer pointsFinalWinner = 10;
 
 	/**
 	 * Extra betting points for semi final winner.
 	 */
 	@NotNull
 	@Min(value = 0)
-	private Integer pointsSemiFinalWinner = Integer.valueOf(5);
+	private Integer pointsSemiFinalWinner = 5;
 
 	/**
 	 * Extra betting points for third winner.
 	 */
 	@NotNull
 	@Min(value = 0)
-	private Integer pointsThirdFinalWinner = Integer.valueOf(2);
+	private Integer pointsThirdFinalWinner = 2;
 	
 	/**
 	 * If users have to change their password at first login.
@@ -64,7 +64,7 @@ public class RuntimeConfig {
 	
 	@NotNull
 	@Min(value = 0)
-	private Integer jokerMaxCount = Integer.valueOf(3);
+	private Integer jokerMaxCount = 3;
 
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;

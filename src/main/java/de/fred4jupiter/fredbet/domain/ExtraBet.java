@@ -162,6 +162,6 @@ public class ExtraBet {
 
 	@Transient
 	public Integer getPoints() {
-		return pointsOne.intValue() + pointsTwo.intValue() + pointsThree.intValue();
+		return pointsOne + pointsTwo + pointsThree;
 	}
 }

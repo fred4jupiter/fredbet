@@ -48,7 +48,7 @@ public class ImageUploadController {
 
 	@ModelAttribute("availableImages")
 	public List<ImageCommand> availableImages() {
-		List<ImageMetaData> imageMetadataList = Collections.emptyList();
+		List<ImageMetaData> imageMetadataList;
 		if (securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
 			imageMetadataList = imageAdministrationService.fetchAllImagesExceptUserProfileImages();
 		} else {
@@ -82,7 +82,7 @@ public class ImageUploadController {
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
 
-			if (!myFile.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
+			if (!MediaType.IMAGE_JPEG_VALUE.equals(myFile.getContentType())) {
 				messageUtil.addErrorMsg(redirect, "image.upload.msg.noJpegImage");
 				return new ModelAndView(REDIRECT_SHOW_PAGE);
 			}
