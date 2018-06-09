@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web.info;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.MultiValuedMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,30 +20,30 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 @RequestMapping("/info/pointsfrequency")
 public class PointsFrequencyController {
 
-	@Autowired
-	private ReportService reportService;
+    @Autowired
+    private ReportService reportService;
 
-	@Autowired
-	private WebMessageUtil webMessageUtil;
+    @Autowired
+    private WebMessageUtil webMessageUtil;
 
-	@GetMapping
-	public ModelAndView show(ModelMap modelMap) {
-		MultiValuedMap<Integer, PointCountResult> map = reportService.reportPointsFrequency();
+    @GetMapping
+    public ModelAndView show(ModelMap modelMap) {
+        MultiValuedMap<Integer, PointCountResult> map = reportService.reportPointsFrequency();
 
-		final ModelAndView modelAndView = new ModelAndView("info/points_freq");
+        final ModelAndView modelAndView = new ModelAndView("info/points_freq");
 
-		if (map.isEmpty()) {
-			webMessageUtil.addInfoMsg(modelMap, "pointsfrequency.noData");
-			return modelAndView;
-		}
+        if (map.isEmpty()) {
+            webMessageUtil.addInfoMsg(modelMap, "pointsfrequency.noData");
+            return modelAndView;
+        }
 
-		List<Integer> pointsList = new ArrayList<>(map.keySet());
-		Collections.reverse(pointsList);
+        List<Integer> pointsList = new ArrayList<>(map.keySet());
+        Collections.reverse(pointsList);
 
-		PointsFrequencyCommand command = new PointsFrequencyCommand(map);
+        PointsFrequencyCommand command = new PointsFrequencyCommand(map);
 
-		modelAndView.addObject("pointsFrequencyCommand", command);
-		return modelAndView;
-	}
+        modelAndView.addObject("pointsFrequencyCommand", command);
+        return modelAndView;
+    }
 
 }
