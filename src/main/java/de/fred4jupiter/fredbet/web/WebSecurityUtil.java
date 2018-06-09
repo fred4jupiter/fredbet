@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
@@ -35,6 +36,10 @@ public class WebSecurityUtil {
 	}
 
 	public boolean isRoleSelectionDisabledForUser(String username) {
+		if (FredbetConstants.TECHNICAL_USERNAME.equals(username)) {
+			return true;
+		}
+
 		final AppUser currentUser = securityService.getCurrentUser();
 		return currentUser.getUsername().equals(username) || !(currentUser.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE));
 	}
@@ -60,7 +65,7 @@ public class WebSecurityUtil {
 	public boolean isDemoDataMenuEntryEnabled() {
 		return runtimeConfigurationService.loadRuntimeConfig().isShowDemoDataNavigationEntry();
 	}
-	
+
 	public boolean isChangePasswordOnFirstLogin() {
 		return runtimeConfigurationService.loadRuntimeConfig().isChangePasswordOnFirstLogin();
 	}
