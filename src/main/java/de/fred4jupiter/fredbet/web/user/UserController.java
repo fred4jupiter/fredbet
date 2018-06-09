@@ -59,7 +59,7 @@ public class UserController {
 	@ModelAttribute("availableRoles")
 	public List<String> availableRoles() {
 		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-		return Collections.unmodifiableList(fredBetRoles.stream().map(role -> role.name()).collect(Collectors.toList()));
+		return Collections.unmodifiableList(fredBetRoles.stream().map(Enum::name).collect(Collectors.toList()));
 	}
 
 	@RequestMapping

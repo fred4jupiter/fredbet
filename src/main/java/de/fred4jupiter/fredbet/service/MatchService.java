@@ -91,7 +91,7 @@ public class MatchService {
 
 	public Match findMatchById(Long matchId) {
 		Optional<Match> matchOpt = matchRepository.findById(matchId);
-		return matchOpt.isPresent() ? matchOpt.get() : null;
+		return matchOpt.orElse(null);
 	}
 
 	@Cacheable(CacheNames.AVAIL_GROUPS)

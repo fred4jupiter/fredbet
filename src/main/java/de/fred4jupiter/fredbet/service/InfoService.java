@@ -44,11 +44,8 @@ public class InfoService {
 	public Info findBy(InfoType infoType, Locale locale) {
 		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
 		Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
-		if (foundInfoOpt.isPresent()) {
-			return foundInfoOpt.get();
-		}
-		
-		return saveInfoContent(infoType, "", locale);
+		return foundInfoOpt.orElseGet(() -> saveInfoContent(infoType, "", locale));
+
 	}
 
 }

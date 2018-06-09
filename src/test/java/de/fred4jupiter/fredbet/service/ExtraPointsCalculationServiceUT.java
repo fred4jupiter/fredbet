@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -82,7 +83,7 @@ public class ExtraPointsCalculationServiceUT {
 		match.setCountryTwo(Country.CUBA);
 
 		when(runtimeConfigurationService.loadRuntimeConfig()).thenReturn(runtimeConfig);
-		when(extraBetRepository.findAll()).thenReturn(Arrays.asList(extraBet));
+		when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
 
 		extraPointsCalculationService.onApplicationEvent(matchGoalsChangedEvent);
 
@@ -103,7 +104,7 @@ public class ExtraPointsCalculationServiceUT {
 		match.setGoalsTeamTwo(1);		
 
 		when(runtimeConfigurationService.loadRuntimeConfig()).thenReturn(runtimeConfig);
-		when(extraBetRepository.findAll()).thenReturn(Arrays.asList(extraBet));
+		when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
 
 		extraPointsCalculationService.onApplicationEvent(matchGoalsChangedEvent);
 
@@ -128,7 +129,7 @@ public class ExtraPointsCalculationServiceUT {
 		match.setGoalsTeamTwo(1);		
 
 		when(runtimeConfigurationService.loadRuntimeConfig()).thenReturn(runtimeConfig);
-		when(extraBetRepository.findAll()).thenReturn(Arrays.asList(extraBet));
+		when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
 
 		extraPointsCalculationService.onApplicationEvent(matchGoalsChangedEvent);
 

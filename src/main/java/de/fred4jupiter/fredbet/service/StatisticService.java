@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,13 @@ public class StatisticService {
 
 			statistic.setPointsForExtraBets(extraBetsPerUser.get(statistic.getUsername()));
 
-			if (statistic.getSum().intValue() == minPoints) {
+			if (statistic.getSum() == minPoints) {
 				statistic.setMinPointsCandidate(true);
 			}
-			if (statistic.getSum().intValue() == maxPoints) {
+			if (statistic.getSum() == maxPoints) {
 				statistic.setMaxPointsCandidate(true);
 			}
-			if (statistic.getPointsGroup().intValue() == maxGroupPoints) {
+			if (statistic.getPointsGroup() == maxGroupPoints) {
 				statistic.setMaxGroupPointsCandidate(true);
 			}
 		}
@@ -87,15 +88,15 @@ public class StatisticService {
 		int maxGroupPoints = 0;
 
 		for (Statistic statistic : statisticList) {
-			if (statistic.getSum().intValue() < minPoints) {
-				minPoints = statistic.getSum().intValue();
+			if (statistic.getSum() < minPoints) {
+				minPoints = statistic.getSum();
 			}
-			if (statistic.getSum().intValue() > maxPoints) {
-				maxPoints = statistic.getSum().intValue();
+			if (statistic.getSum() > maxPoints) {
+				maxPoints = statistic.getSum();
 			}
 
-			if (statistic.getPointsGroup().intValue() > maxGroupPoints) {
-				maxGroupPoints = statistic.getPointsGroup().intValue();
+			if (statistic.getPointsGroup() > maxGroupPoints) {
+				maxGroupPoints = statistic.getPointsGroup();
 			}
 		}
 
@@ -104,9 +105,6 @@ public class StatisticService {
 
 	private Map<String, Integer> findExtraBetsPerUser() {
 		List<ExtraBet> extraBets = extraBetRepository.findAll();
-		Map<String, Integer> userExtraBetPoints = new HashMap<>();
-
-		extraBets.forEach(extraBet -> userExtraBetPoints.put(extraBet.getUserName(), extraBet.getPoints()));
-		return userExtraBetPoints;
+		return extraBets.stream().collect(Collectors.toMap(ExtraBet::getUserName, ExtraBet::getPoints));
 	}
 }

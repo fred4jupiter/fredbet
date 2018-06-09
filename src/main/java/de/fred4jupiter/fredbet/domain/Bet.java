@@ -36,7 +36,7 @@ public class Bet {
 
 	private Integer goalsTeamTwo;
 
-	private Integer points = Integer.valueOf(0);
+	private Integer points = 0;
 
 	@Column(name = "PENALTY_WINNER_ONE")
 	private boolean penaltyWinnerOne;
@@ -48,7 +48,7 @@ public class Bet {
 		if (goalsTeamOne == null || goalsTeamTwo == null) {
 			throw new IllegalStateException("Bet not finished! No goal bets set!");
 		}
-		return Math.abs(goalsTeamOne.intValue() - goalsTeamTwo.intValue());
+		return Math.abs(goalsTeamOne - goalsTeamTwo);
 	}
 
 	public boolean isTeamOneWinner() {
@@ -56,7 +56,7 @@ public class Bet {
 			throw new IllegalStateException("Bet not finished! No goal bets set!");
 		}
 
-		return goalsTeamOne.intValue() > goalsTeamTwo.intValue();
+		return goalsTeamOne > goalsTeamTwo;
 	}
 
 	public boolean isTeamTwoWinner() {
@@ -64,11 +64,11 @@ public class Bet {
 			throw new IllegalStateException("Bet not finished! No goal bets set!");
 		}
 
-		return goalsTeamTwo.intValue() > goalsTeamOne.intValue();
+		return goalsTeamTwo > goalsTeamOne;
 	}
 
 	public boolean isUndecidedBetting() {
-		return getGoalDifference().intValue() == 0;
+		return getGoalDifference() == 0;
 	}
 
 	public boolean equals(Object obj) {

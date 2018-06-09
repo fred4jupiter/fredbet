@@ -12,7 +12,6 @@ public class PointCountResult {
 	private Long numberOfPointsCount;
 
 	public PointCountResult(String username, Integer points, Long numberOfPointsCount) {
-		super();
 		this.username = username;
 		this.points = points;
 		this.numberOfPointsCount = numberOfPointsCount;

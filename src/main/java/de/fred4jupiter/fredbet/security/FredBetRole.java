@@ -41,7 +41,7 @@ public enum FredBetRole {
 			PERM_CHANGE_USER_ROLE, PERM_EDIT_INFOS_RULES, PERM_EDIT_INFOS_PRICES, PERM_SHOW_ACTIVE_USERS, PERM_SHOW_LAST_LOGINS,
 			PERM_EDIT_IMAGE_GROUP, PERM_DOWNLOAD_IMAGES, PERM_DELETE_ALL_IMAGES);
 
-	private String[] permissions = new String[] {};
+	private String[] permissions;
 
 	private String msgUserRole;
 
@@ -55,7 +55,7 @@ public enum FredBetRole {
 	}
 
 	public Collection<? extends GrantedAuthority> getPermissions() {
-		return Arrays.asList(permissions).stream().map(permission -> new SimpleGrantedAuthority(permission)).collect(Collectors.toList());
+		return Arrays.stream(permissions).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
 
 	public static FredBetRole fromRole(String roleName) {

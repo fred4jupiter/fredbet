@@ -102,7 +102,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
 	public Integer getPoints() {
 		if (hasMatchFinished() && points == null) {
-			return Integer.valueOf(0);
+			return 0;
 		}
 		return points;
 	}

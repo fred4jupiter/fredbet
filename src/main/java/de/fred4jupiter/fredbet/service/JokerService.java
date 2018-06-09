@@ -26,7 +26,7 @@ public class JokerService {
 
 	public boolean isSettingJokerAllowed(String userName, Long matchId) {
 		Joker joker = getJokerForUser(userName);
-		if (joker.getNumberOfJokersUsed().intValue() < joker.getMax().intValue()) {
+		if (joker.getNumberOfJokersUsed() < joker.getMax()) {
 			return true;
 		}
 

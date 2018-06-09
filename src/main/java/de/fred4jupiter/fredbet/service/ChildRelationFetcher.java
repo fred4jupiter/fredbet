@@ -26,7 +26,7 @@ public class ChildRelationFetcher {
 	public Map<String, Boolean> fetchUserIsChildRelation() {
 		LOG.info("fetching user child relations from DB...");
 		List<AppUser> allUsers = appUserRepository.findAll();
-		return allUsers.stream().collect(Collectors.toMap((entry) -> entry.getUsername(), (entry) -> entry.isChild()));
+		return allUsers.stream().collect(Collectors.toMap(AppUser::getUsername, AppUser::isChild));
 	}
 
 }

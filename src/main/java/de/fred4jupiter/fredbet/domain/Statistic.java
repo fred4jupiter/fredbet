@@ -2,21 +2,21 @@ package de.fred4jupiter.fredbet.domain;
 
 public class Statistic {
 
-	private Integer pointsGroup = Integer.valueOf(0);
+	private Integer pointsGroup = 0;
 
-	private Integer pointsRoundOfSixteen = Integer.valueOf(0);
+	private Integer pointsRoundOfSixteen = 0;
 
-	private Integer pointsQuarterFinal = Integer.valueOf(0);
+	private Integer pointsQuarterFinal = 0;
 
-	private Integer pointsSemiFinal = Integer.valueOf(0);
+	private Integer pointsSemiFinal = 0;
 
-	private Integer pointsFinal = Integer.valueOf(0);
+	private Integer pointsFinal = 0;
 
-	private Integer pointsGameForThird = Integer.valueOf(0);
+	private Integer pointsGameForThird = 0;
 
-	private Integer pointsFavoriteCountry = Integer.valueOf(0);
+	private Integer pointsFavoriteCountry = 0;
 
-	private Integer pointsForExtraBets = Integer.valueOf(0);
+	private Integer pointsForExtraBets = 0;
 
 	private boolean minPointsCandidate;
 
@@ -111,7 +111,7 @@ public class Statistic {
 		int result = 0;
 		for (Integer value : values) {
 			if (value != null) {
-				result = result + value.intValue();
+				result = result + value;
 			}
 		}
 		return result;
