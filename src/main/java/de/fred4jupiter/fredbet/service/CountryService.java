@@ -1,6 +1,14 @@
 package de.fred4jupiter.fredbet.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +41,7 @@ public class CountryService {
 	}
 
 	public List<Country> getAvailableCountriesSortedWithoutNoneEntry(Locale locale, List<Country> countriesWithoutNoneEntry) {
-
-		return countriesWithoutNoneEntry.stream()
-				.filter(Objects::nonNull)
+		return countriesWithoutNoneEntry.stream().filter(Objects::nonNull)
 				.sorted(Comparator.comparing((Country country) -> messageSourceUtil.getCountryName(country, locale)))
 				.collect(Collectors.toList());
 	}
@@ -56,10 +62,11 @@ public class CountryService {
 		List<Match> allMatches = matchRepository.findAll();
 
 		final Set<Country> resultset = new HashSet<>();
-		allMatches.stream().filter(match -> match != null && (match.getCountryOne() != null || match.getCountryTwo() != null)).forEach(match -> {
-			resultset.add(match.getCountryOne());
-			resultset.add(match.getCountryTwo());
-		});
+		allMatches.stream().filter(match -> match != null && (match.getCountryOne() != null || match.getCountryTwo() != null))
+				.forEach(match -> {
+					resultset.add(match.getCountryOne());
+					resultset.add(match.getCountryTwo());
+				});
 		return resultset;
 	}
 }
