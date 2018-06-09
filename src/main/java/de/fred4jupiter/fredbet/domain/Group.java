@@ -58,4 +58,8 @@ public enum Group {
 	public static List<Group> getFinalGroups() {
         return Arrays.asList(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL);
     }
+	
+	public boolean isKnockoutRound() {
+	    return !this.name().startsWith("GROUP_");
+	}
 }

@@ -15,30 +15,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 
 public class CountryServiceIT extends AbstractIntegrationTest {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CountryServiceIT.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CountryServiceIT.class);
 
-	@Autowired
-	private CountryService countryService;
+    @Autowired
+    private CountryService countryService;
 
-	@Test
-	public void availableCountriesDoesNotContainNoneEntry() {
-		List<Country> countries = countryService.getAvailableCountriesSortedWithoutNoneEntry(Locale.GERMAN);
-		assertNotNull(countries);
+    @Test
+    public void availableCountriesDoesNotContainNoneEntry() {
+        List<Country> countries = countryService.getAvailableCountriesSortedWithoutNoneEntry(Locale.GERMAN);
+        assertNotNull(countries);
 
-		assertThat(countries, not(hasItem(Country.NONE)));
+        assertThat(countries, not(hasItem(Country.NONE)));
 
-		LOG.debug("" + countries);
-	}
+        LOG.debug("" + countries);
+    }
 
-	@Test
-	public void getAvailableCountries() {
-		List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(Locale.GERMAN);
-		assertNotNull(countries);
+    @Test
+    public void getAvailableCountries() {
+        List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(Locale.GERMAN, Group.GROUP_A);
+        assertNotNull(countries);
 
-		assertThat(countries, hasItem(Country.NONE));
-	}
+        assertThat(countries, hasItem(Country.NONE));
+    }
 
 }

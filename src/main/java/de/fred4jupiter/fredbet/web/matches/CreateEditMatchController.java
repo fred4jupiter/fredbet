@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,135 +32,137 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 @RequestMapping("/match")
 public class CreateEditMatchController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CreateEditMatchController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateEditMatchController.class);
 
-	private static final String VIEW_EDIT_MATCH = "matches/edit";
+    private static final String VIEW_EDIT_MATCH = "matches/edit";
 
-	@Autowired
-	private WebMessageUtil messageUtil;
+    @Autowired
+    private WebMessageUtil messageUtil;
 
-	@Autowired
-	private MatchService matchService;
+    @Autowired
+    private MatchService matchService;
 
-	@Autowired
-	private CountryService countryService;
+    @Autowired
+    private CountryService countryService;
 
-	@Autowired
-	private BettingService bettingService;
+    @Autowired
+    private BettingService bettingService;
 
-	@ModelAttribute("createEditMatchCommand")
-	public CreateEditMatchCommand matchCommand() {
-		return new CreateEditMatchCommand();
-	}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public ModelAndView create() {
+        CreateEditMatchCommand command = new CreateEditMatchCommand();
+        command.setKickOffDate(LocalDateTime.now().plusHours(1));
+        ModelAndView modelAndView = new ModelAndView(VIEW_EDIT_MATCH, "createEditMatchCommand", command);
+        addCountriesAndGroups(modelAndView);
+        return modelAndView;
+    }
 
-	@ModelAttribute("availableGroups")
-	public List<Group> availableGroups() {
-		return Group.getAllGroups();
-	}
+    private void addCountriesAndGroups(ModelAndView modelAndView) {
+        addCountriesAndGroups(modelAndView, null);
+    }
 
-	@ModelAttribute("availableCountries")
-	public List<Country> availableCountries() {
-		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
-	}
+    private void addCountriesAndGroups(ModelAndView modelAndView, Group group) {
+        modelAndView.addObject("availableGroups", Group.getAllGroups());
+        List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale(), group);
+        modelAndView.addObject("availableCountries", countries);
+    }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String create(@ModelAttribute("createEditMatchCommand") CreateEditMatchCommand createEditMatchCommand) {
-		createEditMatchCommand.setKickOffDate(LocalDateTime.now().plusHours(1));
-		return VIEW_EDIT_MATCH;
-	}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ModelAndView edit(@PathVariable("id") Long matchId) {
+        Match match = matchService.findByMatchId(matchId);
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView edit(@PathVariable("id") Long matchId) {
-		Match match = matchService.findByMatchId(matchId);
+        Long numberOfBetsForThisMatch = bettingService.countByMatch(match);
+        CreateEditMatchCommand createEditMatchCommand = toCreateEditMatchCommand(match);
+        if (numberOfBetsForThisMatch == 0) {
+            createEditMatchCommand.setDeletable(true);
+        }
 
-		Long numberOfBetsForThisMatch = bettingService.countByMatch(match);
-		CreateEditMatchCommand createEditMatchCommand = toCreateEditMatchCommand(match);
-		if (numberOfBetsForThisMatch == 0) {
-			createEditMatchCommand.setDeletable(true);
-		}
+        ModelAndView modelAndView = new ModelAndView(VIEW_EDIT_MATCH, "createEditMatchCommand", createEditMatchCommand);
+        addCountriesAndGroups(modelAndView, match.getGroup());
+        return modelAndView;
+    }
 
-		return new ModelAndView(VIEW_EDIT_MATCH, "createEditMatchCommand", createEditMatchCommand);
-	}
+    private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
+        CreateEditMatchCommand command = new CreateEditMatchCommand();
+        command.setCountryTeamOne(match.getCountryOne());
+        command.setCountryTeamTwo(match.getCountryTwo());
+        command.setTeamNameOne(match.getTeamNameOne());
+        command.setTeamNameTwo(match.getTeamNameTwo());
+        command.setGroup(match.getGroup());
+        command.setKickOffDate(match.getKickOffDate());
+        command.setMatchId(match.getId());
+        command.setStadium(match.getStadium());
+        return command;
+    }
 
-	private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
-		CreateEditMatchCommand command = new CreateEditMatchCommand();
-		command.setCountryTeamOne(match.getCountryOne());
-		command.setCountryTeamTwo(match.getCountryTwo());
-		command.setTeamNameOne(match.getTeamNameOne());
-		command.setTeamNameTwo(match.getTeamNameTwo());
-		command.setGroup(match.getGroup());
-		command.setKickOffDate(match.getKickOffDate());
-		command.setMatchId(match.getId());
-		command.setStadium(match.getStadium());
-		return command;
-	}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView save(@Valid CreateEditMatchCommand createEditMatchCommand, BindingResult result, RedirectAttributes redirect,
+            ModelMap modelMap) {
+        if (result.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView(VIEW_EDIT_MATCH, "createEditMatchCommand", createEditMatchCommand);
+            addCountriesAndGroups(modelAndView);
+            return modelAndView;
+        }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(@Valid CreateEditMatchCommand createEditMatchCommand, BindingResult result, RedirectAttributes redirect,
-			ModelMap modelMap) {
-		if (result.hasErrors()) {
-			return new ModelAndView(VIEW_EDIT_MATCH, "createEditMatchCommand", createEditMatchCommand);
-		}
+        save(createEditMatchCommand);
 
-		save(createEditMatchCommand);
+        if (createEditMatchCommand.getMatchId() == null) {
+            messageUtil.addInfoMsg(redirect, "msg.match.created", createEditMatchCommand.getTeamNameOne(),
+                    createEditMatchCommand.getTeamNameTwo());
+        } else {
+            messageUtil.addInfoMsg(redirect, "msg.match.updated", createEditMatchCommand.getTeamNameOne(),
+                    createEditMatchCommand.getTeamNameTwo());
+        }
 
-		if (createEditMatchCommand.getMatchId() == null) {
-			messageUtil.addInfoMsg(redirect, "msg.match.created", createEditMatchCommand.getTeamNameOne(),
-					createEditMatchCommand.getTeamNameTwo());
-		} else {
-			messageUtil.addInfoMsg(redirect, "msg.match.updated", createEditMatchCommand.getTeamNameOne(),
-					createEditMatchCommand.getTeamNameTwo());
-		}
+        return new ModelAndView("redirect:/matches#" + createEditMatchCommand.getMatchId());
+    }
 
-		return new ModelAndView("redirect:/matches#" + createEditMatchCommand.getMatchId());
-	}
+    private Long save(CreateEditMatchCommand createEditMatchCommand) {
+        Match match = null;
+        if (createEditMatchCommand.getMatchId() != null) {
+            match = matchService.findByMatchId(createEditMatchCommand.getMatchId());
+        }
 
-	private Long save(CreateEditMatchCommand createEditMatchCommand) {
-		Match match = null;
-		if (createEditMatchCommand.getMatchId() != null) {
-			match = matchService.findByMatchId(createEditMatchCommand.getMatchId());
-		}
+        if (match == null) {
+            match = new Match();
+        }
 
-		if (match == null) {
-			match = new Match();
-		}
+        toMatch(createEditMatchCommand, match);
 
-		toMatch(createEditMatchCommand, match);
+        match = matchService.save(match);
+        createEditMatchCommand.setMatchId(match.getId());
+        return match.getId();
+    }
 
-		match = matchService.save(match);
-		createEditMatchCommand.setMatchId(match.getId());
-		return match.getId();
-	}
+    private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
+        match.setCountryOne(matchCommand.getCountryTeamOne());
+        match.setCountryTwo(matchCommand.getCountryTeamTwo());
+        match.setTeamNameOne(matchCommand.getTeamNameOne());
+        match.setTeamNameTwo(matchCommand.getTeamNameTwo());
+        match.setKickOffDate(matchCommand.getKickOffDate());
+        match.setGroup(matchCommand.getGroup());
+        match.setStadium(matchCommand.getStadium());
+    }
 
-	public void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-		match.setCountryOne(matchCommand.getCountryTeamOne());
-		match.setCountryTwo(matchCommand.getCountryTeamTwo());
-		match.setTeamNameOne(matchCommand.getTeamNameOne());
-		match.setTeamNameTwo(matchCommand.getTeamNameTwo());
-		match.setKickOffDate(matchCommand.getKickOffDate());
-		match.setGroup(matchCommand.getGroup());
-		match.setStadium(matchCommand.getStadium());
-	}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
+    @RequestMapping(value = "/delete/{matchId}", method = RequestMethod.GET)
+    public ModelAndView delete(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
+        LOG.debug("deleted match with id={}", matchId);
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
-	@RequestMapping(value = "/delete/{matchId}", method = RequestMethod.GET)
-	public ModelAndView delete(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
-		LOG.debug("deleted match with id={}", matchId);
+        Match match = matchService.findByMatchId(matchId);
+        if (match == null) {
+            messageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
+            return new ModelAndView("redirect:/matches");
+        }
 
-		Match match = matchService.findByMatchId(matchId);
-		if (match == null) {
-			messageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
-			return new ModelAndView("redirect:/matches");
-		}
+        matchService.deleteMatch(matchId);
 
-		matchService.deleteMatch(matchId);
+        messageUtil.addInfoMsg(redirect, "msg.match.deleted", messageUtil.getTeamNameOne(match), messageUtil.getTeamNameTwo(match));
 
-		messageUtil.addInfoMsg(redirect, "msg.match.deleted", messageUtil.getTeamNameOne(match), messageUtil.getTeamNameTwo(match));
-
-		return new ModelAndView("redirect:/matches");
-	}
+        return new ModelAndView("redirect:/matches");
+    }
 
 }

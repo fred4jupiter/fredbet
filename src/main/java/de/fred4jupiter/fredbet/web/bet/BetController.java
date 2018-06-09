@@ -6,11 +6,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Joker;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
@@ -37,144 +33,136 @@ import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 @RequestMapping("/bet")
 public class BetController {
 
-	private static final String VIEW_LIST_OPEN = "bet/list_open";
+    private static final String VIEW_LIST_OPEN = "bet/list_open";
 
-	private static final String VIEW_EDIT = "bet/edit";
+    private static final String VIEW_EDIT = "bet/edit";
 
-	@Autowired
-	private BettingService bettingService;
+    @Autowired
+    private BettingService bettingService;
 
-	@Autowired
-	private SecurityService securityService;
+    @Autowired
+    private SecurityService securityService;
 
-	@Autowired
-	private WebMessageUtil messageUtil;
+    @Autowired
+    private WebMessageUtil messageUtil;
 
-	@Autowired
-	private MatchCommandMapper matchCommandMapper;
+    @Autowired
+    private MatchCommandMapper matchCommandMapper;
 
-	@Autowired
-	private CountryService countryService;
+    @Autowired
+    private MatchService matchService;
 
-	@Autowired
-	private MatchService matchService;
+    @Autowired
+    private AllBetsCommandMapper allBetsCommandMapper;
 
-	@Autowired
-	private AllBetsCommandMapper allBetsCommandMapper;
+    @Autowired
+    private JokerService jokerService;
 
-	@Autowired
-	private JokerService jokerService;
+    @RequestMapping("/open")
+    public ModelAndView listStillOpen(ModelMap modelMap) {
+        List<Match> matchesToBet = bettingService.findMatchesToBet(securityService.getCurrentUserName());
+        if (Validator.isEmpty(matchesToBet)) {
+            messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
+        }
 
-	@ModelAttribute("availableCountries")
-	public List<Country> availableCountries() {
-		return countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
-	}
+        if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName())) {
+            messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
+        }
 
-	@RequestMapping("/open")
-	public ModelAndView listStillOpen(ModelMap modelMap) {
-		List<Match> matchesToBet = bettingService.findMatchesToBet(securityService.getCurrentUserName());
-		if (Validator.isEmpty(matchesToBet)) {
-			messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
-		}
+        List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchCommandMapper.toMatchCommand(match))
+                .collect(Collectors.toList());
+        return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
+    }
 
-		if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName())) {
-			messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
-		}
+    @RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
+    public ModelAndView showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
+        Bet bet = bettingService.findOrCreateBetForMatch(matchId);
+        if (bet == null) {
+            return new ModelAndView("redirect:/matches");
+        }
 
-		List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchCommandMapper.toMatchCommand(match))
-				.collect(Collectors.toList());
-		return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
-	}
+        BetCommand betCommand = toBetCommand(bet);
+        betCommand.setRedirectViewName(redirectViewName);
 
-	@RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
-	public ModelAndView showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
-		Bet bet = bettingService.findOrCreateBetForMatch(matchId);
-		if (bet == null) {
-			return new ModelAndView("redirect:/matches");
-		}
+        return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+    }
 
-		BetCommand betCommand = toBetCommand(bet);
-		betCommand.setRedirectViewName(redirectViewName);
+    private BetCommand toBetCommand(Bet bet) {
+        BetCommand betCommand = new BetCommand();
+        betCommand.setBetId(bet.getId());
+        betCommand.setMatchId(bet.getMatch().getId());
+        betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
+        betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
+        betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 
-		return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
-	}
+        if (bet.getMatch().hasContriesSet()) {
+            betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getCountryOne()));
+            betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPathBig());
 
-	private BetCommand toBetCommand(Bet bet) {
-		BetCommand betCommand = new BetCommand();
-		betCommand.setBetId(bet.getId());
-		betCommand.setMatchId(bet.getMatch().getId());
-		betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
-		betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-		betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
+            betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getCountryTwo()));
+            betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPathBig());
 
-		if (bet.getMatch().hasContriesSet()) {
-			betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getCountryOne()));
-			betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPathBig());
+            betCommand.setShowCountryIcons(true);
+        } else {
+            betCommand.setTeamNameOne(bet.getMatch().getTeamNameOne());
+            betCommand.setTeamNameTwo(bet.getMatch().getTeamNameTwo());
+        }
 
-			betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getCountryTwo()));
-			betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPathBig());
+        betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 
-			betCommand.setShowCountryIcons(true);
-		} else {
-			betCommand.setTeamNameOne(bet.getMatch().getTeamNameOne());
-			betCommand.setTeamNameTwo(bet.getMatch().getTeamNameTwo());
-		}
+        Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
+        betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
+        betCommand.setMaxJokers(joker.getMax());
+        betCommand.setUseJoker(bet.isJoker());
+        betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
 
-		betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
+        return betCommand;
+    }
 
-		Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
-		betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
-		betCommand.setMaxJokers(joker.getMax());
-		betCommand.setUseJoker(bet.isJoker());
-		betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+        }
 
-		return betCommand;
-	}
+        Bet bet = toBet(betCommand);
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
-		if (bindingResult.hasErrors()) {
-			return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
-		}
+        try {
+            bettingService.save(bet);
+            messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
+        } catch (NoBettingAfterMatchStartedAllowedException e) {
+            messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
+        }
 
-		Bet bet = toBet(betCommand);
+        String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
+        return new ModelAndView(view + "#" + betCommand.getMatchId());
+    }
 
-		try {
-			bettingService.save(bet);
-			messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
-		} catch (NoBettingAfterMatchStartedAllowedException e) {
-			messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
-		}
+    private Bet toBet(BetCommand betCommand) {
+        Bet bet = null;
+        if (betCommand.getBetId() == null) {
+            Match match = matchService.findMatchById(betCommand.getMatchId());
+            bet = new Bet();
+            bet.setMatch(match);
+            bet.setUserName(securityService.getCurrentUserName());
+        } else {
+            bet = bettingService.findBetById(betCommand.getBetId());
+        }
 
-		String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
-		return new ModelAndView(view + "#" + betCommand.getMatchId());
-	}
+        bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
+        bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
+        bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
+        bet.setJoker(betCommand.isUseJoker());
+        return bet;
+    }
 
-	private Bet toBet(BetCommand betCommand) {
-		Bet bet = null;
-		if (betCommand.getBetId() == null) {
-			Match match = matchService.findMatchById(betCommand.getMatchId());
-			bet = new Bet();
-			bet.setMatch(match);
-			bet.setUserName(securityService.getCurrentUserName());
-		} else {
-			bet = bettingService.findBetById(betCommand.getBetId());
-		}
-
-		bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
-		bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
-		bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
-		bet.setJoker(betCommand.isUseJoker());
-		return bet;
-	}
-
-	@RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
-	public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId) {
-		AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
-		if (allBetsCommand == null) {
-			return new ModelAndView("redirect:/matches");
-		}
-		return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
-	}
+    @RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
+    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId) {
+        AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
+        if (allBetsCommand == null) {
+            return new ModelAndView("redirect:/matches");
+        }
+        return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
+    }
 
 }

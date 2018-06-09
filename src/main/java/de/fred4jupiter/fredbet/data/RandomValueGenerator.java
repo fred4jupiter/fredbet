@@ -40,7 +40,7 @@ public class RandomValueGenerator {
 	}
 
 	public ImmutablePair<Country, Country> generateTeamPair() {
-		List<Country> availCountries = countryService.getAvailableCountriesWithoutNoneEntry();
+		List<Country> availCountries = countryService.getAllCountriesWithoutNoneEntry();
 		if (CollectionUtils.isEmpty(availCountries)) {
 			return null;
 		}
@@ -59,7 +59,7 @@ public class RandomValueGenerator {
 	}
 
 	public ImmutableTriple<Country, Country, Country> generateTeamTriple() {
-		Set<Country> countries = countryService.getAvailableCountriesExtraBetsWithoutNoneEntry();
+		Set<Country> countries = countryService.getAvailableCountriesWithoutNoneEntry();
 		List<Country> availCountries = new ArrayList<Country>(countries);
 		if (CollectionUtils.isEmpty(availCountries)) {
 			return null;

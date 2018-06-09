@@ -19,19 +19,18 @@ import de.fred4jupiter.fredbet.service.CountryService;
 @RunWith(MockitoJUnitRunner.class)
 public class RandomValueGeneratorUT {
 
-	@InjectMocks
-	private RandomValueGenerator randomValueGenerator;
+    @InjectMocks
+    private RandomValueGenerator randomValueGenerator;
 
-	@Mock
-	private CountryService countryService;
+    @Mock
+    private CountryService countryService;
 
-	@Test
-	public void generateTripleButOnlyOneCountryAvailable() {
-		when(countryService.getAvailableCountriesExtraBetsWithoutNoneEntry())
-				.thenReturn(new HashSet<Country>(Arrays.asList(Country.RUSSIA)));
+    @Test
+    public void generateTripleButOnlyOneCountryAvailable() {
+        when(countryService.getAvailableCountriesWithoutNoneEntry()).thenReturn(new HashSet<Country>(Arrays.asList(Country.RUSSIA)));
 
-		ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
-		assertNotNull(triple);
-	}
+        ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
+        assertNotNull(triple);
+    }
 
 }
