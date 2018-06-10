@@ -13,9 +13,11 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.PointCountResult;
 import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
@@ -30,6 +32,9 @@ public class ReportService {
 
     @Autowired
     private BetRepository betRepository;
+
+    @Autowired
+    private ExtraBetRepository extraBetRepository;
 
     @Autowired
     private MessageSourceUtil messageSourceUtil;
@@ -107,6 +112,46 @@ public class ReportService {
         });
     }
 
+    public byte[] exportExtraBetsToExcel(Locale locale) {
+        final List<ExtraBet> extraBets = this.extraBetRepository.findAll(Sort.by(new Order(Direction.ASC, "userName")));
+
+        return excelExportService.exportEntriesToExcel("Extra-Bets export", extraBets, new EntryCallback<ExtraBet>() {
+
+            @Override
+            public String[] getHeaderRow() {
+                final List<String> header = new ArrayList<>();
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.username", locale));
+
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.finalWinner", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.pointsOne", locale));
+
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.semiFinalWinner", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.pointsTwo", locale));
+
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.thirdFinalWinner", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.pointsThree", locale));
+
+                String[] headerArr = new String[header.size()];
+                return header.toArray(headerArr);
+            }
+
+            @Override
+            public String[] getRowValues(ExtraBet extraBet) {
+                final List<String> row = new ArrayList<>();
+                row.add(extraBet.getUserName());
+                row.add(messageSourceUtil.getCountryName(extraBet.getFinalWinner(), locale));
+                row.add("" + extraBet.getPointsOne());
+                row.add(messageSourceUtil.getCountryName(extraBet.getSemiFinalWinner(), locale));
+                row.add("" + extraBet.getPointsTwo());
+                row.add(messageSourceUtil.getCountryName(extraBet.getThirdFinalWinner(), locale));
+                row.add("" + extraBet.getPointsThree());
+
+                String[] rowArr = new String[row.size()];
+                return row.toArray(rowArr);
+            }
+        });
+    }
+
     private String jokerYesNoLocalized(boolean withJoker, Locale locale) {
         if (withJoker) {
             return messageSourceUtil.getMessageFor("excel.export.yes", locale);
@@ -147,4 +192,5 @@ public class ReportService {
 
         });
     }
+
 }
