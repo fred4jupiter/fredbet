@@ -12,7 +12,10 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.PointCountResult;
 import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -30,7 +33,23 @@ public class ReportService {
     @Autowired
     private MessageSourceUtil messageSourceUtil;
 
+    @Autowired
+    private MatchRepository matchRepository;
+
     public byte[] exportBetsToExcel(final Locale locale) {
+        List<Match> finalMatch = matchRepository.findByGroup(Group.FINAL);
+        if (finalMatch != null && !finalMatch.isEmpty()) {
+            // there should be only one final match (ignoring if more)
+            Match match = finalMatch.get(0);
+            if (match.hasResultSet()) {
+                return exportBetsToExcel(locale, true);
+            }
+        }
+
+        return exportBetsToExcel(locale, false);
+    }
+
+    private byte[] exportBetsToExcel(final Locale locale, boolean withBets) {
         Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
         final List<Bet> bets = this.betRepository.findAll(sort);
 
@@ -44,6 +63,11 @@ public class ReportService {
                 String date = messageSourceUtil.getMessageFor("excel.export.date", locale);
                 String joker = messageSourceUtil.getMessageFor("excel.export.joker", locale);
                 String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
+                if (withBets) {
+                    String bet1 = messageSourceUtil.getMessageFor("excel.export.bet1", locale);
+                    String bet2 = messageSourceUtil.getMessageFor("excel.export.bet2", locale);
+                    return new String[] { userName, team1, team2, date, bet1, bet2, joker, points };
+                }
                 return new String[] { userName, team1, team2, date, joker, points };
             }
 
@@ -54,17 +78,22 @@ public class ReportService {
 
                 String formatedDate = DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale);
                 String jokerYesNoLocalized = jokerYesNoLocalized(bet.isJoker(), locale);
+
+                if (withBets) {
+                    return new String[] { bet.getUserName(), country1, country2, formatedDate, "" + bet.getGoalsTeamOne(),
+                            "" + bet.getGoalsTeamTwo(), jokerYesNoLocalized, "" + bet.getPoints() };
+                }
+
                 return new String[] { bet.getUserName(), country1, country2, formatedDate, jokerYesNoLocalized, "" + bet.getPoints() };
             }
 
         });
     }
-    
+
     private String jokerYesNoLocalized(boolean withJoker, Locale locale) {
         if (withJoker) {
             return messageSourceUtil.getMessageFor("excel.export.yes", locale);
-        }
-        else {
+        } else {
             return messageSourceUtil.getMessageFor("excel.export.no", locale);
         }
     }
