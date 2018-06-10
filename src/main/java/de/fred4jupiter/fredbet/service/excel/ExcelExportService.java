@@ -33,9 +33,9 @@ class ExcelExportService {
 
 			createCells(wb, headerRow, true, callback.getHeaderRow());
 
-			for (int i = 1; i < entries.size(); i++) {
+			for (int i = 0; i < entries.size(); i++) {
 				T bet = entries.get(i);
-				XSSFRow row = sheet.createRow(i);
+				XSSFRow row = sheet.createRow(i + 1);
 				callback.getRowValues(bet);
 				createCells(wb, row, callback.getRowValues(bet));
 			}

@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.service.excel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,36 +58,52 @@ public class ReportService {
 
             @Override
             public String[] getHeaderRow() {
-                String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
-                String team1 = messageSourceUtil.getMessageFor("excel.export.team1", locale);
-                String team2 = messageSourceUtil.getMessageFor("excel.export.team2", locale);
-                String date = messageSourceUtil.getMessageFor("excel.export.date", locale);
-                String joker = messageSourceUtil.getMessageFor("excel.export.joker", locale);
-                String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
+                final List<String> header = new ArrayList<>();
+                header.add(messageSourceUtil.getMessageFor("excel.export.username", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.team1", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.team2", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.date", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.resultTeam1", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.resultTeam2", locale));
+
                 if (withBets) {
-                    String bet1 = messageSourceUtil.getMessageFor("excel.export.bet1", locale);
-                    String bet2 = messageSourceUtil.getMessageFor("excel.export.bet2", locale);
-                    return new String[] { userName, team1, team2, date, bet1, bet2, joker, points };
+                    header.add(messageSourceUtil.getMessageFor("excel.export.bet1", locale));
+                    header.add(messageSourceUtil.getMessageFor("excel.export.bet2", locale));
                 }
-                return new String[] { userName, team1, team2, date, joker, points };
+
+                header.add(messageSourceUtil.getMessageFor("excel.export.joker", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.points", locale));
+
+                String[] headerArr = new String[header.size()];
+                return header.toArray(headerArr);
             }
 
             @Override
             public String[] getRowValues(Bet bet) {
-                String country1 = messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale);
-                String country2 = messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale);
-
-                String formatedDate = DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale);
-                String jokerYesNoLocalized = jokerYesNoLocalized(bet.isJoker(), locale);
-
-                if (withBets) {
-                    return new String[] { bet.getUserName(), country1, country2, formatedDate, "" + bet.getGoalsTeamOne(),
-                            "" + bet.getGoalsTeamTwo(), jokerYesNoLocalized, "" + bet.getPoints() };
+                final List<String> row = new ArrayList<>();
+                row.add(bet.getUserName());
+                row.add(messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale));
+                row.add(messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale));
+                row.add(DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale));
+                if (bet.getMatch().hasResultSet()) {
+                    row.add("" + bet.getMatch().getGoalsTeamOne());
+                    row.add("" + bet.getMatch().getGoalsTeamTwo());
+                } else {
+                    row.add("");
+                    row.add("");
                 }
 
-                return new String[] { bet.getUserName(), country1, country2, formatedDate, jokerYesNoLocalized, "" + bet.getPoints() };
-            }
+                if (withBets) {
+                    row.add("" + bet.getGoalsTeamOne());
+                    row.add("" + bet.getGoalsTeamTwo());
+                }
 
+                row.add(jokerYesNoLocalized(bet.isJoker(), locale));
+                row.add("" + bet.getPoints());
+
+                String[] rowArr = new String[row.size()];
+                return row.toArray(rowArr);
+            }
         });
     }
 

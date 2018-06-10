@@ -9,13 +9,17 @@
 			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<h1 th:text="#{administration.excel.export.title}"></h1>
 			<div class="row">			
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<p th:text="#{excel.export.hint}"></p>
 					<a class="btn btn-primary" role="button" th:href="@{/excelexport/allBets}" th:text="#{administration.excel.export.allBets}"></a>
-					<p/>
-					<p/>
+				</div>
+			</div>
+			<hr/>
+			<div class="row">			
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<a class="btn btn-primary" role="button" th:href="@{/excelexport/pointsCount}" th:text="#{administration.excel.export.pointsCount}"></a>
 				</div>
-			</div>					
+			</div>
 		</div>
 	</body>
 </html>
