@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 
 public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Long> {
@@ -30,4 +32,6 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
 	@Query("select a from ImageMetaData a where a.owner.username = :username and a.imageGroup.userProfileImageGroup = false")
 	List<ImageMetaData> findImageMetaDataForUser(@Param("username") String username);
+	
+	ImageMetaData findByOwnerAndImageGroup(AppUser owner, ImageGroup imageGroup);
 }
