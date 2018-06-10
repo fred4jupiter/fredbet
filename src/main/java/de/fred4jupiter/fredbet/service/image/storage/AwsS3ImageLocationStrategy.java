@@ -35,7 +35,7 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	private String createFileKey(String imageKey, Long imageGroupId, String prefix) {
-		return imageGroupId + "/" + prefix + imageKey + FredbetConstants.IMAGE_JPG_EXTENSION;
+		return imageGroupId + "/" + prefix + imageKey + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class AwsS3ImageLocationStrategy implements ImageLocationStrategy {
 	public List<BinaryImage> findAllImages() {
 		LOG.debug("loading all images from S3.");
 
-		List<String> listFiles = amazonS3ClientWrapper.listFiles(FredbetConstants.IMAGE_JPG_EXTENSION);
+		List<String> listFiles = amazonS3ClientWrapper.listFiles(FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT);
 		List<BinaryImage> files = amazonS3ClientWrapper.downloadAllFiles(listFiles);
 
 		if (files.isEmpty()) {

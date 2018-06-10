@@ -66,7 +66,7 @@ public class DownloadService {
 	private String createEntryFileName(BinaryImage image, int index) {
 		String fileName = FilenameUtils.getName(image.getKey());
 		if (!FilenameUtils.isExtension(fileName, FredbetConstants.IMAGE_JPG_EXTENSION)) {
-			return fileName + FredbetConstants.IMAGE_JPG_EXTENSION;
+			return fileName + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT;
 		}
 		return fileName;
 	}

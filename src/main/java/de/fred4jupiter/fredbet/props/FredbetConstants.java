@@ -21,13 +21,15 @@ public interface FredbetConstants {
 	String BADGE_PENALTY_WINNER_BET_CSS_CLASS = "badge-penalty-winner-bet";
 
 	String BADGE_PENALTY_WINNER_MATCH_CSS_CLASS = "badge-penalty-winner-match";
-	
+
 	String JOKER_CSS_CLASS = "joker-betting";
 
 	Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
 	String DEFAULT_REST_PASSWORT = "fredbet";
-	
-	String IMAGE_JPG_EXTENSION = ".jpg";
+
+	String IMAGE_JPG_EXTENSION_WITH_DOT = "." + FredbetConstants.IMAGE_JPG_EXTENSION;
+
+	String IMAGE_JPG_EXTENSION = "jpg";
 
 }

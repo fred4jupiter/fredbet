@@ -86,7 +86,7 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 	}
 
 	private File getFileFor(Long imageGroupId, String imageKey, String filePrefix) {
-		return new File(basePath + File.separator + imageGroupId + File.separator + filePrefix + imageKey + FredbetConstants.IMAGE_JPG_EXTENSION);
+		return new File(basePath + File.separator + imageGroupId + File.separator + filePrefix + imageKey + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT);
 	}
 
 	private List<BinaryImage> readFilesToImageData(File imageFolder) {

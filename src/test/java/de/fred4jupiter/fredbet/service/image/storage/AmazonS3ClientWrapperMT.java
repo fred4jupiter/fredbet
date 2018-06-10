@@ -76,7 +76,7 @@ public class AmazonS3ClientWrapperMT {
 		 amazonS3ClientWrapper.uploadImageFile(key1, fileAsByteArray);
 		 amazonS3ClientWrapper.uploadImageFile(key2, fileAsByteArray);
 
-		List<String> listFiles = amazonS3ClientWrapper.listFiles(FredbetConstants.IMAGE_JPG_EXTENSION);
+		List<String> listFiles = amazonS3ClientWrapper.listFiles(FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT);
 
 		List<BinaryImage> files = amazonS3ClientWrapper.downloadAllFiles(listFiles);
 		assertFalse(files.isEmpty());
