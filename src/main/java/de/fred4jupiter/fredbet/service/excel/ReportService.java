@@ -21,73 +21,84 @@ import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 @Service
 public class ReportService {
 
-	@Autowired
-	private ExcelExportService excelExportService;
+    @Autowired
+    private ExcelExportService excelExportService;
 
-	@Autowired
-	private BetRepository betRepository;
+    @Autowired
+    private BetRepository betRepository;
 
-	@Autowired
-	private MessageSourceUtil messageSourceUtil;
+    @Autowired
+    private MessageSourceUtil messageSourceUtil;
 
-	public byte[] exportBetsToExcel(final Locale locale) {
-		Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
-		final List<Bet> bets = this.betRepository.findAll(sort);
+    public byte[] exportBetsToExcel(final Locale locale) {
+        Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
+        final List<Bet> bets = this.betRepository.findAll(sort);
 
-		return excelExportService.exportEntriesToExcel("Bets export", bets, new EntryCallback<Bet>() {
+        return excelExportService.exportEntriesToExcel("Bets export", bets, new EntryCallback<Bet>() {
 
-			@Override
-			public String[] getHeaderRow() {
-				String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
-				String team1 = messageSourceUtil.getMessageFor("excel.export.team1", locale);
-				String team2 = messageSourceUtil.getMessageFor("excel.export.team2", locale);
-				String date = messageSourceUtil.getMessageFor("excel.export.date", locale);
-				String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
-				return new String[] { userName, team1, team2, date, points };
-			}
+            @Override
+            public String[] getHeaderRow() {
+                String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
+                String team1 = messageSourceUtil.getMessageFor("excel.export.team1", locale);
+                String team2 = messageSourceUtil.getMessageFor("excel.export.team2", locale);
+                String date = messageSourceUtil.getMessageFor("excel.export.date", locale);
+                String joker = messageSourceUtil.getMessageFor("excel.export.joker", locale);
+                String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
+                return new String[] { userName, team1, team2, date, joker, points };
+            }
 
-			@Override
-			public String[] getRowValues(Bet bet) {
-				String country1 = messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale);
-				String country2 = messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale);
+            @Override
+            public String[] getRowValues(Bet bet) {
+                String country1 = messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale);
+                String country2 = messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale);
 
-				String formatedDate = DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale);
-				return new String[] { bet.getUserName(), country1, country2, formatedDate, "" + bet.getPoints() };
-			}
+                String formatedDate = DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale);
+                String jokerYesNoLocalized = jokerYesNoLocalized(bet.isJoker(), locale);
+                return new String[] { bet.getUserName(), country1, country2, formatedDate, jokerYesNoLocalized, "" + bet.getPoints() };
+            }
 
-		});
-	}
+        });
+    }
+    
+    private String jokerYesNoLocalized(boolean withJoker, Locale locale) {
+        if (withJoker) {
+            return messageSourceUtil.getMessageFor("excel.export.yes", locale);
+        }
+        else {
+            return messageSourceUtil.getMessageFor("excel.export.no", locale);
+        }
+    }
 
-	public MultiValuedMap<Integer, PointCountResult> reportPointsFrequency() {
-		MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
+    public MultiValuedMap<Integer, PointCountResult> reportPointsFrequency() {
+        MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
 
-		final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
-		for (PointCountResult pointCountResult : resultList) {
-			map.put(pointCountResult.getPoints(), pointCountResult);
-		}
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
+        for (PointCountResult pointCountResult : resultList) {
+            map.put(pointCountResult.getPoints(), pointCountResult);
+        }
 
-		return map;
-	}
+        return map;
+    }
 
-	public byte[] exportNumberOfPointsInBets(final Locale locale) {
-		final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
+    public byte[] exportNumberOfPointsInBets(final Locale locale) {
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
 
-		return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<>() {
+        return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<>() {
 
-			@Override
-			public String[] getHeaderRow() {
-				String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
-				String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
-				String pointsCount = messageSourceUtil.getMessageFor("excel.export.pointsCount", locale);
-				return new String[] { userName, points, pointsCount };
-			}
+            @Override
+            public String[] getHeaderRow() {
+                String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
+                String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
+                String pointsCount = messageSourceUtil.getMessageFor("excel.export.pointsCount", locale);
+                return new String[] { userName, points, pointsCount };
+            }
 
-			@Override
-			public String[] getRowValues(PointCountResult pointCountResult) {
-				return new String[] { pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
-						"" + pointCountResult.getNumberOfPointsCount() };
-			}
+            @Override
+            public String[] getRowValues(PointCountResult pointCountResult) {
+                return new String[] { pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
+                        "" + pointCountResult.getNumberOfPointsCount() };
+            }
 
-		});
-	}
+        });
+    }
 }
