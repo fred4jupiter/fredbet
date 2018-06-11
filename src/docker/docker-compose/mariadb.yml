@@ -25,3 +25,7 @@ services:
        - SPRING_DATASOURCE_HIKARI_USERNAME=fred
        - SPRING_DATASOURCE_HIKARI_PASSWORD=fred
        - SPRING_DATASOURCE_HIKARI_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
+       - FREDBET_IMAGE_LOCATION_FILE=FILE_SYSTEM
+       - FREDBET_IMAGE_FILE_SYSTEM_BASE_FOLDER=/home/fred/fredbet_images
+      volumes:
+       - "~/fredbet_images:/home/fred/fredbet_images"
