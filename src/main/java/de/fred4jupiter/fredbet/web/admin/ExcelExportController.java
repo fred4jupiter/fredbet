@@ -35,7 +35,7 @@ public class ExcelExportController {
         final String fileName = "allBets.xlsx";
         byte[] fileContent = this.reportService.exportBetsToExcel(LocaleContextHolder.getLocale());
         if (fileContent == null) {
-            return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return createResponseEntity(fileName, fileContent);
@@ -46,7 +46,7 @@ public class ExcelExportController {
         final String fileName = "extraBets.xlsx";
         byte[] fileContent = this.reportService.exportExtraBetsToExcel(LocaleContextHolder.getLocale());
         if (fileContent == null) {
-            return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return createResponseEntity(fileName, fileContent);
@@ -57,7 +57,18 @@ public class ExcelExportController {
         final String fileName = "numberOfReachedPointsCount.xlsx";
         byte[] fileContent = this.reportService.exportNumberOfPointsInBets(LocaleContextHolder.getLocale());
         if (fileContent == null) {
-            return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return createResponseEntity(fileName, fileContent);
+    }
+
+    @RequestMapping(value = "/ranking", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
+    public ResponseEntity<byte[]> exportRanking(HttpServletResponse response) {
+        final String fileName = "ranking.xlsx";
+        byte[] fileContent = this.reportService.exportRankingToExcel(LocaleContextHolder.getLocale());
+        if (fileContent == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return createResponseEntity(fileName, fileContent);

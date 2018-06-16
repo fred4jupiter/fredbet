@@ -1,13 +1,8 @@
 package de.fred4jupiter.fredbet.service.excel;
 
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.ExtraBet;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.repository.BetRepository;
-import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.repository.MatchRepository;
-import de.fred4jupiter.fredbet.repository.PointCountResult;
+import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.repository.*;
+import de.fred4jupiter.fredbet.service.RankingService;
 import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
@@ -41,6 +36,9 @@ public class ReportService {
 
     @Autowired
     private MatchRepository matchRepository;
+
+    @Autowired
+    private RankingService rankingService;
 
     public byte[] exportBetsToExcel(final Locale locale) {
         List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
@@ -188,6 +186,31 @@ public class ReportService {
             public String[] getRowValues(PointCountResult pointCountResult) {
                 return new String[]{pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
                         "" + pointCountResult.getNumberOfPointsCount()};
+            }
+        });
+    }
+
+    public byte[] exportRankingToExcel(Locale locale) {
+        List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.MIXED);
+
+        return excelExportService.exportEntriesToExcel("Ranking Export", rankings, new EntryCallback<UsernamePoints>() {
+
+            @Override
+            public String[] getHeaderRow() {
+                final List<String> header = new ArrayList<>();
+                header.add(messageSourceUtil.getMessageFor("excel.export.ranking.username", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.ranking.points", locale));
+                String[] headerArr = new String[header.size()];
+                return header.toArray(headerArr);
+            }
+
+            @Override
+            public String[] getRowValues(UsernamePoints usernamePoints) {
+                final List<String> row = new ArrayList<>();
+                row.add(usernamePoints.getUserName());
+                row.add("" + usernamePoints.getTotalPoints());
+                String[] rowArr = new String[row.size()];
+                return row.toArray(rowArr);
             }
         });
     }
