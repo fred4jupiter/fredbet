@@ -40,13 +40,15 @@
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a sec:authorize="hasAuthority('PERM_DELETE_USER')" href="#" th:href="@{'/user/' + ${editUserCommand.userId} + '/delete'}" 
-							class="btn btn-danger" role="button" th:classappend="${!editUserCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>
+							class="btn btn-danger" role="button" th:classappend="${!editUserCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"
+                           data-toggle="confirmation" th:data-title="#{confirmation.msg}" th:data-btn-ok-label="#{yes}" th:data-btn-cancel-label="#{no}"></a>
 						<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>						
 					</div>
 				</div>
 			</div>
 		</form>
 		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
 	</div>
 </body>
 </html>

@@ -38,6 +38,6 @@ public class SessionTrackingService {
 	}
 
 	public List<SessionTracking> findLoggedInUsers() {
-		return sessionTrackingRepository.findAllByOrderByUserNameAsc();
+		return sessionTrackingRepository.findAllByOrderByLastLoginDesc();
 	}	
 }

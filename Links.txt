@@ -1,0 +1,3 @@
+Links:
+
+bootstrap confirmation: https://github.com/tavicu/bs-confirmation
