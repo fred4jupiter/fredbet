@@ -69,7 +69,9 @@
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/match/delete/' + ${createEditMatchCommand.matchId}}" 
-							class="btn btn-danger" role="button" th:classappend="${!createEditMatchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"></a>						
+							class="btn btn-danger" role="button" th:classappend="${!createEditMatchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"
+                           data-toggle="confirmation" th:data-title="#{confirmation.msg}" th:data-btn-ok-label="#{yes}" th:data-btn-cancel-label="#{no}">
+                        </a>
 						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
 					</div>
 				</div>
@@ -77,6 +79,7 @@
 			<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.js}" charset="UTF-8"></script>
 			<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.de.js}" charset="UTF-8"></script>
 			<script type="text/javascript" th:src="@{/js/datepicker-selection.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
 		</form>
 	</div>	
 </body>
