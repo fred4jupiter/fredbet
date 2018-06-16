@@ -266,7 +266,7 @@ public class Match {
 		this.kickOffDate = kickOffDate;
 	}
 
-	public boolean isBetable() {
+	public boolean isBettable() {
 		return !hasStarted() && !hasResultSet();
 	}
 

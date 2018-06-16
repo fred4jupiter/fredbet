@@ -62,7 +62,7 @@ public class BettingService {
 		List<Match> matchesToBet = new ArrayList<>();
 		List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
 		for (Match match : allMatches) {
-			if (!matchIds.contains(match.getId()) && match.isBetable()) {
+			if (!matchIds.contains(match.getId()) && match.isBettable()) {
 				matchesToBet.add(match);
 			}
 		}

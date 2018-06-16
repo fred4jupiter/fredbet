@@ -157,10 +157,13 @@ public class BetController {
     }
 
     @RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
-    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId) {
+    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
         AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
         if (allBetsCommand == null) {
             return new ModelAndView("redirect:/matches");
+        } else if (allBetsCommand.getMatch().isBettable()){
+            messageUtil.addErrorMsg(redirect,"msg.match.bettable");
+            return new ModelAndView("redirect:/matches", redirect.asMap());
         }
         return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
     }
