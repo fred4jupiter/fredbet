@@ -14,7 +14,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,11 +55,10 @@ public class ReportService {
         Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
         final List<Bet> bets = this.betRepository.findAll(sort);
 
-        return excelExportService.exportEntriesToExcel("Bets export", bets, new EntryCallback<Bet>() {
+        return excelExportService.exportEntriesToExcel("Bets export", bets, new ListEntryCallback<>() {
 
             @Override
-            public String[] getHeaderRow() {
-                final List<String> header = new ArrayList<>();
+            public void addHeaderRow(List<String> header) {
                 header.add(messageSourceUtil.getMessageFor("excel.export.username", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.team1", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.team2", locale));
@@ -75,14 +73,10 @@ public class ReportService {
 
                 header.add(messageSourceUtil.getMessageFor("excel.export.joker", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.points", locale));
-
-                String[] headerArr = new String[header.size()];
-                return header.toArray(headerArr);
             }
 
             @Override
-            public String[] getRowValues(Bet bet) {
-                final List<String> row = new ArrayList<>();
+            public void addValueRow(Bet bet, List<String> row) {
                 row.add(bet.getUserName());
                 row.add(messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale));
                 row.add(messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale));
@@ -102,9 +96,6 @@ public class ReportService {
 
                 row.add(jokerYesNoLocalized(bet.isJoker(), locale));
                 row.add("" + bet.getPoints());
-
-                String[] rowArr = new String[row.size()];
-                return row.toArray(rowArr);
             }
         });
     }
@@ -112,11 +103,10 @@ public class ReportService {
     public byte[] exportExtraBetsToExcel(Locale locale) {
         final List<ExtraBet> extraBets = this.extraBetRepository.findAll(Sort.by(new Order(Direction.ASC, "userName")));
 
-        return excelExportService.exportEntriesToExcel("Extra-Bets export", extraBets, new EntryCallback<ExtraBet>() {
+        return excelExportService.exportEntriesToExcel("Extra-Bets export", extraBets, new ListEntryCallback<>() {
 
             @Override
-            public String[] getHeaderRow() {
-                final List<String> header = new ArrayList<>();
+            public void addHeaderRow(List<String> header) {
                 header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.username", locale));
 
                 header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.finalWinner", locale));
@@ -127,14 +117,10 @@ public class ReportService {
 
                 header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.thirdFinalWinner", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.extrabet.pointsThree", locale));
-
-                String[] headerArr = new String[header.size()];
-                return header.toArray(headerArr);
             }
 
             @Override
-            public String[] getRowValues(ExtraBet extraBet) {
-                final List<String> row = new ArrayList<>();
+            public void addValueRow(ExtraBet extraBet, List<String> row) {
                 row.add(extraBet.getUserName());
                 row.add(messageSourceUtil.getCountryName(extraBet.getFinalWinner(), locale));
                 row.add("" + extraBet.getPointsOne());
@@ -142,9 +128,6 @@ public class ReportService {
                 row.add("" + extraBet.getPointsTwo());
                 row.add(messageSourceUtil.getCountryName(extraBet.getThirdFinalWinner(), locale));
                 row.add("" + extraBet.getPointsThree());
-
-                String[] rowArr = new String[row.size()];
-                return row.toArray(rowArr);
             }
         });
     }
