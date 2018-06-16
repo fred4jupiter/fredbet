@@ -60,4 +60,13 @@ public class MatchController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/today")
+	public ModelAndView matchesOfToday() {
+		List<MatchCommand> matches = matchCommandMapper.findMatchesOfToday(securityBean.getCurrentUserName());
+		ModelAndView modelAndView = new ModelAndView(VIEW_LIST_MATCHES, "allMatches", matches);
+		modelAndView.addObject("heading", messageUtil.getMessageFor("today.matches"));
+		return modelAndView;
+	}
+
+
 }

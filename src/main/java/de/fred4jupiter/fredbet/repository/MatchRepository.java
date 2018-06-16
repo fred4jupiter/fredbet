@@ -34,4 +34,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	@Query("Select b.match from Bet b where b.joker = TRUE and b.userName = :userName")
 	List<Match> findMatchesOfJokerBetsForUser(@Param("userName") String userName);
+
+	List<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(LocalDateTime startDate, LocalDateTime endDate);
 }

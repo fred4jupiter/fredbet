@@ -37,6 +37,8 @@
 					        <ul class="dropdown-menu">
 					        	<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
 					        	<li class="divider" role="separator"></li>
+                                <li th:class="${pageState_matches_today}"><a href="#matchesToday" th:href="@{/matches/today}" th:text="#{today.matches}"></a></li>
+                                <li class="divider" role="separator"></li>
 								<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
 								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" class="divider" role="separator"></li>
 								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" th:class="${pageState_matches_joker}">
