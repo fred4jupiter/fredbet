@@ -1,17 +1,5 @@
 package de.fred4jupiter.fredbet.service.excel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.stereotype.Service;
-
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
@@ -23,6 +11,18 @@ import de.fred4jupiter.fredbet.repository.PointCountResult;
 import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.util.Validator;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ReportService {
@@ -43,10 +43,10 @@ public class ReportService {
     private MatchRepository matchRepository;
 
     public byte[] exportBetsToExcel(final Locale locale) {
-        List<Match> finalMatch = matchRepository.findByGroup(Group.FINAL);
-        if (finalMatch != null && !finalMatch.isEmpty()) {
+        List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
+        if (Validator.isNotEmpty(finalMatches)) {
             // there should be only one final match (ignoring if more)
-            Match match = finalMatch.get(0);
+            Match match = finalMatches.get(0);
             if (match.hasResultSet()) {
                 return exportBetsToExcel(locale, true);
             }
@@ -181,16 +181,14 @@ public class ReportService {
                 String userName = messageSourceUtil.getMessageFor("excel.export.username", locale);
                 String points = messageSourceUtil.getMessageFor("excel.export.points", locale);
                 String pointsCount = messageSourceUtil.getMessageFor("excel.export.pointsCount", locale);
-                return new String[] { userName, points, pointsCount };
+                return new String[]{userName, points, pointsCount};
             }
 
             @Override
             public String[] getRowValues(PointCountResult pointCountResult) {
-                return new String[] { pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
-                        "" + pointCountResult.getNumberOfPointsCount() };
+                return new String[]{pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
+                        "" + pointCountResult.getNumberOfPointsCount()};
             }
-
         });
     }
-
 }

@@ -1,12 +1,15 @@
 package de.fred4jupiter.fredbet.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.props.CacheNames;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.repository.*;
+import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.util.Validator;
+import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
-import de.fred4jupiter.fredbet.props.CacheNames;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.repository.AppUserRepository;
-import de.fred4jupiter.fredbet.repository.BetRepository;
-import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
-import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
-import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
-import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
-import de.fred4jupiter.fredbet.web.user.UserDto;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -99,7 +90,7 @@ public class UserService {
     public AppUser updateUser(Long userId, Set<String> roles, boolean isChild) {
         Assert.notNull(userId, "userId must be given");
         AppUser appUser = findByUserId(userId);
-        if (roles != null && !roles.isEmpty()) {
+        if (Validator.isNotEmpty(roles)) {
             appUser.setRoles(roles);
         }
 
