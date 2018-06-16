@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.service.excel;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.service.RankingService;
-import de.fred4jupiter.fredbet.service.excel.ExcelExportService.EntryCallback;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;
@@ -193,24 +192,18 @@ public class ReportService {
     public byte[] exportRankingToExcel(Locale locale) {
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.MIXED);
 
-        return excelExportService.exportEntriesToExcel("Ranking Export", rankings, new EntryCallback<UsernamePoints>() {
+        return excelExportService.exportEntriesToExcel("Ranking Export", rankings, new ListEntryCallback<>() {
 
             @Override
-            public String[] getHeaderRow() {
-                final List<String> header = new ArrayList<>();
+            public void addHeaderRow(List<String> header) {
                 header.add(messageSourceUtil.getMessageFor("excel.export.ranking.username", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.ranking.points", locale));
-                String[] headerArr = new String[header.size()];
-                return header.toArray(headerArr);
             }
 
             @Override
-            public String[] getRowValues(UsernamePoints usernamePoints) {
-                final List<String> row = new ArrayList<>();
-                row.add(usernamePoints.getUserName());
-                row.add("" + usernamePoints.getTotalPoints());
-                String[] rowArr = new String[row.size()];
-                return row.toArray(rowArr);
+            public void addValueRow(UsernamePoints usernamePoints, List<String> rowValues) {
+                rowValues.add(usernamePoints.getUserName());
+                rowValues.add("" + usernamePoints.getTotalPoints());
             }
         });
     }
