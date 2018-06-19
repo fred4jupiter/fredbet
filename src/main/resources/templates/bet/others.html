@@ -7,6 +7,12 @@
 	<body>
 		<div layout:fragment="content">
 			<h1 th:text="#{bet.others.title}"></h1>
+            <div th:with="groupAvg=${allBetsCommand.getAvgGroupBet()}">
+            <p><span>Der Gruppentipp liegt bei: </span>
+                <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamOne}"/>
+                <span>:</span>
+                <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamTwo}"/>
+            </p>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="panel panel-default">

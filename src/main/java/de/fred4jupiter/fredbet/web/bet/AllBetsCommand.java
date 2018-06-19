@@ -1,10 +1,11 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import java.util.List;
-
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
+
+import java.util.List;
 
 public class AllBetsCommand extends AbstractMatchHeaderCommand {
 
@@ -30,5 +31,19 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 
 	public void setMatch(Match match) {
 		this.match = match;
+	}
+
+	public GroupAvg getAvgGroupBet() {
+		double teamOne = 0.0;
+		double teamTwo = 0.0;
+		if (Validator.isEmpty(allBetsForMatch)) {
+			return new GroupAvg(teamOne, teamTwo);
+		}
+
+		for (Bet bet : allBetsForMatch) {
+			teamOne = teamOne + bet.getGoalsTeamOne();
+			teamTwo = teamTwo + bet.getGoalsTeamTwo();
+		}
+		return new GroupAvg(teamOne / allBetsForMatch.size(), teamTwo / allBetsForMatch.size());
 	}
 }
