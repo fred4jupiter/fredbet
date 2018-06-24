@@ -36,6 +36,9 @@ public class BettingService {
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    private JokerService jokerService;
+
     public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
         Bet bet = new Bet();
         bet.setGoalsTeamOne(goalsTeamOne);
@@ -69,6 +72,10 @@ public class BettingService {
         Match match = matchRepository.getOne(bet.getMatch().getId());
         if (match.hasStarted()) {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
+        }
+
+        if (!jokerService.isSettingJokerAllowed(bet.getUserName(), bet.getMatch().getId())) {
+            throw new NumberOfJokersReachedException("Maximum number of jokes to use has already been reached!");
         }
 
         if (StringUtils.isBlank(bet.getUserName())) {
