@@ -1,21 +1,5 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Joker;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -28,6 +12,20 @@ import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/bet")
@@ -157,15 +155,16 @@ public class BetController {
     }
 
     @RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
-    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
+    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
         AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
         if (allBetsCommand == null) {
             return new ModelAndView("redirect:/matches");
-        } else if (allBetsCommand.getMatch().isBettable()){
-            messageUtil.addErrorMsg(redirect,"msg.match.bettable");
+        } else if (allBetsCommand.getMatch().isBettable()) {
+            messageUtil.addErrorMsg(redirect, "msg.match.bettable");
             return new ModelAndView("redirect:/matches", redirect.asMap());
         }
+
+        allBetsCommand.setRedirectViewName(redirectViewName);
         return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
     }
-
 }

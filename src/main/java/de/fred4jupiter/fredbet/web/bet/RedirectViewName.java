@@ -5,15 +5,15 @@ import org.apache.commons.lang3.StringUtils;
 
 public enum RedirectViewName {
 
-    MATCHES("redirect:/matches"),
+    MATCHES("/matches"),
 
-    OPEN_BETS("redirect:/bet/open"),
+    OPEN_BETS("/bet/open"),
 
-    MATCHES_UPCOMING("redirect:/matches/upcoming"),
+    MATCHES_UPCOMING("/matches/upcoming"),
 
-    MATCHES_TODAY("redirect:/matches/today"),
+    MATCHES_TODAY("/matches/today"),
 
-    MATCHES_JOKER("redirect:/matches/joker");
+    MATCHES_JOKER("/matches/joker");
 
     private static final String GROUP_PREFIX = "GROUP@";
 
@@ -38,13 +38,17 @@ public enum RedirectViewName {
     }
 
     public static String resolveRedirect(String redirectViewNameString) {
+        return "redirect:" + resolveBackUrl(redirectViewNameString);
+    }
+
+    public static String resolveBackUrl(String redirectViewNameString) {
         if (StringUtils.isBlank(redirectViewNameString)) {
             return RedirectViewName.MATCHES.getRedirectViewName();
         }
 
         if (redirectViewNameString.startsWith(GROUP_PREFIX)) {
             String group = redirectViewNameString.substring(6);
-            return "redirect:/matches/group/" + group;
+            return "/matches/group/" + group;
         }
 
         try {
