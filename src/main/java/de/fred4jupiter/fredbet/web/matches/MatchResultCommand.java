@@ -22,7 +22,17 @@ public class MatchResultCommand {
 
 	private boolean showCountryIcons;
 
-	public Long getMatchId() {
+	private String redirectViewName;
+
+    public String getRedirectViewName() {
+        return redirectViewName;
+    }
+
+    public void setRedirectViewName(String redirectViewName) {
+        this.redirectViewName = redirectViewName;
+    }
+
+    public Long getMatchId() {
 		return matchId;
 	}
 
