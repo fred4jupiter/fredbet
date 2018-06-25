@@ -81,7 +81,7 @@ public class WebMessageUtil {
 		return getTeamName(match.getCountryTwo(), match.getTeamNameTwo());
 	}
 
-	private String getTeamName(Country country, String teamName) {
+	public String getTeamName(Country country, String teamName) {
 		if (country == null) {
 			return teamName;
 		}

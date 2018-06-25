@@ -1,24 +1,5 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -27,6 +8,22 @@ import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("/match")
@@ -37,7 +34,7 @@ public class CreateEditMatchController {
     private static final String VIEW_EDIT_MATCH = "matches/edit";
 
     @Autowired
-    private WebMessageUtil messageUtil;
+    private WebMessageUtil webMessageUtil;
 
     @Autowired
     private MatchService matchService;
@@ -99,8 +96,7 @@ public class CreateEditMatchController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView save(@Valid CreateEditMatchCommand createEditMatchCommand, BindingResult result, RedirectAttributes redirect,
-            ModelMap modelMap) {
+    public ModelAndView save(@Valid CreateEditMatchCommand createEditMatchCommand, BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView(VIEW_EDIT_MATCH, "createEditMatchCommand", createEditMatchCommand);
             addCountriesAndGroups(modelAndView);
@@ -109,13 +105,16 @@ public class CreateEditMatchController {
 
         save(createEditMatchCommand);
 
+        String msgKey;
         if (createEditMatchCommand.getMatchId() == null) {
-            messageUtil.addInfoMsg(redirect, "msg.match.created", createEditMatchCommand.getTeamNameOne(),
-                    createEditMatchCommand.getTeamNameTwo());
+            msgKey = "msg.match.created";
         } else {
-            messageUtil.addInfoMsg(redirect, "msg.match.updated", createEditMatchCommand.getTeamNameOne(),
-                    createEditMatchCommand.getTeamNameTwo());
+            msgKey = "msg.match.updated";
         }
+
+        String teamNameOne = webMessageUtil.getTeamName(createEditMatchCommand.getCountryTeamOne(), createEditMatchCommand.getTeamNameOne());
+        String teamNameTwo = webMessageUtil.getTeamName(createEditMatchCommand.getCountryTeamTwo(), createEditMatchCommand.getTeamNameTwo());
+        webMessageUtil.addInfoMsg(redirect, msgKey, teamNameOne, teamNameTwo);
 
         return new ModelAndView("redirect:/matches#" + createEditMatchCommand.getMatchId());
     }
@@ -154,15 +153,14 @@ public class CreateEditMatchController {
 
         Match match = matchService.findByMatchId(matchId);
         if (match == null) {
-            messageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
+            webMessageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
             return new ModelAndView("redirect:/matches");
         }
 
         matchService.deleteMatch(matchId);
 
-        messageUtil.addInfoMsg(redirect, "msg.match.deleted", messageUtil.getTeamNameOne(match), messageUtil.getTeamNameTwo(match));
+        webMessageUtil.addInfoMsg(redirect, "msg.match.deleted", webMessageUtil.getTeamNameOne(match), webMessageUtil.getTeamNameTwo(match));
 
         return new ModelAndView("redirect:/matches");
     }
-
 }
