@@ -74,7 +74,7 @@ public class BettingService {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
         }
 
-        if (!jokerService.isSettingJokerAllowed(bet.getUserName(), bet.getMatch().getId())) {
+        if (bet.isJoker() && !jokerService.isSettingJokerAllowed(bet.getUserName(), bet.getMatch().getId())) {
             throw new NumberOfJokersReachedException("Maximum number of jokes to use has already been reached!");
         }
 
