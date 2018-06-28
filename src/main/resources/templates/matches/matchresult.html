@@ -76,7 +76,7 @@
 						<br/>
 						<div class="row">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-							<a href="#" th:href="@{${'/matches#' + matchResultCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+							<a href="#" th:href="@{${matchResultCommand.getBackUrl()}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 						</div>
 					</div>
 				</div>

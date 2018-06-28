@@ -45,6 +45,11 @@ public class BetCommand {
 	private Integer maxJokers; 
 	private boolean jokerEditable;
 
+	public String getBackUrl() {
+		String view = RedirectViewName.resolveBackUrl(redirectViewName);
+		return view + "#" + getMatchId();
+	}
+
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);

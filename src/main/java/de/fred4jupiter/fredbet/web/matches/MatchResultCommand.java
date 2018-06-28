@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 
 @TeamResultConstraint(message = "{msg.invalidTeamResult}")
@@ -23,6 +24,11 @@ public class MatchResultCommand {
 	private boolean showCountryIcons;
 
 	private String redirectViewName;
+
+	public String getBackUrl() {
+		String view = RedirectViewName.resolveBackUrl(redirectViewName);
+		return view + "#" + getMatchId();
+	}
 
     public String getRedirectViewName() {
         return redirectViewName;
