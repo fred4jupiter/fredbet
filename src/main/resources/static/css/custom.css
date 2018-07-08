@@ -28,6 +28,10 @@ body {
 	font-size: 15px;
 }
 
+.ranking-badge {
+    font-size: 13px;
+}
+
 .bold {
 	font-weight: bold;
 }
