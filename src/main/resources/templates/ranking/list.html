@@ -42,7 +42,7 @@
 					</div>
 				</div>
 			</div>
-            <div class="row">
+            <div th:if="${not #lists.isEmpty(rankings)}" class="row">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <button type="button" class="btn btn-info" data-toggle="collapse" data-target=".panel-heading"><span th:text="#{ranking.show.details.button}"></span></button>
                 </div>
