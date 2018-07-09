@@ -22,26 +22,26 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">				
 					<div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
+                        </div>
 						<div class="panel-body">
-							<div class="col-xs-3 no-left-padding">
-								<span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="'# ' + ${status.count}"
-                                      aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                      th:title="#{ranking.goalDifference.title(${ranking.goalDifference})}"></span>
-							</div>
-							<div class="col-xs-1 no-left-padding">
-								<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})}"></span>
-							</div>
-							<div class="col-xs-6 no-left-padding no-right-padding">
-								<span class="ranking-name" th:text="${ranking.userName}"></span>
-							</div>
-							<div class="col-xs-2 no-left-padding no-right-padding">
-								<span class="label label-warning label-as-badge ranking-badge" th:text="${ranking.totalPoints}"></span>
-							</div>
+                            <div class="col-xs-3 no-left-padding">
+                                <span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="'# ' + ${status.count}"></span>
+                            </div>
+                            <div class="col-xs-1 no-left-padding">
+                                <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})}"></span>
+                            </div>
+                            <div class="col-xs-6 no-left-padding no-right-padding">
+                                <span class="ranking-name" th:text="${ranking.userName}"></span>
+                            </div>
+                            <div class="col-xs-2 no-left-padding no-right-padding">
+                                <span class="label label-warning label-as-badge ranking-badge" th:text="${ranking.totalPoints}"></span>
+                            </div>
 						</div>
 					</div>
 				</div>
 			</div>
-            <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 		</div>
 	</body>
 </html>

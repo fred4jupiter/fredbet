@@ -7,11 +7,31 @@ public class UsernamePoints {
 
     private String userName;
 
-    private Integer totalPoints;
+    private Integer totalPoints = 0;
 
-    private Integer goalDifference;
+    private Integer goalDifference = 0;
+
+    private Integer correctResultCount = 0;
+
+    private boolean child;
 
     private String cssRankClass;
+
+    public boolean isChild() {
+        return child;
+    }
+
+    public void setChild(boolean child) {
+        this.child = child;
+    }
+
+    public Integer getCorrectResultCount() {
+        return correctResultCount;
+    }
+
+    public void setCorrectResultCount(Integer correctResultCount) {
+        this.correctResultCount = correctResultCount;
+    }
 
     public Integer getGoalDifference() {
         return goalDifference;
@@ -35,6 +55,7 @@ public class UsernamePoints {
         builder.append("userName", userName);
         builder.append("totalPoints", totalPoints);
         builder.append("goalDifference", goalDifference);
+        builder.append("correctResultCount", correctResultCount);
         return builder.toString();
     }
 
@@ -53,5 +74,4 @@ public class UsernamePoints {
     public void setCssRankClass(String cssRankClass) {
         this.cssRankClass = cssRankClass;
     }
-
 }

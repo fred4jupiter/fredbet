@@ -1,9 +1,10 @@
 package de.fred4jupiter.fredbet.service;
 
+import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
+import de.fred4jupiter.fredbet.domain.Visitable;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
-import de.fred4jupiter.fredbet.service.goaldiff.GoalsDifferenceCalculationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +24,21 @@ public class RankingService {
     @Autowired
     private ChildRelationFetcher childRelationFetcher;
 
-    @Autowired
-    private GoalsDifferenceCalculationService goalsDifferenceCalculationService;
-
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
         final List<UsernamePoints> rankings = betRepository.calculateRanging();
 
-        final Map<String, Integer> goalDifferenceForUsers = goalsDifferenceCalculationService.calculateGoalDifferenceForUsers();
+        List<Bet> allBetsWithMatches = betRepository.findAllBetsWithMatches();
 
-        rankings.forEach(usernamePoints -> {
-            Integer goalDiference = goalDifferenceForUsers.get(usernamePoints.getUserName());
-            usernamePoints.setGoalDifference(goalDiference);
+        CorrectResultVisitor correctResultVisitor = new CorrectResultVisitor();
+        GoalDifferenceVisitor goalDifferenceVisitor = new GoalDifferenceVisitor();
+        for (Visitable bet : allBetsWithMatches) {
+            bet.accept(correctResultVisitor);
+            bet.accept(goalDifferenceVisitor);
+        }
+
+        rankings.stream().filter(Objects::nonNull).forEach(usernamePoints -> {
+            usernamePoints.setCorrectResultCount(correctResultVisitor.getTotalCorrectResultCountForUser(usernamePoints.getUserName()));
+            usernamePoints.setGoalDifference(goalDifferenceVisitor.getTotalGoalDifferenceForUser(usernamePoints.getUserName()));
         });
 
         final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
@@ -49,8 +54,11 @@ public class RankingService {
             throw new IllegalArgumentException("Unsupported ranking selection " + rankingSelection);
         }
 
-        Comparator<UsernamePoints> comparator = Comparator.comparing(UsernamePoints::getTotalPoints).reversed().thenComparing(UsernamePoints::getGoalDifference);
-        return usernamePointsStream.sorted(comparator).collect(Collectors.toList());
+        Comparator<UsernamePoints> comparator1 = Comparator.comparingInt(UsernamePoints::getTotalPoints).reversed();
+        Comparator<UsernamePoints> comparator2 = Comparator.comparingInt(UsernamePoints::getCorrectResultCount).reversed();
+        Comparator<UsernamePoints> comparator3 = Comparator.comparingInt(UsernamePoints::getGoalDifference);
+
+        return usernamePointsStream.sorted(comparator1.thenComparing(comparator2).thenComparing(comparator3)).collect(Collectors.toList());
     }
 
     private Boolean isChild(Map<String, Boolean> relationMap, UsernamePoints usernamePoints) {
