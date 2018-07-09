@@ -22,7 +22,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">				
 					<div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading collapse">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
                         </div>
 						<div class="panel-body">
@@ -42,6 +42,11 @@
 					</div>
 				</div>
 			</div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target=".panel-heading"><span th:text="#{ranking.show.details.button}"></span></button>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>
