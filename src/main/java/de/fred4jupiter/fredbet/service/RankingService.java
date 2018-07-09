@@ -29,8 +29,8 @@ public class RankingService {
 
         List<Bet> allBetsWithMatches = betRepository.findAllBetsWithMatches();
 
-        CorrectResultVisitor correctResultVisitor = new CorrectResultVisitor();
-        GoalDifferenceVisitor goalDifferenceVisitor = new GoalDifferenceVisitor();
+        final CorrectResultVisitor correctResultVisitor = new CorrectResultVisitor();
+        final GoalDifferenceVisitor goalDifferenceVisitor = new GoalDifferenceVisitor();
         for (Visitable bet : allBetsWithMatches) {
             bet.accept(correctResultVisitor);
             bet.accept(goalDifferenceVisitor);
