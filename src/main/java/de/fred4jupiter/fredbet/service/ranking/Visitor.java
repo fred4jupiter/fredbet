@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service;
+package de.fred4jupiter.fredbet.service.ranking;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 

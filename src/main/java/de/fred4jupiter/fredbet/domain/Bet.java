@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.service.Visitor;
+import de.fred4jupiter.fredbet.service.ranking.Visitor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

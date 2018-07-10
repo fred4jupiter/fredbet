@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.service.excel;
 
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.repository.*;
-import de.fred4jupiter.fredbet.service.RankingService;
+import de.fred4jupiter.fredbet.service.ranking.RankingService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;

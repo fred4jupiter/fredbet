@@ -25,7 +25,7 @@
                         <div class="panel-heading collapse">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
                         </div>
-						<div class="panel-body">
+						<div class="panel-body" th:classappend="${ranking.sameRankingPositionAsOtherUser} ? 'ranking-same-position'">
                             <div class="col-xs-3 no-left-padding">
                                 <span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="'# ' + ${status.count}"></span>
                             </div>

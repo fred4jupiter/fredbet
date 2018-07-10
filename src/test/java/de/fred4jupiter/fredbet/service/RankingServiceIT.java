@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import de.fred4jupiter.fredbet.service.ranking.RankingService;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.repository;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -7,15 +8,32 @@ public class UsernamePoints {
 
     private String userName;
 
+    // 1. Criteria
     private Integer totalPoints = 0;
 
-    private Integer goalDifference = 0;
-
+    // 2. Criteria
     private Integer correctResultCount = 0;
+
+    // 3. Criteria
+    private Integer goalDifference = 0;
 
     private boolean child;
 
     private String cssRankClass;
+
+    private boolean sameRankingPositionAsOtherUser;
+
+    public boolean isSameRankingPositionAsOtherUser() {
+        return sameRankingPositionAsOtherUser;
+    }
+
+    public void setSameRankingPositionAsOtherUser(boolean sameRankingPositionAsOtherUser) {
+        this.sameRankingPositionAsOtherUser = sameRankingPositionAsOtherUser;
+    }
+
+    public int getUniqueHash() {
+        return new HashCodeBuilder().append(totalPoints).append(correctResultCount).append(goalDifference).toHashCode();
+    }
 
     public boolean isChild() {
         return child;
