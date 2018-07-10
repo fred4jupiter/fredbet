@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CorrectResultVisitor implements Visitor {
+class CorrectResultVisitor implements Visitor {
 
     private Map<String, Integer> correctResultCountMap = new HashMap<>();
 

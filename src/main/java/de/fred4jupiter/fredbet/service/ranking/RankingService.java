@@ -27,6 +27,15 @@ public class RankingService {
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
         final List<UsernamePoints> rankings = betRepository.calculateRanging();
 
+        calculateAdditionalMetricsForRanking(rankings);
+
+        SameRankingCollector collector = new SameRankingCollector();
+        collector.markEntriesWithSameRanking(rankings);
+
+        return filterAndSortRankings(rankingSelection, rankings);
+    }
+
+    private void calculateAdditionalMetricsForRanking(List<UsernamePoints> rankings) {
         List<Bet> allBetsWithMatches = betRepository.findAllBetsWithMatches();
 
         final CorrectResultVisitor correctResultVisitor = new CorrectResultVisitor();
@@ -40,10 +49,9 @@ public class RankingService {
             usernamePoints.setCorrectResultCount(correctResultVisitor.getTotalCorrectResultCountForUser(usernamePoints.getUserName()));
             usernamePoints.setGoalDifference(goalDifferenceVisitor.getTotalGoalDifferenceForUser(usernamePoints.getUserName()));
         });
+    }
 
-        SameRankingCollector collector = new SameRankingCollector();
-        collector.markEntriesWithSameRanking(rankings);
-
+    private List<UsernamePoints> filterAndSortRankings(RankingSelection rankingSelection, List<UsernamePoints> rankings) {
         final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
         Stream<UsernamePoints> usernamePointsStream = rankings.stream().filter(Objects::nonNull);
 

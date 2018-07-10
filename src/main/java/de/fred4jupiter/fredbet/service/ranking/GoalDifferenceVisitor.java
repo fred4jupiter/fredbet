@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GoalDifferenceVisitor implements Visitor {
+class GoalDifferenceVisitor implements Visitor {
 
     private Map<String, Integer> goalDifferenceMap = new HashMap<>();
 
