@@ -78,6 +78,7 @@ public class StatisticService {
 			}
 		}
 
+		statisticList.sort(Comparator.comparing(Statistic::getUsername, String.CASE_INSENSITIVE_ORDER));
 		return statisticList;
 	}
 
