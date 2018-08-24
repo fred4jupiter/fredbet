@@ -155,9 +155,13 @@ You can call this URL for a health check:
 
 You will see a response of `{"status":"UP"}`. The health check URL is callable without authentication.
 
-## Screenshot
+## Screenshots
 
-![FredBet Screenshot](src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot")
+![FredBet Screenshot 1](src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot 1")
+
+![FredBet Screenshot 2](src/docs/screenshot/Screenshot2.jpg?raw=true "FredBet Screenshot 2")
+
+![FredBet Screenshot 3](src/docs/screenshot/Screenshot3.jpg?raw=true "FredBet Screenshot 3")
 
 ## License
 
