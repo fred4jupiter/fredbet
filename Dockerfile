@@ -14,7 +14,7 @@ RUN set -ex; \
         && chmod -R g+rw /home/fred \
         && chmod g+w /etc/passwd
 
-ENV JAVA_OPTS="-Xms256m -Xmx1024m -Duser.timezone=Europe/Berlin"
+ENV JAVA_OPTS="-Xms1024m -Xmx1024m -Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
