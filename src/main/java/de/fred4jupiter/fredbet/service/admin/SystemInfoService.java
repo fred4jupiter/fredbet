@@ -4,19 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.boot.info.InfoProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -25,66 +20,58 @@ public class SystemInfoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SystemInfoService.class);
 
-    @Autowired
-    private BuildProperties buildProperties;
+    private final BuildProperties buildProperties;
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     private final SortedMap<String, Object> allProperties = new TreeMap<>();
 
-    @PostConstruct
-    private void addStaticProperties() {
-        Iterator<InfoProperties.Entry> iterator = buildProperties.iterator();
-        while (iterator.hasNext()) {
-            InfoProperties.Entry entry = iterator.next();
-            allProperties.put(entry.getKey(), entry.getValue());
-        }
+    @Autowired
+    public SystemInfoService(BuildProperties buildProperties, Environment environment) {
+        this.buildProperties = buildProperties;
+        this.environment = environment;
 
-        addSpringProfiles(allProperties);
-        addEnvProperty("spring.datasource.hikari.driver-class-name", allProperties);
-        addEnvProperty("spring.datasource.hikari.jdbc-url", allProperties);
-        addEnvProperty("fredbet.image-location", allProperties);
-        addEnvProperty("fredbet.image-size", allProperties);
-        addEnvProperty("fredbet.thumbnail-size", allProperties);
-        addEnvProperty("fredbet.aws-s3bucket-name", allProperties);
-        addEnvProperty("fredbet.aws-region", allProperties);
+        addStaticProperties();
+    }
+
+    private void addStaticProperties() {
+        allProperties.put("build.time", buildProperties.getTime());
+        allProperties.put("build.version", buildProperties.getVersion());
+
+        addSpringProfiles();
+        addEnvProperty("spring.datasource.hikari.driver-class-name");
+        addEnvProperty("spring.datasource.hikari.jdbc-url");
+        addEnvProperty("fredbet.image-location");
+        addEnvProperty("fredbet.image-size");
+        addEnvProperty("fredbet.thumbnail-size");
+        addEnvProperty("fredbet.aws-s3bucket-name");
+        addEnvProperty("fredbet.aws-region");
     }
 
     public SortedMap<String, Object> fetchSystemInfo() {
-        addCurrentDateTime(allProperties);
-        addHostName(allProperties);
-        allProperties.put("system.timeZone", ZoneId.systemDefault().toString());
-        return allProperties;
+        SortedMap<String, Object> props = new TreeMap<>(allProperties);
+        props.put("currentDateTime", ZonedDateTime.now());
+        props.put("hostName", getHostName());
+        props.put("system.timeZone", ZoneId.systemDefault().toString());
+        return props;
     }
 
-    private void addEnvProperty(String envKey, SortedMap<String, Object> map) {
-        map.put(envKey, environment.getProperty(envKey));
+    private void addEnvProperty(String envKey) {
+        allProperties.put(envKey, environment.getProperty(envKey));
     }
 
-    private String convertToSystemLocale(String buildTimestamp) {
-        String tmpBuildTimestamp = buildTimestamp + " +00:00";
-        ZonedDateTime parseToZonedDateTime = ZonedDateTime.parse(tmpBuildTimestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm ZZZZZ"));
-        ZonedDateTime converted = parseToZonedDateTime.withZoneSameInstant(ZoneOffset.systemDefault());
-        return converted.toString();
-    }
-
-    private void addSpringProfiles(SortedMap<String, Object> map) {
+    private void addSpringProfiles() {
         String[] activeProfiles = environment.getActiveProfiles();
-        map.put("Active Profiles", activeProfiles != null ? Arrays.asList(activeProfiles) : "");
+        allProperties.put("Active Profiles", Arrays.asList(activeProfiles));
     }
 
-    private void addHostName(SortedMap<String, Object> map) {
+    private String getHostName() {
         try {
             InetAddress localHost = InetAddress.getLocalHost();
-            String hostName = localHost.getHostName();
-            map.put("hostName", hostName);
+            return localHost.getHostName();
         } catch (UnknownHostException e) {
             LOG.error(e.getMessage(), e);
+            return "n.A.";
         }
-    }
-
-    private void addCurrentDateTime(SortedMap<String, Object> map) {
-        map.put("currentDateTime", ZonedDateTime.now());
     }
 }
