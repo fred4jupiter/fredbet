@@ -6,7 +6,7 @@ services:
   - docker
 language: java
 jdk:
-- oraclejdk9
+- oraclejdk11
 install:
 - mvn verify
 deploy:
