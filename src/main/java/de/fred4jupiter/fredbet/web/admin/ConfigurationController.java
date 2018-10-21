@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import javax.validation.Valid;
-
+import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.service.admin.CacheAdministrationService;
+import de.fred4jupiter.fredbet.util.LogLevel;
+import de.fred4jupiter.fredbet.util.LogLevelChangable;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,58 +15,53 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.admin.CacheAdministrationService;
-import de.fred4jupiter.fredbet.util.LoggingUtil;
-import de.fred4jupiter.fredbet.util.LoggingUtil.LogLevel;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/config")
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class ConfigurationController {
 
-	@Autowired
-	private CacheAdministrationService cacheAdministrationService;
+    @Autowired
+    private CacheAdministrationService cacheAdministrationService;
 
-	@Autowired
-	private WebMessageUtil webMessageUtil;
+    @Autowired
+    private WebMessageUtil webMessageUtil;
 
-	@Autowired
-	private LoggingUtil loggingUtil;
+    @Autowired
+    private LogLevelChangable logLevelChangable;
 
-	@ModelAttribute("configurationCommand")
-	public ConfigurationCommand initConfigurationCommand() {
-		return new ConfigurationCommand();
-	}
+    @ModelAttribute("configurationCommand")
+    public ConfigurationCommand initConfigurationCommand() {
+        return new ConfigurationCommand();
+    }
 
-	@RequestMapping(value = "/show", method = RequestMethod.GET)
-	public ModelAndView showCachePage(ConfigurationCommand configurationCommand) {
-		configurationCommand.setLevel(loggingUtil.getCurrentLogLevel());
-		return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
-	}
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    public ModelAndView showCachePage(ConfigurationCommand configurationCommand) {
+        configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
+        return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
+    }
 
-	@RequestMapping(path = "/clearCache", method = RequestMethod.GET)
-	public ModelAndView clearCache(ConfigurationCommand configurationCommand, ModelMap modelMap) {
-		final ModelAndView modelAndView = new ModelAndView("admin/configuration");
+    @RequestMapping(path = "/clearCache", method = RequestMethod.GET)
+    public ModelAndView clearCache(ConfigurationCommand configurationCommand, ModelMap modelMap) {
+        final ModelAndView modelAndView = new ModelAndView("admin/configuration");
 
-		this.cacheAdministrationService.clearCaches();
+        this.cacheAdministrationService.clearCaches();
 
-		configurationCommand.setLevel(loggingUtil.getCurrentLogLevel());
+        configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
 
-		webMessageUtil.addInfoMsg(modelMap, "administration.msg.info.cacheCleared");
-		return modelAndView;
-	}
+        webMessageUtil.addInfoMsg(modelMap, "administration.msg.info.cacheCleared");
+        return modelAndView;
+    }
 
-	@RequestMapping(value = "/changeLogLevel", method = RequestMethod.POST)
-	public ModelAndView changeLogLevel(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect, ModelMap modelMap) {
-		LogLevel level = configurationCommand.getLevel();
+    @RequestMapping(value = "/changeLogLevel", method = RequestMethod.POST)
+    public ModelAndView changeLogLevel(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect, ModelMap modelMap) {
+        LogLevel level = configurationCommand.getLevel();
 
-		loggingUtil.setLogLevelTo(level);
+        logLevelChangable.setLogLevelTo(level);
 
-		webMessageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
 
-		return new ModelAndView("redirect:/config/show");
-	}
-
+        return new ModelAndView("redirect:/config/show");
+    }
 }

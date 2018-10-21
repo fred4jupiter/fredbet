@@ -26,7 +26,7 @@ public class DatabaseBackupService {
 	@Autowired
 	private Environment environment;
 
-	private static final Long DATABASE_BACKUP_CONFIG_ID = Long.valueOf(2);
+	private static final Long DATABASE_BACKUP_CONFIG_ID = 2L;
 
 	public String executeBackup() {
 		String driverClassName = this.environment.getProperty("spring.datasource.hikari.driver-class-name");
