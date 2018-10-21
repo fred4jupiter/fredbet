@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.util;
 
 import ch.qos.logback.classic.Level;
+import de.fred4jupiter.fredbet.Application;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class LoggingUtil implements LogLevelChangable {
 
-    private static final String APP_PACKAGE_LOGGER = "de.fred4jupiter.fredbet";
+    private static final String APP_PACKAGE_LOGGER = Application.class.getPackageName();
 
     private static final Logger LOG = LoggerFactory.getLogger(LoggingUtil.class);
 

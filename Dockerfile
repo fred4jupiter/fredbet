@@ -17,6 +17,7 @@ RUN set -ex; \
 ENV JAVA_OPTS="-Xms1024m -Xmx1024m -Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
+EXPOSE 5555
 
 COPY target/fredbet.jar /home/fred/fredbet.jar
 

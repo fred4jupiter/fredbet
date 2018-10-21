@@ -46,20 +46,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * these matches will not go through the security filter (all above
          * static folder)
          */
-        web.ignoring().antMatchers("favicon.ico", "/blueimpgallery/**", "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
+        web.ignoring().antMatchers("/actuator/**", "/webjars/**", "favicon.ico", "/blueimpgallery/**", "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/webjars/**", "/login", "/logout", "/static/**", "/console/*").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/logout", "/console/*").permitAll();
         http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
         http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
         http.authorizeRequests().antMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO);
         http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
-
-        // Spring Boot Actuator
-        http.authorizeRequests().antMatchers("/actuator/health").permitAll();
-        http.authorizeRequests().antMatchers("/actuator/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 
         http.authorizeRequests().anyRequest().authenticated();
 
