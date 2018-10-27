@@ -151,9 +151,13 @@ Disabling Liquibase database migration at all. This may be useful if you have an
 
 You can call this URL for a health check:
 
-[http://localhost:8080/actuator/health](http://localhost:8080/actuator/health).
+[http://localhost:5555/actuator/health](http://localhost:5555/actuator/health).
 
 You will see a response of `{"status":"UP"}`. The health check URL is callable without authentication.
+
+## H2-Console
+
+While running in `dev` profile the H2 web console is available at [http://localhost:8080/console](http://localhost:8080/console).
 
 ## Screenshots
 
