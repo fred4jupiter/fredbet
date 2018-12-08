@@ -22,7 +22,7 @@
 		<script type="text/javascript" th:src="@{/lightbox/js/lightbox.min.js}"></script>		
 	</head>
 	<body>
-		<nav th:insert="~{_navigation :: menu}" class="navbar navbar-inverse navbar-fixed-top"></nav>
+		<nav th:replace="~{_navigation :: menu}"></nav>
 		<div class="container" role="main">		
 			<div layout:fragment="content" class="container" role="main">Content Placeholder</div>
 		</div>
