@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -68,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // if the image has not been changed)
         http.headers().cacheControl().disable();
 
-        if (environment.acceptsProfiles(FredBetProfile.DEV)) {
+        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
             // this is for the embedded h2 console
             http.headers().frameOptions().disable();
 

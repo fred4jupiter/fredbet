@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +54,7 @@ public class RuntimeConfigurationService {
 		runtimeConfig.setPasswordForReset(FredbetConstants.DEFAULT_REST_PASSWORT);
 		runtimeConfig.setChangePasswordOnFirstLogin(true);
 
-		if (environment.acceptsProfiles(FredBetProfile.DEV)) {
+		if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);
 			runtimeConfig.setEnableChangingUsername(true);
 			runtimeConfig.setCreateDemoData(true);

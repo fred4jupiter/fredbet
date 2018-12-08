@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -27,9 +28,9 @@ public class LoggingUtil implements LogLevelChangable {
 
     @PostConstruct
     public void init() {
-        if (environment.acceptsProfiles(FredBetProfile.DEV)) {
+        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
             setLogLevelTo(LogLevel.DEBUG);
-        } else if (environment.acceptsProfiles(FredBetProfile.PROD)) {
+        } else if (environment.acceptsProfiles(Profiles.of(FredBetProfile.PROD))) {
             setLogLevelTo(LogLevel.INFO);
         }
     }
