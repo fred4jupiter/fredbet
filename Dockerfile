@@ -2,9 +2,9 @@ FROM openjdk:11-jre-slim
 
 LABEL maintainer="Michael Staehler"
 
-# VOLUME /tmp
+VOLUME /tmp
 
-# Add custom user for running the image as a non-root user
+# Add custom user for running the image as a non-root user (but in root group)
 RUN useradd -ms /bin/bash fred
 
 RUN set -ex; \
@@ -14,7 +14,7 @@ RUN set -ex; \
         && chmod -R g+rw /home/fred \
         && chmod g+w /etc/passwd
 
-ENV JAVA_OPTS="-Xms1024m -Xmx1024m -Duser.timezone=Europe/Berlin"
+ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 EXPOSE 5555
