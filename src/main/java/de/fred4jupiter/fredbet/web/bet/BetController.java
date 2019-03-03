@@ -118,16 +118,13 @@ public class BetController {
     }
 
     @PostMapping
-    public String saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+    public String saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("betCommand", betCommand);
             return VIEW_EDIT;
         }
 
-        Bet bet = toBet(betCommand);
-
         try {
-            bettingService.save(bet);
+            bettingService.save(toBet(betCommand));
             messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
         } catch (NoBettingAfterMatchStartedAllowedException e) {
             messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
