@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,27 +21,30 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 @RequestMapping("/ranking")
 public class RankingController {
 
+	private static final String PAGE_RANKING = "ranking/list";
+
 	@Autowired
 	private RankingService rankingService;
 
 	@Autowired
 	private WebMessageUtil messageUtil;
 
-	@RequestMapping
-	public ModelAndView list(ModelMap modelMap) {
-		return queryRanking(modelMap, RankingSelection.MIXED);
+	@GetMapping
+	public String list(Model model) {
+		return queryRanking(model, RankingSelection.MIXED);
 	}
 
-	@RequestMapping("/{mode}")
-	public ModelAndView list(ModelMap modelMap, @PathVariable("mode") String mode) {
-		return queryRanking(modelMap, RankingSelection.fromMode(mode));
+	@GetMapping("/{mode}")
+	public String list(Model model, @PathVariable("mode") String mode) {
+		return queryRanking(model, RankingSelection.fromMode(mode));
 	}
 
-	private ModelAndView queryRanking(ModelMap modelMap, RankingSelection rankingSelection) {
+	private String queryRanking(Model model, RankingSelection rankingSelection) {
 		List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(rankingSelection);
 		if (Validator.isEmpty(rankings) && RankingSelection.MIXED.equals(rankingSelection)) {
-			messageUtil.addInfoMsg(modelMap, "ranking.noRankings");
-			return new ModelAndView("ranking/list", "rankings", rankings);
+			messageUtil.addInfoMsg(model, "ranking.noRankings");
+			model.addAttribute("rankings", rankings);
+			return PAGE_RANKING;
 		}
 
 		for (int i = 0; i < rankings.size(); i++) {
@@ -60,6 +65,8 @@ public class RankingController {
 				usernamePoints.setCssRankClass("label-default");
 			}
 		}
-		return new ModelAndView("ranking/list", "rankings", rankings);
+
+		model.addAttribute("rankings", rankings);
+		return PAGE_RANKING;
 	}
 }

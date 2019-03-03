@@ -13,13 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,11 +42,15 @@ public class UserController {
 
     private static final String CREATE_USER_PAGE = "user/create";
 
+    private static final String LIST_USER_PAGE = "user/list";
+
+    private static final String REDIRECT_USER_PAGE = "redirect:/user";
+
     @Autowired
     private UserService userService;
 
     @Autowired
-    private WebMessageUtil messageUtil;
+    private WebMessageUtil webMessageUtil;
 
     @Autowired
     private SecurityService securityService;
@@ -59,22 +61,24 @@ public class UserController {
     @ModelAttribute("availableRoles")
     public List<String> availableRoles() {
         List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-        return Collections.unmodifiableList(fredBetRoles.stream().map(Enum::name).collect(Collectors.toList()));
+        return fredBetRoles.stream().map(Enum::name).collect(Collectors.toUnmodifiableList());
     }
 
-    @RequestMapping
-    public ModelAndView list() {
+    @GetMapping
+    public String list(Model model) {
         List<UserDto> users = userService.findAllAsUserDto();
-        return new ModelAndView("user/list", "allUsers", users);
+        model.addAttribute("allUsers", users);
+        return LIST_USER_PAGE;
     }
 
-    @RequestMapping("{id}")
-    public ModelAndView edit(@PathVariable("id") Long userId) {
+    @GetMapping("{id}")
+    public String edit(@PathVariable("id") Long userId, Model model) {
         AppUser user = userService.findByUserId(userId);
 
         EditUserCommand editUserCommand = toEditUserCommand(user);
 
-        return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
+        model.addAttribute("editUserCommand", editUserCommand);
+        return EDIT_USER_PAGE;
     }
 
     private EditUserCommand toEditUserCommand(AppUser appUser) {
@@ -92,10 +96,10 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ModelAndView edit(@Valid EditUserCommand editUserCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+    @PostMapping("/edit")
+    public String edit(@Valid EditUserCommand editUserCommand, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
+            return EDIT_USER_PAGE;
         }
 
         if (webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
@@ -105,41 +109,41 @@ public class UserController {
             userService.updateUser(editUserCommand.getUserId(), editUserCommand.getRoles(), editUserCommand.isChild());
         }
 
-        messageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
-        return new ModelAndView("redirect:/user");
+        webMessageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
+        return REDIRECT_USER_PAGE;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_USER + "')")
-    @RequestMapping("{id}/delete")
-    public ModelAndView delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
+    @GetMapping("{id}/delete")
+    public String delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
         if (securityService.getCurrentUser().getId().equals(userId)) {
-            messageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
-            return new ModelAndView("redirect:/user");
+            webMessageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
+            return REDIRECT_USER_PAGE;
         }
 
         AppUser appUser = userService.findByUserId(userId);
         try {
             userService.deleteUser(userId);
-            messageUtil.addInfoMsg(redirect, "user.deleted", appUser.getUsername());
+            webMessageUtil.addInfoMsg(redirect, "user.deleted", appUser.getUsername());
         } catch (UserNotDeletableException e) {
-            messageUtil.addErrorMsg(redirect, "user.not.deletable", appUser.getUsername());
+            webMessageUtil.addErrorMsg(redirect, "user.not.deletable", appUser.getUsername());
         }
 
-        return new ModelAndView("redirect:/user");
+        return REDIRECT_USER_PAGE;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public ModelAndView create() {
-        return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", new CreateUserCommand());
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("createUserCommand", new CreateUserCommand());
+        return CREATE_USER_PAGE;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView create(@Valid CreateUserCommand createUserCommand, BindingResult bindingResult, RedirectAttributes redirect,
-                               ModelMap modelMap) {
+    @PostMapping
+    public String create(@Valid CreateUserCommand createUserCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
+            return CREATE_USER_PAGE;
         }
 
         try {
@@ -158,19 +162,20 @@ public class UserController {
 
             userService.createUser(appUserBuilder.build());
         } catch (UserAlreadyExistsException e) {
-            messageUtil.addErrorMsg(modelMap, "user.username.duplicate");
-            return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
+            webMessageUtil.addErrorMsg(model, "user.username.duplicate");
+            model.addAttribute("createUserCommand", createUserCommand);
+            return CREATE_USER_PAGE;
         }
 
-        messageUtil.addInfoMsg(redirect, "user.created", createUserCommand.getUsername());
-        return new ModelAndView("redirect:/user");
+        webMessageUtil.addInfoMsg(redirect, "user.created", createUserCommand.getUsername());
+        return REDIRECT_USER_PAGE;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_PASSWORD_RESET + "')")
-    @RequestMapping("{id}/resetPwd")
-    public ModelAndView resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
+    @GetMapping("{id}/resetPwd")
+    public String resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
         String username = userService.resetPasswordForUser(userId);
-        messageUtil.addInfoMsg(redirect, "user.password.reset", username);
-        return new ModelAndView("redirect:/user");
+        webMessageUtil.addInfoMsg(redirect, "user.password.reset", username);
+        return REDIRECT_USER_PAGE;
     }
 }
