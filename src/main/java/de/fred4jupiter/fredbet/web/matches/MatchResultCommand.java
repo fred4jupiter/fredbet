@@ -6,29 +6,30 @@ import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 @TeamResultConstraint(message = "{msg.invalidTeamResult}")
 public class MatchResultCommand {
 
-	private Long matchId;
+    private Long matchId;
 
-	private String teamNameOne;
-	private String teamNameTwo;
+    private String teamNameOne;
+    private String teamNameTwo;
 
-	private String iconPathTeamOne;
-	private String iconPathTeamTwo;
+    private String iconPathTeamOne;
+    private String iconPathTeamTwo;
 
-	private Integer teamResultOne;
-	private Integer teamResultTwo;
+    private Integer teamResultOne;
 
-	private boolean penaltyWinnerOne;
+    private Integer teamResultTwo;
 
-	private boolean groupMatch;
+    private boolean penaltyWinnerOne;
 
-	private boolean showCountryIcons;
+    private boolean groupMatch;
 
-	private String redirectViewName;
+    private boolean showCountryIcons;
 
-	public String getBackUrl() {
-		String view = RedirectViewName.resolveBackUrl(redirectViewName);
-		return view + "#" + getMatchId();
-	}
+    private String redirectViewName;
+
+    public String getBackUrl() {
+        String view = RedirectViewName.resolveBackUrl(redirectViewName);
+        return view + "#" + getMatchId();
+    }
 
     public String getRedirectViewName() {
         return redirectViewName;
@@ -39,82 +40,82 @@ public class MatchResultCommand {
     }
 
     public Long getMatchId() {
-		return matchId;
-	}
+        return matchId;
+    }
 
-	public void setMatchId(Long matchId) {
-		this.matchId = matchId;
-	}
+    public void setMatchId(Long matchId) {
+        this.matchId = matchId;
+    }
 
-	public Integer getTeamResultOne() {
-		return teamResultOne;
-	}
+    public Integer getTeamResultOne() {
+        return teamResultOne;
+    }
 
-	public void setTeamResultOne(Integer teamResultOne) {
-		this.teamResultOne = teamResultOne;
-	}
+    public void setTeamResultOne(Integer teamResultOne) {
+        this.teamResultOne = teamResultOne;
+    }
 
-	public Integer getTeamResultTwo() {
-		return teamResultTwo;
-	}
+    public Integer getTeamResultTwo() {
+        return teamResultTwo;
+    }
 
-	public void setTeamResultTwo(Integer teamResultTwo) {
-		this.teamResultTwo = teamResultTwo;
-	}
+    public void setTeamResultTwo(Integer teamResultTwo) {
+        this.teamResultTwo = teamResultTwo;
+    }
 
-	public boolean isPenaltyWinnerOne() {
-		return penaltyWinnerOne;
-	}
+    public boolean isPenaltyWinnerOne() {
+        return penaltyWinnerOne;
+    }
 
-	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
-		this.penaltyWinnerOne = penaltyWinnerOne;
-	}
+    public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+        this.penaltyWinnerOne = penaltyWinnerOne;
+    }
 
-	public boolean isGroupMatch() {
-		return this.groupMatch;
-	}
+    public boolean isGroupMatch() {
+        return this.groupMatch;
+    }
 
-	public void setGroupMatch(boolean groupMatch) {
-		this.groupMatch = groupMatch;
-	}
+    public void setGroupMatch(boolean groupMatch) {
+        this.groupMatch = groupMatch;
+    }
 
-	public boolean isShowCountryIcons() {
-		return showCountryIcons;
-	}
+    public boolean isShowCountryIcons() {
+        return showCountryIcons;
+    }
 
-	public void setShowCountryIcons(boolean showCountryIcons) {
-		this.showCountryIcons = showCountryIcons;
-	}
+    public void setShowCountryIcons(boolean showCountryIcons) {
+        this.showCountryIcons = showCountryIcons;
+    }
 
-	public String getTeamNameOne() {
-		return teamNameOne;
-	}
+    public String getTeamNameOne() {
+        return teamNameOne;
+    }
 
-	public void setTeamNameOne(String teamNameOne) {
-		this.teamNameOne = teamNameOne;
-	}
+    public void setTeamNameOne(String teamNameOne) {
+        this.teamNameOne = teamNameOne;
+    }
 
-	public String getTeamNameTwo() {
-		return teamNameTwo;
-	}
+    public String getTeamNameTwo() {
+        return teamNameTwo;
+    }
 
-	public void setTeamNameTwo(String teamNameTwo) {
-		this.teamNameTwo = teamNameTwo;
-	}
+    public void setTeamNameTwo(String teamNameTwo) {
+        this.teamNameTwo = teamNameTwo;
+    }
 
-	public void setIconPathTeamOne(String iconPathTeamOne) {
-		this.iconPathTeamOne = iconPathTeamOne;
-	}
+    public void setIconPathTeamOne(String iconPathTeamOne) {
+        this.iconPathTeamOne = iconPathTeamOne;
+    }
 
-	public void setIconPathTeamTwo(String iconPathTeamTwo) {
-		this.iconPathTeamTwo = iconPathTeamTwo;
-	}
+    public void setIconPathTeamTwo(String iconPathTeamTwo) {
+        this.iconPathTeamTwo = iconPathTeamTwo;
+    }
 
-	public String getIconPathTeamOne() {
-		return iconPathTeamOne;
-	}
+    public String getIconPathTeamOne() {
+        return iconPathTeamOne;
+    }
 
-	public String getIconPathTeamTwo() {
-		return iconPathTeamTwo;
-	}
+    public String getIconPathTeamTwo() {
+        return iconPathTeamTwo;
+    }
 }

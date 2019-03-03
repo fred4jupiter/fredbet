@@ -118,9 +118,10 @@ public class BetController {
     }
 
     @PostMapping
-    public ModelAndView saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+            model.addAttribute("betCommand", betCommand);
+            return VIEW_EDIT;
         }
 
         Bet bet = toBet(betCommand);
@@ -133,7 +134,7 @@ public class BetController {
         }
 
         String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
-        return new ModelAndView(view + "#" + betCommand.getMatchId());
+        return view + "#" + betCommand.getMatchId();
     }
 
     private Bet toBet(BetCommand betCommand) {

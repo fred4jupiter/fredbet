@@ -8,12 +8,9 @@ import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,22 +24,24 @@ public class MatchResultController {
     private MatchService matchService;
 
     @Autowired
-    private WebMessageUtil messageUtil;
+    private WebMessageUtil webMessageUtil;
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") Long matchId, @RequestParam(required = false) String redirectViewName) {
+    @GetMapping("/{id}")
+    public String edit(@PathVariable("id") Long matchId, @RequestParam(required = false) String redirectViewName, Model model) {
         Match match = matchService.findMatchById(matchId);
         MatchResultCommand matchResultCommand = toMatchResultCommand(match);
         matchResultCommand.setRedirectViewName(redirectViewName);
-        return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
+        model.addAttribute("matchResultCommand", matchResultCommand);
+        return VIEW_EDIT_MATCHRESULT;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult) {
+    @PostMapping
+    public String save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView(VIEW_EDIT_MATCHRESULT, "matchResultCommand", matchResultCommand);
+            model.addAttribute("matchResultCommand", matchResultCommand);
+            return VIEW_EDIT_MATCHRESULT;
         }
 
         Match match = matchService.findMatchById(matchResultCommand.getMatchId());
@@ -53,7 +52,7 @@ public class MatchResultController {
         matchService.save(match);
 
         String view = RedirectViewName.resolveRedirect(matchResultCommand.getRedirectViewName());
-        return new ModelAndView(view + "#" + matchResultCommand.getMatchId());
+        return view + "#" + matchResultCommand.getMatchId();
     }
 
     private MatchResultCommand toMatchResultCommand(Match match) {
@@ -62,10 +61,10 @@ public class MatchResultController {
         matchResultCommand.setGroupMatch(match.isGroupMatch());
 
         if (match.hasContriesSet()) {
-            matchResultCommand.setTeamNameOne(messageUtil.getCountryName(match.getCountryOne()));
+            matchResultCommand.setTeamNameOne(webMessageUtil.getCountryName(match.getCountryOne()));
             matchResultCommand.setIconPathTeamOne(match.getCountryOne().getIconPathBig());
 
-            matchResultCommand.setTeamNameTwo(messageUtil.getCountryName(match.getCountryTwo()));
+            matchResultCommand.setTeamNameTwo(webMessageUtil.getCountryName(match.getCountryTwo()));
             matchResultCommand.setIconPathTeamTwo(match.getCountryTwo().getIconPathBig());
             matchResultCommand.setShowCountryIcons(true);
         } else {
