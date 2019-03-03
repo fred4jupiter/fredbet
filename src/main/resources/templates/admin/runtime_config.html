@@ -14,32 +14,32 @@
 					<div class="col-xs-12 col-sm-6 col-md-4">										
 						<ul class="list-group">
 							<li class="list-group-item">								
-								<input type="checkbox" th:field="*{runtimeConfig.enabledParentChildRanking}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>
+								<input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeConfig.enabledParentChildRanking}"/>
+								<label for="enabledParentChildRanking" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.enabledParentChildRanking.tooltip}"></span>								
 							</li>
 							<li class="list-group-item">									
-								<input type="checkbox" th:field="*{runtimeConfig.enableChangingUsername}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>
+								<input id="enableChangingUsername" type="checkbox" th:field="*{runtimeConfig.enableChangingUsername}"/>
+								<label for="enableChangingUsername" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.enableChangingUsername.tooltip}"></span>
 							</li>
 							<li class="list-group-item">									
-								<input type="checkbox" th:field="*{runtimeConfig.showDemoDataNavigationEntry}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>
+								<input id="showDemoDataNavigationEntry" type="checkbox" th:field="*{runtimeConfig.showDemoDataNavigationEntry}"/>
+								<label for="showDemoDataNavigationEntry" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.showDemoDataNavigationEntry.tooltip}"></span>
 							</li>
 							<li class="list-group-item">									
-								<input type="checkbox" th:field="*{runtimeConfig.createDemoData}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.createDemoData}"></label>
+								<input id="createDemoData" type="checkbox" th:field="*{runtimeConfig.createDemoData}"/>
+								<label for="createDemoData" th:text="#{administration.runtime.configuration.createDemoData}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.createDemoData.tooltip}"></span>
 							</li>
 							<li class="list-group-item">								
-								<input type="checkbox" th:field="*{runtimeConfig.changePasswordOnFirstLogin}"/>
-								<label for="child" th:text="#{administration.runtime.configuration.changePasswordOnFirstLogin}"></label>
+								<input id="changePasswordOnFirstLogin" type="checkbox" th:field="*{runtimeConfig.changePasswordOnFirstLogin}"/>
+								<label for="changePasswordOnFirstLogin" th:text="#{administration.runtime.configuration.changePasswordOnFirstLogin}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>								
 							</li>
@@ -51,24 +51,24 @@
 					<div class="col-xs-12 col-sm-6 col-md-4">	
 						<div class="form-group">
 							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label> 
-							<select th:field="*{runtimeConfig.favouriteCountry}" class="form-control">
+							<select id="favouriteCountry" th:field="*{runtimeConfig.favouriteCountry}" class="form-control">
 							    <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.favouriteCountry')}" th:errors="*{runtimeConfig.favouriteCountry}">favouriteCountry Error</p>						
 						</div>
 						<div class="form-group">
 							<label for="passwordForReset" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label> 
-							<input type="text" th:field="*{runtimeConfig.passwordForReset}" class="form-control" />
+							<input id="passwordForReset" type="text" th:field="*{runtimeConfig.passwordForReset}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.passwordForReset')}" th:errors="*{runtimeConfig.passwordForReset}">passwordForReset Error</p>						
 						</div>	
 						<div class="form-group">
 							<label for="currentTime" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
 							<br/> 
-							<span th:text="${runtimeConfigCommand.currentTime}"></span>						
+							<span id="currentTime" th:text="${runtimeConfigCommand.currentTime}"></span>						
 						</div>
 						<div class="form-group">
 							<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone}"></label> 
-							<select th:field="*{timeZone}" class="form-control">
+							<select id="timeZone" th:field="*{timeZone}" class="form-control">
 							  <option th:each="timeZone : ${runtimeConfigCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
 							</select>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('timeZone')}" th:errors="*{timeZone}">timeZone Error</p>						
@@ -81,17 +81,17 @@
 						<h3 th:text="#{administration.runtime.configuration.extraBetPoints}"></h3>
 						<div class="form-group">
 							<label for="runtimeConfig.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label> 
-							<input type="text" th:field="*{runtimeConfig.pointsFinalWinner}" class="form-control" />
+							<input id="runtimeConfig.pointsFinalWinner" type="text" th:field="*{runtimeConfig.pointsFinalWinner}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsFinalWinner')}" th:errors="*{runtimeConfig.pointsFinalWinner}"></p>						
 						</div>
 						<div class="form-group">
 							<label for="runtimeConfig.pointsSemiFinalWinner" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label> 
-							<input type="text" th:field="*{runtimeConfig.pointsSemiFinalWinner}" class="form-control" />
+							<input id="runtimeConfig.pointsSemiFinalWinner" type="text" th:field="*{runtimeConfig.pointsSemiFinalWinner}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsSemiFinalWinner')}" th:errors="*{runtimeConfig.pointsSemiFinalWinner}"></p>						
 						</div>	
 						<div class="form-group">
 							<label for="runtimeConfig.pointsThirdFinalWinner" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label> 
-							<input type="text" th:field="*{runtimeConfig.pointsThirdFinalWinner}" class="form-control" />
+							<input id="runtimeConfig.pointsThirdFinalWinner" type="text" th:field="*{runtimeConfig.pointsThirdFinalWinner}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.pointsThirdFinalWinner')}" th:errors="*{runtimeConfig.pointsThirdFinalWinner}"></p>						
 						</div>
 						<br/>
@@ -103,8 +103,8 @@
 						<h3 th:text="#{administration.runtime.configuration.joker}"></h3>
 						<div class="form-group">
 							<label for="runtimeConfig.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label> 
-							<input type="text" th:field="*{runtimeConfig.jokerMaxCount}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.jokerMaxCount')}" th:errors="*{runtimeConfig.jokerMaxCount}"></p>						
+							<input id="runtimeConfig.jokerMaxCount" type="text" th:field="*{runtimeConfig.jokerMaxCount}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.jokerMaxCount')}" th:errors="*{runtimeConfig.jokerMaxCount}"></p>
 						</div>						
 					</div>
 				</div>				
