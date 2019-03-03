@@ -11,10 +11,12 @@ import static de.fred4jupiter.fredbet.security.FredBetPermission.*;
 
 /**
  * Fredbet roles.
- * 
+ *
+ * @deprecated 
  * @author michael
  *
  */
+@Deprecated
 public enum FredBetRole {
 
 	/**

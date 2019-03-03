@@ -1,14 +1,13 @@
 package de.fred4jupiter.fredbet.data;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
-
-import javax.annotation.PostConstruct;
-
+import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.props.FredBetProfile;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.service.*;
+import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -22,24 +21,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.MatchBuilder;
-import de.fred4jupiter.fredbet.props.FredBetProfile;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.security.FredBetRole;
-import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.InfoService;
-import de.fred4jupiter.fredbet.service.JokerService;
-import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
-import de.fred4jupiter.fredbet.service.UserService;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
-import de.fred4jupiter.fredbet.web.info.InfoType;
+import javax.annotation.PostConstruct;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class DataBasePopulator {
@@ -200,7 +188,7 @@ public class DataBasePopulator {
 		for (int i = 1; i <= numberOfDemoUsers; i++) {
 			String usernameAndPassword = "test" + i;
 			AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
-					.withRole(FredBetRole.ROLE_USER).build();
+					.withUserGroup(FredBetUserGroup.ROLE_USER).build();
 			boolean isNewUser = saveIfNotPresent(user);
 			if (isNewUser && (numberOfDemoUsers % i == 0)) {
 				this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);
@@ -222,9 +210,9 @@ public class DataBasePopulator {
 
 		// admin user will also be used for remote shell login
 		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
-				.withRole(FredBetRole.ROLE_ADMIN).deletable(false).build());
+				.withUserGroup(FredBetUserGroup.ROLE_ADMIN).deletable(false).build());
 
-		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withRole(FredBetRole.ROLE_ADMIN).build());
+		saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
 	}
 
 	public boolean saveIfNotPresent(AppUser appUser) {

@@ -1,21 +1,14 @@
 package de.fred4jupiter.fredbet.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
+import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Joker;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.MatchBuilder;
-import de.fred4jupiter.fredbet.repository.BetRepository;
-import de.fred4jupiter.fredbet.security.FredBetRole;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class JokerServiceIT extends AbstractTransactionalIntegrationTest {
 
@@ -33,7 +26,7 @@ public class JokerServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Test
 	public void newUserHasNoJokerUsed() {
-		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
 				.build();
 
 		userService.createUser(appUser);
@@ -46,7 +39,7 @@ public class JokerServiceIT extends AbstractTransactionalIntegrationTest {
 
 	@Test
 	public void oneBetWithJoker() {
-		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+		AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
 				.build();
 
 		userService.createUser(appUser);

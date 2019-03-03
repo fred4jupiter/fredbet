@@ -1,14 +1,8 @@
 package de.fred4jupiter.fredbet.service;
 
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Joker;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.MatchBuilder;
-import de.fred4jupiter.fredbet.security.FredBetRole;
+import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +26,7 @@ public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
 
     @Test(expected = NumberOfJokersReachedException.class)
     public void shouldNotAllowToUseMoreJokersThanWhileBetting() {
-        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
                 .build();
 
         userService.createUser(appUser);
@@ -88,7 +82,7 @@ public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
 
     @Test
     public void shouldAllowToBetIfMaximumNumberOfJokesIsReachedButJokerIsNotUsed() {
-        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
                 .build();
 
         userService.createUser(appUser);
@@ -145,7 +139,7 @@ public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
 
     @Test
     public void shouldAllowSavingAgainMatchWithLastJoker() {
-        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withRole(FredBetRole.ROLE_USER)
+        AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
                 .build();
 
         userService.createUser(appUser);

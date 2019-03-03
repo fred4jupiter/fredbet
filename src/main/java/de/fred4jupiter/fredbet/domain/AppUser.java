@@ -1,24 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -29,8 +12,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
-import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.security.FredBetRole;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -79,12 +67,12 @@ public class AppUser implements UserDetails {
 		// for hibernate
 	}
 
-	public void addRole(FredBetRole... fredBetRoles) {
+	public void addUserGroup(FredBetUserGroup... fredBetUserGroups) {
 		if (this.roles == null) {
 			this.roles = new HashSet<>();
 		}
-		for (FredBetRole fredBetRole : fredBetRoles) {
-			this.roles.add(fredBetRole.name());
+		for (FredBetUserGroup fredBetUserGroup : fredBetUserGroups) {
+			this.roles.add(fredBetUserGroup.name());
 		}
 	}
 

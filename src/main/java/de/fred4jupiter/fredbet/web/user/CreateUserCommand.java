@@ -1,15 +1,13 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
+import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import de.fred4jupiter.fredbet.security.FredBetRole;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CreateUserCommand {
 
@@ -29,7 +27,7 @@ public class CreateUserCommand {
 	private boolean child;
 
 	public CreateUserCommand() {
-		this.roles.add(FredBetRole.ROLE_USER.name());
+		this.roles.add(FredBetUserGroup.ROLE_USER.name());
 	}
 
 	public Set<String> getRoles() {

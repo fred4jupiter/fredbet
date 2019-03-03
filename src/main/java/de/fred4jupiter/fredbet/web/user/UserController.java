@@ -1,12 +1,15 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
+import de.fred4jupiter.fredbet.service.UserNotDeletableException;
+import de.fred4jupiter.fredbet.service.UserService;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +17,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.security.FredBetRole;
-import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
-import de.fred4jupiter.fredbet.service.UserNotDeletableException;
-import de.fred4jupiter.fredbet.service.UserService;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.WebSecurityUtil;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -60,8 +55,8 @@ public class UserController {
 
     @ModelAttribute("availableRoles")
     public List<String> availableRoles() {
-        List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-        return fredBetRoles.stream().map(Enum::name).collect(Collectors.toUnmodifiableList());
+        List<FredBetUserGroup> fredBetUserGroups = Arrays.asList(FredBetUserGroup.values());
+        return fredBetUserGroups.stream().map(Enum::name).collect(Collectors.toUnmodifiableList());
     }
 
     @GetMapping
@@ -154,10 +149,10 @@ public class UserController {
 
             if (webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
                 LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
-                        FredBetRole.ROLE_USER);
-                appUserBuilder.withRole(FredBetRole.ROLE_USER);
+                        FredBetUserGroup.ROLE_USER);
+                appUserBuilder.withUserGroup(FredBetUserGroup.ROLE_USER);
             } else {
-                appUserBuilder.withRoles(createUserCommand.getRoles());
+                appUserBuilder.withUserGroups(createUserCommand.getRoles());
             }
 
             userService.createUser(appUserBuilder.build());
