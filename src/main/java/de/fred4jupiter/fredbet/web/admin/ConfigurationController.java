@@ -8,11 +8,11 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -21,6 +21,8 @@ import javax.validation.Valid;
 @RequestMapping("/config")
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class ConfigurationController {
+
+    private static final String PAGE_CONFIGURATION = "admin/configuration";
 
     @Autowired
     private CacheAdministrationService cacheAdministrationService;
@@ -36,32 +38,30 @@ public class ConfigurationController {
         return new ConfigurationCommand();
     }
 
-    @RequestMapping(value = "/show", method = RequestMethod.GET)
-    public ModelAndView showCachePage(ConfigurationCommand configurationCommand) {
+    @GetMapping("/show")
+    public String showCachePage(ConfigurationCommand configurationCommand, Model model) {
         configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
-        return new ModelAndView("admin/configuration", "configurationCommand", configurationCommand);
+        model.addAttribute("configurationCommand", configurationCommand);
+        return PAGE_CONFIGURATION;
     }
 
-    @RequestMapping(path = "/clearCache", method = RequestMethod.GET)
-    public ModelAndView clearCache(ConfigurationCommand configurationCommand, ModelMap modelMap) {
-        final ModelAndView modelAndView = new ModelAndView("admin/configuration");
-
+    @GetMapping("/clearCache")
+    public String clearCache(ConfigurationCommand configurationCommand, Model model) {
         this.cacheAdministrationService.clearCaches();
 
         configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
-
-        webMessageUtil.addInfoMsg(modelMap, "administration.msg.info.cacheCleared");
-        return modelAndView;
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.cacheCleared");
+        return PAGE_CONFIGURATION;
     }
 
-    @RequestMapping(value = "/changeLogLevel", method = RequestMethod.POST)
-    public ModelAndView changeLogLevel(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect, ModelMap modelMap) {
+    @PostMapping("/changeLogLevel")
+    public String changeLogLevel(@Valid ConfigurationCommand configurationCommand, RedirectAttributes redirect) {
         LogLevel level = configurationCommand.getLevel();
 
         logLevelChangable.setLogLevelTo(level);
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.logLevelChanged", level);
 
-        return new ModelAndView("redirect:/config/show");
+        return "redirect:/config/show";
     }
 }
