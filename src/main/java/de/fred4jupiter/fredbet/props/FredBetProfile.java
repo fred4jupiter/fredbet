@@ -12,7 +12,5 @@ public interface FredBetProfile {
 	
 	String PROD = "prod";
 
-	String LOCALDB = "localdb";
-
 	String INTEGRATION_TEST = "integration_test";
 }
