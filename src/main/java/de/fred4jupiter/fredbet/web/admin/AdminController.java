@@ -1,15 +1,5 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.SessionTracking;
@@ -17,88 +7,84 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.AdministrationService;
 import de.fred4jupiter.fredbet.service.SessionTrackingService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/administration")
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class AdminController {
 
-	@Autowired
-	private DataBasePopulator dataBasePopulator;
+    private static final String PAGE_ADMINISTRATION = "admin/administration";
 
-	@Autowired
-	private WebMessageUtil messageUtil;
+    private static final String PAGE_ACTIVE_USERS = "admin/active_users";
 
-	@Autowired
-	private SessionTrackingService sessionTrackingService;
+    private static final String PAGE_LAST_LOGINS = "admin/lastlogins";
 
-	@Autowired
-	private AdministrationService administrationService;
+    @Autowired
+    private DataBasePopulator dataBasePopulator;
 
-	
-	@RequestMapping
-	public String list() {
-		return "admin/administration";
-	}
+    @Autowired
+    private WebMessageUtil webMessageUtil;
 
-	@RequestMapping(path = "/createRandomMatches", method = RequestMethod.GET)
-	public ModelAndView createRandomMatches(ModelMap modelMap) {
-		dataBasePopulator.createRandomMatches();
+    @Autowired
+    private SessionTrackingService sessionTrackingService;
 
-		ModelAndView modelAndView = new ModelAndView("admin/administration");
+    @Autowired
+    private AdministrationService administrationService;
 
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.randomMatchesCreated");
-		return modelAndView;
-	}
+    @RequestMapping
+    public String list() {
+        return "admin/administration";
+    }
 
-	@RequestMapping(path = "/createDemoBets", method = RequestMethod.GET)
-	public ModelAndView createDemoBets(ModelMap modelMap) {
-		dataBasePopulator.createDemoBetsForAllUsers();
+    @GetMapping("/createRandomMatches")
+    public String createRandomMatches(Model model) {
+        dataBasePopulator.createRandomMatches();
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.randomMatchesCreated");
+        return PAGE_ADMINISTRATION;
+    }
 
-		ModelAndView modelAndView = new ModelAndView("admin/administration");
+    @GetMapping("/createDemoBets")
+    public String createDemoBets(Model model) {
+        dataBasePopulator.createDemoBetsForAllUsers();
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.demoBetsCreated");
+        return PAGE_ADMINISTRATION;
+    }
 
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoBetsCreated");
-		return modelAndView;
-	}
+    @GetMapping("/createDemoResults")
+    public String createDemoResults(Model model) {
+        dataBasePopulator.createDemoResultsForAllMatches();
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.demoResultsCreated");
+        return PAGE_ADMINISTRATION;
+    }
 
-	@RequestMapping(path = "/createDemoResults", method = RequestMethod.GET)
-	public ModelAndView createDemoResults(ModelMap modelMap) {
-		dataBasePopulator.createDemoResultsForAllMatches();
+    @GetMapping("/deleteAllBetsAndMatches")
+    public String deleteAllBetsAndMatches(Model model) {
+        dataBasePopulator.deleteAllBetsAndMatches();
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.allBetsAndMatchesDeleted");
+        return PAGE_ADMINISTRATION;
+    }
 
-		ModelAndView modelAndView = new ModelAndView("admin/administration");
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
+    @GetMapping("/active/users")
+    public String showActiveUsers(Model model) {
+        List<SessionTracking> userList = sessionTrackingService.findLoggedInUsers();
+        model.addAttribute("userList", userList);
+        return PAGE_ACTIVE_USERS;
+    }
 
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.demoResultsCreated");
-		return modelAndView;
-	}
-
-	@RequestMapping(path = "/deleteAllBetsAndMatches", method = RequestMethod.GET)
-	public ModelAndView deleteAllBetsAndMatches(ModelMap modelMap) {
-		dataBasePopulator.deleteAllBetsAndMatches();
-
-		ModelAndView modelAndView = new ModelAndView("admin/administration");
-
-		messageUtil.addInfoMsg(modelMap, "administration.msg.info.allBetsAndMatchesDeleted");
-		return modelAndView;
-	}
-
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
-	@RequestMapping(path = "/active/users", method = RequestMethod.GET)
-	public ModelAndView showActiveUsers(ModelMap modelMap) {
-		List<SessionTracking> userList = sessionTrackingService.findLoggedInUsers();
-
-		ModelAndView modelAndView = new ModelAndView("admin/active_users");
-		modelAndView.addObject("userList", userList);
-		return modelAndView;
-	}
-
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_LAST_LOGINS + "')")
-	@RequestMapping(path = "/lastlogins", method = RequestMethod.GET)
-	public ModelAndView showLastLogins() {
-		List<AppUser> lastLoginUsers = administrationService.fetchLastLoginUsers();
-
-		ModelAndView modelAndView = new ModelAndView("admin/lastlogins");
-		modelAndView.addObject("userList", lastLoginUsers);
-		return modelAndView;
-	}
-
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_LAST_LOGINS + "')")
+    @GetMapping("/lastlogins")
+    public String showLastLogins(Model model) {
+        List<AppUser> lastLoginUsers = administrationService.fetchLastLoginUsers();
+        model.addAttribute("userList", lastLoginUsers);
+        return PAGE_LAST_LOGINS;
+    }
 }
