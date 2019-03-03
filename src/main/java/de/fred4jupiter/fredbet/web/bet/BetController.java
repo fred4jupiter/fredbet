@@ -14,12 +14,10 @@ import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -56,33 +54,35 @@ public class BetController {
     @Autowired
     private JokerService jokerService;
 
-    @RequestMapping("/open")
-    public ModelAndView listStillOpen(ModelMap modelMap) {
+    @GetMapping("/open")
+    public String listStillOpen(Model model) {
         List<Match> matchesToBet = bettingService.findMatchesToBet(securityService.getCurrentUserName());
         if (Validator.isEmpty(matchesToBet)) {
-            messageUtil.addInfoMsg(modelMap, "msg.bet.betting.info.allBetted");
+            messageUtil.addInfoMsg(model, "msg.bet.betting.info.allBetted");
         }
 
         if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName())) {
-            messageUtil.addWarnMsg(modelMap, "msg.bet.betting.warn.extraBetOpen");
+            messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
         }
 
         List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchCommandMapper.toMatchCommand(match))
                 .collect(Collectors.toList());
-        return new ModelAndView(VIEW_LIST_OPEN, "matchesToBet", matchCommands);
+        model.addAttribute("matchesToBet", matchCommands);
+        return VIEW_LIST_OPEN;
     }
 
-    @RequestMapping(value = "/createOrUpdate/{matchId}", method = RequestMethod.GET)
-    public ModelAndView showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName) {
+    @GetMapping("/createOrUpdate/{matchId}")
+    public String showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, Model model) {
         Bet bet = bettingService.findOrCreateBetForMatch(matchId);
         if (bet == null) {
-            return new ModelAndView("redirect:/matches");
+            return "redirect:/matches";
         }
 
         BetCommand betCommand = toBetCommand(bet);
         betCommand.setRedirectViewName(redirectViewName);
 
-        return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
+        model.addAttribute("betCommand", betCommand);
+        return VIEW_EDIT;
     }
 
     private BetCommand toBetCommand(Bet bet) {
@@ -117,8 +117,8 @@ public class BetController {
         return betCommand;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect, ModelMap modelMap) {
+    @PostMapping
+    public ModelAndView saveBet(@Valid BetCommand betCommand, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView(VIEW_EDIT, "betCommand", betCommand);
         }
@@ -137,7 +137,7 @@ public class BetController {
     }
 
     private Bet toBet(BetCommand betCommand) {
-        Bet bet = null;
+        Bet bet;
         if (betCommand.getBetId() == null) {
             Match match = matchService.findMatchById(betCommand.getMatchId());
             bet = new Bet();
@@ -154,7 +154,7 @@ public class BetController {
         return bet;
     }
 
-    @RequestMapping(value = "/others/match/{matchId}", method = RequestMethod.GET)
+    @GetMapping("/others/match/{matchId}")
     public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
         AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
         if (allBetsCommand == null) {

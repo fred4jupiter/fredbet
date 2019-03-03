@@ -65,6 +65,11 @@ public class WebMessageUtil {
         modelMap.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALERT_WARN, message));
     }
 
+    public void addWarnMsg(Model model, String msgKey, Object... params) {
+        String message = getMessageFor(msgKey, params);
+        model.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALERT_WARN, message));
+    }
+
     private void addMessage(RedirectAttributes redirect, String cssClass, String text) {
         redirect.addFlashAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(cssClass, text));
     }
@@ -91,6 +96,8 @@ public class WebMessageUtil {
         }
         return Validator.isNotNull(country) ? getCountryName(country) : teamName;
     }
+
+
 
     public static final class WebMessage {
         private String cssClass;
