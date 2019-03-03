@@ -38,140 +38,139 @@ import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 @RequestMapping("/user")
 public class UserController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-	private static final String EDIT_USER_PAGE = "user/edit";
+    private static final String EDIT_USER_PAGE = "user/edit";
 
-	private static final String CREATE_USER_PAGE = "user/create";
+    private static final String CREATE_USER_PAGE = "user/create";
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private WebMessageUtil messageUtil;
+    @Autowired
+    private WebMessageUtil messageUtil;
 
-	@Autowired
-	private SecurityService securityService;
+    @Autowired
+    private SecurityService securityService;
 
-	@Autowired
-	private WebSecurityUtil webSecurityUtil;
+    @Autowired
+    private WebSecurityUtil webSecurityUtil;
 
-	@ModelAttribute("availableRoles")
-	public List<String> availableRoles() {
-		List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
-		return Collections.unmodifiableList(fredBetRoles.stream().map(Enum::name).collect(Collectors.toList()));
-	}
+    @ModelAttribute("availableRoles")
+    public List<String> availableRoles() {
+        List<FredBetRole> fredBetRoles = Arrays.asList(FredBetRole.values());
+        return Collections.unmodifiableList(fredBetRoles.stream().map(Enum::name).collect(Collectors.toList()));
+    }
 
-	@RequestMapping
-	public ModelAndView list() {
-		List<UserDto> users = userService.findAllAsUserDto();
-		return new ModelAndView("user/list", "allUsers", users);
-	}
+    @RequestMapping
+    public ModelAndView list() {
+        List<UserDto> users = userService.findAllAsUserDto();
+        return new ModelAndView("user/list", "allUsers", users);
+    }
 
-	@RequestMapping("{id}")
-	public ModelAndView edit(@PathVariable("id") Long userId) {
-		AppUser user = userService.findByUserId(userId);
+    @RequestMapping("{id}")
+    public ModelAndView edit(@PathVariable("id") Long userId) {
+        AppUser user = userService.findByUserId(userId);
 
-		EditUserCommand editUserCommand = toEditUserCommand(user);
+        EditUserCommand editUserCommand = toEditUserCommand(user);
 
-		return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
-	}
+        return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
+    }
 
-	private EditUserCommand toEditUserCommand(AppUser appUser) {
-		EditUserCommand userCommand = new EditUserCommand();
-		userCommand.setUserId(appUser.getId());
-		userCommand.setUsername(appUser.getUsername());
-		userCommand.setDeletable(appUser.isDeletable());
-		userCommand.setChild(appUser.isChild());
-		if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
-			for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
-				userCommand.addRole(grantedAuthority.getAuthority());
-			}
-		}
-		return userCommand;
-	}
+    private EditUserCommand toEditUserCommand(AppUser appUser) {
+        EditUserCommand userCommand = new EditUserCommand();
+        userCommand.setUserId(appUser.getId());
+        userCommand.setUsername(appUser.getUsername());
+        userCommand.setDeletable(appUser.isDeletable());
+        userCommand.setChild(appUser.isChild());
+        if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
+            for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
+                userCommand.addRole(grantedAuthority.getAuthority());
+            }
+        }
+        return userCommand;
+    }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView edit(@Valid EditUserCommand editUserCommand, BindingResult bindingResult, RedirectAttributes redirect,
-			ModelMap modelMap) {
-		if (bindingResult.hasErrors()) {
-			return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
-		}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_USER + "')")
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public ModelAndView edit(@Valid EditUserCommand editUserCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView(EDIT_USER_PAGE, "editUserCommand", editUserCommand);
+        }
 
-		if (webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
-			LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
-			userService.updateUser(editUserCommand.getUserId(), editUserCommand.isChild());
-		} else {
-			userService.updateUser(editUserCommand.getUserId(), editUserCommand.getRoles(), editUserCommand.isChild());
-		}
+        if (webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
+            LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
+            userService.updateUser(editUserCommand.getUserId(), editUserCommand.isChild());
+        } else {
+            userService.updateUser(editUserCommand.getUserId(), editUserCommand.getRoles(), editUserCommand.isChild());
+        }
 
-		messageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
-		return new ModelAndView("redirect:/user");
-	}
+        messageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
+        return new ModelAndView("redirect:/user");
+    }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_USER + "')")
-	@RequestMapping("{id}/delete")
-	public ModelAndView delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
-		if (securityService.getCurrentUser().getId().equals(userId)) {
-			messageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
-			return new ModelAndView("redirect:/user");
-		}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_USER + "')")
+    @RequestMapping("{id}/delete")
+    public ModelAndView delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
+        if (securityService.getCurrentUser().getId().equals(userId)) {
+            messageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
+            return new ModelAndView("redirect:/user");
+        }
 
-		AppUser appUser = userService.findByUserId(userId);
-		try {
-			userService.deleteUser(userId);
-			messageUtil.addInfoMsg(redirect, "user.deleted", appUser.getUsername());
-		} catch (UserNotDeletableException e) {
-			messageUtil.addErrorMsg(redirect, "user.not.deletable", appUser.getUsername());
-		}
+        AppUser appUser = userService.findByUserId(userId);
+        try {
+            userService.deleteUser(userId);
+            messageUtil.addInfoMsg(redirect, "user.deleted", appUser.getUsername());
+        } catch (UserNotDeletableException e) {
+            messageUtil.addErrorMsg(redirect, "user.not.deletable", appUser.getUsername());
+        }
 
-		return new ModelAndView("redirect:/user");
-	}
+        return new ModelAndView("redirect:/user");
+    }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", new CreateUserCommand());
-	}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public ModelAndView create() {
+        return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", new CreateUserCommand());
+    }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView create(@Valid CreateUserCommand createUserCommand, BindingResult bindingResult, RedirectAttributes redirect,
-			ModelMap modelMap) {
-		if (bindingResult.hasErrors()) {
-			return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
-		}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_USER + "')")
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView create(@Valid CreateUserCommand createUserCommand, BindingResult bindingResult, RedirectAttributes redirect,
+                               ModelMap modelMap) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
+        }
 
-		try {
-			// create new user
-			AppUserBuilder appUserBuilder = AppUserBuilder.create()
-					.withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
-					.withIsChild(createUserCommand.isChild()).withFirstLogin(true);
+        try {
+            // create new user
+            AppUserBuilder appUserBuilder = AppUserBuilder.create()
+                    .withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
+                    .withIsChild(createUserCommand.isChild()).withFirstLogin(true);
 
-			if (webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
-				LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
-						FredBetRole.ROLE_USER);
-				appUserBuilder.withRole(FredBetRole.ROLE_USER);
-			} else {
-				appUserBuilder.withRoles(createUserCommand.getRoles());
-			}
+            if (webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
+                LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),
+                        FredBetRole.ROLE_USER);
+                appUserBuilder.withRole(FredBetRole.ROLE_USER);
+            } else {
+                appUserBuilder.withRoles(createUserCommand.getRoles());
+            }
 
-			userService.createUser(appUserBuilder.build());
-		} catch (UserAlreadyExistsException e) {
-			messageUtil.addErrorMsg(modelMap, "user.username.duplicate");
-			return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
-		}
+            userService.createUser(appUserBuilder.build());
+        } catch (UserAlreadyExistsException e) {
+            messageUtil.addErrorMsg(modelMap, "user.username.duplicate");
+            return new ModelAndView(CREATE_USER_PAGE, "createUserCommand", createUserCommand);
+        }
 
-		messageUtil.addInfoMsg(redirect, "user.created", createUserCommand.getUsername());
-		return new ModelAndView("redirect:/user");
-	}
+        messageUtil.addInfoMsg(redirect, "user.created", createUserCommand.getUsername());
+        return new ModelAndView("redirect:/user");
+    }
 
-	@PreAuthorize("hasAuthority('" + FredBetPermission.PERM_PASSWORD_RESET + "')")
-	@RequestMapping("{id}/resetPwd")
-	public ModelAndView resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
-		String username = userService.resetPasswordForUser(userId);
-		messageUtil.addInfoMsg(redirect, "user.password.reset", username);
-		return new ModelAndView("redirect:/user");
-	}
+    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_PASSWORD_RESET + "')")
+    @RequestMapping("{id}/resetPwd")
+    public ModelAndView resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
+        String username = userService.resetPasswordForUser(userId);
+        messageUtil.addInfoMsg(redirect, "user.password.reset", username);
+        return new ModelAndView("redirect:/user");
+    }
 }

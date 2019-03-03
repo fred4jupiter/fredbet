@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,33 +28,33 @@ public class ImageCroppingController {
 	@Autowired
 	private ImageAdministrationService imageAdministrationService;
 
-	@RequestMapping("/show")
-	public ModelAndView show() {
-		return new ModelAndView("profile/crop_image");
+	@GetMapping("/show")
+	public String show() {
+		return "profile/crop_image";
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ModelAndView uploadImage(@RequestParam("croppedFileBase64") String imageBase64, RedirectAttributes redirect) {
+	@PostMapping("/upload")
+	public String uploadImage(@RequestParam("croppedFileBase64") String imageBase64, RedirectAttributes redirect) {
 		LOG.debug("imageBase64: {}", imageBase64);
 
 		if (StringUtils.isBlank(imageBase64)) {
 			LOG.error("No base64 image given");
 			messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
-			return new ModelAndView(REDIRECT_SHOW_PAGE);
+			return REDIRECT_SHOW_PAGE;
 		}
 
 		byte[] imageByte = Base64.getDecoder().decode(imageBase64.split(",")[1]);
 
 		if (imageByte.length == 0) {
 			messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
-			return new ModelAndView(REDIRECT_SHOW_PAGE);
+			return REDIRECT_SHOW_PAGE;
 		}
 
 		imageAdministrationService.saveUserProfileImage(imageByte);
 
 		messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 
-		return new ModelAndView(REDIRECT_SHOW_PAGE);
+		return REDIRECT_SHOW_PAGE;
 	}
 
 }

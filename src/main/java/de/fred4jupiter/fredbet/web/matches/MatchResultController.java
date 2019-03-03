@@ -40,7 +40,6 @@ public class MatchResultController {
     @PostMapping
     public String save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("matchResultCommand", matchResultCommand);
             return VIEW_EDIT_MATCHRESULT;
         }
 

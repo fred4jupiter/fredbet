@@ -62,10 +62,8 @@ public class RuntimeConfigurationController {
     }
 
     @RequestMapping(value = "/saveRuntimeConfig", method = RequestMethod.POST)
-    public String saveRuntimeConfig(@Valid RuntimeConfigCommand command, BindingResult bindingResult, RedirectAttributes redirect,
-                                    Model model) {
+    public String saveRuntimeConfig(@Valid RuntimeConfigCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("runtimeConfigCommand", command);
             return PAGE_RUNTIME_CONFIG;
         }
 

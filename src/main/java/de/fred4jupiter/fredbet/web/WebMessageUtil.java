@@ -50,6 +50,11 @@ public class WebMessageUtil {
         addMessage(redirect, CSS_ALERT_ERROR, message);
     }
 
+    public void addErrorMsg(Model model, String msgKey, Object... params) {
+        String message = getMessageFor(msgKey, params);
+        model.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALERT_ERROR, message));
+    }
+
     public void addErrorMsg(ModelMap modelMap, String msgKey, Object... params) {
         String message = getMessageFor(msgKey, params);
         modelMap.addAttribute(MSG_ATTRIBUTE_NAME, new WebMessage(CSS_ALERT_ERROR, message));
