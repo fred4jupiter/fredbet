@@ -1,0 +1,50 @@
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/liquibase-changelog.xml
+  h2:
+    console:
+      enabled: false
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+# metrics configuration
+management:
+  server:
+    port: 5555
+  endpoints:
+    web:
+      base-path: /actuator
+  endpoint:
+    health:
+      enabled: true
+
+# -------- fredbet properties ------------------------------------------------------------------------------
+
+fredbet:
+  image-size: 1920
+  thumbnail-size: 75
+  image-location: file_system
+  # set folder where you want to store images to (defaults to user home dir)
+  image-file-system-base-folder:
+  aws-s3bucket-name: fredbet
+  aws-access-key:
+  aws-secret-key:
+  aws-region: eu-central-1
+  default-language: de

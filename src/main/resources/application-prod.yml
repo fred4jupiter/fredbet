@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/fredbet
+      username: fredbet
+      password: fredbet
+      driver-class-name: com.mysql.jdbc.Driver
