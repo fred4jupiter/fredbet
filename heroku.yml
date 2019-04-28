@@ -1,5 +1,5 @@
 build:
   docker:
     web: Dockerfile
-config:
-  SPRING_PROFILES_ACTIVE: prod  
+  config:
+    SPRING_PROFILES_ACTIVE: prod  
