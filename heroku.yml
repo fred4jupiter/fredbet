@@ -3,3 +3,4 @@ build:
     web: Dockerfile
   config:
     SPRING_PROFILES_ACTIVE: prod  
+    SERVER_PORT: $PORT
