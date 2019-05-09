@@ -4,8 +4,8 @@ services:
 language: java
 jdk:
   - oraclejdk11
-install:
-  - mvn verify -DskipTests
+script:
+  - mvn -version
 before_deploy:
   - docker build -t fred4jupiter/fredbet .
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
