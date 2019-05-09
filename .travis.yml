@@ -13,3 +13,6 @@ deploy:
 branches:
   only:
   - master
+cache:
+  directories:
+    ~/docker
