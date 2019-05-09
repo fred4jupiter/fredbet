@@ -33,7 +33,6 @@ USER fred
 WORKDIR /home/fred
 
 EXPOSE 8080
-EXPOSE 5555
 
 ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /home/fred/app/lib
