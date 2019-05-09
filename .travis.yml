@@ -1,6 +1,7 @@
 sudo: required
 services:
   - docker
+language: generic
 install:
   - docker build -t fred4jupiter/fredbet .
 before_deploy:
