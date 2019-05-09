@@ -7,6 +7,7 @@ COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
+RUN mvn dependency:go-offline
 RUN ./mvnw clean install
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
