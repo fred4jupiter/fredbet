@@ -1,11 +1,11 @@
 sudo: required
 services:
   - docker
-language: java
 install:
   - docker build -t fred4jupiter/fredbet .
-  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
+before_deploy:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
   - docker push fred4jupiter/fredbet:latest
 deploy:
   provider: heroku
