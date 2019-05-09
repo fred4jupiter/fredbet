@@ -1,11 +1,8 @@
 sudo: required
 services:
   - docker
-language: java
-jdk:
-  - oraclejdk11
 script:
-  - mvn -version
+  - docker version
 before_deploy:
   - docker build -t fred4jupiter/fredbet .
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
