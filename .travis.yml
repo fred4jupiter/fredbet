@@ -18,7 +18,7 @@ branches:
   only:
     - master
 after_success:
-  - docker -f Dockerfile-single login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker -f Dockerfile-single build -t fred4jupiter/fredbet .
-  - docker -f Dockerfile-single tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
-  - docker -f Dockerfile-single push fred4jupiter/fredbet:latest
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker build -f Dockerfile-single -t fred4jupiter/fredbet .
+  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
+  - docker push fred4jupiter/fredbet:latest
