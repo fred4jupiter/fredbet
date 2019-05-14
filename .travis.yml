@@ -7,9 +7,7 @@ services:
 language: java
 jdk:
   - oraclejdk11
-install:
-  - true 
-  - mvn verify
+script: mvn verify
 deploy:
   provider: heroku
   api_key:
