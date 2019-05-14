@@ -1,6 +1,6 @@
 cache:
   directories:
-    - "$HOME/.m2/repository"
+    - "$HOME/.m2"
 sudo: required
 services:
   - docker
@@ -13,10 +13,10 @@ deploy:
   provider: heroku
   api_key:
     secure: $HEROKU_AUTH_TOKEN
-# safelist
 branches:
   only:
     - master
+after_script: heroku keys:remove $USER@`hostname`
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker build -f Dockerfile-single -t fred4jupiter/fredbet .
