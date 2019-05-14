@@ -9,14 +9,13 @@ jdk:
   - oraclejdk11
 install: true
 script: mvn verify
-deploy:
-  provider: heroku
-  api_key:
-    secure: $HEROKU_AUTH_TOKEN
+#deploy:
+#  provider: heroku
+#  api_key:
+#    secure: $HEROKU_AUTH_TOKEN
 branches:
   only:
     - master
-after_script: heroku keys:remove $USER@`hostname`
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker build -f Dockerfile-single -t fred4jupiter/fredbet .
