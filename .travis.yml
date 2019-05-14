@@ -9,10 +9,6 @@ jdk:
   - oraclejdk11
 install: true
 script: ./mvnw clean install
-#deploy:
-#  provider: heroku
-#  api_key:
-#    secure: $HEROKU_AUTH_TOKEN
 branches:
   only:
     - master
