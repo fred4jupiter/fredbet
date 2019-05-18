@@ -105,7 +105,7 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 | Database | Driver Class |
 |--------|--------|
 | H2 | org.h2.Driver |
-| MySQL | com.mysql.cj.jdbc.Driver |
+| MySQL | com.mysql.jdbc.Driver |
 | MariaDB | org.mariadb.jdbc.Driver |
 | PostgreSQL | org.postgresql.Driver |
 
