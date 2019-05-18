@@ -100,10 +100,10 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 | spring.datasource.hikari.password | | The database password. |
 | spring.datasource.hikari.driver-class-name |  | see driver class below |
 
-Driver class names:
+### Driver class names
 
 | Database | Driver Class |
-|--------|--------|--------|
+|--------|--------|
 | H2 | org.h2.Driver |
 | MySQL | com.mysql.cj.jdbc.Driver |
 | MariaDB | org.mariadb.jdbc.Driver |
