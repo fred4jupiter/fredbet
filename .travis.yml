@@ -1,20 +1,19 @@
+cache:
+  directories:
+    - "$HOME/.m2"
 sudo: required
 services:
   - docker
-script:
-  - docker version
-before_deploy:
-  - docker build -t fred4jupiter/fredbet .
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
-  - docker push fred4jupiter/fredbet:latest
-deploy:
-  provider: heroku
-  api_key:
-    secure: $HEROKU_AUTH_TOKEN
+language: java
+jdk:
+  - oraclejdk11
+install: true
+script: ./mvnw clean install
 branches:
   only:
-  - master
-cache:
-  directories:
-    ~/docker
+    - master
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker build -f Dockerfile-single -t fred4jupiter/fredbet .
+  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
+  - docker push fred4jupiter/fredbet:latest
