@@ -98,7 +98,17 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 | spring.datasource.hikari.jdbc-url | | The database jdbc connection url, e.g. `jdbc:mariadb://localhost:3306/fredbetdb`. |
 | spring.datasource.hikari.username | | The database username. |
 | spring.datasource.hikari.password | | The database password. |
-| spring.datasource.hikari.driver-class-name |  | One of: `org.h2.Driver, com.mysql.jdbc.Driver, org.mariadb.jdbc.Driver, org.postgresql.Driver` |
+| spring.datasource.hikari.driver-class-name |  | see driver class below |
+
+Driver class names:
+
+| Database | Driver Class |
+|--------|--------|--------|
+| H2 | org.h2.Driver |
+| MySQL | com.mysql.cj.jdbc.Driver |
+| MariaDB | org.mariadb.jdbc.Driver |
+| PostgreSQL | org.postgresql.Driver |
+
 
 ## Runtime Configuration
 
