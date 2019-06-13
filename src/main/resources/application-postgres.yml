@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:postgresql://localhost:5432/fredbet
+      driver-class-name: org.postgresql.Driver

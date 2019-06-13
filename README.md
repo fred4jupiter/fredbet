@@ -102,12 +102,12 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 
 ### Driver class names
 
-| Database | Driver Class |
-|--------|--------|
-| H2 | org.h2.Driver |
-| MySQL | com.mysql.jdbc.Driver |
-| MariaDB | org.mariadb.jdbc.Driver |
-| PostgreSQL | org.postgresql.Driver |
+| Database | Driver Class | Spring Profile | 
+|--------|--------|--------|
+| H2 | org.h2.Driver | dev |
+| MySQL | com.mysql.jdbc.Driver | mysql |
+| MariaDB | org.mariadb.jdbc.Driver |  maria |
+| PostgreSQL | org.postgresql.Driver | postgres |
 
 
 ## Runtime Configuration
