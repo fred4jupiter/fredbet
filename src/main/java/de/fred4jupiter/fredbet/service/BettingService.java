@@ -88,7 +88,7 @@ public class BettingService {
 
     public Bet findOrCreateBetForMatch(Long matchId) {
         final Optional<Match> matchOpt = matchRepository.findById(matchId);
-        if (!matchOpt.isPresent()) {
+        if (matchOpt.isEmpty()) {
             return null;
         }
         final String currentUserName = securityService.getCurrentUserName();
