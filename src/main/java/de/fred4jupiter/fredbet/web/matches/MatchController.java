@@ -73,4 +73,13 @@ public class MatchController {
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);
         return VIEW_LIST_MATCHES;
     }
+
+    @GetMapping("/finishednoresult")
+    public String finishedMatchesWithoutResult(Model model) {
+        List<MatchCommand> matches = matchCommandMapper.findFinishedMatchesNoResult(securityBean.getCurrentUserName());
+        model.addAttribute("allMatches", matches);
+        model.addAttribute("heading", messageUtil.getMessageFor("finishednoresult.matches"));
+        model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);
+        return VIEW_LIST_MATCHES;
+    }
 }

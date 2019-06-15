@@ -35,6 +35,10 @@
 				        		<span class="caret"></span>
 				        	</a>
 					        <ul class="dropdown-menu">
+								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" th:class="${pageState_matches_finishednoresult}">
+									<a href="#matchesFinishednoresult" th:href="@{/matches/finishednoresult}" th:text="#{finishednoresult.matches}"></a>
+								</li>
+								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" class="divider" role="separator"></li>
 					        	<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
 					        	<li class="divider" role="separator"></li>
                                 <li th:class="${pageState_matches_today}"><a href="#matchesToday" th:href="@{/matches/today}" th:text="#{today.matches}"></a></li>

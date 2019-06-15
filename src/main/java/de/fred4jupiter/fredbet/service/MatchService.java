@@ -109,4 +109,9 @@ public class MatchService {
         LocalDateTime endDateTime = LocalDate.now().atTime(23, 59, 59);
         return matchRepository.findByKickOffDateBetweenOrderByKickOffDateAsc(startDateTime, endDateTime);
     }
+
+    public List<Match> findFinishedMatchesWithoutResult() {
+        LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(105);
+        return matchRepository.findFinishedMatchesWithMissingResult(localDateTime);
+    }
 }

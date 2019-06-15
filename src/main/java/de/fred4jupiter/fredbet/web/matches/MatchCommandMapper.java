@@ -59,6 +59,11 @@ public class MatchCommandMapper {
 		return toMatchCommandsWithBets(currentUserName, allMatches);
 	}
 
+	public List<MatchCommand> findFinishedMatchesNoResult(String currentUserName) {
+		List<Match> allMatches = matchService.findFinishedMatchesWithoutResult();
+		return toMatchCommandsWithBets(currentUserName, allMatches);
+	}
+
 	public MatchCommand toMatchCommand(Match match) {
 		Assert.notNull(match, "Match must be given");
 		MatchCommand matchCommand = new MatchCommand();

@@ -36,4 +36,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 	List<Match> findMatchesOfJokerBetsForUser(@Param("userName") String userName);
 
 	List<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(LocalDateTime startDate, LocalDateTime endDate);
+
+	@Query("select m from Match m where m.kickOffDate < :date and goalsTeamOne is null and goalsTeamTwo is null order by m.kickOffDate asc")
+	List<Match> findFinishedMatchesWithMissingResult(@Param("date") LocalDateTime date);
 }
