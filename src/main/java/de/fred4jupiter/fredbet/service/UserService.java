@@ -115,6 +115,8 @@ public class UserService {
         AppUser appUser = findByUserId(userId);
         String passwordForReset = runtimeConfigurationService.loadRuntimeConfig().getPasswordForReset();
         appUser.setPassword(passwordEncoder.encode(passwordForReset));
+        // user has to change his password when password is reset
+        appUser.setFirstLogin(true);
         appUserRepository.save(appUser);
         return appUser.getUsername();
     }
