@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{login.title}"></title>
 		<link rel="stylesheet" th:href="@{/css/bootstrap-toggle.min.css}" />
@@ -8,8 +7,8 @@
 	<body>
 		<div layout:fragment="content" class="container">
 			<h1 th:text="#{login.title.short}"></h1>
-			<div th:if="${param.error}">
-				<div class="alert alert-danger" role="alert" th:text="#{login.msg.error}"></div>
+			<div th:if="${param.error}" class="alert alert-danger" role="alert" th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+				<span th:text="${errorMsg}"></span>
 			</div>
 			<form th:action="@{/login}" method="post">
 				<div class="col-xs-12 col-sm-6 col-md-4">

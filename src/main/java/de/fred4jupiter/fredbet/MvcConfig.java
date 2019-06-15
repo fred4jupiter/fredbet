@@ -7,8 +7,10 @@ import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -75,5 +77,13 @@ public class MvcConfig implements WebMvcConfigurer {
     public LayoutDialect layoutDialect() {
         // for grouping CSS and JS files together
         return new LayoutDialect(new GroupingStrategy());
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.addBasenames("classpath:org/springframework/security/messages", "classpath:/messages", "classpath:/ValidationMessages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
     }
 }

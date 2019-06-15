@@ -13,9 +13,7 @@ spring:
     hikari:
       # jdbc-url: jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       jdbc-url: jdbc:h2:mem:fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-      username: sa
-      password:
-      driver-class-name: org.h2.Driver
+
 #      jdbc-url: jdbc:mysql://localhost:3306/fredbet
 #      username: fredbet
 #      password: fredbet

@@ -130,7 +130,7 @@ public class FredbetProperties {
 
 	public Locale getDefaultLocale() {
 		if (StringUtils.isBlank(defaultLanguage)) {
-			return Locale.GERMAN;
+			return Locale.getDefault();
 		}
 
 		return new Locale(defaultLanguage);
