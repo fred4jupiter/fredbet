@@ -5,13 +5,12 @@ import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.Visitable;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import de.fred4jupiter.fredbet.service.pdf.PdfExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,6 +22,9 @@ public class RankingService {
 
     @Autowired
     private ChildRelationFetcher childRelationFetcher;
+
+    @Autowired
+    private PdfExportService pdfExportService;
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
         final List<UsernamePoints> rankings = betRepository.calculateRanging();
@@ -75,5 +77,20 @@ public class RankingService {
     private Boolean isChild(Map<String, Boolean> relationMap, UsernamePoints usernamePoints) {
         Boolean isChild = relationMap.get(usernamePoints.getUserName());
         return isChild == null ? false : isChild;
+    }
+
+    public byte[] exportBetsToPdf(Locale locale) {
+        // TODO: 16.08.2019 update for i18n
+        List<UsernamePoints> rankings = calculateCurrentRanking(RankingSelection.MIXED);
+
+        String[] headerColumns = new String[]{"#", "username", "correct results", "goal difference", "total points"};
+        final AtomicInteger rank = new AtomicInteger();
+        return pdfExportService.createPdfFileFrom(headerColumns, rankings, (rowContentAdder, row) -> {
+            rowContentAdder.addCellContent("" + rank.incrementAndGet());
+            rowContentAdder.addCellContent(row.getUserName());
+            rowContentAdder.addCellContent("" + row.getCorrectResultCount());
+            rowContentAdder.addCellContent("" + row.getGoalDifference());
+            rowContentAdder.addCellContent("" + row.getTotalPoints());
+        });
     }
 }
