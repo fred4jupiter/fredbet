@@ -9,9 +9,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,11 +22,8 @@ public class PdfExportServiceUT {
 
     @Test
     public void createPdf() throws IOException {
-        final List<String> headerColumns = new ArrayList<>();
-        headerColumns.add("username");
-        headerColumns.add("correctResultCount");
-        headerColumns.add("goalDifference");
-        headerColumns.add("totalPoints");
+        PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("username").withHeaderColumn("correct results").withHeaderColumn("goal difference").withHeaderColumn("total points");
+        builder.withColumnWidths(new float[]{3, 3, 3, 3}).withTitle("Fredbet Results").withLocale(Locale.getDefault());
 
         UsernamePoints usernamePoints = new UsernamePoints();
         usernamePoints.setUserName("Michael");
@@ -35,7 +31,7 @@ public class PdfExportServiceUT {
         usernamePoints.setCorrectResultCount(23);
         usernamePoints.setGoalDifference(32);
 
-        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom("Fredbet Results", headerColumns, Collections.singletonList(usernamePoints), (rowContentAdder, row) -> {
+        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, Collections.singletonList(usernamePoints), (rowContentAdder, row) -> {
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());

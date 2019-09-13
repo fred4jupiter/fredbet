@@ -18,18 +18,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class PdfExportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PdfExportService.class);
 
-    public <T> byte[] createPdfFileFrom(String title, List<String> headerColumns, List<T> data, RowCallback<T> rowCallback) {
-        return createPdfFileFrom(title, headerColumns, data, rowCallback, Locale.getDefault());
-    }
+    public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, RowCallback<T> rowCallback) {
+        final PdfTableData pdfTableData = pdfTableDataBuilder.build();
 
-    public <T> byte[] createPdfFileFrom(String title, List<String> headerColumns, List<T> data, RowCallback<T> rowCallback, Locale locale) {
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
             document.open();
@@ -38,19 +35,19 @@ public class PdfExportService {
             Font font = createFont();
             font.setSize(18);
             font.setStyle(Font.BOLD);
-            Paragraph headline = new Paragraph(title, font);
+            Paragraph headline = new Paragraph(pdfTableData.getTitle(), font);
             headline.setSpacingAfter(20);
             document.add(headline);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
+            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(pdfTableData.getLocale());
             Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter));
             dateParagraph.setSpacingAfter(10);
             document.add(dateParagraph);
 
-            PdfPTable table = new PdfPTable(headerColumns.size());
+            PdfPTable table = new PdfPTable(pdfTableData.getColumnWidths());
             table.setWidthPercentage(100);
 
-            addRowToTable(table, headerColumns, true);
+            addRowToTable(table, pdfTableData.getHeaderColumns(), true);
 
             data.forEach(dataEntry -> {
                 RowContentAdder rowContentAdder = new RowContentAdder();
@@ -58,6 +55,7 @@ public class PdfExportService {
                 List<String> rowContent = rowContentAdder.getRowContent();
                 addRowToTable(table, rowContent, false);
             });
+
             document.add(table);
             document.close();
             out.flush();

@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.domain.Visitable;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.pdf.PdfExportService;
+import de.fred4jupiter.fredbet.service.pdf.PdfTableDataBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,22 +86,24 @@ public class RankingService {
 
     public byte[] exportBetsToPdf(Locale locale) {
         final String title = "FredBet " + messageSourceUtil.getMessageFor("ranking.list.title", locale);
+        PdfTableDataBuilder builder = PdfTableDataBuilder.create()
+                .withHeaderColumn("#")
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale))
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale))
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale))
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale));
+
+        builder.withColumnWidths(new float[]{1, 3, 3, 3, 3}).withTitle(title).withLocale(locale);
+
         List<UsernamePoints> rankings = calculateCurrentRanking(RankingSelection.MIXED);
 
-        final List<String> headerColumns = new ArrayList<>();
-        headerColumns.add("#");
-        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.username", locale));
-        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale));
-        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
-        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale));
-
         final AtomicInteger rank = new AtomicInteger();
-        return pdfExportService.createPdfFileFrom(title, headerColumns, rankings, (rowContentAdder, row) -> {
+        return pdfExportService.createPdfFileFrom(builder, rankings, (rowContentAdder, row) -> {
             rowContentAdder.addCellContent("" + rank.incrementAndGet());
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
             rowContentAdder.addCellContent("" + row.getTotalPoints());
-        }, locale);
+        });
     }
 }
