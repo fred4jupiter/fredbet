@@ -40,7 +40,7 @@ public class PdfExportService {
             document.add(headline);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(pdfTableData.getLocale());
-            Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter));
+            Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), createFont());
             dateParagraph.setSpacingAfter(10);
             document.add(dateParagraph);
 
