@@ -1,11 +1,13 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.DatabaseIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +15,9 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
-public class AppUserRepositoryIT extends AbstractTransactionalIntegrationTest {
+@RunWith(SpringRunner.class)
+@DatabaseIntegrationTest
+public class AppUserRepositoryIT {
 
     @Autowired
     private AppUserRepository appUserRepository;

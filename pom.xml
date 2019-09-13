@@ -28,7 +28,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.4.RELEASE</version>
+        <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -90,7 +90,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -252,7 +252,7 @@
         <dependency>
             <groupId>org.fluentlenium</groupId>
             <artifactId>fluentlenium-assertj</artifactId>
-            <version>0.10.9</version>
+            <version>4.3.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -266,18 +266,19 @@
             <version>2.0.0.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.tngtech.archunit</groupId>
-            <artifactId>archunit-junit</artifactId>
-            <version>0.4.0</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <finalName>fredbet</finalName>
-
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -289,79 +290,93 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*UT.java</include>
+                        <include>**/*IT.java</include>
+                    </includes>
+                    <excludes>
+                        <!-- Manual tests will be excluded -->
+                        <exclude>**/*MT.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>--add-modules java.base</argLine>
-                            <includes>
-                                <include>**/*UT.java</include>
-                            </includes>
-                            <excludes>
-                                <!-- Manual tests will be excluded -->
-                                <exclude>**/*MT.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <argLine>--add-modules java.base</argLine>
-                            <includes>
-                                <include>**/*IT.java</include>
-                            </includes>
-                            <excludes>
-                                <!-- Manual tests will be excluded -->
-                                <exclude>**/*MT.java</exclude>
-                            </excludes>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>acceptance</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.18.1</version>
-                        <configuration>
-                            <includes>
-                                <include>**/*AT.java</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/*UT.java</exclude>
-                                <exclude>**/*IT.java</exclude>
-                                <!-- Manual tests will be excluded -->
-                                <exclude>**/*MT.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>default</id>-->
+    <!--            <activation>-->
+    <!--                <activeByDefault>true</activeByDefault>-->
+    <!--            </activation>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-surefire-plugin</artifactId>-->
+    <!--                        <configuration>-->
+    <!--                            <argLine>&#45;&#45;add-modules java.base</argLine>-->
+    <!--                            <includes>-->
+    <!--                                <include>**/*UT.java</include>-->
+    <!--                            </includes>-->
+    <!--                            <excludes>-->
+    <!--                                &lt;!&ndash; Manual tests will be excluded &ndash;&gt;-->
+    <!--                                <exclude>**/*MT.java</exclude>-->
+    <!--                            </excludes>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-failsafe-plugin</artifactId>-->
+    <!--                        <configuration>-->
+    <!--                            <argLine>&#45;&#45;add-modules java.base</argLine>-->
+    <!--                            <includes>-->
+    <!--                                <include>**/*IT.java</include>-->
+    <!--                            </includes>-->
+    <!--                            <excludes>-->
+    <!--                                &lt;!&ndash; Manual tests will be excluded &ndash;&gt;-->
+    <!--                                <exclude>**/*MT.java</exclude>-->
+    <!--                            </excludes>-->
+    <!--                        </configuration>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>integration-test</goal>-->
+    <!--                                    <goal>verify</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--        </profile>-->
+    <!--        <profile>-->
+    <!--            <id>acceptance</id>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-surefire-plugin</artifactId>-->
+    <!--                        <version>2.18.1</version>-->
+    <!--                        <configuration>-->
+    <!--                            <includes>-->
+    <!--                                <include>**/*AT.java</include>-->
+    <!--                            </includes>-->
+    <!--                            <excludes>-->
+    <!--                                <exclude>**/*UT.java</exclude>-->
+    <!--                                <exclude>**/*IT.java</exclude>-->
+    <!--                                &lt;!&ndash; Manual tests will be excluded &ndash;&gt;-->
+    <!--                                <exclude>**/*MT.java</exclude>-->
+    <!--                            </excludes>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 
 </project>
