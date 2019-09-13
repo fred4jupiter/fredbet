@@ -71,6 +71,7 @@ public class PdfExportService {
 
         for (String column : columns) {
             PdfPCell cell = new PdfPCell(new Phrase(column, font));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             if (isHeader) {
                 cell.setBackgroundColor(Color.LIGHT_GRAY);
             }
