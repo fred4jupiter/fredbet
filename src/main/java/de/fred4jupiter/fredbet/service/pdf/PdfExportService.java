@@ -1,9 +1,7 @@
 package de.fred4jupiter.fredbet.service.pdf;
 
-import com.lowagie.text.Cell;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Phrase;
+import com.lowagie.text.Font;
+import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +23,23 @@ public class PdfExportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PdfExportService.class);
 
-    public <T> byte[] createPdfFileFrom(String[] headerColumns, List<T> data, RowCallback<T> rowCallback) {
+    public <T> byte[] createPdfFileFrom(String title, String[] headerColumns, List<T> data, RowCallback<T> rowCallback) {
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
             document.open();
+
+            Font font = new Font(Font.COURIER, 18.0f, Font.BOLD);
+            Paragraph headline = new Paragraph(title, font);
+            headline.setSpacingAfter(20);
+            document.add(headline);
+
+            Paragraph dateParagraph = new Paragraph(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+            dateParagraph.setSpacingAfter(10);
+            document.add(dateParagraph);
+
             PdfPTable table = new PdfPTable(headerColumns.length);
             table.setWidthPercentage(100);
+
             addRowToTable(table, Arrays.asList(headerColumns), true);
 
             data.forEach(dataEntry -> {

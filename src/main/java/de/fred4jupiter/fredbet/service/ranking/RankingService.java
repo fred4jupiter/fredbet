@@ -85,7 +85,7 @@ public class RankingService {
 
         String[] headerColumns = new String[]{"#", "username", "correct results", "goal difference", "total points"};
         final AtomicInteger rank = new AtomicInteger();
-        return pdfExportService.createPdfFileFrom(headerColumns, rankings, (rowContentAdder, row) -> {
+        return pdfExportService.createPdfFileFrom("Fredbet Results", headerColumns, rankings, (rowContentAdder, row) -> {
             rowContentAdder.addCellContent("" + rank.incrementAndGet());
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());

@@ -29,7 +29,7 @@ public class PdfExportServiceUT {
         usernamePoints.setCorrectResultCount(23);
         usernamePoints.setGoalDifference(32);
 
-        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(headerColumns, Collections.singletonList(usernamePoints), (rowContentAdder, row) -> {
+        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom("Fredbet Results", headerColumns, Collections.singletonList(usernamePoints), (rowContentAdder, row) -> {
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
