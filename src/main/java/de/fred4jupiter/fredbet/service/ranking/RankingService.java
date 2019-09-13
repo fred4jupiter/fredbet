@@ -101,6 +101,6 @@ public class RankingService {
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
             rowContentAdder.addCellContent("" + row.getTotalPoints());
-        });
+        }, locale);
     }
 }

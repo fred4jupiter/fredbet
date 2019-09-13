@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.service.pdf;
 
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -12,11 +13,12 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class PdfExportService {
@@ -24,16 +26,24 @@ public class PdfExportService {
     private static final Logger LOG = LoggerFactory.getLogger(PdfExportService.class);
 
     public <T> byte[] createPdfFileFrom(String title, List<String> headerColumns, List<T> data, RowCallback<T> rowCallback) {
+        return createPdfFileFrom(title, headerColumns, data, rowCallback, Locale.getDefault());
+    }
+
+    public <T> byte[] createPdfFileFrom(String title, List<String> headerColumns, List<T> data, RowCallback<T> rowCallback, Locale locale) {
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
             document.open();
 
-            Font font = new Font(Font.COURIER, 18.0f, Font.BOLD);
+            // Font font = new Font(Font.COURIER, 18.0f, Font.BOLD);
+            Font font = createFont();
+            font.setSize(18);
+            font.setStyle(Font.BOLD);
             Paragraph headline = new Paragraph(title, font);
             headline.setSpacingAfter(20);
             document.add(headline);
 
-            Paragraph dateParagraph = new Paragraph(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
+            Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter));
             dateParagraph.setSpacingAfter(10);
             document.add(dateParagraph);
 
@@ -59,13 +69,24 @@ public class PdfExportService {
     }
 
     private void addRowToTable(PdfPTable table, List<String> columns, boolean isHeader) {
+        final Font font = createFont();
+
         for (String column : columns) {
-            PdfPCell cell = new PdfPCell(new Phrase(column));
+            PdfPCell cell = new PdfPCell(new Phrase(column, font));
             if (isHeader) {
                 cell.setBackgroundColor(Color.LIGHT_GRAY);
             }
 
             table.addCell(cell);
+        }
+    }
+
+    private Font createFont() {
+        try {
+            BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, "UTF-8", BaseFont.NOT_EMBEDDED);
+            return new Font(baseFont, 12);
+        } catch (IOException e) {
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 
