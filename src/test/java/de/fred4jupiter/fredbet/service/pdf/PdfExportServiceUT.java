@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(MockitoJUnitRunner.class)
 public class PdfExportServiceUT {
 
@@ -33,7 +35,7 @@ public class PdfExportServiceUT {
             rowContentAdder.addCellContent("" + row.getGoalDifference());
             rowContentAdder.addCellContent("" + row.getTotalPoints());
         });
-
+        assertThat(fileAsByteArray).isNotNull();
         FileUtils.writeByteArrayToFile(new File("target/result.pdf"), fileAsByteArray);
     }
 }
