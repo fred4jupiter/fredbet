@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.domain.Visitable;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.pdf.PdfExportService;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class RankingService {
 
     @Autowired
     private PdfExportService pdfExportService;
+
+    @Autowired
+    private MessageSourceUtil messageSourceUtil;
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
         final List<UsernamePoints> rankings = betRepository.calculateRanging();
@@ -80,12 +84,18 @@ public class RankingService {
     }
 
     public byte[] exportBetsToPdf(Locale locale) {
-        // TODO: 16.08.2019 update for i18n
+        final String title = "FredBet " + messageSourceUtil.getMessageFor("ranking.list.title", locale);
         List<UsernamePoints> rankings = calculateCurrentRanking(RankingSelection.MIXED);
 
-        String[] headerColumns = new String[]{"#", "username", "correct results", "goal difference", "total points"};
+        final List<String> headerColumns = new ArrayList<>();
+        headerColumns.add("#");
+        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.username", locale));
+        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale));
+        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
+        headerColumns.add(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale));
+
         final AtomicInteger rank = new AtomicInteger();
-        return pdfExportService.createPdfFileFrom("Fredbet Results", headerColumns, rankings, (rowContentAdder, row) -> {
+        return pdfExportService.createPdfFileFrom(title, headerColumns, rankings, (rowContentAdder, row) -> {
             rowContentAdder.addCellContent("" + rank.incrementAndGet());
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());

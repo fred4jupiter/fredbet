@@ -23,7 +23,7 @@ public class PdfExportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PdfExportService.class);
 
-    public <T> byte[] createPdfFileFrom(String title, String[] headerColumns, List<T> data, RowCallback<T> rowCallback) {
+    public <T> byte[] createPdfFileFrom(String title, List<String> headerColumns, List<T> data, RowCallback<T> rowCallback) {
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
             document.open();
@@ -37,10 +37,10 @@ public class PdfExportService {
             dateParagraph.setSpacingAfter(10);
             document.add(dateParagraph);
 
-            PdfPTable table = new PdfPTable(headerColumns.length);
+            PdfPTable table = new PdfPTable(headerColumns.size());
             table.setWidthPercentage(100);
 
-            addRowToTable(table, Arrays.asList(headerColumns), true);
+            addRowToTable(table, headerColumns, true);
 
             data.forEach(dataEntry -> {
                 RowContentAdder rowContentAdder = new RowContentAdder();

@@ -11,8 +11,8 @@ spring:
         web-allow-others: true
   datasource:
     hikari:
-      # jdbc-url: jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-      jdbc-url: jdbc:h2:mem:fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      jdbc-url: jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      # jdbc-url: jdbc:h2:mem:fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 
 #      jdbc-url: jdbc:mysql://localhost:3306/fredbet
 #      username: fredbet

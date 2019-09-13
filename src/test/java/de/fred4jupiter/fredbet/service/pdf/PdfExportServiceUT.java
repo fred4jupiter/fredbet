@@ -9,7 +9,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +23,11 @@ public class PdfExportServiceUT {
 
     @Test
     public void createPdf() throws IOException {
-        String[] headerColumns = new String[]{"username", "correctResultCount", "goalDifference", "totalPoints"};
+        final List<String> headerColumns = new ArrayList<>();
+        headerColumns.add("username");
+        headerColumns.add("correctResultCount");
+        headerColumns.add("goalDifference");
+        headerColumns.add("totalPoints");
 
         UsernamePoints usernamePoints = new UsernamePoints();
         usernamePoints.setUserName("Michael");
