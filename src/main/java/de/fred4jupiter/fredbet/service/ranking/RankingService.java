@@ -89,9 +89,9 @@ public class RankingService {
         PdfTableDataBuilder builder = PdfTableDataBuilder.create()
                 .withHeaderColumn("#")
                 .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale))
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale))
                 .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale))
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale))
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale));
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
 
         builder.withColumnWidths(new float[]{1, 3, 3, 3, 3}).withTitle(title).withLocale(locale);
 
@@ -101,9 +101,9 @@ public class RankingService {
         return pdfExportService.createPdfFileFrom(builder, rankings, (rowContentAdder, row) -> {
             rowContentAdder.addCellContent("" + rank.incrementAndGet());
             rowContentAdder.addCellContent(row.getUserName());
+            rowContentAdder.addCellContent("" + row.getTotalPoints());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
-            rowContentAdder.addCellContent("" + row.getTotalPoints());
         });
     }
 }

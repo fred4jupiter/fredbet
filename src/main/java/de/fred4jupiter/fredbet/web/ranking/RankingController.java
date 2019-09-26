@@ -44,13 +44,17 @@ public class RankingController {
 
     @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
     public ResponseEntity<byte[]> exportAllBets() {
-        final String fileName = "ranking_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyyHHmmSS")) + ".pdf";
+        final String fileName = createFilename();
         byte[] fileContent = this.rankingService.exportBetsToPdf(LocaleContextHolder.getLocale());
         if (fileContent == null) {
             return ResponseEntity.notFound().build();
         }
 
         return createResponseEntity(fileName, fileContent);
+    }
+
+    private String createFilename() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmSS")) + "_FredBet-Ranking.pdf";
     }
 
     private ResponseEntity<byte[]> createResponseEntity(final String fileName, byte[] fileContent) {
