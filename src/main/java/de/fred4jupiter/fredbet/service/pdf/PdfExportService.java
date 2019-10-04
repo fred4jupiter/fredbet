@@ -35,41 +35,13 @@ public class PdfExportService {
 
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
-
-            String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.getLocale());
-            HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", createFont()), true);
-            footer.setBorder(Rectangle.NO_BORDER);
-            footer.setAlignment(Element.ALIGN_RIGHT);
-            document.setFooter(footer);
+            document.setFooter(createFooter(pdfTableData));
 
             document.open();
 
-            Font font = createFont();
-            font.setSize(18);
-            font.setStyle(Font.BOLD);
-            Paragraph headline = new Paragraph(pdfTableData.getTitle(), font);
-            headline.setSpacingAfter(20);
-            document.add(headline);
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(pdfTableData.getLocale());
-            Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), createFont());
-            dateParagraph.setSpacingAfter(10);
-            document.add(dateParagraph);
-
-            PdfPTable table = new PdfPTable(pdfTableData.getColumnWidths());
-            table.setWidthPercentage(100);
-
-            addRowToTable(table, pdfTableData.getHeaderColumns(), true);
-
-            data.forEach(dataEntry -> {
-                RowContentAdder rowContentAdder = new RowContentAdder();
-                rowCallback.onRow(rowContentAdder, dataEntry);
-                List<String> rowContent = rowContentAdder.getRowContent();
-                addRowToTable(table, rowContent, false);
-            });
-
-            document.add(table);
-
+            document.add(createHeadline(pdfTableData));
+            document.add(createCurrenteDateTimeParagraph(pdfTableData));
+            document.add(createTable(data, rowCallback, pdfTableData));
 
             document.close();
             out.flush();
@@ -78,6 +50,45 @@ public class PdfExportService {
             LOG.error(e.getMessage());
             return null;
         }
+    }
+
+    private <T> PdfPTable createTable(List<T> data, RowCallback<T> rowCallback, PdfTableData pdfTableData) {
+        PdfPTable table = new PdfPTable(pdfTableData.getColumnWidths());
+        table.setWidthPercentage(100);
+
+        addRowToTable(table, pdfTableData.getHeaderColumns(), true);
+
+        data.forEach(dataEntry -> {
+            RowContentAdder rowContentAdder = new RowContentAdder();
+            rowCallback.onRow(rowContentAdder, dataEntry);
+            List<String> rowContent = rowContentAdder.getRowContent();
+            addRowToTable(table, rowContent, false);
+        });
+        return table;
+    }
+
+    private HeaderFooter createFooter(PdfTableData pdfTableData) {
+        String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.getLocale());
+        HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", createFont()), true);
+        footer.setBorder(Rectangle.NO_BORDER);
+        footer.setAlignment(Element.ALIGN_RIGHT);
+        return footer;
+    }
+
+    private Paragraph createCurrenteDateTimeParagraph(PdfTableData pdfTableData) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(pdfTableData.getLocale());
+        Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), createFont());
+        dateParagraph.setSpacingAfter(10);
+        return dateParagraph;
+    }
+
+    private Paragraph createHeadline(PdfTableData pdfTableData) {
+        Font font = createFont();
+        font.setSize(18);
+        font.setStyle(Font.BOLD);
+        Paragraph headline = new Paragraph(pdfTableData.getTitle(), font);
+        headline.setSpacingAfter(20);
+        return headline;
     }
 
     private void addRowToTable(PdfPTable table, List<String> columns, boolean isHeader) {
