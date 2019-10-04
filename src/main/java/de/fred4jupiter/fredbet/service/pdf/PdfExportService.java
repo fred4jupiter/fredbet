@@ -1,13 +1,16 @@
 package de.fred4jupiter.fredbet.service.pdf;
 
 import com.lowagie.text.Font;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -24,14 +27,23 @@ public class PdfExportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PdfExportService.class);
 
+    @Autowired
+    private MessageSourceUtil messageSourceUtil;
+
     public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, RowCallback<T> rowCallback) {
         final PdfTableData pdfTableData = pdfTableDataBuilder.build();
 
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
+
+            String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.getLocale());
+            HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", createFont()), true);
+            footer.setBorder(Rectangle.NO_BORDER);
+            footer.setAlignment(Element.ALIGN_RIGHT);
+            document.setFooter(footer);
+
             document.open();
 
-            // Font font = new Font(Font.COURIER, 18.0f, Font.BOLD);
             Font font = createFont();
             font.setSize(18);
             font.setStyle(Font.BOLD);
@@ -57,6 +69,8 @@ public class PdfExportService {
             });
 
             document.add(table);
+
+
             document.close();
             out.flush();
             return out.toByteArray();

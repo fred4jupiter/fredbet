@@ -28,10 +28,6 @@ public final class PdfTableDataBuilder {
         return this;
     }
 
-    public PdfTableDataBuilder withHeaderColumns(List<String> headerColumns) {
-        this.headerColumns = headerColumns;
-        return this;
-    }
 
     public PdfTableDataBuilder withHeaderColumn(String headerColumn) {
         this.headerColumns.add(headerColumn);

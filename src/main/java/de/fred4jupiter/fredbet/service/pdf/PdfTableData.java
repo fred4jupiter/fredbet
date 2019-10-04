@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.service.pdf;
 import java.util.List;
 import java.util.Locale;
 
-class PdfTableData<T> {
+class PdfTableData {
 
     private Locale locale;
 

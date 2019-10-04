@@ -1,18 +1,22 @@
 package de.fred4jupiter.fredbet.service.pdf;
 
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PdfExportServiceUT {
@@ -20,18 +24,17 @@ public class PdfExportServiceUT {
     @InjectMocks
     private PdfExportService pdfExportService;
 
+    @Mock
+    private MessageSourceUtil messageSourceUtil;
+
     @Test
     public void createPdf() throws IOException {
+        when(messageSourceUtil.getMessageFor(eq("page"), eq(Locale.getDefault()))).thenReturn("Seite");
+
         PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("username").withHeaderColumn("correct results").withHeaderColumn("goal difference").withHeaderColumn("total points");
         builder.withColumnWidths(new float[]{3, 3, 3, 3}).withTitle("Fredbet Results").withLocale(Locale.getDefault());
 
-        UsernamePoints usernamePoints = new UsernamePoints();
-        usernamePoints.setUserName("Michael");
-        usernamePoints.setTotalPoints(100);
-        usernamePoints.setCorrectResultCount(23);
-        usernamePoints.setGoalDifference(32);
-
-        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, Collections.singletonList(usernamePoints), (rowContentAdder, row) -> {
+        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, createTestData(), (rowContentAdder, row) -> {
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
@@ -39,5 +42,20 @@ public class PdfExportServiceUT {
         });
         assertThat(fileAsByteArray).isNotNull();
         FileUtils.writeByteArrayToFile(new File("target/result.pdf"), fileAsByteArray);
+    }
+
+    private List<UsernamePoints> createTestData() {
+        List<UsernamePoints> data = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            UsernamePoints usernamePoints = new UsernamePoints();
+            usernamePoints.setUserName("Michael");
+            usernamePoints.setTotalPoints(100);
+            usernamePoints.setCorrectResultCount(23);
+            usernamePoints.setGoalDifference(32);
+            data.add(usernamePoints);
+        }
+
+        return data;
     }
 }
