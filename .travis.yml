@@ -1,19 +1,8 @@
-cache:
-  directories:
-    - "$HOME/.m2"
-sudo: required
-services:
-  - docker
-language: java
-jdk:
-  - oraclejdk11
-install: true
-script: ./mvnw -q clean install
-branches:
-  only:
-    - master
-after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker build -f Dockerfile -t fred4jupiter/fredbet .
-  - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
-  - docker push fred4jupiter/fredbet:latest
+jobs:
+  include:
+    - stage: build and publish docker image
+      script:
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - docker build -f Dockerfile -t fred4jupiter/fredbet .
+        - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
+        - docker push fred4jupiter/fredbet:latest
