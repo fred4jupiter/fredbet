@@ -13,22 +13,22 @@
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="form-group">
 						<label for="token" th:text="#{registration.token} + ':'"></label>
-						<input type="token" th:field="*{token}" class="form-control" />
+						<input id="token" type="text" th:field="*{token}" class="form-control" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('token')}" th:errors="*{token}">token error</p>
 					</div>
 					<div class="form-group">
 						<label for="username" th:text="#{registration.username} + ':'"></label>
-						<input type="username" th:field="*{username}" class="form-control" />
+						<input id="username" type="text" th:field="*{username}" class="form-control" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
 					</div>
 					<div class="form-group">
 						<label for="newPassword" th:text="#{userprofile.changePassword.newPassword} + ':'"></label> 
-						<input type="password" th:field="*{newPassword}" class="form-control" />
+						<input id="newPassword" type="password" th:field="*{newPassword}" class="form-control" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">newPasswordRepeat error</p>
 					</div>
 					<div class="form-group">
 						<label for="newPasswordRepeat" th:text="#{userprofile.changePassword.newPasswordRepeat} + ':'"></label> 
-						<input type="password" th:field="*{newPasswordRepeat}" class="form-control" />
+						<input id="newPasswordRepeat" type="password" th:field="*{newPasswordRepeat}" class="form-control" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newPasswordRepeat')}" th:errors="*{newPasswordRepeat}">newPasswordRepeat error</p>
 					</div>
 					<div class="form-group">

@@ -28,7 +28,7 @@ public class RuntimeConfigurationService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RuntimeConfigurationService.class);
 
-	private static final Long DEFAULT_CONFIG_ID = Long.valueOf(1);
+	private static final Long DEFAULT_CONFIG_ID = 1L;
 
 	@Autowired
 	private RuntimeConfigRepository<RuntimeConfig> runtimeConfigRepository;

@@ -11,8 +11,8 @@
 				<span th:text="${errorMsg}"></span>
 			</div>
 			<form th:action="@{/login}" method="post">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="row">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-4">
 						<div class="form-group">
 							<input id="username" type="text" name="username" th:placeholder="#{login.placeholder.username}" class="form-control" />
 						</div>
@@ -29,8 +29,11 @@
 							<button id="loginSubmitBtn" type="submit" class="btn btn-primary" th:text="#{login.button.login}"></button>
 						</div>
 					</div>
-					<div class="row">
-						<a href="#" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<span class="small" th:text="#{registration.text}"></span>
+						<a class="small" href="#" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
 					</div>
 				</div>
 			</form>
