@@ -107,6 +107,25 @@
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.jokerMaxCount')}" th:errors="*{runtimeConfig.jokerMaxCount}"></p>
 						</div>						
 					</div>
+					<div class="visible-xs col-xs-12">
+						<hr/>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<h3 th:text="#{administration.runtime.configuration.registrationCode}"></h3>
+						<ul class="list-group">
+							<li class="list-group-item">
+								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeConfig.selfRegistrationEnabled}"/>
+								<label for="selfRegistrationEnabled" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+									  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
+							</li>
+						</ul>
+						<div class="form-group">
+							<label for="runtimeConfig.registrationCode" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
+							<input id="runtimeConfig.registrationCode" type="text" th:field="*{runtimeConfig.registrationCode}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.registrationCode')}" th:errors="*{runtimeConfig.registrationCode}"></p>
+						</div>
+					</div>
 				</div>				
 				<div class="row">			
 					<div class="col-xs-12 col-sm-12 col-md-6">	

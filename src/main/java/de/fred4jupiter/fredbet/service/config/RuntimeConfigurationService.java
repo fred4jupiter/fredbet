@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.service.config;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,8 @@ public class RuntimeConfigurationService {
 		runtimeConfig.setFavouriteCountry(FredbetConstants.DEFAULT_FAVOURITE_COUNTRY);
 		runtimeConfig.setPasswordForReset(FredbetConstants.DEFAULT_REST_PASSWORT);
 		runtimeConfig.setChangePasswordOnFirstLogin(true);
+		runtimeConfig.setSelfRegistrationEnabled(false);
+		runtimeConfig.setRegistrationCode(RandomStringUtils.randomAlphabetic(4));
 
 		if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);

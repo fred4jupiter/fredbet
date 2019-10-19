@@ -66,6 +66,12 @@ public class RuntimeConfig {
 	@Min(value = 0)
 	private Integer jokerMaxCount = 3;
 
+	private boolean selfRegistrationEnabled;
+
+	@NotNull
+	@Min(value = 4)
+	private String registrationCode;
+
 	public boolean isEnabledParentChildRanking() {
 		return enabledParentChildRanking;
 	}
@@ -154,5 +160,19 @@ public class RuntimeConfig {
 		this.jokerMaxCount = jokerMaxCount;
 	}
 
-	
+	public boolean isSelfRegistrationEnabled() {
+		return selfRegistrationEnabled;
+	}
+
+	public void setSelfRegistrationEnabled(boolean selfRegistrationEnabled) {
+		this.selfRegistrationEnabled = selfRegistrationEnabled;
+	}
+
+	public String getRegistrationCode() {
+		return registrationCode;
+	}
+
+	public void setRegistrationCode(String registrationCode) {
+		this.registrationCode = registrationCode;
+	}
 }
