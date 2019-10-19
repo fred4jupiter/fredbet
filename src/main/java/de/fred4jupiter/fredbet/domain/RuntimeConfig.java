@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -7,172 +9,171 @@ import javax.validation.constraints.NotNull;
 
 /**
  * These properties are changable at runtime (via admin page).
- * 
- * @author michael
  *
+ * @author michael
  */
 public class RuntimeConfig {
 
-	private boolean enabledParentChildRanking;
+    private boolean enabledParentChildRanking;
 
-	private boolean enableChangingUsername;
+    private boolean enableChangingUsername;
 
-	private boolean showDemoDataNavigationEntry;
+    private boolean showDemoDataNavigationEntry;
 
-	/**
-	 * Creates demo data with additional users and matches.
-	 */
-	private boolean createDemoData;
+    /**
+     * Creates demo data with additional users and matches.
+     */
+    private boolean createDemoData;
 
-	/**
-	 * Sum points per user for selected country that will be shown in points
-	 * statistics.
-	 */
-	private Country favouriteCountry;
+    /**
+     * Sum points per user for selected country that will be shown in points
+     * statistics.
+     */
+    private Country favouriteCountry;
 
-	/**
-	 * Password used if the user password has been reset.
-	 */
-	@NotEmpty
-	private String passwordForReset;
+    /**
+     * Password used if the user password has been reset.
+     */
+    @NotEmpty
+    private String passwordForReset;
 
-	/**
-	 * Extra betting points for final winner.
-	 */
-	@NotNull
-	@Min(value = 0)
-	private Integer pointsFinalWinner = 10;
+    /**
+     * Extra betting points for final winner.
+     */
+    @NotNull
+    @Min(value = 0)
+    private Integer pointsFinalWinner = 10;
 
-	/**
-	 * Extra betting points for semi final winner.
-	 */
-	@NotNull
-	@Min(value = 0)
-	private Integer pointsSemiFinalWinner = 5;
+    /**
+     * Extra betting points for semi final winner.
+     */
+    @NotNull
+    @Min(value = 0)
+    private Integer pointsSemiFinalWinner = 5;
 
-	/**
-	 * Extra betting points for third winner.
-	 */
-	@NotNull
-	@Min(value = 0)
-	private Integer pointsThirdFinalWinner = 2;
-	
-	/**
-	 * If users have to change their password at first login.
-	 */
-	private boolean changePasswordOnFirstLogin;
-	
-	@NotNull
-	@Min(value = 0)
-	private Integer jokerMaxCount = 3;
+    /**
+     * Extra betting points for third winner.
+     */
+    @NotNull
+    @Min(value = 0)
+    private Integer pointsThirdFinalWinner = 2;
 
-	private boolean selfRegistrationEnabled;
+    /**
+     * If users have to change their password at first login.
+     */
+    private boolean changePasswordOnFirstLogin;
 
-	@NotNull
-	@Min(value = 4)
-	private String registrationCode;
+    @NotNull
+    @Min(value = 0)
+    private Integer jokerMaxCount = 3;
 
-	public boolean isEnabledParentChildRanking() {
-		return enabledParentChildRanking;
-	}
+    private boolean selfRegistrationEnabled;
 
-	public void setEnabledParentChildRanking(boolean enabledParentChildRanking) {
-		this.enabledParentChildRanking = enabledParentChildRanking;
-	}
+    @NotNull
+    @Length(min = 4)
+    private String registrationCode;
 
-	public boolean isEnableChangingUsername() {
-		return enableChangingUsername;
-	}
+    public boolean isEnabledParentChildRanking() {
+        return enabledParentChildRanking;
+    }
 
-	public void setEnableChangingUsername(boolean enableChangingUsername) {
-		this.enableChangingUsername = enableChangingUsername;
-	}
+    public void setEnabledParentChildRanking(boolean enabledParentChildRanking) {
+        this.enabledParentChildRanking = enabledParentChildRanking;
+    }
 
-	public boolean isShowDemoDataNavigationEntry() {
-		return showDemoDataNavigationEntry;
-	}
+    public boolean isEnableChangingUsername() {
+        return enableChangingUsername;
+    }
 
-	public void setShowDemoDataNavigationEntry(boolean showDemoDataNavigationEntry) {
-		this.showDemoDataNavigationEntry = showDemoDataNavigationEntry;
-	}
+    public void setEnableChangingUsername(boolean enableChangingUsername) {
+        this.enableChangingUsername = enableChangingUsername;
+    }
 
-	public boolean isCreateDemoData() {
-		return createDemoData;
-	}
+    public boolean isShowDemoDataNavigationEntry() {
+        return showDemoDataNavigationEntry;
+    }
 
-	public void setCreateDemoData(boolean createDemoData) {
-		this.createDemoData = createDemoData;
-	}
+    public void setShowDemoDataNavigationEntry(boolean showDemoDataNavigationEntry) {
+        this.showDemoDataNavigationEntry = showDemoDataNavigationEntry;
+    }
 
-	public Country getFavouriteCountry() {
-		return favouriteCountry;
-	}
+    public boolean isCreateDemoData() {
+        return createDemoData;
+    }
 
-	public void setFavouriteCountry(Country favouriteCountry) {
-		this.favouriteCountry = favouriteCountry;
-	}
+    public void setCreateDemoData(boolean createDemoData) {
+        this.createDemoData = createDemoData;
+    }
 
-	public String getPasswordForReset() {
-		return passwordForReset;
-	}
+    public Country getFavouriteCountry() {
+        return favouriteCountry;
+    }
 
-	public void setPasswordForReset(String passwordForReset) {
-		this.passwordForReset = passwordForReset;
-	}
+    public void setFavouriteCountry(Country favouriteCountry) {
+        this.favouriteCountry = favouriteCountry;
+    }
 
-	public Integer getPointsFinalWinner() {
-		return pointsFinalWinner;
-	}
+    public String getPasswordForReset() {
+        return passwordForReset;
+    }
 
-	public void setPointsFinalWinner(Integer pointsFinalWinner) {
-		this.pointsFinalWinner = pointsFinalWinner;
-	}
+    public void setPasswordForReset(String passwordForReset) {
+        this.passwordForReset = passwordForReset;
+    }
 
-	public Integer getPointsSemiFinalWinner() {
-		return pointsSemiFinalWinner;
-	}
+    public Integer getPointsFinalWinner() {
+        return pointsFinalWinner;
+    }
 
-	public void setPointsSemiFinalWinner(Integer pointsSemiFinalWinner) {
-		this.pointsSemiFinalWinner = pointsSemiFinalWinner;
-	}
+    public void setPointsFinalWinner(Integer pointsFinalWinner) {
+        this.pointsFinalWinner = pointsFinalWinner;
+    }
 
-	public Integer getPointsThirdFinalWinner() {
-		return pointsThirdFinalWinner;
-	}
+    public Integer getPointsSemiFinalWinner() {
+        return pointsSemiFinalWinner;
+    }
 
-	public void setPointsThirdFinalWinner(Integer pointsThirdFinalWinner) {
-		this.pointsThirdFinalWinner = pointsThirdFinalWinner;
-	}
+    public void setPointsSemiFinalWinner(Integer pointsSemiFinalWinner) {
+        this.pointsSemiFinalWinner = pointsSemiFinalWinner;
+    }
 
-	public boolean isChangePasswordOnFirstLogin() {
-		return changePasswordOnFirstLogin;
-	}
+    public Integer getPointsThirdFinalWinner() {
+        return pointsThirdFinalWinner;
+    }
 
-	public void setChangePasswordOnFirstLogin(boolean changePasswordOnFirstLogin) {
-		this.changePasswordOnFirstLogin = changePasswordOnFirstLogin;
-	}
+    public void setPointsThirdFinalWinner(Integer pointsThirdFinalWinner) {
+        this.pointsThirdFinalWinner = pointsThirdFinalWinner;
+    }
 
-	public Integer getJokerMaxCount() {
-		return jokerMaxCount;
-	}
+    public boolean isChangePasswordOnFirstLogin() {
+        return changePasswordOnFirstLogin;
+    }
 
-	public void setJokerMaxCount(Integer jokerMaxCount) {
-		this.jokerMaxCount = jokerMaxCount;
-	}
+    public void setChangePasswordOnFirstLogin(boolean changePasswordOnFirstLogin) {
+        this.changePasswordOnFirstLogin = changePasswordOnFirstLogin;
+    }
 
-	public boolean isSelfRegistrationEnabled() {
-		return selfRegistrationEnabled;
-	}
+    public Integer getJokerMaxCount() {
+        return jokerMaxCount;
+    }
 
-	public void setSelfRegistrationEnabled(boolean selfRegistrationEnabled) {
-		this.selfRegistrationEnabled = selfRegistrationEnabled;
-	}
+    public void setJokerMaxCount(Integer jokerMaxCount) {
+        this.jokerMaxCount = jokerMaxCount;
+    }
 
-	public String getRegistrationCode() {
-		return registrationCode;
-	}
+    public boolean isSelfRegistrationEnabled() {
+        return selfRegistrationEnabled;
+    }
 
-	public void setRegistrationCode(String registrationCode) {
-		this.registrationCode = registrationCode;
-	}
+    public void setSelfRegistrationEnabled(boolean selfRegistrationEnabled) {
+        this.selfRegistrationEnabled = selfRegistrationEnabled;
+    }
+
+    public String getRegistrationCode() {
+        return registrationCode;
+    }
+
+    public void setRegistrationCode(String registrationCode) {
+        this.registrationCode = registrationCode;
+    }
 }
