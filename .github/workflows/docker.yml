@@ -4,11 +4,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout and Build
-      uses: actions/checkout@master
-    - name: Publish to Registry
-      uses: fred4jupiter/fredbet@master
-      with:
-        name: fred4jupiter/fredbet
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+    - uses: actions/checkout@master
+    - name: Build Docker image
+      run: docker build --file Dockerfile fred4jupiter/fredbet .
