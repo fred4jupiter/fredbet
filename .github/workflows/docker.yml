@@ -8,7 +8,7 @@ jobs:
     - name: Build Docker image
       run: docker build -t fred4jupiter/fredbet .
     - name: Publish to Docker Hub
-      uses: fred4jupiter/fredbet@master
+      run: docker push fred4jupiter/fredbet
       with:
         name: fred4jupiter/fredbet
         username: ${{ secrets.DOCKER_USERNAME }}
