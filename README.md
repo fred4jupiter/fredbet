@@ -189,3 +189,6 @@ You should have received a copy of the license along with this work. If not, see
 
 ## Travis Build Status
 [![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
+
+## GitHub Action Status
+![](https://github.com/fred4jupiter/fredbet/workflows/Publish%20Docker/badge.svg)

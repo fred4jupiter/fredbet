@@ -1,0 +1,14 @@
+name: Publish Docker
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout and Build
+      uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: fred4jupiter/fredbet@master
+      with:
+        name: fred4jupiter/fredbet
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
