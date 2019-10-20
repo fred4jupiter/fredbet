@@ -30,10 +30,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" th:if="${@runtimeConfigurationUtil.getConfig().isSelfRegistrationEnabled()}">
+				<div th:if="${@runtimeConfigurationUtil.getConfig().isSelfRegistrationEnabled()}">
 					<div class="col-xs-12 col-sm-12 col-md-12">
-						<span class="small" th:text="#{registration.text}"></span>
-						<a class="small" href="#" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+						<div class="row">
+							<span class="text-muted" th:text="#{registration.text}"></span>
+						</div>
+						<div class="row">
+							<a href="#" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+						</div>
 					</div>
 				</div>
 			</form>
