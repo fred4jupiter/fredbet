@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.registration;
 
+import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.registration.RegistrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,13 @@ public class RegistrationController {
             return REGISTRATION_PAGE;
         }
 
-        registrationService.registerNewUser(command.getUsername(), command.getNewPassword());
+        try {
+            registrationService.registerNewUser(command.getUsername(), command.getNewPassword());
+        } catch (UserAlreadyExistsException e) {
+            webMessageUtil.addErrorMsg(model, "user.username.duplicate");
+            model.addAttribute("registrationCommand", command);
+            return REGISTRATION_PAGE;
+        }
 
         webMessageUtil.addInfoMsg(redirect, "msg.registration.info.success");
         return "redirect:/registration";
