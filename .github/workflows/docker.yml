@@ -1,4 +1,4 @@
-name: Publish Docker
+name: Build and Publish Docker Image
 on: [push]
 jobs:
   build:
@@ -7,3 +7,10 @@ jobs:
     - uses: actions/checkout@master
     - name: Build Docker image
       run: docker build -t fred4jupiter/fredbet .
+    - name: Publish to Docker Hub
+      uses: fred4jupiter/fredbet@master
+      with:
+        name: fred4jupiter/fredbet
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        cache: true
