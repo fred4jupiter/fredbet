@@ -11,7 +11,8 @@
 			<h2 th:text="#{administration.runtime.configuration}"></h2>
 			<form id="saveRuntimeConfigForm" th:action="@{/runtimeconfig/saveRuntimeConfig}" th:object="${runtimeConfigCommand}" action="#" method="post" role="form">				
 				<div class="row">			
-					<div class="col-xs-12 col-sm-6 col-md-4">										
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<h3 th:text="#{administration.runtime.configuration.misc}"></h3>
 						<ul class="list-group">
 							<li class="list-group-item">								
 								<input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeConfig.enabledParentChildRanking}"/>
@@ -48,7 +49,8 @@
 					<div class="visible-xs col-xs-12">
 						<hr/>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4">	
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<h3 th:text="#{administration.runtime.configuration.misc}"></h3>
 						<div class="form-group">
 							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label> 
 							<select id="favouriteCountry" th:field="*{runtimeConfig.favouriteCountry}" class="form-control">
@@ -99,13 +101,15 @@
 					<div class="visible-xs col-xs-12">
 						<hr/>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-4">
 						<h3 th:text="#{administration.runtime.configuration.joker}"></h3>
 						<div class="form-group">
-							<label for="runtimeConfig.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label> 
+							<label for="runtimeConfig.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
 							<input id="runtimeConfig.jokerMaxCount" type="text" th:field="*{runtimeConfig.jokerMaxCount}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.jokerMaxCount')}" th:errors="*{runtimeConfig.jokerMaxCount}"></p>
-						</div>						
+						</div>
 					</div>
 					<div class="visible-xs col-xs-12">
 						<hr/>
@@ -126,7 +130,7 @@
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeConfig.registrationCode')}" th:errors="*{runtimeConfig.registrationCode}"></p>
 						</div>
 					</div>
-				</div>				
+				</div>
 				<div class="row">			
 					<div class="col-xs-12 col-sm-12 col-md-6">	
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>	
