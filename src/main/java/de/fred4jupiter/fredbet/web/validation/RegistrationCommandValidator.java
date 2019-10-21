@@ -17,10 +17,10 @@ public class RegistrationCommandValidator implements ConstraintValidator<Passwor
             return true;
         }
 
-        if (!value.getNewPassword().equals(value.getNewPasswordRepeat())) {
-            context.buildConstraintViolationWithTemplate("{msg.passwordChange.passwordMismatch}")
-                    .addPropertyNode("newPassword").addConstraintViolation().disableDefaultConstraintViolation();
-            LOG.error("newPassword and newPasswordRepeat are different");
+        if (!value.getPassword().equals(value.getPasswordRepeat())) {
+            context.buildConstraintViolationWithTemplate("{msg.registration.passwordMismatch}")
+                    .addPropertyNode("password").addConstraintViolation().disableDefaultConstraintViolation();
+            LOG.error("password and passwordRepeat are different");
             return false;
         }
 

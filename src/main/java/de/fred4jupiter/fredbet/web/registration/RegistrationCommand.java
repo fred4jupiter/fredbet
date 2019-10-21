@@ -17,11 +17,11 @@ public class RegistrationCommand {
 
     @NotEmpty
     @Size(min = 4, max = 12)
-    private String newPassword;
+    private String password;
 
     @NotEmpty
     @Size(min = 4, max = 12)
-    private String newPasswordRepeat;
+    private String passwordRepeat;
 
     public String getUsername() {
         return username;
@@ -31,20 +31,20 @@ public class RegistrationCommand {
         this.username = username;
     }
 
-    public String getNewPassword() {
-        return newPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getNewPasswordRepeat() {
-        return newPasswordRepeat;
+    public String getPasswordRepeat() {
+        return passwordRepeat;
     }
 
-    public void setNewPasswordRepeat(String newPasswordRepeat) {
-        this.newPasswordRepeat = newPasswordRepeat;
+    public void setPasswordRepeat(String passwordRepeat) {
+        this.passwordRepeat = passwordRepeat;
     }
 
     public String getToken() {

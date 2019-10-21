@@ -22,14 +22,14 @@
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
 					</div>
 					<div class="form-group">
-						<label for="newPassword" th:text="#{userprofile.changePassword.newPassword} + ':'"></label> 
-						<input id="newPassword" type="password" th:field="*{newPassword}" class="form-control" />
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">newPasswordRepeat error</p>
+						<label for="password" th:text="#{registration.password} + ':'"></label>
+						<input id="password" type="password" th:field="*{password}" class="form-control" />
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">passwordRepeat error</p>
 					</div>
 					<div class="form-group">
-						<label for="newPasswordRepeat" th:text="#{userprofile.changePassword.newPasswordRepeat} + ':'"></label> 
-						<input id="newPasswordRepeat" type="password" th:field="*{newPasswordRepeat}" class="form-control" />
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newPasswordRepeat')}" th:errors="*{newPasswordRepeat}">newPasswordRepeat error</p>
+						<label for="passwordRepeat" th:text="#{registration.passwordRepeat} + ':'"></label>
+						<input id="passwordRepeat" type="password" th:field="*{passwordRepeat}" class="form-control" />
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}">passwordRepeat error</p>
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>

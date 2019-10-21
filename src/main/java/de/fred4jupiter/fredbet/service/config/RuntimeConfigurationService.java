@@ -55,7 +55,7 @@ public class RuntimeConfigurationService {
 		runtimeConfig.setPasswordForReset(FredbetConstants.DEFAULT_REST_PASSWORT);
 		runtimeConfig.setChangePasswordOnFirstLogin(true);
 		runtimeConfig.setSelfRegistrationEnabled(false);
-		runtimeConfig.setRegistrationCode(RandomStringUtils.randomAlphabetic(4));
+		runtimeConfig.setRegistrationCode(RandomStringUtils.randomAlphanumeric(6));
 
 		if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
 			runtimeConfig.setShowDemoDataNavigationEntry(true);

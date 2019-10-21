@@ -49,7 +49,7 @@ public class RegistrationController {
         }
 
         try {
-            registrationService.registerNewUser(command.getUsername(), command.getNewPassword());
+            registrationService.registerNewUser(command.getUsername(), command.getPassword());
         } catch (UserAlreadyExistsException e) {
             webMessageUtil.addErrorMsg(model, "user.username.duplicate");
             model.addAttribute("registrationCommand", command);
