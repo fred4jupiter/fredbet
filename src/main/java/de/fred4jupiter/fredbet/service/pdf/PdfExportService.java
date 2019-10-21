@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.service.pdf;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -29,6 +28,9 @@ public class PdfExportService {
 
     @Autowired
     private MessageSourceUtil messageSourceUtil;
+
+    @Autowired
+    private FontCreator fontCreator;
 
     public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, RowCallback<T> rowCallback) {
         final PdfTableData pdfTableData = pdfTableDataBuilder.build();
@@ -69,7 +71,7 @@ public class PdfExportService {
 
     private HeaderFooter createFooter(PdfTableData pdfTableData) {
         String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.getLocale());
-        HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", createFont()), true);
+        HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", fontCreator.createFont()), true);
         footer.setBorder(Rectangle.NO_BORDER);
         footer.setAlignment(Element.ALIGN_RIGHT);
         return footer;
@@ -77,13 +79,13 @@ public class PdfExportService {
 
     private Paragraph createCurrenteDateTimeParagraph(PdfTableData pdfTableData) {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(pdfTableData.getLocale());
-        Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), createFont());
+        Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), fontCreator.createFont());
         dateParagraph.setSpacingAfter(10);
         return dateParagraph;
     }
 
     private Paragraph createHeadline(PdfTableData pdfTableData) {
-        Font font = createFont();
+        Font font = fontCreator.createFont();
         font.setSize(18);
         font.setStyle(Font.BOLD);
         Paragraph headline = new Paragraph(pdfTableData.getTitle(), font);
@@ -92,7 +94,7 @@ public class PdfExportService {
     }
 
     private void addRowToTable(PdfPTable table, List<String> columns, boolean isHeader) {
-        final Font font = createFont();
+        final Font font = fontCreator.createFont();
 
         for (String column : columns) {
             PdfPCell cell = new PdfPCell(new Phrase(column, font));
@@ -102,15 +104,6 @@ public class PdfExportService {
             }
 
             table.addCell(cell);
-        }
-    }
-
-    private Font createFont() {
-        try {
-            BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, "UTF-8", BaseFont.NOT_EMBEDDED);
-            return new Font(baseFont, 12);
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 

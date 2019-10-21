@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
@@ -16,13 +17,17 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PdfExportServiceUT {
 
     @InjectMocks
     private PdfExportService pdfExportService;
+
+    @Spy
+    private FontCreator fontCreator = new FontCreator();
 
     @Mock
     private MessageSourceUtil messageSourceUtil;
@@ -44,12 +49,28 @@ public class PdfExportServiceUT {
         FileUtils.writeByteArrayToFile(new File("target/result.pdf"), fileAsByteArray);
     }
 
+    @Test
+    public void createPdfWithUmlauts() throws IOException {
+        when(messageSourceUtil.getMessageFor(eq("page"), eq(Locale.getDefault()))).thenReturn("Page");
+
+        PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("października").withHeaderColumn("Prawidłowe zakłady").withHeaderColumn("Różnica goli");
+        builder.withColumnWidths(new float[]{3, 3, 3}).withTitle("Fredbet Resultsäöü").withLocale(new Locale("pl", "PL"));
+
+        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, createTestData(), (rowContentAdder, row) -> {
+            rowContentAdder.addCellContent(row.getUserName());
+            rowContentAdder.addCellContent("" + row.getCorrectResultCount());
+            rowContentAdder.addCellContent("" + row.getGoalDifference());
+        });
+        assertThat(fileAsByteArray).isNotNull();
+        FileUtils.writeByteArrayToFile(new File("target/result.pdf"), fileAsByteArray);
+    }
+
     private List<UsernamePoints> createTestData() {
         List<UsernamePoints> data = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             UsernamePoints usernamePoints = new UsernamePoints();
-            usernamePoints.setUserName("Michael");
+            usernamePoints.setUserName("Michael_üäö");
             usernamePoints.setTotalPoints(100);
             usernamePoints.setCorrectResultCount(23);
             usernamePoints.setGoalDifference(32);
