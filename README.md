@@ -23,7 +23,9 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - ranking filter for adults and childs listing
 - integrated testing capabilities: create demo users, matches, bets...
 - configurable runtime configuration
-- use a joker to double your points of a bet
+- use a joker to double your points
+- self registration (can be disabled)
+- PDF export of user ranking 
 
 ## Testing it locally
 
@@ -192,5 +194,3 @@ You should have received a copy of the license along with this work. If not, see
 
 ## GitHub Action Status
 ![](https://github.com/fred4jupiter/fredbet/workflows/Java%20CI/badge.svg)
-
-![](https://github.com/fred4jupiter/fredbet/workflows/Build%20and%20Publish%20Docker%20Image/badge.svg)
