@@ -1,0 +1,6 @@
+build:
+  docker:
+    web: Dockerfile
+  config:
+    SPRING_PROFILES_ACTIVE: dev
+    SERVER_PORT: $PORT
