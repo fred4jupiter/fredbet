@@ -39,4 +39,5 @@ ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /home/fred/app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /home/fred/app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /home/fred/app
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -cp /home/fred/app:/home/fred/app/lib/* de.fred4jupiter.fredbet.Application" ]
+ENTRYPOINT [ "sh", "-c", "java -cp /home/fred/app:/home/fred/app/lib/* de.fred4jupiter.fredbet.Application" ]
+CMD ["$JAVA_OPTS -Djava.security.egd=file:/dev/./urandom"]
