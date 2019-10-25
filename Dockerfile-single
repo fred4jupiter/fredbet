@@ -25,5 +25,4 @@ USER fred
 
 WORKDIR /home/fred
 
-ENTRYPOINT [ "sh", "-c", "java -jar /home/fred/fredbet.jar" ]
-CMD ["$JAVA_OPTS -Djava.security.egd=file:/dev/./urandom"]
+CMD [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /home/fred/fredbet.jar" ]
