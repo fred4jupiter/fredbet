@@ -1,19 +1,14 @@
-FROM openjdk:11-jdk as build
-
-WORKDIR /workspace/app
-
-COPY mvnw .
-COPY .mvn .mvn
+# Step : Test and package
+FROM maven:3.6.2-jdk-11-slim as target
+WORKDIR /build
 COPY pom.xml .
-COPY src src
+RUN mvn dependency:go-offline
 
-RUN ./mvnw -q dependency:go-offline
-RUN ./mvnw clean install
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+COPY src/ /build/src/
+RUN mvn package
 
-
+# Step : Package image
 FROM openjdk:11-jre-slim
-
 LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp
@@ -35,8 +30,5 @@ WORKDIR /home/fred
 
 EXPOSE 8080
 
-ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /home/fred/app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /home/fred/app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /home/fred/app
-CMD [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -cp /home/fred/app:/home/fred/app/lib/* de.fred4jupiter.fredbet.Application" ]
+COPY --from=target /build/target/fredbet.jar /home/fred/fredbet.jar
+CMD exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /home/fred/fredbet.jar
