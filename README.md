@@ -155,7 +155,7 @@ The policy to access your S3 bucket will look like this:
 ## Hints
 
 ```bash
--Dliquibase.enabled = false
+-Dspring.liquibase.enabled = false
 ```
 Disabling Liquibase database migration at all. This may be useful if you have an already populated database schema.
 
