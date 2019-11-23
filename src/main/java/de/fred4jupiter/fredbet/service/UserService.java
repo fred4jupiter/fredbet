@@ -58,7 +58,7 @@ public class UserService {
     private ImageGroupRepository imageGroupRepository;
 
     public List<AppUser> findAll() {
-        return appUserRepository.findAll(new Sort(Direction.ASC, "username"));
+        return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));
     }
 
     public AppUser findByUserId(Long userId) {
