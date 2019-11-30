@@ -73,6 +73,12 @@
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}" th:class="${pageState_matches_group_GROUP_H}">
 					            	<a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
 				            	</li>
+								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}" th:class="${pageState_matches_group_GROUP_I}">
+									<a href="#matches" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
+								</li>
+								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}" th:class="${pageState_matches_group_GROUP_J}">
+									<a href="#matches" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
+								</li>
 					            <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}" class="divider" role="separator"></li>
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}" th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}">
 					            	<a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>

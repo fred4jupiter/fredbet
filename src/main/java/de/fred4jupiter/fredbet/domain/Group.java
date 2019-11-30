@@ -22,6 +22,10 @@ public enum Group {
 	
 	GROUP_H("group.title.H"),
 
+	GROUP_I("group.title.I"),
+
+	GROUP_J("group.title.J"),
+
 	ROUND_OF_SIXTEEN("group.title.roundOfSixteen"), // Achtelfinale
 
 	QUARTER_FINAL("group.title.quarterFinal"), // Viertelfinale
@@ -32,7 +36,7 @@ public enum Group {
     
     GAME_FOR_THIRD("group.title.gameForThird"); // Finale
 
-	private String titleMsgKey;
+	private final String titleMsgKey;
 
 	private Group(String titleMsgKey) {
 		this.titleMsgKey = titleMsgKey;

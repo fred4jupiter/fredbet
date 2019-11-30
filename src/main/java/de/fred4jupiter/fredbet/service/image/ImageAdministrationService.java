@@ -167,7 +167,7 @@ public class ImageAdministrationService {
 	}
 
 	public List<String> findAvailableImageGroups() {
-		return imageGroupRepository.findAllGroupsWithoutUserProfileImageGroup().stream().map(imageGroup -> imageGroup.getName()).sorted()
+		return imageGroupRepository.findAllGroupsWithoutUserProfileImageGroup().stream().map(ImageGroup::getName).sorted()
 				.collect(Collectors.toList());
 	}
 

@@ -98,6 +98,8 @@ public class DataBasePopulator {
 		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_F, 4);
 		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_G, 4);
 		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_H, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_I, 4);
+		localDateTime = createRandomForGroup(localDateTime, Group.GROUP_J, 4);
 
 		localDateTime = createRandomForGroup(localDateTime, Group.ROUND_OF_SIXTEEN, 8);
 		localDateTime = createRandomForGroup(localDateTime, Group.QUARTER_FINAL, 4);
