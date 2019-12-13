@@ -7,6 +7,8 @@
 target/
 release_version.txt
 
+.vscode/
+
 # IntelliJ IDEA
 .idea/
 *.iml

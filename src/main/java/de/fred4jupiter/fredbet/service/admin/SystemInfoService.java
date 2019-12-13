@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.boot.info.GitProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -25,27 +24,19 @@ public class SystemInfoService {
 
     private final Environment environment;
 
-    private final GitProperties gitProperties;
 
     private final SortedMap<String, Object> allProperties = new TreeMap<>();
 
     @Autowired
-    public SystemInfoService(BuildProperties buildProperties, Environment environment, GitProperties gitProperties) {
+    public SystemInfoService(BuildProperties buildProperties, Environment environment) {
         this.buildProperties = buildProperties;
         this.environment = environment;
-        this.gitProperties = gitProperties;
         addStaticProperties();
     }
 
     private void addStaticProperties() {
         allProperties.put("build.time", buildProperties.getTime());
         allProperties.put("build.version", buildProperties.getVersion());
-
-        allProperties.put("commit ID", gitProperties.getCommitId());
-        allProperties.put("branch", gitProperties.getBranch());
-        allProperties.put("commit message", gitProperties.get("commit.message.full"));
-        allProperties.put("commit username", gitProperties.get("commit.user.name"));
-        allProperties.put("commit time", gitProperties.get("commit.time"));
 
         addSpringProfiles();
         addEnvProperty("spring.datasource.hikari.driver-class-name");
