@@ -126,8 +126,8 @@ public class AmazonS3ClientWrapper {
 	/**
 	 * Prefix is like a directory name.
 	 * 
-	 * @param prefix
-	 * @return
+	 * @param keys list of keys.
+	 * @return list of BinaryImage.
 	 */
 	public List<BinaryImage> downloadAllFiles(List<String> keys) {
 		List<BinaryImage> resultList = new ArrayList<>();
