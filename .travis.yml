@@ -6,6 +6,8 @@ jobs:
         - docker build -f Dockerfile -t fred4jupiter/fredbet .
         - docker tag fred4jupiter/fredbet fred4jupiter/fredbet:latest
         - docker push fred4jupiter/fredbet:latest
+        - docker logout
         - docker login --username=_ --password=$HEROKU_AUTH_TOKEN registry.heroku.com
         - docker tag fred4jupiter/fredbet registry.heroku.com/fred4jupiter/fredbet/web
         - docker push registry.heroku.com/fred4jupiter/fredbet/web
+        - docker logout
