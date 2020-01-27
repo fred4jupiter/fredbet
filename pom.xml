@@ -259,6 +259,7 @@
                 <artifactId>git-commit-id-plugin</artifactId>
                 <version>4.0.0</version>
                 <configuration>
+                    <verbose>false</verbose>
                     <failOnNoGitDirectory>false</failOnNoGitDirectory>
                     <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
                 </configuration>
