@@ -80,7 +80,7 @@
 						<br/>
 						<div class="center" th:if="${betCommand.maxJokers gt 0}">
 							<div class="row" th:if="${betCommand.jokerEditable}">
-								<input type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
+								<input id="useJoker" type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
 								<label for="useJoker" th:text="#{betting.joker}"></label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 									th:title="#{betting.joker.tooltip}"></span>
