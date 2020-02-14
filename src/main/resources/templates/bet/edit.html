@@ -93,6 +93,10 @@
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 							<a href="#" th:href="@{${betCommand.getBackUrl()}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 						</div>
+						<div class="row">
+							<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+							<a href="#" th:href="@{'/ics/' + ${betCommand.matchId}}" th:text="#{calendar.ics.download.text}"></a>
+						</div>
 					</div>
 				</div>
 			</div>

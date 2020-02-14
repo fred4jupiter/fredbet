@@ -102,8 +102,6 @@ public class WebMessageUtil {
         return Validator.isNotNull(country) ? getCountryName(country) : teamName;
     }
 
-
-
     public static final class WebMessage {
         private String cssClass;
 
