@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import de.fred4jupiter.fredbet.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -88,18 +87,15 @@ public class WebMessageUtil {
     }
 
     public String getTeamNameOne(Match match) {
-        return getTeamName(match.getCountryOne(), match.getTeamNameOne());
+        return messageSourceUtil.getTeamNameOne(match, LocaleContextHolder.getLocale());
     }
 
     public String getTeamNameTwo(Match match) {
-        return getTeamName(match.getCountryTwo(), match.getTeamNameTwo());
+        return messageSourceUtil.getTeamNameTwo(match, LocaleContextHolder.getLocale());
     }
 
     public String getTeamName(Country country, String teamName) {
-        if (country == null) {
-            return teamName;
-        }
-        return Validator.isNotNull(country) ? getCountryName(country) : teamName;
+        return messageSourceUtil.getTeamName(country, teamName, LocaleContextHolder.getLocale());
     }
 
     public static final class WebMessage {
