@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 @Service
 public class IcsCalendarService {
@@ -34,6 +35,7 @@ public class IcsCalendarService {
 
         return IcsCalendarBuilder.create().withTitle(title).withContent(content)
                 .withLocation(match.getStadium())
+                .withTimeZone(TimeZone.getDefault().getID())
                 .withStartEnd(match.getKickOffDate(), match.getKickOffDate().plusHours(2))
                 .build();
     }
