@@ -23,5 +23,14 @@ jobs:
 
       - name: Push image to GitHub Docker image registry
         run: |          
-          docker tag fred4jupiter/fredbet docker.pkg.github.com/fred4jupiter/fredbet:latest
-          docker push docker.pkg.github.com/fred4jupiter/fredbet:latest
+          docker tag fred4jupiter/fredbet docker.pkg.github.com/fred4jupiter/fredbet
+          docker push docker.pkg.github.com/fred4jupiter/fredbet
+
+      - name: Heroku Release
+        run: |
+          docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+          docker tag docker.pkg.github.com/fred4jupiter/fredbet registry.heroku.com/fred4jupiter/fredbet
+          docker push registry.heroku.com/fred4jupiter/fredbet
+          heroku container:release web -a fredbet
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
