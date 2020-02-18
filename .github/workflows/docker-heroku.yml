@@ -2,31 +2,20 @@ name: Heroku
 
 on: [push]
 
-env:
-  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
 jobs:
-  
-  build-publish:
-  
+  build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build . --file Dockerfile --tag fredbet:latest
-
-      - name: Log into registry
-        run: echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
-
-      - name: Docker Tag and Push
-        run: |
-          docker tag fredbet:latest registry.heroku.com/fred4jupiter/fredbet:latest
-          docker push registry.heroku.com/fred4jupiter/fredbet:latest
-
-      - name: Heroku Release
-        run: |
-          heroku container:release web -a fredbet
-
+      - uses: actions/checkout@v1
+      - name: Login to Heroku Container registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
