@@ -2,11 +2,11 @@
 FROM maven:3.6.2-jdk-11-slim as target
 WORKDIR /build
 COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN mvn -B dependency:go-offline
 
 COPY src/ /build/src/
 COPY .git /build/.git/
-RUN mvn package
+RUN mvn -B package
 
 # Step : Package image
 FROM openjdk:11-jre-slim
