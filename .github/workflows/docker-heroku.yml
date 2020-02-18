@@ -18,10 +18,15 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag fredbet:latest
 
-      - name: Heroku Release
+      - name: Log into registry
+        run: echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
+
+      - name: Docker Tag and Push
         run: |
-          docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
           docker tag fredbet:latest registry.heroku.com/fred4jupiter/fredbet:latest
           docker push registry.heroku.com/fred4jupiter/fredbet:latest
+
+      - name: Heroku Release
+        run: |
           heroku container:release web -a fredbet
 
