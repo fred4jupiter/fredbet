@@ -1,0 +1,27 @@
+name: Docker
+
+on: [push]
+
+env:  
+  IMAGE_NAME: fred4jupiter/fredbet
+
+jobs:
+  
+  push:
+  
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag fred4jupiter/fredbet
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to GitHub Docker image registry
+        run: |          
+          docker tag fred4jupiter/fredbet docker.pkg.github.com/fred4jupiter/fredbet:latest
+          docker push docker.pkg.github.com/fred4jupiter/fredbet:latest
