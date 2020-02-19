@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TransactionalIntegrationTest
-public class BettingServiceTest {
+public class BettingServiceIT {
 
     @Autowired
     private BettingService bettingService;

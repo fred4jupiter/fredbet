@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @IntegrationTest
-public class CreateApplicationContextTest {
+public class CreateApplicationContextIT {
 
     @Autowired
     private ApplicationContext applicationContext;
