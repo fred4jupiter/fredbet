@@ -53,6 +53,11 @@ public class AppUserBuilder {
         return this;
     }
 
+    public AppUserBuilder withRoles(Set<String> roles) {
+        this.appUser.setRoles(roles);
+        return this;
+    }
+
     public AppUserBuilder withLastLogin(LocalDateTime date) {
         this.appUser.setLastLogin(date);
         return this;

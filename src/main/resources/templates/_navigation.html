@@ -123,6 +123,9 @@
 					        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
 					        		<a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a>
 				        		</li>
+								<li th:class="${pageState_user_importexport}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+									<a th:href="@{/user/importexport}" th:text="#{user.importexport.title}"></a>
+								</li>
 						  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
 						  			<a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
 					  			</li>
