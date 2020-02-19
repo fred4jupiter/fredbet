@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.user.UserService;
@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
+@TransactionalIntegrationTest
+public class BettingServiceTest {
 
     @Autowired
     private BettingService bettingService;

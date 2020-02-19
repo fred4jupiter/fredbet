@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service.config;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.RuntimeConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-public class RuntimeConfigurationServiceIT extends AbstractTransactionalIntegrationTest {
+@TransactionalIntegrationTest
+public class RuntimeConfigurationServiceIT {
 
     @Autowired
     private RuntimeConfigurationService runtimeConfigurationService;

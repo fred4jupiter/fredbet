@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.FredBetUsageBuilder;
+import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Bet;
@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserServiceIT extends AbstractTransactionalIntegrationTest {
+@TransactionalIntegrationTest
+public class UserServiceIT {
 
     @Autowired
     private UserService userService;

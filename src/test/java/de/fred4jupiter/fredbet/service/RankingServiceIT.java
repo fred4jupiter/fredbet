@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataBasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
@@ -21,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RankingServiceIT extends AbstractTransactionalIntegrationTest {
+@TransactionalIntegrationTest
+public class RankingServiceIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(RankingServiceIT.class);
 

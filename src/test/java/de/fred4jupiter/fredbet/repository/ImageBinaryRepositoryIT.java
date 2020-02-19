@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.ImageBinary;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
-public class ImageBinaryRepositoryIT extends AbstractTransactionalIntegrationTest {
+@TransactionalIntegrationTest
+public class ImageBinaryRepositoryIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageBinaryRepositoryIT.class);
 
