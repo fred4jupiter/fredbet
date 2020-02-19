@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RandomValueGeneratorIT extends AbstractIntegrationTest {
+@IntegrationTest
+public class RandomValueGeneratorIT {
 
     @Autowired
     private RandomValueGenerator randomValueGenerator;

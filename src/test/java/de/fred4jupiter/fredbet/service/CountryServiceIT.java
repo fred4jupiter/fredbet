@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,8 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CountryServiceIT extends AbstractIntegrationTest {
+@IntegrationTest
+public class CountryServiceIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(CountryServiceIT.class);
 

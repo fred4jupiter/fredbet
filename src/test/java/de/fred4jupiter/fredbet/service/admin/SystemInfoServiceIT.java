@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.service.admin;
 
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,8 @@ import java.util.SortedMap;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SystemInfoServiceIT extends AbstractIntegrationTest {
+@IntegrationTest
+public class SystemInfoServiceIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(SystemInfoServiceIT.class);
 

@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service.excel;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import de.fred4jupiter.fredbet.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
@@ -13,8 +13,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-public class ExcelImportServiceIT extends AbstractIntegrationTest {
+@IntegrationTest
+public class ExcelImportServiceIT {
 
     @Autowired
     private ExcelImportService excelImportService;
