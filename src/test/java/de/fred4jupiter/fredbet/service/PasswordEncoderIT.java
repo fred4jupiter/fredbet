@@ -1,12 +1,12 @@
 package de.fred4jupiter.fredbet.service;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import de.fred4jupiter.fredbet.AbstractIntegrationTest;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PasswordEncoderIT extends AbstractIntegrationTest {
 

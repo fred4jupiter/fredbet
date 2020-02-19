@@ -9,16 +9,16 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceIT extends AbstractTransactionalIntegrationTest {
 
@@ -118,10 +118,10 @@ public class UserServiceIT extends AbstractTransactionalIntegrationTest {
         assertEquals(newUsername, foundUser.getUsername());
 
         List<Bet> betsByOldName = this.betRepository.findByUserName(oldUserName);
-        assertThat(betsByOldName.size(), equalTo(0));
+        assertThat(betsByOldName.size()).isEqualTo(0);
 
         List<Bet> betsByNewName = this.betRepository.findByUserName(newUsername);
         assertNotNull(betsByNewName);
-        assertThat(betsByNewName.size(), greaterThan(0));
+        assertThat(betsByNewName.size()).isGreaterThan(0);
     }
 }

@@ -4,18 +4,16 @@ import de.fred4jupiter.fredbet.DatabaseIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
 @DatabaseIntegrationTest
 public class AppUserRepositoryIT {
 
@@ -58,6 +56,6 @@ public class AppUserRepositoryIT {
         AppUser foundAppUser = appUserRepository.getOne(appUser.getId());
         assertNotNull(foundAppUser);
         assertEquals(appUser.getUsername(), foundAppUser.getUsername());
-        assertThat(appUser.getRoles().size(), equalTo(2));
+        assertThat(appUser.getRoles().size()).isEqualTo(2);
     }
 }

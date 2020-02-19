@@ -1,67 +1,65 @@
 package de.fred4jupiter.fredbet.data;
 
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import de.fred4jupiter.fredbet.AbstractIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RandomValueGeneratorIT extends AbstractIntegrationTest {
 
-	@Autowired
-	private RandomValueGenerator randomValueGenerator;
-	
-	@Autowired
-	private DataBasePopulator dataBasePopulator;
+    @Autowired
+    private RandomValueGenerator randomValueGenerator;
 
-	@Test
-	public void valueFromOneToTen() {
-		assertThat(randomValueGenerator.generateRandomValueInRange(1, 10), greaterThanOrEqualTo(1));
-		assertThat(randomValueGenerator.generateRandomValueInRange(1, 10), lessThanOrEqualTo(10));
-	}
+    @Autowired
+    private DataBasePopulator dataBasePopulator;
 
-	@Test
-	public void generateTeamPair() {
-		for (int i = 0; i < 100; i++) {
-			ImmutablePair<Country, Country> teeamPair = randomValueGenerator.generateTeamPair();
-			Country countryOne = teeamPair.getLeft();
-			Country countryTwo = teeamPair.getRight();
-			assertNotNull(countryOne);
-			assertNotNull(countryTwo);
-			assertNotEquals(countryOne, countryTwo);
-			assertNotEquals(Country.NONE, countryOne);
-			assertNotEquals(Country.NONE, countryTwo);
-		}
-	}
-	
-	@Test
-	public void generateTeamTriple() {
-		dataBasePopulator.createRandomMatches();
-		
-		for (int i = 0; i < 100; i++) {
-			ImmutableTriple<Country,Country,Country> triple = randomValueGenerator.generateTeamTriple();
-			assertNotNull(triple);
-			Country countryOne = triple.getLeft();
-			Country countryTwo = triple.getMiddle();
-			Country countryThree = triple.getRight();
-			assertNotNull(countryOne);
-			assertNotNull(countryTwo);
-			assertNotNull(countryThree);
-			assertNotEquals(countryOne, countryTwo);
-			assertNotEquals(countryTwo, countryThree);
-			assertNotEquals(countryThree, countryOne);
-			assertNotEquals(Country.NONE, countryOne);
-			assertNotEquals(Country.NONE, countryTwo);
-			assertNotEquals(Country.NONE, countryThree);
-		}
-	}
+    @Test
+    public void valueFromOneToTen() {
+        assertThat(randomValueGenerator.generateRandomValueInRange(1, 10)).isGreaterThanOrEqualTo(1);
+        assertThat(randomValueGenerator.generateRandomValueInRange(1, 10)).isLessThanOrEqualTo(10);
+    }
+
+    @Test
+    public void generateTeamPair() {
+        for (int i = 0; i < 100; i++) {
+            ImmutablePair<Country, Country> teeamPair = randomValueGenerator.generateTeamPair();
+            Country countryOne = teeamPair.getLeft();
+            Country countryTwo = teeamPair.getRight();
+            assertThat(countryOne).isNotNull();
+            assertThat(countryTwo).isNotNull();
+            assertThat(countryOne).isNotEqualTo(countryTwo);
+
+            assertThat(Country.NONE).isNotEqualTo(countryOne);
+            assertThat(Country.NONE).isNotEqualTo(countryTwo);
+        }
+    }
+
+    @Test
+    public void generateTeamTriple() {
+        dataBasePopulator.createRandomMatches();
+
+        for (int i = 0; i < 100; i++) {
+            ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
+            assertThat(triple).isNotNull();
+            Country countryOne = triple.getLeft();
+            Country countryTwo = triple.getMiddle();
+            Country countryThree = triple.getRight();
+            assertThat(countryOne).isNotNull();
+            assertThat(countryTwo).isNotNull();
+            assertThat(countryThree).isNotNull();
+
+            assertThat(countryOne).isNotEqualTo(countryTwo);
+            assertThat(countryTwo).isNotEqualTo(countryThree);
+            assertThat(countryThree).isNotEqualTo(countryOne);
+
+            assertThat(Country.NONE).isNotEqualTo(countryOne);
+            assertThat(Country.NONE).isNotEqualTo(countryTwo);
+            assertThat(Country.NONE).isNotEqualTo(countryThree);
+        }
+    }
 
 }

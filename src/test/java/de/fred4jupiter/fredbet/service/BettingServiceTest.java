@@ -4,15 +4,16 @@ import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.user.UserService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
+
     @Autowired
     private BettingService bettingService;
 
@@ -25,7 +26,7 @@ public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
     @Autowired
     private MatchService matchService;
 
-    @Test(expected = NumberOfJokersReachedException.class)
+    @Test
     public void shouldNotAllowToUseMoreJokersThanWhileBetting() {
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
                 .build();
@@ -78,7 +79,9 @@ public class BettingServiceTest extends AbstractTransactionalIntegrationTest {
         assertEquals(Integer.valueOf(3), joker.getNumberOfJokersUsed());
         assertEquals(Integer.valueOf(3), joker.getMax());
 
-        bettingService.save(bet4);
+        assertThrows(NumberOfJokersReachedException.class, () -> {
+            bettingService.save(bet4);
+        });
     }
 
     @Test

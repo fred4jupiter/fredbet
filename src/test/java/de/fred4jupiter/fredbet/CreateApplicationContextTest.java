@@ -1,14 +1,12 @@
 package de.fred4jupiter.fredbet;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+
 @IntegrationTest
 public class CreateApplicationContextTest {
 
@@ -17,6 +15,6 @@ public class CreateApplicationContextTest {
 
     @Test
     public void createApplicationContext() {
-        assertNotNull(applicationContext);
+        assertThat(applicationContext).isNotNull();
     }
 }
