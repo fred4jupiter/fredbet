@@ -7,6 +7,8 @@ import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.*;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
+import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;

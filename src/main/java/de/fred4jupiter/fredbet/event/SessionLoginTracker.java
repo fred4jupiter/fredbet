@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.event;
 
-import de.fred4jupiter.fredbet.service.SessionTrackingService;
+import de.fred4jupiter.fredbet.service.admin.SessionTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

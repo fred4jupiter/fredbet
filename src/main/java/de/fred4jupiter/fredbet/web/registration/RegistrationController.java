@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.registration;
 
-import de.fred4jupiter.fredbet.service.UserAlreadyExistsException;
+import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.registration.RegistrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;

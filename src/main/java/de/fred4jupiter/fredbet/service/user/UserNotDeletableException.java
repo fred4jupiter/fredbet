@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service;
+package de.fred4jupiter.fredbet.service.user;
 
 public class UserNotDeletableException extends RuntimeException {
 

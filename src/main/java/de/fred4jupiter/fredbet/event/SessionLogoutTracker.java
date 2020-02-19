@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;
 import org.springframework.stereotype.Component;
 
-import de.fred4jupiter.fredbet.service.SessionTrackingService;
+import de.fred4jupiter.fredbet.service.admin.SessionTrackingService;
 
 @Component
 public class SessionLogoutTracker implements ApplicationListener<HttpSessionDestroyedEvent> {

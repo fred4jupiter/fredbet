@@ -7,6 +7,8 @@ import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
+import de.fred4jupiter.fredbet.service.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;

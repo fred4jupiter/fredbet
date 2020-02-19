@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.service;
 import de.fred4jupiter.fredbet.AbstractTransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.service.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
