@@ -1,12 +1,11 @@
 package de.fred4jupiter.fredbet.service.image;
 
+import de.fred4jupiter.fredbet.UnitTest;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@UnitTest
 public class ImageResizingServiceUT {
 
     private static final int IMAGE_SIZE = 1920;
