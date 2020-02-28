@@ -1,4 +1,3 @@
-# override properties of defaults settings in application.yml here
 spring:
   thymeleaf:
     cache: false
