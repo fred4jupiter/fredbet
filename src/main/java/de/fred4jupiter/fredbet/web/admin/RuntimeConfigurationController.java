@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 @Controller
@@ -51,6 +52,9 @@ public class RuntimeConfigurationController {
     public RuntimeConfigCommand initRuntimeConfigCommand() {
         RuntimeConfigCommand configurationCommand = new RuntimeConfigCommand();
         configurationCommand.setTimeZone(TimeZone.getDefault().getID());
+        Locale defaultLocale = Locale.getDefault();
+        configurationCommand.setLanguage(defaultLocale.getLanguage());
+        configurationCommand.setCountry(defaultLocale.getCountry());
         return configurationCommand;
     }
 
@@ -72,6 +76,9 @@ public class RuntimeConfigurationController {
             LOG.info("Setting timeZone to: {}", timeZone.getID());
             TimeZone.setDefault(timeZone);
         }
+
+        Locale locale = new Locale(command.getLanguage(), command.getCountry());
+        Locale.setDefault(locale);
 
         runtimeConfigurationService.saveRuntimeConfig(command.getRuntimeConfig());
 
