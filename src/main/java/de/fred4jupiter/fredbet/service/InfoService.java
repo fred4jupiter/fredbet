@@ -32,8 +32,8 @@ public class InfoService {
 		return infoRepository.save(info);
 	}
 
-	public void saveInfoContentIfNotPresent(InfoType infoType, String content, Locale locale) {
-		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
+	public void saveInfoContentIfNotPresent(InfoType infoType, String content, String language) {
+		InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), language);
 		Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
 		if (!foundInfoOpt.isPresent()) {
 			Info info = new Info(infoPK, content);
