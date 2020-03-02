@@ -19,10 +19,6 @@ public class RuntimeConfigCommand {
 
 	private String timeZone;
 
-	private String language;
-
-	private String country;
-
 	public List<String> getTimeZoneIds() {
 		return ZoneId.getAvailableZoneIds().stream().sorted().collect(Collectors.toList());
 	}
@@ -45,21 +41,5 @@ public class RuntimeConfigCommand {
 
 	public void setRuntimeConfig(RuntimeConfig runtimeConfig) {
 		this.runtimeConfig = runtimeConfig;
-	}
-
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
 	}
 }

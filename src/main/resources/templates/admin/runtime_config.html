@@ -74,15 +74,7 @@
 							  <option th:each="timeZone : ${runtimeConfigCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
 							</select>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('timeZone')}" th:errors="*{timeZone}">timeZone Error</p>						
-						</div>
-						<div class="form-group">
-							<label for="language" th:text="#{administration.runtime.configuration.language} + ':'"></label>
-							<input id="language" type="text" th:field="*{language}"  maxlength="2" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label for="country" th:text="#{administration.runtime.configuration.country} + ':'"></label>
-							<input id="country" type="text" th:field="*{country}" maxlength="2"  class="form-control" />
-						</div>
+						</div>					
 					</div>
 					<div class="visible-xs col-xs-12">
 						<hr/>
