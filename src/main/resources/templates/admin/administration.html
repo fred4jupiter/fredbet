@@ -23,6 +23,23 @@
                        data-toggle="confirmation" data-placement="top" th:data-title="#{confirmation.msg}" th:data-btn-ok-label="#{yes}" th:data-btn-cancel-label="#{no}"></a>
 				</div>			
 			</div>
+			<hr/>
+			<form id="adminForm" th:action="@{/administration/save}" th:object="${adminFormCommand}" action="#" method="post" role="form">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<div class="form-group">
+							<label for="numberOfTestUsers" th:text="#{administration.numberOfTestUsers.title} + ':'"></label>
+							<input id="numberOfTestUsers" type="text" th:field="*{numberOfTestUsers}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('numberOfTestUsers')}" th:errors="*{numberOfTestUsers}"></p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6">
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+					</div>
+				</div>
+			</form>
 			<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
 		</div>
 	</body>

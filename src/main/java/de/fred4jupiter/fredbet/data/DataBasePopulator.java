@@ -14,6 +14,7 @@ import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class DataBasePopulator {
@@ -77,7 +79,7 @@ public class DataBasePopulator {
         }
 
         if (!isRunInIntegrationTest() && runtimeConfigurationService.loadRuntimeConfig().isCreateDemoData()) {
-            createDemoUsers();
+            createDemoUsers(NUMBER_OF_DEMO_USERS, true);
             createRandomMatches();
         }
 
@@ -182,21 +184,25 @@ public class DataBasePopulator {
         }
     }
 
-    private void createDemoUsers() {
+    public Integer createDemoUsers(int numberOfDemoUsers, boolean withProfileImage) {
         LOG.info("createAdditionalUsers: creating additional demo users ...");
 
         final byte[] demoImage = loadDemoUserProfileImage();
 
-        final int numberOfDemoUsers = NUMBER_OF_DEMO_USERS;
+        final AtomicInteger counter = new AtomicInteger();
         for (int i = 1; i <= numberOfDemoUsers; i++) {
-            String usernameAndPassword = "test" + i;
+            final String usernameAndPassword = RandomStringUtils.randomAlphanumeric(6);
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
             boolean isNewUser = saveIfNotPresent(user);
-            if (isNewUser && (numberOfDemoUsers % i == 0)) {
-                this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);
+            if (isNewUser) {
+                if (withProfileImage) {
+                    this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);
+                }
+                counter.incrementAndGet();
             }
         }
+        return counter.get();
     }
 
     private byte[] loadDemoUserProfileImage() {
