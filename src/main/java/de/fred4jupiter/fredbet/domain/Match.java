@@ -49,7 +49,7 @@ public class Match {
     @Column(name = "STADIUM")
     private String stadium;
 
-    public boolean hasContriesSet() {
+    public boolean hasCountriesSet() {
         return teamOne.hasCountrySet() && teamTwo.hasCountrySet();
     }
 
