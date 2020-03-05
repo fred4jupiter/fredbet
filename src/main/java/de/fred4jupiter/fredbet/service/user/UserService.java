@@ -113,6 +113,13 @@ public class UserService {
         appUserRepository.deleteById(userId);
     }
 
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public void deleteAllUsers() {
+        AppUser adminUser = appUserRepository.findByUsername(FredbetConstants.TECHNICAL_USERNAME);
+        imageMetaDataRepository.deleteAllByOwnerNotLike(adminUser);
+        appUserRepository.deleteAllByDeletableTrue();
+    }
+
     public String resetPasswordForUser(Long userId) {
         AppUser appUser = findByUserId(userId);
         String passwordForReset = runtimeConfigurationService.loadRuntimeConfig().getPasswordForReset();

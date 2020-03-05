@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.admin.AdministrationService;
 import de.fred4jupiter.fredbet.service.admin.SessionTrackingService;
+import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,6 +44,9 @@ public class AdminController {
 
     @Autowired
     private AdministrationService administrationService;
+
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute("adminFormCommand")
     public AdminFormCommand adminFormCommand() {
@@ -107,5 +111,12 @@ public class AdminController {
         Integer created = dataBasePopulator.createDemoUsers(command.getNumberOfTestUsers(), false);
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", created);
         return "redirect:/administration";
+    }
+
+    @GetMapping("/deleteAllUsers")
+    public String deleteAllUsers(Model model) {
+        userService.deleteAllUsers();
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.deleteAllUsers");
+        return PAGE_ADMINISTRATION;
     }
 }
