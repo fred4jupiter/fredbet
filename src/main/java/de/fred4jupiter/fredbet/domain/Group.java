@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.domain;
 
+import de.fred4jupiter.fredbet.service.grouppoints.GroupTeamPoints;
+
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +59,8 @@ public enum Group {
 
 	public static List<Group> getMainGroups() {
 		List<Group> groups = Arrays.asList(values());
-		return groups.stream().filter(group -> group.name().startsWith("GROUP_")).collect(Collectors.toList());
+		return groups.stream().filter(group -> group.name().startsWith("GROUP_"))
+				.sorted(Comparator.comparing(Group::name)).collect(Collectors.toList());
 	}
 	
 	public static List<Group> getFinalGroups() {

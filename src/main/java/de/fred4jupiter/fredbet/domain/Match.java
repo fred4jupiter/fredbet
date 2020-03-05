@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MATCHES")
-public class Match {
+public class Match implements MatchResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +61,7 @@ public class Match {
         return LocalDateTime.now().isAfter(kickOffDate);
     }
 
+    @Override
     public Integer getGoalDifference() {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
             throw new IllegalStateException("Match has not finished! No goal results set!");
@@ -73,6 +74,7 @@ public class Match {
      *
      * @return
      */
+    @Override
     public boolean isUndecidedResult() {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
             return false;
@@ -80,6 +82,7 @@ public class Match {
         return getGoalDifference() == 0;
     }
 
+    @Override
     public boolean isTeamOneWinner() {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
             throw new IllegalStateException("Match has not finished! No goal results set!");
@@ -88,6 +91,7 @@ public class Match {
         return teamOne.getGoals() > teamTwo.getGoals();
     }
 
+    @Override
     public boolean isTeamTwoWinner() {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
             throw new IllegalStateException("Match has not finished! No goal results set!");
@@ -194,6 +198,7 @@ public class Match {
         return id;
     }
 
+    @Override
     public Group getGroup() {
         return group;
     }
@@ -221,38 +226,6 @@ public class Match {
     public boolean isBettable() {
         return !hasStarted() && !hasResultSet();
     }
-
-//    public String getTeamNameOne() {
-//        return teamNameOne;
-//    }
-//
-//    public void setTeamNameOne(String teamNameOne) {
-//        this.teamNameOne = teamNameOne;
-//    }
-//
-//    public String getTeamNameTwo() {
-//        return teamNameTwo;
-//    }
-//
-//    public void setTeamNameTwo(String teamNameTwo) {
-//        this.teamNameTwo = teamNameTwo;
-//    }
-//
-//    public Country getCountryOne() {
-//        return countryOne;
-//    }
-//
-//    public void setCountryOne(Country countryOne) {
-//        this.countryOne = countryOne;
-//    }
-//
-//    public Country getCountryTwo() {
-//        return countryTwo;
-//    }
-//
-//    public void setCountryTwo(Country countryTwo) {
-//        this.countryTwo = countryTwo;
-//    }
 
     public boolean isFinal() {
         return isGroup(Group.FINAL);
@@ -288,6 +261,7 @@ public class Match {
         return this.group.equals(group);
     }
 
+    @Override
     public Team getTeamOne() {
         if (this.teamOne == null) {
             this.teamOne = new Team();
@@ -299,6 +273,7 @@ public class Match {
         this.teamOne = teamOne;
     }
 
+    @Override
     public Team getTeamTwo() {
         if (this.teamTwo == null) {
             this.teamTwo = new Team();
