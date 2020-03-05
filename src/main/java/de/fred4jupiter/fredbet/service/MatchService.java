@@ -59,20 +59,17 @@ public class MatchService {
         return matchRepository.save(match);
     }
 
-    public Match enterMatchResult(Long matchId, Integer teamResultOne, Integer teamResulTwo, boolean penaltyWinnerOne) {
+    public void enterMatchResult(Long matchId, Consumer<Match> consumer) {
         Match match = findMatchById(matchId);
-        match.setGoalsTeamOne(teamResultOne);
-        match.setGoalsTeamTwo(teamResulTwo);
-        match.setPenaltyWinnerOne(penaltyWinnerOne);
+        consumer.accept(match);
 
-        Match saved = save(match);
+        save(match);
         publishMatchGoalsChangedEvent(match);
-        return saved;
     }
 
     public void enterMatchResultsForAllMatches(Consumer<Match> consumer) {
         List<Match> allMatches = matchRepository.findAll();
-        allMatches.forEach(consumer::accept);
+        allMatches.forEach(consumer);
         matchRepository.saveAll(allMatches);
         allMatches.forEach(this::publishMatchGoalsChangedEvent);
     }

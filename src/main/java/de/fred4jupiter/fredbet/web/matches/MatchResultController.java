@@ -43,8 +43,11 @@ public class MatchResultController {
             return VIEW_EDIT_MATCHRESULT;
         }
 
-        matchService.enterMatchResult(command.getMatchId(), command.getTeamResultOne(),
-                command.getTeamResultTwo(), command.isPenaltyWinnerOne());
+        matchService.enterMatchResult(command.getMatchId(), match -> {
+            match.setGoalsTeamOne(command.getTeamResultOne());
+            match.setGoalsTeamTwo(command.getTeamResultTwo());
+            match.setPenaltyWinnerOne(command.isPenaltyWinnerOne());
+        });
 
         String view = RedirectViewName.resolveRedirect(command.getRedirectViewName());
         return view + "#" + command.getMatchId();
