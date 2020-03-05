@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class DataBasePopulator {
@@ -90,6 +90,7 @@ public class DataBasePopulator {
         return environment.acceptsProfiles(Profiles.of(FredBetProfile.INTEGRATION_TEST));
     }
 
+    @Async
     public void createRandomMatches() {
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
@@ -126,6 +127,7 @@ public class DataBasePopulator {
         return tmpTime;
     }
 
+    @Async
     public void createDemoBetsForAllUsers() {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
@@ -143,6 +145,7 @@ public class DataBasePopulator {
 
             createExtraBetForUser(appUser);
         });
+        LOG.debug("created demo bets for all users finished.");
     }
 
     private void createExtraBetForUser(AppUser appUser) {
@@ -164,7 +167,6 @@ public class DataBasePopulator {
 
     public void createDemoResultsForAllMatches() {
         LOG.info("createDemoResultsForAllUsers...");
-
         List<Match> allMatches = matchService.findAll();
         allMatches.forEach(match -> {
             match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
@@ -184,25 +186,21 @@ public class DataBasePopulator {
         }
     }
 
-    public Integer createDemoUsers(int numberOfDemoUsers, boolean withProfileImage) {
+    @Async
+    public void createDemoUsers(int numberOfDemoUsers, boolean withProfileImage) {
         LOG.info("createAdditionalUsers: creating additional demo users ...");
 
         final byte[] demoImage = loadDemoUserProfileImage();
 
-        final AtomicInteger counter = new AtomicInteger();
         for (int i = 1; i <= numberOfDemoUsers; i++) {
             final String usernameAndPassword = RandomStringUtils.randomAlphanumeric(6);
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
             boolean isNewUser = saveIfNotPresent(user);
-            if (isNewUser) {
-                if (withProfileImage) {
-                    this.imageAdministrationService.saveUserProfileImage(demoImage, user, null);
-                }
-                counter.incrementAndGet();
+            if (isNewUser && withProfileImage) {
+                this.imageAdministrationService.saveUserProfileImage(demoImage, user);
             }
         }
-        return counter.get();
     }
 
     private byte[] loadDemoUserProfileImage() {

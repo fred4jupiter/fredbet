@@ -66,7 +66,7 @@ public class Match {
 	@Column(name = "STADIUM")
 	private String stadium;
 
-	public boolean hasGoalsChanged() {
+	public synchronized boolean hasGoalsChanged() {
 		boolean hasChanged = goalsChanged;
 		// reset flag
 		this.goalsChanged = false;

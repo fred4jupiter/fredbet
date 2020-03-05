@@ -108,8 +108,8 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        Integer created = dataBasePopulator.createDemoUsers(command.getNumberOfTestUsers(), false);
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", created);
+        dataBasePopulator.createDemoUsers(command.getNumberOfTestUsers(), false);
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }
 

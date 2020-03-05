@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableConfigurationProperties({FredbetProperties.class, FredBetUserGroups.class})
 @EnableCaching
+@EnableAsync
 public class Application {
 
     public static void main(String[] args) {
