@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.service.excel;
 
 import de.fred4jupiter.fredbet.Application;
-import de.fred4jupiter.fredbet.data.DataBasePopulator;
+import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
@@ -26,7 +26,7 @@ public class ReportServiceMT {
     private ReportService reportService;
 
     @Autowired
-    private DataBasePopulator dataBasePopulator;
+    private DatabasePopulator dataBasePopulator;
 
     @Test
     public void exportResultsToExcel() throws IOException {

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.data.DataBasePopulator;
+import de.fred4jupiter.fredbet.data.AsyncDatabasePopulator;
+import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -34,7 +35,10 @@ public class AdminController {
     private static final String PAGE_LAST_LOGINS = "admin/lastlogins";
 
     @Autowired
-    private DataBasePopulator dataBasePopulator;
+    private DatabasePopulator databasePopulator;
+
+    @Autowired
+    private AsyncDatabasePopulator asyncDatabasePopulator;
 
     @Autowired
     private WebMessageUtil webMessageUtil;
@@ -60,28 +64,28 @@ public class AdminController {
 
     @GetMapping("/createRandomMatches")
     public String createRandomMatches(Model model) {
-        dataBasePopulator.createRandomMatches();
+        asyncDatabasePopulator.createRandomMatches();
         webMessageUtil.addInfoMsg(model, "administration.msg.info.randomMatchesCreated");
         return PAGE_ADMINISTRATION;
     }
 
     @GetMapping("/createDemoBets")
     public String createDemoBets(Model model) {
-        dataBasePopulator.createDemoBetsForAllUsers();
+        asyncDatabasePopulator.createDemoBetsForAllUsers();
         webMessageUtil.addInfoMsg(model, "administration.msg.info.demoBetsCreated");
         return PAGE_ADMINISTRATION;
     }
 
     @GetMapping("/createDemoResults")
     public String createDemoResults(Model model) {
-        dataBasePopulator.createDemoResultsForAllMatches();
+        databasePopulator.createDemoResultsForAllMatches();
         webMessageUtil.addInfoMsg(model, "administration.msg.info.demoResultsCreated");
         return PAGE_ADMINISTRATION;
     }
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(Model model) {
-        dataBasePopulator.deleteAllBetsAndMatches();
+        databasePopulator.deleteAllBetsAndMatches();
         webMessageUtil.addInfoMsg(model, "administration.msg.info.allBetsAndMatchesDeleted");
         return PAGE_ADMINISTRATION;
     }
@@ -108,7 +112,7 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        dataBasePopulator.createDemoUsers(command.getNumberOfTestUsers(), false);
+        asyncDatabasePopulator.createDemoUsers(command.getNumberOfTestUsers(), false);
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }

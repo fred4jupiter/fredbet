@@ -16,7 +16,7 @@ public class RandomValueGeneratorIT {
     private RandomValueGenerator randomValueGenerator;
 
     @Autowired
-    private DataBasePopulator dataBasePopulator;
+    private DatabasePopulator dataBasePopulator;
 
     @Test
     public void valueFromOneToTen() {
