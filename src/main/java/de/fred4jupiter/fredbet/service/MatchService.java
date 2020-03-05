@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @Service
 @Transactional
@@ -55,14 +56,30 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
-        match = matchRepository.save(match);
+        return matchRepository.save(match);
+    }
 
-        if (match.hasGoalsChanged()) {
-            LOG.debug("fire MatchGoalsChangedEvent...");
-            applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(this, match));
-        }
+    public Match enterMatchResult(Long matchId, Integer teamResultOne, Integer teamResulTwo, boolean penaltyWinnerOne) {
+        Match match = findMatchById(matchId);
+        match.setGoalsTeamOne(teamResultOne);
+        match.setGoalsTeamTwo(teamResulTwo);
+        match.setPenaltyWinnerOne(penaltyWinnerOne);
 
-        return match;
+        Match saved = save(match);
+        publishMatchGoalsChangedEvent(match);
+        return saved;
+    }
+
+    public void enterMatchResultsForAllMatches(Consumer<Match> consumer) {
+        List<Match> allMatches = matchRepository.findAll();
+        allMatches.forEach(consumer::accept);
+        matchRepository.saveAll(allMatches);
+        allMatches.forEach(this::publishMatchGoalsChangedEvent);
+    }
+
+    private void publishMatchGoalsChangedEvent(Match match) {
+        LOG.debug("fire MatchGoalsChangedEvent...");
+        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(this, match));
     }
 
     public List<Match> findMatchesByGroup(Group group) {

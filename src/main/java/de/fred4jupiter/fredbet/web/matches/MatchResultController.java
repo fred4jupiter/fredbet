@@ -38,20 +38,16 @@ public class MatchResultController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
     @PostMapping
-    public String save(@Valid MatchResultCommand matchResultCommand, BindingResult bindingResult, Model model) {
+    public String save(@Valid MatchResultCommand command, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return VIEW_EDIT_MATCHRESULT;
         }
 
-        Match match = matchService.findMatchById(matchResultCommand.getMatchId());
-        match.setGoalsTeamOne(matchResultCommand.getTeamResultOne());
-        match.setGoalsTeamTwo(matchResultCommand.getTeamResultTwo());
-        match.setPenaltyWinnerOne(matchResultCommand.isPenaltyWinnerOne());
+        matchService.enterMatchResult(command.getMatchId(), command.getTeamResultOne(),
+                command.getTeamResultTwo(), command.isPenaltyWinnerOne());
 
-        matchService.save(match);
-
-        String view = RedirectViewName.resolveRedirect(matchResultCommand.getRedirectViewName());
-        return view + "#" + matchResultCommand.getMatchId();
+        String view = RedirectViewName.resolveRedirect(command.getRedirectViewName());
+        return view + "#" + command.getMatchId();
     }
 
     private MatchResultCommand toMatchResultCommand(Match match) {

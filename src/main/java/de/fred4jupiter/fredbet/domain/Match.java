@@ -1,338 +1,310 @@
 package de.fred4jupiter.fredbet.domain;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import de.fred4jupiter.fredbet.props.FredbetConstants;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MATCHES")
 public class Match {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "MATCH_ID")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MATCH_ID")
+    private Long id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "COUNTRY_ONE")
-	private Country countryOne;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "COUNTRY_ONE")
+    private Country countryOne;
 
-	@Column(name = "TEAM_NAME_ONE")
-	private String teamNameOne;
+    @Column(name = "TEAM_NAME_ONE")
+    private String teamNameOne;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "COUNTRY_TWO")
-	private Country countryTwo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "COUNTRY_TWO")
+    private Country countryTwo;
 
-	@Column(name = "TEAM_NAME_TWO")
-	private String teamNameTwo;
+    @Column(name = "TEAM_NAME_TWO")
+    private String teamNameTwo;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "MATCH_GROUP")
-	private Group group;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "MATCH_GROUP")
+    private Group group;
 
-	@Column(name = "GOALS_TEAM_ONE")
-	private Integer goalsTeamOne;
+    @Column(name = "GOALS_TEAM_ONE")
+    private Integer goalsTeamOne;
 
-	@Column(name = "GOALS_TEAM_TWO")
-	private Integer goalsTeamTwo;
+    @Column(name = "GOALS_TEAM_TWO")
+    private Integer goalsTeamTwo;
 
-	@Column(name = "PENALTY_WINNER_ONE")
-	private boolean penaltyWinnerOne;
+    @Column(name = "PENALTY_WINNER_ONE")
+    private boolean penaltyWinnerOne;
 
-	@Transient
-	private boolean goalsChanged;
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
+    @Column(name = "KICK_OFF_DATE")
+    private LocalDateTime kickOffDate;
 
-	@DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
-	@Column(name = "KICK_OFF_DATE")
-	private LocalDateTime kickOffDate;
+    @Column(name = "STADIUM")
+    private String stadium;
 
-	@Column(name = "STADIUM")
-	private String stadium;
+    public boolean hasContriesSet() {
+        return hasContrySet(countryOne) && hasContrySet(countryTwo);
+    }
 
-	public synchronized boolean hasGoalsChanged() {
-		boolean hasChanged = goalsChanged;
-		// reset flag
-		this.goalsChanged = false;
-		return hasChanged;
-	}
+    private boolean hasContrySet(Country country) {
+        return country != null && !Country.NONE.equals(country);
+    }
 
-	public boolean hasContriesSet() {
-		return hasContrySet(countryOne) && hasContrySet(countryTwo);
-	}
+    public boolean hasResultSet() {
+        return goalsTeamOne != null && goalsTeamTwo != null;
+    }
 
-	private boolean hasContrySet(Country country) {
-		return country != null && !Country.NONE.equals(country);
-	}
+    public boolean hasStarted() {
+        return LocalDateTime.now().isAfter(kickOffDate);
+    }
 
-	public boolean hasResultSet() {
-		return goalsTeamOne != null && goalsTeamTwo != null;
-	}
+    public Integer getGoalDifference() {
+        if (goalsTeamOne == null || goalsTeamTwo == null) {
+            throw new IllegalStateException("Match has not finished! No goal results set!");
+        }
+        return Math.abs(goalsTeamOne - goalsTeamTwo);
+    }
 
-	public boolean hasStarted() {
-		return LocalDateTime.now().isAfter(kickOffDate);
-	}
+    /**
+     * Goal difference is 0, e.g. 1:1 or 3:3
+     *
+     * @return
+     */
+    public boolean isUndecidedResult() {
+        if (goalsTeamOne == null || goalsTeamTwo == null) {
+            return false;
+        }
+        return getGoalDifference() == 0;
+    }
 
-	public void enterResult(Integer goalsTeamOne, Integer goalsTeamTwo) {
-		this.goalsTeamOne = goalsTeamOne;
-		this.goalsTeamTwo = goalsTeamTwo;
-		this.goalsChanged = true;
-	}
+    public boolean isTeamOneWinner() {
+        if (goalsTeamOne == null || goalsTeamTwo == null) {
+            throw new IllegalStateException("Match has not finished! No goal results set!");
+        }
 
-	public Integer getGoalDifference() {
-		if (goalsTeamOne == null || goalsTeamTwo == null) {
-			throw new IllegalStateException("Match has not finished! No goal results set!");
-		}
-		return Math.abs(goalsTeamOne - goalsTeamTwo);
-	}
+        return goalsTeamOne > goalsTeamTwo;
+    }
 
-	/**
-	 * Goal difference is 0, e.g. 1:1 or 3:3
-	 * 
-	 * @return
-	 */
-	public boolean isUndecidedResult() {
-		if (goalsTeamOne == null || goalsTeamTwo == null) {
-			return false;
-		}
-		return getGoalDifference() == 0;
-	}
+    public boolean isTeamTwoWinner() {
+        if (goalsTeamOne == null || goalsTeamTwo == null) {
+            throw new IllegalStateException("Match has not finished! No goal results set!");
+        }
 
-	public boolean isTeamOneWinner() {
-		if (goalsTeamOne == null || goalsTeamTwo == null) {
-			throw new IllegalStateException("Match has not finished! No goal results set!");
-		}
+        return goalsTeamTwo > goalsTeamOne;
+    }
 
-		return goalsTeamOne > goalsTeamTwo;
-	}
+    public Country getWinner() {
+        if (!hasResultSet()) {
+            return null;
+        }
 
-	public boolean isTeamTwoWinner() {
-		if (goalsTeamOne == null || goalsTeamTwo == null) {
-			throw new IllegalStateException("Match has not finished! No goal results set!");
-		}
+        if (isTeamOneWinner()) {
+            return countryOne;
+        }
 
-		return goalsTeamTwo > goalsTeamOne;
-	}
+        if (isTeamTwoWinner()) {
+            return countryTwo;
+        }
 
-	public Country getWinner() {
-		if (!hasResultSet()) {
-			return null;
-		}
+        return null;
+    }
 
-		if (isTeamOneWinner()) {
-			return countryOne;
-		}
+    public Country getLooser() {
+        if (!hasResultSet()) {
+            return null;
+        }
 
-		if (isTeamTwoWinner()) {
-			return countryTwo;
-		}
+        if (isTeamOneWinner()) {
+            return countryTwo;
+        }
 
-		return null;
-	}
+        if (isTeamTwoWinner()) {
+            return countryOne;
+        }
 
-	public Country getLooser() {
-		if (!hasResultSet()) {
-			return null;
-		}
+        return null;
+    }
 
-		if (isTeamOneWinner()) {
-			return countryTwo;
-		}
+    public Integer getGoalsTeamOne() {
+        return goalsTeamOne;
+    }
 
-		if (isTeamTwoWinner()) {
-			return countryOne;
-		}
+    public void setGoalsTeamOne(Integer goalsTeamOne) {
+        this.goalsTeamOne = goalsTeamOne;
+    }
 
-		return null;
-	}
+    public Integer getGoalsTeamTwo() {
+        return goalsTeamTwo;
+    }
 
-	public Integer getGoalsTeamOne() {
-		return goalsTeamOne;
-	}
+    public void setGoalsTeamTwo(Integer goalsTeamTwo) {
+        this.goalsTeamTwo = goalsTeamTwo;
+    }
 
-	public void setGoalsTeamOne(Integer goalsTeamOne) {
-		this.goalsTeamOne = goalsTeamOne;
-		this.goalsChanged = true;
-	}
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Match match = (Match) obj;
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(id, match.id);
+        builder.append(countryOne, match.countryOne);
+        builder.append(countryTwo, match.countryTwo);
+        builder.append(teamNameOne, match.teamNameOne);
+        builder.append(teamNameTwo, match.teamNameTwo);
+        builder.append(group, match.group);
+        builder.append(goalsTeamOne, match.goalsTeamOne);
+        builder.append(goalsTeamTwo, match.goalsTeamTwo);
+        builder.append(kickOffDate, match.kickOffDate);
+        builder.append(stadium, match.stadium);
 
-	public Integer getGoalsTeamTwo() {
-		return goalsTeamTwo;
-	}
+        return builder.isEquals();
+    }
 
-	public void setGoalsTeamTwo(Integer goalsTeamTwo) {
-		this.goalsTeamTwo = goalsTeamTwo;
-		this.goalsChanged = true;
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder builder = new HashCodeBuilder();
+        builder.append(id);
+        builder.append(countryOne);
+        builder.append(countryTwo);
+        builder.append(teamNameOne);
+        builder.append(teamNameTwo);
+        builder.append(group);
+        builder.append(goalsTeamOne);
+        builder.append(goalsTeamTwo);
+        builder.append(kickOffDate);
+        builder.append(stadium);
+        return builder.toHashCode();
+    }
 
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		Match match = (Match) obj;
-		EqualsBuilder builder = new EqualsBuilder();
-		builder.append(id, match.id);
-		builder.append(countryOne, match.countryOne);
-		builder.append(countryTwo, match.countryTwo);
-		builder.append(teamNameOne, match.teamNameOne);
-		builder.append(teamNameTwo, match.teamNameTwo);
-		builder.append(group, match.group);
-		builder.append(goalsTeamOne, match.goalsTeamOne);
-		builder.append(goalsTeamTwo, match.goalsTeamTwo);
-		builder.append(kickOffDate, match.kickOffDate);
-		builder.append(stadium, match.stadium);
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("id", id);
+        builder.append("countryOne", countryOne);
+        builder.append("countryTwo", countryTwo);
+        builder.append("teamNameOne", teamNameOne);
+        builder.append("teamNameTwo", teamNameTwo);
+        builder.append("group", group);
+        builder.append("goalsTeamOne", goalsTeamOne);
+        builder.append("goalsTeamTwo", goalsTeamTwo);
+        builder.append("kickOffDate", kickOffDate);
+        builder.append("stadium", stadium);
+        return builder.toString();
+    }
 
-		return builder.isEquals();
-	}
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder builder = new HashCodeBuilder();
-		builder.append(id);
-		builder.append(countryOne);
-		builder.append(countryTwo);
-		builder.append(teamNameOne);
-		builder.append(teamNameTwo);
-		builder.append(group);
-		builder.append(goalsTeamOne);
-		builder.append(goalsTeamTwo);
-		builder.append(kickOffDate);
-		builder.append(stadium);
-		return builder.toHashCode();
-	}
+    public Group getGroup() {
+        return group;
+    }
 
-	@Override
-	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-		builder.append("id", id);
-		builder.append("countryOne", countryOne);
-		builder.append("countryTwo", countryTwo);
-		builder.append("teamNameOne", teamNameOne);
-		builder.append("teamNameTwo", teamNameTwo);
-		builder.append("group", group);
-		builder.append("goalsTeamOne", goalsTeamOne);
-		builder.append("goalsTeamTwo", goalsTeamTwo);
-		builder.append("kickOffDate", kickOffDate);
-		builder.append("stadium", stadium);
-		return builder.toString();
-	}
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getStadium() {
+        return stadium;
+    }
 
-	public Group getGroup() {
-		return group;
-	}
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
+    }
 
-	public void setGroup(Group group) {
-		this.group = group;
-	}
+    public LocalDateTime getKickOffDate() {
+        return kickOffDate;
+    }
 
-	public String getStadium() {
-		return stadium;
-	}
+    public void setKickOffDate(LocalDateTime kickOffDate) {
+        this.kickOffDate = kickOffDate;
+    }
 
-	public void setStadium(String stadium) {
-		this.stadium = stadium;
-	}
+    public boolean isBettable() {
+        return !hasStarted() && !hasResultSet();
+    }
 
-	public LocalDateTime getKickOffDate() {
-		return kickOffDate;
-	}
+    public String getTeamNameOne() {
+        return teamNameOne;
+    }
 
-	public void setKickOffDate(LocalDateTime kickOffDate) {
-		this.kickOffDate = kickOffDate;
-	}
+    public void setTeamNameOne(String teamNameOne) {
+        this.teamNameOne = teamNameOne;
+    }
 
-	public boolean isBettable() {
-		return !hasStarted() && !hasResultSet();
-	}
+    public String getTeamNameTwo() {
+        return teamNameTwo;
+    }
 
-	public String getTeamNameOne() {
-		return teamNameOne;
-	}
+    public void setTeamNameTwo(String teamNameTwo) {
+        this.teamNameTwo = teamNameTwo;
+    }
 
-	public void setTeamNameOne(String teamNameOne) {
-		this.teamNameOne = teamNameOne;
-	}
+    public Country getCountryOne() {
+        return countryOne;
+    }
 
-	public String getTeamNameTwo() {
-		return teamNameTwo;
-	}
+    public void setCountryOne(Country countryOne) {
+        this.countryOne = countryOne;
+    }
 
-	public void setTeamNameTwo(String teamNameTwo) {
-		this.teamNameTwo = teamNameTwo;
-	}
+    public Country getCountryTwo() {
+        return countryTwo;
+    }
 
-	public Country getCountryOne() {
-		return countryOne;
-	}
+    public void setCountryTwo(Country countryTwo) {
+        this.countryTwo = countryTwo;
+    }
 
-	public void setCountryOne(Country countryOne) {
-		this.countryOne = countryOne;
-	}
+    public boolean isFinal() {
+        return isGroup(Group.FINAL);
+    }
 
-	public Country getCountryTwo() {
-		return countryTwo;
-	}
+    public boolean isPenaltyWinnerOne() {
+        return penaltyWinnerOne;
+    }
 
-	public void setCountryTwo(Country countryTwo) {
-		this.countryTwo = countryTwo;
-	}
+    public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
+        this.penaltyWinnerOne = penaltyWinnerOne;
+    }
 
-	public boolean isFinal() {
-		return isGroup(Group.FINAL);
-	}
+    public boolean isGroupMatch() {
+        return this.group.name().startsWith("GROUP");
+    }
 
-	public boolean isPenaltyWinnerOne() {
-		return penaltyWinnerOne;
-	}
+    public String getCssClassPenaltyWinnerOne() {
+        if (this.isGroupMatch() || !this.isUndecidedResult()) {
+            return "";
+        }
+        return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
+    }
 
-	public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
-		this.penaltyWinnerOne = penaltyWinnerOne;
-	}
+    public String getCssClassPenaltyWinnerTwo() {
+        if (this.isGroupMatch() || !this.isUndecidedResult()) {
+            return "";
+        }
+        return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
+    }
 
-	public boolean isGroupMatch() {
-		return this.group.name().startsWith("GROUP");
-	}
-
-	public String getCssClassPenaltyWinnerOne() {
-		if (this.isGroupMatch() || !this.isUndecidedResult()) {
-			return "";
-		}
-		return this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
-	}
-
-	public String getCssClassPenaltyWinnerTwo() {
-		if (this.isGroupMatch() || !this.isUndecidedResult()) {
-			return "";
-		}
-		return !this.isPenaltyWinnerOne() ? FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS : "";
-	}
-
-	public boolean isGroup(Group group) {
-		return this.group.equals(group);
-	}
+    public boolean isGroup(Group group) {
+        return this.group.equals(group);
+    }
 }

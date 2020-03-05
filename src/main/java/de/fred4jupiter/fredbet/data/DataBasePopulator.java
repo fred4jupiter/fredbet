@@ -167,10 +167,9 @@ public class DataBasePopulator {
 
     public void createDemoResultsForAllMatches() {
         LOG.info("createDemoResultsForAllUsers...");
-        List<Match> allMatches = matchService.findAll();
-        allMatches.forEach(match -> {
-            match.enterResult(randomValueGenerator.generateRandomValue(), randomValueGenerator.generateRandomValue());
-            matchService.save(match);
+        matchService.enterMatchResultsForAllMatches(match -> {
+            match.setGoalsTeamOne(randomValueGenerator.generateRandomValue());
+            match.setGoalsTeamTwo(randomValueGenerator.generateRandomValue());
         });
     }
 
