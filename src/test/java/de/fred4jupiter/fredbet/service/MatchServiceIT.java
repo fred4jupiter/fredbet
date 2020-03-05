@@ -59,7 +59,7 @@ public class MatchServiceIT {
         matchService.save(match);
         matchService.save(match);
 
-        List<Match> foundList = matchRepository.findByCountryOne(countryOne);
+        List<Match> foundList = matchRepository.findByTeamOneCountry(countryOne);
         assertEquals(1, foundList.size());
     }
 
@@ -84,11 +84,11 @@ public class MatchServiceIT {
         assertEquals(match, found);
 
         final Country newCountry = Country.ENGLAND;
-        found.setCountryOne(newCountry);
+        found.getTeamOne().setCountry(newCountry);
 
         matchService.save(found);
 
         Match found2 = matchRepository.getOne(found.getId());
-        assertEquals(newCountry, found2.getCountryOne());
+        assertEquals(newCountry, found2.getTeamOne().getCountry());
     }
 }

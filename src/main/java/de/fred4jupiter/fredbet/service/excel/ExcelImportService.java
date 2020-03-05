@@ -93,15 +93,15 @@ public class ExcelImportService {
 		Match match = new Match();
 
 		if (Country.fromName(country1) != null) {
-			match.setCountryOne(Country.fromName(country1));
+			match.getTeamOne().setCountry(Country.fromName(country1));
 		} else {
-			match.setTeamNameOne(country1);
+			match.getTeamOne().setName(country1);
 		}
 
 		if (Country.fromName(country2) != null) {
-			match.setCountryTwo(Country.fromName(country2));
+			match.getTeamTwo().setCountry(Country.fromName(country2));
 		} else {
-			match.setTeamNameTwo(country2);
+			match.getTeamTwo().setName(country2);
 		}
 
 		match.setGroup(Group.valueOf(group));

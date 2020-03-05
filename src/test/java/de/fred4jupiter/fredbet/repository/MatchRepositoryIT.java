@@ -28,7 +28,7 @@ public class MatchRepositoryIT {
         assertNotNull(matchesOrderByKickOffDate);
         assertFalse(matchesOrderByKickOffDate.isEmpty());
 
-        assertThat(matchesOrderByKickOffDate).extracting(Match::getTeamNameOne).containsAnyOf("Bulgarien", "Belgien", "Deutschland");
+        assertThat(matchesOrderByKickOffDate).extracting(Match::getTeamOne).extracting(Team::getName).containsAnyOf("Bulgarien", "Belgien", "Deutschland");
     }
 
     private void createSomeMatches() {

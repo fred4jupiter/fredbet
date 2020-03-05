@@ -78,8 +78,8 @@ public class ReportService {
             @Override
             public void addValueRow(Bet bet, List<String> row) {
                 row.add(bet.getUserName());
-                row.add(messageSourceUtil.getCountryName(bet.getMatch().getCountryOne(), locale));
-                row.add(messageSourceUtil.getCountryName(bet.getMatch().getCountryTwo(), locale));
+                row.add(messageSourceUtil.getCountryName(bet.getMatch().getTeamOne().getCountry(), locale));
+                row.add(messageSourceUtil.getCountryName(bet.getMatch().getTeamTwo().getCountry(), locale));
                 row.add(DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale));
                 if (bet.getMatch().hasResultSet()) {
                     row.add("" + bet.getMatch().getGoalsTeamOne());

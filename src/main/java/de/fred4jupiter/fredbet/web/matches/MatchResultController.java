@@ -59,15 +59,15 @@ public class MatchResultController {
         matchResultCommand.setGroupMatch(match.isGroupMatch());
 
         if (match.hasContriesSet()) {
-            matchResultCommand.setTeamNameOne(webMessageUtil.getCountryName(match.getCountryOne()));
-            matchResultCommand.setIconPathTeamOne(match.getCountryOne().getIconPathBig());
+            matchResultCommand.setTeamNameOne(webMessageUtil.getCountryName(match.getTeamOne().getCountry()));
+            matchResultCommand.setIconPathTeamOne(match.getTeamOne().getCountry().getIconPathBig());
 
-            matchResultCommand.setTeamNameTwo(webMessageUtil.getCountryName(match.getCountryTwo()));
-            matchResultCommand.setIconPathTeamTwo(match.getCountryTwo().getIconPathBig());
+            matchResultCommand.setTeamNameTwo(webMessageUtil.getCountryName(match.getTeamTwo().getCountry()));
+            matchResultCommand.setIconPathTeamTwo(match.getTeamTwo().getCountry().getIconPathBig());
             matchResultCommand.setShowCountryIcons(true);
         } else {
-            matchResultCommand.setTeamNameOne(match.getTeamNameOne());
-            matchResultCommand.setTeamNameTwo(match.getTeamNameTwo());
+            matchResultCommand.setTeamNameOne(match.getTeamOne().getName());
+            matchResultCommand.setTeamNameTwo(match.getTeamTwo().getName());
         }
         matchResultCommand.setTeamResultOne(match.getGoalsTeamOne());
         matchResultCommand.setTeamResultTwo(match.getGoalsTeamTwo());

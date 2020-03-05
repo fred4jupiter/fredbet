@@ -41,11 +41,11 @@ public class MessageSourceUtil {
     }
 
     public String getTeamNameOne(Match match, Locale locale) {
-        return getTeamName(match.getCountryOne(), match.getTeamNameOne(), locale);
+        return getTeamName(match.getTeamOne().getCountry(), match.getTeamOne().getName(), locale);
     }
 
     public String getTeamNameTwo(Match match, Locale locale) {
-        return getTeamName(match.getCountryTwo(), match.getTeamNameTwo(), locale);
+        return getTeamName(match.getTeamTwo().getCountry(), match.getTeamTwo().getName(), locale);
     }
 
     public String getTeamName(Country country, String teamName, Locale locale) {

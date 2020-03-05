@@ -50,8 +50,8 @@ public class AllBetsCommandMapper {
 		allBetsCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
 		allBetsCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
 
-		allBetsCommand.setCountryTeamOne(match.getCountryOne());
-		allBetsCommand.setCountryTeamTwo(match.getCountryTwo());
+		allBetsCommand.setCountryTeamOne(match.getTeamOne().getCountry());
+		allBetsCommand.setCountryTeamTwo(match.getTeamTwo().getCountry());
 		allBetsCommand.setKickOffDate(match.getKickOffDate());
 		allBetsCommand.setStadium(match.getStadium());
 		allBetsCommand.setGroup(match.getGroup());

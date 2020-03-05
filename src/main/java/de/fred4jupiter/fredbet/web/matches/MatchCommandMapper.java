@@ -68,8 +68,8 @@ public class MatchCommandMapper {
 		Assert.notNull(match, "Match must be given");
 		MatchCommand matchCommand = new MatchCommand();
 		matchCommand.setMatchId(match.getId());
-		matchCommand.setCountryTeamOne(match.getCountryOne());
-		matchCommand.setCountryTeamTwo(match.getCountryTwo());
+		matchCommand.setCountryTeamOne(match.getTeamOne().getCountry());
+		matchCommand.setCountryTeamTwo(match.getTeamTwo().getCountry());
 		matchCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
 		matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
 		matchCommand.setTeamResultOne(match.getGoalsTeamOne());

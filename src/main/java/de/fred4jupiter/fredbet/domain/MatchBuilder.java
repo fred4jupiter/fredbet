@@ -16,14 +16,14 @@ public class MatchBuilder {
 	}
 
 	public MatchBuilder withTeams(String teamOne, String teamTwo) {
-		match.setTeamNameOne(teamOne);
-		match.setTeamNameTwo(teamTwo);
+		match.getTeamOne().setName(teamOne);
+		match.getTeamTwo().setName(teamTwo);
 		return this;
 	}
 
 	public MatchBuilder withTeams(Country one, Country two) {
-		match.setCountryOne(one);
-		match.setCountryTwo(two);
+		match.getTeamOne().setCountry(one);
+		match.getTeamTwo().setCountry(two);
 		return this;
 	}
 

@@ -27,22 +27,22 @@ public class ExcelImportServiceIT {
         assertEquals(3, matches.size());
 
         Match match1 = matches.get(0);
-        assertEquals(Country.GERMANY, match1.getCountryOne());
-        assertEquals(Country.BELGIUM, match1.getCountryTwo());
+        assertEquals(Country.GERMANY, match1.getTeamOne().getCountry());
+        assertEquals(Country.BELGIUM, match1.getTeamTwo().getCountry());
         assertEquals(Group.GROUP_B, match1.getGroup());
         assertEquals(LocalDateTime.of(2017, 6, 1, 18, 0), match1.getKickOffDate());
         assertEquals("Westfalenstadion, Dortmund", match1.getStadium());
 
         Match match2 = matches.get(1);
-        assertEquals(Country.ANDORRA, match2.getCountryOne());
-        assertEquals(Country.ISRAEL, match2.getCountryTwo());
+        assertEquals(Country.ANDORRA, match2.getTeamOne().getCountry());
+        assertEquals(Country.ISRAEL, match2.getTeamTwo().getCountry());
         assertEquals(Group.GROUP_E, match2.getGroup());
         assertEquals(LocalDateTime.of(2018, 2, 5, 20, 0), match2.getKickOffDate());
         assertEquals("Allianz Arena, München", match2.getStadium());
 
         Match match3 = matches.get(2);
-        assertEquals("Sieger Gruppe A", match3.getTeamNameOne());
-        assertEquals("Zweiter Gruppe B", match3.getTeamNameTwo());
+        assertEquals("Sieger Gruppe A", match3.getTeamOne().getName());
+        assertEquals("Zweiter Gruppe B", match3.getTeamTwo().getName());
         assertEquals(Group.SEMI_FINAL, match3.getGroup());
         assertEquals(LocalDateTime.of(2017, 6, 28, 20, 0), match3.getKickOffDate());
         assertEquals("Kasan", match3.getStadium());

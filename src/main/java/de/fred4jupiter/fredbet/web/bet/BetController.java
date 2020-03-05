@@ -94,16 +94,16 @@ public class BetController {
         betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 
         if (bet.getMatch().hasContriesSet()) {
-            betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getCountryOne()));
-            betCommand.setIconPathTeamOne(bet.getMatch().getCountryOne().getIconPathBig());
+            betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getTeamOne().getCountry()));
+            betCommand.setIconPathTeamOne(bet.getMatch().getTeamOne().getCountry().getIconPathBig());
 
-            betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getCountryTwo()));
-            betCommand.setIconPathTeamTwo(bet.getMatch().getCountryTwo().getIconPathBig());
+            betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getTeamTwo().getCountry()));
+            betCommand.setIconPathTeamTwo(bet.getMatch().getTeamTwo().getCountry().getIconPathBig());
 
             betCommand.setShowCountryIcons(true);
         } else {
-            betCommand.setTeamNameOne(bet.getMatch().getTeamNameOne());
-            betCommand.setTeamNameTwo(bet.getMatch().getTeamNameTwo());
+            betCommand.setTeamNameOne(bet.getMatch().getTeamOne().getName());
+            betCommand.setTeamNameTwo(bet.getMatch().getTeamTwo().getName());
         }
 
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());

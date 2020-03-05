@@ -1,24 +1,15 @@
 package de.fred4jupiter.fredbet.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryService {
@@ -87,10 +78,10 @@ public class CountryService {
 
     private Set<Country> toCountrySet(List<Match> matches) {
         final Set<Country> resultset = new HashSet<>();
-        matches.stream().filter(match -> match != null && (match.getCountryOne() != null || match.getCountryTwo() != null))
+        matches.stream().filter(match -> match != null && (match.getTeamOne().getCountry() != null || match.getTeamTwo().getCountry() != null))
                 .forEach(match -> {
-                    resultset.add(match.getCountryOne());
-                    resultset.add(match.getCountryTwo());
+                    resultset.add(match.getTeamOne().getCountry());
+                    resultset.add(match.getTeamTwo().getCountry());
                 });
         return resultset;
     }

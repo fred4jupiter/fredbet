@@ -16,8 +16,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -120,10 +122,10 @@ public class CreateEditMatchController {
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
         CreateEditMatchCommand command = new CreateEditMatchCommand();
-        command.setCountryTeamOne(match.getCountryOne());
-        command.setCountryTeamTwo(match.getCountryTwo());
-        command.setTeamNameOne(match.getTeamNameOne());
-        command.setTeamNameTwo(match.getTeamNameTwo());
+        command.setCountryTeamOne(match.getTeamOne().getCountry());
+        command.setCountryTeamTwo(match.getTeamTwo().getCountry());
+        command.setTeamNameOne(match.getTeamOne().getName());
+        command.setTeamNameTwo(match.getTeamTwo().getName());
         command.setGroup(match.getGroup());
         command.setKickOffDate(match.getKickOffDate());
         command.setMatchId(match.getId());
@@ -149,10 +151,10 @@ public class CreateEditMatchController {
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-        match.setCountryOne(matchCommand.getCountryTeamOne());
-        match.setCountryTwo(matchCommand.getCountryTeamTwo());
-        match.setTeamNameOne(matchCommand.getTeamNameOne());
-        match.setTeamNameTwo(matchCommand.getTeamNameTwo());
+        match.getTeamOne().setCountry(matchCommand.getCountryTeamOne());
+        match.getTeamTwo().setCountry(matchCommand.getCountryTeamTwo());
+        match.getTeamOne().setName(matchCommand.getTeamNameOne());
+        match.getTeamTwo().setName(matchCommand.getTeamNameTwo());
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());
         match.setStadium(matchCommand.getStadium());
