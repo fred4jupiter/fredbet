@@ -58,7 +58,7 @@ public class MatchResultController {
         matchResultCommand.setMatchId(match.getId());
         matchResultCommand.setGroupMatch(match.isGroupMatch());
 
-        if (match.hasContriesSet()) {
+        if (match.hasCountriesSet()) {
             matchResultCommand.setTeamNameOne(webMessageUtil.getCountryName(match.getTeamOne().getCountry()));
             matchResultCommand.setIconPathTeamOne(match.getTeamOne().getCountry().getIconPathBig());
 

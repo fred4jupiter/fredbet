@@ -15,7 +15,6 @@ import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -93,7 +92,7 @@ public class BetController {
         betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
         betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 
-        if (bet.getMatch().hasContriesSet()) {
+        if (bet.getMatch().hasCountriesSet()) {
             betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getTeamOne().getCountry()));
             betCommand.setIconPathTeamOne(bet.getMatch().getTeamOne().getCountry().getIconPathBig());
 
