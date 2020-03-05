@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+	<head>
+		<title th:text="#{standings.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div th:replace="~{fragments/alert :: alert_headline}"></div>
+			<h1 th:text="#{standings.title}"></h1>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="group : ${groupPointsContainer.groups}">
+					<div class="panel panel-default" th:if="${not #lists.isEmpty(groupPointsContainer.getForGroup(group))}">
+						<div class="panel-heading">
+							<span th:text="#{'group.entry.'+ ${group}}"></span>
+					   </div>
+					   <div class="panel-body">
+						   <div class="table-responsive">
+						   		<table class="table small">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th class="text-left">Team</th>
+											<th title="Matches Played">MP</th>
+											<th title="Wins">W</th>
+											<th title="Draws">D</th>
+											<th title="Looses">L</th>
+											<th title="Goals">G</th>
+											<th title="Points">Pts</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="groupTeamPoints,iter : ${groupPointsContainer.getForGroup(group)}">
+											<td th:text="${iter.count}"></td>
+											<td th:text="${groupTeamPoints.teamName}"></td>
+											<td th:text="${groupTeamPoints.numberOfMatches}"></td>
+											<td th:text="${groupTeamPoints.numberOfWins}"></td>
+											<td th:text="${groupTeamPoints.numberOfUndecided}"></td>
+											<td th:text="${groupTeamPoints.numberOfDefeats}"></td>
+											<td th:text="${groupTeamPoints.numberOfGoals} + ':' + ${groupTeamPoints.numberOfSheets}"></td>
+											<td th:text="${groupTeamPoints.numberOfPoints}"></td>
+										</tr>
+									</tbody>
+						   		</table>
+					   	   </div>
+					   </div>
+					</div>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>

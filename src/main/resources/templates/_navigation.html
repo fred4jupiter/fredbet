@@ -105,6 +105,7 @@
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
+								<li th:class="${pageState_grouptable}"><a href="#grouptable" th:href="@{/grouptable}" th:text="#{standings.title}"></a></li>
 					        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
 					        	<li th:class="${pageState_info_prices}"><a href="#prices" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
 					        	<li th:class="${pageState_info_misc}"><a href="#misc" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
