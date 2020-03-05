@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
 import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
@@ -58,6 +59,9 @@ public class UserService {
 
     @Autowired
     private ImageGroupRepository imageGroupRepository;
+
+    @Autowired
+    private BettingService bettingService;
 
     public List<AppUser> findAll() {
         return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));
@@ -115,6 +119,7 @@ public class UserService {
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
     public void deleteAllUsers() {
+        bettingService.deleteAllBets();
         AppUser adminUser = appUserRepository.findByUsername(FredbetConstants.TECHNICAL_USERNAME);
         imageMetaDataRepository.deleteAllByOwnerNotLike(adminUser);
         appUserRepository.deleteAllByDeletableTrue();
