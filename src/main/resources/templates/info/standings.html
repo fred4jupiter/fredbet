@@ -8,8 +8,8 @@
 			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<h1 th:text="#{standings.title}"></h1>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="group : ${groupPointsContainer.groups}">
-					<div class="panel panel-default" th:if="${not #lists.isEmpty(groupPointsContainer.getForGroup(group))}">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="group : ${standingsContainer.groups}">
+					<div class="panel panel-default" th:if="${not #lists.isEmpty(standingsContainer.getForGroup(group))}">
 						<div class="panel-heading">
 							<span th:text="#{'group.entry.'+ ${group}}"></span>
 					   </div>
@@ -29,15 +29,15 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="groupTeamPoints,iter : ${groupPointsContainer.getForGroup(group)}">
+										<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
 											<td th:text="${iter.count}"></td>
-											<td th:text="${groupTeamPoints.teamName}"></td>
-											<td th:text="${groupTeamPoints.numberOfMatches}"></td>
-											<td th:text="${groupTeamPoints.numberOfWins}"></td>
-											<td th:text="${groupTeamPoints.numberOfUndecided}"></td>
-											<td th:text="${groupTeamPoints.numberOfDefeats}"></td>
-											<td th:text="${groupTeamPoints.numberOfGoals} + ':' + ${groupTeamPoints.numberOfSheets}"></td>
-											<td th:text="${groupTeamPoints.numberOfPoints}"></td>
+											<td th:text="${teamStandings.teamName}"></td>
+											<td th:text="${teamStandings.numberOfMatches}"></td>
+											<td th:text="${teamStandings.numberOfWins}"></td>
+											<td th:text="${teamStandings.numberOfUndecided}"></td>
+											<td th:text="${teamStandings.numberOfDefeats}"></td>
+											<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfSheets}"></td>
+											<td th:text="${teamStandings.numberOfPoints}"></td>
 										</tr>
 									</tbody>
 						   		</table>

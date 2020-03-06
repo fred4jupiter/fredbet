@@ -1,10 +1,10 @@
-package de.fred4jupiter.fredbet.service.grouppoints;
+package de.fred4jupiter.fredbet.service.standings;
 
 import de.fred4jupiter.fredbet.domain.Team;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GroupTeamPoints {
+public class TeamStandings {
 
     private final String teamName;
 
@@ -24,7 +24,7 @@ public class GroupTeamPoints {
 
     private final AtomicInteger numberOfPoints = new AtomicInteger();
 
-    public GroupTeamPoints(String teamName) {
+    public TeamStandings(String teamName) {
         this.teamName = teamName;
     }
 

@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.grouppoints;
+package de.fred4jupiter.fredbet.service.standings;
 
 import de.fred4jupiter.fredbet.IntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
@@ -14,12 +14,12 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-public class GroupPointsServiceIT {
+public class StandingsServiceIT {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GroupPointsServiceIT.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StandingsServiceIT.class);
 
     @Autowired
-    private GroupPointsService groupPointsService;
+    private StandingsService standingsService;
 
     @Autowired
     private DatabasePopulator databasePopulator;
@@ -30,15 +30,15 @@ public class GroupPointsServiceIT {
         databasePopulator.createDemoBetsForAllUsers();
         databasePopulator.createDemoResultsForAllMatches();
 
-        GroupPointsContainer groupPointsContainer = groupPointsService.calculateGroupTablePoints(new Locale("de", "DE"));
-        assertThat(groupPointsContainer).isNotNull();
-        LOG.debug("groupPointsContainer: {}", groupPointsContainer);
+        StandingsContainer standingsContainer = standingsService.calculateStandings(new Locale("de", "DE"));
+        assertThat(standingsContainer).isNotNull();
+        LOG.debug("groupPointsContainer: {}", standingsContainer);
 
-        List<Group> groups = groupPointsContainer.getGroups();
+        List<Group> groups = standingsContainer.getGroups();
         groups.forEach(group -> {
             LOG.info("group: {}", group);
-            List<GroupTeamPoints> list = groupPointsContainer.getForGroup(group);
-            list.forEach(groupTeamPoints -> LOG.info("groupTeamPoints: {}", groupTeamPoints));
+            List<TeamStandings> list = standingsContainer.getForGroup(group);
+            list.forEach(teamStandings -> LOG.info("groupTeamPoints: {}", teamStandings));
         });
     }
 }

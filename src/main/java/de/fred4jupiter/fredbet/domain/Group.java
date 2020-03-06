@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.domain;
 
-import de.fred4jupiter.fredbet.service.grouppoints.GroupTeamPoints;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
