@@ -11,12 +11,12 @@
 				<div class="col-xs-12 col-sm-6 col-md-4" th:if="${not #lists.isEmpty(standingsContainer.getForGroup(group))}" th:each="group : ${standingsContainer.groups}">
 					<h2 th:text="#{'group.entry.'+ ${group}}"></h2>
 					<div class="table-responsive">
-						<table class="table small table-condensed">
+						<table class="table small table-condensed table-centered">
 							<thead>
-								<tr>
+								<tr class="active">
 									<th>#</th>
-									<th>Team</th>
-									<th class="left" title="Matches Played">MP</th>
+									<th class="text-left">Team</th>
+									<th title="Matches Played">MP</th>
 									<th title="Wins">W</th>
 									<th title="Draws">D</th>
 									<th title="Looses">L</th>
@@ -28,7 +28,7 @@
 							<tbody>
 								<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
 									<td th:text="${iter.count}"></td>
-									<td th:text="${teamStandings.teamName}"></td>
+									<td class="text-left" th:text="${teamStandings.teamName}"></td>
 									<td th:text="${teamStandings.numberOfMatches}"></td>
 									<td th:text="${teamStandings.numberOfWins}"></td>
 									<td th:text="${teamStandings.numberOfUndecided}"></td>

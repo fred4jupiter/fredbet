@@ -78,6 +78,10 @@ body {
 	padding-right: 0px;
 }
 
+.text-left {
+	text-align: left !important;
+}
+
 .center {
 	text-align: center;
 }
@@ -129,7 +133,7 @@ body {
 	font-size: 1.2em;
 }
 
-.table-centered.table th, td {
+.table-centered th, .table-centered td {
 	text-align: center;
 }
 
