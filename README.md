@@ -26,6 +26,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - use a joker to double your points
 - self registration (can be disabled)
 - PDF export of user ranking 
+- Group standings
 
 ## Testing it locally
 
@@ -80,7 +81,7 @@ These properties has to be set at application startup.
 
 | Key | Default Value | Description |
 |--------|--------|--------|
-| spring.profiles.active | dev | Active Spring profile at startup. Possible values: `dev,prod,localdb`. Use profile `prod` for real productive setup. |
+| spring.profiles.active | h2 | Active Spring profile at startup. Possible values: `h2,dev,maria,mysql,postgres`. Use profile `prod` for real productive setup. |
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
 | fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE, AWS_S3` |
@@ -97,20 +98,21 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 
 | Key | Default Value | Description |
 |--------|--------|--------|
-| spring.datasource.hikari.jdbc-url | | The database jdbc connection url, e.g. `jdbc:mariadb://localhost:3306/fredbetdb`. |
-| spring.datasource.hikari.username | | The database username. |
+| spring.datasource.hikari.jdbc-url | jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE | JDBC connection URL. |
+| spring.datasource.hikari.username | sa | The database username. |
 | spring.datasource.hikari.password | | The database password. |
-| spring.datasource.hikari.driver-class-name |  | see driver class below |
+| spring.datasource.hikari.driver-class-name | org.h2.Driver | see driver class below |
 
 ### Driver class names
 
 | Database | Driver Class | Spring Profile | 
 |--------|--------|--------|
-| H2 | org.h2.Driver | dev |
+| H2 | org.h2.Driver | h2 |
 | MySQL | com.mysql.jdbc.Driver | mysql |
 | MariaDB | org.mariadb.jdbc.Driver |  maria |
 | PostgreSQL | org.postgresql.Driver | postgres |
 
+Activate the spring profile via JVM (e.g. `-Dspring.profiles.active=h2`) or system environment variable (e.g. `SPRING_PROFILES_ACTIVE=h2`).
 
 ## Runtime Configuration
 
@@ -131,7 +133,7 @@ FredBet is designed to run within the Amazon Web Services (AWS) cloud as product
 
 | Key | Value | Description |
 |--------|--------|--------|
-| spring.profiles.active | prod |  |
+| spring.profiles.active | e.g. postgres | see section `Driver class names` |
 | fredbet.image-location | AWS_S3 |  |
 | fredbet.aws-s3bucket-name | fredbet | Or any other name for your S3 bucket. |
 
