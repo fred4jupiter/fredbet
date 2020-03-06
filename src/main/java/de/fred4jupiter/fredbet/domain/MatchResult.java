@@ -13,6 +13,4 @@ public interface MatchResult {
     Team getTeamOne();
 
     Team getTeamTwo();
-
-    Integer getGoalDifference();
 }

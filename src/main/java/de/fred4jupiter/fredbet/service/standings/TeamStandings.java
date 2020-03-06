@@ -14,13 +14,11 @@ public class TeamStandings {
 
     private final AtomicInteger numberOfUndecided = new AtomicInteger();
 
-    private final AtomicInteger numberOfDefeats = new AtomicInteger(); // Verloren
+    private final AtomicInteger numberOfLooses = new AtomicInteger();
 
     private final AtomicInteger numberOfGoals = new AtomicInteger();
 
-    private final AtomicInteger numberOfSheets = new AtomicInteger(); // Gegentore
-
-    private final AtomicInteger numberOfGoalDifference = new AtomicInteger();
+    private final AtomicInteger numberOfGoalsAgainst = new AtomicInteger(); // Gegentore
 
     private final AtomicInteger numberOfPoints = new AtomicInteger();
 
@@ -28,12 +26,12 @@ public class TeamStandings {
         this.teamName = teamName;
     }
 
-    public void registerResultForTeam(Team team, Integer goalDifference, Team opponent, boolean isWinner, boolean isUndecided) {
+    public void registerResultForTeam(Team team, Team opponent, boolean isWinner, boolean isUndecided) {
         numberOfMatches.incrementAndGet();
         if (isWinner) {
             numberOfWins.incrementAndGet();
         } else {
-            numberOfDefeats.incrementAndGet();
+            numberOfLooses.incrementAndGet();
         }
 
         if (isUndecided) {
@@ -41,9 +39,7 @@ public class TeamStandings {
         }
 
         numberOfGoals.addAndGet(team.getGoals());
-        numberOfSheets.addAndGet(opponent.getGoals());
-
-        numberOfGoalDifference.addAndGet(goalDifference);
+        numberOfGoalsAgainst.addAndGet(opponent.getGoals());
 
         // calculate points
         if (isWinner) {
@@ -69,20 +65,20 @@ public class TeamStandings {
         return numberOfUndecided.get();
     }
 
-    public Integer getNumberOfDefeats() {
-        return numberOfDefeats.get();
+    public Integer getNumberOfLooses() {
+        return numberOfLooses.get();
     }
 
     public Integer getNumberOfGoals() {
         return numberOfGoals.get();
     }
 
-    public Integer getNumberOfSheets() {
-        return numberOfSheets.get();
+    public Integer getNumberOfGoalsAgainst() {
+        return numberOfGoalsAgainst.get();
     }
 
     public Integer getNumberOfGoalDifference() {
-        return numberOfGoalDifference.get();
+        return numberOfGoals.get() - numberOfGoalsAgainst.get();
     }
 
     public Integer getNumberOfPoints() {
@@ -91,24 +87,22 @@ public class TeamStandings {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(teamName);
-        sb.append(" | ");
-        sb.append(numberOfMatches);
-        sb.append(" | ");
-        sb.append(numberOfWins);
-        sb.append(" | ");
-        sb.append(numberOfUndecided);
-        sb.append(" | ");
-        sb.append(numberOfDefeats);
-        sb.append(" | ");
-        sb.append(numberOfGoals);
-        sb.append(" | ");
-        sb.append(numberOfSheets);
-        sb.append(" | ");
-        sb.append(numberOfGoalDifference);
-        sb.append(" | ");
-        sb.append(numberOfPoints);
-        return sb.toString();
+        return teamName +
+                " | " +
+                numberOfMatches +
+                " | " +
+                numberOfWins +
+                " | " +
+                numberOfUndecided +
+                " | " +
+                numberOfLooses +
+                " | " +
+                numberOfGoals +
+                " | " +
+                numberOfGoalsAgainst +
+                " | " +
+                getNumberOfGoalDifference() +
+                " | " +
+                numberOfPoints;
     }
 }

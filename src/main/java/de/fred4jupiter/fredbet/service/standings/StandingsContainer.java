@@ -21,10 +21,10 @@ public class StandingsContainer {
 
     public void registerResult(MatchResult matchResult, Locale locale) {
         TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(matchResult.getGroup(), getTranslatedTeamName(matchResult.getTeamOne(), locale));
-        teamPointsTeamOne.registerResultForTeam(matchResult.getTeamOne(), matchResult.getGoalDifference(), matchResult.getTeamTwo(), matchResult.isTeamOneWinner(), matchResult.isUndecidedResult());
+        teamPointsTeamOne.registerResultForTeam(matchResult.getTeamOne(), matchResult.getTeamTwo(), matchResult.isTeamOneWinner(), matchResult.isUndecidedResult());
 
         TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(matchResult.getGroup(), getTranslatedTeamName(matchResult.getTeamTwo(), locale));
-        teamPointsTeamTwo.registerResultForTeam(matchResult.getTeamTwo(), matchResult.getGoalDifference(), matchResult.getTeamOne(), matchResult.isTeamTwoWinner(), matchResult.isUndecidedResult());
+        teamPointsTeamTwo.registerResultForTeam(matchResult.getTeamTwo(), matchResult.getTeamOne(), matchResult.isTeamTwoWinner(), matchResult.isUndecidedResult());
     }
 
     private String getTranslatedTeamName(Team team, Locale locale) {
@@ -61,9 +61,13 @@ public class StandingsContainer {
             return Collections.emptyList();
         }
 
-        Comparator<TeamStandings> comparator1 = Comparator.comparingInt(TeamStandings::getNumberOfPoints).reversed();
-        Comparator<TeamStandings> comparator2 = Comparator.comparingInt(TeamStandings::getNumberOfGoalDifference);
+        Comparator<TeamStandings> points = Comparator.comparingInt(TeamStandings::getNumberOfPoints).reversed();
+        Comparator<TeamStandings> goalDifference = Comparator.comparingInt(TeamStandings::getNumberOfGoalDifference).reversed();
+        Comparator<TeamStandings> goals = Comparator.comparingInt(TeamStandings::getNumberOfGoals).reversed();
+        Comparator<TeamStandings> goalsAgainst = Comparator.comparingInt(TeamStandings::getNumberOfGoalsAgainst);
 
-        return teamPoints.stream().sorted(comparator1.thenComparing(comparator2)).collect(Collectors.toList());
+        Comparator<TeamStandings> completeComparator = points.thenComparing(goalDifference)
+                .thenComparing(goals).thenComparing(goalsAgainst);
+        return teamPoints.stream().sorted(completeComparator).collect(Collectors.toList());
     }
 }

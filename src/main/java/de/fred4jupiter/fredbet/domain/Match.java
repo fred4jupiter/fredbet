@@ -61,7 +61,6 @@ public class Match implements MatchResult {
         return LocalDateTime.now().isAfter(kickOffDate);
     }
 
-    @Override
     public Integer getGoalDifference() {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
             throw new IllegalStateException("Match has not finished! No goal results set!");

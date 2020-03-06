@@ -25,6 +25,7 @@
 											<th title="Draws">D</th>
 											<th title="Looses">L</th>
 											<th title="Goals">G</th>
+											<th title="Diff">Diff</th>
 											<th title="Points">Pts</th>
 										</tr>
 									</thead>
@@ -35,8 +36,9 @@
 											<td th:text="${teamStandings.numberOfMatches}"></td>
 											<td th:text="${teamStandings.numberOfWins}"></td>
 											<td th:text="${teamStandings.numberOfUndecided}"></td>
-											<td th:text="${teamStandings.numberOfDefeats}"></td>
-											<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfSheets}"></td>
+											<td th:text="${teamStandings.numberOfLooses}"></td>
+											<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
+											<td th:text="${teamStandings.numberOfGoalDifference}"></td>
 											<td th:text="${teamStandings.numberOfPoints}"></td>
 										</tr>
 									</tbody>
