@@ -105,4 +105,14 @@ public class TeamStandings {
                 " | " +
                 numberOfPoints;
     }
+
+    public String getCssClass(Integer rowCount) {
+        if (rowCount == 1 || rowCount == 2) {
+            return "success";
+        }
+        if (rowCount == 3) {
+            return "warning";
+        }
+        return "";
+    }
 }

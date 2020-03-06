@@ -26,7 +26,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
+								<tr th:classappend="${teamStandings.getCssClass(iter.count)}" th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
 									<td th:text="${iter.count}"></td>
 									<td class="text-left" th:text="${teamStandings.teamName}"></td>
 									<td th:text="${teamStandings.numberOfMatches}"></td>
@@ -35,7 +35,7 @@
 									<td th:text="${teamStandings.numberOfLooses}"></td>
 									<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
 									<td th:text="${teamStandings.numberOfGoalDifference}"></td>
-									<td th:text="${teamStandings.numberOfPoints}"></td>
+									<td class="bold" th:text="${teamStandings.numberOfPoints}"></td>
 								</tr>
 							</tbody>
 						</table>
