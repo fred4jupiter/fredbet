@@ -173,6 +173,12 @@ You will see a response of `{"status":"UP"}`. The health check URL is callable w
 
 While running in `dev` profile the H2 web console is available at [http://localhost:8080/console](http://localhost:8080/console).
 
+## Excel-Templates ready to import
+
+The following Excel-Templates with matches are prepared for import:
+
+*  ![EM 2020](src/excel_templates/EM_2020.xlsx?raw=true "EM 2020")
+
 ## Screenshots
 
 ![FredBet Screenshot 1](src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot 1")
