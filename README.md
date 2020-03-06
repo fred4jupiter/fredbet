@@ -19,7 +19,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - ranking page
 - Microsoft Excel match import (ready to use world championchip 2018 template available)
 - Microsoft Excel bets, statistic export
-- language switcher (supported languages: englisch, german (by now))
+- language switcher (supported languages: englisch, german and polish (by now))
 - ranking filter for adults and childs listing
 - integrated testing capabilities: create demo users, matches, bets...
 - configurable runtime configuration
