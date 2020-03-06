@@ -11,26 +11,30 @@
 			<span class="label label-info" th:text="#{pointsfrequency.title2}"></span>
 			<br/>
 			<br/>
-			<div class="row" th:if="${pointsFrequencyCommand != null}">			
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="pointsfrequency : ${pointsFrequencyCommand.getResultList()}">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:if="${pointsFrequencyCommand != null}" th:each="pointsfrequency : ${pointsFrequencyCommand.getResultList()}">
 					<div class="table-responsive">
-				   		<table class="table">
-				   			<tr class="active">
-				   				<th th:text="#{pointsfrequency.table.header.name}"></th>
-				   				<th>
-				   					<span class="label label-warning label-as-badge big-badge" th:text="${pointsfrequency.points}">
-				   					</span>				   					
-				   					<span th:text="#{pointsfrequency.points}"></span>
-				   				</th>
-				   			</tr>
-				   			<tr class="success" th:each="pointCountResult : ${pointsfrequency.list}">	
-				   				<td th:text="${pointCountResult.username}"></td>
-				   				<td th:text="${pointCountResult.numberOfPointsCount}"></td>			   									   				
-				   			</tr>				   			
+				   		<table class="table table-centered">
+							<thead>
+								<tr class="active">
+									<th th:text="#{pointsfrequency.table.header.name}"></th>
+									<th>
+										<span class="label label-warning label-as-badge big-badge" th:text="${pointsfrequency.points}">
+										</span>
+										<span th:text="#{pointsfrequency.points}"></span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="success" th:each="pointCountResult : ${pointsfrequency.list}">
+									<td th:text="${pointCountResult.username}"></td>
+									<td th:text="${pointCountResult.numberOfPointsCount}"></td>
+								</tr>
+							</tbody>
 				   		</table>
 				   	</div>
 				</div>				
-			</div>			
+			</div>
 		</div>
 	</body>
 </html>

@@ -13,30 +13,30 @@
 					<div class="table-responsive">
 						<table class="table small table-condensed">
 							<thead>
-							<tr>
-								<th>#</th>
-								<th class="text-left">Team</th>
-								<th title="Matches Played">MP</th>
-								<th title="Wins">W</th>
-								<th title="Draws">D</th>
-								<th title="Looses">L</th>
-								<th title="Goals">G</th>
-								<th title="Diff">Diff</th>
-								<th title="Points">Pts</th>
-							</tr>
+								<tr>
+									<th>#</th>
+									<th>Team</th>
+									<th class="left" title="Matches Played">MP</th>
+									<th title="Wins">W</th>
+									<th title="Draws">D</th>
+									<th title="Looses">L</th>
+									<th title="Goals">G</th>
+									<th title="Diff">Diff</th>
+									<th title="Points">Pts</th>
+								</tr>
 							</thead>
 							<tbody>
-							<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
-								<td th:text="${iter.count}"></td>
-								<td th:text="${teamStandings.teamName}"></td>
-								<td th:text="${teamStandings.numberOfMatches}"></td>
-								<td th:text="${teamStandings.numberOfWins}"></td>
-								<td th:text="${teamStandings.numberOfUndecided}"></td>
-								<td th:text="${teamStandings.numberOfLooses}"></td>
-								<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
-								<td th:text="${teamStandings.numberOfGoalDifference}"></td>
-								<td th:text="${teamStandings.numberOfPoints}"></td>
-							</tr>
+								<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
+									<td th:text="${iter.count}"></td>
+									<td th:text="${teamStandings.teamName}"></td>
+									<td th:text="${teamStandings.numberOfMatches}"></td>
+									<td th:text="${teamStandings.numberOfWins}"></td>
+									<td th:text="${teamStandings.numberOfUndecided}"></td>
+									<td th:text="${teamStandings.numberOfLooses}"></td>
+									<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
+									<td th:text="${teamStandings.numberOfGoalDifference}"></td>
+									<td th:text="${teamStandings.numberOfPoints}"></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>

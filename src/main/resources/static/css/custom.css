@@ -129,7 +129,7 @@ body {
 	font-size: 1.2em;
 }
 
-.table th, td {
+.table-centered.table th, td {
 	text-align: center;
 }
 
