@@ -8,43 +8,37 @@
 			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<h1 th:text="#{standings.title}"></h1>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="group : ${standingsContainer.groups}">
-					<div class="panel panel-default" th:if="${not #lists.isEmpty(standingsContainer.getForGroup(group))}">
-						<div class="panel-heading">
-							<span th:text="#{'group.entry.'+ ${group}}"></span>
-					   </div>
-					   <div class="panel-body">
-						   <div class="table-responsive">
-						   		<table class="table small">
-									<thead>
-										<tr>
-											<th>#</th>
-											<th class="text-left">Team</th>
-											<th title="Matches Played">MP</th>
-											<th title="Wins">W</th>
-											<th title="Draws">D</th>
-											<th title="Looses">L</th>
-											<th title="Goals">G</th>
-											<th title="Diff">Diff</th>
-											<th title="Points">Pts</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
-											<td th:text="${iter.count}"></td>
-											<td th:text="${teamStandings.teamName}"></td>
-											<td th:text="${teamStandings.numberOfMatches}"></td>
-											<td th:text="${teamStandings.numberOfWins}"></td>
-											<td th:text="${teamStandings.numberOfUndecided}"></td>
-											<td th:text="${teamStandings.numberOfLooses}"></td>
-											<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
-											<td th:text="${teamStandings.numberOfGoalDifference}"></td>
-											<td th:text="${teamStandings.numberOfPoints}"></td>
-										</tr>
-									</tbody>
-						   		</table>
-					   	   </div>
-					   </div>
+				<div class="col-xs-12 col-sm-6 col-md-4" th:if="${not #lists.isEmpty(standingsContainer.getForGroup(group))}" th:each="group : ${standingsContainer.groups}">
+					<h2 th:text="#{'group.entry.'+ ${group}}"></h2>
+					<div class="table-responsive">
+						<table class="table small table-condensed">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th class="text-left">Team</th>
+								<th title="Matches Played">MP</th>
+								<th title="Wins">W</th>
+								<th title="Draws">D</th>
+								<th title="Looses">L</th>
+								<th title="Goals">G</th>
+								<th title="Diff">Diff</th>
+								<th title="Points">Pts</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
+								<td th:text="${iter.count}"></td>
+								<td th:text="${teamStandings.teamName}"></td>
+								<td th:text="${teamStandings.numberOfMatches}"></td>
+								<td th:text="${teamStandings.numberOfWins}"></td>
+								<td th:text="${teamStandings.numberOfUndecided}"></td>
+								<td th:text="${teamStandings.numberOfLooses}"></td>
+								<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
+								<td th:text="${teamStandings.numberOfGoalDifference}"></td>
+								<td th:text="${teamStandings.numberOfPoints}"></td>
+							</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>				
 			</div>
