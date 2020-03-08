@@ -1,9 +1,12 @@
 package de.fred4jupiter.fredbet.domain;
 
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.Locale;
 import java.util.Objects;
 
 @Embeddable
@@ -37,6 +40,14 @@ public class Team {
 
     public String getName() {
         return name;
+    }
+
+    public String getNameTranslated(MessageSourceUtil messageSourceUtil, Locale locale) {
+        if (this.country == null || Country.NONE.equals(this.country)) {
+            return name;
+        }
+
+        return messageSourceUtil.getCountryName(this.country, locale);
     }
 
     public void setName(String name) {

@@ -22,8 +22,6 @@ public class MatchResultCommand {
 
     private boolean groupMatch;
 
-    private boolean showCountryIcons;
-
     private String redirectViewName;
 
     public String getBackUrl() {
@@ -77,14 +75,6 @@ public class MatchResultCommand {
 
     public void setGroupMatch(boolean groupMatch) {
         this.groupMatch = groupMatch;
-    }
-
-    public boolean isShowCountryIcons() {
-        return showCountryIcons;
-    }
-
-    public void setShowCountryIcons(boolean showCountryIcons) {
-        this.showCountryIcons = showCountryIcons;
     }
 
     public String getTeamNameOne() {

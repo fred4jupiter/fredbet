@@ -110,10 +110,16 @@ public enum Country {
     }
 
     public String getIconPath() {
+        if (Country.NONE.equals(this)) {
+            return null;
+        }
         return ICON_BASE_PATH + isoCode + ".png";
     }
 
     public String getIconPathBig() {
+        if (Country.NONE.equals(this)) {
+            return null;
+        }
         return ICON_BASE_PATH_BIG + isoCode + ".png";
     }
 }

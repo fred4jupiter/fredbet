@@ -1,11 +1,13 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/matchresult")
@@ -24,7 +27,7 @@ public class MatchResultController {
     private MatchService matchService;
 
     @Autowired
-    private WebMessageUtil webMessageUtil;
+    private MessageSourceUtil messageSourceUtil;
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
     @GetMapping("/{id}")
@@ -58,17 +61,14 @@ public class MatchResultController {
         matchResultCommand.setMatchId(match.getId());
         matchResultCommand.setGroupMatch(match.isGroupMatch());
 
-        if (match.hasCountriesSet()) {
-            matchResultCommand.setTeamNameOne(webMessageUtil.getCountryName(match.getTeamOne().getCountry()));
-            matchResultCommand.setIconPathTeamOne(match.getTeamOne().getCountry().getIconPathBig());
+        final Locale locale = LocaleContextHolder.getLocale();
+        final Team teamOne = match.getTeamOne();
+        final Team teamTwo = match.getTeamTwo();
+        matchResultCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
+        matchResultCommand.setIconPathTeamOne(teamOne.getCountry().getIconPathBig());
+        matchResultCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
+        matchResultCommand.setIconPathTeamTwo(teamTwo.getCountry().getIconPathBig());
 
-            matchResultCommand.setTeamNameTwo(webMessageUtil.getCountryName(match.getTeamTwo().getCountry()));
-            matchResultCommand.setIconPathTeamTwo(match.getTeamTwo().getCountry().getIconPathBig());
-            matchResultCommand.setShowCountryIcons(true);
-        } else {
-            matchResultCommand.setTeamNameOne(match.getTeamOne().getName());
-            matchResultCommand.setTeamNameTwo(match.getTeamTwo().getName());
-        }
         matchResultCommand.setTeamResultOne(match.getGoalsTeamOne());
         matchResultCommand.setTeamResultTwo(match.getGoalsTeamTwo());
         matchResultCommand.setPenaltyWinnerOne(match.isPenaltyWinnerOne());

@@ -22,16 +22,15 @@
 					<input type="hidden" th:field="*{groupMatch}" />
 					<input type="hidden" th:field="*{iconPathTeamOne}" />
 					<input type="hidden" th:field="*{iconPathTeamTwo}" />
-					<input type="hidden" th:field="*{showCountryIcons}" />
 					<div class="form-group">
 						<div class="row center">
 							<div class="col-xs-6">
-								<img class="flag big" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamOne()}}"/>
+								<img class="flag big" th:if="${matchResultCommand.getIconPathTeamOne() != null}" th:src="@{${matchResultCommand.getIconPathTeamOne()}}"/>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-xs-6">
-								<img class="flag big" th:if="${matchResultCommand.isShowCountryIcons()}" th:src="@{${matchResultCommand.getIconPathTeamTwo()}}"/>
+								<img class="flag big" th:if="${matchResultCommand.getIconPathTeamTwo() != null}" th:src="@{${matchResultCommand.getIconPathTeamTwo()}}"/>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
 							</div>

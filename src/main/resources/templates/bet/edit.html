@@ -21,8 +21,7 @@
 					<input type="hidden" th:field="*{groupMatch}" class="form-control" />
 					<input type="hidden" th:field="*{iconPathTeamOne}" class="form-control" />
 					<input type="hidden" th:field="*{iconPathTeamTwo}" class="form-control" />
-					<input type="hidden" th:field="*{showCountryIcons}" class="form-control" />
-					
+
 					<input type="hidden" th:field="*{numberOfJokersUsed}" class="form-control" />
 					<input type="hidden" th:field="*{maxJokers}" class="form-control" />
 					<input type="hidden" th:field="*{jokerEditable}" class="form-control" />
@@ -30,12 +29,12 @@
 					<div class="form-group">
 						<div class="row center">
 							<div class="col-xs-6">
-								<img class="flag big" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
+								<img class="flag big" th:if="${betCommand.getIconPathTeamOne() != null}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
 								<br/>
 								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-xs-6">
-								<img class="flag big" th:if="${betCommand.isShowCountryIcons()}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
+								<img class="flag big" th:if="${betCommand.getIconPathTeamTwo() != null}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
 								<br/>
 								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
 							</div>

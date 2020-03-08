@@ -3,16 +3,19 @@ package de.fred4jupiter.fredbet.web.bet;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Joker;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,6 +44,9 @@ public class BetController {
 
     @Autowired
     private WebMessageUtil messageUtil;
+
+    @Autowired
+    private MessageSourceUtil messageSourceUtil;
 
     @Autowired
     private MatchCommandMapper matchCommandMapper;
@@ -92,18 +99,13 @@ public class BetController {
         betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
         betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 
-        if (bet.getMatch().hasCountriesSet()) {
-            betCommand.setTeamNameOne(messageUtil.getCountryName(bet.getMatch().getTeamOne().getCountry()));
-            betCommand.setIconPathTeamOne(bet.getMatch().getTeamOne().getCountry().getIconPathBig());
-
-            betCommand.setTeamNameTwo(messageUtil.getCountryName(bet.getMatch().getTeamTwo().getCountry()));
-            betCommand.setIconPathTeamTwo(bet.getMatch().getTeamTwo().getCountry().getIconPathBig());
-
-            betCommand.setShowCountryIcons(true);
-        } else {
-            betCommand.setTeamNameOne(bet.getMatch().getTeamOne().getName());
-            betCommand.setTeamNameTwo(bet.getMatch().getTeamTwo().getName());
-        }
+        final Locale locale = LocaleContextHolder.getLocale();
+        final Team teamOne = bet.getMatch().getTeamOne();
+        final Team teamTwo = bet.getMatch().getTeamTwo();
+        betCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
+        betCommand.setIconPathTeamOne(teamOne.getCountry().getIconPathBig());
+        betCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
+        betCommand.setIconPathTeamTwo(teamTwo.getCountry().getIconPathBig());
 
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 
