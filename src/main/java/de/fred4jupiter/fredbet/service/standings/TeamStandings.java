@@ -18,7 +18,7 @@ public class TeamStandings {
 
     private final AtomicInteger numberOfGoals = new AtomicInteger();
 
-    private final AtomicInteger numberOfGoalsAgainst = new AtomicInteger(); // Gegentore
+    private final AtomicInteger numberOfGoalsAgainst = new AtomicInteger();
 
     private final AtomicInteger numberOfPoints = new AtomicInteger();
 
@@ -28,25 +28,20 @@ public class TeamStandings {
 
     public void registerResultForTeam(Team team, Team opponent, boolean isWinner, boolean isUndecided) {
         numberOfMatches.incrementAndGet();
-        if (isWinner) {
-            numberOfWins.incrementAndGet();
-        } else {
-            numberOfLooses.incrementAndGet();
-        }
-
         if (isUndecided) {
             numberOfUndecided.incrementAndGet();
+            numberOfPoints.addAndGet(1);
+        } else {
+            if (isWinner) {
+                numberOfWins.incrementAndGet();
+                numberOfPoints.addAndGet(3);
+            } else {
+                numberOfLooses.incrementAndGet();
+            }
         }
 
         numberOfGoals.addAndGet(team.getGoals());
         numberOfGoalsAgainst.addAndGet(opponent.getGoals());
-
-        // calculate points
-        if (isWinner) {
-            numberOfPoints.addAndGet(3);
-        } else if (isUndecided) {
-            numberOfPoints.addAndGet(1);
-        }
     }
 
     public String getTeamName() {
