@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 

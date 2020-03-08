@@ -81,7 +81,9 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
         String teamNameTwo = value.getTeamNameTwo();
 
         return (Validator.isNull(countryTeamOne) && StringUtils.isBlank(teamNameOne))
-                || (Validator.isNull(countryTeamTwo) && StringUtils.isBlank(teamNameTwo));
+                || (Validator.isNotNull(countryTeamOne) && StringUtils.isNotBlank(teamNameOne))
+                || (Validator.isNull(countryTeamTwo) && StringUtils.isBlank(teamNameTwo))
+                || (Validator.isNotNull(countryTeamTwo) && StringUtils.isNotBlank(teamNameTwo));
     }
 
     private boolean hasSameTeamsPlayingAgainstEachOther(CreateEditMatchCommand value) {

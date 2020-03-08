@@ -20,10 +20,10 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <img class="flag" th:if="${allBetsCommand.isShowCountryIcons()}" th:src="@{${allBetsCommand.getIconPathTeamOne()}}"/>
+                                        <img class="flag" th:if="${allBetsCommand.getIconPathTeamOne() != null}" th:src="@{${allBetsCommand.getIconPathTeamOne()}}"/>
                                         <span class="bold" th:text="${allBetsCommand.teamNameOne}"></span>
                                         <span> - </span>
-                                        <img class="flag" th:if="${allBetsCommand.isShowCountryIcons()}" th:src="@{${allBetsCommand.getIconPathTeamTwo()}}"/>
+                                        <img class="flag" th:if="${allBetsCommand.getIconPathTeamTwo() != null}" th:src="@{${allBetsCommand.getIconPathTeamTwo()}}"/>
                                         <span class="bold" th:text="${allBetsCommand.teamNameTwo}"></span>
                                         <br/>
                                         <span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
