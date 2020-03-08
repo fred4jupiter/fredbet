@@ -55,6 +55,7 @@ fredbet:
   aws-secret-key:
   aws-region: eu-central-1
   default-language: de
+  create-demo-data: false
 
 # -------- user groups and permissions ------------------------------------------------------------------------------
 

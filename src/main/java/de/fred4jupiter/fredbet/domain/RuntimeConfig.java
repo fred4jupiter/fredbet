@@ -20,10 +20,6 @@ public class RuntimeConfig {
 
     private boolean showDemoDataNavigationEntry;
 
-    /**
-     * Creates demo data with additional users and matches.
-     */
-    private boolean createDemoData;
 
     /**
      * Sum points per user for selected country that will be shown in points
@@ -95,14 +91,6 @@ public class RuntimeConfig {
 
     public void setShowDemoDataNavigationEntry(boolean showDemoDataNavigationEntry) {
         this.showDemoDataNavigationEntry = showDemoDataNavigationEntry;
-    }
-
-    public boolean isCreateDemoData() {
-        return createDemoData;
-    }
-
-    public void setCreateDemoData(boolean createDemoData) {
-        this.createDemoData = createDemoData;
     }
 
     public Country getFavouriteCountry() {

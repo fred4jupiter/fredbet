@@ -1,146 +1,155 @@
 package de.fred4jupiter.fredbet.props;
 
-import java.util.Locale;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Locale;
+
 /**
  * Contains all configuration properties for FredBet application.
- * 
- * @author michael
  *
+ * @author michael
  */
 @ConfigurationProperties(prefix = FredbetProperties.PROPS_PREFIX)
 public class FredbetProperties {
 
-	public static final String PROPS_PREFIX = "fredbet";
+    public static final String PROPS_PREFIX = "fredbet";
 
-	/**
-	 * Image size of the generated thumbnails.
-	 */
-	private int thumbnailSize;
+    /**
+     * Image size of the generated thumbnails.
+     */
+    private int thumbnailSize;
 
-	/**
-	 * Image size for the uploaded images.
-	 */
-	private int imageSize;
+    /**
+     * Image size for the uploaded images.
+     */
+    private int imageSize;
 
-	/**
-	 * Selection of possible image storage locations.
-	 */
-	private ImageLocation imageLocation;
+    /**
+     * Selection of possible image storage locations.
+     */
+    private ImageLocation imageLocation;
 
-	/**
-	 * Path in file system to store images in case of image location is set to
-	 * 'file-system'
-	 */
-	private String imageFileSystemBaseFolder;
+    /**
+     * Path in file system to store images in case of image location is set to
+     * 'file-system'
+     */
+    private String imageFileSystemBaseFolder;
 
-	/**
-	 * The AWS S3 bucket name to use to store images in.
-	 */
-	private String awsS3bucketName;
+    /**
+     * The AWS S3 bucket name to use to store images in.
+     */
+    private String awsS3bucketName;
 
-	private String awsAccessKey;
+    private String awsAccessKey;
 
-	private String awsSecretKey;
+    private String awsSecretKey;
 
-	private String awsRegion;
+    private String awsRegion;
 
-	private String defaultLanguage;
+    private String defaultLanguage;
 
-	public int getThumbnailSize() {
-		return thumbnailSize;
-	}
+    private boolean createDemoData;
 
-	public void setThumbnailSize(int thumbnailSize) {
-		this.thumbnailSize = thumbnailSize;
-	}
+    public int getThumbnailSize() {
+        return thumbnailSize;
+    }
 
-	public int getImageSize() {
-		return imageSize;
-	}
+    public void setThumbnailSize(int thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
+    }
 
-	public void setImageSize(int imageSize) {
-		this.imageSize = imageSize;
-	}
+    public int getImageSize() {
+        return imageSize;
+    }
 
-	public ImageLocation getImageLocation() {
-		return imageLocation;
-	}
+    public void setImageSize(int imageSize) {
+        this.imageSize = imageSize;
+    }
 
-	public void setImageLocation(ImageLocation imageLocation) {
-		this.imageLocation = imageLocation;
-	}
+    public ImageLocation getImageLocation() {
+        return imageLocation;
+    }
 
-	public String getAwsS3bucketName() {
-		return awsS3bucketName;
-	}
+    public void setImageLocation(ImageLocation imageLocation) {
+        this.imageLocation = imageLocation;
+    }
 
-	public void setAwsS3bucketName(String awsS3bucketName) {
-		this.awsS3bucketName = awsS3bucketName;
-	}
+    public String getAwsS3bucketName() {
+        return awsS3bucketName;
+    }
 
-	@Override
-	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-		builder.append("thumbnailSize", thumbnailSize);
-		builder.append("imageSize", imageSize);
-		builder.append("imageLocation", imageLocation);
+    public void setAwsS3bucketName(String awsS3bucketName) {
+        this.awsS3bucketName = awsS3bucketName;
+    }
 
-		builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
-		builder.append("awsS3bucketName", awsS3bucketName);
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("thumbnailSize", thumbnailSize);
+        builder.append("imageSize", imageSize);
+        builder.append("imageLocation", imageLocation);
 
-	public String getImageFileSystemBaseFolder() {
-		return imageFileSystemBaseFolder;
-	}
+        builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
+        builder.append("awsS3bucketName", awsS3bucketName);
+        return builder.toString();
+    }
 
-	public void setImageFileSystemBaseFolder(String imageFileSystemBaseFolder) {
-		this.imageFileSystemBaseFolder = imageFileSystemBaseFolder;
-	}
+    public String getImageFileSystemBaseFolder() {
+        return imageFileSystemBaseFolder;
+    }
 
-	public String getAwsAccessKey() {
-		return awsAccessKey;
-	}
+    public void setImageFileSystemBaseFolder(String imageFileSystemBaseFolder) {
+        this.imageFileSystemBaseFolder = imageFileSystemBaseFolder;
+    }
 
-	public void setAwsAccessKey(String awsAccessKey) {
-		this.awsAccessKey = awsAccessKey;
-	}
+    public String getAwsAccessKey() {
+        return awsAccessKey;
+    }
 
-	public String getAwsSecretKey() {
-		return awsSecretKey;
-	}
+    public void setAwsAccessKey(String awsAccessKey) {
+        this.awsAccessKey = awsAccessKey;
+    }
 
-	public void setAwsSecretKey(String awsSecretKey) {
-		this.awsSecretKey = awsSecretKey;
-	}
+    public String getAwsSecretKey() {
+        return awsSecretKey;
+    }
 
-	public String getAwsRegion() {
-		return awsRegion;
-	}
+    public void setAwsSecretKey(String awsSecretKey) {
+        this.awsSecretKey = awsSecretKey;
+    }
 
-	public void setAwsRegion(String awsRegion) {
-		this.awsRegion = awsRegion;
-	}
+    public String getAwsRegion() {
+        return awsRegion;
+    }
 
-	public Locale getDefaultLocale() {
-		if (StringUtils.isBlank(defaultLanguage)) {
-			return Locale.getDefault();
-		}
+    public void setAwsRegion(String awsRegion) {
+        this.awsRegion = awsRegion;
+    }
 
-		return new Locale(defaultLanguage);
-	}
+    public Locale getDefaultLocale() {
+        if (StringUtils.isBlank(defaultLanguage)) {
+            return Locale.getDefault();
+        }
 
-	public String getDefaultLanguage() {
-		return defaultLanguage;
-	}
+        return new Locale(defaultLanguage);
+    }
 
-	public void setDefaultLanguage(String defaultLanguage) {
-		this.defaultLanguage = defaultLanguage;
-	}
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public void setDefaultLanguage(String defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
+
+    public boolean isCreateDemoData() {
+        return createDemoData;
+    }
+
+    public void setCreateDemoData(boolean createDemoData) {
+        this.createDemoData = createDemoData;
+    }
 }

@@ -3,12 +3,12 @@ package de.fred4jupiter.fredbet.data;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
@@ -65,10 +65,10 @@ public class DatabasePopulator {
     private ImageAdministrationService imageAdministrationService;
 
     @Autowired
-    private RuntimeConfigurationService runtimeConfigurationService;
+    private JokerService jokerService;
 
     @Autowired
-    private JokerService jokerService;
+    private FredbetProperties fredbetProperties;
 
     @PostConstruct
     private void initDatabaseWithDemoData() {
@@ -77,7 +77,7 @@ public class DatabasePopulator {
             addRulesIfEmpty();
         }
 
-        if (!isRunInIntegrationTest() && runtimeConfigurationService.loadRuntimeConfig().isCreateDemoData()) {
+        if (!isRunInIntegrationTest() && fredbetProperties.isCreateDemoData()) {
             createDemoUsers(NUMBER_OF_DEMO_USERS, true);
             createRandomMatches();
         }
