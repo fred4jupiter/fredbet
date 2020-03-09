@@ -65,9 +65,9 @@ public class MatchResultController {
         final Team teamOne = match.getTeamOne();
         final Team teamTwo = match.getTeamTwo();
         matchResultCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
-        matchResultCommand.setIconPathTeamOne(teamOne.getCountry().getIconPathBig());
+        matchResultCommand.setIconPathTeamOne(teamOne.getIconPathBig());
         matchResultCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
-        matchResultCommand.setIconPathTeamTwo(teamTwo.getCountry().getIconPathBig());
+        matchResultCommand.setIconPathTeamTwo(teamTwo.getIconPathBig());
 
         matchResultCommand.setTeamResultOne(match.getGoalsTeamOne());
         matchResultCommand.setTeamResultTwo(match.getGoalsTeamTwo());
