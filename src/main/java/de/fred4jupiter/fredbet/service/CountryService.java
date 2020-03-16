@@ -51,7 +51,9 @@ public class CountryService {
         List<Country> sortCountries = sortCountries(locale, new ArrayList<>(resultset));
 
         LinkedList<Country> result = new LinkedList<>(sortCountries);
-        result.addFirst(Country.NONE);
+        if (!result.contains(Country.NONE)) {
+            result.addFirst(Country.NONE);
+        }
         return result;
     }
 
