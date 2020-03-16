@@ -15,10 +15,10 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-xs-12">
-								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
+								<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 								<span> - </span>
-								<img class="flag" th:if="${matchCommand.isShowCountryIcons()}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+								<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 								<br/>
 							</div>
