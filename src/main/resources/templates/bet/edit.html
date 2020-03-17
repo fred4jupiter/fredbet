@@ -91,6 +91,7 @@
 						<div class="row">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 							<a href="#" th:href="@{${betCommand.getBackUrl()}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+							<button type="button" class="btn btn-info" onclick="runRandomDice()"><i class="fa fa-diamond" aria-hidden="true"></i></button>
 						</div>
 						<div class="row">
 							<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
@@ -100,6 +101,7 @@
 				</div>
 			</div>
 		</form>
+		<script type="text/javascript" th:src="@{/js/pages/random_dice.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 	</div>
 </body>
