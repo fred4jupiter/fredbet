@@ -45,7 +45,7 @@
             <div class="row" th:if="${not #lists.isEmpty(rankings)}">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <button type="button" class="btn btn-info" data-toggle="collapse" data-target=".panel-heading"><span th:text="#{ranking.show.details.button}"></span></button>
-					<a class="btn btn-primary" role="button" th:href="@{/ranking/pdf}"><i class="fas fa-file-pdf-o"></i>  <span th:text="#{pdf.export.button}"></span></a>
+					<a class="btn btn-primary" role="button" th:href="@{/ranking/pdf}"><i class="fas fa-file-pdf"></i>  <span th:text="#{pdf.export.button}"></span></a>
                 </div>
             </div>
 			<div class="row">
