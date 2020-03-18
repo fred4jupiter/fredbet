@@ -34,12 +34,12 @@
 								<div class="col-xs-2 center">
 									<div class="short-div goal_padding">
 										<a th:if="${!matchCommand.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}">
-											<span class="fa fa-thumbs-o-up fa-2x" th:title="#{matches.list.betted}"></span>
+											<span class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}"></span>
 										</a>
-										<span th:if="${matchCommand.isBettable()}" class="fa fa-thumbs-o-up fa-2x" th:title="#{matches.list.betted}"></span>
+										<span th:if="${matchCommand.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}"></span>
 									</div>
 									<div class="short-div goal_padding">
-										<span class="fa fa-trophy fa-2x" th:title="#{matches.list.result}"></span>
+										<span class="fas fa-trophy fa-2x" th:title="#{matches.list.result}"></span>
 									</div>							  									  		
 					  			</div>					
 					  			<div class="col-xs-4 goal-badges center">				
@@ -62,15 +62,15 @@
 					  				<div class="row center">
 								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/match/' + ${matchCommand.matchId}}" 
 								              class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
-				            				  <span class="glyphicon glyphicon-pencil"></span>
+											  <span class="fas fa-edit"></span>
 				            			</a>				            			
 				            			<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
 												   class="btn btn-success" role="button" th:title="#{matches.list.betMatch}">
-											<span class="fa fa-thumbs-o-up fa-lg"></span>
+											<span class="fas fa-thumbs-up"></span>
 										</a>
 										<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
 				            			        class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
-				            					<span class="fa fa-trophy fa-lg"></span>
+				            					<span class="fas fa-trophy"></span>
 				            			</a>
 							        </div>
 	       						</div>	       						

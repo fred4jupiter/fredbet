@@ -11,11 +11,11 @@
 			<div class="row" th:if="${not #lists.isEmpty(statisticList)}">
 				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">					
 					<img class="flag" th:src="@{${favouriteCountry.getIconPath()}}"/> <span th:text="#{statistics.legend.favouriteCountry}"></span>,
-					<span class="fa fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>,
+					<span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>,
 					
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
-					<span class="fa fa-star blue" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>,
+					<span class="fas fa-star blue" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>,
 					<span class="glyphicon glyphicon-lamp red" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
 				</div>
 			</div>		
@@ -27,13 +27,13 @@
 							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(statistic.username)})}"></span>
 							<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
 							<span th:if="${statistic.minPointsCandidate}" class="glyphicon glyphicon-lamp red" aria-hidden="true"></span>
-							<span th:if="${statistic.maxPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+							<span th:if="${statistic.maxPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
 							<span>,</span>
 							<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
 							<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-							<span th:if="${statistic.maxFavoriteCountryCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+							<span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
 							<span>,</span>
-							<span class="fa fa-magic" aria-hidden="true"></span>
+							<span class="fas fa-magic" aria-hidden="true"></span>
 							<span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
 					   </div>
 					   <div class="panel-body">
@@ -41,7 +41,7 @@
 						   		<table class="table table-condensed table-centered">
 									<thead>
 										<tr class="active">
-											<th><i class="fa fa-users" aria-hidden="true"></i></th>
+											<th><i class="fas fa-users" aria-hidden="true"></i></th>
 											<th>1/8</th>
 											<th>1/4</th>
 											<th>1/2</th>
@@ -53,7 +53,7 @@
 										<tr>
 											<td class="success">
 												<span th:text="${statistic.pointsGroup}"></span>
-												<span th:if="${statistic.maxGroupPointsCandidate}" class="fa fa-star blue" aria-hidden="true"></span>
+												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
 											</td>
 											<td class="warning" th:text="${statistic.pointsRoundOfSixteen}"></td>
 											<td class="warning" th:text="${statistic.pointsQuarterFinal}"></td>
