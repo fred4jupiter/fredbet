@@ -11,8 +11,8 @@
 			<span class="label label-info" th:text="#{pointsfrequency.title2}"></span>
 			<br/>
 			<br/>
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:if="${pointsFrequencyCommand != null}" th:each="pointsfrequency : ${pointsFrequencyCommand.getResultList()}">
+			<div class="row" th:if="${pointsFrequencyCommand != null}">
+				<div class="col-xs-12 col-sm-6 col-md-4" th:each="pointsfrequency : ${pointsFrequencyCommand.resultList}">
 					<div class="table-responsive">
 				   		<table class="table table-centered">
 							<thead>
