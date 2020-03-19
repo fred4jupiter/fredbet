@@ -28,9 +28,9 @@ public class LoggingUtil implements LogLevelChangable {
 
     @PostConstruct
     public void init() {
-        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
+        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV, FredBetProfile.H2))) {
             setLogLevelTo(LogLevel.DEBUG);
-        } else if (environment.acceptsProfiles(Profiles.of(FredBetProfile.PROD))) {
+        } else {
             setLogLevelTo(LogLevel.INFO);
         }
     }

@@ -55,11 +55,9 @@ public class RuntimeConfigurationService {
         runtimeConfig.setSelfRegistrationEnabled(false);
         runtimeConfig.setRegistrationCode(RandomStringUtils.randomAlphanumeric(6));
 
-        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
+        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV, FredBetProfile.H2))) {
             runtimeConfig.setShowDemoDataNavigationEntry(true);
             runtimeConfig.setEnableChangingUsername(true);
-            runtimeConfig.setEnabledParentChildRanking(true);
-
             saveRuntimeConfig(runtimeConfig);
         }
 

@@ -2,15 +2,16 @@ package de.fred4jupiter.fredbet.props;
 
 /**
  * All available spring profiles within this application.
- * 
- * @author michael
  *
+ * @author michael
  */
 public interface FredBetProfile {
 
-	String DEV = "dev";
-	
-	String PROD = "prod";
+    String DEV = "dev";
 
-	String INTEGRATION_TEST = "integration_test";
+    String PROD = "prod";
+
+    String INTEGRATION_TEST = "integration_test";
+
+    String H2 = "h2";
 }
