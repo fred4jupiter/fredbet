@@ -11,7 +11,7 @@ import de.fred4jupiter.fredbet.repository.PointCountResult;
 
 public class PointsFrequencyCommand {
 
-	private List<PointsFrequency> resultList = new ArrayList<>();
+	private final List<PointsFrequency> resultList = new ArrayList<>();
 
 	public PointsFrequencyCommand(MultiValuedMap<Integer, PointCountResult> map) {
 		List<Integer> pointsList = new ArrayList<>(map.keySet());

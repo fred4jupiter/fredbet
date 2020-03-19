@@ -14,7 +14,7 @@
 			<div th:if="${imageKey}" th:remove="tag">
 				<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
 			</div>						
-	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
+	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
 		
 		<div th:fragment="profile_image_small_with_popup(imageKey)" th:remove="tag">			
@@ -23,12 +23,12 @@
 					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
 				</a>
 			</div>						
-	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
+	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
 		
 		<div th:fragment="profile_image_big(imageKey)" th:remove="tag">
 			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
-	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
+	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
 		
 		<div th:fragment="profile_image_big_with_popup(imageKey)" th:remove="tag">			
@@ -37,7 +37,7 @@
 					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
 				</a>
 			</div>						
-	        <span th:if="!${imageKey}" class="glyphicon glyphicon-user icon-user" aria-hidden="true"></span>
+	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
 	</body>
 </html>

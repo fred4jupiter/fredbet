@@ -16,7 +16,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
 					<span class="fas fa-star blue" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>,
-					<span class="glyphicon glyphicon-lamp red" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
+					<span class="fas fa-fire red" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
 				</div>
 			</div>		
 			<br/>
@@ -26,7 +26,7 @@
 						<div class="panel-heading">
 							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(statistic.username)})}"></span>
 							<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
-							<span th:if="${statistic.minPointsCandidate}" class="glyphicon glyphicon-lamp red" aria-hidden="true"></span>
+							<span th:if="${statistic.minPointsCandidate}" class="fas fa-fire red" aria-hidden="true"></span>
 							<span th:if="${statistic.maxPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
 							<span>,</span>
 							<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
