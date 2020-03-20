@@ -7,7 +7,7 @@
     </appender>
 
     <springProfile name="dev">
-        <logger name="de.fred4jupiter.fredbet" level="ERROR"/>
+        <logger name="de.fred4jupiter.fredbet" level="DEBUG"/>
 
         <root>
             <level value="WARN"/>

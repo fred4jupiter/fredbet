@@ -19,22 +19,6 @@ public class LoggingUtil implements LogLevelChangable {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoggingUtil.class);
 
-    private final Environment environment;
-
-    @Autowired
-    public LoggingUtil(Environment environment) {
-        this.environment = environment;
-    }
-
-    @PostConstruct
-    public void init() {
-        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV, FredBetProfile.H2))) {
-            setLogLevelTo(LogLevel.DEBUG);
-        } else {
-            setLogLevelTo(LogLevel.INFO);
-        }
-    }
-
     @Override
     public void setLogLevelTo(LogLevel logLevel) {
         LOG.info("Setting log level to {}", logLevel);
@@ -71,8 +55,6 @@ public class LoggingUtil implements LogLevelChangable {
                 return Level.INFO;
             case WARN:
                 return Level.WARN;
-            case ERROR:
-                return Level.ERROR;
             default:
                 return Level.ERROR;
         }
