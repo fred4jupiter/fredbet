@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.calendar;
 
 import de.fred4jupiter.fredbet.service.calendar.IcsCalendarService;
+import de.fred4jupiter.fredbet.service.calendar.IcsFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,15 @@ public class IcsCalendarController {
 
     @RequestMapping(value = "/{matchId}", method = RequestMethod.GET, produces = CONTENT_TYPE)
     public ResponseEntity<byte[]> downloadIcsCalendarFile(@PathVariable("matchId") Long matchId) {
-        final String fileName = "Match.ics";
-        byte[] templateFile = icsCalendarService.createCalendarEventFromMatch(matchId, LocaleContextHolder.getLocale());
+        final IcsFile icsFile = icsCalendarService.createCalendarEventFromMatch(matchId, LocaleContextHolder.getLocale());
 
-        if (templateFile == null) {
+        if (icsFile == null) {
             return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE)
-                .header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(templateFile);
+                .header("Content-Disposition", "inline; filename=\"" + icsFile.getFileName() + "\"")
+                .body(icsFile.getBinary());
     }
 
 }

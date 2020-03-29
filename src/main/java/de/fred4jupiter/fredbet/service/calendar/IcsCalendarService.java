@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -23,7 +24,7 @@ public class IcsCalendarService {
     @Autowired
     private MessageSourceUtil messageSourceUtil;
 
-    public byte[] createCalendarEventFromMatch(Long matchId, Locale locale) {
+    public IcsFile createCalendarEventFromMatch(Long matchId, Locale locale) {
         Match match = matchService.findByMatchId(matchId);
         if (match == null) {
             LOG.info("Cloud not find match with matchId={}", matchId);
@@ -33,16 +34,22 @@ public class IcsCalendarService {
         String title = createTitle(match, locale);
         String content = createContent(match, locale);
 
-        return IcsCalendarBuilder.create().withTitle(title).withContent(content)
+        byte[] binary = IcsCalendarBuilder.create().withTitle(title).withContent(content)
                 .withLocation(match.getStadium())
                 .withTimeZone(TimeZone.getDefault().getID())
                 .withStartEnd(match.getKickOffDate(), match.getKickOffDate().plusHours(2))
                 .build();
+
+        return new IcsFile(binary, createFileName(match));
+    }
+
+    private String createFileName(Match match) {
+        String timestamp = match.getKickOffDate().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+        return "Match_" + timestamp + "_" + match.getId() + ".ics";
     }
 
     private String createContent(Match match, Locale locale) {
-        String group = messageSourceUtil.getMessageFor(match.getGroup().getTitleMsgKey(), locale);
-        return messageSourceUtil.getMessageFor("calendar.ics.content", locale, group);
+        return messageSourceUtil.getMessageFor(match.getGroup().getTitleMsgKey(), locale);
     }
 
     private String createTitle(Match match, Locale locale) {
