@@ -3,7 +3,6 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{bet.edit.title}"></title>
-	<script type="text/javascript" th:src="@{/js/pages/bet_and_result.js}" charset="UTF-8"></script>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
@@ -101,6 +100,7 @@
 				</div>
 			</div>
 		</form>
+		<script type="text/javascript" th:src="@{/js/pages/bet_and_result.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/random_dice.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 	</div>

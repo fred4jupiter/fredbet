@@ -1,6 +1,7 @@
 function runRandomDice() {
 	$('#goalsTeamOne').val(randomNumber());
 	$('#goalsTeamTwo').val(randomNumber());
+	checkPenalty();
 }
 
 function randomNumber() {
