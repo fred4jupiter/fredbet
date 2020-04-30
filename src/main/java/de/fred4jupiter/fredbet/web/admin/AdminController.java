@@ -78,8 +78,15 @@ public class AdminController {
 
     @GetMapping("/createDemoResults")
     public String createDemoResults(Model model) {
-        databasePopulator.createDemoResultsForAllMatches();
+        asyncDatabasePopulator.createDemoResultsForAllMatches();
         webMessageUtil.addInfoMsg(model, "administration.msg.info.demoResultsCreated");
+        return PAGE_ADMINISTRATION;
+    }
+
+    @GetMapping("/createTestDataForAll")
+    public String createTestDataForAll(Model model) {
+        asyncDatabasePopulator.createTestDataForAll();
+        webMessageUtil.addInfoMsg(model, "administration.msg.info.createTestDataForAll");
         return PAGE_ADMINISTRATION;
     }
 

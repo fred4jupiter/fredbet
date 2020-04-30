@@ -26,4 +26,16 @@ public class AsyncDatabasePopulator {
     public void createDemoUsers(int numberOfDemoUsers, boolean withProfileImage) {
         databasePopulator.createDemoUsers(numberOfDemoUsers, withProfileImage);
     }
+
+    @Async
+    public void createDemoResultsForAllMatches() {
+        databasePopulator.createDemoResultsForAllMatches();
+    }
+
+    @Async
+    public void createTestDataForAll() {
+        databasePopulator.createRandomMatches();
+        databasePopulator.createDemoBetsForAllUsers();
+        databasePopulator.createDemoResultsForAllMatches();
+    }
 }
