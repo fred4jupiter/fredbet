@@ -2,7 +2,6 @@
 FROM maven:3.6.3-openjdk-11 as target
 WORKDIR /build
 COPY pom.xml .
-RUN mvn -B dependency:go-offline
 
 COPY src/ /build/src/
 COPY .git /build/.git/
