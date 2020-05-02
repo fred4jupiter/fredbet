@@ -1,5 +1,5 @@
 # Step : Test and package
-FROM maven:3.6.2-jdk-11-slim as target
+FROM maven:3.6.3-openjdk-11 as target
 WORKDIR /build
 COPY pom.xml .
 RUN mvn -B dependency:go-offline
