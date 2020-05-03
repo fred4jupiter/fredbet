@@ -8,7 +8,7 @@ COPY .git /build/.git/
 RUN mvn -B package
 
 # Step : Package image
-FROM openjdk:14-jre-slim
+FROM openjdk:14.0.1-slim
 LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp
