@@ -1,5 +1,5 @@
 # Step : Test and package
-FROM maven:3.6.3-openjdk-11 as target
+FROM maven:3.6.3-openjdk-14 as target
 WORKDIR /build
 COPY pom.xml .
 
@@ -8,7 +8,7 @@ COPY .git /build/.git/
 RUN mvn -B package
 
 # Step : Package image
-FROM openjdk:11-jre-slim
+FROM openjdk:14-jre-slim
 LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp
