@@ -39,43 +39,48 @@ public class SystemInfoService {
     }
 
     private void addStaticProperties() {
-        allProperties.put("build.time", buildProperties.getTime());
-        allProperties.put("build.version", buildProperties.getVersion());
-        allProperties.put("java.version", buildProperties.get("java.source"));
+        add("Build Time", buildProperties.getTime());
+        add("Build Version", buildProperties.getVersion());
+        add("Java Version", buildProperties.get("java.source"));
 
         if (gitProperties.isPresent()) {
             GitProperties gitProps = gitProperties.get();
-            allProperties.put("commit ID", gitProps.getCommitId());
-            allProperties.put("branch", gitProps.getBranch());
-            allProperties.put("commit message", gitProps.get("commit.message.full"));
-            allProperties.put("commit time", gitProps.getCommitTime());
+            add("Commit ID", gitProps.getCommitId());
+            add("Branch", gitProps.getBranch());
+            add("Commit Message", gitProps.get("commit.message.full"));
+            add("Commit Time", gitProps.getCommitTime());
         }
 
         addSpringProfiles();
-        addEnvProperty("spring.datasource.hikari.driver-class-name");
-        addEnvProperty("spring.datasource.hikari.jdbc-url");
-        addEnvProperty("fredbet.image-location");
-        addEnvProperty("fredbet.image-size");
-        addEnvProperty("fredbet.thumbnail-size");
-        addEnvProperty("fredbet.aws-s3bucket-name");
-        addEnvProperty("fredbet.aws-region");
+        addEnvProperty("JDBC Driver Class","spring.datasource.hikari.driver-class-name");
+        addEnvProperty("JDBC-URL","spring.datasource.hikari.jdbc-url");
+        addEnvProperty("Image Location","fredbet.image-location");
+        addEnvProperty("Image Size","fredbet.image-size");
+        addEnvProperty("Thumbnail Size","fredbet.thumbnail-size");
+        addEnvProperty("AWS S3 Bucket Name","fredbet.aws-s3bucket-name");
+        addEnvProperty("AWS Region","fredbet.aws-region");
     }
 
     public SortedMap<String, Object> fetchSystemInfo() {
         SortedMap<String, Object> props = new TreeMap<>(allProperties);
-        props.put("currentDateTime", ZonedDateTime.now());
-        props.put("hostName", getHostName());
-        props.put("system.timeZone", ZoneId.systemDefault().toString());
+        props.put("Current Date", ZonedDateTime.now());
+        props.put("Host Name", getHostName());
+        props.put("Timezone", ZoneId.systemDefault().toString());
         return props;
     }
 
-    private void addEnvProperty(String envKey) {
-        allProperties.put(envKey, environment.getProperty(envKey));
+    private void addEnvProperty(String label, String envKey) {
+        add(label, environment.getProperty(envKey));
     }
 
     private void addSpringProfiles() {
-        String[] activeProfiles = environment.getActiveProfiles();
-        allProperties.put("Active Profiles", Arrays.asList(activeProfiles));
+        add("Active Profiles", Arrays.asList(environment.getActiveProfiles()));
+    }
+
+    private void add(String key, Object value) {
+        if (value != null) {
+            allProperties.put(key, value);
+        }
     }
 
     private String getHostName() {
