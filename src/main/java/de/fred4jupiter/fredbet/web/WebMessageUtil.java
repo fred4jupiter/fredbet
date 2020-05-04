@@ -99,9 +99,9 @@ public class WebMessageUtil {
     }
 
     public static final class WebMessage {
-        private String cssClass;
+        private final String cssClass;
 
-        private String text;
+        private final String text;
 
         public WebMessage(String cssClass, String text) {
             super();
