@@ -10,23 +10,9 @@
 <div layout:fragment="content">
     <h1 th:text="#{pointcourse.title}"></h1>
     <canvas id="myChart"></canvas>
-    <script>
+    <script th:inline="javascript">
         var ctx = $('#myChart');
-        var barChartData = {
-            labels: ['4 points', '3 points', '2 points', '1 points'],
-            datasets: [{
-                label: 'admin',
-                data: [2,4,3,12]
-            },
-            {
-                label: 'michael',
-                data: [0, 1, 8, 9]
-            },
-            {
-                label: 'test',
-                data: [0,3, 3,13]
-            }]
-        };
+        var barChartData = /*[[${barChartData}]]*/ 'default';
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: barChartData,
