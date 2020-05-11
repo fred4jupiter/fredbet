@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title th:text="#{pointcourse.title}"></title>
+    <script type="text/javascript" th:src="@{/js/Chart.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/chartjs-plugin-colorschemes.min.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 th:text="#{pointcourse.title}"></h1>
+    <canvas id="myChart"></canvas>
+    <script>
+        var ctx = $('#myChart');
+        var barChartData = {
+            labels: ['4 points', '3 points', '2 points', '1 points'],
+            datasets: [{
+                label: 'admin',
+                data: [2,4,3,12]
+            },
+            {
+                label: 'michael',
+                data: [0, 1, 8, 9]
+            },
+            {
+                label: 'test',
+                data: [0,3, 3,13]
+            }]
+        };
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                legend: {
+                    position: 'bottom'
+                },
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                plugins: {
+                    colorschemes: {
+                        scheme: 'brewer.Paired7'
+                    }
+                }
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
