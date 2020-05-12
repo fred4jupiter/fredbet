@@ -151,6 +151,17 @@ public class ReportService {
         return map;
     }
 
+    public PointsFrequencyContainer reportPointsFrequencyToContainer() {
+        PointsFrequencyContainer container = new PointsFrequencyContainer();
+
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
+        for (PointCountResult pointCountResult : resultList) {
+            container.add(pointCountResult.getUsername(), pointCountResult.getPoints(), pointCountResult.getNumberOfPointsCount().intValue());
+        }
+
+        return container;
+    }
+
     public byte[] exportNumberOfPointsInBets(final Locale locale) {
         final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
 

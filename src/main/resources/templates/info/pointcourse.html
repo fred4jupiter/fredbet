@@ -9,36 +9,40 @@
 <body>
 <div layout:fragment="content">
     <h1 th:text="#{pointcourse.title}"></h1>
-    <canvas id="myChart"></canvas>
-    <script th:inline="javascript">
-        var ctx = $('#myChart');
-        var barChartData = /*[[${barChartData}]]*/ 'default';
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: barChartData,
-            options: {
-                legend: {
-                    position: 'bottom'
-                },
-                scales: {
-                    xAxes: [{
-                        stacked: true,
-                    }],
-                    yAxes: [{
-                        stacked: true,
-                        ticks: {
-                            beginAtZero: true
+    <div class="row">
+        <div class="col-12">
+            <canvas id="myChart"></canvas>
+            <script th:inline="javascript">
+                var ctx = $('#myChart');
+                var barChartData = /*[[${barChartData}]]*/ 'default';
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                            }],
+                            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        plugins: {
+                            colorschemes: {
+                                scheme: 'brewer.Paired7'
+                            }
                         }
-                    }]
-                },
-                plugins: {
-                    colorschemes: {
-                        scheme: 'brewer.Paired7'
                     }
-                }
-            }
-        });
-    </script>
+                });
+            </script>
+        </div>
+    </div>
 </div>
 </body>
 </html>
