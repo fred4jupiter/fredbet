@@ -63,7 +63,7 @@ echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
 
 # docker image tagging and publishing on Docker Hub
-docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-docker tag fred4jupiter/fredbet fred4jupiter/fredbet:$PROJECT_REL_VERSION
-docker push fred4jupiter/fredbet:$PROJECT_REL_VERSION
+docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+docker tag fred4jupiter/fredbet fred4jupiter/fredbet:"$PROJECT_REL_VERSION"
+docker push fred4jupiter/fredbet:"$PROJECT_REL_VERSION"
 docker logout
