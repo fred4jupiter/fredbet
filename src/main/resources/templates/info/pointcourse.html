@@ -15,22 +15,11 @@
             var ctx = $('#myChart');
             var barChartData = /*[[${barChartData}]]*/ 'default';
             var myChart = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: barChartData,
                 options: {
                     legend: {
                         position: 'bottom'
-                    },
-                    scales: {
-                        xAxes: [{
-                            stacked: true,
-                        }],
-                        yAxes: [{
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
                     },
                     plugins: {
                         colorschemes: {

@@ -151,15 +151,14 @@ public class ReportService {
         return map;
     }
 
-    public PointsFrequencyContainer reportPointsFrequencyToContainer() {
-        PointsFrequencyContainer container = new PointsFrequencyContainer();
+    public PointCourseContainer reportPointsCourse(Locale locale) {
+        PointCourseContainer pointCourseContainer = new PointCourseContainer();
 
-        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
-        for (PointCountResult pointCountResult : resultList) {
-            container.add(pointCountResult.getUsername(), pointCountResult.getPoints(), pointCountResult.getNumberOfPointsCount().intValue());
-        }
-
-        return container;
+        List<PointCourseResult> pointCourseResultList = this.betRepository.queryPointsCourse();
+        pointCourseResultList.forEach(pointCourseResult -> {
+            pointCourseContainer.add(pointCourseResult, messageSourceUtil, locale);
+        });
+        return pointCourseContainer;
     }
 
     public byte[] exportNumberOfPointsInBets(final Locale locale) {
