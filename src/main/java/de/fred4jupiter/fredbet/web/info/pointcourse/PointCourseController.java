@@ -29,10 +29,10 @@ public class PointCourseController {
             return "info/pointcourse";
         }
 
-        BarChartData barChartData = new BarChartData(pointCourseContainer.getLabels());
-        pointCourseContainer.iteratePointsPerUser(barChartData::addDataSet);
+        ChartData chartData = new ChartData(pointCourseContainer.getLabels());
+        pointCourseContainer.iteratePointsPerUser(chartData::addDataSet);
 
-        model.addAttribute("barChartData", barChartData);
+        model.addAttribute("chartData", chartData);
         return "info/pointcourse";
     }
 }

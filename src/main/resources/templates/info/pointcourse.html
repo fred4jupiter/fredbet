@@ -9,14 +9,14 @@
 <body>
 <div layout:fragment="content">
     <h1 th:text="#{pointcourse.title}"></h1>
-    <div class="chart-container" style="height: 100px">
+    <div class="chart-container">
         <canvas id="myChart"></canvas>
         <script th:inline="javascript">
             var ctx = $('#myChart');
-            var barChartData = /*[[${barChartData}]]*/ 'default';
+            var chartData = /*[[${chartData}]]*/ 'default';
             var myChart = new Chart(ctx, {
                 type: 'line',
-                data: barChartData,
+                data: chartData,
                 options: {
                     legend: {
                         position: 'bottom'
