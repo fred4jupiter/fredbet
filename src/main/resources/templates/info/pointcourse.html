@@ -9,26 +9,30 @@
 <body>
 <div layout:fragment="content">
     <h1 th:text="#{pointcourse.title}"></h1>
-    <div class="chart-container">
-        <canvas id="myChart"></canvas>
-        <script th:inline="javascript">
-            var ctx = $('#myChart');
-            var chartData = /*[[${chartData}]]*/ 'default';
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: chartData,
-                options: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    plugins: {
-                        colorschemes: {
-                            scheme: 'brewer.Paired7'
-                        }
+    <div class="row">
+        <div class="col-12" style="height: 480px;">
+            <canvas id="myChart"></canvas>
+            <script th:inline="javascript">
+                var ctx = $('#myChart');
+                var chartData = /*[[${chartData}]]*/ 'default';
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'bottom'
+                        },
+                        plugins: {
+                            colorschemes: {
+                                scheme: 'brewer.Paired7'
+                            }
+                        },
+                        maintainAspectRatio: false
                     }
-                }
-            });
-        </script>
+                });
+            </script>
+        </div>
     </div>
 </div>
 </body>

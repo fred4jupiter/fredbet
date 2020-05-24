@@ -151,10 +151,10 @@ public class ReportService {
         return map;
     }
 
-    public PointCourseContainer reportPointsCourse(Locale locale) {
+    public PointCourseContainer reportPointsCourse(String username, Locale locale) {
         PointCourseContainer pointCourseContainer = new PointCourseContainer();
 
-        List<PointCourseResult> pointCourseResultList = this.betRepository.queryPointsCourse();
+        List<PointCourseResult> pointCourseResultList = this.betRepository.queryPointsCourse(username);
         pointCourseResultList.forEach(pointCourseResult -> {
             pointCourseContainer.add(pointCourseResult, messageSourceUtil, locale);
         });

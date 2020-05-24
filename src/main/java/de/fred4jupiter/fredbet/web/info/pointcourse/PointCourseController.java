@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.info.pointcourse;
 
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.excel.PointCourseContainer;
 import de.fred4jupiter.fredbet.service.excel.ReportService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -20,9 +21,12 @@ public class PointCourseController {
     @Autowired
     private WebMessageUtil webMessageUtil;
 
+    @Autowired
+    private SecurityService securityService;
+
     @GetMapping("/show")
     public String showPage(Model model) {
-        PointCourseContainer pointCourseContainer = reportService.reportPointsCourse(LocaleContextHolder.getLocale());
+        PointCourseContainer pointCourseContainer = reportService.reportPointsCourse(securityService.getCurrentUserName(), LocaleContextHolder.getLocale());
 
         if (pointCourseContainer.isEmpty()) {
             webMessageUtil.addInfoMsg(model, "pointsfrequency.noData");
