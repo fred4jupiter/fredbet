@@ -1,16 +1,15 @@
 package de.fred4jupiter.fredbet.web.info.pointcourse;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BarChartData {
 
-    private final List<Integer> labels = new ArrayList<>();
+    private final List<String> labels = new ArrayList<>();
 
     private final List<DataSet> datasets = new ArrayList<>();
 
-    public BarChartData(List<Integer> labels) {
+    public BarChartData(List<String> labels) {
         this.labels.addAll(labels);
     }
 
@@ -34,7 +33,7 @@ public class BarChartData {
         this.datasets.add(dataSet);
     }
 
-    public List<Integer> getLabels() {
+    public List<String> getLabels() {
         return labels;
     }
 

@@ -3,22 +3,21 @@ package de.fred4jupiter.fredbet.service.excel;
 import de.fred4jupiter.fredbet.repository.PointCourseResult;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class PointCourseContainer {
 
-    private final TreeSet<Integer> labels = new TreeSet<>();
+    private final List<String> labels = new ArrayList<>();
 
     private final Map<String, LinkedList<Integer>> map = new HashMap<>();
-
-    private final AtomicInteger counter = new AtomicInteger();
 
     public void add(PointCourseResult pointCourseResult, MessageSourceUtil messageSourceUtil, Locale locale) {
         map.computeIfAbsent(pointCourseResult.getUsername(), k -> new LinkedList<>());
 
-        labels.add(counter.incrementAndGet());
+        String label = pointCourseResult.getMatch().getLabel(messageSourceUtil, locale);
+        if (!labels.contains(label)) {
+            labels.add(label);
+        }
 
         LinkedList<Integer> values = map.get(pointCourseResult.getUsername());
         Integer last = values.peekLast();
@@ -37,7 +36,7 @@ public class PointCourseContainer {
         }
     }
 
-    public List<Integer> getLabels() {
+    public List<String> getLabels() {
         return new ArrayList<>(this.labels);
     }
 
