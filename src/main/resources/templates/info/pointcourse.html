@@ -10,7 +10,10 @@
 <div layout:fragment="content">
     <h1 th:text="#{pointcourse.title}"></h1>
     <div class="row">
-        <div class="col-12" style="height: 480px;">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p th:text="#{pointcourse.subtitle}"></p>
+        </div>
+        <div class="col-12" style="height: 430px;">
             <canvas id="myChart"></canvas>
             <script th:inline="javascript">
                 var ctx = $('#myChart');
