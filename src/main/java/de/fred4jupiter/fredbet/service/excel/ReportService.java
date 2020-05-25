@@ -156,7 +156,7 @@ public class ReportService {
         ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointCountResults);
 
         PointCourseContainer pointCourseContainer = new PointCourseContainer();
-        List<PointCourseResult> pointCourseResultList = null;
+        List<PointCourseResult> pointCourseResultList;
         if (pair != null) {
             pointCourseResultList = this.betRepository.queryPointsCourse(Arrays.asList(pair.getLeft(), username, pair.getRight()));
         }
