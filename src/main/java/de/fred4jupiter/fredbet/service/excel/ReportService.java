@@ -8,14 +8,14 @@ import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 public class ReportService {
@@ -149,6 +149,31 @@ public class ReportService {
         }
 
         return map;
+    }
+
+    public PointCourseContainer reportPointsCourse(String username, Locale locale) {
+        List<PointCountResult> pointCountResults = this.betRepository.countNumberOfPointsByUser();
+        ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointCountResults);
+
+        PointCourseContainer pointCourseContainer = new PointCourseContainer();
+        List<PointCourseResult> pointCourseResultList = null;
+        if (pair != null) {
+            pointCourseResultList = this.betRepository.queryPointsCourse(Arrays.asList(pair.getLeft(), username, pair.getRight()));
+        }
+        else {
+            pointCourseResultList = this.betRepository.queryPointsCourse(Collections.singletonList(username));
+        }
+
+        pointCourseResultList.forEach(pointCourseResult -> {
+            pointCourseContainer.add(pointCourseResult, messageSourceUtil, locale);
+        });
+        return pointCourseContainer;
+    }
+
+    private ImmutablePair<String, String> calculateMinMaxPointsUsernames(List<PointCountResult> pointCountResults) {
+        PointCountResult min = pointCountResults.stream().min(Comparator.comparing(PointCountResult::getPoints)).orElse(null);
+        PointCountResult max = pointCountResults.stream().max(Comparator.comparing(PointCountResult::getPoints)).orElse(null);
+        return min != null && max != null ? ImmutablePair.of(min.getUsername(), max.getUsername()) : null;
     }
 
     public byte[] exportNumberOfPointsInBets(final Locale locale) {

@@ -5,11 +5,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class PointCountResult {
 
-	private String username;
+	private final String username;
 
-	private Integer points;
+	private final Integer points;
 
-	private Long numberOfPointsCount;
+	private final Long numberOfPointsCount;
 
 	public PointCountResult(String username, Integer points, Long numberOfPointsCount) {
 		this.username = username;

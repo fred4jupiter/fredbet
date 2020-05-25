@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Table(name = "MATCHES")
@@ -282,5 +284,10 @@ public class Match implements MatchResult {
 
     public void setTeamTwo(Team teamTwo) {
         this.teamTwo = teamTwo;
+    }
+
+    public String getLabel(MessageSourceUtil messageSourceUtil, Locale locale) {
+        return getTeamOne().getNameTranslated(messageSourceUtil, locale) + " - "
+                + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
     }
 }
