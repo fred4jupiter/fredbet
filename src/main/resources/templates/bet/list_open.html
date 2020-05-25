@@ -10,6 +10,15 @@
 		
 		<h1 th:if="${not #lists.isEmpty(matchesToBet)}" th:text="#{bet.listOpen.title}"></h1>
 		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="form-group">
+					<a href="#" th:href="@{'/bet/dice'}" class="btn btn-info" role="button">
+						<span class="fas fa-dice"></span> <span th:text="#{bet.listOpen.dice.all}"></span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
 				<div class="panel panel-default">
 					<div class="panel-body">

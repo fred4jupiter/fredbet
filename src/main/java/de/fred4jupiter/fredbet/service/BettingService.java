@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
+import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.BetRepository;
@@ -8,6 +9,7 @@ import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -39,12 +41,15 @@ public class BettingService {
     @Autowired
     private JokerService jokerService;
 
-    public Bet createAndSaveBetting(AppUser appUser, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
+    @Autowired
+    private RandomValueGenerator randomValueGenerator;
+
+    public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
         Bet bet = new Bet();
         bet.setGoalsTeamOne(goalsTeamOne);
         bet.setGoalsTeamTwo(goalsTeamTwo);
         bet.setMatch(match);
-        bet.setUserName(appUser.getUsername());
+        bet.setUserName(username);
         bet.setJoker(withJoker);
         return betRepository.save(bet);
     }
@@ -185,5 +190,30 @@ public class BettingService {
 
     public Long countByMatch(Match match) {
         return betRepository.countByMatch(match);
+    }
+
+    public void diceAllMatchesForUser(String username) {
+        List<Match> allMatches = matchRepository.findAll();
+        allMatches.forEach(match -> {
+            Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
+            Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
+            boolean jokerAllowed = false;
+            if (randomValueGenerator.generateRandomBoolean()) {
+                jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
+            }
+            createAndSaveBetting(username, match, goalsTeamOne, goalsTeamTwo, jokerAllowed);
+        });
+        createExtraBetForUser(username);
+    }
+
+    public void createExtraBetForUser(String username) {
+        ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
+        if (triple != null) {
+            Country extraBetCountryFinalWinner = triple.getLeft();
+            Country extraBetCountrySemiFinalWinner = triple.getMiddle();
+            Country extraBetCountryThirdFinalWinner = triple.getRight();
+            saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
+                    username);
+        }
     }
 }

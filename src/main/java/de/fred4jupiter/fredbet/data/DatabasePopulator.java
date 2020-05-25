@@ -16,14 +16,12 @@ import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -141,26 +139,15 @@ public class DatabasePopulator {
                 createBetForUser(appUser, match, jokerAllowed);
             }
 
-            createExtraBetForUser(appUser);
+            bettingService.createExtraBetForUser(appUser.getUsername());
         });
         LOG.debug("created demo bets for all users finished.");
-    }
-
-    private void createExtraBetForUser(AppUser appUser) {
-        ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
-        if (triple != null) {
-            Country extraBetCountryFinalWinner = triple.getLeft();
-            Country extraBetCountrySemiFinalWinner = triple.getMiddle();
-            Country extraBetCountryThirdFinalWinner = triple.getRight();
-            bettingService.saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
-                    appUser.getUsername());
-        }
     }
 
     private void createBetForUser(AppUser appUser, Match match, boolean joker) {
         Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
         Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
-        bettingService.createAndSaveBetting(appUser, match, goalsTeamOne, goalsTeamTwo, joker);
+        bettingService.createAndSaveBetting(appUser.getUsername(), match, goalsTeamOne, goalsTeamTwo, joker);
     }
 
     public void createDemoResultsForAllMatches() {

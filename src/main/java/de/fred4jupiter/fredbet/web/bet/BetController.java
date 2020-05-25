@@ -91,6 +91,13 @@ public class BetController {
         return VIEW_EDIT;
     }
 
+    @GetMapping("/dice")
+    public String diceAllMatches(Model model) {
+        this.bettingService.diceAllMatchesForUser(securityService.getCurrentUserName());
+        messageUtil.addInfoMsg(model, "msg.bet.betting.random.dice.all");
+        return "redirect:/bet/open";
+    }
+
     private BetCommand toBetCommand(Bet bet) {
         BetCommand betCommand = new BetCommand();
         betCommand.setBetId(bet.getId());
