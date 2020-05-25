@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.service.excel;
 
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.service.ranking.RankingService;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -152,8 +153,8 @@ public class ReportService {
     }
 
     public PointCourseContainer reportPointsCourse(String username, Locale locale) {
-        List<PointCountResult> pointCountResults = this.betRepository.countNumberOfPointsByUser();
-        ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointCountResults);
+        List<PointsPerUser> pointsPerUsers = this.betRepository.queryPointsPerUser();
+        ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointsPerUsers);
 
         PointCourseContainer pointCourseContainer = new PointCourseContainer();
         List<PointCourseResult> pointCourseResultList;
@@ -170,9 +171,13 @@ public class ReportService {
         return pointCourseContainer;
     }
 
-    private ImmutablePair<String, String> calculateMinMaxPointsUsernames(List<PointCountResult> pointCountResults) {
-        PointCountResult min = pointCountResults.stream().min(Comparator.comparing(PointCountResult::getPoints)).orElse(null);
-        PointCountResult max = pointCountResults.stream().max(Comparator.comparing(PointCountResult::getPoints)).orElse(null);
+    private ImmutablePair<String, String> calculateMinMaxPointsUsernames(List<PointsPerUser> pointsPerUsers) {
+        PointsPerUser min = pointsPerUsers.stream()
+                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .min(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
+        PointsPerUser max = pointsPerUsers.stream()
+                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .max(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
         return min != null && max != null ? ImmutablePair.of(min.getUsername(), max.getUsername()) : null;
     }
 
