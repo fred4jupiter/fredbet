@@ -54,13 +54,13 @@
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('kickOffDateString')}" th:errors="*{kickOffDateString}">kickOffDateString error</p>
 		            </div>					
 					<div class="form-group">
-						<label for="teamResultTwo" th:text="#{matches.form.stadium} + ':'"></label>
-						<input type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
+						<label for="stadium" th:text="#{matches.form.stadium} + ':'"></label>
+						<input id="stadium" type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('stadium')}" th:errors="*{stadium}">stadium error</p>
 					</div>					
 					<div class="form-group">
-						<label for="teamResultTwo" th:text="#{matches.form.group} + ':'"></label>
-						<select th:field="*{group}" class="form-control">
+						<label for="group" th:text="#{matches.form.group} + ':'"></label>
+						<select id="group" th:field="*{group}" class="form-control">
 						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}"></option>
 						</select>						
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
