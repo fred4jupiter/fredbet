@@ -17,7 +17,7 @@
 							<br/>
 							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" 
 										th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}">
-						        <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="img-responsive gallery"/>
+								<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="img-responsive gallery"/>
 						    </a>
 						</div>												
 					</div>
@@ -45,8 +45,10 @@
 					<a href="#" th:href="@{/gallery/download/all}" th:text="#{image.gallery.downloadAll}"></a>
 				</div>	
 			</div>
-			<script type="text/javascript" th:src="@{/blueimpgallery/js/blueimp-gallery.min.js}"></script>
-			<script type="text/javascript" th:src="@{/js/pages/gallery.js}"></script>
 		</div>
-	</body>	
+	</body>
+	<th:block layout:fragment="scripts">
+		<script type="text/javascript" th:src="@{/blueimpgallery/js/blueimp-gallery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/pages/gallery.js}"></script>
+	</th:block>
 </html>

@@ -3,7 +3,6 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.group.title}"></title>
-		<script type="text/javascript" th:src="@{/js/pages/image_group.js}" charset="UTF-8"></script>
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -43,7 +42,10 @@
 					</div>
 				</form>
 			</div>
-			<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
 		</div>
 	</body>
+	<th:block layout:fragment="scripts">
+		<script type="text/javascript" th:src="@{/js/pages/image_group.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
+	</th:block>
 </html>

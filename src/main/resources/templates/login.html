@@ -41,8 +41,10 @@
 					</div>
 				</div>
 			</form>
-			<script type="text/javascript" th:src="@{/js/bootstrap-toggle.min.js}"></script>
-			<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 		</div>		
 	</body>
+	<th:block layout:fragment="scripts">
+		<script type="text/javascript" th:src="@{/js/bootstrap-toggle.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+	</th:block>
 </html>

@@ -3,7 +3,6 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{matches.matchresult.title}"></title>
-	<script type="text/javascript" th:src="@{/js/pages/bet_and_result.js}" charset="UTF-8"></script>
 </head>
 <body>
 	<div layout:fragment="content" class="container">
@@ -83,4 +82,7 @@
 		</form>
 	</div>
 </body>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript" th:src="@{/js/pages/bet_and_result.js}" charset="UTF-8"></script>
+</th:block>
 </html>

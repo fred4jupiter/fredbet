@@ -3,7 +3,6 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{info.edit.title}"></title>
-		<script type="text/javascript" th:src="@{/webjars/ckeditor/4.14.0/standard/ckeditor.js}"></script>
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -15,44 +14,6 @@
 						<input type="hidden" th:field="*{name}" class="form-control" />
 	                    <textarea id="textContent" name="textContent" required="required" th:text="${infoCommand.textContent}">                       
 	                    </textarea>
-	                    <script>
-	                        CKEDITOR.replace('textContent', {
-								// Define the toolbar groups as it is a more accessible solution.
-								toolbarGroups: [{
-										"name": "basicstyles",
-										"groups": ["basicstyles"]
-									},
-									{
-										"name": "links",
-										"groups": ["links"]
-									},
-									{
-										"name": "paragraph",
-										"groups": ["list", "blocks"]
-									},
-									{
-										"name": "document",
-										"groups": ["mode"]
-									},
-									{
-										"name": "insert",
-										"groups": ["insert"]
-									},
-									{
-										"name": "styles",
-										"groups": ["styles"]
-									},
-									{
-										"name": "about",
-										"groups": ["about"]
-									}
-								],
-								// Remove the redundant buttons from toolbar groups defined above.
-								removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-	                            allowedContent : true,
-	                            height: '400px'
-	                        });
-	                    </script>
 	                    <br />
 	                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 	                    <a href="#" th:href="@{${'/info/' + infoCommand.name}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
@@ -61,4 +22,45 @@
 			</form>
 		</div>
 	</body>
+	<th:block layout:fragment="scripts">
+		<script type="text/javascript" th:src="@{/webjars/ckeditor/4.14.0/standard/ckeditor.js}"></script>
+		<script>
+			CKEDITOR.replace('textContent', {
+				// Define the toolbar groups as it is a more accessible solution.
+				toolbarGroups: [{
+					"name": "basicstyles",
+					"groups": ["basicstyles"]
+				},
+					{
+						"name": "links",
+						"groups": ["links"]
+					},
+					{
+						"name": "paragraph",
+						"groups": ["list", "blocks"]
+					},
+					{
+						"name": "document",
+						"groups": ["mode"]
+					},
+					{
+						"name": "insert",
+						"groups": ["insert"]
+					},
+					{
+						"name": "styles",
+						"groups": ["styles"]
+					},
+					{
+						"name": "about",
+						"groups": ["about"]
+					}
+				],
+				// Remove the redundant buttons from toolbar groups defined above.
+				removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+				allowedContent : true,
+				height: '400px'
+			});
+		</script>
+	</th:block>
 </html>

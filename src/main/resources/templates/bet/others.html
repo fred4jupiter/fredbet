@@ -72,8 +72,10 @@
                 <div class="row">
                     <br/>
                 </div>
-                <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 			</div>
 		</div>
 	</body>
+    <th:block layout:fragment="scripts">
+        <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+    </th:block>
 </html>
