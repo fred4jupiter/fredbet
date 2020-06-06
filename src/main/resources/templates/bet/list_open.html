@@ -8,7 +8,7 @@
 	<div layout:fragment="content">
 		<div th:replace="~{fragments/alert :: alert_headline}"></div>
 
-		<h1 th:text="#{bet.listOpen.title}"></h1>
+		<h1 th:text="#{bet.listOpen.title} + ' (' + ${#lists.size(matchesToBet)} + ')'"></h1>
 		<div th:if="${not #lists.isEmpty(matchesToBet)}" class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<div class="form-group">
