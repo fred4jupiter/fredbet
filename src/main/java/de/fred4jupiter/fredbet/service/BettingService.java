@@ -193,7 +193,7 @@ public class BettingService {
     }
 
     public void diceAllMatchesForUser(String username) {
-        List<Match> allMatches = matchRepository.findAll();
+        List<Match> allMatches = findMatchesToBet(username);
         allMatches.forEach(match -> {
             Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
             Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
