@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.domain;
 
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -79,11 +81,11 @@ public class Team {
 
     @Override
     public String toString() {
-        return "Team{" +
-                "country=" + country +
-                ", name='" + name + '\'' +
-                ", goals=" + goals +
-                '}';
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        builder.append("country", country);
+        builder.append("name", name);
+        builder.append("goals", goals);
+        return builder.build();
     }
 
     public String getIconPath() {
