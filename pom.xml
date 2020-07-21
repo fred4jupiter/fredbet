@@ -19,6 +19,10 @@
         </contributor>
     </contributors>
 
+    <url>https://github.com/fred4jupiter/fredbet</url>
+
+    <inceptionYear>2016</inceptionYear>
+
     <scm>
         <developerConnection>scm:git:https://github.com/fred4jupiter/fredbet.git</developerConnection>
         <connection>scm:git:https://github.com/fred4jupiter/fredbet.git</connection>
