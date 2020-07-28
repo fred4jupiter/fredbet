@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.service.image;
 
 public class BinaryImage {
 
-	private String key;
+	private final String key;
 
-	private byte[] imageBinary;
+	private final byte[] imageBinary;
 
 	public BinaryImage(String key, byte[] imageBinary) {
 		super();

@@ -8,5 +8,5 @@ public enum FredBetUserGroup {
 
     ROLE_SUB_ADMIN,
 
-    ROLE_ADMIN;
+    ROLE_ADMIN
 }

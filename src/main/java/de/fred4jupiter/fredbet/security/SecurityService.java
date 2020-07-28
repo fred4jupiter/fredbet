@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,11 +19,14 @@ import java.util.Optional;
 @Service
 public class SecurityService {
 
-    @Autowired
-    private ImageMetaDataRepository imageMetaDataRepository;
+    private final ImageMetaDataRepository imageMetaDataRepository;
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+    private final AppUserRepository appUserRepository;
+
+    public SecurityService(ImageMetaDataRepository imageMetaDataRepository, AppUserRepository appUserRepository) {
+        this.imageMetaDataRepository = imageMetaDataRepository;
+        this.appUserRepository = appUserRepository;
+    }
 
     public boolean isUserLoggedIn() {
         try {

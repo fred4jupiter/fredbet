@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,11 +14,14 @@ public class RuntimeConfigRepository<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RuntimeConfigRepository.class);
 
-    @Autowired
-    private RuntimeConfigDbRepository runtimeConfigDbRepository;
+    private final RuntimeConfigDbRepository runtimeConfigDbRepository;
 
-    @Autowired
-    private JsonObjectConverter jsonObjectConverter;
+    private final JsonObjectConverter jsonObjectConverter;
+
+    public RuntimeConfigRepository(RuntimeConfigDbRepository runtimeConfigDbRepository, JsonObjectConverter jsonObjectConverter) {
+        this.runtimeConfigDbRepository = runtimeConfigDbRepository;
+        this.jsonObjectConverter = jsonObjectConverter;
+    }
 
     public T loadRuntimeConfig(Long id, Class<T> targetType) {
         RuntimeConfigDb runtimeConfigDb = loadRuntimeConfigDb(id);

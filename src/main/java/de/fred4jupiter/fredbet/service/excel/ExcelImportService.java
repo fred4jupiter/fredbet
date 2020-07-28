@@ -9,7 +9,6 @@ import de.fred4jupiter.fredbet.util.DateUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +20,14 @@ import java.util.List;
 @Service
 public class ExcelImportService {
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private DatabasePopulator dataBasePopulator;
+    private final DatabasePopulator dataBasePopulator;
+
+    public ExcelImportService(MatchRepository matchRepository, DatabasePopulator dataBasePopulator) {
+        this.matchRepository = matchRepository;
+        this.dataBasePopulator = dataBasePopulator;
+    }
 
     public List<Match> importFromExcel(File file) {
         try (InputStream inp = new FileInputStream(file)) {

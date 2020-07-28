@@ -10,7 +10,6 @@ import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -21,23 +20,27 @@ import java.util.*;
 @Service
 public class ReportService {
 
-    @Autowired
-    private ExcelExportService excelExportService;
+    private final ExcelExportService excelExportService;
 
-    @Autowired
-    private BetRepository betRepository;
+    private final BetRepository betRepository;
 
-    @Autowired
-    private ExtraBetRepository extraBetRepository;
+    private final ExtraBetRepository extraBetRepository;
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private RankingService rankingService;
+    private final RankingService rankingService;
+
+    public ReportService(ExcelExportService excelExportService, BetRepository betRepository, ExtraBetRepository extraBetRepository,
+                         MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService) {
+        this.excelExportService = excelExportService;
+        this.betRepository = betRepository;
+        this.extraBetRepository = extraBetRepository;
+        this.messageSourceUtil = messageSourceUtil;
+        this.matchRepository = matchRepository;
+        this.rankingService = rankingService;
+    }
 
     public byte[] exportBetsToExcel(final Locale locale) {
         List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
@@ -160,8 +163,7 @@ public class ReportService {
         List<PointCourseResult> pointCourseResultList;
         if (pair != null) {
             pointCourseResultList = this.betRepository.queryPointsCourse(Arrays.asList(pair.getLeft(), username, pair.getRight()));
-        }
-        else {
+        } else {
             pointCourseResultList = this.betRepository.queryPointsCourse(Collections.singletonList(username));
         }
 

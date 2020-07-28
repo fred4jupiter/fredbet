@@ -29,7 +29,7 @@ public interface ImageLocationStrategy {
 	 * Delete image and thumbnail by given key.
 	 * 
 	 * @param imageKey
-	 * @param imageGroup
+	 * @param imageGroupId
 	 */
 	void deleteImage(String imageKey, Long imageGroupId);
 

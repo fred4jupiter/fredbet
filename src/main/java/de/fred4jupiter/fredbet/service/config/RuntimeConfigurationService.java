@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.repository.RuntimeConfigRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
@@ -29,11 +28,14 @@ public class RuntimeConfigurationService {
 
     private static final Long DEFAULT_CONFIG_ID = 1L;
 
-    @Autowired
-    private RuntimeConfigRepository<RuntimeConfig> runtimeConfigRepository;
+    private final RuntimeConfigRepository<RuntimeConfig> runtimeConfigRepository;
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
+
+    public RuntimeConfigurationService(RuntimeConfigRepository<RuntimeConfig> runtimeConfigRepository, Environment environment) {
+        this.runtimeConfigRepository = runtimeConfigRepository;
+        this.environment = environment;
+    }
 
     @Cacheable(CacheNames.RUNTIME_CONFIG)
     public RuntimeConfig loadRuntimeConfig() {
