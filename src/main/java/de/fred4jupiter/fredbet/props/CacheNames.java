@@ -2,25 +2,26 @@ package de.fred4jupiter.fredbet.props;
 
 /**
  * Please NOTE: Add the cache name in config. Application -> CacheManager
- * 
- * 
- * @author michael
  *
+ * @author michael
  */
-public interface CacheNames {
+public final class CacheNames {
 
-	/**
-	 * For showing the right navigation entries.
-	 */
-	String AVAIL_GROUPS = "availableGroups";
+    private CacheNames() {
+    }
 
-	/**
-	 * Information about which user is grown up or child.
-	 */
-	String CHILD_RELATION = "childRelation";
+    /**
+     * For showing the right navigation entries.
+     */
+    public static final String AVAIL_GROUPS = "availableGroups";
 
-	/**
-	 * Runtime config parameters that will be cached.
-	 */
-	String RUNTIME_CONFIG = "runtimeConfig";
+    /**
+     * Information about which user is grown up or child.
+     */
+    public static final String CHILD_RELATION = "childRelation";
+
+    /**
+     * Runtime config parameters that will be cached.
+     */
+    public static final String RUNTIME_CONFIG = "runtimeConfig";
 }

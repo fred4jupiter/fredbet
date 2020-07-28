@@ -5,13 +5,16 @@ package de.fred4jupiter.fredbet.props;
  *
  * @author michael
  */
-public interface FredBetProfile {
+public final class FredBetProfile {
 
-    String DEV = "dev";
+    private FredBetProfile() {
+    }
 
-    String PROD = "prod";
+    public static final String DEV = "dev";
 
-    String INTEGRATION_TEST = "integration_test";
+    public static final String PROD = "prod";
 
-    String H2 = "h2";
+    public static final String INTEGRATION_TEST = "integration_test";
+
+    public static final String H2 = "h2";
 }

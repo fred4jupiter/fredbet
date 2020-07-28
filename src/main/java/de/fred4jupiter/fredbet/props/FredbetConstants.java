@@ -4,32 +4,37 @@ import de.fred4jupiter.fredbet.domain.Country;
 
 /**
  * Misc constants used in FredBet.
- * 
- * @author michael
  *
+ * @author michael
  */
-public interface FredbetConstants {
+public final class FredbetConstants {
 
-	String TECHNICAL_USERNAME = "admin";
+    private FredbetConstants() {
+        // only constant definitions here
+    }
 
-	String INFO_CONTEXT_RULES = "rules";
+    public static final String BASE_PACKAGE = "de.fred4jupiter.fredbet";
 
-	String INFO_CONTEXT_PRICES = "prices";
+    public static final String TECHNICAL_USERNAME = "admin";
 
-	String INFO_CONTEXT_MISC = "misc";
+    public static final String INFO_CONTEXT_RULES = "rules";
 
-	String BADGE_PENALTY_WINNER_BET_CSS_CLASS = "badge-penalty-winner-bet";
+    public static final String INFO_CONTEXT_PRICES = "prices";
 
-	String BADGE_PENALTY_WINNER_MATCH_CSS_CLASS = "badge-penalty-winner-match";
+    public static final String INFO_CONTEXT_MISC = "misc";
 
-	String JOKER_CSS_CLASS = "joker-betting";
+    public static final String BADGE_PENALTY_WINNER_BET_CSS_CLASS = "badge-penalty-winner-bet";
 
-	Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
+    public static final String BADGE_PENALTY_WINNER_MATCH_CSS_CLASS = "badge-penalty-winner-match";
 
-	String DEFAULT_REST_PASSWORT = "fredbet";
+    public static final String JOKER_CSS_CLASS = "joker-betting";
 
-	String IMAGE_JPG_EXTENSION_WITH_DOT = "." + FredbetConstants.IMAGE_JPG_EXTENSION;
+    public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
-	String IMAGE_JPG_EXTENSION = "jpg";
+    public static final String DEFAULT_REST_PASSWORT = "fredbet";
+
+    public static final String IMAGE_JPG_EXTENSION = "jpg";
+
+    public static final String IMAGE_JPG_EXTENSION_WITH_DOT = "." + IMAGE_JPG_EXTENSION;
 
 }
