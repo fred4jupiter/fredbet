@@ -20,16 +20,19 @@ spring:
   h2:
     console:
       enabled: false
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+      path: /console
   servlet:
     multipart:
       max-file-size: 10MB
   jmx:
     enabled: false
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 # metrics configuration
 management:
