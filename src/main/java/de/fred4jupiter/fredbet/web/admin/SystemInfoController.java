@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.admin.SystemInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +15,11 @@ public class SystemInfoController {
 
     private static final String SYSTEMINFO_VIEW = "admin/systeminfo";
 
-    @Autowired
-    private SystemInfoService systemInfoService;
+    private final SystemInfoService systemInfoService;
+
+    public SystemInfoController(SystemInfoService systemInfoService) {
+        this.systemInfoService = systemInfoService;
+    }
 
     @GetMapping
     public String list(Model model) {

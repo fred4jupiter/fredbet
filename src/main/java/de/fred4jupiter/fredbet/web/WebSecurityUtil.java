@@ -20,11 +20,14 @@ import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 @Component
 public class WebSecurityUtil {
 
-	@Autowired
-	private RuntimeConfigurationService runtimeConfigurationService;
+	private final RuntimeConfigurationService runtimeConfigurationService;
 
-	@Autowired
-	private SecurityService securityService;
+	private final SecurityService securityService;
+
+	public WebSecurityUtil(RuntimeConfigurationService runtimeConfigurationService, SecurityService securityService) {
+		this.runtimeConfigurationService = runtimeConfigurationService;
+		this.securityService = securityService;
+	}
 
 	public String getCurrentUserProfileImageKey() {
 		return getUserProfileImageKeyFor(securityService.getCurrentUserName());

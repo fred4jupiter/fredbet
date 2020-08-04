@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ConfigurationCommand {
 
-    private List<LogLevel> logLevel = Arrays.asList(LogLevel.values());
+    private final List<LogLevel> logLevel = Arrays.asList(LogLevel.values());
 
     private LogLevel level;
 

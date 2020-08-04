@@ -7,11 +7,12 @@ import java.util.Locale;
 public final class PdfTableDataBuilder {
     private Locale locale;
     private String title;
-    private List<String> headerColumns = new ArrayList<>();
+    private final List<String> headerColumns = new ArrayList<>();
 
     private float[] columnWidths;
 
     private PdfTableDataBuilder() {
+        // use create method
     }
 
     public static PdfTableDataBuilder create() {
@@ -27,7 +28,6 @@ public final class PdfTableDataBuilder {
         this.title = title;
         return this;
     }
-
 
     public PdfTableDataBuilder withHeaderColumn(String headerColumn) {
         this.headerColumns.add(headerColumn);

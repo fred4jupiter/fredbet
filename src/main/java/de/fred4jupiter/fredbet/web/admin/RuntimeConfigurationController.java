@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,14 +32,18 @@ public class RuntimeConfigurationController {
 
     private static final String PAGE_RUNTIME_CONFIG = "admin/runtime_config";
 
-    @Autowired
-    private RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeConfigurationService runtimeConfigurationService;
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private CountryService countryService;
+    private final CountryService countryService;
+
+    public RuntimeConfigurationController(RuntimeConfigurationService runtimeConfigurationService, WebMessageUtil webMessageUtil,
+                                          CountryService countryService) {
+        this.runtimeConfigurationService = runtimeConfigurationService;
+        this.webMessageUtil = webMessageUtil;
+        this.countryService = countryService;
+    }
 
     @ModelAttribute("availableCountries")
     public List<Country> availableCountries() {

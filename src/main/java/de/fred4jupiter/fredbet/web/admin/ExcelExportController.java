@@ -17,8 +17,11 @@ public class ExcelExportController {
 
     private static final String CONTENT_TYPE_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-    @Autowired
-    private ReportService reportService;
+    private final ReportService reportService;
+
+    public ExcelExportController(ReportService reportService) {
+        this.reportService = reportService;
+    }
 
     @GetMapping("/show")
     public String showCachePage() {

@@ -10,7 +10,6 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -26,23 +25,27 @@ import java.util.stream.Collectors;
 @Transactional
 public class BettingService {
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private BetRepository betRepository;
+    private final BetRepository betRepository;
 
-    @Autowired
-    private ExtraBetRepository extraBetRepository;
+    private final ExtraBetRepository extraBetRepository;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private JokerService jokerService;
+    private final JokerService jokerService;
 
-    @Autowired
-    private RandomValueGenerator randomValueGenerator;
+    private final RandomValueGenerator randomValueGenerator;
+
+    public BettingService(MatchRepository matchRepository, BetRepository betRepository, ExtraBetRepository extraBetRepository,
+                          SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator) {
+        this.matchRepository = matchRepository;
+        this.betRepository = betRepository;
+        this.extraBetRepository = extraBetRepository;
+        this.securityService = securityService;
+        this.jokerService = jokerService;
+        this.randomValueGenerator = randomValueGenerator;
+    }
 
     public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
         Bet bet = new Bet();

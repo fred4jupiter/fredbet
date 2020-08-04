@@ -11,7 +11,6 @@ import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.image.Rotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,28 +26,34 @@ public class ImageAdministrationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageAdministrationService.class);
 
-    @Autowired
-    private ImageMetaDataRepository imageMetaDataRepository;
+    private final ImageMetaDataRepository imageMetaDataRepository;
 
-    @Autowired
-    private ImageGroupRepository imageGroupRepository;
+    private final ImageGroupRepository imageGroupRepository;
 
-    @Autowired
-    private ImageResizingService imageResizingService;
+    private final ImageResizingService imageResizingService;
 
-    @Autowired
-    private ImageLocationStrategy imageLocationService;
+    private final ImageLocationStrategy imageLocationService;
 
-    @Autowired
-    private ImageKeyGenerator imageKeyGenerator;
+    private final ImageKeyGenerator imageKeyGenerator;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     private static final String GALLERY_NAME = "Users";
+
+    public ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
+                                      ImageResizingService imageResizingService, ImageLocationStrategy imageLocationService,
+                                      ImageKeyGenerator imageKeyGenerator, SecurityService securityService,
+                                      UserService userService) {
+        this.imageMetaDataRepository = imageMetaDataRepository;
+        this.imageGroupRepository = imageGroupRepository;
+        this.imageResizingService = imageResizingService;
+        this.imageLocationService = imageLocationService;
+        this.imageKeyGenerator = imageKeyGenerator;
+        this.securityService = securityService;
+        this.userService = userService;
+    }
 
     @PostConstruct
     private void initUserProfileImageGroup() {
@@ -161,11 +166,7 @@ public class ImageAdministrationService {
             return false;
         }
 
-        if (imageMetaData.getOwner().getId().equals(appUser.getId())) {
-            return true;
-        }
-
-        return false;
+        return imageMetaData.getOwner().getId().equals(appUser.getId());
     }
 
     public List<String> findAvailableImageGroups() {

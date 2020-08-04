@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.repository.PointCountResult;
 import de.fred4jupiter.fredbet.service.excel.ReportService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.collections4.MultiValuedMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +19,14 @@ public class PointsFrequencyController {
 
     private static final String PAGE_INFO_POINTS_FREQ = "info/points_freq";
 
-    @Autowired
-    private ReportService reportService;
+    private final ReportService reportService;
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
+
+    public PointsFrequencyController(ReportService reportService, WebMessageUtil webMessageUtil) {
+        this.reportService = reportService;
+        this.webMessageUtil = webMessageUtil;
+    }
 
     @GetMapping
     public String show(Model model) {

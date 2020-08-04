@@ -1,60 +1,63 @@
 package de.fred4jupiter.fredbet.web.profile;
 
-import java.util.Base64;
-
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import java.util.Base64;
 
 @Controller
 @RequestMapping("/cropping")
 public class ImageCroppingController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ImageCroppingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ImageCroppingController.class);
 
-	private static final String REDIRECT_SHOW_PAGE = "redirect:/cropping/show";
+    private static final String REDIRECT_SHOW_PAGE = "redirect:/cropping/show";
 
-	@Autowired
-	private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-	@Autowired
-	private ImageAdministrationService imageAdministrationService;
+    private final ImageAdministrationService imageAdministrationService;
 
-	@GetMapping("/show")
-	public String show() {
-		return "profile/crop_image";
-	}
+    public ImageCroppingController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService) {
+        this.messageUtil = messageUtil;
+        this.imageAdministrationService = imageAdministrationService;
+    }
 
-	@PostMapping("/upload")
-	public String uploadImage(@RequestParam("croppedFileBase64") String imageBase64, RedirectAttributes redirect) {
-		LOG.debug("imageBase64: {}", imageBase64);
+    @GetMapping("/show")
+    public String show() {
+        return "profile/crop_image";
+    }
 
-		if (StringUtils.isBlank(imageBase64)) {
-			LOG.error("No base64 image given");
-			messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
-			return REDIRECT_SHOW_PAGE;
-		}
+    @PostMapping("/upload")
+    public String uploadImage(@RequestParam("croppedFileBase64") String imageBase64, RedirectAttributes redirect) {
+        LOG.debug("imageBase64: {}", imageBase64);
 
-		byte[] imageByte = Base64.getDecoder().decode(imageBase64.split(",")[1]);
+        if (StringUtils.isBlank(imageBase64)) {
+            LOG.error("No base64 image given");
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+            return REDIRECT_SHOW_PAGE;
+        }
 
-		if (imageByte.length == 0) {
-			messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
-			return REDIRECT_SHOW_PAGE;
-		}
+        byte[] imageByte = Base64.getDecoder().decode(imageBase64.split(",")[1]);
 
-		imageAdministrationService.saveUserProfileImage(imageByte);
+        if (imageByte.length == 0) {
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+            return REDIRECT_SHOW_PAGE;
+        }
 
-		messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
+        imageAdministrationService.saveUserProfileImage(imageByte);
 
-		return REDIRECT_SHOW_PAGE;
-	}
+        messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
+
+        return REDIRECT_SHOW_PAGE;
+    }
 
 }

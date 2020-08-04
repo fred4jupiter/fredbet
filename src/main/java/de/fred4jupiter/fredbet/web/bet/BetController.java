@@ -14,7 +14,6 @@ import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,29 +35,34 @@ public class BetController {
 
     private static final String VIEW_EDIT = "bet/edit";
 
-    @Autowired
-    private BettingService bettingService;
+    private final BettingService bettingService;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
 
-    @Autowired
-    private MatchCommandMapper matchCommandMapper;
+    private final MatchCommandMapper matchCommandMapper;
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private AllBetsCommandMapper allBetsCommandMapper;
+    private final AllBetsCommandMapper allBetsCommandMapper;
 
-    @Autowired
-    private JokerService jokerService;
+    private final JokerService jokerService;
+
+    public BetController(BettingService bettingService, SecurityService securityService, WebMessageUtil messageUtil,
+                         MessageSourceUtil messageSourceUtil, MatchCommandMapper matchCommandMapper, MatchService matchService,
+                         AllBetsCommandMapper allBetsCommandMapper, JokerService jokerService) {
+        this.bettingService = bettingService;
+        this.securityService = securityService;
+        this.messageUtil = messageUtil;
+        this.messageSourceUtil = messageSourceUtil;
+        this.matchCommandMapper = matchCommandMapper;
+        this.matchService = matchService;
+        this.allBetsCommandMapper = allBetsCommandMapper;
+        this.jokerService = jokerService;
+    }
 
     @GetMapping("/open")
     public String listStillOpen(Model model) {
@@ -71,7 +75,7 @@ public class BetController {
             messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
         }
 
-        List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> matchCommandMapper.toMatchCommand(match))
+        List<MatchCommand> matchCommands = matchesToBet.stream().map(matchCommandMapper::toMatchCommand)
                 .collect(Collectors.toList());
         model.addAttribute("matchesToBet", matchCommands);
         return VIEW_LIST_OPEN;

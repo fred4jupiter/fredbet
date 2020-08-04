@@ -9,7 +9,6 @@ import de.fred4jupiter.fredbet.service.admin.AdministrationService;
 import de.fred4jupiter.fredbet.service.admin.SessionTrackingService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,23 +33,28 @@ public class AdminController {
 
     private static final String PAGE_LAST_LOGINS = "admin/lastlogins";
 
-    @Autowired
-    private DatabasePopulator databasePopulator;
+    private final DatabasePopulator databasePopulator;
 
-    @Autowired
-    private AsyncDatabasePopulator asyncDatabasePopulator;
+    private final AsyncDatabasePopulator asyncDatabasePopulator;
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private SessionTrackingService sessionTrackingService;
+    private final SessionTrackingService sessionTrackingService;
 
-    @Autowired
-    private AdministrationService administrationService;
+    private final AdministrationService administrationService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public AdminController(DatabasePopulator databasePopulator, AsyncDatabasePopulator asyncDatabasePopulator,
+                           WebMessageUtil webMessageUtil, SessionTrackingService sessionTrackingService,
+                           AdministrationService administrationService, UserService userService) {
+        this.databasePopulator = databasePopulator;
+        this.asyncDatabasePopulator = asyncDatabasePopulator;
+        this.webMessageUtil = webMessageUtil;
+        this.sessionTrackingService = sessionTrackingService;
+        this.administrationService = administrationService;
+        this.userService = userService;
+    }
 
     @ModelAttribute("adminFormCommand")
     public AdminFormCommand adminFormCommand() {

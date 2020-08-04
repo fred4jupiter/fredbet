@@ -7,7 +7,6 @@ import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,17 +32,21 @@ public class ImageGalleryController {
 
     private static final String PAGE_IMAGE_GALLERY = "image/gallery";
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-    @Autowired
-    private ImageAdministrationService imageAdministrationService;
+    private final ImageAdministrationService imageAdministrationService;
 
-    @Autowired
-    private DownloadService downloadService;
+    private final DownloadService downloadService;
 
-    @Autowired
-    private ImageCommandMapper imageCommandMapper;
+    private final ImageCommandMapper imageCommandMapper;
+
+    public ImageGalleryController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService,
+                                  DownloadService downloadService, ImageCommandMapper imageCommandMapper) {
+        this.messageUtil = messageUtil;
+        this.imageAdministrationService = imageAdministrationService;
+        this.downloadService = downloadService;
+        this.imageCommandMapper = imageCommandMapper;
+    }
 
     @GetMapping("/show")
     public String showGallery(Model model) {

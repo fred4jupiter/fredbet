@@ -8,9 +8,9 @@ import java.util.Set;
 
 class SameRankingCollector {
 
-    private Set<Integer> hashList = new HashSet<>();
+    private final Set<Integer> hashList = new HashSet<>();
 
-    private Set<Integer> duplicates = new HashSet<>();
+    private final Set<Integer> duplicates = new HashSet<>();
 
     void markEntriesWithSameRanking(List<UsernamePoints> rankings) {
         for (UsernamePoints usernamePoints : rankings) {

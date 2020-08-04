@@ -15,7 +15,6 @@ import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -33,35 +32,42 @@ public class UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+    private final AppUserRepository appUserRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private ImageMetaDataRepository imageMetaDataRepository;
+    private final ImageMetaDataRepository imageMetaDataRepository;
 
-    @Autowired
-    private BetRepository betRepository;
+    private final BetRepository betRepository;
 
-    @Autowired
-    private ExtraBetRepository extraBetRepository;
+    private final ExtraBetRepository extraBetRepository;
 
-    @Autowired
-    private SessionTrackingRepository sessionTrackingRepository;
+    private final SessionTrackingRepository sessionTrackingRepository;
 
-    @Autowired
-    private RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeConfigurationService runtimeConfigurationService;
 
-    @Autowired
-    private ImageGroupRepository imageGroupRepository;
+    private final ImageGroupRepository imageGroupRepository;
 
-    @Autowired
-    private BettingService bettingService;
+    private final BettingService bettingService;
+
+    public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
+                       ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
+                       ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
+                       RuntimeConfigurationService runtimeConfigurationService, ImageGroupRepository imageGroupRepository,
+                       BettingService bettingService) {
+        this.appUserRepository = appUserRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.securityService = securityService;
+        this.imageMetaDataRepository = imageMetaDataRepository;
+        this.betRepository = betRepository;
+        this.extraBetRepository = extraBetRepository;
+        this.sessionTrackingRepository = sessionTrackingRepository;
+        this.runtimeConfigurationService = runtimeConfigurationService;
+        this.imageGroupRepository = imageGroupRepository;
+        this.bettingService = bettingService;
+    }
 
     public List<AppUser> findAll() {
         return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));

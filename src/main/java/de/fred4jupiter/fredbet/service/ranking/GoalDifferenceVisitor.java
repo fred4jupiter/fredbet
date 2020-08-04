@@ -7,7 +7,7 @@ import java.util.Map;
 
 class GoalDifferenceVisitor implements Visitor {
 
-    private Map<String, Integer> goalDifferenceMap = new HashMap<>();
+    private final Map<String, Integer> goalDifferenceMap = new HashMap<>();
 
     @Override
     public void visit(Bet bet) {

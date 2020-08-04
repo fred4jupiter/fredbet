@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.ranking.RankingService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,11 +25,14 @@ public class RankingController {
 
     private static final String PAGE_RANKING = "ranking/list";
 
-    @Autowired
-    private RankingService rankingService;
+    private final RankingService rankingService;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
+
+    public RankingController(RankingService rankingService, WebMessageUtil messageUtil) {
+        this.rankingService = rankingService;
+        this.messageUtil = messageUtil;
+    }
 
     @GetMapping
     public String list(Model model) {
