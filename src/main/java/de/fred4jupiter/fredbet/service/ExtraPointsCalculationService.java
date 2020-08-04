@@ -3,9 +3,9 @@ package de.fred4jupiter.fredbet.service;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.RuntimeConfig;
+import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -25,11 +25,11 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
 
     private final ExtraBetRepository extraBetRepository;
 
-    private final RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeSettingsService runtimeSettingsService;
 
-    public ExtraPointsCalculationService(ExtraBetRepository extraBetRepository, RuntimeConfigurationService runtimeConfigurationService) {
+    public ExtraPointsCalculationService(ExtraBetRepository extraBetRepository, RuntimeSettingsService runtimeSettingsService) {
         this.extraBetRepository = extraBetRepository;
-        this.runtimeConfigurationService = runtimeConfigurationService;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     @Override
@@ -41,21 +41,21 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
             return;
         }
 
-        final RuntimeConfig runtimeConfig = runtimeConfigurationService.loadRuntimeConfig();
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
 
         LOG.debug("Calculate extra betting points...");
         List<ExtraBet> extraBets = extraBetRepository.findAll();
 
         extraBets.forEach(extraBet -> {
-            calculatePointsFor(match, extraBet, runtimeConfig);
+            calculatePointsFor(match, extraBet, runtimeSettings);
             LOG.debug("User {} has {} points", extraBet.getUserName(), extraBet.getPoints());
         });
     }
 
-    private void calculatePointsFor(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+    private void calculatePointsFor(Match match, ExtraBet extraBet, RuntimeSettings runtimeSettings) {
         if (match.isFinal()) {
-            Integer pointsFinal = calculatePointsFinal(match, extraBet, runtimeConfig);
-            Integer pointsSemiFinal = calculatePointsSemiFinal(match, extraBet, runtimeConfig);
+            Integer pointsFinal = calculatePointsFinal(match, extraBet, runtimeSettings);
+            Integer pointsSemiFinal = calculatePointsSemiFinal(match, extraBet, runtimeSettings);
             LOG.debug("User {} reached extra bets: pointsFinal={}, pointsSemiFinal={}", extraBet.getUserName(), pointsFinal,
                     pointsSemiFinal);
             extraBet.setPointsOne(pointsFinal);
@@ -65,7 +65,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
         }
 
         if (match.isGroup(Group.GAME_FOR_THIRD)) {
-            Integer pointsGameOfThird = calculatePointsGameOfThird(match, extraBet, runtimeConfig);
+            Integer pointsGameOfThird = calculatePointsGameOfThird(match, extraBet, runtimeSettings);
             LOG.debug("User {} reached extra bets: pointsGameOfThird={}", extraBet.getUserName(), pointsGameOfThird);
 
             extraBet.setPointsThree(pointsGameOfThird);
@@ -73,7 +73,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
         }
     }
 
-    private Integer calculatePointsFinal(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+    private Integer calculatePointsFinal(Match match, ExtraBet extraBet, RuntimeSettings runtimeSettings) {
         if (!match.isFinal()) {
             return 0;
         }
@@ -83,13 +83,13 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
         }
 
         if (extraBet.getFinalWinner().equals(match.getWinner())) {
-            return runtimeConfig.getPointsFinalWinner();
+            return runtimeSettings.getPointsFinalWinner();
         }
 
         return 0;
     }
 
-    private Integer calculatePointsSemiFinal(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+    private Integer calculatePointsSemiFinal(Match match, ExtraBet extraBet, RuntimeSettings runtimeSettings) {
         if (!match.isFinal()) {
             return 0;
         }
@@ -99,13 +99,13 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
         }
 
         if (extraBet.getSemiFinalWinner().equals(match.getLooser())) {
-            return runtimeConfig.getPointsSemiFinalWinner();
+            return runtimeSettings.getPointsSemiFinalWinner();
         }
 
         return 0;
     }
 
-    private Integer calculatePointsGameOfThird(Match match, ExtraBet extraBet, RuntimeConfig runtimeConfig) {
+    private Integer calculatePointsGameOfThird(Match match, ExtraBet extraBet, RuntimeSettings runtimeSettings) {
         if (!match.isGroup(Group.GAME_FOR_THIRD)) {
             return 0;
         }
@@ -115,7 +115,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
         }
 
         if (extraBet.getThirdFinalWinner().equals(match.getWinner())) {
-            return runtimeConfig.getPointsThirdFinalWinner();
+            return runtimeSettings.getPointsThirdFinalWinner();
         }
 
         return 0;

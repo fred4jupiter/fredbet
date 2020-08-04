@@ -1,9 +1,9 @@
 package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.RuntimeConfig;
+import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -13,11 +13,11 @@ public class GroupAvailabilityUtil {
 
     private final MatchService matchService;
 
-    private final RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeSettingsService runtimeSettingsService;
 
-    public GroupAvailabilityUtil(MatchService matchService, RuntimeConfigurationService runtimeConfigurationService) {
+    public GroupAvailabilityUtil(MatchService matchService, RuntimeSettingsService runtimeSettingsService) {
         this.matchService = matchService;
-        this.runtimeConfigurationService = runtimeConfigurationService;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     public boolean isGroupAvailable(String groupName) {
@@ -40,7 +40,7 @@ public class GroupAvailabilityUtil {
     }
 
     public boolean isJokerBettingActive() {
-        RuntimeConfig runtimeConfig = runtimeConfigurationService.loadRuntimeConfig();
-        return runtimeConfig.getJokerMaxCount() > 0;
+        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        return runtimeSettings.getJokerMaxCount() > 0;
     }
 }

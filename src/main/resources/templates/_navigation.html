@@ -152,7 +152,7 @@
 						  			<a href="#config" th:href="@{/config/show}" th:text="#{navigation.configuration}"></a>
 					  			</li>					  			
 					  			<li th:class="${pageState_runtimeconfig_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#config" th:href="@{/runtimeconfig/show}" th:text="#{navigation.runtime.configuration}"></a>
+						  			<a href="#config" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
 					  			</li>
 					  			<li th:class="${pageState_backup_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#backup" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>

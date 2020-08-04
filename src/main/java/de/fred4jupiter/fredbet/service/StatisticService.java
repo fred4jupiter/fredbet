@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.StatisticRepository;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +22,17 @@ public class StatisticService {
 
     private final ExtraBetRepository extraBetRepository;
 
-    private final RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeSettingsService runtimeSettingsService;
 
-    public StatisticService(StatisticRepository statisticRepository, RuntimeConfigurationService runtimeConfigurationService,
+    public StatisticService(StatisticRepository statisticRepository, RuntimeSettingsService runtimeSettingsService,
                             ExtraBetRepository extraBetRepository) {
         this.statisticRepository = statisticRepository;
-        this.runtimeConfigurationService = runtimeConfigurationService;
+        this.runtimeSettingsService = runtimeSettingsService;
         this.extraBetRepository = extraBetRepository;
     }
 
     public Country getFavouriteCountry() {
-        return runtimeConfigurationService.loadRuntimeConfig().getFavouriteCountry();
+        return runtimeSettingsService.loadRuntimeSettings().getFavouriteCountry();
     }
 
     public List<Statistic> createStatistic() {

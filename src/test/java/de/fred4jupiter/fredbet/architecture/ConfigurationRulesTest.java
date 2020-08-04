@@ -11,9 +11,9 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 @AnalyzeClasses(packages = FredbetConstants.BASE_PACKAGE)
 public class ConfigurationRulesTest {
 
-//    @ArchTest
-//    private void configClassesShouldBeAnnotatedWithConfigurationAnnotation(JavaClasses classes) {
-//        classes().that().haveSimpleNameEndingWith("Config")
-//                .should().beAnnotatedWith(Configuration.class).check(classes);
-//    }
+    @ArchTest
+    private void configClassesShouldBeAnnotatedWithConfigurationAnnotation(JavaClasses classes) {
+        classes().that().haveSimpleNameEndingWith("Config")
+                .should().beAnnotatedWith(Configuration.class).check(classes);
+    }
 }

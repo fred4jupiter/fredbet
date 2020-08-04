@@ -10,7 +10,7 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class UserService {
 
     private final SessionTrackingRepository sessionTrackingRepository;
 
-    private final RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeSettingsService runtimeSettingsService;
 
     private final ImageGroupRepository imageGroupRepository;
 
@@ -55,7 +55,7 @@ public class UserService {
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
                        ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
                        ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
-                       RuntimeConfigurationService runtimeConfigurationService, ImageGroupRepository imageGroupRepository,
+                       RuntimeSettingsService runtimeSettingsService, ImageGroupRepository imageGroupRepository,
                        BettingService bettingService) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
@@ -64,7 +64,7 @@ public class UserService {
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.sessionTrackingRepository = sessionTrackingRepository;
-        this.runtimeConfigurationService = runtimeConfigurationService;
+        this.runtimeSettingsService = runtimeSettingsService;
         this.imageGroupRepository = imageGroupRepository;
         this.bettingService = bettingService;
     }
@@ -133,7 +133,7 @@ public class UserService {
 
     public String resetPasswordForUser(Long userId) {
         AppUser appUser = findByUserId(userId);
-        String passwordForReset = runtimeConfigurationService.loadRuntimeConfig().getPasswordForReset();
+        String passwordForReset = runtimeSettingsService.loadRuntimeSettings().getPasswordForReset();
         appUser.setPassword(passwordEncoder.encode(passwordForReset));
         // user has to change his password when password is reset
         appUser.setFirstLogin(true);

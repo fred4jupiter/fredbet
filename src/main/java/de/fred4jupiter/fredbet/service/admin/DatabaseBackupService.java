@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.service.admin;
 
 import de.fred4jupiter.fredbet.domain.DatabaseBackup;
 import de.fred4jupiter.fredbet.repository.DatabaseBackupRepository;
-import de.fred4jupiter.fredbet.repository.RuntimeConfigRepository;
+import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
 import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException.ErrorCode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -19,14 +19,14 @@ public class DatabaseBackupService {
 
     private final DatabaseBackupRepository databaseBackupRepository;
 
-    private final RuntimeConfigRepository<DatabaseBackup> runtimeConfigRepository;
+    private final RuntimeSettingsRepository<DatabaseBackup> runtimeSettingsRepository;
 
     private final Environment environment;
 
     public DatabaseBackupService(DatabaseBackupRepository databaseBackupRepository,
-                                 RuntimeConfigRepository<DatabaseBackup> runtimeConfigRepository, Environment environment) {
+                                 RuntimeSettingsRepository<DatabaseBackup> runtimeSettingsRepository, Environment environment) {
         this.databaseBackupRepository = databaseBackupRepository;
-        this.runtimeConfigRepository = runtimeConfigRepository;
+        this.runtimeSettingsRepository = runtimeSettingsRepository;
         this.environment = environment;
     }
 
@@ -59,7 +59,7 @@ public class DatabaseBackupService {
     }
 
     public DatabaseBackup loadDatabaseBackup() {
-        DatabaseBackup databaseBackup = runtimeConfigRepository.loadRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
+        DatabaseBackup databaseBackup = runtimeSettingsRepository.loadRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
         if (databaseBackup == null) {
             databaseBackup = new DatabaseBackup();
             databaseBackup.setDatabaseBackupFolder(determineDefaultBackupFolder());
@@ -70,6 +70,6 @@ public class DatabaseBackupService {
     public void saveBackupFolder(String backupFolder) {
         DatabaseBackup databaseBackup = loadDatabaseBackup();
         databaseBackup.setDatabaseBackupFolder(backupFolder);
-        runtimeConfigRepository.saveRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
+        runtimeSettingsRepository.saveRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
     }
 }

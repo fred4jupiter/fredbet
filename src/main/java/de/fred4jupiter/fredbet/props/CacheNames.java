@@ -23,5 +23,5 @@ public final class CacheNames {
     /**
      * Runtime config parameters that will be cached.
      */
-    public static final String RUNTIME_CONFIG = "runtimeConfig";
+    public static final String RUNTIME_SETTINGS = "runtimeSettings";
 }

@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.service;
 import de.fred4jupiter.fredbet.UnitTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,13 +25,13 @@ public class ExtraPointsCalculationServiceUT {
     private ExtraBetRepository extraBetRepository;
 
     @Mock
-    private RuntimeConfigurationService runtimeConfigurationService;
+    private RuntimeSettingsService runtimeSettingsService;
 
     @Mock
     private MatchGoalsChangedEvent matchGoalsChangedEvent;
 
     @Mock
-    private RuntimeConfig runtimeConfig;
+    private RuntimeSettings runtimeSettings;
 
     private Match match;
 
@@ -70,7 +70,7 @@ public class ExtraPointsCalculationServiceUT {
         match.getTeamOne().setCountry(Country.AFGHANISTAN);
         match.getTeamTwo().setCountry(Country.CUBA);
 
-        when(runtimeConfigurationService.loadRuntimeConfig()).thenReturn(runtimeConfig);
+        when(runtimeSettingsService.loadRuntimeSettings()).thenReturn(runtimeSettings);
         when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
 
         extraPointsCalculationService.onApplicationEvent(matchGoalsChangedEvent);
@@ -91,10 +91,10 @@ public class ExtraPointsCalculationServiceUT {
         match.setGoalsTeamOne(2);
         match.setGoalsTeamTwo(1);
 
-        when(runtimeConfigurationService.loadRuntimeConfig()).thenReturn(runtimeConfig);
+        when(runtimeSettingsService.loadRuntimeSettings()).thenReturn(runtimeSettings);
         when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
-        when(runtimeConfig.getPointsFinalWinner()).thenReturn(10);
-        when(runtimeConfig.getPointsSemiFinalWinner()).thenReturn(5);
+        when(runtimeSettings.getPointsFinalWinner()).thenReturn(10);
+        when(runtimeSettings.getPointsSemiFinalWinner()).thenReturn(5);
 
         extraPointsCalculationService.onApplicationEvent(matchGoalsChangedEvent);
 
@@ -118,9 +118,9 @@ public class ExtraPointsCalculationServiceUT {
         match.setGoalsTeamOne(2);
         match.setGoalsTeamTwo(1);
 
-        when(runtimeConfigurationService.loadRuntimeConfig()).thenReturn(runtimeConfig);
+        when(runtimeSettingsService.loadRuntimeSettings()).thenReturn(runtimeSettings);
         when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
-        when(runtimeConfig.getPointsThirdFinalWinner()).thenReturn(2);
+        when(runtimeSettings.getPointsThirdFinalWinner()).thenReturn(2);
 
         extraPointsCalculationService.onApplicationEvent(matchGoalsChangedEvent);
 

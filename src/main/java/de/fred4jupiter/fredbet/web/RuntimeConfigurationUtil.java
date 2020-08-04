@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
-import de.fred4jupiter.fredbet.domain.RuntimeConfig;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.domain.RuntimeSettings;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RuntimeConfigurationUtil {
 
-    private final RuntimeConfigurationService runtimeConfigurationService;
+    private final RuntimeSettingsService runtimeSettingsService;
 
-    public RuntimeConfigurationUtil(RuntimeConfigurationService runtimeConfigurationService) {
-        this.runtimeConfigurationService = runtimeConfigurationService;
+    public RuntimeConfigurationUtil(RuntimeSettingsService runtimeSettingsService) {
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
-    public RuntimeConfig getConfig() {
-        return runtimeConfigurationService.loadRuntimeConfig();
+    public RuntimeSettings getConfig() {
+        return runtimeSettingsService.loadRuntimeSettings();
     }
 }
