@@ -59,7 +59,7 @@ public class DatabaseBackupService {
     }
 
     public DatabaseBackup loadDatabaseBackup() {
-        DatabaseBackup databaseBackup = runtimeSettingsRepository.loadRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
+        DatabaseBackup databaseBackup = runtimeSettingsRepository.loadRuntimeSettings(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
         if (databaseBackup == null) {
             databaseBackup = new DatabaseBackup();
             databaseBackup.setDatabaseBackupFolder(determineDefaultBackupFolder());

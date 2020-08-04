@@ -23,15 +23,15 @@ public class RuntimeSettingsRepository<T> {
         this.jsonObjectConverter = jsonObjectConverter;
     }
 
-    public T loadRuntimeConfig(Long id, Class<T> targetType) {
+    public T loadRuntimeSettings(Long id, Class<T> targetType) {
         RuntimeSettingsDb runtimeSettingsDb = loadRuntimeSettingsDb(id);
         return toRuntimeConfig(runtimeSettingsDb, targetType);
     }
 
     private RuntimeSettingsDb loadRuntimeSettingsDb(Long id) {
-        Optional<RuntimeSettingsDb> runtimeConfigDbOpt = runtimeSettingsDbRepository.findById(id);
-        if (runtimeConfigDbOpt.isPresent()) {
-            return runtimeConfigDbOpt.get();
+        Optional<RuntimeSettingsDb> runtimeSettingsDbOpt = runtimeSettingsDbRepository.findById(id);
+        if (runtimeSettingsDbOpt.isPresent()) {
+            return runtimeSettingsDbOpt.get();
         }
 
         RuntimeSettingsDb runtimeSettingsDb = new RuntimeSettingsDb(id);
