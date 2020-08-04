@@ -38,7 +38,7 @@ public class CodingRulesTest {
     @ArchTest
     private final ArchRule no_jodatime = NO_CLASSES_SHOULD_USE_JODATIME;
 
-//    @ArchTest
-//    private final ArchRule no_field_injection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION;
+    @ArchTest
+    private final ArchRule no_field_injection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION;
 
 }
