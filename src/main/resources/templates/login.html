@@ -30,7 +30,7 @@
 						</div>
 					</div>
 				</div>
-				<div th:if="${@runtimeConfigurationUtil.getConfig().isSelfRegistrationEnabled()}">
+				<div th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}">
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<div class="row">
 							<span class="text-muted" th:text="#{registration.text}"></span>
