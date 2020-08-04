@@ -25,7 +25,7 @@ public class RuntimeSettingsRepository<T> {
 
     public T loadRuntimeSettings(Long id, Class<T> targetType) {
         RuntimeSettingsDb runtimeSettingsDb = loadRuntimeSettingsDb(id);
-        return toRuntimeConfig(runtimeSettingsDb, targetType);
+        return toRuntimeSettings(runtimeSettingsDb, targetType);
     }
 
     private RuntimeSettingsDb loadRuntimeSettingsDb(Long id) {
@@ -39,7 +39,7 @@ public class RuntimeSettingsRepository<T> {
         return runtimeSettingsDb;
     }
 
-    private T toRuntimeConfig(RuntimeSettingsDb runtimeSettingsDb, Class<T> targetType) {
+    private T toRuntimeSettings(RuntimeSettingsDb runtimeSettingsDb, Class<T> targetType) {
         String jsonConfig = runtimeSettingsDb.getJsonConfig();
 
         if (StringUtils.isNotBlank(jsonConfig)) {
@@ -49,7 +49,7 @@ public class RuntimeSettingsRepository<T> {
         return null;
     }
 
-    public void saveRuntimeConfig(Long id, T runtimeSettings) {
+    public void saveRuntimeSettings(Long id, T runtimeSettings) {
         RuntimeSettingsDb runtimeSettingsDb = toRuntimeSettingsDb(id, runtimeSettings);
 
         runtimeSettingsDbRepository.save(runtimeSettingsDb);

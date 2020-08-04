@@ -68,7 +68,7 @@ public class RuntimeSettingsService {
 
     @CacheEvict(cacheNames = CacheNames.RUNTIME_SETTINGS, allEntries = true)
     public void saveRuntimeSettings(RuntimeSettings runtimeSettings) {
-        runtimeSettingsRepository.saveRuntimeConfig(DEFAULT_CONFIG_ID, runtimeSettings);
+        runtimeSettingsRepository.saveRuntimeSettings(DEFAULT_CONFIG_ID, runtimeSettings);
     }
 
 }

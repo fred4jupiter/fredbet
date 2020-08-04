@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class RuntimeSettingsDbRepositoryIT {
 
     @Autowired
-    private RuntimeSettingsDbRepository runtimeConfigRepository;
+    private RuntimeSettingsDbRepository runtimeSettingsDbRepository;
 
     @Test
     public void saveAndRead() {
@@ -20,9 +20,9 @@ public class RuntimeSettingsDbRepositoryIT {
         RuntimeSettingsDb runtimeSettingsDb = new RuntimeSettingsDb(configId);
         runtimeSettingsDb.setJsonConfig("{bla:1}");
 
-        runtimeConfigRepository.save(runtimeSettingsDb);
+        runtimeSettingsDbRepository.save(runtimeSettingsDb);
 
-        RuntimeSettingsDb found = runtimeConfigRepository.getOne(configId);
+        RuntimeSettingsDb found = runtimeSettingsDbRepository.getOne(configId);
         assertNotNull(found);
 
         assertEquals(runtimeSettingsDb.getConfigId(), found.getConfigId());

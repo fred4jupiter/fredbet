@@ -70,6 +70,6 @@ public class DatabaseBackupService {
     public void saveBackupFolder(String backupFolder) {
         DatabaseBackup databaseBackup = loadDatabaseBackup();
         databaseBackup.setDatabaseBackupFolder(backupFolder);
-        runtimeSettingsRepository.saveRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
+        runtimeSettingsRepository.saveRuntimeSettings(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
     }
 }

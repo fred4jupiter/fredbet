@@ -63,7 +63,7 @@ public class RuntimeSettingsController {
     }
 
     @RequestMapping(value = "/saveRuntimeSettings", method = RequestMethod.POST)
-    public String saveRuntimeConfig(@Valid RuntimeSettingsCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String saveRuntimeSettings(@Valid RuntimeSettingsCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_RUNTIME_CONFIG;
         }

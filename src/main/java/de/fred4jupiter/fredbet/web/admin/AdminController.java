@@ -118,7 +118,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveRuntimeConfig(@Valid AdminFormCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String saveRuntimeSettings(@Valid AdminFormCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_ADMINISTRATION;
         }
