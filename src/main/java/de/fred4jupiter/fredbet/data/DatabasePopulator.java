@@ -18,7 +18,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
@@ -42,32 +41,38 @@ public class DatabasePopulator {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabasePopulator.class);
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private BettingService bettingService;
+    private final BettingService bettingService;
 
-    @Autowired
-    private RandomValueGenerator randomValueGenerator;
+    private final RandomValueGenerator randomValueGenerator;
 
-    @Autowired
-    private InfoService infoService;
+    private final InfoService infoService;
 
-    @Autowired
-    private ImageAdministrationService imageAdministrationService;
+    private final ImageAdministrationService imageAdministrationService;
 
-    @Autowired
-    private JokerService jokerService;
+    private final JokerService jokerService;
 
-    @Autowired
-    private FredbetProperties fredbetProperties;
+    private final FredbetProperties fredbetProperties;
+
+    public DatabasePopulator(MatchService matchService, Environment environment, UserService userService,
+                             BettingService bettingService, RandomValueGenerator randomValueGenerator,
+                             InfoService infoService, ImageAdministrationService imageAdministrationService,
+                             JokerService jokerService, FredbetProperties fredbetProperties) {
+        this.matchService = matchService;
+        this.environment = environment;
+        this.userService = userService;
+        this.bettingService = bettingService;
+        this.randomValueGenerator = randomValueGenerator;
+        this.infoService = infoService;
+        this.imageAdministrationService = imageAdministrationService;
+        this.jokerService = jokerService;
+        this.fredbetProperties = fredbetProperties;
+    }
 
     @PostConstruct
     private void initDatabaseWithDemoData() {

@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,11 +22,14 @@ public class MatchResultController {
 
     private static final String VIEW_EDIT_MATCHRESULT = "matches/matchresult";
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
+
+    public MatchResultController(MatchService matchService, MessageSourceUtil messageSourceUtil) {
+        this.matchService = matchService;
+        this.messageSourceUtil = messageSourceUtil;
+    }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
     @GetMapping("/{id}")

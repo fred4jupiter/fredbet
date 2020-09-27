@@ -7,7 +7,7 @@ import java.util.Map;
 
 class CorrectResultVisitor implements Visitor {
 
-    private Map<String, Integer> correctResultCountMap = new HashMap<>();
+    private final Map<String, Integer> correctResultCountMap = new HashMap<>();
 
     @Override
     public void visit(Bet bet) {

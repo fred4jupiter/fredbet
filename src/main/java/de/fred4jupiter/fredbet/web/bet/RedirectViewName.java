@@ -17,7 +17,7 @@ public enum RedirectViewName {
 
     private static final String GROUP_PREFIX = "GROUP@";
 
-    private String redirectViewName;
+    private final String redirectViewName;
 
     private RedirectViewName(String redirectViewName) {
         this.redirectViewName = redirectViewName;

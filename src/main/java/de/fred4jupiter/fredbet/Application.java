@@ -43,7 +43,7 @@ public class Application {
         List<Cache> caches = new ArrayList<>();
         caches.add(new ConcurrentMapCache(CacheNames.AVAIL_GROUPS));
         caches.add(new ConcurrentMapCache(CacheNames.CHILD_RELATION));
-        caches.add(new ConcurrentMapCache(CacheNames.RUNTIME_CONFIG));
+        caches.add(new ConcurrentMapCache(CacheNames.RUNTIME_SETTINGS));
         cacheManager.setCaches(caches);
         return cacheManager;
     }

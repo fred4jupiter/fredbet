@@ -2,19 +2,16 @@ package de.fred4jupiter.fredbet;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -32,14 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 24 Stunden
     private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final Environment environment;
 
-    @Autowired
-    private Environment environment;
+    private final DataSource dataSource;
 
-    @Autowired
-    private DataSource dataSource;
+    public WebSecurityConfig(Environment environment, DataSource dataSource) {
+        super(false);
+        this.environment = environment;
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -47,7 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * these matches will not go through the security filter (all above
          * static folder)
          */
-        web.ignoring().antMatchers("/actuator/**", "/webjars/**", "favicon.ico", "/blueimpgallery/**", "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
+        web.ignoring().antMatchers("/actuator/**", "/webjars/**", "favicon.ico", "/blueimpgallery/**",
+                "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
     }
 
     @Override
@@ -76,11 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // otherwise the H2 console will not work
             http.csrf().ignoringAntMatchers("/console/*");
         }
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

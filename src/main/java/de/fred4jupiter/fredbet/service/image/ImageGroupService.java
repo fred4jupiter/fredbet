@@ -12,8 +12,11 @@ import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 @Service
 public class ImageGroupService {
 
-	@Autowired
-	private ImageGroupRepository imageGroupRepository;
+	private final ImageGroupRepository imageGroupRepository;
+
+	public ImageGroupService(ImageGroupRepository imageGroupRepository) {
+		this.imageGroupRepository = imageGroupRepository;
+	}
 
 	public List<ImageGroup> findAvailableImageGroups() {
 		return imageGroupRepository.findAll();
@@ -30,7 +33,7 @@ public class ImageGroupService {
 
 	public void updateImageGroup(Long id, String name) {
 		Optional<ImageGroup> imageGroupOpt = imageGroupRepository.findById(id);
-		if (!imageGroupOpt.isPresent()) {
+		if (imageGroupOpt.isEmpty()) {
 			throw new IllegalArgumentException("Image group with id=" + id + " could not be found!");
 		}
 

@@ -7,13 +7,11 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.StatisticService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,17 +29,21 @@ public class InfoController {
     private static final String PAGE_EDIT_INFO = "info/edit_info";
     public static final String PAGE_INFO_STATISTIC = "info/statistic";
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private InfoService infoService;
+    private final InfoService infoService;
 
-    @Autowired
-    private StatisticService statisticService;
+    private final StatisticService statisticService;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
+
+    public InfoController(WebMessageUtil webMessageUtil, InfoService infoService, StatisticService statisticService,
+                          SecurityService securityService) {
+        this.webMessageUtil = webMessageUtil;
+        this.infoService = infoService;
+        this.statisticService = statisticService;
+        this.securityService = securityService;
+    }
 
     @GetMapping("/rules")
     public ModelAndView showRules() {

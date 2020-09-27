@@ -4,16 +4,12 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.service.user.UserImportExportService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.admin.ExcelImportController;
-import de.fred4jupiter.fredbet.web.admin.ExcelUploadCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +29,14 @@ public class UserImportExportController {
 
     private static final String CONTENT_TYPE_JSON = "application/json";
 
-    @Autowired
-    private UserImportExportService userImportExportService;
+    private final UserImportExportService userImportExportService;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
+
+    public UserImportExportController(UserImportExportService userImportExportService, WebMessageUtil messageUtil) {
+        this.userImportExportService = userImportExportService;
+        this.messageUtil = messageUtil;
+    }
 
     private static final String REDIRECT_SHOW_PAGE = "redirect:/user/importexport";
 
@@ -78,7 +77,7 @@ public class UserImportExportController {
 
             int importedCount = userImportExportService.importUsers(new String(myFile.getBytes(), StandardCharsets.UTF_8));
 
-            messageUtil.addInfoMsg(redirect, "user.importexport.upload.msg.saved",importedCount);
+            messageUtil.addInfoMsg(redirect, "user.importexport.upload.msg.saved", importedCount);
         } catch (IOException | ExcelReadingException e) {
             LOG.error(e.getMessage(), e);
             messageUtil.addErrorMsg(redirect, "user.importexport.upload.msg.failed", e.getMessage());

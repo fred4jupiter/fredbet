@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.security;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,6 @@ public class PermissionResolverPostProcessor implements BeanPostProcessor {
 
     private final PermissionResolver permissionResolver;
 
-    @Autowired
     public PermissionResolverPostProcessor(PermissionResolver permissionResolver) {
         this.permissionResolver = permissionResolver;
     }

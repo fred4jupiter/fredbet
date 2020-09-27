@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.service.pdf.PdfTableDataBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,17 +18,21 @@ import java.util.stream.Stream;
 @Service
 public class RankingService {
 
-    @Autowired
-    private BetRepository betRepository;
+    private final BetRepository betRepository;
 
-    @Autowired
-    private ChildRelationFetcher childRelationFetcher;
+    private final ChildRelationFetcher childRelationFetcher;
 
-    @Autowired
-    private PdfExportService pdfExportService;
+    private final PdfExportService pdfExportService;
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
+
+    public RankingService(BetRepository betRepository, ChildRelationFetcher childRelationFetcher, PdfExportService pdfExportService,
+                          MessageSourceUtil messageSourceUtil) {
+        this.betRepository = betRepository;
+        this.childRelationFetcher = childRelationFetcher;
+        this.pdfExportService = pdfExportService;
+        this.messageSourceUtil = messageSourceUtil;
+    }
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
         final List<UsernamePoints> rankings = betRepository.calculateRanging();

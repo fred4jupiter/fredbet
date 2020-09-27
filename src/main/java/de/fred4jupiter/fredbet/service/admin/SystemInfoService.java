@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.service.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.core.env.Environment;
@@ -30,7 +29,6 @@ public class SystemInfoService {
 
     private final Optional<GitProperties> gitProperties;
 
-    @Autowired
     public SystemInfoService(BuildProperties buildProperties, Environment environment, Optional<GitProperties> gitProperties) {
         this.buildProperties = buildProperties;
         this.environment = environment;
@@ -52,13 +50,13 @@ public class SystemInfoService {
         }
 
         addSpringProfiles();
-        addEnvProperty("JDBC Driver Class","spring.datasource.hikari.driver-class-name");
-        addEnvProperty("JDBC-URL","spring.datasource.hikari.jdbc-url");
-        addEnvProperty("Image Location","fredbet.image-location");
-        addEnvProperty("Image Size","fredbet.image-size");
-        addEnvProperty("Thumbnail Size","fredbet.thumbnail-size");
-        addEnvProperty("AWS S3 Bucket Name","fredbet.aws-s3bucket-name");
-        addEnvProperty("AWS Region","fredbet.aws-region");
+        addEnvProperty("JDBC Driver Class", "spring.datasource.hikari.driver-class-name");
+        addEnvProperty("JDBC-URL", "spring.datasource.hikari.jdbc-url");
+        addEnvProperty("Image Location", "fredbet.image-location");
+        addEnvProperty("Image Size", "fredbet.image-size");
+        addEnvProperty("Thumbnail Size", "fredbet.thumbnail-size");
+        addEnvProperty("AWS S3 Bucket Name", "fredbet.aws-s3bucket-name");
+        addEnvProperty("AWS Region", "fredbet.aws-region");
     }
 
     public SortedMap<String, Object> fetchSystemInfo() {

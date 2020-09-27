@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 
 /**
  * Security utility class for access in Thymeleaf templates.
@@ -20,11 +19,14 @@ import de.fred4jupiter.fredbet.service.config.RuntimeConfigurationService;
 @Component
 public class WebSecurityUtil {
 
-	@Autowired
-	private RuntimeConfigurationService runtimeConfigurationService;
+	private final RuntimeSettingsService runtimeSettingsService;
 
-	@Autowired
-	private SecurityService securityService;
+	private final SecurityService securityService;
+
+	public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService) {
+		this.runtimeSettingsService = runtimeSettingsService;
+		this.securityService = securityService;
+	}
 
 	public String getCurrentUserProfileImageKey() {
 		return getUserProfileImageKeyFor(securityService.getCurrentUserName());
@@ -63,11 +65,11 @@ public class WebSecurityUtil {
 	 * @return
 	 */
 	public boolean isDemoDataMenuEntryEnabled() {
-		return runtimeConfigurationService.loadRuntimeConfig().isShowDemoDataNavigationEntry();
+		return runtimeSettingsService.loadRuntimeSettings().isShowDemoDataNavigationEntry();
 	}
 
 	public boolean isChangePasswordOnFirstLogin() {
-		return runtimeConfigurationService.loadRuntimeConfig().isChangePasswordOnFirstLogin();
+		return runtimeSettingsService.loadRuntimeSettings().isChangePasswordOnFirstLogin();
 	}
 
 	public String getCurrentUsername() {

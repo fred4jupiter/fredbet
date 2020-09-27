@@ -250,4 +250,8 @@
 		</addColumn>
 	</changeSet>
 
+	<changeSet id="11" author="michael">
+		<renameTable oldTableName="RUNTIME_CONFIG" newTableName="RUNTIME_SETTING"/>
+	</changeSet>
+
 </databaseChangeLog>

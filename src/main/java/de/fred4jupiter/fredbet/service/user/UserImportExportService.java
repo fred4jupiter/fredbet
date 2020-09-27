@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +17,14 @@ public class UserImportExportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserImportExportService.class);
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+    private final AppUserRepository appUserRepository;
 
-    @Autowired
-    private JsonObjectConverter jsonObjectConverter;
+    private final JsonObjectConverter jsonObjectConverter;
+
+    public UserImportExportService(AppUserRepository appUserRepository, JsonObjectConverter jsonObjectConverter) {
+        this.appUserRepository = appUserRepository;
+        this.jsonObjectConverter = jsonObjectConverter;
+    }
 
     public String exportAllUsersToJson() {
         List<AppUser> allUsers = appUserRepository.findAll();

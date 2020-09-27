@@ -5,7 +5,6 @@ spring:
     console:
       # connect in console (http://localhost:8080/console) with jdbcUrl: jdbc:h2:mem:testdb
       enabled: true
-      path: /console
       settings:
         web-allow-others: true
   jpa:

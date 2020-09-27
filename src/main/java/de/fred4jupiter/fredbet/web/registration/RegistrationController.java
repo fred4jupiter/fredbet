@@ -1,9 +1,8 @@
 package de.fred4jupiter.fredbet.web.registration;
 
-import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.registration.RegistrationService;
+import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,11 +19,14 @@ public class RegistrationController {
 
     private static final String REGISTRATION_PAGE = "registration/registration";
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private RegistrationService registrationService;
+    private final RegistrationService registrationService;
+
+    public RegistrationController(WebMessageUtil webMessageUtil, RegistrationService registrationService) {
+        this.webMessageUtil = webMessageUtil;
+        this.registrationService = registrationService;
+    }
 
     @GetMapping
     public String register(Model model) {

@@ -1,101 +1,98 @@
 package de.fred4jupiter.fredbet.repository;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.stereotype.Repository;
-
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Statistic;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.stereotype.Repository;
+
+import java.sql.ResultSet;
+import java.util.*;
 
 @Repository
 public class StatisticRepository {
 
-	@Autowired
-	private NamedParameterJdbcOperations namedParameterJdbcOperations;
+    private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-	public List<Statistic> createStatistic() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Select b.user_name, a.match_group, sum(b.points) ");
-		builder.append("from matches a join bet b on a.match_id = b.match_id ");
-		builder.append("where a.goals_team_one is not null  ");
-		builder.append("and a.goals_team_two is not null  ");
-		builder.append("and b.user_name not like :username ");
-		builder.append("group by b.user_name, a.match_group;");
+    public StatisticRepository(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+        this.namedParameterJdbcOperations = namedParameterJdbcOperations;
+    }
 
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("username", FredbetConstants.TECHNICAL_USERNAME);
+    public List<Statistic> createStatistic() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Select b.user_name, a.match_group, sum(b.points) ");
+        builder.append("from matches a join bet b on a.match_id = b.match_id ");
+        builder.append("where a.goals_team_one is not null  ");
+        builder.append("and a.goals_team_two is not null  ");
+        builder.append("and b.user_name not like :username ");
+        builder.append("group by b.user_name, a.match_group");
 
-		final StatisticsCollector statisticsCollector = new StatisticsCollector();
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("username", FredbetConstants.TECHNICAL_USERNAME);
 
-		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
-			String userName = rs.getString(1);
-			String group = rs.getString(2);
-			int points = rs.getInt(3);
-			statisticsCollector.addValue(userName, group, points);
-		});
+        final StatisticsCollector statisticsCollector = new StatisticsCollector();
 
-		return statisticsCollector.getResult();
-	}
+        namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
+            String userName = rs.getString(1);
+            String group = rs.getString(2);
+            int points = rs.getInt(3);
+            statisticsCollector.addValue(userName, group, points);
+        });
 
-	public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Select a.user_name, sum(a.points) ");
-		builder.append("from bet a join matches b on a.match_id = b.match_id ");
-		builder.append("where b.country_one = :country or b.country_two = :country ");
-		builder.append("group by a.user_name ");
+        return statisticsCollector.getResult();
+    }
 
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("country", favoriteCountry.name());
+    public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Select a.user_name, sum(a.points) ");
+        builder.append("from bet a join matches b on a.match_id = b.match_id ");
+        builder.append("where b.country_one = :country or b.country_two = :country ");
+        builder.append("group by a.user_name ");
 
-		Map<String, Integer> userPoints = new HashMap<>();
-		namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
-			String userName = rs.getString(1);
-			int points = rs.getInt(2);
-			if (!FredbetConstants.TECHNICAL_USERNAME.equals(userName)) {
-				userPoints.put(userName, points);
-			}
-		});
-		return userPoints;
-	}
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("country", favoriteCountry.name());
 
-	private static final class StatisticsCollector {
+        Map<String, Integer> userPoints = new HashMap<>();
+        namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
+            String userName = rs.getString(1);
+            int points = rs.getInt(2);
+            if (!FredbetConstants.TECHNICAL_USERNAME.equals(userName)) {
+                userPoints.put(userName, points);
+            }
+        });
+        return userPoints;
+    }
 
-		private TreeMap<String, Statistic> statisticsMap = new TreeMap<>();
+    private static final class StatisticsCollector {
 
-		public void addValue(String username, String group, Integer points) {
-			Statistic statistic = statisticsMap.get(username);
-			if (statistic == null) {
-				statistic = new Statistic(username);
-			}
-			if (group.startsWith("GROUP")) {
-				statistic.setPointsGroup(statistic.getPointsGroup() + points);
-			} else if (Group.ROUND_OF_SIXTEEN.getName().equals(group)) {
-				statistic.setPointsRoundOfSixteen(points);
-			} else if (Group.QUARTER_FINAL.getName().equals(group)) {
-				statistic.setPointsQuarterFinal(points);
-			} else if (Group.SEMI_FINAL.getName().equals(group)) {
-				statistic.setPointsSemiFinal(points);
-			} else if (Group.FINAL.getName().equals(group)) {
-				statistic.setPointsFinal(points);
-			} else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
-				statistic.setPointsGameForThird(points);
-			}
-			statisticsMap.put(username, statistic);
-		}
+        private final TreeMap<String, Statistic> statisticsMap = new TreeMap<>();
 
-		public List<Statistic> getResult() {
-			return new ArrayList<>(statisticsMap.values());
-		}
-	}
+        public void addValue(String username, String group, Integer points) {
+            Statistic statistic = statisticsMap.get(username);
+            if (statistic == null) {
+                statistic = new Statistic(username);
+            }
+            if (group.startsWith("GROUP")) {
+                statistic.setPointsGroup(statistic.getPointsGroup() + points);
+            } else if (Group.ROUND_OF_SIXTEEN.getName().equals(group)) {
+                statistic.setPointsRoundOfSixteen(points);
+            } else if (Group.QUARTER_FINAL.getName().equals(group)) {
+                statistic.setPointsQuarterFinal(points);
+            } else if (Group.SEMI_FINAL.getName().equals(group)) {
+                statistic.setPointsSemiFinal(points);
+            } else if (Group.FINAL.getName().equals(group)) {
+                statistic.setPointsFinal(points);
+            } else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
+                statistic.setPointsGameForThird(points);
+            }
+            statisticsMap.put(username, statistic);
+        }
+
+        public List<Statistic> getResult() {
+            return new ArrayList<>(statisticsMap.values());
+        }
+    }
 
 }

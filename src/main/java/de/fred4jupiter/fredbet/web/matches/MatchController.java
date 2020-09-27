@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +18,17 @@ public class MatchController {
 
     private static final String VIEW_LIST_MATCHES = "matches/list";
 
-    @Autowired
-    private SecurityService securityBean;
+    private final SecurityService securityBean;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-    @Autowired
-    private MatchCommandMapper matchCommandMapper;
+    private final MatchCommandMapper matchCommandMapper;
+
+    public MatchController(SecurityService securityBean, WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper) {
+        this.securityBean = securityBean;
+        this.messageUtil = messageUtil;
+        this.matchCommandMapper = matchCommandMapper;
+    }
 
     @GetMapping
     public String listAllMatches(Model model) {

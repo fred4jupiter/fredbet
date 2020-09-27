@@ -1,21 +1,22 @@
 package de.fred4jupiter.fredbet.service.admin;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AdministrationService {
 
-	@Autowired
-	private AppUserRepository appUserRepository;
-	
-	public List<AppUser> fetchLastLoginUsers() {
-		return appUserRepository.fetchLastLoginUsers();
-	}
+    private final AppUserRepository appUserRepository;
+
+    public AdministrationService(AppUserRepository appUserRepository) {
+        this.appUserRepository = appUserRepository;
+    }
+
+    public List<AppUser> fetchLastLoginUsers() {
+        return appUserRepository.fetchLastLoginUsers();
+    }
 
 }

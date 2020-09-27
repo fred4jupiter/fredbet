@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.service.standings;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,14 @@ import java.util.stream.Collectors;
 @Service
 public class StandingsService {
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
+
+    public StandingsService(MatchService matchService, MessageSourceUtil messageSourceUtil) {
+        this.matchService = matchService;
+        this.messageSourceUtil = messageSourceUtil;
+    }
 
     public StandingsContainer calculateStandings(Locale locale) {
         final StandingsContainer standingsContainer = new StandingsContainer(messageSourceUtil);

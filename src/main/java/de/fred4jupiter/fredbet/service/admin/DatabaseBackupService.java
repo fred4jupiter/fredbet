@@ -1,73 +1,75 @@
 package de.fred4jupiter.fredbet.service.admin;
 
+import de.fred4jupiter.fredbet.domain.DatabaseBackup;
+import de.fred4jupiter.fredbet.repository.DatabaseBackupRepository;
+import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
+import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException.ErrorCode;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
-
-import de.fred4jupiter.fredbet.domain.DatabaseBackup;
-import de.fred4jupiter.fredbet.repository.DatabaseBackupRepository;
-import de.fred4jupiter.fredbet.repository.RuntimeConfigRepository;
-import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException.ErrorCode;
-
 @Service
 public class DatabaseBackupService {
 
-	@Autowired
-	private DatabaseBackupRepository databaseBackupRepository;
+    private static final Long DATABASE_BACKUP_CONFIG_ID = 2L;
 
-	@Autowired
-	private RuntimeConfigRepository<DatabaseBackup> runtimeConfigRepository;
+    private final DatabaseBackupRepository databaseBackupRepository;
 
-	@Autowired
-	private Environment environment;
+    private final RuntimeSettingsRepository<DatabaseBackup> runtimeSettingsRepository;
 
-	private static final Long DATABASE_BACKUP_CONFIG_ID = 2L;
+    private final Environment environment;
 
-	public String executeBackup() {
-		String driverClassName = this.environment.getProperty("spring.datasource.hikari.driver-class-name");
-		if (StringUtils.isNotBlank(driverClassName) && !driverClassName.contains("h2")) {
-			throw new DatabaseBackupCreationException("Database of driver=" + driverClassName + " is not supported for backup!",
-					ErrorCode.UNSUPPORTED_DATABASE_TYPE);
-		}
+    public DatabaseBackupService(DatabaseBackupRepository databaseBackupRepository,
+                                 RuntimeSettingsRepository<DatabaseBackup> runtimeSettingsRepository, Environment environment) {
+        this.databaseBackupRepository = databaseBackupRepository;
+        this.runtimeSettingsRepository = runtimeSettingsRepository;
+        this.environment = environment;
+    }
 
-		String jdbcUrl = this.environment.getProperty("spring.datasource.hikari.jdbc-url");
+    public String executeBackup() {
+        String driverClassName = this.environment.getProperty("spring.datasource.hikari.driver-class-name");
+        if (StringUtils.isNotBlank(driverClassName) && !driverClassName.contains("h2")) {
+            throw new DatabaseBackupCreationException("Database of driver=" + driverClassName + " is not supported for backup!",
+                    ErrorCode.UNSUPPORTED_DATABASE_TYPE);
+        }
 
-		if (StringUtils.isNotBlank(jdbcUrl) && jdbcUrl.contains("h2:mem")) {
-			throw new DatabaseBackupCreationException("Could not create a database backup of H2 in-memory databases!",
-					ErrorCode.IN_MEMORY_NOT_SUPPORTED);
-		}
+        String jdbcUrl = this.environment.getProperty("spring.datasource.hikari.jdbc-url");
 
-		String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        if (StringUtils.isNotBlank(jdbcUrl) && jdbcUrl.contains("h2:mem")) {
+            throw new DatabaseBackupCreationException("Could not create a database backup of H2 in-memory databases!",
+                    ErrorCode.IN_MEMORY_NOT_SUPPORTED);
+        }
 
-		DatabaseBackup databaseBackup = loadDatabaseBackup();
-		String fileName = formattedDateTime + "_fredbetdb_bkp.zip";
-		String pathFilename = databaseBackup.getDatabaseBackupFolder() + File.separator + fileName;
-		databaseBackupRepository.executeBackup(pathFilename);
-		return pathFilename;
-	}
+        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 
-	private String determineDefaultBackupFolder() {
-		String userHomeFolder = System.getProperty("user.home");
-		return userHomeFolder + File.separator + "fredbet";
-	}
+        DatabaseBackup databaseBackup = loadDatabaseBackup();
+        String fileName = formattedDateTime + "_fredbetdb_bkp.zip";
+        String pathFilename = databaseBackup.getDatabaseBackupFolder() + File.separator + fileName;
+        databaseBackupRepository.executeBackup(pathFilename);
+        return pathFilename;
+    }
 
-	public DatabaseBackup loadDatabaseBackup() {
-		DatabaseBackup databaseBackup = runtimeConfigRepository.loadRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
-		if (databaseBackup == null) {
-			databaseBackup = new DatabaseBackup();
-			databaseBackup.setDatabaseBackupFolder(determineDefaultBackupFolder());
-		}
-		return databaseBackup;
-	}
+    private String determineDefaultBackupFolder() {
+        String userHomeFolder = System.getProperty("user.home");
+        return userHomeFolder + File.separator + "fredbet";
+    }
 
-	public void saveBackupFolder(String backupFolder) {
-		DatabaseBackup databaseBackup = loadDatabaseBackup();
-		databaseBackup.setDatabaseBackupFolder(backupFolder);
-		runtimeConfigRepository.saveRuntimeConfig(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
-	}
+    public DatabaseBackup loadDatabaseBackup() {
+        DatabaseBackup databaseBackup = runtimeSettingsRepository.loadRuntimeSettings(DATABASE_BACKUP_CONFIG_ID, DatabaseBackup.class);
+        if (databaseBackup == null) {
+            databaseBackup = new DatabaseBackup();
+            databaseBackup.setDatabaseBackupFolder(determineDefaultBackupFolder());
+        }
+        return databaseBackup;
+    }
+
+    public void saveBackupFolder(String backupFolder) {
+        DatabaseBackup databaseBackup = loadDatabaseBackup();
+        databaseBackup.setDatabaseBackupFolder(backupFolder);
+        runtimeSettingsRepository.saveRuntimeSettings(DATABASE_BACKUP_CONFIG_ID, databaseBackup);
+    }
 }

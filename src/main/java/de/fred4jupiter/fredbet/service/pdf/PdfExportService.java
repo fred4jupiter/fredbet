@@ -9,7 +9,6 @@ import com.lowagie.text.pdf.PdfWriter;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -26,11 +25,14 @@ public class PdfExportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PdfExportService.class);
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
 
-    @Autowired
-    private FontCreator fontCreator;
+    private final FontCreator fontCreator;
+
+    public PdfExportService(MessageSourceUtil messageSourceUtil, FontCreator fontCreator) {
+        this.messageSourceUtil = messageSourceUtil;
+        this.fontCreator = fontCreator;
+    }
 
     public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, RowCallback<T> rowCallback) {
         final PdfTableData pdfTableData = pdfTableDataBuilder.build();

@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web.calendar;
 
 import de.fred4jupiter.fredbet.service.calendar.IcsCalendarService;
 import de.fred4jupiter.fredbet.service.calendar.IcsFile;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,8 +15,11 @@ public class IcsCalendarController {
 
     private static final String CONTENT_TYPE = "text/calendar";
 
-    @Autowired
-    private IcsCalendarService icsCalendarService;
+    private final IcsCalendarService icsCalendarService;
+
+    public IcsCalendarController(IcsCalendarService icsCalendarService) {
+        this.icsCalendarService = icsCalendarService;
+    }
 
     @RequestMapping(value = "/{matchId}", method = RequestMethod.GET, produces = CONTENT_TYPE)
     public ResponseEntity<byte[]> downloadIcsCalendarFile(@PathVariable("matchId") Long matchId) {

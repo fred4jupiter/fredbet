@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -25,8 +24,11 @@ public class WebMessageUtil {
 
     private static final String CSS_ALT_SUCCESS = "alert-success";
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
+
+    public WebMessageUtil(MessageSourceUtil messageSourceUtil) {
+        this.messageSourceUtil = messageSourceUtil;
+    }
 
     public void addInfoMsg(RedirectAttributes redirect, String msgKey, Object... params) {
         String message = getMessageFor(msgKey, params);

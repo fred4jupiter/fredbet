@@ -10,7 +10,6 @@ import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -34,17 +33,21 @@ public class CreateEditMatchController {
 
     private static final String VIEW_EDIT_MATCH = "matches/edit";
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private CountryService countryService;
+    private final CountryService countryService;
 
-    @Autowired
-    private BettingService bettingService;
+    private final BettingService bettingService;
+
+    public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService, CountryService countryService,
+                                     BettingService bettingService) {
+        this.webMessageUtil = webMessageUtil;
+        this.matchService = matchService;
+        this.countryService = countryService;
+        this.bettingService = bettingService;
+    }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
     @GetMapping("/create")

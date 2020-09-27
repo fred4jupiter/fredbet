@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
@@ -39,11 +38,14 @@ public class MatchService {
      */
     private static final int HOURS_SHOW_UPCOMING_GROUP_MATCHES = 2;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher) {
+        this.matchRepository = matchRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
 
     public List<Match> findAll() {
         return matchRepository.findAll();

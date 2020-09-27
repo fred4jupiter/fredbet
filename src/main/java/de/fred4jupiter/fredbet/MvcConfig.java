@@ -6,8 +6,6 @@ import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy;
-import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +22,11 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private WebSecurityUtil webSecurityUtil;
+    private final WebSecurityUtil webSecurityUtil;
+
+    public MvcConfig(WebSecurityUtil webSecurityUtil) {
+        this.webSecurityUtil = webSecurityUtil;
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

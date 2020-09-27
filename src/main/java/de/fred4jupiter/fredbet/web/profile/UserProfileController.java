@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,17 +27,21 @@ public class UserProfileController {
 
     private static final String CHANGE_USERNAME_PAGE = "profile/change_username";
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private WebSecurityUtil webSecurityUtil;
+    private final WebSecurityUtil webSecurityUtil;
+
+    public UserProfileController(UserService userService, WebMessageUtil webMessageUtil, SecurityService securityService,
+                                 WebSecurityUtil webSecurityUtil) {
+        this.userService = userService;
+        this.webMessageUtil = webMessageUtil;
+        this.securityService = securityService;
+        this.webSecurityUtil = webSecurityUtil;
+    }
 
     @GetMapping("/changePassword")
     public String changePassword(@ModelAttribute ChangePasswordCommand changePasswordCommand, Model model) {
@@ -85,8 +88,7 @@ public class UserProfileController {
             webMessageUtil.addErrorMsg(model, "user.username.duplicate");
             model.addAttribute("changeUsernameCommand", changeUsernameCommand);
             return "profile/change_username";
-        }
-        catch (RenameUsernameNotAllowedException e) {
+        } catch (RenameUsernameNotAllowedException e) {
             webMessageUtil.addErrorMsg(model, "user.username.changeNotAllowed");
             model.addAttribute("changeUsernameCommand", changeUsernameCommand);
             return "profile/change_username";

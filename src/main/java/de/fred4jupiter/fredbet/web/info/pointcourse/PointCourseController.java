@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.excel.PointCourseContainer;
 import de.fred4jupiter.fredbet.service.excel.ReportService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/pointcourse")
 public class PointCourseController {
 
-    @Autowired
-    private ReportService reportService;
+    private final ReportService reportService;
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
+
+    public PointCourseController(ReportService reportService, WebMessageUtil webMessageUtil, SecurityService securityService) {
+        this.reportService = reportService;
+        this.webMessageUtil = webMessageUtil;
+        this.securityService = securityService;
+    }
 
     @GetMapping("/show")
     public String showPage(Model model) {

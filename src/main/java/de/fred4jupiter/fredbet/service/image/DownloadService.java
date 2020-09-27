@@ -1,74 +1,75 @@
 package de.fred4jupiter.fredbet.service.image;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class DownloadService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DownloadService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DownloadService.class);
 
-	@Autowired
-	private ImageLocationStrategy imageLocationService;
+    private final ImageLocationStrategy imageLocationService;
 
-	public byte[] downloadAllImagesAsZipFile() {
-		List<BinaryImage> allImages = imageLocationService.findAllImages();
-		if (allImages.isEmpty()) {
-			return null;
-		}
+    public DownloadService(ImageLocationStrategy imageLocationService) {
+        this.imageLocationService = imageLocationService;
+    }
 
-		return compressToZipFile(allImages);
-	}
+    public byte[] downloadAllImagesAsZipFile() {
+        List<BinaryImage> allImages = imageLocationService.findAllImages();
+        if (allImages.isEmpty()) {
+            return null;
+        }
 
-	byte[] compressToZipFile(List<BinaryImage> allImages) {
-		try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-				ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream(byteOut);) {
+        return compressToZipFile(allImages);
+    }
 
-			zipOutput.setEncoding("UTF-8");
+    byte[] compressToZipFile(List<BinaryImage> allImages) {
+        try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+             ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream(byteOut);) {
 
-			for (int i = 0; i < allImages.size(); i++) {
-				BinaryImage image = allImages.get(i);
-				String fileName = createEntryFileName(image, i + 1);
-				ZipArchiveEntry entry = new ZipArchiveEntry(fileName);
-				entry.setSize(image.getImageBinary().length);
-				zipOutput.putArchiveEntry(entry);
-				copyToOutputStream(zipOutput, image.getImageBinary());
-				zipOutput.closeArchiveEntry();
-			}
-			zipOutput.close();
-			return byteOut.toByteArray();
-		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-			return null;
-		}
-	}
+            zipOutput.setEncoding("UTF-8");
 
-	private void copyToOutputStream(ZipArchiveOutputStream zipOutput, byte[] data) throws IOException {
-		try (ByteArrayInputStream entryInputStream = new ByteArrayInputStream(data)) {
-			IOUtils.copy(entryInputStream, zipOutput);
-		}
-	}
+            for (int i = 0; i < allImages.size(); i++) {
+                BinaryImage image = allImages.get(i);
+                String fileName = createEntryFileName(image, i + 1);
+                ZipArchiveEntry entry = new ZipArchiveEntry(fileName);
+                entry.setSize(image.getImageBinary().length);
+                zipOutput.putArchiveEntry(entry);
+                copyToOutputStream(zipOutput, image.getImageBinary());
+                zipOutput.closeArchiveEntry();
+            }
+            zipOutput.close();
+            return byteOut.toByteArray();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            return null;
+        }
+    }
 
-	private String createEntryFileName(BinaryImage image, int index) {
-		String fileName = FilenameUtils.getName(image.getKey());
-		if (!FilenameUtils.isExtension(fileName, FredbetConstants.IMAGE_JPG_EXTENSION)) {
-			return fileName + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT;
-		}
-		return fileName;
-	}
+    private void copyToOutputStream(ZipArchiveOutputStream zipOutput, byte[] data) throws IOException {
+        try (ByteArrayInputStream entryInputStream = new ByteArrayInputStream(data)) {
+            IOUtils.copy(entryInputStream, zipOutput);
+        }
+    }
+
+    private String createEntryFileName(BinaryImage image, int index) {
+        String fileName = FilenameUtils.getName(image.getKey());
+        if (!FilenameUtils.isExtension(fileName, FredbetConstants.IMAGE_JPG_EXTENSION)) {
+            return fileName + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT;
+        }
+        return fileName;
+    }
 
 }

@@ -12,7 +12,6 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -41,17 +40,20 @@ public class UserController {
 
     private static final String REDIRECT_USER_PAGE = "redirect:/user";
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private WebSecurityUtil webSecurityUtil;
+    private final WebSecurityUtil webSecurityUtil;
+
+    public UserController(UserService userService, WebMessageUtil webMessageUtil, SecurityService securityService, WebSecurityUtil webSecurityUtil) {
+        this.userService = userService;
+        this.webMessageUtil = webMessageUtil;
+        this.securityService = securityService;
+        this.webSecurityUtil = webSecurityUtil;
+    }
 
     @ModelAttribute("availableRoles")
     public List<String> availableRoles() {

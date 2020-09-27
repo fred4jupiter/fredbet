@@ -34,14 +34,18 @@ public class ExcelImportController {
 
     private static final String REDIRECT_SHOW_PAGE = "redirect:/excelimport/show";
 
-    @Autowired
-    private ExcelImportService excelImportService;
+    private final ExcelImportService excelImportService;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-    @Value("classpath:/excelimport/ImportTemplate.xlsx")
-    private Resource excelTemplateFile;
+    private final Resource excelTemplateFile;
+
+    public ExcelImportController(ExcelImportService excelImportService, WebMessageUtil messageUtil,
+                                 @Value("classpath:/excelimport/ImportTemplate.xlsx") Resource excelTemplateFile) {
+        this.excelImportService = excelImportService;
+        this.messageUtil = messageUtil;
+        this.excelTemplateFile = excelTemplateFile;
+    }
 
     @ModelAttribute("excelUploadCommand")
     public ExcelUploadCommand initExcelUploadCommand() {

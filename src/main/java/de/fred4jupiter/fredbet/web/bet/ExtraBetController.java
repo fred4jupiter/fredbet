@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,20 +22,24 @@ import java.util.List;
 @RequestMapping("/extra_bets")
 public class ExtraBetController {
 
-    @Autowired
-    private BettingService bettingService;
+    private final BettingService bettingService;
 
-    @Autowired
-    private ExtraBetCommandMapper extraBetCommandMapper;
+    private final ExtraBetCommandMapper extraBetCommandMapper;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-    @Autowired
-    private CountryService countryService;
+    private final CountryService countryService;
+
+    public ExtraBetController(BettingService bettingService, ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
+                              WebMessageUtil messageUtil, CountryService countryService) {
+        this.bettingService = bettingService;
+        this.extraBetCommandMapper = extraBetCommandMapper;
+        this.securityService = securityService;
+        this.messageUtil = messageUtil;
+        this.countryService = countryService;
+    }
 
     @ModelAttribute("availableCountriesExtraBets")
     public List<Country> availableCountriesExtraBets() {

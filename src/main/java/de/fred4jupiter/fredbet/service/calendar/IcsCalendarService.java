@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.util.IcsCalendarBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -18,11 +17,14 @@ public class IcsCalendarService {
 
     private static final Logger LOG = LoggerFactory.getLogger(IcsCalendarService.class);
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
+
+    public IcsCalendarService(MatchService matchService, MessageSourceUtil messageSourceUtil) {
+        this.matchService = matchService;
+        this.messageSourceUtil = messageSourceUtil;
+    }
 
     public IcsFile createCalendarEventFromMatch(Long matchId, Locale locale) {
         Match match = matchService.findByMatchId(matchId);

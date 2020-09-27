@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,11 +13,14 @@ import java.util.stream.Collectors;
 @Service
 public class CountryService {
 
-    @Autowired
-    private MessageSourceUtil messageSourceUtil;
+    private final MessageSourceUtil messageSourceUtil;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
+
+    public CountryService(MessageSourceUtil messageSourceUtil, MatchRepository matchRepository) {
+        this.messageSourceUtil = messageSourceUtil;
+        this.matchRepository = matchRepository;
+    }
 
     public List<Country> getAvailableCountriesSortedWithNoneEntryByLocale(Locale locale, Group group) {
         final LinkedList<Country> result = new LinkedList<>();

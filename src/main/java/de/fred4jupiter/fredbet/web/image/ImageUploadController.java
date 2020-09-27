@@ -9,12 +9,10 @@ import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -28,17 +26,21 @@ public class ImageUploadController {
 
     private static final Logger log = LoggerFactory.getLogger(ImageUploadController.class);
 
-    @Autowired
-    private ImageAdministrationService imageAdministrationService;
+    private final ImageAdministrationService imageAdministrationService;
 
-    @Autowired
-    private WebMessageUtil messageUtil;
+    private final WebMessageUtil messageUtil;
 
-    @Autowired
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    @Autowired
-    private ImageCommandMapper imageCommandMapper;
+    private final ImageCommandMapper imageCommandMapper;
+
+    public ImageUploadController(ImageAdministrationService imageAdministrationService, WebMessageUtil messageUtil,
+                                 SecurityService securityService, ImageCommandMapper imageCommandMapper) {
+        this.imageAdministrationService = imageAdministrationService;
+        this.messageUtil = messageUtil;
+        this.securityService = securityService;
+        this.imageCommandMapper = imageCommandMapper;
+    }
 
     @ModelAttribute("availableImages")
     public List<ImageCommand> availableImages() {
@@ -113,10 +115,6 @@ public class ImageUploadController {
             return true;
         }
 
-        if (imageAdministrationService.isImageOfUser(imageKey, appUser)) {
-            return true;
-        }
-
-        return false;
+        return imageAdministrationService.isImageOfUser(imageKey, appUser);
     }
 }

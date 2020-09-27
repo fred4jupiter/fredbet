@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.service.admin.DatabaseBackupService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +25,14 @@ public class DatabaseBackupController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseBackupController.class);
 
-    @Autowired
-    private WebMessageUtil webMessageUtil;
+    private final WebMessageUtil webMessageUtil;
 
-    @Autowired
-    private DatabaseBackupService databaseBackupService;
+    private final DatabaseBackupService databaseBackupService;
+
+    public DatabaseBackupController(WebMessageUtil webMessageUtil, DatabaseBackupService databaseBackupService) {
+        this.webMessageUtil = webMessageUtil;
+        this.databaseBackupService = databaseBackupService;
+    }
 
     @ModelAttribute("databaseBackupCommand")
     public DatabaseBackupCommand initBackupCommand() {
