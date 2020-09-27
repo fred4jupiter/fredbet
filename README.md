@@ -177,7 +177,7 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Excel-Templates with matches are prepared for import:
 
-*  ![EM 2020](src/excel_templates/EM_2020.xlsx?raw=true "EM 2020")
+*  ![EM 2021](src/excel_templates/EM_2021.xlsx?raw=true "EM 2021")
 
 ## Screenshots
 
