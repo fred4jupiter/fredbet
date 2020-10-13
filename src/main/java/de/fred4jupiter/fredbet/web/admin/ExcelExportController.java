@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +36,7 @@ public class ExcelExportController {
             return ResponseEntity.notFound().build();
         }
 
-        return createResponseEntity(fileName, fileContent);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
     }
 
     @GetMapping(value = "/extraBets", produces = CONTENT_TYPE_EXCEL)
@@ -47,7 +47,7 @@ public class ExcelExportController {
             return ResponseEntity.notFound().build();
         }
 
-        return createResponseEntity(fileName, fileContent);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
     }
 
     @GetMapping(value = "/pointsCount", produces = CONTENT_TYPE_EXCEL)
@@ -58,7 +58,7 @@ public class ExcelExportController {
             return ResponseEntity.notFound().build();
         }
 
-        return createResponseEntity(fileName, fileContent);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
     }
 
     @GetMapping(value = "/ranking", produces = CONTENT_TYPE_EXCEL)
@@ -69,11 +69,6 @@ public class ExcelExportController {
             return ResponseEntity.notFound().build();
         }
 
-        return createResponseEntity(fileName, fileContent);
-    }
-
-    private ResponseEntity<byte[]> createResponseEntity(final String fileName, byte[] fileContent) {
-        return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
-                .header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(fileContent);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
     }
 }

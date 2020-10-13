@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.DownloadService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,8 +85,7 @@ public class ImageGalleryController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().header("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE)
-                .header("Content-Disposition", "inline; filename=\"" + zipFileName + "\"").body(zipFile);
+        return ResponseEntityUtil.createResponseEntity(zipFileName, zipFile, MediaType.APPLICATION_OCTET_STREAM_VALUE);
     }
 
     private ResponseEntity<byte[]> createResponseEntityForImageId(String imageKey, WebRequest webRequest,

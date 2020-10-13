@@ -3,17 +3,16 @@ package de.fred4jupiter.fredbet.web.admin;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ExcelImportService;
 import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,15 +69,14 @@ public class ExcelImportController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_EXCEL)
-                .header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(fileContent);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String uploadExcelFile(ExcelUploadCommand excelUploadCommand, BindingResult result, RedirectAttributes redirect) {
+    public String uploadExcelFile(ExcelUploadCommand excelUploadCommand, RedirectAttributes redirect) {
         try {
             MultipartFile myFile = excelUploadCommand.getMyFile();
-            if (myFile == null || myFile.getBytes() == null || myFile.getBytes().length == 0) {
+            if (myFile == null || myFile.getBytes().length == 0) {
                 messageUtil.addErrorMsg(redirect, "excel.upload.msg.noFileGiven");
                 return REDIRECT_SHOW_PAGE;
             }

@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.ranking;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.ranking.RankingService;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -52,16 +53,11 @@ public class RankingController {
             return ResponseEntity.notFound().build();
         }
 
-        return createResponseEntity(fileName, fileContent);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.INLINE);
     }
 
     private String createFilename() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmSS")) + "_FredBet-Ranking.pdf";
-    }
-
-    private ResponseEntity<byte[]> createResponseEntity(final String fileName, byte[] fileContent) {
-        return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_PDF)
-                .header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(fileContent);
     }
 
     private String queryRanking(Model model, RankingSelection rankingSelection) {

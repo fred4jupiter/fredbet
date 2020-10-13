@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.user;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.service.user.UserImportExportService;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ public class UserImportExportController {
             return ResponseEntity.notFound().build();
         }
 
-        return createResponseEntity(fileName, json.getBytes(StandardCharsets.UTF_8));
+        return ResponseEntityUtil.createResponseEntity(fileName, json.getBytes(StandardCharsets.UTF_8), CONTENT_TYPE_JSON);
     }
 
     @RequestMapping(value = "/import", method = RequestMethod.POST)
@@ -85,11 +86,4 @@ public class UserImportExportController {
 
         return REDIRECT_SHOW_PAGE;
     }
-
-    private ResponseEntity<byte[]> createResponseEntity(final String fileName, byte[] fileContent) {
-        return ResponseEntity.ok().header("Content-Type", CONTENT_TYPE_JSON)
-                .header("Content-Disposition", "inline; filename=\"" + fileName + "\"").body(fileContent);
-    }
-
-
 }
