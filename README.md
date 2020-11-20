@@ -9,7 +9,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - simple betting of football championchips
 - responsive design (mobile first design)
 - extra betting of 1st, 2nd and 3rd winner
-- image gallery (image storage support: filesystem, database, AWS S3)
+- image gallery (image storage support: filesystem, database)
 - user profile image
 - multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
 - integrated user administration
@@ -84,12 +84,8 @@ These properties has to be set at application startup.
 | spring.profiles.active | h2 | Active Spring profile at startup. Possible values: `h2,dev,maria,mysql,postgres`. Use profile `prod` for real productive setup. |
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
-| fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE, AWS_S3` |
+| fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE` |
 | fredbet.image-file-system-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
-| fredbet.aws-s3bucket-name | fredbet | Name of the AWS bucket if the image location is set to AWS_S3. |
-| fredbet.aws-access-key | -- | Your AWS access key if the image location is set to AWS_S3. |
-| fredbet.aws-secret-key | -- | Your AWS secret key if the image location is set to AWS_S3. |
-| fredbet.aws-region | eu-central-1 | Name of the AWS bucket if the image location is set to AWS_S3. |
 | fredbet.default-language | de | The default language you prefer. |
 
 Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.
@@ -129,30 +125,13 @@ Some configuration parameters are configurable at runtime. You has to be adminis
 
 ## Production Environment
 
-FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. Typically you run the docker container in EC2 container service (ECS) with these environment properties while storing the images of the image gallery in S3:
+FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. Typically you run the docker container in EC2 container service (ECS) with these environment properties:
 
 | Key | Value | Description |
 |--------|--------|--------|
 | spring.profiles.active | e.g. postgres | see section `Driver class names` |
-| fredbet.image-location | AWS_S3 |  |
-| fredbet.aws-s3bucket-name | fredbet | Or any other name for your S3 bucket. |
 
 Other properties depend on your production setup (see possible properties above). Add also the properties for your database connection (see above).
-
-The policy to access your S3 bucket will look like this:
-
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "s3:*",
-            "Resource": "arn:aws:s3:::<BUCKET_NAME>/*"
-        }
-    ]
-}
-```
 
 ## Hints
 

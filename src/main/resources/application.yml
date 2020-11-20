@@ -50,13 +50,9 @@ management:
 fredbet:
   image-size: 1920
   thumbnail-size: 75
-  image-location: file_system
+  image-location: database
   # set folder where you want to store images to (defaults to user home dir)
   image-file-system-base-folder:
-  aws-s3bucket-name: fredbet
-  aws-access-key:
-  aws-secret-key:
-  aws-region: eu-central-1
   default-language: de
   create-demo-data: false
 

@@ -38,17 +38,6 @@ public class FredbetProperties {
      */
     private String imageFileSystemBaseFolder;
 
-    /**
-     * The AWS S3 bucket name to use to store images in.
-     */
-    private String awsS3bucketName;
-
-    private String awsAccessKey;
-
-    private String awsSecretKey;
-
-    private String awsRegion;
-
     private String defaultLanguage;
 
     private boolean createDemoData;
@@ -77,13 +66,6 @@ public class FredbetProperties {
         this.imageLocation = imageLocation;
     }
 
-    public String getAwsS3bucketName() {
-        return awsS3bucketName;
-    }
-
-    public void setAwsS3bucketName(String awsS3bucketName) {
-        this.awsS3bucketName = awsS3bucketName;
-    }
 
     @Override
     public String toString() {
@@ -93,7 +75,6 @@ public class FredbetProperties {
         builder.append("imageLocation", imageLocation);
 
         builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
-        builder.append("awsS3bucketName", awsS3bucketName);
         return builder.toString();
     }
 
@@ -103,30 +84,6 @@ public class FredbetProperties {
 
     public void setImageFileSystemBaseFolder(String imageFileSystemBaseFolder) {
         this.imageFileSystemBaseFolder = imageFileSystemBaseFolder;
-    }
-
-    public String getAwsAccessKey() {
-        return awsAccessKey;
-    }
-
-    public void setAwsAccessKey(String awsAccessKey) {
-        this.awsAccessKey = awsAccessKey;
-    }
-
-    public String getAwsSecretKey() {
-        return awsSecretKey;
-    }
-
-    public void setAwsSecretKey(String awsSecretKey) {
-        this.awsSecretKey = awsSecretKey;
-    }
-
-    public String getAwsRegion() {
-        return awsRegion;
-    }
-
-    public void setAwsRegion(String awsRegion) {
-        this.awsRegion = awsRegion;
     }
 
     public Locale getDefaultLocale() {
