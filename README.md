@@ -84,7 +84,7 @@ These properties has to be set at application startup.
 | spring.profiles.active | h2 | Active Spring profile at startup. Possible values: `h2,dev,maria,mysql,postgres`. Use profile `prod` for real productive setup. |
 | fredbet.image-size | 1920 | Pixel length side for storing images in photo gallery. |
 | fredbet.thumbnail-size | 75 | Pixel length side for storing thumbnail images. |
-| fredbet.image-location | FILE_SYSTEM | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE` |
+| fredbet.image-location | DATABASE | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE` |
 | fredbet.image-file-system-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
 | fredbet.default-language | de | The default language you prefer. |
 
