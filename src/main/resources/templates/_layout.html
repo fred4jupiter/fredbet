@@ -19,7 +19,7 @@
 	</head>
 	<body>
 		<nav th:replace="~{_navigation :: menu}"></nav>
-		<div class="container" role="main">		
+		<div class="container" role="main">
 			<div layout:fragment="content" class="container" role="main">Content Placeholder</div>
 		</div>
 		<script type="text/javascript" th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
@@ -27,6 +27,8 @@
 		<script type="text/javascript" th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap-confirmation.min.js}"></script>
 		<script type="text/javascript" th:src="@{/lightbox/js/lightbox.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/compressjs/compress.js}"></script>
+
 		<th:block layout:fragment="scripts"></th:block>
 	</body>
 </html>

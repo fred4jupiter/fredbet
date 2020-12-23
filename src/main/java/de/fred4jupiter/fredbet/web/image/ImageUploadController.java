@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -71,26 +73,22 @@ public class ImageUploadController {
 
     @PostMapping("/upload")
     public String uploadImage(ImageUploadCommand imageUploadCommand, RedirectAttributes redirect) {
-        try {
-            MultipartFile myFile = imageUploadCommand.getMyFile();
-            if (myFile == null || myFile.getBytes().length == 0) {
-                messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
-                return REDIRECT_SHOW_PAGE;
-            }
-
-            if (!MediaType.IMAGE_JPEG_VALUE.equals(myFile.getContentType())) {
-                messageUtil.addErrorMsg(redirect, "image.upload.msg.noJpegImage");
-                return REDIRECT_SHOW_PAGE;
-            }
-
-            final ImageGroup imageGroup = imageAdministrationService.createOrFetchImageGroup(imageUploadCommand.getGalleryGroup());
-            imageAdministrationService.saveImage(myFile.getBytes(), imageGroup.getId(), imageUploadCommand.getDescription(),
-                    imageUploadCommand.getRotation());
-            messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
+        if (StringUtils.isBlank(imageUploadCommand.getMyFileBase64())) {
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+            return REDIRECT_SHOW_PAGE;
         }
+
+        final byte[] imageByte = Base64.getDecoder().decode(imageUploadCommand.getMyFileBase64().split(",")[1]);
+
+        if (imageByte.length == 0) {
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+            return REDIRECT_SHOW_PAGE;
+        }
+
+        final ImageGroup imageGroup = imageAdministrationService.createOrFetchImageGroup(imageUploadCommand.getGalleryGroup());
+        imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription(),
+                imageUploadCommand.getRotation());
+        messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 
         return REDIRECT_SHOW_PAGE;
     }

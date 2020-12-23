@@ -1,47 +1,44 @@
 package de.fred4jupiter.fredbet.web.image;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class ImageUploadCommand {
 
-	private String galleryGroup;
+    private String galleryGroup;
 
-	private String description;
+    private String description;
 
-	private MultipartFile myFile;
+    private String myFileBase64;
 
-	private Rotation rotation = Rotation.NONE;
+    private Rotation rotation = Rotation.NONE;
 
-	public MultipartFile getMyFile() {
-		return myFile;
-	}
+    public String getGalleryGroup() {
+        return galleryGroup;
+    }
 
-	public void setMyFile(MultipartFile myFile) {
-		this.myFile = myFile;
-	}
+    public void setGalleryGroup(String galleryGroup) {
+        this.galleryGroup = galleryGroup;
+    }
 
-	public String getGalleryGroup() {
-		return galleryGroup;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setGalleryGroup(String galleryGroup) {
-		this.galleryGroup = galleryGroup;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Rotation getRotation() {
+        return rotation;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
+    }
 
-	public Rotation getRotation() {
-		return rotation;
-	}
+    public String getMyFileBase64() {
+        return myFileBase64;
+    }
 
-	public void setRotation(Rotation rotation) {
-		this.rotation = rotation;
-	}
-
+    public void setMyFileBase64(String myFileBase64) {
+        this.myFileBase64 = myFileBase64;
+    }
 }

@@ -32,7 +32,7 @@ public class ImageAdministrationService {
 
     private final ImageResizingService imageResizingService;
 
-    private final ImageLocationStrategy imageLocationService;
+    private final ImageLocationStrategy imageLocationStrategy;
 
     private final ImageKeyGenerator imageKeyGenerator;
 
@@ -43,13 +43,13 @@ public class ImageAdministrationService {
     private static final String GALLERY_NAME = "Users";
 
     public ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
-                                      ImageResizingService imageResizingService, ImageLocationStrategy imageLocationService,
+                                      ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
                                       ImageKeyGenerator imageKeyGenerator, SecurityService securityService,
                                       UserService userService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
-        this.imageLocationService = imageLocationService;
+        this.imageLocationStrategy = imageLocationStrategy;
         this.imageKeyGenerator = imageKeyGenerator;
         this.securityService = securityService;
         this.userService = userService;
@@ -85,9 +85,9 @@ public class ImageAdministrationService {
         imageMetaDataRepository.save(image);
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
-        byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
+//        byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
 
-        imageLocationService.saveImage(key, imageGroup.getId(), imageByte, thumbnail);
+        imageLocationStrategy.saveImage(key, imageGroup.getId(), binary, thumbnail);
     }
 
     public void saveUserProfileImage(byte[] binary) {
@@ -115,7 +115,7 @@ public class ImageAdministrationService {
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
         byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
-        imageLocationService.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
+        imageLocationStrategy.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
     }
 
     public List<ImageMetaData> fetchAllImages() {
@@ -137,7 +137,7 @@ public class ImageAdministrationService {
             return null;
         }
 
-        return imageLocationService.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        return imageLocationStrategy.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
     }
 
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
@@ -146,7 +146,7 @@ public class ImageAdministrationService {
             return null;
         }
 
-        return imageLocationService.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        return imageLocationStrategy.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
     }
 
     public void deleteImageByImageKey(String imageKey) {
@@ -157,7 +157,7 @@ public class ImageAdministrationService {
         }
 
         imageMetaDataRepository.delete(imageMetaData);
-        imageLocationService.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        imageLocationStrategy.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
     }
 
     public boolean isImageOfUser(String imageKey, AppUser appUser) {

@@ -22,7 +22,31 @@
 						</div>
 						<div class="form-group">
 							<label th:text="#{image.upload.file}"></label><br/>
-					    	<input type="file" th:field="*{myFile}" class="btn btn-default btn-file" />
+					    	<input id="upload" type="file" accept="image/jpeg"/>
+							<script type="text/javascript" th:src="@{/js/index.js}"></script>
+							<input id="myFileBase64" type="hidden" name="myFileBase64" value="" />
+							<img id="preview" width="320"/>
+							<script type="text/javascript">
+								"use strict";
+								const compressor = new Compress()
+								const upload = document.getElementById('upload')
+								const preview = document.getElementById('preview')
+
+								upload.addEventListener('change', function (evt){
+									const files = [...evt.target.files]
+									compressor.compress(files, {
+										size: 4,
+										quality: .75
+									}).then((results) => {
+										console.log(results)
+										const output = results[0]
+										const file = Compress.convertBase64ToFile(output.data, output.ext)
+										console.log(file)
+										preview.src = output.prefix + output.data
+										$("#myFileBase64").attr("value", output.prefix + output.data);
+									})
+								}, false)
+							</script>
 						</div>
 						<div class="form-group">
 							<label th:text="#{image.upload.description}"></label><br/>
