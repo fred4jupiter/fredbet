@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.web.image.Rotation;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.Thumbnails.Builder;
 import net.coobird.thumbnailator.geometry.Positions;
@@ -34,28 +33,18 @@ class ImageResizingService {
     }
 
     public byte[] createThumbnail(byte[] imageBinary) {
-        return createThumbnail(imageBinary, Rotation.NONE);
-    }
-
-    public byte[] createThumbnail(byte[] imageBinary, Rotation rotation) {
-        return minimizeToSize(imageBinary, thumbnailSize, rotation,
-                builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
+        return minimizeToSize(imageBinary, thumbnailSize, builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
     }
 
     public byte[] minimizeToDefaultSize(byte[] imageBinary) {
-        return minimizeToDefaultSize(imageBinary, Rotation.NONE);
+        return minimizeToSize(imageBinary, imageSize);
     }
 
-    public byte[] minimizeToDefaultSize(byte[] imageBinary, Rotation rotation) {
-        return minimizeToSize(imageBinary, imageSize, rotation);
+    public byte[] minimizeToSize(byte[] imageBinary, int size) {
+        return minimizeToSize(imageBinary, size, builder -> builder.size(size, size));
     }
 
-    public byte[] minimizeToSize(byte[] imageBinary, int size, Rotation rotation) {
-        return minimizeToSize(imageBinary, size, rotation, builder -> builder.size(size, size));
-    }
-
-    public byte[] minimizeToSize(byte[] imageBinary, int size, Rotation rotation,
-                                 ThumbnailsBuilderCallback byteArrayConverter) {
+    public byte[] minimizeToSize(byte[] imageBinary, int size, ThumbnailsBuilderCallback byteArrayConverter) {
         if (size == 0) {
             throw new IllegalArgumentException("Given size must be greather than 0!");
         }
@@ -72,12 +61,6 @@ class ImageResizingService {
 
             Builder<BufferedImage> builder = Thumbnails.of(bufferedImage);
             byteArrayConverter.doWithBuilder(builder);
-
-            if (Rotation.LEFT.equals(rotation)) {
-                builder.rotate(-90);
-            } else if (Rotation.RIGHT.equals(rotation)) {
-                builder.rotate(90);
-            }
 
             builder.outputFormat("JPEG").toOutputStream(byteOut);
             return byteOut.toByteArray();

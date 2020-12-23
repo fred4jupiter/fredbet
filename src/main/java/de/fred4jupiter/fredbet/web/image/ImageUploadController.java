@@ -86,8 +86,7 @@ public class ImageUploadController {
         }
 
         final ImageGroup imageGroup = imageAdministrationService.createOrFetchImageGroup(imageUploadCommand.getGalleryGroup());
-        imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription(),
-                imageUploadCommand.getRotation());
+        imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription());
         messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 
         return REDIRECT_SHOW_PAGE;

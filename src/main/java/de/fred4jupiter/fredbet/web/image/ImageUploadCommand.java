@@ -8,8 +8,6 @@ public class ImageUploadCommand {
 
     private String myFileBase64;
 
-    private Rotation rotation = Rotation.NONE;
-
     public String getGalleryGroup() {
         return galleryGroup;
     }
@@ -24,14 +22,6 @@ public class ImageUploadCommand {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Rotation getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(Rotation rotation) {
-        this.rotation = rotation;
     }
 
     public String getMyFileBase64() {

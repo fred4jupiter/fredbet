@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.service.user.UserService;
-import de.fred4jupiter.fredbet.web.image.Rotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -75,7 +74,7 @@ public class ImageAdministrationService {
         return imageGroup;
     }
 
-    public void saveImage(byte[] binary, Long imageGroupId, String description, Rotation rotation) {
+    public void saveImage(byte[] binary, Long imageGroupId, String description) {
         final ImageGroup imageGroup = imageGroupRepository.getOne(imageGroupId);
 
         final String key = imageKeyGenerator.generateKey();
@@ -84,8 +83,7 @@ public class ImageAdministrationService {
         image.setDescription(description);
         imageMetaDataRepository.save(image);
 
-        byte[] thumbnail = imageResizingService.createThumbnail(binary, rotation);
-//        byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, rotation);
+        byte[] thumbnail = imageResizingService.createThumbnail(binary);
 
         imageLocationStrategy.saveImage(key, imageGroup.getId(), binary, thumbnail);
     }
@@ -113,8 +111,8 @@ public class ImageAdministrationService {
 
         imageMetaDataRepository.save(imageMetaData);
 
-        byte[] thumbnail = imageResizingService.createThumbnail(binary, Rotation.NONE);
-        byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary, Rotation.NONE);
+        byte[] thumbnail = imageResizingService.createThumbnail(binary);
+        byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary);
         imageLocationStrategy.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
     }
 
