@@ -67,7 +67,7 @@
 					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
 					   				<td class="vert-align">
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}">
-					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" class="img-responsive displayed"/>
+					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" alt="Image preview" class="img-responsive displayed"/>
 					   					</a>
 					   				</td>
 					   				<td class="vert-align">
