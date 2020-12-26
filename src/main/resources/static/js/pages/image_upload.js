@@ -9,6 +9,13 @@ $(document).ready(function() {
             $("#myFileBase64").attr("value", result);
         });
     });
+
+    $(".popup-link").on("click", function() {
+        var imageUrl = $(this).data('image-url');
+        console.log('imageUrl: '+imageUrl);
+        $('#imagepreview').attr('src', imageUrl); // here asign the image to the modal when the user click the enlarge link
+        $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+    });
 });
 
 const compressor = new Compress()

@@ -47,6 +47,23 @@
 			    </div>
 			</div>
 			<br/>
+			<!-- Creates the bootstrap modal where the image will appear -->
+			<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Image preview</h4>
+						</div>
+						<div class="modal-body">
+							<img src="" id="imagepreview" style="width: 400px;" >
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="table-responsive">
@@ -69,6 +86,9 @@
 					   					<a th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}">
 					   						<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" alt="Image preview" class="img-responsive displayed"/>
 					   					</a>
+										<a href="#" class="popup-link" th:data-image-url="@{'/gallery/show/' + ${imageCommand.imageKey}}">
+											<img th:id="${imageCommand.imageKey}" th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}">
+										</a>
 					   				</td>
 					   				<td class="vert-align">
 					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>	
@@ -80,6 +100,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<th:block layout:fragment="scripts">
 			<script type="text/javascript" th:src="@{/js/jquery-rotate.js}"></script>
 			<script type="text/javascript" th:src="@{/js/compress.js}" charset="UTF-8"></script>
