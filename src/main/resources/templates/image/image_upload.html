@@ -24,14 +24,17 @@
 							<label th:text="#{image.upload.file}"></label><br/>
 					    	<input id="upload" type="file" accept="image/jpeg"/>
 							<input id="myFileBase64" type="hidden" name="myFileBase64" value="" />
-							<img id="preview" width="320"/>
+							<img id="preview" width="100%"/>
 						</div>
-<!--						<div class="form-group">-->
-<!--							<label th:text="#{image.upload.rotate}"></label><br/>-->
-<!--							<button id="rotateRight" type="button" class="crop-image-rotate btn" data-deg="90">-->
-<!--								<i class="fas fa-redo" aria-hidden="true"></i>-->
-<!--							</button>-->
-<!--						</div>-->
+						<div class="form-group">
+							<label th:text="#{image.upload.rotate}"></label><br/>
+							<button id="rotateLeft" type="button" class="crop-image-rotate btn" data-deg="-90">
+								<i class="fas fa-undo" aria-hidden="true"></i>
+							</button>
+							<button id="rotateRight" type="button" class="crop-image-rotate btn" data-deg="90">
+								<i class="fas fa-redo" aria-hidden="true"></i>
+							</button>
+						</div>
 						<div class="form-group">
 							<label th:text="#{image.upload.description}"></label><br/>
 							<input type="text" th:field="*{description}" class="form-control" />

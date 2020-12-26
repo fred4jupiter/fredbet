@@ -1,10 +1,24 @@
 "use strict";
 
 $(document).ready(function() {
-    var angle = 0;
+    $('#rotateLeft').on('click', function() {
+        var data  = $('#preview').attr('src');
+        console.log(data);
+        rotate(data, -90, function (result) {
+            console.log('result: ' + result);
+            $('#preview').attr('src', result);
+            $("#myFileBase64").attr("value", result);
+        })
+    });
+
     $('#rotateRight').on('click', function() {
-        angle += 90;
-        $("#preview").rotate(angle);
+        var data  = $('#preview').attr('src');
+        console.log(data);
+        rotate(data, 90, function (result) {
+            console.log('result: ' + result);
+            $('#preview').attr('src', result);
+            $("#myFileBase64").attr("value", result);
+        })
     });
 });
 
@@ -18,7 +32,7 @@ upload.addEventListener('change', function (evt) {
         size: 4,
         quality: .75
     }).then((results) => {
-        console.log(results)
+        console.log('results: '+results)
         const output = results[0]
         const file = Compress.convertBase64ToFile(output.data, output.ext)
         console.log(file)
@@ -40,7 +54,7 @@ function rotate(srcBase64, degrees, callback) {
         ctx.rotate(degrees * Math.PI / 180);
         ctx.drawImage(image, image.width / -2, image.height / -2);
 
-        callback(canvas.toDataURL());
+        callback(canvas.toDataURL("image/jpeg", 100));
     };
 
     image.src = srcBase64;
