@@ -7,8 +7,8 @@ function imageCroppingUpload() {
 
 	var opts = {
 		viewport: {
-			width: 150,
-			height: 150,			
+			width: 250,
+			height: 250,
 		},
 		type: 'canvas',
 		size: 'viewport',
