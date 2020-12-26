@@ -1,14 +1,24 @@
 "use strict";
 
 $(document).ready(function() {
+    $('.rotate-image-btn').on('click', function(ev) {
+        var degress = $(this).data('deg');
+        var data  = $('#preview').attr('src');
+        rotate(data, degress, function (result) {
+            $('#preview').attr('src', result);
+            $("#myFileBase64").attr("value", result);
+        });
+    });
+
     $('#rotateLeft').on('click', function() {
+        var degress = $(this).data('deg');
         var data  = $('#preview').attr('src');
         console.log(data);
-        rotate(data, -90, function (result) {
+        rotate(data, degress, function (result) {
             console.log('result: ' + result);
             $('#preview').attr('src', result);
             $("#myFileBase64").attr("value", result);
-        })
+        });
     });
 
     $('#rotateRight').on('click', function() {
