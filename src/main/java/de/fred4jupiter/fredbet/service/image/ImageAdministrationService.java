@@ -112,8 +112,7 @@ public class ImageAdministrationService {
         imageMetaDataRepository.save(imageMetaData);
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary);
-        byte[] imageByte = imageResizingService.minimizeToDefaultSize(binary);
-        imageLocationStrategy.saveImage(key, imageMetaData.getImageGroup().getId(), imageByte, thumbnail);
+        imageLocationStrategy.saveImage(key, imageMetaData.getImageGroup().getId(), binary, thumbnail);
     }
 
     public List<ImageMetaData> fetchAllImages() {
