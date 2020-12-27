@@ -23,21 +23,14 @@ class ImageResizingService {
 
     private final int thumbnailSize;
 
-    private final int imageSize;
-
     private static final Logger log = LoggerFactory.getLogger(ImageResizingService.class);
 
     public ImageResizingService(FredbetProperties fredbetProperties) {
         this.thumbnailSize = fredbetProperties.getThumbnailSize();
-        this.imageSize = fredbetProperties.getImageSize();
     }
 
     public byte[] createThumbnail(byte[] imageBinary) {
         return minimizeToSize(imageBinary, thumbnailSize, builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
-    }
-
-    public byte[] minimizeToDefaultSize(byte[] imageBinary) {
-        return minimizeToSize(imageBinary, imageSize);
     }
 
     public byte[] minimizeToSize(byte[] imageBinary, int size) {
