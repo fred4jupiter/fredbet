@@ -149,7 +149,7 @@
 						  			<a href="#excelexport" th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
 					  			</li>
 					  			<li th:class="${pageState_config_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#config" th:href="@{/config/show}" th:text="#{navigation.configuration}"></a>
+						  			<a href="#config" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
 					  			</li>					  			
 					  			<li th:class="${pageState_runtimeconfig_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#config" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
