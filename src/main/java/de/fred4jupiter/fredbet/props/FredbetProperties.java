@@ -23,11 +23,6 @@ public class FredbetProperties {
     private int thumbnailSize;
 
     /**
-     * Image size for the uploaded images.
-     */
-    private int imageSize;
-
-    /**
      * Selection of possible image storage locations.
      */
     private ImageLocation imageLocation;
@@ -50,14 +45,6 @@ public class FredbetProperties {
         this.thumbnailSize = thumbnailSize;
     }
 
-    public int getImageSize() {
-        return imageSize;
-    }
-
-    public void setImageSize(int imageSize) {
-        this.imageSize = imageSize;
-    }
-
     public ImageLocation getImageLocation() {
         return imageLocation;
     }
@@ -66,12 +53,10 @@ public class FredbetProperties {
         this.imageLocation = imageLocation;
     }
 
-
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
         builder.append("thumbnailSize", thumbnailSize);
-        builder.append("imageSize", imageSize);
         builder.append("imageLocation", imageLocation);
 
         builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);

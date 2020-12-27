@@ -20,8 +20,6 @@ import static org.mockito.Mockito.when;
 @UnitTest
 public class ImageResizingServiceUT {
 
-    private static final int IMAGE_SIZE = 1920;
-
     private static final int THUMB_SIZE = 75;
 
     private static final Logger log = LoggerFactory.getLogger(ImageResizingServiceUT.class);
@@ -34,7 +32,6 @@ public class ImageResizingServiceUT {
     @BeforeEach
     public void setUp() {
         when(fredbetProperties.getThumbnailSize()).thenReturn(THUMB_SIZE);
-        when(fredbetProperties.getImageSize()).thenReturn(IMAGE_SIZE);
 
         this.imageResizingService = new ImageResizingService(fredbetProperties);
     }
@@ -56,45 +53,6 @@ public class ImageResizingServiceUT {
 
         BufferedImage bufferedImage = ImageIO.read(outputFile);
         assertEquals(THUMB_SIZE, bufferedImage.getWidth());
-    }
-
-    @Test
-    public void createDefaultSizedImageNoSizeReduction() throws IOException {
-        File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");
-        assertNotNull(file);
-        assertTrue(file.exists());
-
-        byte[] thumbByteArray = imageResizingService.minimizeToDefaultSize(FileUtils.readFileToByteArray(file));
-        assertNotNull(thumbByteArray);
-
-        File outputFile = createOutputFile(file);
-
-        FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
-        log.debug("written file to: {}", outputFile);
-        assertTrue(outputFile.exists());
-
-        BufferedImage bufferedImage = ImageIO.read(outputFile);
-        assertEquals(800, bufferedImage.getWidth());
-    }
-
-    @Test
-    public void createDefaultSizedImage() throws IOException {
-        File file = new File("src/test/resources/sample_images/sampleImage_2560.jpg");
-        assertNotNull(file);
-        assertTrue(file.exists());
-
-        byte[] thumbByteArray = imageResizingService.minimizeToDefaultSize(FileUtils.readFileToByteArray(file));
-        assertNotNull(thumbByteArray);
-
-        File outputFile = createOutputFile(file);
-        assertNotNull(outputFile);
-
-        FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
-        log.debug("written file to: {}", outputFile);
-        assertTrue(outputFile.exists());
-
-        BufferedImage bufferedImage = ImageIO.read(outputFile);
-        assertEquals(IMAGE_SIZE, bufferedImage.getWidth());
     }
 
     private File createOutputFile(File file) {

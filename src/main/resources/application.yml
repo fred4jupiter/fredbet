@@ -48,11 +48,10 @@ management:
 # -------- fredbet properties ------------------------------------------------------------------------------
 
 fredbet:
-  image-size: 1920
   thumbnail-size: 75
   image-location: database
   # set folder where you want to store images to (defaults to user home dir)
-  image-file-system-base-folder:
+  image-file-system-base-folder: ${user.home}/fredbet
   default-language: de
   create-demo-data: false
 
