@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+		<script>
+		    lightbox.option({
+		      'showImageNumberLabel': false,
+		      'imageFadeDuration': 0,
+		      'resizeDuration': 0
+		    })
+		</script>
+		
+		<div th:fragment="image_popup(imageKey)" th:remove="tag">
+			<div th:if="${imageKey}" th:remove="tag">
+				<a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="img-link">
+					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="40" height="40" class="img-rounded"/>
+				</a>
+			</div>						
+	        <span th:if="!${imageKey}" class="fas fa-image fa-3x" aria-hidden="true"></span>
+		</div>
+	</body>
+</html>
