@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.gallery.title}"></title>
-		<link rel="stylesheet" th:href="@{/blueimpgallery/css/blueimp-gallery.min.css}" />
+		<link rel="stylesheet" th:href="@{/blueimpgallery-3.3.0/css/blueimp-gallery.min.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -48,7 +48,7 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/blueimpgallery/js/blueimp-gallery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/blueimpgallery-3.3.0/js/blueimp-gallery.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/pages/gallery.js}"></script>
 	</th:block>
 </html>
