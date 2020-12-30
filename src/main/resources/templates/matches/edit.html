@@ -8,7 +8,11 @@
 <body>
 	<div layout:fragment="content" class="container">		
 		<div th:replace="~{fragments/alert :: alert_headline}"></div>
+
 		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
+
+			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal('/match/delete/' + ${createEditMatchCommand.matchId})}"></div>
+
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
@@ -67,11 +71,9 @@
 			        </div>					
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<a sec:authorize="hasAuthority('PERM_DELETE_MATCH')" href="#" th:href="@{'/match/delete/' + ${createEditMatchCommand.matchId}}" 
-							class="btn btn-danger" role="button" th:classappend="${!createEditMatchCommand.isDeletable()}? 'disabled'" th:text="#{button.delete}"
-                           data-toggle="confirmation" data-placement="top" th:data-title="#{confirmation.msg}" th:data-btn-ok-label="#{yes}" th:data-btn-cancel-label="#{no}">
-                        </a>
-						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+						<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
+								data-toggle="modal" data-target="#confirm-delete" th:text="#{button.delete}"></button>
+						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
 			</div>
