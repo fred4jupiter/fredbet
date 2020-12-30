@@ -20,9 +20,7 @@
 					<div class="row">
 						<div class="form-group">
 							<button type="button" class="btn btn-info" onclick="editImageGroup()" th:text="#{button.edit}"></button>
-							<input type="submit" class="btn btn-danger" th:value="#{button.delete}"
-								   data-toggle="confirmation" data-placement="top"
-								   th:data-title="#{confirmation.msg}" th:data-btn-ok-label="#{yes}" th:data-btn-cancel-label="#{no}"/>
+							<input type="submit" class="btn btn-danger" th:value="#{button.delete}"/>
 						</div>
 					</div>
 				</form>
@@ -30,7 +28,7 @@
 					<div class="row">
 						<div class="form-group">
 							<input id="imageGroupId" type="hidden" th:field="*{id}" class="form-control" />
-							<label th:text="#{image.group.name}"></label>
+							<label for="imageGroupName" th:text="#{image.group.name}"></label>
 							<input id="imageGroupName" type="text" th:field="*{name}" class="form-control" />
 						</div>
 					</div>
@@ -46,6 +44,5 @@
 	</body>
 	<th:block layout:fragment="scripts">
 		<script type="text/javascript" th:src="@{/js/pages/image_group.js}" charset="UTF-8"></script>
-		<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
 	</th:block>
 </html>
