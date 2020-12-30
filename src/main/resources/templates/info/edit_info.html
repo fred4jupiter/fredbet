@@ -26,7 +26,9 @@
 		<script type="text/javascript" th:src="@{/summernote-0.8.18/summernote.min.js}"></script>
 		<script>
 			$(document).ready(function() {
-				$('#summernote').summernote();
+				$('#summernote').summernote({
+					height: 300
+				});
 			});
 		</script>
 	</th:block>
