@@ -27,6 +27,9 @@
 			</div>
 			<hr/>
 			<form id="adminForm" th:action="@{/administration/save}" th:object="${adminFormCommand}" action="#" method="post" role="form">
+
+				<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal('/administration/deleteAllUsers')}"></div>
+
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-4">
 						<div class="form-group">
@@ -45,13 +48,9 @@
 			<hr/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<a id="deleteAllUsers" class="btn btn-danger" role="button" th:href="@{/administration/deleteAllUsers}" th:text="#{administration.deleteAllUsers}"
-					   data-toggle="confirmation" data-placement="top" th:data-title="#{confirmation.msg}" th:data-btn-ok-label="#{yes}" th:data-btn-cancel-label="#{no}"></a>
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" th:text="#{administration.deleteAllUsers}"></button>
 				</div>
 			</div>
 		</div>
 	</body>
-	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/js/pages/confirmation.js}" charset="UTF-8"></script>
-	</th:block>
 </html>
