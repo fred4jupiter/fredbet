@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.StatisticService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,8 +64,15 @@ public class InfoController {
     private ModelAndView prepareModelAndViewFor(InfoType infoType) {
         final String content = loadContentFor(infoType);
         ModelAndView modelAndView = new ModelAndView(infoType.getPageName());
-        modelAndView.addObject(TEXT_CONTENT, content);
+        modelAndView.addObject(TEXT_CONTENT, prepareForImages(content));
         return modelAndView;
+    }
+
+    private String prepareForImages(String content) {
+        if (StringUtils.isNotBlank(content) && content.contains("<img ")) {
+            return StringUtils.replace(content,"<img ", "<img class=\"img-responsive\" ");
+        }
+        return content;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_INFOS_RULES + "')")
