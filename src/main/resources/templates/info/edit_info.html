@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{info.edit.title}"></title>
+		<link rel="stylesheet" th:href="@{/summernote-0.8.18/summernote.min.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -12,7 +12,7 @@
 					<div class="col-xs-12">
 						<h1 th:text="#{${infoCommand.name} + '.title'}"></h1>
 						<input type="hidden" th:field="*{name}" class="form-control" />
-	                    <textarea id="textContent" name="textContent" required="required" th:text="${infoCommand.textContent}">                       
+	                    <textarea id="summernote" name="textContent" required="required" th:text="${infoCommand.textContent}">
 	                    </textarea>
 	                    <br />
 	                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
@@ -23,43 +23,10 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/webjars/ckeditor/4.14.0/standard/ckeditor.js}"></script>
+		<script type="text/javascript" th:src="@{/summernote-0.8.18/summernote.min.js}"></script>
 		<script>
-			CKEDITOR.replace('textContent', {
-				// Define the toolbar groups as it is a more accessible solution.
-				toolbarGroups: [{
-					"name": "basicstyles",
-					"groups": ["basicstyles"]
-				},
-					{
-						"name": "links",
-						"groups": ["links"]
-					},
-					{
-						"name": "paragraph",
-						"groups": ["list", "blocks"]
-					},
-					{
-						"name": "document",
-						"groups": ["mode"]
-					},
-					{
-						"name": "insert",
-						"groups": ["insert"]
-					},
-					{
-						"name": "styles",
-						"groups": ["styles"]
-					},
-					{
-						"name": "about",
-						"groups": ["about"]
-					}
-				],
-				// Remove the redundant buttons from toolbar groups defined above.
-				removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-				allowedContent : true,
-				height: '400px'
+			$(document).ready(function() {
+				$('#summernote').summernote();
 			});
 		</script>
 	</th:block>
