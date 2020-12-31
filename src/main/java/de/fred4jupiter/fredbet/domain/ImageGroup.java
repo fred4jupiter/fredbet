@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -74,5 +75,9 @@ public class ImageGroup {
 
 	public void setUserProfileImageGroup(boolean userProfileImageGroup) {
 		this.userProfileImageGroup = userProfileImageGroup;
+	}
+
+	public boolean isDefaultImageGroup() {
+		return FredbetConstants.DEFAULT_IMAGE_GROUP_NAME.equals(this.name) || FredbetConstants.GALLERY_NAME.equals(this.name);
 	}
 }

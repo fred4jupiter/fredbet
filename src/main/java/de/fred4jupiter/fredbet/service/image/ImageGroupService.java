@@ -1,54 +1,58 @@
 package de.fred4jupiter.fredbet.service.image;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageGroupService {
 
-	private final ImageGroupRepository imageGroupRepository;
+    private final ImageGroupRepository imageGroupRepository;
 
-	public ImageGroupService(ImageGroupRepository imageGroupRepository) {
-		this.imageGroupRepository = imageGroupRepository;
-	}
+    public ImageGroupService(ImageGroupRepository imageGroupRepository) {
+        this.imageGroupRepository = imageGroupRepository;
+    }
 
-	public List<ImageGroup> findAvailableImageGroups() {
-		return imageGroupRepository.findAll();
-	}
+    public List<ImageGroup> findAvailableImageGroups() {
+        return imageGroupRepository.findAll();
+    }
 
-	public void deleteImageGroup(Long imageGroupId) {
-		imageGroupRepository.deleteById(imageGroupId);
-	}
+    public void deleteImageGroup(Long imageGroupId) {
+        imageGroupRepository.findById(imageGroupId).ifPresent(group -> {
+            if (group.isUserProfileImageGroup() || group.isDefaultImageGroup()) {
+                throw new ImageGroupNotDeletableException("Image Group with ID=" + imageGroupId + " will be used as user profile image group and cannot be deleted!");
+            }
+        });
 
-	public void addImageGroup(String imageGroupName) {
-		checkImageGroupName(imageGroupName);
-		imageGroupRepository.save(new ImageGroup(imageGroupName));
-	}
+        imageGroupRepository.deleteById(imageGroupId);
+    }
 
-	public void updateImageGroup(Long id, String name) {
-		Optional<ImageGroup> imageGroupOpt = imageGroupRepository.findById(id);
-		if (imageGroupOpt.isEmpty()) {
-			throw new IllegalArgumentException("Image group with id=" + id + " could not be found!");
-		}
+    public void addImageGroup(String imageGroupName) {
+        checkImageGroupName(imageGroupName);
+        imageGroupRepository.save(new ImageGroup(imageGroupName));
+    }
 
-		checkImageGroupName(name);
+    public void updateImageGroup(Long id, String name) {
+        Optional<ImageGroup> imageGroupOpt = imageGroupRepository.findById(id);
+        if (imageGroupOpt.isEmpty()) {
+            throw new IllegalArgumentException("Image group with id=" + id + " could not be found!");
+        }
 
-		ImageGroup imageGroup = imageGroupOpt.get();
-		imageGroup.setName(name);
-		imageGroupRepository.save(imageGroup);
-	}
+        checkImageGroupName(name);
 
-	private void checkImageGroupName(String imageGroupName) {
-		ImageGroup foundImageGroup = imageGroupRepository.findByName(imageGroupName);
-		if (foundImageGroup != null) {
-			throw new ImageGroupExistsException("An image with this group name still exists!");
-		}
-	}
+        ImageGroup imageGroup = imageGroupOpt.get();
+        imageGroup.setName(name);
+        imageGroupRepository.save(imageGroup);
+    }
+
+    private void checkImageGroupName(String imageGroupName) {
+        ImageGroup foundImageGroup = imageGroupRepository.findByName(imageGroupName);
+        if (foundImageGroup != null) {
+            throw new ImageGroupExistsException("An image with this group name still exists!");
+        }
+    }
 
 }

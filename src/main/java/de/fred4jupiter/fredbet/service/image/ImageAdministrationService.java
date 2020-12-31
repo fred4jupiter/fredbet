@@ -3,11 +3,13 @@ package de.fred4jupiter.fredbet.service.image;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ImageAdministrationService {
-
-    private static final String DEFAULT_IMAGE_GROUP_NAME = "Misc";
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageAdministrationService.class);
 
@@ -38,8 +38,6 @@ public class ImageAdministrationService {
     private final SecurityService securityService;
 
     private final UserService userService;
-
-    private static final String GALLERY_NAME = "Users";
 
     public ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
                                       ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
@@ -59,16 +57,17 @@ public class ImageAdministrationService {
         ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
 
         if (imageGroup == null) {
-            imageGroup = new ImageGroup(GALLERY_NAME, true);
+            imageGroup = new ImageGroup(FredbetConstants.GALLERY_NAME, true);
             imageGroupRepository.save(imageGroup);
         }
     }
 
-    public ImageGroup createOrFetchImageGroup(String galleryGroupName) {
+    public ImageGroup findOrCreateImageGroup(String galleryGroupName) {
         ImageGroup imageGroup = imageGroupRepository.findByName(galleryGroupName);
 
         if (imageGroup == null) {
-            imageGroup = new ImageGroup(galleryGroupName);
+            String tmpImageGroupName = StringUtils.isBlank(galleryGroupName) ? FredbetConstants.DEFAULT_IMAGE_GROUP_NAME : galleryGroupName;
+            imageGroup = new ImageGroup(tmpImageGroupName);
             imageGroupRepository.save(imageGroup);
         }
         return imageGroup;
@@ -175,7 +174,7 @@ public class ImageAdministrationService {
         long numberOfImageGroups = imageGroupRepository.count();
         if (numberOfImageGroups == 1) {
             // if there is only one image group then it is the users group
-            createOrFetchImageGroup(DEFAULT_IMAGE_GROUP_NAME);
+            findOrCreateImageGroup(FredbetConstants.DEFAULT_IMAGE_GROUP_NAME);
         }
     }
 }

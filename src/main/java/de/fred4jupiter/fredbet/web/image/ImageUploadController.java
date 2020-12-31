@@ -10,13 +10,10 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
@@ -85,7 +82,7 @@ public class ImageUploadController {
             return REDIRECT_SHOW_PAGE;
         }
 
-        final ImageGroup imageGroup = imageAdministrationService.createOrFetchImageGroup(imageUploadCommand.getGalleryGroup());
+        final ImageGroup imageGroup = imageAdministrationService.findOrCreateImageGroup(imageUploadCommand.getGalleryGroup());
         imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription());
         messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 

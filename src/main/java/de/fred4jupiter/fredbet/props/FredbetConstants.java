@@ -37,4 +37,8 @@ public final class FredbetConstants {
 
     public static final String IMAGE_JPG_EXTENSION_WITH_DOT = "." + IMAGE_JPG_EXTENSION;
 
+    public static final String DEFAULT_IMAGE_GROUP_NAME = "Misc";
+
+    public static final String GALLERY_NAME = "Users";
+
 }

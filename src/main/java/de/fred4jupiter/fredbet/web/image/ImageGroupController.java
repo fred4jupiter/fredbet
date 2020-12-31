@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.image;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.image.ImageGroupExistsException;
+import de.fred4jupiter.fredbet.service.image.ImageGroupNotDeletableException;
 import de.fred4jupiter.fredbet.service.image.ImageGroupService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -63,6 +64,8 @@ public class ImageGroupController {
             webMessageUtil.addInfoMsg(redirect, "image.group.msg.deleted");
         } catch (DataIntegrityViolationException e) {
             webMessageUtil.addErrorMsg(redirect, "image.group.msg.deletionHasReferences");
+        } catch (ImageGroupNotDeletableException e) {
+            webMessageUtil.addErrorMsg(redirect, "image.group.msg.deletionNotAllowed");
         }
 
         return REDIRECT_SHOW_IMAGEGROUP;
