@@ -17,12 +17,6 @@ public final class FredbetConstants {
 
     public static final String TECHNICAL_USERNAME = "admin";
 
-    public static final String INFO_CONTEXT_RULES = "rules";
-
-    public static final String INFO_CONTEXT_PRICES = "prices";
-
-    public static final String INFO_CONTEXT_MISC = "misc";
-
     public static final String BADGE_PENALTY_WINNER_BET_CSS_CLASS = "badge-penalty-winner-bet";
 
     public static final String BADGE_PENALTY_WINNER_MATCH_CSS_CLASS = "badge-penalty-winner-match";
