@@ -21,16 +21,12 @@ import java.io.ByteArrayOutputStream;
 @Service
 class ImageResizingService {
 
-    private final int thumbnailSize;
+    static final int THUMBNAIL_SIZE = 75;
 
     private static final Logger log = LoggerFactory.getLogger(ImageResizingService.class);
 
-    public ImageResizingService(FredbetProperties fredbetProperties) {
-        this.thumbnailSize = fredbetProperties.getThumbnailSize();
-    }
-
     public byte[] createThumbnail(byte[] imageBinary) {
-        return minimizeToSize(imageBinary, thumbnailSize, builder -> builder.crop(Positions.CENTER).size(thumbnailSize, thumbnailSize));
+        return minimizeToSize(imageBinary, THUMBNAIL_SIZE, builder -> builder.crop(Positions.CENTER).size(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
     }
 
     public byte[] minimizeToSize(byte[] imageBinary, int size) {

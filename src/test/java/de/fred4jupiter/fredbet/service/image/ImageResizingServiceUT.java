@@ -1,11 +1,9 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import de.fred4jupiter.fredbet.UnitTest;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,26 +13,16 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @UnitTest
 public class ImageResizingServiceUT {
 
-    private static final int THUMB_SIZE = 75;
+    private static final int THUMB_SIZE = ImageResizingService.THUMBNAIL_SIZE;
 
     private static final Logger log = LoggerFactory.getLogger(ImageResizingServiceUT.class);
 
+    @InjectMocks
     private ImageResizingService imageResizingService;
-
-    @Mock
-    private FredbetProperties fredbetProperties;
-
-    @BeforeEach
-    public void setUp() {
-        when(fredbetProperties.getThumbnailSize()).thenReturn(THUMB_SIZE);
-
-        this.imageResizingService = new ImageResizingService(fredbetProperties);
-    }
 
     @Test
     public void createThumbnail() throws IOException {

@@ -18,11 +18,6 @@ public class FredbetProperties {
     public static final String PROPS_PREFIX = "fredbet";
 
     /**
-     * Image size of the generated thumbnails.
-     */
-    private int thumbnailSize;
-
-    /**
      * Selection of possible image storage locations.
      */
     private ImageLocation imageLocation;
@@ -37,14 +32,6 @@ public class FredbetProperties {
 
     private boolean createDemoData;
 
-    public int getThumbnailSize() {
-        return thumbnailSize;
-    }
-
-    public void setThumbnailSize(int thumbnailSize) {
-        this.thumbnailSize = thumbnailSize;
-    }
-
     public ImageLocation getImageLocation() {
         return imageLocation;
     }
@@ -56,9 +43,7 @@ public class FredbetProperties {
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("thumbnailSize", thumbnailSize);
         builder.append("imageLocation", imageLocation);
-
         builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
         return builder.toString();
     }
