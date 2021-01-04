@@ -179,3 +179,6 @@ You should have received a copy of the license along with this work. If not, see
 
 ## GitHub Action Status
 ![](https://github.com/fred4jupiter/fredbet/workflows/Java%20CI/badge.svg)
+
+## Heroku Deployment Status
+[![Deployed on Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet.svg?logo=heroku)](https://fredbet.herokuapp.com)
