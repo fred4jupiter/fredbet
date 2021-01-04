@@ -19,15 +19,16 @@
 				</div>
 			</div>
 			<hr/>
+			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
 			<div class="row">			
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<a id="dialog-confirm" class="btn btn-danger" role="button" th:href="@{/administration/deleteAllBetsAndMatches}" th:text="#{administration.deleteAllBetsAndMatches}"></a>
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
 				</div>			
 			</div>
 			<hr/>
 			<form id="adminForm" th:action="@{/administration/save}" th:object="${adminFormCommand}" action="#" method="post" role="form">
 
-				<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal('/administration/deleteAllUsers')}"></div>
+				<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllUsers', id='deleteAllUsers')}"></div>
 
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-4">
@@ -47,7 +48,7 @@
 			<hr/>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" th:text="#{administration.deleteAllUsers}"></button>
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAllUsers" th:text="#{administration.deleteAllUsers}"></button>
 				</div>
 			</div>
 		</div>

@@ -11,7 +11,7 @@
 
 		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
 
-			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal('/match/delete/' + ${createEditMatchCommand.matchId})}"></div>
+			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/match/delete/' + ${createEditMatchCommand.matchId}, id = 'confirm-delete')}"></div>
 
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
