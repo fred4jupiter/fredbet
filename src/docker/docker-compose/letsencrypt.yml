@@ -17,7 +17,7 @@ services:
      - LETSENCRYPT_HOST=mydomain.de,www.mydomain.de
      - LETSENCRYPT_EMAIL=myemail
     volumes:
-      - "~/fredbet:/home/fred"
+      - "~/logs:/home/fred/logs"
   postgres:  
     image: postgres
     volumes:

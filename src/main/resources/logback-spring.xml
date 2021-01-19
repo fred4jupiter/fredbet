@@ -16,10 +16,10 @@
 
     <springProfile name="!dev">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${user.home}/fredbet.log</file>
+            <file>${user.home}/logs/fredbet.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover -->
-                <fileNamePattern>${user.home}/fredbet.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>${user.home}/logs/fredbet.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <!-- keep 30 days' worth of history capped at 3GB total size -->
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
