@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles(value = {FredBetProfile.DEV, FredBetProfile.INTEGRATION_TEST})
+@ActiveProfiles(value = {FredBetProfile.INTEGRATION_TEST})
 @Transactional
 @Rollback
 public @interface TransactionalIntegrationTest {
