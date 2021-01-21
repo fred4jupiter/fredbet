@@ -14,5 +14,6 @@ release_version.txt
 *.iml
 
 *.log
+logs/
 
 /.apt_generated/
