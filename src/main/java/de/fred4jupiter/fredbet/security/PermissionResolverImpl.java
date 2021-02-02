@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @author michael
  */
 @Component
-public class PermissionResolverImpl implements PermissionResolver {
+class PermissionResolverImpl implements PermissionResolver {
 
     private final FredBetUserGroups fredBetUserGroups;
 
