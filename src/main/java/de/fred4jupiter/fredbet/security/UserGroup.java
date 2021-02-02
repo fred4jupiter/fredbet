@@ -1,13 +1,13 @@
 package de.fred4jupiter.fredbet.security;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserGroup {
 
     private String groupName;
 
-    private List<String> permissions = new ArrayList<>();
+    private Set<String> permissions = new HashSet<>();
 
     public String getGroupName() {
         return groupName;
@@ -17,11 +17,11 @@ public class UserGroup {
         this.groupName = groupName;
     }
 
-    public List<String> getPermissions() {
+    public Set<String> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<String> permissions) {
+    public void setPermissions(Set<String> permissions) {
         this.permissions = permissions;
     }
 }
