@@ -19,7 +19,7 @@ esac
 done
 
 if [ $# -eq 0 ]; then
-    echo "No arguments provided. Usage example: ./release-me.sh -du=fred -dp=secret -gu=freddy -gp=secret"
+    echo "No arguments provided. Usage example: ./release-me.sh -du=fred -dp='secret' -gu=freddy -gp='secret'"
     exit 1
 fi
 
@@ -63,7 +63,7 @@ echo "release version is: $PROJECT_REL_VERSION"
 echo "next development version is: $NEXT_DEV_VERSION"
 
 # docker image tagging and publishing on Docker Hub
-docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 docker tag fred4jupiter/fredbet fred4jupiter/fredbet:"$PROJECT_REL_VERSION"
 docker push fred4jupiter/fredbet:"$PROJECT_REL_VERSION"
 docker logout
