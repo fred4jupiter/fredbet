@@ -9,11 +9,13 @@
 <body>
 <div layout:fragment="content" class="container">
     <div id="login">
-        <h3 class="text-center text-white pt-5">Login form</h3>
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
+                        <div class="logo text-center">
+                            <img th:src="@{/images/thumbs_up.jpg}" class="img-circle" width="90"/>
+                        </div>
                         <div class="row">
                             <div th:if="${param.error}" class="alert alert-danger" role="alert"
                                  th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
