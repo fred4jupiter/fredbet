@@ -15,7 +15,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-4 registrationBox">
 					<div class="form-group">
 						<label for="token" th:text="#{registration.token} + ':'"></label>
-						<input id="token" type="text" th:field="*{token}" class="form-control" style="width: 50%; background-color: lightskyblue;"/>
+						<input id="token" type="text" th:field="*{token}" class="form-control token-input" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('token')}" th:errors="*{token}">token error</p>
 					</div>
 					<div class="form-group">
