@@ -27,6 +27,9 @@ class FredbetUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final AppUser appUser = this.appUserRepository.findByUsername(username);
+        if (appUser == null) {
+            throw new UsernameNotFoundException("Could not found user with username=" + username);
+        }
         Collection<GrantedAuthority> permissions = permissionResolver.resolvePermissions(appUser.getAuthorities());
         appUser.setRoles(toRoles(permissions));
         return appUser;
