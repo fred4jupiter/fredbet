@@ -19,7 +19,7 @@
                     <img th:src="@{/images/thumbs_up.jpg}" width="90"/>
                 </div>
                 <div class="modal-header">
-                    <h1 class="text-center" th:text="#{login.title.short}">Welcome</h1>
+                    <h1 class="text-center" th:text="'FredBet - ' + #{login.title.short}">Welcome</h1>
                 </div>
                 <div class="modal-body">
                     <form id="login-form" class="form" th:action="@{/login}" method="post">
