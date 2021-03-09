@@ -5,7 +5,7 @@ COPY pom.xml .
 
 COPY src/ /build/src/
 COPY .git /build/.git/
-RUN mvn -B package
+RUN mvn -B -DskipTests package
 
 # Step : Package image
 FROM openjdk:15-slim
