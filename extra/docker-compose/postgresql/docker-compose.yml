@@ -3,7 +3,7 @@ services:
     postgres:  
       image: postgres
       volumes:
-        - $(PWD)/pgdata:/var/lib/postgresql/data
+        - ./pgdata:/var/lib/postgresql/data
       ports:
         - "5432:5432"
       environment:
@@ -22,4 +22,4 @@ services:
        - SPRING_DATASOURCE_HIKARI_USERNAME=fred
        - SPRING_DATASOURCE_HIKARI_PASSWORD=fred
       volumes:
-       - $(PWD)/logs:/home/fred/logs
+       - ./logs:/logs
