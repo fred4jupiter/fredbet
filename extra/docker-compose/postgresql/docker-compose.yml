@@ -11,7 +11,9 @@ services:
        - POSTGRES_PASSWORD=fred
        - POSTGRES_DB=fredbetdb
     fredbet:
-      image: fred4jupiter/fredbet
+#      image: fred4jupiter/fredbet
+      build:
+        context: ../../../
       depends_on:
         - postgres
       ports:
