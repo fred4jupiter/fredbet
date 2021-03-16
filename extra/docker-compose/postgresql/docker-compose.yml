@@ -24,4 +24,4 @@ services:
        - SPRING_DATASOURCE_HIKARI_USERNAME=fred
        - SPRING_DATASOURCE_HIKARI_PASSWORD=fred
       volumes:
-       - ./logs:/logs
+       - "./logs:/logs"
