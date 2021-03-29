@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%highlight(%d %-5level [%c] - %msg%n)</pattern>
-        </encoder>
-    </appender>
-
     <springProfile name="dev">
+        <appender name="DEV_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%highlight(%d %-5level [%c] - %msg%n)</pattern>
+            </encoder>
+        </appender>
         <logger name="de.fred4jupiter.fredbet" level="DEBUG"/>
         <root>
             <level value="WARN"/>
-            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEV_CONSOLE"/>
         </root>
     </springProfile>
 
-    <springProfile name="!dev | !integration_test">
+    <springProfile name="default,maria,mysql,postgres">
+        <appender name="OTHER_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d %-5level [%c] - %msg%n</pattern>
+            </encoder>
+        </appender>
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/logs/fredbet.log</file>
+            <file>${user.home}/logs/fredbet.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- daily rollover -->
-                <fileNamePattern>/logs/fredbet.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>${user.home}/logs/fredbet.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <!-- keep 30 days' worth of history capped at 3GB total size -->
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
@@ -31,7 +35,7 @@
         <logger name="de.fred4jupiter.fredbet" level="INFO"/>
         <root>
             <level value="WARN"/>
-            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="OTHER_CONSOLE"/>
             <appender-ref ref="FILE"/>
         </root>
     </springProfile>
