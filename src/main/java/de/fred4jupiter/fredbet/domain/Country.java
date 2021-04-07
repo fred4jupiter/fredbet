@@ -9,11 +9,11 @@ public enum Country {
 
     NONE("none"), // non selected country placeholder
 
-    ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), ENGLAND("eng"), FRANCE("fra"), IRELAND("irl"), ICELAND("isl"), ITALY("ita"),
-
-    CROATIA("hrv"), NORTH_IRELAND("north_ireland"), AUSTRIA("aut"), POLAND("pol"), PORTUGAL("prt"), ROMANIA("rou"), RUSSIA("rus"),
-
-    SWEDEN("swe"), SWITZERLAND("che"), SLOVAKIA("svk"), SPAIN("esp"), CZECH_REPUBLIC("cze"), TURKEY("tur"), UKRAINE("ukr"),
+    ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), ENGLAND("eng"), FRANCE("fra"),
+    IRELAND("irl"), ICELAND("isl"), ITALY("ita"), CROATIA("hrv"), NORTH_IRELAND("north_ireland"),
+    AUSTRIA("aut"), POLAND("pol"), PORTUGAL("prt"), ROMANIA("rou"), RUSSIA("rus"),
+    SWEDEN("swe"), SWITZERLAND("che"),
+    SLOVAKIA("svk"), SPAIN("esp"), CZECH_REPUBLIC("cze"), TURKEY("tur"), UKRAINE("ukr"),
 
     HUNGARY("hun"), WALES("wales"), AUSTRALIA("aus"), EGYPT("egy"), ALGERIA("alg"), ANGOLA("ang"), EQUATORIAL_GUINEA("eqg"),
 
@@ -50,7 +50,7 @@ public enum Country {
     ARMENIA("arm"), AZERBAIJAN("aze"), BELARUS("blr"), BOSNIA_HERZEGOVINA("bih"), BULGARIA("bul"), CYPRUS("cyp"), DENMARK("den"), ESTONIA(
             "est"),
 
-    FAROE_ISLANDS("fro"), FINLAND("fin"), FYR_MACEDONIA("mkd"), GEORGIA("geo"), GIBRALTAR("gib"), GREECE("gre"), ISRAEL("isr"), KAZAKHSTAN(
+    FAROE_ISLANDS("fro"), FINLAND("fin"), MACEDONIA("mkd"), GEORGIA("geo"), GIBRALTAR("gib"), GREECE("gre"), ISRAEL("isr"), KAZAKHSTAN(
             "kaz"),
 
     KOSOVO("kvx"), LATVIA("lva"), LIECHTENSTEIN("lie"), LITHUANIA("ltu"), LUXEMBOURG("lux"), MALTA("mlt"), MOLDOVA("mda"), MONTENEGRO(
@@ -81,7 +81,7 @@ public enum Country {
 
     private String isoCode;
 
-    private Country(String isoCode) {
+    Country(String isoCode) {
         this.isoCode = isoCode;
     }
 

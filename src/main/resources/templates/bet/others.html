@@ -8,12 +8,6 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{bet.others.title}"></h1>
             <div th:with="groupAvg=${allBetsCommand.avgGroupBet}">
-                <p>
-                    <span th:text="#{others.bet.groupBet} + ':'"></span>
-                    <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
-                    <span> : </span>
-                    <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamTwo}">1</span>
-                </p>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                         <div class="panel panel-default">
@@ -39,6 +33,12 @@
                         </div>
                     </div>
                 </div>
+                <p>
+                    <span th:text="#{others.bet.groupBet} + ':'"></span>
+                    <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
+                    <span> : </span>
+                    <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamTwo}">1</span>
+                </p>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4" th:each="bet : ${allBetsCommand.allBetsForMatch}">
                         <div class="panel panel-default">
