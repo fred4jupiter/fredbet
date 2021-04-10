@@ -21,7 +21,7 @@ services:
   postgres:  
     image: postgres
     volumes:
-      - "~/pgdata:/var/lib/postgresql/data"
+      - "./pgdata:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
     environment:
