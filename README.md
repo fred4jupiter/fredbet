@@ -154,8 +154,6 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Excel-Templates with matches are prepared for import:
 
-* <a href="https://raw.githubusercontent.com/fred4jupiter/fredbet/master/src/excel_templates/EM_2021.xlsx">EM 2021 Template</a>
-
 * ![EM 2021](src/excel_templates/EM_2021.xlsx?raw=true "EM 2021")
 
 ## Screenshots
