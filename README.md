@@ -154,7 +154,9 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Excel-Templates with matches are prepared for import:
 
-*  ![EM 2021](src/excel_templates/EM_2021.xlsx?raw=true "EM 2021")
+* <a href="https://raw.githubusercontent.com/fred4jupiter/fredbet/master/src/excel_templates/EM_2021.xlsx">EM 2021 Template</a>
+
+* ![EM 2021](src/excel_templates/EM_2021.xlsx?raw=true "EM 2021")
 
 ## Screenshots
 
@@ -163,16 +165,6 @@ The following Excel-Templates with matches are prepared for import:
 ![FredBet Screenshot 2](src/docs/screenshot/Screenshot2.jpg?raw=true "FredBet Screenshot 2")
 
 ![FredBet Screenshot 3](src/docs/screenshot/Screenshot3.jpg?raw=true "FredBet Screenshot 3")
-
-## License
-
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-	<img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
-</a> FredBet (c) by Michael Stähler
-
-FredBet is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
-
-You should have received a copy of the license along with this work. If not, see [http://creativecommons.org/licenses/by-sa/4.0/](http://creativecommons.org/licenses/by-sa/4.0/).
 
 ## Travis Build Status
 [![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
