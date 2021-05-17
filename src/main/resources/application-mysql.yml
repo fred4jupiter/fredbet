@@ -1,5 +1,4 @@
 spring:
   datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://localhost:3306/fredbet
-      driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fredbet
+    driver-class-name: com.mysql.jdbc.Driver

@@ -17,7 +17,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - points statistic
 - display other users bets after match kickoff
 - ranking page
-- Microsoft Excel match import (ready to use world championchip 2018 template available)
+- Microsoft Excel match import
 - Microsoft Excel bets, statistic export
 - language switcher (supported languages: englisch, german and polish (by now))
 - ranking filter for adults and childs listing
@@ -60,20 +60,10 @@ This will build (and run) an image with name `fred4jupiter/fredbet`.
 
 ## Running with Docker Compose
 
-There are some docker compose files available to run the application e.g. with a separate database. This configuration is recommended for production use.
+There are some docker compose files available to run the application e.g. with a separate database. 
+This configuration is recommended for production use.
 
-You can find the docker compose files in folder
-
-```
-src/docker/docker-compose
-```
-
-Example for FredBet with MariaDB:
-
-```bash
-cd src/docker/docker-compose
-docker-compose -f mariadb.yml up -d
-```
+You can find the docker compose example files in folder `extra/docker-compose` and its subdirectories.
 
 ## FredBet Properties
 
@@ -83,7 +73,7 @@ These properties has to be set at application startup.
 |--------|--------|--------|
 | spring.profiles.active | h2 | Active Spring profile at startup. Possible values: `h2,dev,maria,mysql,postgres`. Use profile `prod` for real productive setup. |
 | fredbet.image-location | DATABASE | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE` |
-| fredbet.image-file-system-base-folder | the users home folder | In case you selected to save the images in file system this is the path to the folder. |
+| fredbet.image-file-system-base-folder | user home folder | In case you selected to save the images in file system this is the path to the folder. |
 | fredbet.default-language | de | The default language you prefer. |
 
 Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.
@@ -92,10 +82,10 @@ Please have a look at [Spring Boots externalized configuration documentation](ht
 
 | Key | Default Value | Description |
 |--------|--------|--------|
-| spring.datasource.hikari.jdbc-url | jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE | JDBC connection URL. |
-| spring.datasource.hikari.username | sa | The database username. |
-| spring.datasource.hikari.password | | The database password. |
-| spring.datasource.hikari.driver-class-name | org.h2.Driver | see driver class below |
+| spring.datasource.url | jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE | JDBC connection URL. |
+| spring.datasource.username | sa | The database username. |
+| spring.datasource.password | | The database password. |
+| spring.datasource.driver-class-name | org.h2.Driver | see driver class below |
 
 ### Driver class names
 

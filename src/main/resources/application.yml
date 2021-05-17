@@ -3,11 +3,10 @@ spring:
     cache: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      jdbc-url: jdbc:h2:file:~/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-      username: sa
-      password:
-      driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
   jpa:
     generate-ddl: false
     show-sql: false
