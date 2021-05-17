@@ -192,7 +192,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.8</version>
+            <version>0.4.14</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
