@@ -21,10 +21,10 @@ services:
         - "8080:8080"
       environment:
        - spring.profiles.active=test
-       - SPRING_DATASOURCE_HIKARI_JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
-       - SPRING_DATASOURCE_HIKARI_USERNAME=fred
-       - SPRING_DATASOURCE_HIKARI_PASSWORD=fred
-       - SPRING_DATASOURCE_HIKARI_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
+       - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+       - SPRING_DATASOURCE_USERNAME=fred
+       - SPRING_DATASOURCE_PASSWORD=fred
+       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
       logging:
         driver: gelf
         options:

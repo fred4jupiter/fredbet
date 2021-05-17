@@ -21,10 +21,10 @@ services:
         - "8080:8080"
       environment:
        - SPRING_PROFILES_ACTIVE=prod
-       - SPRING_DATASOURCE_HIKARI_JDBC_URL=jdbc:mariadb://mariadb:3306/fredbetdb
-       - SPRING_DATASOURCE_HIKARI_USERNAME=fred
-       - SPRING_DATASOURCE_HIKARI_PASSWORD=fred
-       - SPRING_DATASOURCE_HIKARI_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
+       - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+       - SPRING_DATASOURCE_USERNAME=fred
+       - SPRING_DATASOURCE_PASSWORD=fred
+       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
        - FREDBET_IMAGE_LOCATION_FILE=FILE_SYSTEM
        - FREDBET_IMAGE_FILE_SYSTEM_BASE_FOLDER=/home/fred/fredbet_images
       volumes:
