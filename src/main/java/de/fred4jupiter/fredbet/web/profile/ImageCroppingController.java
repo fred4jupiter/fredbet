@@ -38,8 +38,6 @@ public class ImageCroppingController {
 
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("croppedFileBase64") String imageBase64, RedirectAttributes redirect) {
-        LOG.debug("imageBase64: {}", imageBase64);
-
         if (StringUtils.isBlank(imageBase64)) {
             LOG.error("No base64 image given");
             messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
@@ -47,6 +45,7 @@ public class ImageCroppingController {
         }
 
         byte[] imageByte = Base64.getDecoder().decode(imageBase64.split(",")[1]);
+        LOG.debug("image size: {}", imageByte.length);
 
         if (imageByte.length == 0) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
