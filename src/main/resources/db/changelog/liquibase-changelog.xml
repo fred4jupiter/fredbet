@@ -251,7 +251,7 @@
 	</changeSet>
 
 	<changeSet id="11" author="michael">
-		<renameTable oldTableName="RUNTIME_CONFIG" newTableName="RUNTIME_SETTING"/>
+		<renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
 	</changeSet>
 
 </databaseChangeLog>
