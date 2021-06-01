@@ -5,7 +5,7 @@ function runRandomDice() {
 }
 
 function randomNumber() {
-	return randomIntFromInterval(1,4);
+	return randomIntFromInterval(0,5);
 }
 
 function randomIntFromInterval(min, max) { // min and max included
