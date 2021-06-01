@@ -10,6 +10,7 @@ import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class BettingService {
+
+    private static final int RANDOM_LEFT_RANGE = 0;
+
+    private static final int RANDOM_RIGHT_RANGE = 5;
 
     private final MatchRepository matchRepository;
 
@@ -198,15 +203,19 @@ public class BettingService {
     public void diceAllMatchesForUser(String username) {
         List<Match> allMatches = findMatchesToBet(username);
         allMatches.forEach(match -> {
-            Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
-            Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
             boolean jokerAllowed = false;
             if (randomValueGenerator.generateRandomBoolean()) {
                 jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
             }
-            createAndSaveBetting(username, match, goalsTeamOne, goalsTeamTwo, jokerAllowed);
+            Pair<Integer, Integer> goals = randomGoals();
+            createAndSaveBetting(username, match, goals.getLeft(), goals.getRight(), jokerAllowed);
         });
         createExtraBetForUser(username);
+    }
+
+    private Pair<Integer, Integer> randomGoals() {
+        return Pair.of(randomValueGenerator.generateRandomValueInRange(RANDOM_LEFT_RANGE, RANDOM_RIGHT_RANGE),
+                randomValueGenerator.generateRandomValueInRange(RANDOM_LEFT_RANGE, RANDOM_RIGHT_RANGE));
     }
 
     public void createExtraBetForUser(String username) {
