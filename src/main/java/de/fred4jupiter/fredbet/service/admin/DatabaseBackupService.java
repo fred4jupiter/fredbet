@@ -31,13 +31,13 @@ public class DatabaseBackupService {
     }
 
     public String executeBackup() {
-        String driverClassName = this.environment.getProperty("spring.datasource.hikari.driver-class-name");
+        String driverClassName = this.environment.getProperty("spring.datasource.driver-class-name");
         if (StringUtils.isNotBlank(driverClassName) && !driverClassName.contains("h2")) {
             throw new DatabaseBackupCreationException("Database of driver=" + driverClassName + " is not supported for backup!",
                     ErrorCode.UNSUPPORTED_DATABASE_TYPE);
         }
 
-        String jdbcUrl = this.environment.getProperty("spring.datasource.hikari.jdbc-url");
+        String jdbcUrl = this.environment.getProperty("spring.datasource.url");
 
         if (StringUtils.isNotBlank(jdbcUrl) && jdbcUrl.contains("h2:mem")) {
             throw new DatabaseBackupCreationException("Could not create a database backup of H2 in-memory databases!",
