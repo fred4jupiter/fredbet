@@ -130,4 +130,9 @@ public class MatchService {
         LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(105);
         return matchRepository.findFinishedMatchesWithMissingResult(localDateTime);
     }
+
+    public boolean isGameForThirdAvailable() {
+        List<Match> matches = matchRepository.findByGroup(Group.GAME_FOR_THIRD);
+        return !matches.isEmpty();
+    }
 }

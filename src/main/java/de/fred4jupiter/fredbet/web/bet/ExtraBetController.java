@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
+import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,18 +33,26 @@ public class ExtraBetController {
 
     private final CountryService countryService;
 
+    private final MatchService matchService;
+
     public ExtraBetController(BettingService bettingService, ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
-                              WebMessageUtil messageUtil, CountryService countryService) {
+                              WebMessageUtil messageUtil, CountryService countryService, MatchService matchService) {
         this.bettingService = bettingService;
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
         this.countryService = countryService;
+        this.matchService = matchService;
     }
 
     @ModelAttribute("availableCountriesExtraBets")
     public List<Country> availableCountriesExtraBets() {
         return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+    }
+
+    @ModelAttribute("gameForThirdAvailable")
+    public boolean gameForThirdAvailable() {
+        return matchService.isGameForThirdAvailable();
     }
 
     @GetMapping

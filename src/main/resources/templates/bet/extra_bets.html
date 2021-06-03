@@ -37,7 +37,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div th:if="${gameForThirdAvailable}" class="col-xs-12 col-sm-6 col-md-4">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<span class="bold" th:text="#{extra_bets.thirdFinalWinner} + ':'"></span>
