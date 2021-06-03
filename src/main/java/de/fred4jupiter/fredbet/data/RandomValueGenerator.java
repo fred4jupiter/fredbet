@@ -61,7 +61,7 @@ public class RandomValueGenerator {
 
     public ImmutableTriple<Country, Country, Country> generateTeamTriple() {
         Set<Country> countries = countryService.getAvailableCountriesWithoutNoneEntry();
-        List<Country> availCountries = new ArrayList<Country>(countries);
+        List<Country> availCountries = new ArrayList<>(countries);
         if (CollectionUtils.isEmpty(availCountries)) {
             return null;
         }

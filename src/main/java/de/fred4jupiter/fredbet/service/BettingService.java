@@ -42,14 +42,17 @@ public class BettingService {
 
     private final RandomValueGenerator randomValueGenerator;
 
+    private final MatchService matchService;
+
     public BettingService(MatchRepository matchRepository, BetRepository betRepository, ExtraBetRepository extraBetRepository,
-                          SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator) {
+                          SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator, MatchService matchService) {
         this.matchRepository = matchRepository;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.securityService = securityService;
         this.jokerService = jokerService;
         this.randomValueGenerator = randomValueGenerator;
+        this.matchService = matchService;
     }
 
     public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
@@ -154,6 +157,7 @@ public class BettingService {
         ExtraBet extraBet = extraBetRepository.findByUserName(username);
         if (extraBet == null) {
             extraBet = new ExtraBet();
+            extraBet.setUserName(username);
         }
 
         return extraBet;
@@ -210,7 +214,21 @@ public class BettingService {
             Pair<Integer, Integer> goals = randomGoals();
             createAndSaveBetting(username, match, goals.getLeft(), goals.getRight(), jokerAllowed);
         });
-        createExtraBetForUser(username);
+
+        ExtraBet extraBet = loadExtraBetForUser(username);
+        if (extraBet.noExtraBetsSet()) {
+            ImmutableTriple<Country, Country, Country> teamTriple = randomValueGenerator.generateTeamTriple();
+            if (extraBet.getFinalWinner() == null || Country.NONE.equals(extraBet.getFinalWinner())) {
+                extraBet.setFinalWinner(teamTriple.getLeft());
+            }
+            if (extraBet.getSemiFinalWinner() == null || Country.NONE.equals(extraBet.getSemiFinalWinner())) {
+                extraBet.setSemiFinalWinner(teamTriple.getMiddle());
+            }
+            if (matchService.isGameForThirdAvailable() && (extraBet.getThirdFinalWinner() == null || Country.NONE.equals(extraBet.getThirdFinalWinner()))) {
+                extraBet.setThirdFinalWinner(teamTriple.getRight());
+            }
+            extraBetRepository.save(extraBet);
+        }
     }
 
     private Pair<Integer, Integer> randomGoals() {
