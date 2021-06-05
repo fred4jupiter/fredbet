@@ -53,6 +53,8 @@ fredbet:
   image-file-system-base-folder: ${user.home}/fredbet
   default-language: de
   create-demo-data: false
+  dice-min-range: 0
+  dice-max-range: 3
 
 # -------- user groups and permissions ------------------------------------------------------------------------------
 

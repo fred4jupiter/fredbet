@@ -158,6 +158,18 @@ public class ExtraBet {
     }
 
     public boolean noExtraBetsSet() {
-        return this.finalWinner == null || Country.NONE.equals(this.finalWinner) || this.semiFinalWinner == null || Country.NONE.equals(this.semiFinalWinner);
+        return !isFinalWinnerSet() || !isSemiFinalWinnerSet();
+    }
+
+    public boolean isFinalWinnerSet() {
+        return this.finalWinner != null && !Country.NONE.equals(this.finalWinner);
+    }
+
+    public boolean isSemiFinalWinnerSet() {
+        return this.semiFinalWinner != null && !Country.NONE.equals(this.semiFinalWinner);
+    }
+
+    public boolean isThirdFinalWinnerSet() {
+        return this.thirdFinalWinner != null && !Country.NONE.equals(this.thirdFinalWinner);
     }
 }

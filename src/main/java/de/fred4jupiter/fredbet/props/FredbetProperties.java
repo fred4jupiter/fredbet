@@ -32,6 +32,10 @@ public class FredbetProperties {
 
     private boolean createDemoData;
 
+    private Integer diceMinRange = 0;
+
+    private Integer diceMaxRange = 3;
+
     public ImageLocation getImageLocation() {
         return imageLocation;
     }
@@ -78,5 +82,21 @@ public class FredbetProperties {
 
     public void setCreateDemoData(boolean createDemoData) {
         this.createDemoData = createDemoData;
+    }
+
+    public Integer getDiceMinRange() {
+        return diceMinRange;
+    }
+
+    public void setDiceMinRange(Integer diceMinRange) {
+        this.diceMinRange = diceMinRange;
+    }
+
+    public Integer getDiceMaxRange() {
+        return diceMaxRange;
+    }
+
+    public void setDiceMaxRange(Integer diceMaxRange) {
+        this.diceMaxRange = diceMaxRange;
     }
 }

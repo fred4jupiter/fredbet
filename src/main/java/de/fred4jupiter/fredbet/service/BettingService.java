@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.service;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
@@ -26,10 +27,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class BettingService {
 
-    private static final int RANDOM_LEFT_RANGE = 0;
-
-    private static final int RANDOM_RIGHT_RANGE = 5;
-
     private final MatchRepository matchRepository;
 
     private final BetRepository betRepository;
@@ -44,8 +41,11 @@ public class BettingService {
 
     private final MatchService matchService;
 
+    private final FredbetProperties fredbetProperties;
+
     public BettingService(MatchRepository matchRepository, BetRepository betRepository, ExtraBetRepository extraBetRepository,
-                          SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator, MatchService matchService) {
+                          SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator,
+                          MatchService matchService, FredbetProperties fredbetProperties) {
         this.matchRepository = matchRepository;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
@@ -53,6 +53,7 @@ public class BettingService {
         this.jokerService = jokerService;
         this.randomValueGenerator = randomValueGenerator;
         this.matchService = matchService;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
@@ -211,29 +212,28 @@ public class BettingService {
             if (randomValueGenerator.generateRandomBoolean()) {
                 jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
             }
-            Pair<Integer, Integer> goals = randomGoals();
+            Pair<Integer, Integer> goals = Pair.of(randomFromTo(), randomFromTo());
             createAndSaveBetting(username, match, goals.getLeft(), goals.getRight(), jokerAllowed);
         });
 
         ExtraBet extraBet = loadExtraBetForUser(username);
         if (extraBet.noExtraBetsSet()) {
             ImmutableTriple<Country, Country, Country> teamTriple = randomValueGenerator.generateTeamTriple();
-            if (extraBet.getFinalWinner() == null || Country.NONE.equals(extraBet.getFinalWinner())) {
+            if (!extraBet.isFinalWinnerSet()) {
                 extraBet.setFinalWinner(teamTriple.getLeft());
             }
-            if (extraBet.getSemiFinalWinner() == null || Country.NONE.equals(extraBet.getSemiFinalWinner())) {
+            if (!extraBet.isSemiFinalWinnerSet()) {
                 extraBet.setSemiFinalWinner(teamTriple.getMiddle());
             }
-            if (matchService.isGameForThirdAvailable() && (extraBet.getThirdFinalWinner() == null || Country.NONE.equals(extraBet.getThirdFinalWinner()))) {
+            if (matchService.isGameForThirdAvailable() && (!extraBet.isThirdFinalWinnerSet())) {
                 extraBet.setThirdFinalWinner(teamTriple.getRight());
             }
             extraBetRepository.save(extraBet);
         }
     }
 
-    private Pair<Integer, Integer> randomGoals() {
-        return Pair.of(randomValueGenerator.generateRandomValueInRange(RANDOM_LEFT_RANGE, RANDOM_RIGHT_RANGE),
-                randomValueGenerator.generateRandomValueInRange(RANDOM_LEFT_RANGE, RANDOM_RIGHT_RANGE));
+    private Integer randomFromTo() {
+        return randomValueGenerator.generateRandomValueInRange(fredbetProperties.getDiceMinRange(), fredbetProperties.getDiceMaxRange());
     }
 
     public void createExtraBetForUser(String username) {
