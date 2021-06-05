@@ -251,6 +251,7 @@
 	</changeSet>
 
 	<changeSet id="11" author="michael">
+		<validCheckSum>ANY</validCheckSum>
 		<renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
 	</changeSet>
 
