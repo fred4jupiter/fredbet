@@ -46,7 +46,7 @@ public class CountryService {
     }
 
     /*
-     * show in extra bets
+     * show in extra bets and in runtime config
      */
     public List<Country> getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(Locale locale) {
         final Set<Country> resultset = getAvailableCountriesWithoutNoneEntry();

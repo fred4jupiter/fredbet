@@ -45,7 +45,7 @@ public class RuntimeSettingsController {
 
     @ModelAttribute("availableCountries")
     public List<Country> availableCountries() {
-        return countryService.getAvailableCountriesSortedWithoutNoneEntry(LocaleContextHolder.getLocale());
+        return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
     }
 
     @ModelAttribute("runtimeSettingsCommand")

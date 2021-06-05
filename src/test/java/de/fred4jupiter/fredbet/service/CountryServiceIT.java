@@ -1,35 +1,42 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.IntegrationTest;
+import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.repository.MatchRepository;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@IntegrationTest
+@TransactionalIntegrationTest
 public class CountryServiceIT {
-
-    private static final Logger LOG = LoggerFactory.getLogger(CountryServiceIT.class);
 
     @Autowired
     private CountryService countryService;
 
+    @Autowired
+    private MatchRepository matchRepository;
+
     @Test
-    public void availableCountriesDoesNotContainNoneEntry() {
-        List<Country> countries = countryService.getAvailableCountriesSortedWithoutNoneEntry(Locale.GERMAN);
+    public void getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale() {
+        matchRepository.deleteAll();
+        createSomeMatches();
+
+        List<Country> countries = countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(Locale.GERMAN);
         assertNotNull(countries);
-
-        assertThat(countries).doesNotContain(Country.NONE);
-
-        LOG.debug("" + countries);
+        assertThat(countries.size()).isEqualTo(5);
+        assertThat(countries.get(0)).isEqualTo(Country.NONE);
+        assertThat(countries.get(1)).isEqualTo(Country.BULGARIA);
+        assertThat(countries.get(2)).isEqualTo(Country.GERMANY);
+        assertThat(countries.get(3)).isEqualTo(Country.FRANCE);
+        assertThat(countries.get(4)).isEqualTo(Country.IRELAND);
     }
 
     @Test
@@ -38,6 +45,14 @@ public class CountryServiceIT {
         assertNotNull(countries);
 
         assertThat(countries).contains(Country.NONE);
+    }
+
+    private void createSomeMatches() {
+        matchRepository.save(MatchBuilder.create().withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_B)
+                .withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build());
+
+        matchRepository.save(MatchBuilder.create().withTeams(Country.BULGARIA, Country.IRELAND).withGroup(Group.GROUP_A)
+                .withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build());
     }
 
 }
