@@ -253,3 +253,8 @@ button.vote {
 .ranking-same-position {
 	background-color: #ffe8b3;
 }
+
+.no-left-right-margin {
+	margin-left: 0;
+	margin-right: 0;
+}

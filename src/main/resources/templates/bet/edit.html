@@ -63,10 +63,10 @@
 							</div>
 						</div>						
 						<div id="penaltyBox" th:if="${!betCommand.isGroupMatch()}">
-							<div class="row">
+							<div class="row no-left-right-margin">
 								<span class="bold" th:text="#{penalty.box.heading}"></span>
 							</div>
-							<div class="row center color-vote penalty-height">
+							<div class="row center color-vote penalty-height no-left-right-margin">
 								<div class="col-xs-6">
 									<input type="radio" th:field="*{penaltyWinnerOne}" value="true" />
 								</div>
