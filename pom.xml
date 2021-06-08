@@ -322,6 +322,22 @@
                     <target>14</target>
                 </configuration>
             </plugin>
+            <!-- use mvn jib:dockerBuild to build the image -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <to>
+                        <image>${project.artifactId}</image>
+                    </to>
+                    <container>
+                        <jvmFlags>
+                            <jvmFlag>-Duser.timezone=Europe/Berlin</jvmFlag>
+                        </jvmFlags>
+                    </container>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
