@@ -33,7 +33,7 @@ public class AppUserBuilder {
     }
 
     public AppUserBuilder withUsernameAndPassword(String username, String password) {
-        this.appUser.setUsername(username);
+        this.appUser.setUsername(username.trim());
         this.appUser.setPassword(password);
         return this;
     }

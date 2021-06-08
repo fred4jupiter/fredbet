@@ -6,10 +6,14 @@ import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RegistrationService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationService.class);
 
     private final UserService userService;
 
@@ -21,12 +25,13 @@ public class RegistrationService {
     }
 
     public boolean isTokenValid(String token) {
-        String registrationCode = runtimeSettingsService.loadRuntimeSettings().getRegistrationCode();
-        if (StringUtils.isNotBlank(registrationCode) && !registrationCode.equals(token)) {
+        final String registrationCode = runtimeSettingsService.loadRuntimeSettings().getRegistrationCode();
+        if (StringUtils.isBlank(registrationCode)) {
+            LOG.warn("No registration code set!");
             return false;
         }
 
-        return true;
+        return registrationCode.equals(token);
     }
 
     public boolean isSelfRegistrationEnabled() {
