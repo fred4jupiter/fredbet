@@ -29,7 +29,7 @@
 											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></span>
 										</td>
 						   			</tr>
-						   			<tr>
+						   			<tr th:if="${extraBet.thirdFinalWinner}">
 										<td class="info">
 											3. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getIsoCode()}}"></span>

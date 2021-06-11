@@ -135,8 +135,7 @@ public class BettingService {
 
     public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {
         ExtraBet found = extraBetRepository.findByUserName(username);
-        if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && Country.NONE.equals(thirdFinalWinner)
-                && found != null) {
+        if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && found != null) {
             // reset/delete existing extra bet
             extraBetRepository.delete(found);
             return;
@@ -148,7 +147,9 @@ public class BettingService {
 
         found.setFinalWinner(finalWinner);
         found.setSemiFinalWinner(semiFinalWinner);
-        found.setThirdFinalWinner(thirdFinalWinner);
+        if (matchService.isGameForThirdAvailable()) {
+            found.setThirdFinalWinner(thirdFinalWinner);
+        }
         found.setUserName(username);
 
         extraBetRepository.save(found);
