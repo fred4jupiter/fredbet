@@ -25,13 +25,16 @@ public class RegistrationService {
     }
 
     public boolean isTokenValid(String token) {
+        if (StringUtils.isBlank(token)) {
+            return false;
+        }
         final String registrationCode = runtimeSettingsService.loadRuntimeSettings().getRegistrationCode();
         if (StringUtils.isBlank(registrationCode)) {
             LOG.warn("No registration code set!");
             return false;
         }
 
-        return registrationCode.equals(token);
+        return registrationCode.trim().equals(token.trim());
     }
 
     public boolean isSelfRegistrationEnabled() {
