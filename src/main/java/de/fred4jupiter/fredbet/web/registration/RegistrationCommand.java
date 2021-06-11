@@ -23,6 +23,8 @@ public class RegistrationCommand {
     @Size(min = 4, max = 12)
     private String passwordRepeat;
 
+    private boolean child;
+
     public String getUsername() {
         return username;
     }
@@ -53,5 +55,13 @@ public class RegistrationCommand {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isChild() {
+        return child;
+    }
+
+    public void setChild(boolean child) {
+        this.child = child;
     }
 }

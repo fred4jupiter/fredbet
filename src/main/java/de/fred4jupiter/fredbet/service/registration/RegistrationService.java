@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.service.registration;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
@@ -41,10 +40,12 @@ public class RegistrationService {
         return runtimeSettingsService.loadRuntimeSettings().isSelfRegistrationEnabled();
     }
 
-    public void registerNewUser(String username, String newPassword) {
-        AppUser appUser = AppUserBuilder.create()
+    public void registerNewUser(String username, String newPassword, boolean child) {
+        AppUserBuilder builder = AppUserBuilder.create()
                 .withUsernameAndPassword(username, newPassword)
-                .withUserGroup(FredBetUserGroup.ROLE_USER).build();
-        userService.createUser(appUser);
+                .withUserGroup(FredBetUserGroup.ROLE_USER)
+                .withIsChild(child);
+
+        userService.createUser(builder.build());
     }
 }
