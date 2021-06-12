@@ -168,7 +168,9 @@ public class ReportService {
         }
 
         pointCourseResultList.forEach(pointCourseResult -> {
-            pointCourseContainer.add(pointCourseResult, messageSourceUtil, locale);
+            if (pointCourseResult.getMatch().hasResultSet()) {
+                pointCourseContainer.add(pointCourseResult, messageSourceUtil, locale);
+            }
         });
         return pointCourseContainer;
     }

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+// Punkteverlauf
 @Controller
 @RequestMapping("/pointcourse")
 public class PointCourseController {
