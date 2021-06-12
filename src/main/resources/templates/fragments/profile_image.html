@@ -20,7 +20,7 @@
 		<div th:fragment="profile_image_small_with_popup(imageKey)" th:remove="tag">			
 			<div th:if="${imageKey}" th:remove="tag">
 				<a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="img-link">
-					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
+					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="17" height="17" class="img-rounded"/>
 				</a>
 			</div>						
 	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
