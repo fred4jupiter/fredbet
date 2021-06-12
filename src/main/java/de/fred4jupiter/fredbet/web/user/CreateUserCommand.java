@@ -18,7 +18,7 @@ public class CreateUserCommand {
 	private String username;
 
 	@NotEmpty
-	@Size(min = 4, max = 12)
+	@Size(min = 4, max = 100)
 	private String password;
 
 	@NotEmpty

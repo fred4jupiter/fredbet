@@ -16,11 +16,11 @@ public class RegistrationCommand {
     private String username;
 
     @NotEmpty
-    @Size(min = 4, max = 12)
+    @Size(min = 4, max = 100)
     private String password;
 
     @NotEmpty
-    @Size(min = 4, max = 12)
+    @Size(min = 4, max = 100)
     private String passwordRepeat;
 
     private boolean child;
