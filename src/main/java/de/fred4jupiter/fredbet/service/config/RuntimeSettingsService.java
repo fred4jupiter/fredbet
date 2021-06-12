@@ -5,7 +5,9 @@ import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
+import de.fred4jupiter.fredbet.service.admin.TimeZoneService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -14,6 +16,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.TimeZone;
 
 /**
  * Service for loading runtime configuration settings.
@@ -28,24 +32,24 @@ public class RuntimeSettingsService {
 
     private static final Long DEFAULT_CONFIG_ID = 1L;
 
-    private final RuntimeSettingsRepository<RuntimeSettings> runtimeSettingsRepository;
+    private final RuntimeSettingsRepository runtimeSettingsRepository;
 
     private final Environment environment;
 
-    public RuntimeSettingsService(RuntimeSettingsRepository<RuntimeSettings> runtimeSettingsRepository, Environment environment) {
+    private final TimeZoneService timeZoneService;
+
+    public RuntimeSettingsService(RuntimeSettingsRepository runtimeSettingsRepository,
+                                  Environment environment, TimeZoneService timeZoneService) {
         this.runtimeSettingsRepository = runtimeSettingsRepository;
         this.environment = environment;
+        this.timeZoneService = timeZoneService;
     }
 
     @Cacheable(CacheNames.RUNTIME_SETTINGS)
     public RuntimeSettings loadRuntimeSettings() {
         LOG.debug("Loading runtime settings from DB...");
         RuntimeSettings runtimeSettings = runtimeSettingsRepository.loadRuntimeSettings(DEFAULT_CONFIG_ID, RuntimeSettings.class);
-        if (runtimeSettings == null) {
-            runtimeSettings = createDefaultRuntimeSettings();
-        }
-
-        return runtimeSettings;
+        return runtimeSettings == null ? createDefaultRuntimeSettings() : runtimeSettings;
     }
 
     private RuntimeSettings createDefaultRuntimeSettings() {
@@ -56,6 +60,7 @@ public class RuntimeSettingsService {
         runtimeSettings.setChangePasswordOnFirstLogin(true);
         runtimeSettings.setSelfRegistrationEnabled(false);
         runtimeSettings.setRegistrationCode(RandomStringUtils.randomAlphanumeric(6));
+        runtimeSettings.setTimeZone(TimeZone.getDefault().getID());
 
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV, FredBetProfile.H2))) {
             runtimeSettings.setShowDemoDataNavigationEntry(true);
@@ -68,7 +73,10 @@ public class RuntimeSettingsService {
 
     @CacheEvict(cacheNames = CacheNames.RUNTIME_SETTINGS, allEntries = true)
     public void saveRuntimeSettings(RuntimeSettings runtimeSettings) {
+        if (StringUtils.isNotBlank(runtimeSettings.getTimeZone())) {
+            timeZoneService.setTimeZone(runtimeSettings.getTimeZone());
+        }
+
         runtimeSettingsRepository.saveRuntimeSettings(DEFAULT_CONFIG_ID, runtimeSettings);
     }
-
 }

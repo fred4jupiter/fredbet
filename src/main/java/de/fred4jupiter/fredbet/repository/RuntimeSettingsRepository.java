@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public class RuntimeSettingsRepository<T> {
+public class RuntimeSettingsRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(RuntimeSettingsRepository.class);
 
@@ -23,7 +23,7 @@ public class RuntimeSettingsRepository<T> {
         this.jsonObjectConverter = jsonObjectConverter;
     }
 
-    public T loadRuntimeSettings(Long id, Class<T> targetType) {
+    public <T> T loadRuntimeSettings(Long id, Class<T> targetType) {
         RuntimeSettingsDb runtimeSettingsDb = loadRuntimeSettingsDb(id);
         return toRuntimeSettings(runtimeSettingsDb, targetType);
     }
@@ -39,7 +39,7 @@ public class RuntimeSettingsRepository<T> {
         return runtimeSettingsDb;
     }
 
-    private T toRuntimeSettings(RuntimeSettingsDb runtimeSettingsDb, Class<T> targetType) {
+    private <T> T toRuntimeSettings(RuntimeSettingsDb runtimeSettingsDb, Class<T> targetType) {
         String jsonConfig = runtimeSettingsDb.getJsonConfig();
 
         if (StringUtils.isNotBlank(jsonConfig)) {
@@ -49,14 +49,14 @@ public class RuntimeSettingsRepository<T> {
         return null;
     }
 
-    public void saveRuntimeSettings(Long id, T runtimeSettings) {
+    public <T> void saveRuntimeSettings(Long id, T runtimeSettings) {
         RuntimeSettingsDb runtimeSettingsDb = toRuntimeSettingsDb(id, runtimeSettings);
 
         runtimeSettingsDbRepository.save(runtimeSettingsDb);
         LOG.info("saved runtime settings.");
     }
 
-    private RuntimeSettingsDb toRuntimeSettingsDb(Long id, T runtimeSettings) {
+    private <T> RuntimeSettingsDb toRuntimeSettingsDb(Long id, T runtimeSettings) {
         String json = jsonObjectConverter.toJson(runtimeSettings);
         RuntimeSettingsDb runtimeSettingsDb = loadRuntimeSettingsDb(id);
         runtimeSettingsDb.setJsonConfig(json);

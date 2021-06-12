@@ -64,10 +64,10 @@
 						</div>
 						<div class="form-group">
 							<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone}"></label> 
-							<select id="timeZone" th:field="*{timeZone}" class="form-control">
+							<select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-control">
 							  <option th:each="timeZone : ${runtimeSettingsCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
 							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('timeZone')}" th:errors="*{timeZone}">timeZone Error</p>						
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
 						</div>					
 					</div>
 					<div class="visible-xs col-xs-12">

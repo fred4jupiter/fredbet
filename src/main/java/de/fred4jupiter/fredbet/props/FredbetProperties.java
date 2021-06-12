@@ -46,10 +46,14 @@ public class FredbetProperties {
 
     @Override
     public String toString() {
-        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("imageLocation", imageLocation);
-        builder.append("imageFileSystemBaseFolder", imageFileSystemBaseFolder);
-        return builder.toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("imageLocation", imageLocation)
+                .append("imageFileSystemBaseFolder", imageFileSystemBaseFolder)
+                .append("defaultLanguage", defaultLanguage)
+                .append("createDemoData", createDemoData)
+                .append("diceMinRange", diceMinRange)
+                .append("diceMaxRange", diceMaxRange)
+                .toString();
     }
 
     public String getImageFileSystemBaseFolder() {
@@ -99,4 +103,5 @@ public class FredbetProperties {
     public void setDiceMaxRange(Integer diceMaxRange) {
         this.diceMaxRange = diceMaxRange;
     }
+
 }

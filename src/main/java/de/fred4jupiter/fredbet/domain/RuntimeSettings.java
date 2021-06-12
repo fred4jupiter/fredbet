@@ -68,6 +68,9 @@ public class RuntimeSettings {
     @Length(min = 4)
     private String registrationCode;
 
+    @NotNull
+    private String timeZone;
+
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
     }
@@ -162,5 +165,13 @@ public class RuntimeSettings {
 
     public void setRegistrationCode(String registrationCode) {
         this.registrationCode = registrationCode;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 }

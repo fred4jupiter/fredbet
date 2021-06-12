@@ -19,12 +19,12 @@ public class DatabaseBackupService {
 
     private final DatabaseBackupRepository databaseBackupRepository;
 
-    private final RuntimeSettingsRepository<DatabaseBackup> runtimeSettingsRepository;
+    private final RuntimeSettingsRepository runtimeSettingsRepository;
 
     private final Environment environment;
 
     public DatabaseBackupService(DatabaseBackupRepository databaseBackupRepository,
-                                 RuntimeSettingsRepository<DatabaseBackup> runtimeSettingsRepository, Environment environment) {
+                                 RuntimeSettingsRepository runtimeSettingsRepository, Environment environment) {
         this.databaseBackupRepository = databaseBackupRepository;
         this.runtimeSettingsRepository = runtimeSettingsRepository;
         this.environment = environment;
