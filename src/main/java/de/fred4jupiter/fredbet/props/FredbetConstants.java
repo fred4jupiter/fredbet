@@ -35,4 +35,8 @@ public final class FredbetConstants {
 
     public static final String GALLERY_NAME = "Users";
 
+    public static final int USERNAME_MAX_LENGTH = 12;
+
+    public static final int PASSWORD_MAX_LENGTH = 100;
+
 }

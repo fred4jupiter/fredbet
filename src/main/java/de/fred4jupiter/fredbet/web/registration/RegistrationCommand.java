@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.registration;
 
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.web.validation.PasswordRepeatConstraint;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,15 +13,15 @@ public class RegistrationCommand {
     private String token;
 
     @NotEmpty
-    @Size(min = 2, max = 12)
+    @Size(min = 2, max = FredbetConstants.USERNAME_MAX_LENGTH)
     private String username;
 
     @NotEmpty
-    @Size(min = 4, max = 100)
+    @Size(min = 4, max = FredbetConstants.PASSWORD_MAX_LENGTH)
     private String password;
 
     @NotEmpty
-    @Size(min = 4, max = 100)
+    @Size(min = 4, max = FredbetConstants.PASSWORD_MAX_LENGTH)
     private String passwordRepeat;
 
     private boolean child;
