@@ -52,8 +52,7 @@ public class ImageAdministrationService {
         this.userService = userService;
     }
 
-    @PostConstruct
-    private void initUserProfileImageGroup() {
+    public void initUserProfileImageGroup() {
         ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
 
         if (imageGroup == null) {

@@ -79,4 +79,15 @@ public class RuntimeSettingsService {
 
         runtimeSettingsRepository.saveRuntimeSettings(DEFAULT_CONFIG_ID, runtimeSettings);
     }
+
+    public void checkIfTimezoneIsCorrect() {
+        final RuntimeSettings runtimeSettings = loadRuntimeSettings();
+        final String defaultTimeZone = TimeZone.getDefault().getID();
+        if (defaultTimeZone != null && defaultTimeZone.equals(runtimeSettings.getTimeZone())) {
+            return;
+        }
+
+        LOG.debug("setting timezone to: {}", runtimeSettings.getTimeZone());
+        timeZoneService.setTimeZone(runtimeSettings.getTimeZone());
+    }
 }

@@ -74,8 +74,7 @@ public class DatabasePopulator {
         this.fredbetProperties = fredbetProperties;
     }
 
-    @PostConstruct
-    private void initDatabaseWithDemoData() {
+    public void initDatabaseWithDemoData() {
         if (!isRunInIntegrationTest()) {
             createDefaultUsers();
             addRulesIfEmpty();
