@@ -39,4 +39,6 @@ public final class FredbetConstants {
 
     public static final int PASSWORD_MAX_LENGTH = 100;
 
+    public static final String DEFAULT_TIMEZONE = "Europe/Berlin";
+
 }

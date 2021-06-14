@@ -100,6 +100,7 @@ public class RuntimeSettingsService {
     }
 
     private String getTimeZoneId() {
-        return TimeZone.getDefault().getID();
+        String timeZoneId = TimeZone.getDefault().getID();
+        return StringUtils.isNotBlank(timeZoneId) ? timeZoneId : FredbetConstants.DEFAULT_TIMEZONE;
     }
 }
