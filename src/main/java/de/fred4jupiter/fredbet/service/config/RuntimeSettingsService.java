@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
-import de.fred4jupiter.fredbet.service.admin.TimeZoneService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,13 +35,9 @@ public class RuntimeSettingsService {
 
     private final Environment environment;
 
-    private final TimeZoneService timeZoneService;
-
-    public RuntimeSettingsService(RuntimeSettingsRepository runtimeSettingsRepository,
-                                  Environment environment, TimeZoneService timeZoneService) {
+    public RuntimeSettingsService(RuntimeSettingsRepository runtimeSettingsRepository, Environment environment) {
         this.runtimeSettingsRepository = runtimeSettingsRepository;
         this.environment = environment;
-        this.timeZoneService = timeZoneService;
     }
 
     @Cacheable(CacheNames.RUNTIME_SETTINGS)
@@ -60,7 +55,7 @@ public class RuntimeSettingsService {
         runtimeSettings.setChangePasswordOnFirstLogin(true);
         runtimeSettings.setSelfRegistrationEnabled(false);
         runtimeSettings.setRegistrationCode(RandomStringUtils.randomAlphanumeric(6));
-        runtimeSettings.setTimeZone(TimeZone.getDefault().getID());
+        runtimeSettings.setTimeZone(getTimeZoneId());
 
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV, FredBetProfile.H2))) {
             runtimeSettings.setShowDemoDataNavigationEntry(true);
@@ -74,7 +69,7 @@ public class RuntimeSettingsService {
     @CacheEvict(cacheNames = CacheNames.RUNTIME_SETTINGS, allEntries = true)
     public void saveRuntimeSettings(RuntimeSettings runtimeSettings) {
         if (StringUtils.isNotBlank(runtimeSettings.getTimeZone())) {
-            timeZoneService.setTimeZone(runtimeSettings.getTimeZone());
+            setTimeZone(runtimeSettings.getTimeZone());
         }
 
         runtimeSettingsRepository.saveRuntimeSettings(DEFAULT_CONFIG_ID, runtimeSettings);
@@ -82,12 +77,25 @@ public class RuntimeSettingsService {
 
     public void checkIfTimezoneIsCorrect() {
         final RuntimeSettings runtimeSettings = loadRuntimeSettings();
-        final String defaultTimeZone = TimeZone.getDefault().getID();
-        if (defaultTimeZone != null && defaultTimeZone.equals(runtimeSettings.getTimeZone())) {
+        final String timeZoneId = runtimeSettings.getTimeZone();
+
+        final String defaultTimeZone = getTimeZoneId();
+
+        if (StringUtils.isNotBlank(timeZoneId) && timeZoneId.equals(defaultTimeZone)) {
             return;
         }
 
-        LOG.debug("setting timezone to: {}", runtimeSettings.getTimeZone());
-        timeZoneService.setTimeZone(runtimeSettings.getTimeZone());
+        LOG.debug("setting timezone to: {}", timeZoneId);
+        setTimeZone(timeZoneId);
+    }
+
+    private void setTimeZone(String timeZoneId) {
+        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+        LOG.info("Setting timeZone to: {}", timeZone.getID());
+        TimeZone.setDefault(timeZone);
+    }
+
+    private String getTimeZoneId() {
+        return TimeZone.getDefault().getID();
     }
 }
