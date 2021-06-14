@@ -90,6 +90,10 @@ public class RuntimeSettingsService {
     }
 
     private void setTimeZone(String timeZoneId) {
+        if (StringUtils.isBlank(timeZoneId)) {
+            LOG.warn("timeZoneId is null");
+            return;
+        }
         TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
         LOG.info("Setting timeZone to: {}", timeZone.getID());
         TimeZone.setDefault(timeZone);
