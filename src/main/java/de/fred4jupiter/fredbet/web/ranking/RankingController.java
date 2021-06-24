@@ -65,6 +65,7 @@ public class RankingController {
         if (Validator.isEmpty(rankings) && RankingSelection.MIXED.equals(rankingSelection)) {
             messageUtil.addInfoMsg(model, "ranking.noRankings");
             model.addAttribute("rankings", rankings);
+            model.addAttribute("rankingSelection", rankingSelection);
             return PAGE_RANKING;
         }
 
@@ -88,6 +89,7 @@ public class RankingController {
         }
 
         model.addAttribute("rankings", rankings);
+        model.addAttribute("rankingSelection", rankingSelection);
         return PAGE_RANKING;
     }
 }
