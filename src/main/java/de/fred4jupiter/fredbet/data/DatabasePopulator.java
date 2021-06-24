@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.data;
 
+import com.github.javafaker.Faker;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
@@ -24,7 +25,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +59,8 @@ public class DatabasePopulator {
 
     private final FredbetProperties fredbetProperties;
 
+    private final Faker faker = new Faker();
+
     public DatabasePopulator(MatchService matchService, Environment environment, UserService userService,
                              BettingService bettingService, RandomValueGenerator randomValueGenerator,
                              InfoService infoService, ImageAdministrationService imageAdministrationService,
@@ -81,7 +83,7 @@ public class DatabasePopulator {
         }
 
         if (!isRunInIntegrationTest() && fredbetProperties.isCreateDemoData()) {
-            createDemoUsers(NUMBER_OF_DEMO_USERS, true);
+            createDemoUsers(NUMBER_OF_DEMO_USERS);
             createRandomMatches();
         }
 
@@ -174,7 +176,7 @@ public class DatabasePopulator {
         }
     }
 
-    void createDemoUsers(int numberOfDemoUsers, boolean withProfileImage) {
+    void createDemoUsers(int numberOfDemoUsers) {
         LOG.info("createAdditionalUsers: creating additional demo users ...");
 
         final byte[] demoImage = loadDemoUserProfileImage();
@@ -184,7 +186,7 @@ public class DatabasePopulator {
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
             boolean isNewUser = saveIfNotPresent(user);
-            if (isNewUser && withProfileImage) {
+            if (isNewUser && faker.random().nextBoolean()) {
                 this.imageAdministrationService.saveUserProfileImage(demoImage, user);
             }
         }

@@ -23,8 +23,8 @@ public class AsyncDatabasePopulator {
     }
 
     @Async
-    public void createDemoUsers(int numberOfDemoUsers, boolean withProfileImage) {
-        databasePopulator.createDemoUsers(numberOfDemoUsers, withProfileImage);
+    public void createDemoUsers(int numberOfDemoUsers) {
+        databasePopulator.createDemoUsers(numberOfDemoUsers);
     }
 
     @Async

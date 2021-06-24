@@ -123,7 +123,7 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        asyncDatabasePopulator.createDemoUsers(command.getNumberOfTestUsers(), false);
+        asyncDatabasePopulator.createDemoUsers(command.getNumberOfTestUsers());
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }
