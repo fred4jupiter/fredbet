@@ -32,7 +32,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 	@Query("select a.group from Match a ")
 	Set<Group> fetchGroupsOfAllMatches();
 
-	@Query("Select b.match from Bet b where b.joker = TRUE and b.userName = :userName")
+	@Query("Select b.match from Bet b where b.joker = TRUE and b.userName = :userName order by b.match.kickOffDate asc")
 	List<Match> findMatchesOfJokerBetsForUser(@Param("userName") String userName);
 
 	List<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(LocalDateTime startDate, LocalDateTime endDate);
