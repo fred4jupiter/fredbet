@@ -51,7 +51,7 @@ public class RuntimeSettingsService {
         RuntimeSettings runtimeSettings = new RuntimeSettings();
         // set defaults
         runtimeSettings.setFavouriteCountry(FredbetConstants.DEFAULT_FAVOURITE_COUNTRY);
-        runtimeSettings.setPasswordForReset(FredbetConstants.DEFAULT_REST_PASSWORT);
+        runtimeSettings.setPasswordForReset(FredbetConstants.DEFAULT_RESET_PASSWORT);
         runtimeSettings.setChangePasswordOnFirstLogin(true);
         runtimeSettings.setSelfRegistrationEnabled(false);
         runtimeSettings.setRegistrationCode(RandomStringUtils.randomAlphanumeric(6));

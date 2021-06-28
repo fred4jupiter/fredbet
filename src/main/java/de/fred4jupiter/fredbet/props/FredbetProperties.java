@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -35,6 +36,8 @@ public class FredbetProperties {
     private Integer diceMinRange = 0;
 
     private Integer diceMaxRange = 3;
+
+    private List<String> additionalAdminUsers;
 
     public ImageLocation getImageLocation() {
         return imageLocation;
@@ -104,4 +107,11 @@ public class FredbetProperties {
         this.diceMaxRange = diceMaxRange;
     }
 
+    public List<String> getAdditionalAdminUsers() {
+        return additionalAdminUsers;
+    }
+
+    public void setAdditionalAdminUsers(List<String> additionalAdminUsers) {
+        this.additionalAdminUsers = additionalAdminUsers;
+    }
 }

@@ -208,7 +208,12 @@ public class DatabasePopulator {
         saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
                 .withUserGroup(FredBetUserGroup.ROLE_ADMIN).deletable(false).build());
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword("michael", "michael").withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
+        List<String> additionalAdminUsers = fredbetProperties.getAdditionalAdminUsers();
+        if (additionalAdminUsers != null && !additionalAdminUsers.isEmpty()) {
+            additionalAdminUsers.forEach(username -> {
+                saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(username, username).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
+            });
+        }
     }
 
     public boolean saveIfNotPresent(AppUser appUser) {

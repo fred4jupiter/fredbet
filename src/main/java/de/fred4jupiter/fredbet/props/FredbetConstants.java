@@ -25,7 +25,7 @@ public final class FredbetConstants {
 
     public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
-    public static final String DEFAULT_REST_PASSWORT = "fredbet";
+    public static final String DEFAULT_RESET_PASSWORT = "fredbet";
 
     public static final String IMAGE_JPG_EXTENSION = "jpg";
 

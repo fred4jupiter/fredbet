@@ -55,6 +55,8 @@ fredbet:
   create-demo-data: false
   dice-min-range: 0
   dice-max-range: 3
+  additional-admin-users:
+    - michael
 
 # -------- user groups and permissions ------------------------------------------------------------------------------
 
