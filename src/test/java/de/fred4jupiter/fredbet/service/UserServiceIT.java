@@ -107,7 +107,7 @@ public class UserServiceIT {
 
         AppUser appUser = fredBetUsageBuilder.withAppUser().withMatch().withBet().build();
 
-        final String oldUserName = new String(appUser.getUsername());
+        final String oldUserName = appUser.getUsername();
 
         final String newUsername = "Klarky";
 
@@ -123,5 +123,15 @@ public class UserServiceIT {
         List<Bet> betsByNewName = this.betRepository.findByUserName(newUsername);
         assertNotNull(betsByNewName);
         assertThat(betsByNewName.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void deleteAllUsers() {
+        final AppUser appUser1 = AppUserBuilder.create().withDemoData().build();
+        userService.createUser(appUser1);
+        final AppUser appUser2 = AppUserBuilder.create().withDemoData().build();
+        userService.createUser(appUser2);
+
+        userService.deleteAllUsers();
     }
 }

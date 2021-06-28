@@ -12,6 +12,4 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     @Query("Select a from AppUser a where a.lastLogin is not null ORDER BY a.lastLogin DESC")
     List<AppUser> fetchLastLoginUsers();
-
-    void deleteAllByDeletableTrue();
 }

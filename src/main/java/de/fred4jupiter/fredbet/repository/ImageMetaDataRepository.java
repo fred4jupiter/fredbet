@@ -1,16 +1,15 @@
 package de.fred4jupiter.fredbet.repository;
 
-import java.util.List;
-
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import java.util.List;
 
 public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Long> {
 
@@ -35,5 +34,4 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
     ImageMetaData findByOwnerAndImageGroup(AppUser owner, ImageGroup imageGroup);
 
-    void deleteAllByOwnerNotLike(AppUser appUser);
 }

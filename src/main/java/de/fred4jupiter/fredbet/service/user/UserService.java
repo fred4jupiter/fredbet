@@ -126,9 +126,13 @@ public class UserService {
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
     public void deleteAllUsers() {
         bettingService.deleteAllBets();
-        AppUser adminUser = appUserRepository.findByUsername(FredbetConstants.TECHNICAL_USERNAME);
-        imageMetaDataRepository.deleteAllByOwnerNotLike(adminUser);
-        appUserRepository.deleteAllByDeletableTrue();
+
+        List<AppUser> allUsers = appUserRepository.findAll();
+        allUsers.forEach(appUser -> {
+            if (!FredbetConstants.TECHNICAL_USERNAME.equals(appUser.getUsername())) {
+                deleteUser(appUser.getId());
+            }
+        });
     }
 
     public String resetPasswordForUser(Long userId) {
