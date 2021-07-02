@@ -156,23 +156,25 @@ public class ReportService {
     }
 
     public PointCourseContainer reportPointsCourse(String username, Locale locale) {
-        List<PointsPerUser> pointsPerUsers = this.betRepository.queryPointsPerUser();
-        ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointsPerUsers);
+        final List<PointsPerUser> pointsPerUsers = this.betRepository.queryPointsPerUser();
+        final ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointsPerUsers);
 
-        PointCourseContainer pointCourseContainer = new PointCourseContainer();
-        List<PointCourseResult> pointCourseResultList;
-        if (pair != null) {
-            pointCourseResultList = this.betRepository.queryPointsCourse(Arrays.asList(pair.getLeft(), username, pair.getRight()));
-        } else {
-            pointCourseResultList = this.betRepository.queryPointsCourse(Collections.singletonList(username));
-        }
-
+        final PointCourseContainer pointCourseContainer = new PointCourseContainer();
+        final List<PointCourseResult> pointCourseResultList = queryPointCourseResultList(username, pair);
         pointCourseResultList.forEach(pointCourseResult -> {
             if (pointCourseResult.getMatch().hasResultSet()) {
                 pointCourseContainer.add(pointCourseResult, messageSourceUtil, locale);
             }
         });
         return pointCourseContainer;
+    }
+
+    private List<PointCourseResult> queryPointCourseResultList(String username, ImmutablePair<String, String> pair) {
+        if (pair != null) {
+            return this.betRepository.queryPointsCourse(Arrays.asList(pair.getLeft(), username, pair.getRight()));
+        } else {
+            return this.betRepository.queryPointsCourse(Collections.singletonList(username));
+        }
     }
 
     private ImmutablePair<String, String> calculateMinMaxPointsUsernames(List<PointsPerUser> pointsPerUsers) {
