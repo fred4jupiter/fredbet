@@ -2,9 +2,11 @@ package de.fred4jupiter.fredbet.service.ranking;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
+import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.domain.Visitable;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.service.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.service.pdf.PdfTableDataBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
@@ -26,12 +28,15 @@ public class RankingService {
 
     private final MessageSourceUtil messageSourceUtil;
 
+    private final RuntimeSettingsService runtimeSettingsService;
+
     public RankingService(BetRepository betRepository, ChildRelationFetcher childRelationFetcher, PdfExportService pdfExportService,
-                          MessageSourceUtil messageSourceUtil) {
+                          MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService) {
         this.betRepository = betRepository;
         this.childRelationFetcher = childRelationFetcher;
         this.pdfExportService = pdfExportService;
         this.messageSourceUtil = messageSourceUtil;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
@@ -91,19 +96,31 @@ public class RankingService {
         final String title = "FredBet " + messageSourceUtil.getMessageFor("ranking.list.title", locale);
         PdfTableDataBuilder builder = PdfTableDataBuilder.create()
                 .withHeaderColumn("#")
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale))
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale))
+                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale));
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        if (runtimeSettings.isEnabledParentChildRanking()) {
+            builder.withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.child", locale));
+            builder.withColumnWidths(new float[]{1, 3, 2, 3, 3, 3});
+        } else {
+            builder.withColumnWidths(new float[]{1, 3, 3, 3, 3});
+        }
+        builder.withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale))
                 .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale))
                 .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
 
-        builder.withColumnWidths(new float[]{1, 3, 3, 3, 3}).withTitle(title).withLocale(locale);
+        builder.withTitle(title).withLocale(locale);
 
-        List<UsernamePoints> rankings = calculateCurrentRanking(RankingSelection.MIXED);
+        final List<UsernamePoints> rankings = calculateCurrentRanking(RankingSelection.MIXED);
+        final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
 
         final AtomicInteger rank = new AtomicInteger();
         return pdfExportService.createPdfFileFrom(builder, rankings, (rowContentAdder, row) -> {
             rowContentAdder.addCellContent("" + rank.incrementAndGet());
             rowContentAdder.addCellContent(row.getUserName());
+            if (runtimeSettings.isEnabledParentChildRanking()) {
+                Boolean isChild = relationMap.get(row.getUserName());
+                rowContentAdder.addCellContent(isChild ? "X" : "");
+            }
             rowContentAdder.addCellContent("" + row.getTotalPoints());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
