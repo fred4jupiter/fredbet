@@ -5,9 +5,11 @@ import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,6 +41,10 @@ public class SessionTrackingService {
     }
 
     public List<SessionTracking> findLoggedInUsers() {
-        return sessionTrackingRepository.findAllByOrderByLastLoginDesc();
+        List<SessionTracking> loggedInUsers = sessionTrackingRepository.findAllByOrderByLastLoginDesc();
+        return loggedInUsers.stream().filter(sessionTracking -> {
+            Duration duration = Duration.between(sessionTracking.getLastLogin(), LocalDateTime.now());
+            return duration.compareTo(Duration.ofDays(1)) < 0; // show only active users that are not older than 1 day
+        }).collect(Collectors.toList());
     }
 }
