@@ -99,6 +99,10 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
     }
 
     private boolean isCorrectWinner(Match match, Bet bet) {
+        if (!match.isGroupMatch() && match.isUndecidedResult()) {
+            // you can only get points if the penalty winner is correct and this is calculated in the other method
+            return false;
+        }
         return (match.isTeamOneWinner() && bet.isTeamOneWinner()) || (match.isTeamTwoWinner() && bet.isTeamTwoWinner());
     }
 
