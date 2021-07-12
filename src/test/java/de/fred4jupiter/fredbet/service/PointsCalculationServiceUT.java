@@ -1,13 +1,11 @@
 package de.fred4jupiter.fredbet.service;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @UnitTest
@@ -125,6 +123,48 @@ public class PointsCalculationServiceUT {
         assertEquals(8, pointsCalculationService.calculatePointsFor(match, bet));
     }
 
+    @Test
+    public void finalMatchCorrectBetWinnerOne() {
+        Match match = createKnockoutMatch(2, 1, false);
+        Bet bet = createKnockoutBet(2, 1, false);
+        assertThat(pointsCalculationService.calculatePointsFor(match, bet)).isEqualTo(3);
+    }
+
+    @Test
+    public void finalMatchCorrectBetWinnerTwo() {
+        Match match = createKnockoutMatch(1, 2, false);
+        Bet bet = createKnockoutBet(1, 2, false);
+        assertThat(pointsCalculationService.calculatePointsFor(match, bet)).isEqualTo(3);
+    }
+
+    @Test
+    public void finalMatchCorrectBetUndecidedPenaltyOne() {
+        Match match = createKnockoutMatch(1, 1, true);
+        Bet bet = createKnockoutBet(1, 1, true);
+        assertThat(pointsCalculationService.calculatePointsFor(match, bet)).isEqualTo(4);
+    }
+
+    @Test
+    public void finalMatchCorrectBetUndecidedPenaltyTwo() {
+        Match match = createKnockoutMatch(1, 1, false);
+        Bet bet = createKnockoutBet(1, 1, false);
+        assertThat(pointsCalculationService.calculatePointsFor(match, bet)).isEqualTo(4);
+    }
+
+    @Test
+    public void finalMatchWrongBetUndecidedPenaltyOne() {
+        Match match = createKnockoutMatch(1, 1, true);
+        Bet bet = createKnockoutBet(2, 1, false);
+        assertThat(pointsCalculationService.calculatePointsFor(match, bet)).isEqualTo(0);
+    }
+
+    @Test
+    public void finalMatchWrongBetUndecidedPenaltyTwo() {
+        Match match = createKnockoutMatch(1, 1, false);
+        Bet bet = createKnockoutBet(2, 1, false);
+        assertThat(pointsCalculationService.calculatePointsFor(match, bet)).isEqualTo(0);
+    }
+
     private Bet createBet(Integer goalsTeamOne, Integer goalsTeamTwo) {
         Bet bet = new Bet();
         bet.setGoalsTeamOne(goalsTeamOne);
@@ -135,5 +175,22 @@ public class PointsCalculationServiceUT {
     private Match createMatch(Integer goalsTeamOne, Integer goalsTeamTwo) {
         return MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("Deutschland", "Italien").withGoals(goalsTeamOne, goalsTeamTwo)
                 .build();
+    }
+
+    private Match createKnockoutMatch(Integer goalsTeamOne, Integer goalsTeamTwo, boolean penaltyWinnerOne) {
+        return MatchBuilder.create()
+                .withGroup(Group.FINAL)
+                .withTeams(Country.GERMANY, Country.ITALY)
+                .withGoals(goalsTeamOne, goalsTeamTwo)
+                .withPenaltyWinnerOne(penaltyWinnerOne)
+                .build();
+    }
+
+    private Bet createKnockoutBet(Integer goalsTeamOne, Integer goalsTeamTwo, boolean penaltyWinnerOne) {
+        Bet bet = new Bet();
+        bet.setGoalsTeamOne(goalsTeamOne);
+        bet.setGoalsTeamTwo(goalsTeamTwo);
+        bet.setPenaltyWinnerOne(penaltyWinnerOne);
+        return bet;
     }
 }
