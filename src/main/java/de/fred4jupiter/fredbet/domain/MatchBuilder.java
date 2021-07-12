@@ -53,6 +53,11 @@ public class MatchBuilder {
 		return this;
 	}
 
+	public MatchBuilder withPenaltyWinnerOne(boolean penaltyWinnerOne) {
+		match.setPenaltyWinnerOne(penaltyWinnerOne);
+		return this;
+	}
+
 	public Match build() {
 		return match;
 	}

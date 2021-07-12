@@ -98,11 +98,16 @@ public class Match implements MatchResult {
             throw new IllegalStateException("Match has not finished! No goal results set!");
         }
 
-        if (getGoalDifference() != 0) {
-            return teamOne.getGoals() > teamTwo.getGoals();
+        if (getGoalDifference() == 0) {
+            if (isGroupMatch()) {
+                return false;
+            } else {
+                // check penalty winner
+                return (this.teamOne.equals(teamOne) && penaltyWinnerOne) || (this.teamTwo.equals(teamOne) && !penaltyWinnerOne);
+            }
         }
 
-        return this.teamOne.equals(teamOne) && penaltyWinnerOne;
+        return teamOne.getGoals() > teamTwo.getGoals();
     }
 
     public Country getWinner() {
