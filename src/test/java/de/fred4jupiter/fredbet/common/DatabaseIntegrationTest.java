@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet;
+package de.fred4jupiter.fredbet.common;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.UnitTest;
+import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;

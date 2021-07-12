@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.UnitTest;
+import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;

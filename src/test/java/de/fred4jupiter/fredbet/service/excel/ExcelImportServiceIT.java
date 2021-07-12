@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service.excel;
 
-import de.fred4jupiter.fredbet.IntegrationTest;
+import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;

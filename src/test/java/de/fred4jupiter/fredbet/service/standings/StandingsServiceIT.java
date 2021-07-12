@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service.standings;
 
-import de.fred4jupiter.fredbet.IntegrationTest;
+import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.Group;
 import org.junit.jupiter.api.Test;

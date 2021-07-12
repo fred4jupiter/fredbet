@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.UnitTest;
+import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.service.CountryService;
 import org.apache.commons.lang3.tuple.ImmutableTriple;

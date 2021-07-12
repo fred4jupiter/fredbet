@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service.pdf;
 
-import de.fred4jupiter.fredbet.UnitTest;
+import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.io.FileUtils;

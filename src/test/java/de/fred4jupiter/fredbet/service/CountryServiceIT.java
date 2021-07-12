@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service;
 
-import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;

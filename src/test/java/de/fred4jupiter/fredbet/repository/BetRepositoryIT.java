@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

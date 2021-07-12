@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.service.image;
 
-import de.fred4jupiter.fredbet.UnitTest;
+import de.fred4jupiter.fredbet.common.UnitTest;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet;
+package de.fred4jupiter.fredbet.common;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

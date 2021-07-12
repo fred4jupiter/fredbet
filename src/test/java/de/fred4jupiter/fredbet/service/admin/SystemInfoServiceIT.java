@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.service.admin;
 
 
-import de.fred4jupiter.fredbet.IntegrationTest;
+import de.fred4jupiter.fredbet.common.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

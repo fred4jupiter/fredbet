@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.TransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.ImageBinary;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;

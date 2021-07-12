@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.UnitTest;
+import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.junit.jupiter.api.Test;

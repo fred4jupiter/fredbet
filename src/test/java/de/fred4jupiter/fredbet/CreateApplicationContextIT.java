@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet;
 
+import de.fred4jupiter.fredbet.common.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
