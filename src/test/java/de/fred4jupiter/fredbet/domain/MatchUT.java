@@ -56,6 +56,7 @@ public class MatchUT {
                 .withGroup(Group.FINAL)
                 .build();
         assertThat(match).isNotNull();
+        assertThat(match.isFinal()).isTrue();
         assertThat(match.isGroupMatch()).isFalse();
         assertThat(match.isTeamOneWinner()).isTrue();
         assertThat(match.isTeamTwoWinner()).isFalse();
@@ -71,6 +72,7 @@ public class MatchUT {
                 .withGroup(Group.FINAL)
                 .build();
         assertThat(match).isNotNull();
+        assertThat(match.isFinal()).isTrue();
         assertThat(match.isGroupMatch()).isFalse();
         assertThat(match.isTeamOneWinner()).isFalse();
         assertThat(match.isTeamTwoWinner()).isTrue();
