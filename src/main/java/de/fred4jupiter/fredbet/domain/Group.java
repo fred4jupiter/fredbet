@@ -35,7 +35,7 @@ public enum Group {
 
 	FINAL("group.title.final"), // Finale
     
-    GAME_FOR_THIRD("group.title.gameForThird"); // Finale
+    GAME_FOR_THIRD("group.title.gameForThird"); // Spiel um den 3. Platz
 
 	private final String titleMsgKey;
 

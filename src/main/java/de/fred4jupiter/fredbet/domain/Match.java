@@ -85,20 +85,24 @@ public class Match implements MatchResult {
 
     @Override
     public boolean isTeamOneWinner() {
-        if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
-            throw new IllegalStateException("Match has not finished! No goal results set!");
-        }
-
-        return teamOne.getGoals() > teamTwo.getGoals();
+        return isFirstWinner(teamOne, teamTwo);
     }
 
     @Override
     public boolean isTeamTwoWinner() {
+        return isFirstWinner(teamTwo, teamOne);
+    }
+
+    private boolean isFirstWinner(Team teamOne, Team teamTwo) {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
             throw new IllegalStateException("Match has not finished! No goal results set!");
         }
 
-        return teamTwo.getGoals() > teamOne.getGoals();
+        if (getGoalDifference() != 0) {
+            return teamOne.getGoals() > teamTwo.getGoals();
+        }
+
+        return this.teamOne.equals(teamOne) && penaltyWinnerOne;
     }
 
     public Country getWinner() {
