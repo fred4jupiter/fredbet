@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.service.user;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.slf4j.Logger;
@@ -21,9 +20,12 @@ public class UserImportExportService {
 
     private final JsonObjectConverter jsonObjectConverter;
 
-    public UserImportExportService(AppUserRepository appUserRepository, JsonObjectConverter jsonObjectConverter) {
+    private final UserService userService;
+
+    public UserImportExportService(AppUserRepository appUserRepository, JsonObjectConverter jsonObjectConverter, UserService userService) {
         this.appUserRepository = appUserRepository;
         this.jsonObjectConverter = jsonObjectConverter;
+        this.userService = userService;
     }
 
     public String exportAllUsersToJson() {
@@ -40,21 +42,12 @@ public class UserImportExportService {
         final AtomicInteger counter = new AtomicInteger();
         UserContainer userContainer = jsonObjectConverter.fromJson(json, UserContainer.class);
         userContainer.getUserList().forEach(userToExport -> {
-            createUserIfNotExists(userToExport, counter);
+            boolean result = userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
+            if (result) {
+                counter.incrementAndGet();
+            }
         });
         return counter.get();
-    }
-
-    private void createUserIfNotExists(UserToExport userToExport, AtomicInteger counter) {
-        AppUser appUser = appUserRepository.findByUsername(userToExport.getUsername());
-        if (appUser != null) {
-            LOG.warn("user with username={} already exists.", userToExport.getUsername());
-            return;
-        }
-        AppUser newAppUser = AppUserBuilder.create().withUsernameAndPassword(userToExport.getUsername(), userToExport.getPassword())
-                .withRoles(userToExport.getRoles()).withIsChild(userToExport.isChild()).build();
-        appUserRepository.save(newAppUser);
-        counter.incrementAndGet();
     }
 
     private UserToExport mapToUserToExport(AppUser appUser) {

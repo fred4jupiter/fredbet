@@ -43,13 +43,6 @@ public class RuntimeSettingsController {
         return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
     }
 
-//    @ModelAttribute("runtimeSettingsCommand")
-//    public RuntimeSettingsCommand initRuntimeSettingsCommand() {
-//        RuntimeSettingsCommand configurationCommand = new RuntimeSettingsCommand();
-//        configurationCommand.setTimeZone(TimeZone.getDefault().getID());
-//        return configurationCommand;
-//    }
-
     @GetMapping("/show")
     public String showPage(RuntimeSettingsCommand runtimeSettingsCommand, Model model) {
         runtimeSettingsCommand.setRuntimeSettings(runtimeSettingsService.loadRuntimeSettings());

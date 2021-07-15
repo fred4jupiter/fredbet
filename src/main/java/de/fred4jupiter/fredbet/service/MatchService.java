@@ -135,4 +135,11 @@ public class MatchService {
         List<Match> matches = matchRepository.findByGroup(Group.GAME_FOR_THIRD);
         return !matches.isEmpty();
     }
+
+    public void createMatchIfNotExistsById(Long matchId, Match match) {
+        Optional<Match> matchOpt = matchRepository.findById(matchId);
+        if (matchOpt.isEmpty()) {
+            save(match);
+        }
+    }
 }

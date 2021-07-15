@@ -247,4 +247,12 @@ public class BettingService {
                     username);
         }
     }
+
+    public List<Bet> findAll() {
+        return this.betRepository.findAll();
+    }
+
+    public List<ExtraBet> findAllExtraBets() {
+        return extraBetRepository.findAll();
+    }
 }

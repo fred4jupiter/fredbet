@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.service.user;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -226,5 +228,17 @@ public class UserService {
             imageMetaData.setDescription(newUsername);
             imageMetaDataRepository.save(imageMetaData);
         }
+    }
+
+    public boolean createUserIfNotExists(String username, String password, boolean isChild, Set<String> roles) {
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser != null) {
+            LOG.warn("user with username={} already exists.", username);
+            return false;
+        }
+        AppUser newAppUser = AppUserBuilder.create().withUsernameAndPassword(username, password)
+                .withRoles(roles).withIsChild(isChild).build();
+        appUserRepository.save(newAppUser);
+        return true;
     }
 }
