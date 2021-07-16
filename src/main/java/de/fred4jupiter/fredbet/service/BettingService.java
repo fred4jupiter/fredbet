@@ -57,12 +57,17 @@ public class BettingService {
     }
 
     public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
+        return createAndSaveBetting(username, match, goalsTeamOne, goalsTeamTwo, withJoker, false);
+    }
+
+    public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker, boolean penaltyWinnerOne) {
         Bet bet = new Bet();
         bet.setGoalsTeamOne(goalsTeamOne);
         bet.setGoalsTeamTwo(goalsTeamTwo);
         bet.setMatch(match);
         bet.setUserName(username);
         bet.setJoker(withJoker);
+        bet.setPenaltyWinnerOne(penaltyWinnerOne);
         return betRepository.save(bet);
     }
 
@@ -254,5 +259,18 @@ public class BettingService {
 
     public List<ExtraBet> findAllExtraBets() {
         return extraBetRepository.findAll();
+    }
+
+    public void createExtraBetForUser(String userName, Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner,
+                                      Integer pointsOne, Integer pointsTwo, Integer pointsThree) {
+        ExtraBet extraBet = new ExtraBet();
+        extraBet.setUserName(userName);
+        extraBet.setFinalWinner(finalWinner);
+        extraBet.setSemiFinalWinner(semiFinalWinner);
+        extraBet.setThirdFinalWinner(thirdFinalWinner);
+        extraBet.setPointsOne(pointsOne);
+        extraBet.setPointsTwo(pointsTwo);
+        extraBet.setPointsThree(pointsThree);
+        extraBetRepository.save(extraBet);
     }
 }

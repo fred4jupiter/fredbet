@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -104,19 +105,34 @@ public class ImportExportService {
     public void importAllFromJson(String json) {
         final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
 
-        List<UserToExport> users = importExportContainer.getUsers();
+        final List<UserToExport> users = importExportContainer.getUsers();
         users.forEach(userToExport -> {
             userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
         });
 
-        List<MatchToExport> matches = importExportContainer.getMatches();
+        final List<MatchToExport> matches = importExportContainer.getMatches();
         matches.forEach(matchToExport -> {
             Match match = mapToMatch(matchToExport);
             matchService.createMatchIfNotExistsById(matchToExport.getId(), match);
         });
 
-        // TODO : implement bets and extrabets
+        final List<BetToExport> bets = importExportContainer.getBets();
+        bets.forEach(betToExport -> {
+            bettingService.createAndSaveBetting(betToExport.getUsername(), getMatchById(matches, betToExport.getMatchId()),
+                    betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo(), betToExport.isJoker(), betToExport.isPenaltyWinnerOne());
+        });
 
+        final List<ExtraBetToExport> extraBets = importExportContainer.getExtraBets();
+        extraBets.forEach(extraBetToExport -> {
+            bettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
+                    extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
+                    extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree());
+        });
+    }
+
+    private Match getMatchById(List<MatchToExport> matches, Long matchId) {
+        Optional<MatchToExport> foundOpt = matches.stream().filter(match -> match.getId().equals(matchId)).findFirst();
+        return foundOpt.map(this::mapToMatch).orElse(null);
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {
