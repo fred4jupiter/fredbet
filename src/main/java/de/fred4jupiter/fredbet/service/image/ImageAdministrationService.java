@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,12 +51,13 @@ public class ImageAdministrationService {
         this.userService = userService;
     }
 
-    public void initUserProfileImageGroup() {
+    public ImageGroup initUserProfileImageGroup() {
         ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
-
         if (imageGroup == null) {
             imageGroup = new ImageGroup(FredbetConstants.GALLERY_NAME, true);
-            imageGroupRepository.save(imageGroup);
+            return imageGroupRepository.save(imageGroup);
+        } else {
+            return imageGroup;
         }
     }
 
@@ -100,7 +100,11 @@ public class ImageAdministrationService {
         final String key = imageKeyGenerator.generateKey();
         if (imageMetaData == null) {
             // create new user profile image
-            final ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
+            ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
+            if (imageGroup == null) {
+                imageGroup = initUserProfileImageGroup();
+            }
+
             imageMetaData = new ImageMetaData(key, imageGroup, appUser);
             imageMetaData.setDescription(appUser.getUsername());
         } else {

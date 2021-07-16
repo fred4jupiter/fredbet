@@ -176,8 +176,8 @@ public class DatabasePopulator {
         }
     }
 
-    void createDemoUsers(int numberOfDemoUsers) {
-        LOG.info("createAdditionalUsers: creating additional demo users ...");
+    public void createDemoUsers(int numberOfDemoUsers) {
+        LOG.info("createAdditionalUsers: creating {} additional demo users ...", numberOfDemoUsers);
 
         final byte[] demoImage = loadDemoUserProfileImage();
 
