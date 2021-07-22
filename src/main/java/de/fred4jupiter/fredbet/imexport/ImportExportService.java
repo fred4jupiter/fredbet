@@ -86,7 +86,6 @@ public class ImportExportService {
     private List<MatchToExport> convertToMatches(List<Match> matches) {
         return matches.stream().map(match -> {
             MatchToExport export = new MatchToExport();
-            export.setMatchBusinessKey(match.getMatchBusinessKey());
             export.setTeamOne(match.getTeamOne());
             export.setTeamTwo(match.getTeamTwo());
             export.setGroup(match.getGroup());
@@ -151,11 +150,6 @@ public class ImportExportService {
         return matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getMatchBusinessKey, e -> e));
     }
 
-//    private Match getMatchById(List<Match> matches, Long matchId) {
-//        Optional<Match> foundOpt = matches.stream().filter(match -> match.getId().equals(matchId)).findFirst();
-//        return foundOpt.orElse(null);
-//    }
-
     private Match mapToMatch(MatchToExport matchToExport) {
         return MatchBuilder.create().withTeams(matchToExport.getTeamOne(), matchToExport.getTeamTwo())
                 .withGroup(matchToExport.getGroup())
@@ -163,6 +157,4 @@ public class ImportExportService {
                 .withStadium(matchToExport.getStadium())
                 .build();
     }
-
-
 }

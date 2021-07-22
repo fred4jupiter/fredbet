@@ -2,13 +2,10 @@ package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Team;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.time.LocalDateTime;
 
-class MatchToExport implements MatchBusinessKey {
-
-    private Integer matchBusinessKey;
+class MatchToExport {
 
     private Team teamOne;
 
@@ -21,10 +18,6 @@ class MatchToExport implements MatchBusinessKey {
     private LocalDateTime kickOffDate;
 
     private String stadium;
-
-    public void setMatchBusinessKey(Integer matchBusinessKey) {
-        this.matchBusinessKey = matchBusinessKey;
-    }
 
     public Team getTeamOne() {
         return teamOne;
@@ -74,13 +67,5 @@ class MatchToExport implements MatchBusinessKey {
         this.stadium = stadium;
     }
 
-    @Override
-    public Integer getMatchBusinessKey() {
-        return new HashCodeBuilder()
-                .append(this.teamOne.getBusinessKey())
-                .append(this.teamTwo.getBusinessKey())
-                .append(this.group)
-                .append(this.kickOffDate)
-                .build();
-    }
+
 }
