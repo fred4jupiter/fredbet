@@ -6,9 +6,12 @@ import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.service.user.UserToExport;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,6 +19,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ImportExportService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ImportExportService.class);
 
     private final JsonObjectConverter jsonObjectConverter;
 
@@ -103,24 +108,34 @@ public class ImportExportService {
     }
 
     public void importAllFromJson(String json) {
+        LOG.debug("importing all from json...");
+        userService.deleteAllUsers();
+        LOG.debug("deleted all users");
+        matchService.deleteAllMatches();
+        LOG.debug("deleted all matches");
+
         final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
 
         final List<UserToExport> users = importExportContainer.getUsers();
         users.forEach(userToExport -> {
             userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
         });
+        LOG.debug("imported users");
 
-        final List<MatchToExport> matches = importExportContainer.getMatches();
-        matches.forEach(matchToExport -> {
+        final List<MatchToExport> matchesToExportList = importExportContainer.getMatches();
+        final List<Match> savedMatches = new ArrayList<>();
+        matchesToExportList.forEach(matchToExport -> {
             Match match = mapToMatch(matchToExport);
-            matchService.createMatchIfNotExistsById(matchToExport.getId(), match);
+            savedMatches.add(matchService.createMatchIfNotExistsById(matchToExport.getId(), match));
         });
+        LOG.debug("imported matches");
 
         final List<BetToExport> bets = importExportContainer.getBets();
         bets.forEach(betToExport -> {
-            bettingService.createAndSaveBetting(betToExport.getUsername(), getMatchById(matches, betToExport.getMatchId()),
+            bettingService.createAndSaveBetting(betToExport.getUsername(), getMatchById(savedMatches, betToExport.getMatchId()),
                     betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo(), betToExport.isJoker(), betToExport.isPenaltyWinnerOne());
         });
+        LOG.debug("imported bets");
 
         final List<ExtraBetToExport> extraBets = importExportContainer.getExtraBets();
         extraBets.forEach(extraBetToExport -> {
@@ -128,11 +143,12 @@ public class ImportExportService {
                     extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
                     extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree());
         });
+        LOG.debug("imported extrabets");
     }
 
-    private Match getMatchById(List<MatchToExport> matches, Long matchId) {
-        Optional<MatchToExport> foundOpt = matches.stream().filter(match -> match.getId().equals(matchId)).findFirst();
-        return foundOpt.map(this::mapToMatch).orElse(null);
+    private Match getMatchById(List<Match> matches, Long matchId) {
+        Optional<Match> foundOpt = matches.stream().filter(match -> match.getId().equals(matchId)).findFirst();
+        return foundOpt.orElse(null);
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {

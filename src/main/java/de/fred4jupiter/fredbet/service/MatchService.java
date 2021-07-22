@@ -136,10 +136,13 @@ public class MatchService {
         return !matches.isEmpty();
     }
 
-    public void createMatchIfNotExistsById(Long matchId, Match match) {
+    public Match createMatchIfNotExistsById(Long matchId, Match match) {
         Optional<Match> matchOpt = matchRepository.findById(matchId);
         if (matchOpt.isEmpty()) {
-            save(match);
+            return save(match);
+        }
+        else {
+            return matchOpt.get();
         }
     }
 }

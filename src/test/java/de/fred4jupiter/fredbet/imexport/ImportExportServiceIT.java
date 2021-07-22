@@ -18,7 +18,7 @@ public class ImportExportServiceIT {
     private DatabasePopulator databasePopulator;
 
     @Test
-    public void exportAllAsJson() {
+    public void exportAllAsJsonAndImportAgain() {
         databasePopulator.createDemoUsers(10);
         databasePopulator.createRandomMatches();
         databasePopulator.createDemoBetsForAllUsers();
@@ -27,5 +27,8 @@ public class ImportExportServiceIT {
         String json = importExportService.exportAllToJson();
         boolean result = TempFileWriterUtil.writeToTempFolder(json.getBytes(), "fredbet_export.json");
         assertThat(result).isTrue();
+
+        importExportService.importAllFromJson(json);
+
     }
 }
