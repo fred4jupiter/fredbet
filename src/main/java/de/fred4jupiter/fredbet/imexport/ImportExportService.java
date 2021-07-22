@@ -11,9 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,7 +73,9 @@ public class ImportExportService {
             export.setJoker(bet.isJoker());
             export.setGoalsTeamOne(bet.getGoalsTeamOne());
             export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-            export.setMatchId(bet.getMatch().getId());
+            if (bet.getMatch() != null) {
+                export.setMatchBusinessKey(bet.getMatch().getMatchBusinessKey());
+            }
             export.setUsername(bet.getUserName());
             export.setPoints(bet.getPoints());
             export.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
@@ -85,7 +86,7 @@ public class ImportExportService {
     private List<MatchToExport> convertToMatches(List<Match> matches) {
         return matches.stream().map(match -> {
             MatchToExport export = new MatchToExport();
-            export.setId(match.getId());
+            export.setMatchBusinessKey(match.getMatchBusinessKey());
             export.setTeamOne(match.getTeamOne());
             export.setTeamTwo(match.getTeamTwo());
             export.setGroup(match.getGroup());
@@ -123,16 +124,16 @@ public class ImportExportService {
         LOG.debug("imported users");
 
         final List<MatchToExport> matchesToExportList = importExportContainer.getMatches();
-        final List<Match> savedMatches = new ArrayList<>();
         matchesToExportList.forEach(matchToExport -> {
             Match match = mapToMatch(matchToExport);
-            savedMatches.add(matchService.createMatchIfNotExistsById(matchToExport.getId(), match));
+            matchService.save(match);
         });
         LOG.debug("imported matches");
 
         final List<BetToExport> bets = importExportContainer.getBets();
+        final Map<Integer, Match> savedMatchesByBusinessKey = loadAllMatches();
         bets.forEach(betToExport -> {
-            bettingService.createAndSaveBetting(betToExport.getUsername(), getMatchById(savedMatches, betToExport.getMatchId()),
+            bettingService.createAndSaveBetting(betToExport.getUsername(), savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey()),
                     betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo(), betToExport.isJoker(), betToExport.isPenaltyWinnerOne());
         });
         LOG.debug("imported bets");
@@ -146,10 +147,14 @@ public class ImportExportService {
         LOG.debug("imported extrabets");
     }
 
-    private Match getMatchById(List<Match> matches, Long matchId) {
-        Optional<Match> foundOpt = matches.stream().filter(match -> match.getId().equals(matchId)).findFirst();
-        return foundOpt.orElse(null);
+    private Map<Integer, Match> loadAllMatches() {
+        return matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getMatchBusinessKey, e -> e));
     }
+
+//    private Match getMatchById(List<Match> matches, Long matchId) {
+//        Optional<Match> foundOpt = matches.stream().filter(match -> match.getId().equals(matchId)).findFirst();
+//        return foundOpt.orElse(null);
+//    }
 
     private Match mapToMatch(MatchToExport matchToExport) {
         return MatchBuilder.create().withTeams(matchToExport.getTeamOne(), matchToExport.getTeamTwo())

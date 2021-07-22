@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -100,5 +101,9 @@ public class Team {
             return null;
         }
         return this.country.getIconPathBig();
+    }
+
+    public Integer getBusinessKey() {
+        return new HashCodeBuilder().append(this.country).append(this.name).build();
     }
 }

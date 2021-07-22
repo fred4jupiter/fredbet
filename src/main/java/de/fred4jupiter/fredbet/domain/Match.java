@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.domain;
 
+import de.fred4jupiter.fredbet.imexport.MatchBusinessKey;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,7 +15,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "MATCHES")
-public class Match implements MatchResult {
+public class Match implements MatchResult, MatchBusinessKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -298,5 +299,15 @@ public class Match implements MatchResult {
     public String getLabel(MessageSourceUtil messageSourceUtil, Locale locale) {
         return getTeamOne().getNameTranslated(messageSourceUtil, locale) + " - "
                 + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
+    }
+
+    @Override
+    public Integer getMatchBusinessKey() {
+        return new HashCodeBuilder()
+                .append(this.teamOne.getBusinessKey())
+                .append(this.teamTwo.getBusinessKey())
+                .append(this.group)
+                .append(this.kickOffDate)
+                .build();
     }
 }
