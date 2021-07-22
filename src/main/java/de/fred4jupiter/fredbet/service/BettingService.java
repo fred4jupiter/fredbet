@@ -222,6 +222,11 @@ public class BettingService {
             createAndSaveBetting(username, match, goals.getLeft(), goals.getRight(), jokerAllowed);
         });
 
+        if (hasFirstMatchStarted()) {
+            // Its too late for betting the extra bets. The first match has already started.
+            return;
+        }
+
         ExtraBet extraBet = loadExtraBetForUser(username);
         if (extraBet.noExtraBetsSet()) {
             ImmutableTriple<Country, Country, Country> teamTriple = randomValueGenerator.generateTeamTriple();
