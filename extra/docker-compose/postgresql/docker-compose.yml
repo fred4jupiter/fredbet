@@ -12,9 +12,9 @@ services:
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
   fredbet:
-    image: fred4jupiter/fredbet
-    #    build:
-    #    context: ../../../
+    #    image: fred4jupiter/fredbet
+    build:
+      context: ../../../
     depends_on:
       - postgres
     ports:
