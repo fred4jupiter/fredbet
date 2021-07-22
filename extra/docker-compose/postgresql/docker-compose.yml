@@ -10,6 +10,7 @@ services:
       - POSTGRES_USER=fred
       - POSTGRES_PASSWORD=fred
       - POSTGRES_DB=fredbetdb
+      - TZ=Europe/Berlin
   fredbet:
     image: fred4jupiter/fredbet
     #    build:
@@ -24,4 +25,4 @@ services:
       - SPRING_DATASOURCE_USERNAME=fred
       - SPRING_DATASOURCE_PASSWORD=fred
     volumes:
-      - "./logs:~/logs"
+      - "./logs:/logs/fredbet"
