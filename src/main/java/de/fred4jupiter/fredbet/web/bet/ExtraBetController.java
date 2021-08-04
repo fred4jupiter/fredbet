@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/extra_bets")
+@RequestMapping("/extrabets")
 public class ExtraBetController {
 
     private final BettingService bettingService;
@@ -69,7 +69,7 @@ public class ExtraBetController {
                 extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
 
         messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
-        return "redirect:/extra_bets";
+        return "redirect:/extrabets";
     }
 
     @GetMapping("/others")
