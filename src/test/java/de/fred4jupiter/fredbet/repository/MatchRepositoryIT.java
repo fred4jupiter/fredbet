@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.repository;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.service.user.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +22,18 @@ public class MatchRepositoryIT {
 
     @Autowired
     private BetRepository betRepository;
+
+    @Autowired
+    private DatabasePopulator databasePopulator;
+
+    @Autowired
+    private UserService userService;
+
+    @BeforeEach
+    public void setup() {
+        databasePopulator.deleteAllBetsAndMatches();
+        userService.deleteAllUsers();
+    }
 
     @Test
     public void findAllOrderByKickOffDate() {

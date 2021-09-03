@@ -2,15 +2,9 @@ package de.fred4jupiter.fredbet.util;
 
 import ch.qos.logback.classic.Level;
 import de.fred4jupiter.fredbet.Application;
-import de.fred4jupiter.fredbet.props.FredBetProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class LoggingUtil implements LogLevelChangable {
