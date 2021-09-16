@@ -1,4 +1,4 @@
-name: Publish to GitHub Container Registry
+name: ghcr.io
 on:
   push:
     branches:
