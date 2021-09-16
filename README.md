@@ -144,15 +144,15 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Excel-Templates with matches are prepared for import:
 
-* ![EM 2021 Template](src/excel_templates/EM_2021.xlsx?raw=true)
+* ![EM 2021 Template](extra/excel_templates/EM_2021.xlsx?raw=true)
 
 ## Screenshots
 
-![FredBet Screenshot 1](src/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot 1")
+![FredBet Screenshot 1](extra/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot 1")
 
-![FredBet Screenshot 2](src/docs/screenshot/Screenshot2.jpg?raw=true "FredBet Screenshot 2")
+![FredBet Screenshot 2](extra/docs/screenshot/Screenshot2.jpg?raw=true "FredBet Screenshot 2")
 
-![FredBet Screenshot 3](src/docs/screenshot/Screenshot3.jpg?raw=true "FredBet Screenshot 3")
+![FredBet Screenshot 3](extra/docs/screenshot/Screenshot3.jpg?raw=true "FredBet Screenshot 3")
 
 ## Travis Build Status
 [![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
