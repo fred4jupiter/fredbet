@@ -18,6 +18,6 @@ jobs:
           server-id: ghcr.io
 
       - name: Publish to GitHub Container Registry
-        run: mvn compile com.google.cloud.tools:jib-maven-plugin:3.4.1:build -Dimage=ghcr.io/fred4jupiter/fredbet
+        run: mvn compile com.google.cloud.tools:jib-maven-plugin:3.1.4:build -Dimage=ghcr.io/fred4jupiter/fredbet
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
