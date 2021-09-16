@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -58,7 +59,7 @@ public class UserController {
     @ModelAttribute("availableRoles")
     public List<String> availableRoles() {
         List<FredBetUserGroup> fredBetUserGroups = Arrays.asList(FredBetUserGroup.values());
-        return fredBetUserGroups.stream().map(Enum::name).collect(Collectors.toUnmodifiableList());
+        return fredBetUserGroups.stream().map(Enum::name).toList();
     }
 
     @GetMapping
@@ -112,18 +113,18 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_USER + "')")
     @GetMapping("{id}/delete")
-    public String delete(@PathVariable("id") Long userId, RedirectAttributes redirect) {
-        if (securityService.getCurrentUser().getId().equals(userId)) {
+    public String delete(@PathVariable("id") Long userId, RedirectAttributes redirect, @AuthenticationPrincipal AppUser currentUser) {
+        if (currentUser.getId().equals(userId)) {
             webMessageUtil.addErrorMsg(redirect, "user.deleted.couldNotDeleteOwnUser");
             return REDIRECT_USER_PAGE;
         }
 
-        AppUser appUser = userService.findByUserId(userId);
+        AppUser userToBeDeleted = userService.findByUserId(userId);
         try {
             userService.deleteUser(userId);
-            webMessageUtil.addInfoMsg(redirect, "user.deleted", appUser.getUsername());
+            webMessageUtil.addInfoMsg(redirect, "user.deleted", userToBeDeleted.getUsername());
         } catch (UserNotDeletableException e) {
-            webMessageUtil.addErrorMsg(redirect, "user.not.deletable", appUser.getUsername());
+            webMessageUtil.addErrorMsg(redirect, "user.not.deletable", userToBeDeleted.getUsername());
         }
 
         return REDIRECT_USER_PAGE;
