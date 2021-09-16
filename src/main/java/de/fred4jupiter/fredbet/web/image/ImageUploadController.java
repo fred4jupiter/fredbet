@@ -4,12 +4,10 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,34 +21,30 @@ public class ImageUploadController {
 
     private static final String REDIRECT_SHOW_PAGE = "redirect:/image/show";
 
-    private static final Logger log = LoggerFactory.getLogger(ImageUploadController.class);
-
     private final ImageAdministrationService imageAdministrationService;
 
     private final WebMessageUtil messageUtil;
 
-    private final SecurityService securityService;
-
     private final ImageCommandMapper imageCommandMapper;
 
     public ImageUploadController(ImageAdministrationService imageAdministrationService, WebMessageUtil messageUtil,
-                                 SecurityService securityService, ImageCommandMapper imageCommandMapper) {
+                                 ImageCommandMapper imageCommandMapper) {
         this.imageAdministrationService = imageAdministrationService;
         this.messageUtil = messageUtil;
-        this.securityService = securityService;
         this.imageCommandMapper = imageCommandMapper;
     }
 
     @ModelAttribute("availableImages")
-    public List<ImageCommand> availableImages() {
-        List<ImageMetaData> imageMetadataList;
-        if (securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
-            imageMetadataList = imageAdministrationService.fetchAllImagesExceptUserProfileImages();
-        } else {
-            imageMetadataList = imageAdministrationService.fetchImagesOfUserExceptUserProfileImages(securityService.getCurrentUserName());
-        }
+    public List<ImageCommand> availableImages(@AuthenticationPrincipal AppUser currentUser) {
+        return imageCommandMapper.toListOfImageCommand(loadImageMetaData(currentUser));
+    }
 
-        return imageCommandMapper.toListOfImageCommand(imageMetadataList);
+    private List<ImageMetaData> loadImageMetaData(AppUser currentUser) {
+        if (currentUser.hasPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
+            return imageAdministrationService.fetchAllImagesExceptUserProfileImages();
+        } else {
+            return imageAdministrationService.fetchImagesOfUserExceptUserProfileImages(currentUser.getUsername());
+        }
     }
 
     @ModelAttribute("availableImageGroups")
@@ -90,8 +84,8 @@ public class ImageUploadController {
     }
 
     @GetMapping("/delete/{imageKey}")
-    public String deleteImage(@PathVariable("imageKey") String imageKey, RedirectAttributes redirect) {
-        if (!isAllowedToDeleteImageWithImageKey(imageKey)) {
+    public String deleteImage(@PathVariable("imageKey") String imageKey, RedirectAttributes redirect, @AuthenticationPrincipal AppUser currentUser) {
+        if (!isAllowedToDeleteImageWithImageKey(currentUser, imageKey)) {
             messageUtil.addErrorMsg(redirect, "image.gallery.msg.delete.perm.denied");
             return REDIRECT_SHOW_PAGE;
         }
@@ -103,12 +97,11 @@ public class ImageUploadController {
         return REDIRECT_SHOW_PAGE;
     }
 
-    private boolean isAllowedToDeleteImageWithImageKey(String imageKey) {
-        final AppUser appUser = securityService.getCurrentUser();
-        if (appUser.hasPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
+    private boolean isAllowedToDeleteImageWithImageKey(AppUser currentUser, String imageKey) {
+        if (currentUser.hasPermission(FredBetPermission.PERM_DELETE_ALL_IMAGES)) {
             return true;
         }
 
-        return imageAdministrationService.isImageOfUser(imageKey, appUser);
+        return imageAdministrationService.isImageOfUser(imageKey, currentUser);
     }
 }
