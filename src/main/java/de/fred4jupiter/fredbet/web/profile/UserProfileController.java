@@ -1,13 +1,13 @@
 package de.fred4jupiter.fredbet.web.profile;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,15 +31,11 @@ public class UserProfileController {
 
     private final WebMessageUtil webMessageUtil;
 
-    private final SecurityService securityService;
-
     private final WebSecurityUtil webSecurityUtil;
 
-    public UserProfileController(UserService userService, WebMessageUtil webMessageUtil, SecurityService securityService,
-                                 WebSecurityUtil webSecurityUtil) {
+    public UserProfileController(UserService userService, WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil) {
         this.userService = userService;
         this.webMessageUtil = webMessageUtil;
-        this.securityService = securityService;
         this.webSecurityUtil = webSecurityUtil;
     }
 
@@ -53,13 +49,13 @@ public class UserProfileController {
     }
 
     @PostMapping("/changePassword")
-    public String changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+    public String changePasswordPost(@Valid ChangePasswordCommand changePasswordCommand, BindingResult bindingResult,
+                                     RedirectAttributes redirect, Model model, @AuthenticationPrincipal AppUser currentUser) {
         if (bindingResult.hasErrors()) {
             return CHANGE_PASSWORD_PAGE;
         }
 
         try {
-            AppUser currentUser = securityService.getCurrentUser();
             userService.changePassword(currentUser.getId(), changePasswordCommand.getOldPassword(), changePasswordCommand.getNewPassword());
         } catch (OldPasswordWrongException e) {
             webMessageUtil.addErrorMsg(model, "msg.bet.betting.error.oldPasswordWrong");
@@ -77,13 +73,14 @@ public class UserProfileController {
     }
 
     @PostMapping("/changeUsername")
-    public String changeUsernamePost(@Valid ChangeUsernameCommand changeUsernameCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+    public String changeUsernamePost(@Valid ChangeUsernameCommand changeUsernameCommand, BindingResult bindingResult,
+                                     RedirectAttributes redirect, Model model, @AuthenticationPrincipal AppUser currentUser) {
         if (bindingResult.hasErrors()) {
             return CHANGE_USERNAME_PAGE;
         }
 
         try {
-            userService.renameUser(securityService.getCurrentUserName(), changeUsernameCommand.getNewUsername());
+            userService.renameUser(currentUser.getUsername(), changeUsernameCommand.getNewUsername());
         } catch (UserAlreadyExistsException e) {
             webMessageUtil.addErrorMsg(model, "user.username.duplicate");
             model.addAttribute("changeUsernameCommand", changeUsernameCommand);

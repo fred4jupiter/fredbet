@@ -50,8 +50,8 @@ public class SystemInfoService {
         }
 
         addSpringProfiles();
-        addEnvProperty("JDBC Driver Class", "spring.datasource.hikari.driver-class-name");
-        addEnvProperty("JDBC-URL", "spring.datasource.hikari.jdbc-url");
+        addEnvProperty("JDBC Driver Class", "spring.datasource.driver-class-name");
+        addEnvProperty("JDBC-URL", "spring.datasource.url");
         addEnvProperty("Image Location", "fredbet.image-location");
         addEnvProperty("Image Size", "fredbet.image-size");
         addEnvProperty("Thumbnail Size", "fredbet.thumbnail-size");
