@@ -8,11 +8,11 @@
 		<div layout:fragment="content">
 			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			
-			<h2 th:text="#{administration.runtime.configuration}"></h2>
+			<h1 th:text="#{administration.runtime.configuration}"></h1>
 			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" action="#" method="post" role="form">
 				<div class="row">			
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<h3 th:text="#{administration.runtime.configuration.misc}"></h3>
+					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
 						<ul class="list-group">
 							<li class="list-group-item">								
 								<input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeSettings.enabledParentChildRanking}"/>
@@ -40,11 +40,8 @@
 							</li>
 						</ul>														
 					</div>
-					<div class="visible-xs col-xs-12">
-						<hr/>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<h3 th:text="#{administration.runtime.configuration.misc}"></h3>
+					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
 						<div class="form-group">
 							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label> 
 							<select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-control">
@@ -70,11 +67,8 @@
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
 						</div>					
 					</div>
-					<div class="visible-xs col-xs-12">
-						<hr/>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<h3 th:text="#{administration.runtime.configuration.extraBetPoints}"></h3>
+					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.extraBetPoints}"></h2>
 						<div class="form-group">
 							<label for="runtimeSettings.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label>
 							<input id="runtimeSettings.pointsFinalWinner" type="text" th:field="*{runtimeSettings.pointsFinalWinner}" class="form-control" />
@@ -90,26 +84,17 @@
 							<input id="runtimeSettings.pointsThirdFinalWinner" type="text" th:field="*{runtimeSettings.pointsThirdFinalWinner}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsThirdFinalWinner')}" th:errors="*{runtimeSettings.pointsThirdFinalWinner}"></p>
 						</div>
-						<br/>
 					</div>
-					<div class="visible-xs col-xs-12">
-						<hr/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<h3 th:text="#{administration.runtime.configuration.joker}"></h3>
+					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.joker}"></h2>
 						<div class="form-group">
 							<label for="runtimeSettings.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
 							<input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
 						</div>
 					</div>
-					<div class="visible-xs col-xs-12">
-						<hr/>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<h3 th:text="#{administration.runtime.configuration.registrationCode}"></h3>
+					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
 						<ul class="list-group">
 							<li class="list-group-item">
 								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}"/>
@@ -125,8 +110,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">			
-					<div class="col-xs-12 col-sm-12 col-md-6">	
+				<div class="row">
+					<div class="col-xs-12">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>	
 					</div>
 				</div>
