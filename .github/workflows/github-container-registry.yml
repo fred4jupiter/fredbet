@@ -17,6 +17,14 @@ jobs:
           java-version: '16'
           server-id: ghcr.io
 
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Publish to GitHub Container Registry
         run: mvn compile com.google.cloud.tools:jib-maven-plugin:3.1.4:build -Dimage=ghcr.io/fred4jupiter/fredbet
         env:
