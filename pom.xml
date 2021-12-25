@@ -335,9 +335,9 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.1.4</version>
                 <configuration>
-                    <from>
-                        <image>adoptopenjdk:17-jre-hotspot</image>
-                    </from>
+<!--                    <from>-->
+<!--                        <image>adoptopenjdk:17-jre-hotspot</image>-->
+<!--                    </from>-->
                     <to>
                         <image>${project.artifactId}</image>
                     </to>
