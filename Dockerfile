@@ -1,5 +1,5 @@
 # Step : Test and package
-FROM maven:3.6.3-openjdk-16 as builder
+FROM maven:3.8.4-openjdk-17 as builder
 WORKDIR /build
 COPY pom.xml .
 
@@ -8,7 +8,7 @@ COPY .git /build/.git/
 RUN mvn -B -DskipTests package
 
 # Step : Package image
-FROM openjdk:16-slim
+FROM openjdk:17-slim
 LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp

@@ -4,8 +4,6 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
-import nz.net.ultraq.thymeleaf.LayoutDialect;
-import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,11 +73,11 @@ public class MvcConfig implements WebMvcConfigurer {
         return new RequestContextListener();
     }
 
-    @Bean
-    public LayoutDialect layoutDialect() {
-        // for grouping CSS and JS files together
-        return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
-    }
+//    @Bean
+//    public LayoutDialect layoutDialect() {
+//        // for grouping CSS and JS files together
+//        return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
+//    }
 
     @Bean
     public MessageSource messageSource() {
