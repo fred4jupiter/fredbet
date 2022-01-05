@@ -11,7 +11,7 @@ import java.util.Collection;
  */
 interface PermissionResolver {
 
-    public static final String PERMISSION_PREFIX = "PERM_";
+    String PERMISSION_PREFIX = "PERM_";
 
     /**
      * Resolve permissions. Returns all permissions that belongs to given roles

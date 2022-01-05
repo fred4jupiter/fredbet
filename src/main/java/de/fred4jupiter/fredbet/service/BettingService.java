@@ -91,7 +91,7 @@ public class BettingService {
     }
 
     public Long save(Bet bet) {
-        Match match = matchRepository.getOne(bet.getMatch().getId());
+        Match match = matchRepository.getById(bet.getMatch().getId());
         if (match.hasStarted()) {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
         }
@@ -204,7 +204,7 @@ public class BettingService {
     }
 
     public Bet findBetById(Long betId) {
-        return betRepository.getOne(betId);
+        return betRepository.getById(betId);
     }
 
     public Long countByMatch(Match match) {

@@ -73,7 +73,7 @@ public class ImageAdministrationService {
     }
 
     public void saveImage(byte[] binary, Long imageGroupId, String description) {
-        final ImageGroup imageGroup = imageGroupRepository.getOne(imageGroupId);
+        final ImageGroup imageGroup = imageGroupRepository.getById(imageGroupId);
 
         final String key = imageKeyGenerator.generateKey();
 

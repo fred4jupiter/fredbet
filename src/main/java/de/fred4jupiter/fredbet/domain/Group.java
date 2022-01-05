@@ -39,7 +39,7 @@ public enum Group {
 
 	private final String titleMsgKey;
 
-	private Group(String titleMsgKey) {
+	Group(String titleMsgKey) {
 		this.titleMsgKey = titleMsgKey;
 	}
 

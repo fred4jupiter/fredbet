@@ -37,7 +37,7 @@ public class DownloadService {
 
     byte[] compressToZipFile(List<BinaryImage> allImages) {
         try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-             ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream(byteOut);) {
+             ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream(byteOut)) {
 
             zipOutput.setEncoding("UTF-8");
 

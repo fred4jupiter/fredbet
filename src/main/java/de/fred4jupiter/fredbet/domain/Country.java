@@ -79,7 +79,7 @@ public enum Country {
 
     private static final String ICON_BASE_PATH_BIG = "/images/flags/42_28/";
 
-    private String isoCode;
+    private final String isoCode;
 
     Country(String isoCode) {
         this.isoCode = isoCode;

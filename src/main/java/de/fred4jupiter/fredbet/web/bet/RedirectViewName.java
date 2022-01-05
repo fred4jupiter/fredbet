@@ -19,7 +19,7 @@ public enum RedirectViewName {
 
     private final String redirectViewName;
 
-    private RedirectViewName(String redirectViewName) {
+    RedirectViewName(String redirectViewName) {
         this.redirectViewName = redirectViewName;
     }
 

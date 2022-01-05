@@ -40,13 +40,6 @@ public class JsonObjectConverter {
         return objectMapper;
     }
 
-//    public JsonObjectConverter() {
-//        this.gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {
-//            Instant instant = Instant.ofEpochMilli(json.getAsJsonPrimitive().getAsLong());
-//            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-//        }).create();
-//    }
-
     public String toJson(Object instance) {
         try {
             return objectMapper.writeValueAsString(instance);

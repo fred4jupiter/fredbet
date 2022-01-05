@@ -20,7 +20,7 @@ class ExcelExportService {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelExportService.class);
 
     public <T> byte[] exportEntriesToExcel(String sheetName, List<T> entries, EntryCallback<T> callback) {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); XSSFWorkbook wb = new XSSFWorkbook();) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); XSSFWorkbook wb = new XSSFWorkbook()) {
             XSSFSheet sheet = wb.createSheet(sheetName);
 
             XSSFRow headerRow = sheet.createRow(0);

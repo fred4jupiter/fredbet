@@ -89,7 +89,7 @@ public class IcsCalendarBuilder {
 
         icsCalendar.getComponents().add(vEvent);
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             CalendarOutputter outputter = new CalendarOutputter();
             outputter.output(icsCalendar, out);
             return out.toByteArray();

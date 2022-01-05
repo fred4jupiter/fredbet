@@ -42,15 +42,11 @@ public class LoggingUtil implements LogLevelChangable {
     }
 
     private Level toLevel(LogLevel logLevel) {
-        switch (logLevel) {
-            case DEBUG:
-                return Level.DEBUG;
-            case INFO:
-                return Level.INFO;
-            case WARN:
-                return Level.WARN;
-            default:
-                return Level.ERROR;
-        }
+        return switch (logLevel) {
+            case DEBUG -> Level.DEBUG;
+            case INFO -> Level.INFO;
+            case WARN -> Level.WARN;
+            default -> Level.ERROR;
+        };
     }
 }
