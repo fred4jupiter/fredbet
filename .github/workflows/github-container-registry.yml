@@ -25,7 +25,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Build docker image
+        run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=ghcr.io/fred4jupiter/fredbet
+
       - name: Publish to GitHub Container Registry
-        run: mvn compile com.google.cloud.tools:jib-maven-plugin:3.1.4:build -Dimage=ghcr.io/fred4jupiter/fredbet
+        run: docker push ghcr.io/fred4jupiter/fredbet
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
