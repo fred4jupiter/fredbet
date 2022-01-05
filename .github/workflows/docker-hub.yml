@@ -32,4 +32,4 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Publish to Docker Hub
-        run: mvn compile com.google.cloud.tools:jib-maven-plugin:3.1.4:build -Dimage=docker.io/fred4jupiter/fredbet
+        run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=docker.io/fred4jupiter/fredbet
