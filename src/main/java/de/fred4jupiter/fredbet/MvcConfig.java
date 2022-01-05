@@ -73,12 +73,6 @@ public class MvcConfig implements WebMvcConfigurer {
         return new RequestContextListener();
     }
 
-//    @Bean
-//    public LayoutDialect layoutDialect() {
-//        // for grouping CSS and JS files together
-//        return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
-//    }
-
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
