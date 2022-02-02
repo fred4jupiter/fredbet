@@ -6,8 +6,7 @@ COPY src/ /build/src/
 COPY .git /build/.git/
 RUN mvn -B dependency:go-offline -DskipTests package
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} application.jar
+COPY /build/target/fredbet.jar application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 # --------------------------------------------------------------------
