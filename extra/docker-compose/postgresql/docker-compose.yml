@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - postgres-vol:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
@@ -26,3 +26,5 @@ services:
       - SPRING_DATASOURCE_PASSWORD=fred
     volumes:
       - "./logs:/logs/fredbet"
+volumes:
+  postgres-vol:
