@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.data;
 
-import com.github.javafaker.Faker;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
@@ -15,7 +14,6 @@ import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,12 +57,12 @@ public class DatabasePopulator {
 
     private final FredbetProperties fredbetProperties;
 
-    private final Faker faker = new Faker();
+    private final FakeDataPopulator fakeDataPopulator;
 
     public DatabasePopulator(MatchService matchService, Environment environment, UserService userService,
                              BettingService bettingService, RandomValueGenerator randomValueGenerator,
                              InfoService infoService, ImageAdministrationService imageAdministrationService,
-                             JokerService jokerService, FredbetProperties fredbetProperties) {
+                             JokerService jokerService, FredbetProperties fredbetProperties, FakeDataPopulator fakeDataPopulator) {
         this.matchService = matchService;
         this.environment = environment;
         this.userService = userService;
@@ -74,6 +72,7 @@ public class DatabasePopulator {
         this.imageAdministrationService = imageAdministrationService;
         this.jokerService = jokerService;
         this.fredbetProperties = fredbetProperties;
+        this.fakeDataPopulator = fakeDataPopulator;
     }
 
     public void initDatabaseWithDemoData() {
@@ -182,11 +181,12 @@ public class DatabasePopulator {
         final byte[] demoImage = loadDemoUserProfileImage();
 
         for (int i = 1; i <= numberOfDemoUsers; i++) {
-            final String usernameAndPassword = RandomStringUtils.randomAlphanumeric(6);
+            final String usernameAndPassword = this.fakeDataPopulator.nextRandomUsername();
+//            final String usernameAndPassword = RandomStringUtils.randomAlphanumeric(6);
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
             boolean isNewUser = saveIfNotPresent(user);
-            if (isNewUser && faker.random().nextBoolean()) {
+            if (isNewUser && fakeDataPopulator.nextRandomBoolean()) {
                 this.imageAdministrationService.saveUserProfileImage(demoImage, user);
             }
         }
