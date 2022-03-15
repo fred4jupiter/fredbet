@@ -11,7 +11,7 @@ jobs:
       DOCKER_IMAGE: fred4jupiter/fredbet
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
-      DOCKER_TARGET_PLATFORM: linux/arm/v7
+      DOCKER_TARGET_PLATFORM: linux/arm64/v8
     steps:
       - name: Checkout the code
         uses: actions/checkout@v1
