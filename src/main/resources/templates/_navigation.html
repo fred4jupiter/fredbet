@@ -167,10 +167,11 @@
 						<li class="dropdown">
 	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
 	                        <ul class="dropdown-menu" role="menu" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/flags/de.png" th:text="' '+#{language.de}" /></a></li>
-	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/flags/en.png" th:text="' '+#{language.en}" /></a></li>
-	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'pl').toUriString()}" class="language"><img src="/images/flags/pl.png" th:text="' '+#{language.pl}" /></a></li>
-
+	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/lang/de.png" th:text="' '+#{language.de}" /></a></li>
+	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/lang/en.png" th:text="' '+#{language.en}" /></a></li>
+	                            <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'pl').toUriString()}" class="language"><img src="/images/lang/pl.png" th:text="' '+#{language.pl}" /></a></li>
+								<li><a th:href="${urlBuilder.replaceQueryParam('lang', 'es').toUriString()}" class="language"><img src="/images/lang/es.png" th:text="' '+#{language.es}" /></a></li>
+								<li><a th:href="${urlBuilder.replaceQueryParam('lang', 'ca').toUriString()}" class="language"><img src="/images/lang/ca.png" th:text="' '+#{language.ca}" /></a></li>
 	                        </ul>
 	                    </li>
 						<li th:if="${@webSecurityUtil.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">

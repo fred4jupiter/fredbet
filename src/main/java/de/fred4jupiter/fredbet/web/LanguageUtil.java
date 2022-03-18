@@ -8,11 +8,13 @@ import de.fred4jupiter.fredbet.domain.Country;
 @Component
 public class LanguageUtil {
 
+	private static final String LANGUAGE_ICON_BASE_PATH = "/images/lang/";
+
 	public String getCurrentUserLanguage() {
 		return LocaleContextHolder.getLocale().getLanguage();
 	}
 
 	public String getImageLanguageIconPath() {
-		return Country.ICON_BASE_PATH + getCurrentUserLanguage() + ".png";
+		return LANGUAGE_ICON_BASE_PATH + getCurrentUserLanguage() + ".png";
 	}
 }

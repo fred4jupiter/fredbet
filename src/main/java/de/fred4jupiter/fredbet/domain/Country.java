@@ -73,7 +73,7 @@ public enum Country {
 
     SAMOA("sam"), SOLOMON_ISLANDS("sol"), TAHITI("tah"), TONGA("tga"), VANUATU("van"), ARGENTINA("arg"), BOLIVIA("bol"), BRAZIL("bra"),
 
-    CHILE("chi"), COLOMBIA("col"), ECUADOR("ecu"), PARAGUAY("par"), PERU("per"), URUGUAY("uru"), VENEZUELA("ven");
+    CHILE("chi"), COLOMBIA("col"), ECUADOR("ecu"), PARAGUAY("par"), PERU("per"), URUGUAY("uru"), VENEZUELA("ven"), CATALAN("cat");
 
     public static final String ICON_BASE_PATH = "/images/flags/";
 
