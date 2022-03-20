@@ -10,7 +10,6 @@ import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,17 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        /*
-         * these matches will not go through the security filter (all above
-         * static folder)
-         */
-        web.ignoring().antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
-                "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // static resources
+        http.authorizeRequests().antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
+                "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**").permitAll();
+
         http.authorizeRequests().antMatchers("/login", "/logout", "/console/*", "/registration").permitAll();
         http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
         http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
