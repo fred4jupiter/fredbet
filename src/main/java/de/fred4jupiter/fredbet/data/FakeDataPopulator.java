@@ -15,6 +15,6 @@ public class FakeDataPopulator {
     }
 
     public String nextRandomUsername() {
-        return this.faker.name().username();
+        return this.faker.name().firstName();
     }
 }
