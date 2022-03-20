@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * these matches will not go through the security filter (all above
          * static folder)
          */
-        web.ignoring().antMatchers("/actuator/**", "/webjars/**", "favicon.ico", "/blueimpgallery/**",
+        web.ignoring().antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
                 "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**");
     }
 
