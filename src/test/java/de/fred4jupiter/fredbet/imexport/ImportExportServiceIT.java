@@ -35,7 +35,7 @@ public class ImportExportServiceIT {
 
     @Test
     public void exportAllAsJsonAndImportAgain() {
-        final int numberOfDemoUsers = 10;
+        final int numberOfDemoUsers = 9;
         databasePopulator.createDemoUsers(numberOfDemoUsers);
         databasePopulator.createRandomMatches();
         databasePopulator.createDemoBetsForAllUsers();
