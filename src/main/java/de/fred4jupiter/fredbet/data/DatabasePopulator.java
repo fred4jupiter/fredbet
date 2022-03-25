@@ -204,7 +204,6 @@ public class DatabasePopulator {
     private void createDefaultUsers() {
         LOG.info("createDefaultUsers: creating default users ...");
 
-        // admin user will also be used for remote shell login
         saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
                 .withUserGroup(FredBetUserGroup.ROLE_ADMIN).deletable(false).build());
 
