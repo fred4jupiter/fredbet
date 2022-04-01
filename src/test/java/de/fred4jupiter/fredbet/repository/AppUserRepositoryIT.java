@@ -22,11 +22,10 @@ public class AppUserRepositoryIT {
 
     @Test
     public void saveAppUser() {
-        AppUser appUser = AppUserBuilder.create().withDemoData().build();
-        appUser = appUserRepository.save(appUser);
+        AppUser appUser = appUserRepository.save(AppUserBuilder.create().withDemoData().build());
         assertNotNull(appUser.getId());
 
-        AppUser foundAppUser = appUserRepository.getOne(appUser.getId());
+        AppUser foundAppUser = appUserRepository.getById(appUser.getId());
         assertNotNull(foundAppUser);
         assertEquals(appUser.getUsername(), foundAppUser.getUsername());
     }
@@ -48,12 +47,12 @@ public class AppUserRepositoryIT {
 
     @Test
     public void appUserCanHaveMultipleRoles() {
-        AppUser appUser = AppUserBuilder.create().withDemoData().withUserGroup(FredBetUserGroup.ROLE_USER).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build();
-        appUser = appUserRepository.save(appUser);
+        AppUser appUser = appUserRepository.save(AppUserBuilder.create().withDemoData()
+                .withUserGroup(FredBetUserGroup.ROLE_USER).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
         appUserRepository.flush();
         assertNotNull(appUser.getId());
 
-        AppUser foundAppUser = appUserRepository.getOne(appUser.getId());
+        AppUser foundAppUser = appUserRepository.getById(appUser.getId());
         assertNotNull(foundAppUser);
         assertEquals(appUser.getUsername(), foundAppUser.getUsername());
         assertThat(appUser.getRoles().size()).isEqualTo(2);

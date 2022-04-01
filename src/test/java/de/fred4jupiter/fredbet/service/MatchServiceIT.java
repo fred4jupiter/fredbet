@@ -89,7 +89,7 @@ public class MatchServiceIT {
                 .withKickOffDate(11, 6, 15).build();
         matchService.save(match);
 
-        Match found = matchRepository.getOne(match.getId());
+        Match found = matchRepository.getById(match.getId());
         assertEquals(match, found);
 
         final Country newCountry = Country.ENGLAND;
@@ -97,7 +97,7 @@ public class MatchServiceIT {
 
         matchService.save(found);
 
-        Match found2 = matchRepository.getOne(found.getId());
+        Match found2 = matchRepository.getById(found.getId());
         assertEquals(newCountry, found2.getTeamOne().getCountry());
     }
 }

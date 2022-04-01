@@ -36,7 +36,7 @@ public class ImageBinaryRepositoryIT {
         assertNotNull(saved);
         assertEquals(key, saved.getKey());
 
-        ImageBinary retrievedFromDb = imageBinaryRepository.getOne(saved.getKey());
+        ImageBinary retrievedFromDb = imageBinaryRepository.getById(saved.getKey());
         assertNotNull(retrievedFromDb);
         assertEquals(saved.getKey(), retrievedFromDb.getKey());
         assertNotNull(retrievedFromDb.getImageBinary());
