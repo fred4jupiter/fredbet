@@ -97,13 +97,13 @@
 						<h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
 						<ul class="list-group">
 							<li class="list-group-item">
-								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}"/>
+								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()"/>
 								<label for="selfRegistrationEnabled" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
 								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 									  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
 							</li>
 						</ul>
-						<div class="form-group">
+						<div id="registrationCodeBox" class="form-group">
 							<label for="runtimeSettings.registrationCode" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
 							<input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
@@ -120,5 +120,6 @@
 	</body>
 	<th:block layout:fragment="scripts">
 		<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/pages/runtime_settings.js}" charset="UTF-8"></script>
 	</th:block>
 </html>
