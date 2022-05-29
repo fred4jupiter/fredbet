@@ -27,7 +27,7 @@ import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 public class ImageBinary {
 
 	@Id
-	@Column(name = "KEY")
+	@Column(name = "IMAGE_KEY")
 	private String key;
 
 	@Basic(fetch = FetchType.LAZY)

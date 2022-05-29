@@ -1,258 +1,264 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
-   http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-	<changeSet id="1" author="michael">
-		<createTable tableName="app_user">
-			<column name="user_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="created_at" type="DATETIME">
-				<constraints nullable="false" />
-			</column>
-			<column name="deletable" type="boolean" defaultValueBoolean="true">
-				<constraints nullable="false" />
-			</column>
-			<column name="password" type="varchar(100)">
-				<constraints nullable="false" />
-			</column>
-			<column name="user_name" type="varchar(100)">
-				<constraints nullable="false" unique="true" />
-			</column>
-		</createTable>
+    <changeSet id="1" author="michael">
+        <createTable tableName="app_user">
+            <column name="user_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deletable" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
 
-		<createTable tableName="bet">
-			<column name="bet_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="goals_team_one" type="int" />
-			<column name="goals_team_two" type="int" />
-			<column name="points" type="int" />
-			<column name="user_name" type="varchar(100)">
-				<constraints nullable="false" />
-			</column>
-			<column name="match_id" type="BIGINT" />
-			<column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false" />
-		</createTable>
-		<addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet" />
-		<createIndex tableName="bet" indexName="idx_user_name">
-			<column name="user_name" type="varchar(100)">
-				<constraints nullable="false" />
-			</column>
-		</createIndex>
+        <createTable tableName="bet">
+            <column name="bet_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="goals_team_one" type="int"/>
+            <column name="goals_team_two" type="int"/>
+            <column name="points" type="int"/>
+            <column name="user_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="match_id" type="BIGINT"/>
+            <column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+        <addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet"/>
+        <createIndex tableName="bet" indexName="idx_user_name">
+            <column name="user_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createIndex>
 
-		<createTable tableName="matches">
-			<column name="match_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="country_one" type="varchar(100)" />
-			<column name="country_two" type="varchar(100)" />
-			<column name="goals_team_one" type="int" />
-			<column name="goals_team_two" type="int" />
-			<column name="match_group" type="varchar(100)" />
-			<column name="kick_off_date" type="DATETIME" />
-			<column name="stadium" type="varchar(100)" />
-			<column name="team_name_one" type="varchar(100)" />
-			<column name="team_name_two" type="varchar(100)" />
-			<column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false" />
-		</createTable>
+        <createTable tableName="matches">
+            <column name="match_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country_one" type="varchar(100)"/>
+            <column name="country_two" type="varchar(100)"/>
+            <column name="goals_team_one" type="int"/>
+            <column name="goals_team_two" type="int"/>
+            <column name="match_group" type="varchar(100)"/>
+            <column name="kick_off_date" type="DATETIME"/>
+            <column name="stadium" type="varchar(100)"/>
+            <column name="team_name_one" type="varchar(100)"/>
+            <column name="team_name_two" type="varchar(100)"/>
+            <column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
 
-		<addForeignKeyConstraint baseTableName="bet" baseColumnNames="match_id"
-			constraintName="FK_match_id" referencedTableName="matches" referencedColumnNames="match_id" />
+        <addForeignKeyConstraint baseTableName="bet" baseColumnNames="match_id"
+                                 constraintName="FK_match_id" referencedTableName="matches"
+                                 referencedColumnNames="match_id"/>
 
-		<createTable tableName="user_roles">
-			<column name="user_id" type="BIGINT" />
-			<column name="role" type="varchar(100)" />
-		</createTable>
+        <createTable tableName="user_roles">
+            <column name="user_id" type="BIGINT"/>
+            <column name="role" type="varchar(100)"/>
+        </createTable>
 
-		<addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id"
-			constraintName="FK_user_id" referencedTableName="app_user" referencedColumnNames="user_id" />
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id"
+                                 constraintName="FK_user_id" referencedTableName="app_user"
+                                 referencedColumnNames="user_id"/>
 
-		<createTable tableName="persistent_logins">
-			<column name="series" type="varchar(64)">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="username" type="varchar(64)">
-				<constraints nullable="false" />
-			</column>
-			<column name="token" type="varchar(64)">
-				<constraints nullable="false" />
-			</column>
-			<column name="last_used" type="DATETIME">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
+        <createTable tableName="persistent_logins">
+            <column name="series" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_used" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
-		<createTable tableName="extra_bet">
-			<column name="extra_bet_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="user_name" type="varchar(100)">
-				<constraints nullable="false" unique="true" uniqueConstraintName="extra_bet_idx1" />
-			</column>
-			<column name="final_winner" type="varchar(255)" />
-			<column name="semi_final_winner" type="varchar(255)" />
-			<column name="points" type="int" />
-		</createTable>
+        <createTable tableName="extra_bet">
+            <column name="extra_bet_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="extra_bet_idx1"/>
+            </column>
+            <column name="final_winner" type="varchar(255)"/>
+            <column name="semi_final_winner" type="varchar(255)"/>
+            <column name="points" type="int"/>
+        </createTable>
 
-		<createTable tableName="info_content">
-			<column name="info_name" type="varchar(100)">
-				<constraints nullable="false" />
-			</column>
-			<column name="locale_string" type="varchar(10)">
-				<constraints nullable="false" />
-			</column>
-			<column name="content" type="CLOB">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-		<addPrimaryKey columnNames="info_name, locale_string" tableName="info_content" />
+        <createTable tableName="info_content">
+            <column name="info_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale_string" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="info_name, locale_string" tableName="info_content"/>
 
-		<createTable tableName="session_tracking">
-			<column name="user_name" type="varchar(100)">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="last_login" type="DATETIME">
-				<constraints nullable="false" />
-			</column>
-			<column name="session_id" type="varchar(255)">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
+        <createTable tableName="session_tracking">
+            <column name="user_name" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="last_login" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="session_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
-		<createTable tableName="image_group">
-			<column name="image_group_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="name" type="varchar(100)">
-				<constraints nullable="false" unique="true" />
-			</column>
-			<column name="version" type="int">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
+        <createTable tableName="image_group">
+            <column name="image_group_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
-		<createTable tableName="image_metadata">
-			<column name="image_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="image_group_id" type="BIGINT">
-				<constraints nullable="false" />
-			</column>
-			<column name="image_key" type="varchar(100)">
-				<constraints nullable="false" unique="true" />
-			</column>
-			<column name="description" type="varchar(400)" />
-			<column name="version" type="int">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-		<addForeignKeyConstraint baseTableName="image_metadata" baseColumnNames="image_group_id"
-			constraintName="FK_image_group" referencedTableName="image_group" referencedColumnNames="image_group_id" />
+        <createTable tableName="image_metadata">
+            <column name="image_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image_group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_key" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar(400)"/>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="image_metadata" baseColumnNames="image_group_id"
+                                 constraintName="FK_image_group" referencedTableName="image_group"
+                                 referencedColumnNames="image_group_id"/>
 
-		<createTable tableName="image_binary">
-			<column name="key" type="varchar(100)">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="image_bytes" type="BLOB">
-				<constraints nullable="false" />
-			</column>
-			<column name="image_group_id" type="BIGINT">
-				<constraints nullable="false" />
-			</column>
-			<column name="thumb_image_bytes" type="BLOB">
-				<constraints nullable="false" />
-			</column>
-			<column name="version" type="int">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-		<modifySql dbms="mysql">
-			<regExpReplace replace="BLOB" with="LONGBLOB" />
-		</modifySql>
-	</changeSet>
+        <createTable tableName="image_binary">
+            <column name="image_key" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image_bytes" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="thumb_image_bytes" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="BLOB" with="LONGBLOB"/>
+        </modifySql>
+    </changeSet>
 
-	<changeSet id="2" author="michael">
-		<addColumn tableName="image_metadata">
-			<column name="user_id" type="BIGINT">
-				<constraints nullable="false" />
-			</column>
-		</addColumn>
-		<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="image_metadata"
-			constraintName="FK_image_user_id" referencedColumnNames="user_id" referencedTableName="app_user" />
-	</changeSet>
+    <changeSet id="2" author="michael">
+        <addColumn tableName="image_metadata">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="image_metadata"
+                                 constraintName="FK_image_user_id" referencedColumnNames="user_id"
+                                 referencedTableName="app_user"/>
+    </changeSet>
 
-	<changeSet id="3" author="michael">
-		<addColumn tableName="image_group">
-			<column name="user_profile_img_group" type="boolean" defaultValueBoolean="false">
-				<constraints nullable="false" />
-			</column>
-		</addColumn>
-	</changeSet>
+    <changeSet id="3" author="michael">
+        <addColumn tableName="image_group">
+            <column name="user_profile_img_group" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
-	<changeSet id="4" author="michael">
-		<addColumn tableName="app_user">
-			<column name="last_login" type="DATETIME" />
-		</addColumn>
-	</changeSet>
+    <changeSet id="4" author="michael">
+        <addColumn tableName="app_user">
+            <column name="last_login" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
 
-	<changeSet id="5" author="michael">
-		<addColumn tableName="extra_bet">
-			<column name="third_final_winner" type="varchar(255)" />
-		</addColumn>
-	</changeSet>
+    <changeSet id="5" author="michael">
+        <addColumn tableName="extra_bet">
+            <column name="third_final_winner" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 
-	<changeSet id="6" author="michael">
-		<addColumn tableName="extra_bet">
-			<column name="points_one" type="int" />
-			<column name="points_two" type="int" />
-			<column name="points_three" type="int" />
-		</addColumn>
-		<dropColumn tableName="extra_bet">
-			<column name="points"></column>
-		</dropColumn>
-	</changeSet>
+    <changeSet id="6" author="michael">
+        <addColumn tableName="extra_bet">
+            <column name="points_one" type="int"/>
+            <column name="points_two" type="int"/>
+            <column name="points_three" type="int"/>
+        </addColumn>
+        <dropColumn tableName="extra_bet">
+            <column name="points"></column>
+        </dropColumn>
+    </changeSet>
 
-	<changeSet id="7" author="michael">
-		<addColumn tableName="app_user">
-			<column name="is_child" type="boolean" defaultValueBoolean="false">
-				<constraints nullable="false" />
-			</column>
-		</addColumn>
-	</changeSet>
+    <changeSet id="7" author="michael">
+        <addColumn tableName="app_user">
+            <column name="is_child" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
-	<changeSet id="8" author="michael">
-		<createTable tableName="runtime_config">
-			<column name="config_id" type="BIGINT" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="json_config" type="varchar(2000)" />
-			<column name="version" type="int">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-	</changeSet>
+    <changeSet id="8" author="michael">
+        <createTable tableName="runtime_config">
+            <column name="config_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="json_config" type="varchar(2000)"/>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
-	<changeSet id="9" author="michael">
-		<addColumn tableName="app_user">
-			<column name="first_login" type="boolean" defaultValueBoolean="false">
-				<constraints nullable="false" />
-			</column>
-		</addColumn>
-	</changeSet>
-	
-	<changeSet id="10" author="michael">
-		<addColumn tableName="bet">
-			<column name="joker" type="boolean" defaultValueBoolean="false">
-				<constraints nullable="false" />
-			</column>
-		</addColumn>
-	</changeSet>
+    <changeSet id="9" author="michael">
+        <addColumn tableName="app_user">
+            <column name="first_login" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
-	<changeSet id="11" author="michael">
-		<validCheckSum>ANY</validCheckSum>
-		<renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
-	</changeSet>
+    <changeSet id="10" author="michael">
+        <addColumn tableName="bet">
+            <column name="joker" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="11" author="michael">
+        <validCheckSum>ANY</validCheckSum>
+        <renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
+    </changeSet>
 
 </databaseChangeLog>
