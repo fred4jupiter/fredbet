@@ -13,14 +13,14 @@ services:
       - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
-      - "8080:8080"
+      - "8180:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   fredbet:
-    image: "fred4jupiter/fredbet"
-    container_name: "fredbet"
+    image: "fred4jupiter/fredbet"   
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`fredbet.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.fredbet.rule=Host(`fredbet.localhost`)"
+      - "traefik.http.routers.fredbet.entrypoints=web"
+      - "traefik.http.services.fredbet.loadbalancer.server.port=8080"
