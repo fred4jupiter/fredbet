@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.CountryService;
@@ -48,6 +49,11 @@ public class RuntimeSettingsController {
     @ModelAttribute("availableThemes")
     public List<Theme> availableThemes() {
         return Arrays.asList(Theme.values());
+    }
+
+    @ModelAttribute("availableNavbarLayouts")
+    public List<NavbarLayout> availableNavbarLayouts() {
+        return Arrays.asList(NavbarLayout.values());
     }
 
     @GetMapping("/show")

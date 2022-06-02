@@ -5,7 +5,7 @@
 		<title>Navigation page</title>
 	</head>
 	<body>
-		<nav th:fragment="menu" class="navbar navbar-default navbar-fixed-top" th:classappend="${@runtimeSettingsUtil.getSettings().getBootswatchTheme().getNavbarTag()}">
+		<nav th:fragment="menu" class="navbar navbar-default navbar-fixed-top" th:classappend="${@runtimeSettingsUtil.getSettings().getNavbarLayout().getNavbarTag()}">
 			<div class="container">
 				<div class="navbar-header" th:if="${@webSecurityUtil.isUserLoggedIn()}">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">

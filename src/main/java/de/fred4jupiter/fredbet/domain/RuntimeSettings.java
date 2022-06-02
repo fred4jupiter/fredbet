@@ -74,6 +74,9 @@ public class RuntimeSettings {
     @NotNull
     private Theme bootswatchTheme = Theme.DEFAULT;
 
+    @NotNull
+    private NavbarLayout navbarLayout = NavbarLayout.INVERSE;
+
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
     }
@@ -184,6 +187,14 @@ public class RuntimeSettings {
 
     public void setBootswatchTheme(Theme bootswatchTheme) {
         this.bootswatchTheme = bootswatchTheme;
+    }
+
+    public NavbarLayout getNavbarLayout() {
+        return navbarLayout;
+    }
+
+    public void setNavbarLayout(NavbarLayout navbarLayout) {
+        this.navbarLayout = navbarLayout;
     }
 
     public String getBootswatchThemeUrl() {
