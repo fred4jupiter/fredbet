@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Theme;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.CountryService;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -41,6 +43,11 @@ public class RuntimeSettingsController {
     @ModelAttribute("availableCountries")
     public List<Country> availableCountries() {
         return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+    }
+
+    @ModelAttribute("availableThemes")
+    public List<Theme> availableThemes() {
+        return Arrays.asList(Theme.values());
     }
 
     @GetMapping("/show")

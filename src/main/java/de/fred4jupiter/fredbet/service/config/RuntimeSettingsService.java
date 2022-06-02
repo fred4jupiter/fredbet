@@ -42,7 +42,6 @@ public class RuntimeSettingsService {
 
     @Cacheable(CacheNames.RUNTIME_SETTINGS)
     public RuntimeSettings loadRuntimeSettings() {
-        LOG.debug("Loading runtime settings from DB...");
         RuntimeSettings runtimeSettings = runtimeSettingsRepository.loadRuntimeSettings(DEFAULT_CONFIG_ID, RuntimeSettings.class);
         return runtimeSettings == null ? createDefaultRuntimeSettings() : runtimeSettings;
     }

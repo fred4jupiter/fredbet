@@ -24,6 +24,7 @@ public class RuntimeSettingsRepository {
     }
 
     public <T> T loadRuntimeSettings(Long id, Class<T> targetType) {
+        LOG.debug("Loading runtime settings from DB...");
         RuntimeSettingsDb runtimeSettingsDb = loadRuntimeSettingsDb(id);
         return toRuntimeSettings(runtimeSettingsDb, targetType);
     }

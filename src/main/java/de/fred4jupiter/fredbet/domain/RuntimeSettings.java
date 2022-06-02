@@ -71,6 +71,9 @@ public class RuntimeSettings {
     @NotNull
     private String timeZone;
 
+    @NotNull
+    private Theme bootswatchTheme = Theme.DEFAULT;
+
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
     }
@@ -173,5 +176,17 @@ public class RuntimeSettings {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public Theme getBootswatchTheme() {
+        return bootswatchTheme;
+    }
+
+    public void setBootswatchTheme(Theme bootswatchTheme) {
+        this.bootswatchTheme = bootswatchTheme;
+    }
+
+    public String getBootswatchThemeUrl() {
+        return "/webjars/bootswatch/" + this.bootswatchTheme.toString().toLowerCase() + "/bootstrap.min.css";
     }
 }
