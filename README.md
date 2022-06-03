@@ -27,6 +27,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - self registration (can be disabled)
 - PDF export of user ranking 
 - Group standings
+- change UI design themes
 
 ## Testing it locally
 
@@ -100,7 +101,8 @@ Activate the spring profile via JVM (e.g. `-Dspring.profiles.active=h2`) or syst
 
 ## Runtime Configuration
 
-Some configuration parameters are configurable at runtime. You has to be administrator to edit these values. Following settings can be changed at runtime:
+Some configuration parameters are configurable at runtime. You have to be administrator to edit these values. 
+Following settings can be changed at runtime:
 
 - Log Level
 - Clearing caches (for available navigation entries, user child relation on ranking page, runtime configuration parameters)
@@ -110,6 +112,7 @@ Some configuration parameters are configurable at runtime. You has to be adminis
 - favourite country (will be used in points statistics)
 - used password on password reset
 - points for extra bets
+- UI design theme
 
 ## Production Environment
 
