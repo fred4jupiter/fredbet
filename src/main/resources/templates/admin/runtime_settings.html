@@ -72,19 +72,25 @@
 					</div>
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
-						<div class="form-group">
-							<label for="theme" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
-							<select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-control">
-								<option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
-							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
-						</div>
-						<div class="form-group">
-							<label for="navbarlayout" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
-							<select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-control">
-								<option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
-							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.navbarLayout')}" th:errors="*{runtimeSettings.navbarLayout}">navbarlayout Error</p>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="theme" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
+									<select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-control">
+										<option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
+									</select>
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="navbarlayout" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
+									<select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-control">
+										<option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
+									</select>
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.navbarLayout')}" th:errors="*{runtimeSettings.navbarLayout}">navbarlayout Error</p>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
