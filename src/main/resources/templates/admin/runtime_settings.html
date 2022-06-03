@@ -38,34 +38,54 @@
 								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
 								th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>								
 							</li>
-						</ul>														
-					</div>
-					<div class="col-xs-12 col-sm-6">
-						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
+						</ul>
 						<div class="form-group">
-							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label> 
+							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
 							<select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-control">
-							    <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+								<option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
 						</div>
 						<div class="form-group">
-							<label for="passwordForReset" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label> 
+							<label for="passwordForReset" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
 							<input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}">passwordForReset Error</p>
-						</div>	
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone}"></label>
+									<select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-control">
+										<option th:each="timeZone : ${runtimeSettingsCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
+									</select>
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="currentTime" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
+									<br/>
+									<span id="currentTime" th:text="${runtimeSettingsCommand.currentTime}"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
 						<div class="form-group">
-							<label for="currentTime" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
-							<br/> 
-							<span id="currentTime" th:text="${runtimeSettingsCommand.currentTime}"></span>
+							<label for="theme" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
+							<select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-control">
+								<option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
+							</select>
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
 						</div>
 						<div class="form-group">
-							<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone}"></label> 
-							<select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-control">
-							  <option th:each="timeZone : ${runtimeSettingsCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
+							<label for="navbarlayout" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
+							<select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-control">
+								<option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
 							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
-						</div>					
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.navbarLayout')}" th:errors="*{runtimeSettings.navbarLayout}">navbarlayout Error</p>
+						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.extraBetPoints}"></h2>
@@ -107,23 +127,6 @@
 							<label for="runtimeSettings.registrationCode" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
 							<input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6">
-						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
-						<div class="form-group">
-							<label for="theme" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
-							<select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-control">
-								<option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
-							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
-						</div>
-						<div class="form-group">
-							<label for="navbarlayout" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
-							<select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-control">
-								<option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
-							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.navbarLayout')}" th:errors="*{runtimeSettings.navbarLayout}">navbarlayout Error</p>
 						</div>
 					</div>
 				</div>
