@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.user.UserService;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -45,14 +43,11 @@ public class UserController {
 
     private final WebMessageUtil webMessageUtil;
 
-    private final SecurityService securityService;
-
     private final WebSecurityUtil webSecurityUtil;
 
-    public UserController(UserService userService, WebMessageUtil webMessageUtil, SecurityService securityService, WebSecurityUtil webSecurityUtil) {
+    public UserController(UserService userService, WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil) {
         this.userService = userService;
         this.webMessageUtil = webMessageUtil;
-        this.securityService = securityService;
         this.webSecurityUtil = webSecurityUtil;
     }
 
