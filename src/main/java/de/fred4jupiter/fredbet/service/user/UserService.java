@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,7 +71,15 @@ public class UserService {
     }
 
     public List<AppUser> findAll() {
-        return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));
+        return findAll(true);
+    }
+
+    public List<AppUser> findAll(boolean withDefaultAdminUser) {
+        if (withDefaultAdminUser) {
+            return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));
+        } else {
+            return appUserRepository.findByUsernameNotLike(FredbetConstants.TECHNICAL_USERNAME, Sort.by(Direction.ASC, "username"));
+        }
     }
 
     public AppUser findByUserId(Long userId) {
@@ -165,12 +172,12 @@ public class UserService {
         appUserRepository.save(appUser);
     }
 
-    public List<UserDto> findAllAsUserDto() {
+    public List<UserDto> findAllAsUserDto(boolean withDefaultAdminUser) {
         List<ImageMetaData> metaDataList = imageMetaDataRepository.loadImageMetaDataOfUserProfileImageSet();
 
         Map<String, ImageMetaData> map = toMap(metaDataList);
 
-        return findAll().stream().map(appUser -> toUserDto(appUser, map)).collect(Collectors.toList());
+        return findAll(withDefaultAdminUser).stream().map(appUser -> toUserDto(appUser, map)).collect(Collectors.toList());
     }
 
     private Map<String, ImageMetaData> toMap(List<ImageMetaData> metaDataList) {

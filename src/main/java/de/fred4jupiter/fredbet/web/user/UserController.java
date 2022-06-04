@@ -59,8 +59,16 @@ public class UserController {
 
     @GetMapping
     public String list(Model model) {
-        List<UserDto> users = userService.findAllAsUserDto();
-        model.addAttribute("allUsers", users);
+        if (webSecurityUtil.isCurrentUserTheDefaultAdminUser()) {
+            // show also the admin user in overview
+            List<UserDto> users = userService.findAllAsUserDto(true);
+            model.addAttribute("allUsers", users);
+        } else {
+            // don´t show admin user in overview
+            List<UserDto> users = userService.findAllAsUserDto(false);
+            model.addAttribute("allUsers", users);
+        }
+
         return LIST_USER_PAGE;
     }
 
