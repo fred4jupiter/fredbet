@@ -2,6 +2,7 @@ name: Java CI
 on:
   push:
     branches:
+      - dev
       - master
     tags-ignore:
       - '*.*'
