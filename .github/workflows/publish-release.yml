@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   build_tag_repo:
     runs-on: ubuntu-latest
