@@ -1,8 +1,12 @@
 name: Publish Docker latest image
 on:
-  push:
+  workflow_dispatch:
+    inputs:
+      release_tag_version:
+        description: 'The release tag version number to use, e.g. 2.8.0'
+        required: true
     branches:
-      - dev
+      - master
 jobs:
   build_push_ghcr_amd64:
     runs-on: ubuntu-latest
