@@ -3,13 +3,14 @@ on:
   push:
     branches:
       - dev
+
 jobs:
   build_push_ghcr_amd64:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up JDK 17 for deploy to GitHub Container Registry
         uses: actions/setup-java@v2
         with:
@@ -32,7 +33,7 @@ jobs:
     if: github.event_name == 'push'
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up JDK 17 for deploy to Docker Hub
         uses: actions/setup-java@v2
         with:
@@ -64,7 +65,7 @@ jobs:
       DOCKER_TARGET_PLATFORM: linux/arm64/v8
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Prepare
