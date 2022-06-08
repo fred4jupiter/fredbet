@@ -1,9 +1,8 @@
-name: Publish Docker latest image
+name: Publish Release
 on:
   push:
     branches:
       - master
-
 jobs:
   build_tag_repo:
     runs-on: ubuntu-latest
@@ -55,7 +54,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Publish to GitHub Container Registry
-        run: mvn -B verify jib:dockerBuild -Dimage=ghcr.io/fred4jupiter/fredbet:latest
+        run: mvn -B compile jib:build -Dimage=ghcr.io/fred4jupiter/fredbet:${{needs.build_tag_repo.outputs.release_version}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build_push_docker_hub_amd64:
@@ -85,7 +84,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Publish to Docker Hub
-        run: mvn -B verify jib:dockerBuild -Dimage=docker.io/fred4jupiter/fredbet:latest
+        run: mvn -B compile jib:build -Dimage=docker.io/fred4jupiter/fredbet:${{needs.build_tag_repo.outputs.release_version}}
   build_push_docker_hub_arm64:
     runs-on: ubuntu-18.04
     needs: build_tag_repo
@@ -110,7 +109,7 @@ jobs:
         run: |
           echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}
           echo ::set-output name=docker_image::${DOCKER_REGISTRY}/${DOCKER_IMAGE}
-          echo ::set-output name=version::latest-arm64
+          echo ::set-output name=version::${{needs.build_tag_repo.outputs.release_version}}-arm64
       - name: Docker Login
         if: success()
         run: |
