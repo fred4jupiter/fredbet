@@ -8,7 +8,7 @@ COPY .git /build/.git/
 RUN mvn -B -DskipTests package
 
 # Step : Package image
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jre-focal
 LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp
