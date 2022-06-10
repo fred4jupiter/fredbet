@@ -13,7 +13,7 @@ LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp
 
-ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin -Djava.security.egd=file:/dev/./urandom"
+ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
