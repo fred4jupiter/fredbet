@@ -326,6 +326,7 @@
                     </to>
                     <container>
                         <jvmFlags>
+                            <mainClass>de.fred4jupiter.fredbet.Application</mainClass>
                             <jvmFlag>-Duser.timezone=Europe/Berlin</jvmFlag>
                         </jvmFlags>
                     </container>
