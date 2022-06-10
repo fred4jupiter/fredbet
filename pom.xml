@@ -325,8 +325,8 @@
                         <image>${project.artifactId}</image>
                     </to>
                     <container>
+                        <mainClass>de.fred4jupiter.fredbet.Application</mainClass>
                         <jvmFlags>
-                            <mainClass>de.fred4jupiter.fredbet.Application</mainClass>
                             <jvmFlag>-Duser.timezone=Europe/Berlin</jvmFlag>
                         </jvmFlags>
                     </container>
