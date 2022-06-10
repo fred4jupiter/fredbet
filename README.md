@@ -43,21 +43,32 @@ In the `dev` profile (which will be activated if no profile is specified) the ap
 
 ## Running the released Docker image
 
-The released docker image is available on [Docker Hub](https://hub.docker.com/r/fred4jupiter/fredbet).
+The released docker image is available on:
+
+### Docker Hub
+
+You can browse the available releases at [Docker Hub](https://hub.docker.com/r/fred4jupiter/fredbet). Please check
+for the latest released version or use the `latest` tag for current development image (not stable).
 
 ```bash
-docker run -d -p 8080:8080 fred4jupiter/fredbet
+docker run -d -p 8080:8080 fred4jupiter/fredbet:2.8.2
+```
+
+### Github Container Registry
+
+```bash
+docker run -d -p 8080:8080 ghcr.io/fred4jupiter/fredbet:2.8.2
 ```
 
 ## Building your own Docker image
 
 ```bash
 mvn clean install
-docker build -t fred4jupiter/fredbet .
-docker run -d -p 8080:8080 fred4jupiter/fredbet
+docker build -t fredbet .
+docker run -d -p 8080:8080 fredbet
 ```
 
-This will build (and run) an image with name `fred4jupiter/fredbet`.
+This will build (and run) an image with name `fredbet`.
 
 ## Running with Docker Compose
 
