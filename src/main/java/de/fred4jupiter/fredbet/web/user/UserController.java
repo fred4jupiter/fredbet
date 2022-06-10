@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.user;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
@@ -73,8 +74,13 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public String edit(@PathVariable("id") Long userId, Model model) {
+    public String edit(@PathVariable("id") Long userId, Model model, RedirectAttributes redirect) {
         AppUser user = userService.findByUserId(userId);
+        if (!webSecurityUtil.isCurrentUserTheDefaultAdminUser() && FredbetConstants.TECHNICAL_USERNAME.equals(user.getUsername())) {
+            // other admin tries to update the default admin user
+            webMessageUtil.addErrorMsg(redirect, "user.edited.notAllowed");
+            return REDIRECT_USER_PAGE;
+        }
 
         EditUserCommand editUserCommand = toEditUserCommand(user);
 
