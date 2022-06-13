@@ -73,7 +73,7 @@
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
 						<div class="row">
-							<div class="col-sm-6">
+							<div class="col-xs-6">
 								<div class="form-group">
 									<label for="theme" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
 									<select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-control">
@@ -82,7 +82,7 @@
 									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
 								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-xs-6">
 								<div class="form-group">
 									<label for="navbarlayout" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
 									<select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-control">
@@ -95,22 +95,31 @@
 					</div>
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.extraBetPoints}"></h2>
-						<div class="form-group">
-							<label for="runtimeSettings.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label>
-							<input id="runtimeSettings.pointsFinalWinner" type="text" th:field="*{runtimeSettings.pointsFinalWinner}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsFinalWinner')}" th:errors="*{runtimeSettings.pointsFinalWinner}"></p>
-						</div>
-						<div class="form-group">
-							<label for="runtimeSettings.pointsSemiFinalWinner" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label>
-							<input id="runtimeSettings.pointsSemiFinalWinner" type="text" th:field="*{runtimeSettings.pointsSemiFinalWinner}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsSemiFinalWinner')}" th:errors="*{runtimeSettings.pointsSemiFinalWinner}"></p>
-						</div>	
-						<div class="form-group">
-							<label for="runtimeSettings.pointsThirdFinalWinner" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label>
-							<input id="runtimeSettings.pointsThirdFinalWinner" type="text" th:field="*{runtimeSettings.pointsThirdFinalWinner}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsThirdFinalWinner')}" th:errors="*{runtimeSettings.pointsThirdFinalWinner}"></p>
+						<div class="row">
+							<div class="col-xs-4">
+								<div class="form-group">
+									<label for="runtimeSettings.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label>
+									<input id="runtimeSettings.pointsFinalWinner" type="text" th:field="*{runtimeSettings.pointsFinalWinner}" class="form-control" />
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsFinalWinner')}" th:errors="*{runtimeSettings.pointsFinalWinner}"></p>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<div class="form-group">
+									<label for="runtimeSettings.pointsSemiFinalWinner" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label>
+									<input id="runtimeSettings.pointsSemiFinalWinner" type="text" th:field="*{runtimeSettings.pointsSemiFinalWinner}" class="form-control" />
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsSemiFinalWinner')}" th:errors="*{runtimeSettings.pointsSemiFinalWinner}"></p>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<div class="form-group">
+									<label for="runtimeSettings.pointsThirdFinalWinner" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label>
+									<input id="runtimeSettings.pointsThirdFinalWinner" type="text" th:field="*{runtimeSettings.pointsThirdFinalWinner}" class="form-control" />
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsThirdFinalWinner')}" th:errors="*{runtimeSettings.pointsThirdFinalWinner}"></p>
+								</div>
+							</div>
 						</div>
 					</div>
+
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.joker}"></h2>
 						<div class="form-group">
