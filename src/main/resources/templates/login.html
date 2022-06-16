@@ -39,25 +39,28 @@
                             </button>
                         </div>
                         <div class="row">
-                            <div class="col-xs-7 col-sm-4">
-                                <input id="remember-me" data-toggle="toggle" data-size="small" data-onstyle="success"
-                                       type="checkbox" name="remember-me"/>
+                            <div class="col-xs-8 col-sm-4">
+                                <input id="remember-me" data-toggle="toggle" data-onstyle="success" type="checkbox" name="remember-me"/>
                                 <label for="remember-me">Auto-Login</label>
                                 <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
                                       data-placement="top" th:title="#{login.autologin.tooltip}"></span>
                             </div>
-                            <div class="col-xs-5 col-sm-2">
-                                <a href="#" class="btn btn-default language-button dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
-                                <ul class="dropdown-menu" role="menu" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-                                    <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/lang_42_28/de.png" th:text="' '+#{language.de}" /></a></li>
-                                    <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/lang_42_28/en.png" th:text="' '+#{language.en}" /></a></li>
-                                    <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'pl').toUriString()}" class="language"><img src="/images/lang_42_28/pl.png" th:text="' '+#{language.pl}" /></a></li>
-                                    <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'es').toUriString()}" class="language"><img src="/images/lang_42_28/es.png" th:text="' '+#{language.es}" /></a></li>
-                                    <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'ca').toUriString()}" class="language"><img src="/images/lang_42_28/ca.png" th:text="' '+#{language.ca}" /></a></li>
-                                </ul>
+                            <div class="col-xs-4 col-sm-2">
+                                <div class="form-group">
+                                    <a href="#" class="btn btn-default language-button dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
+                                    <ul class="dropdown-menu" role="menu" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/lang_42_28/de.png" th:text="' '+#{language.de}" /></a></li>
+                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/lang_42_28/en.png" th:text="' '+#{language.en}" /></a></li>
+                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'pl').toUriString()}" class="language"><img src="/images/lang_42_28/pl.png" th:text="' '+#{language.pl}" /></a></li>
+                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'es').toUriString()}" class="language"><img src="/images/lang_42_28/es.png" th:text="' '+#{language.es}" /></a></li>
+                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'ca').toUriString()}" class="language"><img src="/images/lang_42_28/ca.png" th:text="' '+#{language.ca}" /></a></li>
+                                    </ul>
+                                </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+                                <div class="form-group">
+                                    <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+                                </div>
                             </div>
                         </div>
                     </form>
