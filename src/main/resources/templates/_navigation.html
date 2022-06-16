@@ -16,8 +16,8 @@
 					</button>
 					<a class="navbar-brand" href="#" th:href="@{/matches/upcoming}"><span class="fas fa-home"></span></a>
 				</div>
-				<div id="navbar" class="navbar-collapse collapse">
-					<ul th:if="${@webSecurityUtil.isUserLoggedIn()}" class="nav navbar-nav">
+				<div th:if="${@webSecurityUtil.isUserLoggedIn()}" id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
 						<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
 						<li class="dropdown" th:classappend="${pageState_betting}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -174,7 +174,7 @@
 								<li><a th:href="${urlBuilder.replaceQueryParam('lang', 'ca').toUriString()}" class="language"><img src="/images/lang/ca.png" th:text="' '+#{language.ca}" /></a></li>
 	                        </ul>
 	                    </li>
-						<li th:if="${@webSecurityUtil.isUserLoggedIn()}" class="dropdown" th:classappend="${pageState_profile}">
+						<li class="dropdown" th:classappend="${pageState_profile}">
 							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 	                            <span th:replace="~{fragments/profile_image :: profile_image_small(${@webSecurityUtil.getCurrentUserProfileImageKey()})}"></span>
 	                            <span th:text="${@webSecurityUtil.getCurrentUsername()}"></span><span class="caret"></span>
@@ -191,7 +191,7 @@
 								</li>
 							</ul>						
 						</li>
-						<li th:if="${@webSecurityUtil.isUserLoggedIn()}">
+						<li>
 							<a th:href="@{/logout}">
 								<i class="fas fa-sign-out-alt"></i>
 								<span th:text="#{navigation.logout}" th:remove="tag"></span>
