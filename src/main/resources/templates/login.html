@@ -40,11 +40,11 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-7 col-sm-4">
-                                    <input id="remember-me" data-toggle="toggle" data-size="small" data-onstyle="success"
-                                           type="checkbox" name="remember-me"/>
-                                    <label for="remember-me">Auto-Login</label>
-                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                          data-placement="top" th:title="#{login.autologin.tooltip}"></span>
+                                <input id="remember-me" data-toggle="toggle" data-size="small" data-onstyle="success"
+                                       type="checkbox" name="remember-me"/>
+                                <label for="remember-me">Auto-Login</label>
+                                <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                      data-placement="top" th:title="#{login.autologin.tooltip}"></span>
                             </div>
                             <div class="col-xs-5 col-sm-2">
                                 <a href="#" class="btn btn-default language-button dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
@@ -57,11 +57,7 @@
                                 </ul>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <div class="form-group">
-                                    <div th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}">
-                                        <a href="#" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
-                                    </div>
-                                </div>
+                                <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
                             </div>
                         </div>
                     </form>
