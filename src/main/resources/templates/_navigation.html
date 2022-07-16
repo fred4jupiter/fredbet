@@ -154,12 +154,15 @@
 					  			<li th:class="${pageState_config_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#config" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
 					  			</li>					  			
-					  			<li th:class="${pageState_runtimeconfig_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+					  			<li th:class="${pageState_runtimesettings_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#config" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
 					  			</li>
-					  			<li th:class="${pageState_backup_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+					  			<li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" th:class="${pageState_backup_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a href="#backup" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
 					  			</li>
+								<li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+									<a class="dropdown-item" th:href="@{/h2}" target="_blank">H2 Console</a>
+								</li>
 				        	</ul>
 				        </li>
 					</ul>

@@ -33,7 +33,7 @@ logging:
   level:
     root: WARN
     org.springframework.web: WARN
-    org.springframework.security: WARN
+    org.springframework.security: DEBUG
     de.fred4jupiter.fredbet: DEBUG
 
 server:
@@ -43,10 +43,7 @@ server:
       enabled: true
       force: true
 
-# metrics configuration
 management:
-#  server:
-#    port: 5555
   endpoints:
     web:
       base-path: /actuator

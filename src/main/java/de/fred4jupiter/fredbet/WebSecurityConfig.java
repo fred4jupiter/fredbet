@@ -56,9 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/login", "/logout", "/console/*", "/registration").permitAll();
         http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
-        http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+        http.authorizeRequests().antMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
         http.authorizeRequests().antMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO);
-        http.authorizeRequests().antMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
 
         http.authorizeRequests().anyRequest().authenticated();
 
@@ -76,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
 
             // otherwise the H2 console will not work
-            http.csrf().ignoringAntMatchers("/console/*");
+            http.csrf().ignoringAntMatchers("/h2/*");
         }
     }
 

@@ -3,7 +3,8 @@ spring:
     cache: false
   h2:
     console:
-      # connect in console (http://localhost:8080/console) with jdbcUrl: jdbc:h2:mem:testdb
+      # connect in console (http://localhost:8080/h2)
+      path: /h2
       enabled: true
       settings:
         web-allow-others: true
