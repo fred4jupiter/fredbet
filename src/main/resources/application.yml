@@ -27,6 +27,15 @@ spring:
   jmx:
     enabled: false
 
+logging:
+  pattern:
+    console: "%d %-5level [%c] - %msg%n"
+  level:
+    root: WARN
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    de.fred4jupiter.fredbet: DEBUG
+
 server:
   servlet:
     encoding:

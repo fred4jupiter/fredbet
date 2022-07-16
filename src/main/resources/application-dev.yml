@@ -13,5 +13,9 @@ spring:
   datasource:
     url: jdbc:h2:file:~/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 
+logging:
+  pattern:
+    console: "%highlight(%d %-5level [%c] - %msg%n)"
+
 fredbet:
   create-demo-data: false
