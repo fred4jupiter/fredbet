@@ -17,7 +17,7 @@ public class RuntimeSettingsUtil {
 
     private final boolean h2ConsoleEnabled;
 
-    public RuntimeSettingsUtil(RuntimeSettingsService runtimeSettingsService, @Value("${spring.h2.console.enabled}") boolean h2ConsoleEnabled) {
+    public RuntimeSettingsUtil(RuntimeSettingsService runtimeSettingsService, @Value("${spring.h2.console.enabled:false}") boolean h2ConsoleEnabled) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.h2ConsoleEnabled = h2ConsoleEnabled;
     }
