@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // disable cache control to allow usage of ETAG headers (no image reload
         // if the image has not been changed)
         http.headers().cacheControl().disable();
+        http.csrf().ignoringAntMatchers("/info/editinfo");
 
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
             // this is for the embedded h2 console

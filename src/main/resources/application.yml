@@ -33,7 +33,7 @@ logging:
   level:
     root: WARN
     org.springframework.web: WARN
-    org.springframework.security: DEBUG
+    org.springframework.security: WARN
     de.fred4jupiter.fredbet: DEBUG
 
 server:
@@ -42,6 +42,9 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+  tomcat:
+    max-http-form-post-size: 10MB
+    max-swallow-size: 10MB
 
 management:
   endpoints:

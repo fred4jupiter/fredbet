@@ -70,7 +70,7 @@ public class InfoController {
 
     private String prepareForImages(String content) {
         if (StringUtils.isNotBlank(content) && content.contains("<img ")) {
-            return StringUtils.replace(content,"<img ", "<img class=\"img-responsive\" ");
+            return StringUtils.replace(content, "<img ", "<img class=\"img-responsive\" ");
         }
         return content;
     }
