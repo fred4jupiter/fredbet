@@ -1,0 +1,18 @@
+spring:
+  thymeleaf:
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fredbetdb
+    driver-class-name: org.postgresql.Driver
+    username: fred
+    password: fred
+
+logging:
+  pattern:
+    console: "%highlight(%d %-5level [%c] - %msg%n)"
+
+fredbet:
+  create-demo-data: false

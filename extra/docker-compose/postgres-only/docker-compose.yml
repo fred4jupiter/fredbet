@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-only-vol:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=fred
+      - POSTGRES_PASSWORD=fred
+      - POSTGRES_DB=fredbetdb
+      - TZ=Europe/Berlin
+volumes:
+  postgres-only-vol:

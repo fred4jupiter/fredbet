@@ -19,7 +19,7 @@ public class Info {
 	private InfoPK pk;
 
 	@Lob
-	@Column(name = "CONTENT")
+	@Column(name = "CONTENT", columnDefinition = "text")
 	private String content;
 
 	protected Info() {

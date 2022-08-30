@@ -39,4 +39,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	@Query("select m from Match m where m.kickOffDate < :date and m.teamOne.goals is null and m.teamTwo.goals is null order by m.kickOffDate asc")
 	List<Match> findFinishedMatchesWithMissingResult(@Param("date") LocalDateTime date);
+
+	@Query("select m from Match m where m.teamOne.goals is not null and m.teamTwo.goals is not null order by m.kickOffDate asc")
+	List<Match> findFinishedMatches();
 }
