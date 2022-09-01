@@ -30,7 +30,7 @@ public class PointCourseServiceNew implements PointCourseService{
     @Override
     public PointCourseContainer reportPointsCourse(String username, Locale locale) {
         final List<PointsPerUser> pointsPerUsers = this.betRepository.queryPointsPerUser();
-        final ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(pointsPerUsers);
+        final ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(username, pointsPerUsers);
 
         final List<String> usersToDisplay = new ArrayList<>();
         usersToDisplay.add(username);
@@ -74,12 +74,14 @@ public class PointCourseServiceNew implements PointCourseService{
         }
     }
 
-    private ImmutablePair<String, String> calculateMinMaxPointsUsernames(List<PointsPerUser> pointsPerUsers) {
+    private ImmutablePair<String, String> calculateMinMaxPointsUsernames(String currentUser, List<PointsPerUser> pointsPerUsers) {
         PointsPerUser min = pointsPerUsers.stream()
                 .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(currentUser))
                 .min(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
         PointsPerUser max = pointsPerUsers.stream()
                 .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(currentUser))
                 .max(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
         return min != null && max != null ? ImmutablePair.of(min.getUsername(), max.getUsername()) : ImmutablePair.nullPair();
     }
