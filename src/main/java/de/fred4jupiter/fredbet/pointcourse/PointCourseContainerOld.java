@@ -1,11 +1,13 @@
-package de.fred4jupiter.fredbet.service.excel;
+package de.fred4jupiter.fredbet.pointcourse;
 
 import de.fred4jupiter.fredbet.repository.PointCourseResult;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.web.info.pointcourse.ChartData;
 
 import java.util.*;
 
-public class PointCourseContainer {
+@Deprecated
+public class PointCourseContainerOld implements PointCourseContainer {
 
     private final List<String> labels = new ArrayList<>();
 
@@ -28,7 +30,7 @@ public class PointCourseContainer {
         }
     }
 
-    public void iteratePointsPerUser(PointCourseContainer.ResultCallback resultCallback) {
+    private void iteratePointsPerUser(PointCourseContainerOld.ResultCallback resultCallback) {
         Set<String> usernames = map.keySet();
         for (String username : usernames) {
             LinkedList<Integer> pointsPerUser = map.get(username);
@@ -36,10 +38,18 @@ public class PointCourseContainer {
         }
     }
 
+    @Override
+    public ChartData createChartData() {
+        ChartData chartData = new ChartData(this.getLabels());
+        iteratePointsPerUser(chartData::addDataSet);
+        return chartData;
+    }
+
     public List<String> getLabels() {
         return new ArrayList<>(this.labels);
     }
 
+    @Override
     public boolean isEmpty() {
         return this.map.isEmpty();
     }

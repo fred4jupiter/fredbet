@@ -1,8 +1,10 @@
 package de.fred4jupiter.fredbet.web.info.pointcourse;
 
+import de.fred4jupiter.fredbet.pointcourse.PointCourseContainer;
 import de.fred4jupiter.fredbet.pointcourse.PointCourseService;
+import de.fred4jupiter.fredbet.pointcourse.PointCourseServiceOld;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.service.excel.PointCourseContainer;
+import de.fred4jupiter.fredbet.pointcourse.PointCourseContainerOld;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
@@ -36,8 +38,7 @@ public class PointCourseController {
             return "info/pointcourse";
         }
 
-        ChartData chartData = new ChartData(pointCourseContainer.getLabels());
-        pointCourseContainer.iteratePointsPerUser(chartData::addDataSet);
+        ChartData chartData = pointCourseContainer.createChartData();
 
         model.addAttribute("chartData", chartData);
         return "info/pointcourse";
