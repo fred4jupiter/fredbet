@@ -3,6 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.upload.title}"></title>
+		<link rel="stylesheet" th:href="@{/bootstrap-table/bootstrap-table.min.css}">
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -50,12 +51,12 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="table-responsive">
-				   		<table class="table table-condensed table-striped table-responsive">
+				   		<table class="table table-condensed table-striped table-responsive" data-toggle="table" data-pagination="true">
 				   			<thead>
 					   			<tr>
-					   				<th th:text="#{image.upload.id}" class="hidden-xs"></th>
-					   				<th th:text="#{image.upload.groupName}"></th>
-					   				<th th:text="#{image.upload.description}" class="hidden-xs"></th>
+					   				<th data-sortable="true" th:text="#{image.upload.id}" class="hidden-xs"></th>
+					   				<th data-sortable="true"  th:text="#{image.upload.groupName}"></th>
+					   				<th data-sortable="true" th:text="#{image.upload.description}" class="hidden-xs"></th>
 					   				<th th:text="#{image.upload.thumbnail}"></th>
 					   				<th th:text="#{image.upload.deleteImage}"></th>
 					   			</tr>
@@ -82,6 +83,8 @@
 			<script type="text/javascript" th:src="@{/js/jquery-rotate.js}"></script>
 			<script type="text/javascript" th:src="@{/js/compress.js}" charset="UTF-8"></script>
 			<script type="text/javascript" th:src="@{/js/pages/image_upload.js}" charset="UTF-8"></script>
+			<script th:src="@{/bootstrap-table/bootstrap-table.min.js}"></script>
+			<script th:src="@{/bootstrap-table/extensions/multiple-sort/bootstrap-table-multiple-sort.js}"></script>
 		</th:block>
 	</body>
 </html>
