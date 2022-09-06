@@ -4,6 +4,7 @@
 	<head>
 		<title th:text="#{image.upload.title}"></title>
 		<link rel="stylesheet" th:href="@{/bootstrap-table/bootstrap-table.min.css}">
+		<link rel="stylesheet" th:href="@{/css/pages/image_upload.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
@@ -51,7 +52,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="table-responsive">
-				   		<table class="table table-condensed table-striped table-responsive" data-toggle="table" data-pagination="true">
+				   		<table class="table table-condensed table-striped table-responsive" data-toggle="table" data-pagination="true" data-page-size="5">
 				   			<thead>
 					   			<tr>
 					   				<th data-sortable="true" th:text="#{image.upload.id}" class="hidden-xs"></th>
