@@ -74,7 +74,7 @@ jobs:
 #      - name: Publish to Docker Hub
 #        run: mvn -B compile jib:build -Dimage=docker.io/fred4jupiter/fredbet:latest
   build_push_docker_hub_buildx:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     needs: build
     env:
       DOCKER_REGISTRY: docker.io
