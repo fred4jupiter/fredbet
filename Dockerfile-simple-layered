@@ -1,0 +1,10 @@
+FROM eclipse-temurin:17-jre-focal
+LABEL maintainer="Michael Staehler"
+
+ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin"
+
+COPY dependencies/ ./
+COPY spring-boot-loader/ ./
+COPY snapshot-dependencies/ ./
+COPY application/ ./
+ENTRYPOINT exec java $JAVA_OPTS "org.springframework.boot.loader.JarLauncher"

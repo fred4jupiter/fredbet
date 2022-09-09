@@ -2,7 +2,7 @@ name: Publish Docker latest image
 on:
   push:
     branches:
-      - dev
+      - 'dev'
 
 jobs:
   build:
@@ -24,59 +24,63 @@ jobs:
             ${{ runner.os }}-maven-
       - name: Build with Maven
         run: mvn -B verify
-  build_push_ghcr_amd64:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v3
-      - name: Set up JDK 17 for deploy to GitHub Container Registry
-        uses: actions/setup-java@v2
+      - name: Extract jar for layered image building
+        run: java -Djarmode=layertools -jar target/fredbet.jar extract
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
-          distribution: 'adopt'
-          java-version: '17'
-          server-id: ghcr.io
-      - name: Cache local Maven repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Publish to GitHub Container Registry
-        run: mvn -B compile jib:build -Dimage=ghcr.io/fred4jupiter/fredbet:latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  build_push_docker_hub_buildx:
+          name: app-binary
+          path: |
+            dependencies/
+            spring-boot-loader/
+            snapshot-dependencies/
+            application/
+          retention-days: 5
+  build_push_buildx:
     runs-on: ubuntu-latest
     needs: build
     env:
-      DOCKER_REGISTRY: docker.io
       DOCKER_IMAGE: fred4jupiter/fredbet
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       DOCKER_TARGET_PLATFORM: linux/arm64/v8,linux/amd64
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: app-binary
+      - name: Create missing directories
+        run: mkdir -p snapshot-dependencies
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
       - name: Prepare
         if: success()
         id: prepare
         run: |
           echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}
-          echo ::set-output name=docker_image::${DOCKER_REGISTRY}/${DOCKER_IMAGE}
+          echo ::set-output name=docker_hub_image_name::docker.io/${DOCKER_IMAGE}
+          echo ::set-output name=ghcr_image_name::ghcr.io/${DOCKER_IMAGE}
           echo ::set-output name=version::latest
-      - name: Docker Login
+      - name: Login to Docker Hub
         if: success()
-        run: |
-          echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY} --username "${DOCKER_USERNAME}" --password-stdin
-      - name: Build image with buildx
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Login to GitHub Container Registry
+        if: success()
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push image
         if: success()
         run: |
           docker buildx build \
             --platform ${{ steps.prepare.outputs.docker_platform }} \
-            --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \
-            --file ./Dockerfile-buildx \
+            --tag ${{ steps.prepare.outputs.docker_hub_image_name }}:${{ steps.prepare.outputs.version }} \
+            --tag ${{ steps.prepare.outputs.ghcr_image_name }}:${{ steps.prepare.outputs.version }} \
+            --file ./Dockerfile-simple-layered \
             --output type=image,push=true .
