@@ -27,7 +27,7 @@ jobs:
         run: mvn -B verify
       - name: Update to release version and tag
         id: version_update
-        uses: fred4jupiter/maven-version-update-action@v2
+        uses: fred4jupiter/maven-version-update-action@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Print release version
