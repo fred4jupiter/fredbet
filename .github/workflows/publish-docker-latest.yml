@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Publish to GitHub Container Registry
-        run: mvn -B compile jib:build -Dimage=ghcr.io/fred4jupiter/fredbet:latest
+        run: mvn -B compile jib:build -Dmaven.test.skip=true -Dimage=ghcr.io/fred4jupiter/fredbet:latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build_push_docker_hub_buildx:
@@ -59,6 +59,9 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Prepare
