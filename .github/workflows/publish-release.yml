@@ -34,7 +34,7 @@ jobs:
         run: "echo 'New release Version: ${{steps.version_update.outputs.release-version}}'"
   build_push_buildx:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_tag_repo
     env:
       DOCKER_IMAGE: fred4jupiter/fredbet
       DOCKER_TARGET_PLATFORM: linux/arm64/v8,linux/amd64
