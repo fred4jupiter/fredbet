@@ -74,6 +74,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: app-binary
+      - name: Create missing directories
+        run: mkdir -p snapshot-dependencies
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Prepare
