@@ -44,7 +44,7 @@ jobs:
         with:
           ref: ${{needs.build_tag_repo.outputs.release_version}}
       - name: Build with Maven
-        run: mvn -B verify
+        run: mvn -B -DskipTests verify
       - name: Extract jar for layered image building
         run: java -Djarmode=layertools -jar target/fredbet.jar extract
       - name: Set up Docker Buildx
