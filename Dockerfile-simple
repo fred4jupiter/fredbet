@@ -1,0 +1,11 @@
+FROM eclipse-temurin:17-jre-focal
+LABEL maintainer="Michael Staehler"
+
+VOLUME /tmp
+
+ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin"
+
+EXPOSE 8080
+
+COPY target/fredbet.jar fredbet.jar
+CMD exec java $JAVA_OPTS -jar fredbet.jar
