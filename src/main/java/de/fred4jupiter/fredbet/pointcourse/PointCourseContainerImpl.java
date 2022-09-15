@@ -6,13 +6,13 @@ import de.fred4jupiter.fredbet.web.info.pointcourse.ChartData;
 
 import java.util.*;
 
-public class PointCourseContainerNew implements PointCourseContainer {
+class PointCourseContainerImpl implements PointCourseContainer {
 
     private final List<String> matchLabels = new ArrayList<>();
 
     private final Map<String, LinkedList<Integer>> map = new HashMap<>();
 
-    public PointCourseContainerNew(MessageSourceUtil messageSourceUtil, Locale locale, List<Match> matches) {
+    public PointCourseContainerImpl(MessageSourceUtil messageSourceUtil, Locale locale, List<Match> matches) {
         matches.forEach(match -> {
             String label = match.getLabel(messageSourceUtil, locale);
             if (!matchLabels.contains(label)) {
@@ -33,7 +33,7 @@ public class PointCourseContainerNew implements PointCourseContainer {
         }
     }
 
-    private void iteratePointsPerUser(PointCourseContainerNew.ResultCallback resultCallback) {
+    private void iteratePointsPerUser(PointCourseContainerImpl.ResultCallback resultCallback) {
         Set<String> usernames = map.keySet();
         for (String username : usernames) {
             LinkedList<Integer> pointsPerUser = map.get(username);
