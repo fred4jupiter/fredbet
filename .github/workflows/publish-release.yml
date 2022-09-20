@@ -92,3 +92,21 @@ jobs:
             --tag ${{ steps.prepare.outputs.ghcr_image_name }}:${{ steps.prepare.outputs.version }} \
             --file ./Dockerfile-simple-layered \
             --output type=image,push=true .
+  create_release:
+    runs-on: ubuntu-latest
+    needs: build_tag_repo
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{needs.build_tag_repo.outputs.release_version}}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
