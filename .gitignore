@@ -17,3 +17,4 @@ release_version.txt
 logs/
 
 /.apt_generated/
+.env

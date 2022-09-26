@@ -1,10 +1,11 @@
 version: "3.8"
 services:
   traefik:
-    image: "traefik:v2.6.1"
+    image: traefik:v2.9
     container_name: "traefik"
+    restart: always
     command:
-      - "--log.level=DEBUG"
+      # - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -12,7 +13,7 @@ services:
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
-      - "--entrypoints.websecure.address=:443"  
+      - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
       # - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.letsencrypt.acme.email=${EMAIL_ADDRESS}"
@@ -25,15 +26,16 @@ services:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
   fredbet:
-    image: fred4jupiter/fredbet
+    image: fred4jupiter/fredbet:latest
     container_name: "fredbet"
+    restart: always
     depends_on:
       - postgres
     ports:
       - "8080:8080"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fredbet.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.routers.fredbet.rule=Host(${DOMAIN_NAMES})"
       - "traefik.http.routers.fredbet.entrypoints=websecure"
       - "traefik.http.routers.fredbet.tls=true"
       - "traefik.http.routers.fredbet.tls.certresolver=letsencrypt"
@@ -44,10 +46,9 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - "./logs:/logs"    
   postgres:
-    image: postgres
+    image: postgres:14.5-alpine
+    restart: always
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
     ports:
