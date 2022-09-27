@@ -46,8 +46,14 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+    logging: # use if running on EC2 in AWS
+      driver: awslogs
+      options:
+        awslogs-region: eu-central-1
+        awslogs-group: fredbet # create log group manually
   postgres:
     image: postgres:14.5-alpine
+    container_name: "postgres"
     restart: always
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
@@ -58,7 +64,8 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_DATABASE_NAME}
   backup:
-    image: eeshugerman/postgres-backup-s3:14
+    image: eeshugerman/postgres-backup-s3:14 # run docker exec <backup container name> sh backup.sh for manual backup
+    container_name: "backup"
     environment:
       - SCHEDULE=@hourly
       - BACKUP_KEEP_DAYS=7     # optional
