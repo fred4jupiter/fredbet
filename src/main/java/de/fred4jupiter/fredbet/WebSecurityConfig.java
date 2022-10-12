@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().anyRequest().authenticated();
 
-        http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").permitAll();
+        http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").failureUrl("/login?error=true").permitAll();
         http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "remember-me").permitAll();
         http.rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
