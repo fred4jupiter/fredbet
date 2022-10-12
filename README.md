@@ -158,7 +158,7 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Excel-Templates with matches are prepared for import:
 
-* ![EM 2021 Template](extra/excel_templates/EM_2021.xlsx?raw=true)
+* ![WM 2022 Template](extra/excel_templates/WM_2022.xlsx?raw=true)
 
 ## Screenshots
 
