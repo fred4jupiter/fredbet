@@ -47,15 +47,7 @@
                             </div>
                             <div class="col-xs-4 col-sm-2">
                                 <div class="form-group">
-                                    <a href="#" class="btn btn-default language-button dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img th:src="${@languageUtil.getImageLanguageIconPath()}" /></a>
-                                    <ul class="dropdown-menu" role="menu" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'de').toUriString()}" class="language"><img src="/images/lang_42_28/de.png" th:text="' '+#{language.de}" /></a></li>
-                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'en').toUriString()}" class="language"><img src="/images/lang_42_28/en.png" th:text="' '+#{language.en}" /></a></li>
-                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'pl').toUriString()}" class="language"><img src="/images/lang_42_28/pl.png" th:text="' '+#{language.pl}" /></a></li>
-                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'es').toUriString()}" class="language"><img src="/images/lang_42_28/es.png" th:text="' '+#{language.es}" /></a></li>
-                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'ca').toUriString()}" class="language"><img src="/images/lang_42_28/ca.png" th:text="' '+#{language.ca}" /></a></li>
-                                        <li><a th:href="${urlBuilder.replaceQueryParam('lang', 'sv').toUriString()}" class="language"><img src="/images/lang_42_28/sv.png" th:text="' '+#{language.sv}" /></a></li>
-                                    </ul>
+                                    <div th:replace="~{fragments/language_selector :: language_selector('btn btn-default language-button dropdown-toggle')}"></div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
