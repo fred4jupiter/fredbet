@@ -1,10 +1,10 @@
 name: Publish Release
-on:
-  push:
-    branches:
-      - 'master'
+
+on: workflow_dispatch # only manual trigger for release creation is allowed
+
 jobs:
   build_tag_repo:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     outputs:
       release_version: ${{steps.version_update.outputs.release-version}} # use in jobs: ${{needs.build_tag_repo.outputs.release_version}}
@@ -33,6 +33,7 @@ jobs:
       - name: Print release version
         run: "echo 'New release Version: ${{steps.version_update.outputs.release-version}}'"
   build_push_buildx:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: build_tag_repo
     env:
@@ -93,6 +94,7 @@ jobs:
             --file ./Dockerfile-simple-layered \
             --output type=image,push=true .
   create_release:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: build_tag_repo
     steps:
