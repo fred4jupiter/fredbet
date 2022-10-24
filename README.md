@@ -19,7 +19,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - ranking page
 - Microsoft Excel match import
 - Microsoft Excel bets, statistic export
-- language switcher (supported languages: englisch, german and polish (by now))
+- language switcher (supported languages: englisch, german, polish, catalan, spanish, swedish)
 - ranking filter for adults and childs listing
 - integrated testing capabilities: create demo users, matches, bets...
 - configurable runtime configuration
@@ -127,13 +127,19 @@ Following settings can be changed at runtime:
 
 ## Production Environment
 
-FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. Typically you run the docker container in EC2 container service (ECS) with these environment properties:
+FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. 
+Typically you run the docker container in EC2 container service (ECS) with these environment properties:
 
 | Key | Value | Description |
 |--------|--------|--------|
 | spring.profiles.active | e.g. postgres | see section `Driver class names` |
 
 Other properties depend on your production setup (see possible properties above). Add also the properties for your database connection (see above).
+
+### Docker Compose with Traefik, Postgres, Let´s Encrypt Integration and AWS S3 Backup
+
+Another option is to run all on a virtual machine with a Docker Compose file. You can use the example located in
+`extra/docker-compose/traefik_letsencrypt`. Copy the `.env.template` to `.env` and set the values accordingly.
 
 ## Hints
 
