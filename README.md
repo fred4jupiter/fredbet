@@ -154,11 +154,11 @@ You will see a response of `{"status":"UP"}`. The health check URL is callable w
 
 While running in `dev` profile the H2 web console is available at [http://localhost:8080/console](http://localhost:8080/console).
 
-## Excel-Templates ready to import
+## MS Excel-Templates ready to import
 
-The following Excel-Templates with matches are prepared for import:
+The following Microsoft Excel templates with matches are prepared for import:
 
-* ![WM 2022 Template](extra/excel_templates/WM_2022.xlsx?raw=true)
+* [WM 2022 Template](extra/excel_templates/WM_2022.xlsx?raw=true)
 
 ## Screenshots
 
@@ -168,11 +168,9 @@ The following Excel-Templates with matches are prepared for import:
 
 ![FredBet Screenshot 3](extra/docs/screenshot/Screenshot3.jpg?raw=true "FredBet Screenshot 3")
 
-## Travis Build Status
-[![Build Status](https://travis-ci.org/fred4jupiter/fredbet.svg?branch=master)](https://travis-ci.org/fred4jupiter/fredbet)
+## GitHub Build Status
 
-## GitHub Action Status
-![](https://github.com/fred4jupiter/fredbet/workflows/Java%20CI/badge.svg)
+| dev                    | master        | 
+|------------------------|---------------|
+| [![Publish Docker latest image](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml/badge.svg?branch=dev)](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml) | [![Publish Release](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml/badge.svg?branch=master)](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml) |
 
-## Heroku Deployment Status
-[![Deployed on Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet.svg?logo=heroku)](https://fredbet.herokuapp.com/)
