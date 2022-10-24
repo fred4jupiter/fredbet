@@ -8,6 +8,10 @@ You can create a manual backup running with:
 
     docker exec <container name> sh backup.sh
 
+Example:
+
+    docker exec fredbet-backup-1 sh backup.sh
+
 ### Restore
 
 Restoring the latest backup:
@@ -17,6 +21,10 @@ Restoring the latest backup:
 Restoring from a specific backup:
 
     docker exec <container name> sh restore.sh <timestamp>
+
+Example:
+
+    docker exec fredbet-backup-1 sh restore.sh 2022-10-24T09:54:52
 
 ### Links
 
