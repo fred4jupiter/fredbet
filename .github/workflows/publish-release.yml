@@ -117,4 +117,4 @@ jobs:
           release_name: Release ${{needs.build_tag_repo.outputs.release_version}}
           draft: false
           prerelease: false
-          body: ${{steps.github_release.outputs.changelog}}
+#          body: ${{steps.github_release.outputs.changelog}}
