@@ -12,12 +12,12 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt'
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -45,12 +45,12 @@ jobs:
         with:
           ref: ${{needs.build_tag_repo.outputs.release_version}}
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt'
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -62,14 +62,6 @@ jobs:
         run: java -Djarmode=layertools -jar target/fredbet.jar extract
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Prepare
-        if: success()
-        id: prepare
-        run: |
-          echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}
-          echo ::set-output name=docker_hub_image_name::docker.io/${DOCKER_IMAGE}
-          echo ::set-output name=ghcr_image_name::ghcr.io/${DOCKER_IMAGE}
-          echo ::set-output name=version::${{needs.build_tag_repo.outputs.release_version}}
       - name: Login to Docker Hub
         if: success()
         uses: docker/login-action@v2
@@ -88,9 +80,9 @@ jobs:
         if: success()
         run: |
           docker buildx build \
-            --platform ${{ steps.prepare.outputs.docker_platform }} \
-            --tag ${{ steps.prepare.outputs.docker_hub_image_name }}:${{ steps.prepare.outputs.version }} \
-            --tag ${{ steps.prepare.outputs.ghcr_image_name }}:${{ steps.prepare.outputs.version }} \
+            --platform ${DOCKER_TARGET_PLATFORM} \
+            --tag docker.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
+            --tag ghcr.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
             --file ./Dockerfile-simple-layered \
             --output type=image,push=true .
   create_release:
