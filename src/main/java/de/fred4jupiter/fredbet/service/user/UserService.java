@@ -1,9 +1,6 @@
 package de.fred4jupiter.fredbet.service.user;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.*;
@@ -177,7 +174,10 @@ public class UserService {
 
         Map<String, ImageMetaData> map = toMap(metaDataList);
 
-        return findAll(withDefaultAdminUser).stream().map(appUser -> toUserDto(appUser, map)).collect(Collectors.toList());
+        return findAll(withDefaultAdminUser).stream()
+                .map(appUser -> toUserDto(appUser, map))
+                .sorted(Comparator.comparing(UserDto::getUsername, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
     }
 
     private Map<String, ImageMetaData> toMap(List<ImageMetaData> metaDataList) {
