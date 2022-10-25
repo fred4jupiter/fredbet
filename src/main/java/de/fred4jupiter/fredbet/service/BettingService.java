@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -135,7 +136,10 @@ public class BettingService {
             return null;
         }
         List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
-        return allBets.stream().filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME)).collect(Collectors.toList());
+        return allBets.stream()
+                .filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .sorted(Comparator.comparing(Bet::getUserName, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
     }
 
     public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {
