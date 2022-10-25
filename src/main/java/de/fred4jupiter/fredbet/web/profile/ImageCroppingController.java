@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.profile;
 
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class ImageCroppingController {
         }
 
         byte[] imageByte = Base64.getDecoder().decode(imageBase64.split(",")[1]);
-        LOG.debug("image size: {}", imageByte.length);
+        LOG.debug("image size: {}", imageByte != null ? FileUtils.byteCountToDisplaySize(imageByte.length) : null);
 
         if (imageByte.length == 0) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
