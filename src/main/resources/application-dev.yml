@@ -17,6 +17,8 @@ spring:
 logging:
   pattern:
     console: "%highlight(%d %-5level [%c] - %msg%n)"
+  level:
+    de.fred4jupiter.fredbet: DEBUG
 
 fredbet:
   create-demo-data: false
