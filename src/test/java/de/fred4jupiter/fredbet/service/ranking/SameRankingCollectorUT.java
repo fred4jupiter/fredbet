@@ -31,6 +31,20 @@ public class SameRankingCollectorUT {
         assertThat(sameResult).isEqualTo(3);
     }
 
+    @Test
+    public void markEntriesWithSameRankingAllDifferent() {
+        List<UsernamePoints> list = Arrays.asList(
+                createFor(1, 4, 170),
+                createFor(2, 3, 170),
+                createFor(3, 2, 170),
+                createFor(4, 1, 171));
+
+        sameRankingCollector.markEntriesWithSameRanking(list);
+
+        int sameResult = countSameResult(list);
+        assertThat(sameResult).isEqualTo(0);
+    }
+
     private static UsernamePoints createFor(int totalPoints, int correctResults, int goalDifference) {
         UsernamePoints usernamePoints = new UsernamePoints();
         usernamePoints.setTotalPoints(totalPoints);
