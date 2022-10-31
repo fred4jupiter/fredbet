@@ -30,13 +30,16 @@ public class RankingService {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
+    private final SameRankingCollector sameRankingCollector;
+
     public RankingService(BetRepository betRepository, ChildRelationFetcher childRelationFetcher, PdfExportService pdfExportService,
-                          MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService) {
+                          MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, SameRankingCollector sameRankingCollector) {
         this.betRepository = betRepository;
         this.childRelationFetcher = childRelationFetcher;
         this.pdfExportService = pdfExportService;
         this.messageSourceUtil = messageSourceUtil;
         this.runtimeSettingsService = runtimeSettingsService;
+        this.sameRankingCollector = sameRankingCollector;
     }
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
@@ -44,8 +47,7 @@ public class RankingService {
 
         calculateAdditionalMetricsForRanking(rankings);
 
-        SameRankingCollector collector = new SameRankingCollector();
-        collector.markEntriesWithSameRanking(rankings);
+        sameRankingCollector.markEntriesWithSameRanking(rankings);
 
         return filterAndSortRankings(rankingSelection, rankings);
     }
