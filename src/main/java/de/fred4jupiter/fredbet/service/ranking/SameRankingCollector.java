@@ -1,31 +1,30 @@
 package de.fred4jupiter.fredbet.service.ranking;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
+@Component
 class SameRankingCollector {
 
-    private final Set<Integer> hashList = new HashSet<>();
-
-    private final Set<Integer> duplicates = new HashSet<>();
-
     void markEntriesWithSameRanking(List<UsernamePoints> rankings) {
-        for (UsernamePoints usernamePoints : rankings) {
-            int uniqueHash = usernamePoints.getUniqueHash();
-            if (!hashList.contains(uniqueHash)) {
-                hashList.add(uniqueHash);
-            } else {
-                duplicates.add(uniqueHash);
-            }
-        }
+        final Multimap<Integer, UsernamePoints> map = ArrayListMultimap.create();
 
-        for (UsernamePoints usernamePoints : rankings) {
-            if (duplicates.contains(usernamePoints.getUniqueHash())) {
-                usernamePoints.setSameRankingPositionAsOtherUser(true);
+        rankings.forEach(usernamePoints -> {
+            map.put(usernamePoints.getUniqueHash(), usernamePoints);
+        });
+
+        map.keySet().forEach(key -> {
+            Collection<UsernamePoints> valuesOfKey = map.get(key);
+            if (valuesOfKey.size() > 1) {
+                valuesOfKey.forEach(usernamePoints -> {
+                    usernamePoints.setSameRankingPositionAsOtherUser(true);
+                });
             }
-        }
+        });
     }
 }
