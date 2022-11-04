@@ -32,8 +32,8 @@
 						</ul>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles error</p>
 					</div>
-					<div th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}" class="form-group">
-						<input type="checkbox" th:field="*{child}" th:value="${child}"/>
+					<div class="form-group">
+						<input id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
 						<label for="child" th:text="#{user.create.child}"></label>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child error</p>
 					</div>					
