@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.SortedMap;
@@ -28,6 +29,8 @@ public class SystemInfoService {
     private final SortedMap<String, Object> allProperties = new TreeMap<>();
 
     private final Optional<GitProperties> gitProperties;
+
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z");
 
     public SystemInfoService(BuildProperties buildProperties, Environment environment, Optional<GitProperties> gitProperties) {
         this.buildProperties = buildProperties;
@@ -59,7 +62,7 @@ public class SystemInfoService {
 
     public SortedMap<String, Object> fetchSystemInfo() {
         SortedMap<String, Object> props = new TreeMap<>(allProperties);
-        props.put("Current Date", ZonedDateTime.now());
+        props.put("Current Date", ZonedDateTime.now().format(dateTimeFormatter));
         props.put("Host Name", getHostName());
         props.put("Timezone", ZoneId.systemDefault().toString());
         return props;
