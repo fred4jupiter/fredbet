@@ -57,7 +57,7 @@ public class RankingController {
     }
 
     private String createFilename() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmSS")) + "_FredBet-Ranking.pdf";
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmss")) + "_FredBet-Ranking.pdf";
     }
 
     private String queryRanking(Model model, RankingSelection rankingSelection) {

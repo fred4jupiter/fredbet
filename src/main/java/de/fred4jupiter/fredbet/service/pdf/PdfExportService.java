@@ -80,7 +80,8 @@ public class PdfExportService {
     }
 
     private Paragraph createCurrenteDateTimeParagraph(PdfTableData pdfTableData) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(pdfTableData.getLocale());
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+                .withLocale(pdfTableData.getLocale());
         Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), fontCreator.createFont());
         dateParagraph.setSpacingAfter(10);
         return dateParagraph;
