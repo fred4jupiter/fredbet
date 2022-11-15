@@ -1,37 +1,24 @@
 version: "3"
 
-networks:
-  fredbet:
-  
 services:
-    mariadb:  
-      image: mariadb:10.1.11
-      networks:
-        - fredbet
-      volumes:
-        - ~/mariadb:/var/lib/mysql
-      environment:
-       - MYSQL_DATABASE=fredbetdb
-       - MYSQL_ROOT_PASSWORD=secred
-       - MYSQL_USER=fred
-       - MYSQL_PASSWORD=fred
-    fredbet:
-      image: fred4jupiter/fredbet
-      networks:
-        - fredbet
-      links:
-        - mariadb
-      depends_on:
-        - mariadb
-      ports:
-        - "8080:8080"
-      environment:
-       - SPRING_PROFILES_ACTIVE=maria
-       - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/fredbetdb
-       - SPRING_DATASOURCE_USERNAME=fred
-       - SPRING_DATASOURCE_PASSWORD=fred
-       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
-       - FREDBET_IMAGE_LOCATION_FILE=FILE_SYSTEM
-       - FREDBET_IMAGE_FILE_SYSTEM_BASE_FOLDER=/home/fred/fredbet_images
-      volumes:
-       - "~/fredbet_images:/home/fred/fredbet_images"
+  mariadb:
+    image: mariadb:10.1.11
+    volumes:
+      - "./mariadb:/var/lib/mysql"
+    environment:
+     - MYSQL_DATABASE=fredbetdb
+     - MYSQL_ROOT_PASSWORD=secred
+     - MYSQL_USER=fred
+     - MYSQL_PASSWORD=fred
+  fredbet:
+    image: fred4jupiter/fredbet:latest
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+    environment:
+     - SPRING_PROFILES_ACTIVE=maria
+     - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/fredbetdb
+     - SPRING_DATASOURCE_USERNAME=fred
+     - SPRING_DATASOURCE_PASSWORD=fred
+     - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
