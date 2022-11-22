@@ -37,6 +37,8 @@ public class FredbetProperties {
 
     private Integer diceMaxRange = 3;
 
+    private Integer thumbnailSize;
+
     private List<String> additionalAdminUsers;
 
     public ImageLocation getImageLocation() {
@@ -113,5 +115,13 @@ public class FredbetProperties {
 
     public void setAdditionalAdminUsers(List<String> additionalAdminUsers) {
         this.additionalAdminUsers = additionalAdminUsers;
+    }
+
+    public Integer getThumbnailSize() {
+        return thumbnailSize;
+    }
+
+    public void setThumbnailSize(Integer thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
     }
 }

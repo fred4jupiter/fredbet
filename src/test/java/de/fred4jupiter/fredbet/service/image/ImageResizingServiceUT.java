@@ -1,9 +1,11 @@
 package de.fred4jupiter.fredbet.service.image;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,20 +14,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @UnitTest
 public class ImageResizingServiceUT {
 
-    private static final int THUMB_SIZE = ImageResizingService.THUMBNAIL_SIZE;
-
-    private static final Logger log = LoggerFactory.getLogger(ImageResizingServiceUT.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ImageResizingServiceUT.class);
 
     @InjectMocks
     private ImageResizingService imageResizingService;
 
+    @Mock
+    private FredbetProperties fredbetProperties;
+
     @Test
     public void createThumbnail() throws IOException {
+        final Integer thumbailSize = 75;
+        when(fredbetProperties.getThumbnailSize()).thenReturn(thumbailSize);
+
         File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");
         assertNotNull(file);
         assertTrue(file.exists());
@@ -36,11 +45,11 @@ public class ImageResizingServiceUT {
         File outputFile = createOutputFile(file);
 
         FileUtils.writeByteArrayToFile(outputFile, thumbByteArray);
-        log.debug("written file to: {}", outputFile);
+        LOG.debug("written file to: {}", outputFile);
         assertTrue(outputFile.exists());
 
         BufferedImage bufferedImage = ImageIO.read(outputFile);
-        assertEquals(THUMB_SIZE, bufferedImage.getWidth());
+        assertThat(bufferedImage.getWidth()).isEqualTo(thumbailSize);
     }
 
     private File createOutputFile(File file) {

@@ -64,6 +64,7 @@ fredbet:
   create-demo-data: false
   dice-min-range: 0
   dice-max-range: 3
+  thumbnail-size: 75
 #  additional-admin-users:
 #    - michael
 
