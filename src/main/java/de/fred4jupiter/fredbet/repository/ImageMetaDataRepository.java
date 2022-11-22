@@ -34,4 +34,6 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
     ImageMetaData findByOwnerAndImageGroup(AppUser owner, ImageGroup imageGroup);
 
+    List<ImageMetaData> findByOwner(AppUser owner);
+
 }

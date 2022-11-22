@@ -50,11 +50,13 @@ public class UserService {
 
     private final BettingService bettingService;
 
+    private final ImageBinaryRepository imageBinaryRepository;
+
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
                        ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
                        ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
                        RuntimeSettingsService runtimeSettingsService, ImageGroupRepository imageGroupRepository,
-                       BettingService bettingService) {
+                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
@@ -65,6 +67,7 @@ public class UserService {
         this.runtimeSettingsService = runtimeSettingsService;
         this.imageGroupRepository = imageGroupRepository;
         this.bettingService = bettingService;
+        this.imageBinaryRepository = imageBinaryRepository;
     }
 
     public List<AppUser> findAll() {
@@ -125,7 +128,12 @@ public class UserService {
             throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
         }
 
-        imageMetaDataRepository.deleteMetaDataByOwner(appUser.getId());
+        List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
+        imageMetaDataList.forEach(imageMetaData -> {
+            Optional<ImageBinary> imageOpt = imageBinaryRepository.findById(imageMetaData.getImageKey());
+            imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
+        });
+        imageMetaDataRepository.deleteAll(imageMetaDataList);
 
         appUserRepository.deleteById(userId);
     }
