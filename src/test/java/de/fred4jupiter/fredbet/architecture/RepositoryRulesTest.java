@@ -7,7 +7,7 @@ import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 

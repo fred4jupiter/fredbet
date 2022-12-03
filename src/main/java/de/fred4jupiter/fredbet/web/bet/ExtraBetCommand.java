@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.web.bet;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Match;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 public class ExtraBetCommand {
 

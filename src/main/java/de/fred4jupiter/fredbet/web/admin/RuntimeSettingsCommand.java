@@ -4,7 +4,7 @@ import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;

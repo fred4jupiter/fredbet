@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import de.fred4jupiter.fredbet.web.matches.MatchResultCommand;
 

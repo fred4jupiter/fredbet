@@ -3,8 +3,8 @@ package de.fred4jupiter.fredbet.web.registration;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.web.validation.PasswordRepeatConstraint;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @PasswordRepeatConstraint(message = "{msg.bet.betting.error.passwordMismatch}")
 public class RegistrationCommand {

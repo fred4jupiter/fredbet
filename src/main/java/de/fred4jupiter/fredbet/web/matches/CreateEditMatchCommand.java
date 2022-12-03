@@ -3,8 +3,8 @@ package de.fred4jupiter.fredbet.web.matches;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 

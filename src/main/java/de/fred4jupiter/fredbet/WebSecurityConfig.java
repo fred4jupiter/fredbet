@@ -7,14 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -24,8 +23,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity
+public class WebSecurityConfig {
 
     // 24 Stunden
     private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
@@ -37,29 +36,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
     public WebSecurityConfig(Environment environment, DataSource dataSource, UserDetailsService userDetailsService) {
-        super(false);
         this.environment = environment;
         this.dataSource = dataSource;
         this.userDetailsService = userDetailsService;
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.userDetailsService);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // static resources
-        http.authorizeRequests().antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
+        http.authorizeHttpRequests().requestMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
                 "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**").permitAll();
 
-        http.authorizeRequests().antMatchers("/login", "/logout", "/console/*", "/registration").permitAll();
-        http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
-        http.authorizeRequests().antMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
-        http.authorizeRequests().antMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO);
+        http.authorizeHttpRequests().requestMatchers("/login", "/logout", "/console/*", "/registration").permitAll();
+        http.authorizeHttpRequests().requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION);
+        http.authorizeHttpRequests().requestMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION);
+        http.authorizeHttpRequests().requestMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO);
 
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeHttpRequests().anyRequest().authenticated();
 
         http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").failureUrl("/login?error=true").permitAll();
         http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true)
@@ -69,15 +62,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // disable cache control to allow usage of ETAG headers (no image reload
         // if the image has not been changed)
         http.headers().cacheControl().disable();
-        http.csrf().ignoringAntMatchers("/info/editinfo");
+        http.csrf().ignoringRequestMatchers("/info/editinfo");
 
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
             // this is for the embedded h2 console
             http.headers().frameOptions().disable();
 
             // otherwise the H2 console will not work
-            http.csrf().ignoringAntMatchers("/h2/*");
+            http.csrf().ignoringRequestMatchers("/h2/*");
         }
+        return http.build();
     }
 
     @Bean

@@ -5,8 +5,8 @@ import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
