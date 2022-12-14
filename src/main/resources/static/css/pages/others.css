@@ -2,3 +2,11 @@
 	padding: 0px;
 	background-color: white;
 }
+
+.no-right-padding {
+	padding-right: 0;
+}
+
+.no-left-padding {
+	padding-left: 0;
+}
