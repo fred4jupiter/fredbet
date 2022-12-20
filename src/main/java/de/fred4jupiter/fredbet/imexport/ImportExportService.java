@@ -135,8 +135,15 @@ public class ImportExportService {
         final Map<String, Match> savedMatchesByBusinessKey = loadAllMatches();
         bets.forEach(betToExport -> {
             Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
-            bettingService.createAndSaveBetting(betToExport.getUsername(), match,
-                    betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo(), betToExport.isJoker(), betToExport.isPenaltyWinnerOne());
+            bettingService.createAndSaveBetting(bet -> {
+                bet.setMatch(match);
+                bet.setUserName(betToExport.getUsername());
+                bet.setGoalsTeamOne(betToExport.getGoalsTeamOne());
+                bet.setGoalsTeamTwo(betToExport.getGoalsTeamTwo());
+                bet.setJoker(betToExport.isJoker());
+                bet.setPenaltyWinnerOne(betToExport.isPenaltyWinnerOne());
+                bet.setPoints(betToExport.getPoints());
+            });
         });
         LOG.debug("imported bets");
 

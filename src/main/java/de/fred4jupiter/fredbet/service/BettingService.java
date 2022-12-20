@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +70,12 @@ public class BettingService {
         bet.setUserName(username);
         bet.setJoker(withJoker);
         bet.setPenaltyWinnerOne(penaltyWinnerOne);
+        return betRepository.save(bet);
+    }
+
+    public Bet createAndSaveBetting(Consumer<Bet> consumer) {
+        Bet bet = new Bet();
+        consumer.accept(bet);
         return betRepository.save(bet);
     }
 
