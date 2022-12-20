@@ -7,5 +7,5 @@ public interface MatchBusinessKey {
      *
      * @return the match business key.
      */
-    Integer getMatchBusinessKey();
+    String getMatchBusinessKey();
 }

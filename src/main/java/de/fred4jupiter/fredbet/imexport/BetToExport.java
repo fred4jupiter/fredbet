@@ -4,7 +4,7 @@ class BetToExport {
 
     private String username;
 
-    private Integer matchBusinessKey;
+    private String matchBusinessKey;
 
     private Integer goalsTeamOne;
 
@@ -24,11 +24,11 @@ class BetToExport {
         this.username = username;
     }
 
-    public Integer getMatchBusinessKey() {
+    public String getMatchBusinessKey() {
         return matchBusinessKey;
     }
 
-    public void setMatchBusinessKey(Integer matchBusinessKey) {
+    public void setMatchBusinessKey(String matchBusinessKey) {
         this.matchBusinessKey = matchBusinessKey;
     }
 
