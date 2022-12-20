@@ -113,6 +113,8 @@ public class ImportExportService {
         LOG.debug("deleted all users");
         matchService.deleteAllMatches();
         LOG.debug("deleted all matches");
+        bettingService.deleteAllBets();
+        LOG.debug("deleted all bets");
 
         final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
 
@@ -132,7 +134,8 @@ public class ImportExportService {
         final List<BetToExport> bets = importExportContainer.getBets();
         final Map<Integer, Match> savedMatchesByBusinessKey = loadAllMatches();
         bets.forEach(betToExport -> {
-            bettingService.createAndSaveBetting(betToExport.getUsername(), savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey()),
+            Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
+            bettingService.createAndSaveBetting(betToExport.getUsername(), match,
                     betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo(), betToExport.isJoker(), betToExport.isPenaltyWinnerOne());
         });
         LOG.debug("imported bets");
