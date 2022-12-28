@@ -34,11 +34,21 @@ public class SecurityConfig {
         this.environment = environment;
     }
 
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().requestMatchers("/static/**");
+//    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
-        http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers("static/**","/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
-                        "/lightbox/**", "/static/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration").permitAll()
+        http.securityMatcher("/static/**", "/actuator/**", "/fonts/**", "/webjars/**", "/blueimpgallery/**", "/favicon.ico",
+                        "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration")
+                .authorizeHttpRequests((authz) -> authz.requestMatchers("/**").permitAll());
+
+//        http.securityMatcher("/user/**").authorizeHttpRequests((authz) -> authz.anyRequest().hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
+//        http.securityMatcher("/user/**").authorizeHttpRequests((authz) -> authz.anyRequest().hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
+
+        http.securityMatcher("/**").authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .requestMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)

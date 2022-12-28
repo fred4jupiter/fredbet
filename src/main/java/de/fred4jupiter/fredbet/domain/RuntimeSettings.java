@@ -200,8 +200,8 @@ public class RuntimeSettings {
     public String getBootswatchThemeUrl() {
         final String selectedTheme = this.bootswatchTheme.toString().toLowerCase();
         if (Theme.DEFAULT.name().equalsIgnoreCase(selectedTheme)) {
-            return "/webjars/bootstrap/css/bootstrap-theme.min.css";
+            return "/webjars/bootstrap/3.4.1/css/bootstrap-theme.min.css";
         }
-        return "/webjars/bootswatch/" + selectedTheme + "/bootstrap.min.css";
+        return "/webjars/bootswatch/3.3.7/" + selectedTheme + "/bootstrap.min.css";
     }
 }

@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet;
 
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
@@ -9,10 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 @EnableWebMvc
@@ -24,10 +21,15 @@ public class MvcConfig implements WebMvcConfigurer {
         this.webSecurityUtil = webSecurityUtil;
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**");
-    }
+//    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+//            "classpath:/META-INF/resources/", "classpath:/resources/",
+//            "classpath:/static/", "classpath:/public/" };
+//
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+//    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
