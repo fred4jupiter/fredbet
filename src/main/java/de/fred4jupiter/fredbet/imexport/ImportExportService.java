@@ -113,6 +113,8 @@ public class ImportExportService {
         LOG.debug("deleted all users");
         matchService.deleteAllMatches();
         LOG.debug("deleted all matches");
+        bettingService.deleteAllBets();
+        LOG.debug("deleted all bets");
 
         final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
 
@@ -130,10 +132,18 @@ public class ImportExportService {
         LOG.debug("imported matches");
 
         final List<BetToExport> bets = importExportContainer.getBets();
-        final Map<Integer, Match> savedMatchesByBusinessKey = loadAllMatches();
+        final Map<String, Match> savedMatchesByBusinessKey = loadAllMatches();
         bets.forEach(betToExport -> {
-            bettingService.createAndSaveBetting(betToExport.getUsername(), savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey()),
-                    betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo(), betToExport.isJoker(), betToExport.isPenaltyWinnerOne());
+            Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
+            bettingService.createAndSaveBetting(bet -> {
+                bet.setMatch(match);
+                bet.setUserName(betToExport.getUsername());
+                bet.setGoalsTeamOne(betToExport.getGoalsTeamOne());
+                bet.setGoalsTeamTwo(betToExport.getGoalsTeamTwo());
+                bet.setJoker(betToExport.isJoker());
+                bet.setPenaltyWinnerOne(betToExport.isPenaltyWinnerOne());
+                bet.setPoints(betToExport.getPoints());
+            });
         });
         LOG.debug("imported bets");
 
@@ -146,7 +156,7 @@ public class ImportExportService {
         LOG.debug("imported extrabets");
     }
 
-    private Map<Integer, Match> loadAllMatches() {
+    private Map<String, Match> loadAllMatches() {
         return matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getMatchBusinessKey, e -> e));
     }
 

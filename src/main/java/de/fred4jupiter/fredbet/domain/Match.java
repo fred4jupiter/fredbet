@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Entity
@@ -302,12 +303,8 @@ public class Match implements MatchResult, MatchBusinessKey {
     }
 
     @Override
-    public Integer getMatchBusinessKey() {
-        return new HashCodeBuilder()
-                .append(this.teamOne.getBusinessKey())
-                .append(this.teamTwo.getBusinessKey())
-                .append(this.group)
-                .append(this.kickOffDate)
-                .build();
+    public String getMatchBusinessKey() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return String.format("match_%s_%s_%s_%s", this.teamOne.getBusinessKey(), this.teamTwo.getBusinessKey(), this.group, formatter.format(this.kickOffDate));
     }
 }

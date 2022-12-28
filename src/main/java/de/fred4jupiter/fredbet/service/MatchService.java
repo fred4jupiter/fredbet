@@ -53,7 +53,7 @@ public class MatchService {
 
     public Match findByMatchId(Long matchId) {
         Assert.notNull(matchId, "matchId must be given");
-        return matchRepository.getById(matchId);
+        return matchRepository.getReferenceById(matchId);
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)

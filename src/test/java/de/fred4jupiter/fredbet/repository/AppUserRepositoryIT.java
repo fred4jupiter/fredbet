@@ -25,7 +25,7 @@ public class AppUserRepositoryIT {
         AppUser appUser = appUserRepository.save(AppUserBuilder.create().withDemoData().build());
         assertNotNull(appUser.getId());
 
-        AppUser foundAppUser = appUserRepository.getById(appUser.getId());
+        AppUser foundAppUser = appUserRepository.getReferenceById(appUser.getId());
         assertNotNull(foundAppUser);
         assertEquals(appUser.getUsername(), foundAppUser.getUsername());
     }
@@ -52,7 +52,7 @@ public class AppUserRepositoryIT {
         appUserRepository.flush();
         assertNotNull(appUser.getId());
 
-        AppUser foundAppUser = appUserRepository.getById(appUser.getId());
+        AppUser foundAppUser = appUserRepository.getReferenceById(appUser.getId());
         assertNotNull(foundAppUser);
         assertEquals(appUser.getUsername(), foundAppUser.getUsername());
         assertThat(appUser.getRoles().size()).isEqualTo(2);

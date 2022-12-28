@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,6 +73,12 @@ public class BettingService {
         return betRepository.save(bet);
     }
 
+    public Bet createAndSaveBetting(Consumer<Bet> consumer) {
+        Bet bet = new Bet();
+        consumer.accept(bet);
+        return betRepository.save(bet);
+    }
+
     public List<Bet> findAllByUsername(String username) {
         return betRepository.findByUserName(username);
     }
@@ -92,7 +99,7 @@ public class BettingService {
     }
 
     public Long save(Bet bet) {
-        Match match = matchRepository.getById(bet.getMatch().getId());
+        Match match = matchRepository.getReferenceById(bet.getMatch().getId());
         if (match.hasStarted()) {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
         }
@@ -208,7 +215,7 @@ public class BettingService {
     }
 
     public Bet findBetById(Long betId) {
-        return betRepository.getById(betId);
+        return betRepository.getReferenceById(betId);
     }
 
     public Long countByMatch(Match match) {

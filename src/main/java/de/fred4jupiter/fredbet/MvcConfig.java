@@ -10,13 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 @Configuration
 @EnableWebMvc
@@ -26,6 +22,11 @@ public class MvcConfig implements WebMvcConfigurer {
 
     public MvcConfig(WebSecurityUtil webSecurityUtil) {
         this.webSecurityUtil = webSecurityUtil;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**");
     }
 
     @Override
@@ -51,12 +52,12 @@ public class MvcConfig implements WebMvcConfigurer {
         return new ChangePasswordFirstLoginInterceptor(webSecurityUtil);
     }
 
-    @Bean
-    public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
-        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
-        return sessionLocaleResolver;
-    }
+//    @Bean
+//    public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
+//        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+//        sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
+//        return sessionLocaleResolver;
+//    }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
@@ -65,10 +66,10 @@ public class MvcConfig implements WebMvcConfigurer {
         return localeChangeInterceptor;
     }
 
-    @Bean
-    public Java8TimeDialect java8TimeDialect() {
-        return new Java8TimeDialect();
-    }
+//    @Bean
+//    public Java8TimeDialect java8TimeDialect() {
+//        return new Java8TimeDialect();
+//    }
 
     @Bean
     public RequestContextListener requestContextListener() {

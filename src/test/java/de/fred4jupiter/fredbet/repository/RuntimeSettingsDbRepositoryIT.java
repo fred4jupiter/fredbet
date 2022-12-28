@@ -22,7 +22,7 @@ public class RuntimeSettingsDbRepositoryIT {
 
         runtimeSettingsDbRepository.save(runtimeSettingsDb);
 
-        RuntimeSettingsDb found = runtimeSettingsDbRepository.getById(configId);
+        RuntimeSettingsDb found = runtimeSettingsDbRepository.getReferenceById(configId);
         assertNotNull(found);
 
         assertEquals(runtimeSettingsDb.getConfigId(), found.getConfigId());
