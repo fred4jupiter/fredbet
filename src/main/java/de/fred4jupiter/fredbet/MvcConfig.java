@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet;
 
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
@@ -9,15 +8,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 @Configuration
+@EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer {
 
     private final WebSecurityUtil webSecurityUtil;
@@ -49,12 +48,12 @@ public class MvcConfig implements WebMvcConfigurer {
         return new ChangePasswordFirstLoginInterceptor(webSecurityUtil);
     }
 
-    @Bean
-    public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
-        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
-        return sessionLocaleResolver;
-    }
+//    @Bean
+//    public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
+//        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+//        sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
+//        return sessionLocaleResolver;
+//    }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
