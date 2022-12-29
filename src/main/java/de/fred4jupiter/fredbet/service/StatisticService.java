@@ -58,7 +58,9 @@ public class StatisticService {
             if (favoriteCountryPoints != null) {
                 statistic.setPointsFavoriteCountry(favoriteCountryPoints);
                 if (maxFavoriteCountryPoints.isPresent() && favoriteCountryPoints.equals(maxFavoriteCountryPoints.get())) {
-                    statistic.setMaxFavoriteCountryCandidate(true);
+                    if (maxFavoriteCountryPoints.get() > 0) {
+                        statistic.setMaxFavoriteCountryCandidate(true);
+                    }
                 }
             }
 
