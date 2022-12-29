@@ -13,16 +13,16 @@
 				</div> 
 				<div th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}" class="col-xs-6">
 					<div class="row pull-right btn-group no-left-right-margin" role="group">
-						<a href="#" th:href="@{/ranking/mixed}" class="btn"
+						<a href="#" th:href="@{/ranking(mode=mixed)}" class="btn"
 						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).MIXED ? 'btn-info' : 'btn-default'}">
 							<i class="fas fa-user" aria-hidden="true"></i>
 							<i class="fas fa-child" aria-hidden="true"></i>
 						</a>
-						<a href="#" th:href="@{/ranking/adult}" class="btn"
+						<a href="#" th:href="@{/ranking(mode=adult)}" class="btn"
 						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_ADULTS ? 'btn-info' : 'btn-default'}">
 							<i class="fas fa-user" aria-hidden="true"></i>
 						</a>
-						<a href="#" th:href="@{/ranking/child}" class="btn"
+						<a href="#" th:href="@{/ranking(mode=child)}" class="btn"
 						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_CHILDREN? 'btn-info' : 'btn-default'}">
 							<i class="fas fa-child" aria-hidden="true"></i>
 						</a>
@@ -55,7 +55,7 @@
             <div class="row" th:if="${not #lists.isEmpty(rankings)}">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <button type="button" class="btn btn-info" data-toggle="collapse" data-target=".panel-heading"><span th:text="#{ranking.show.details.button}"></span></button>
-					<a class="btn btn-primary" role="button" th:href="@{/ranking/pdf}"><i class="fas fa-file-pdf"></i>  <span th:text="#{pdf.export.button}"></span></a>
+					<a class="btn btn-primary" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}"><i class="fas fa-file-pdf"></i>  <span th:text="#{pdf.export.button}"></span></a>
                 </div>
             </div>
 			<div class="row">

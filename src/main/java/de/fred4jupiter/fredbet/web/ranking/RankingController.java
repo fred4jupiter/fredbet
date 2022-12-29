@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,19 +36,15 @@ public class RankingController {
     }
 
     @GetMapping
-    public String list(Model model) {
-        return queryRanking(model, RankingSelection.MIXED);
-    }
-
-    @GetMapping("/{mode}")
-    public String list(Model model, @PathVariable("mode") String mode) {
+    public String list(Model model, @RequestParam(value = "mode", required = false, defaultValue = "mixed") String mode) {
         return queryRanking(model, RankingSelection.fromMode(mode));
     }
 
     @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
-    public ResponseEntity<byte[]> exportAllBets() {
+    public ResponseEntity<byte[]> exportAllBets(@RequestParam(value = "mode", required = false, defaultValue = "mixed") String mode) {
+        final RankingSelection rankingSelection = RankingSelection.fromMode(mode);
         final String fileName = createFilename();
-        byte[] fileContent = this.rankingService.exportBetsToPdf(LocaleContextHolder.getLocale());
+        byte[] fileContent = this.rankingService.exportBetsToPdf(LocaleContextHolder.getLocale(), rankingSelection);
         if (fileContent == null) {
             return ResponseEntity.notFound().build();
         }

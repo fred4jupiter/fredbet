@@ -94,7 +94,7 @@ public class RankingService {
         return isChild == null ? false : isChild;
     }
 
-    public byte[] exportBetsToPdf(Locale locale) {
+    public byte[] exportBetsToPdf(Locale locale, RankingSelection rankingSelection) {
         final String title = "FredBet " + messageSourceUtil.getMessageFor("ranking.list.title", locale);
         PdfTableDataBuilder builder = PdfTableDataBuilder.create()
                 .withHeaderColumn("#")
@@ -112,7 +112,7 @@ public class RankingService {
 
         builder.withTitle(title).withLocale(locale);
 
-        final List<UsernamePoints> rankings = calculateCurrentRanking(RankingSelection.MIXED);
+        final List<UsernamePoints> rankings = calculateCurrentRanking(rankingSelection);
         final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
 
         final AtomicInteger rank = new AtomicInteger();
