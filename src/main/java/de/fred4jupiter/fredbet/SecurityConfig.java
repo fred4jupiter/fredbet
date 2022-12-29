@@ -34,20 +34,8 @@ public class SecurityConfig {
         this.environment = environment;
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers("/static/**");
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
-//        http.securityMatcher("/static/**", "/actuator/**", "/fonts/**", "/webjars/**", "/blueimpgallery/**", "/favicon.ico",
-//                        "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration")
-//                .authorizeHttpRequests((authz) -> authz.requestMatchers("/**").permitAll());
-
-//        http.securityMatcher("/user/**").authorizeHttpRequests((authz) -> authz.anyRequest().hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
-//        http.securityMatcher("/user/**").authorizeHttpRequests((authz) -> authz.anyRequest().hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
-
         http.authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/actuator/**", "/webjars/**", "**/favicon.ico", "/blueimpgallery/**",
                         "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration").permitAll()

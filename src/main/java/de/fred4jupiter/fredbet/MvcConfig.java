@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -22,12 +21,6 @@ public class MvcConfig implements WebMvcConfigurer {
     public MvcConfig(WebSecurityUtil webSecurityUtil) {
         this.webSecurityUtil = webSecurityUtil;
     }
-
-
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/public/**");
-//    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -52,24 +45,12 @@ public class MvcConfig implements WebMvcConfigurer {
         return new ChangePasswordFirstLoginInterceptor(webSecurityUtil);
     }
 
-//    @Bean
-//    public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
-//        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-//        sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
-//        return sessionLocaleResolver;
-//    }
-
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
     }
-
-//    @Bean
-//    public Java8TimeDialect java8TimeDialect() {
-//        return new Java8TimeDialect();
-//    }
 
     @Bean
     public RequestContextListener requestContextListener() {
