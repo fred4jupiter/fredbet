@@ -13,6 +13,8 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: true
+    properties:
+      "jakarta.persistence.sharedCache.mode": "UNSPECIFIED" # workaround mentioned in: https://github.com/spring-projects/spring-data-jpa/issues/2717
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/liquibase-changelog.xml
@@ -32,9 +34,9 @@ logging:
     console: "%d %-5level [%c] - %msg%n"
   level:
     root: WARN
-    org.springframework.web: WARN
-    org.springframework.security: WARN
-    de.fred4jupiter.fredbet: INFO
+    "org.springframework.web": WARN
+    "org.springframework.security": WARN
+    "de.fred4jupiter.fredbet": INFO
 
 server:
   servlet:
