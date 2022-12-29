@@ -210,8 +210,10 @@ public class BettingService {
 
     public List<ExtraBet> loadExtraBetDataOthers() {
         List<ExtraBet> allExtraBets = extraBetRepository.findAll(Sort.by(Direction.ASC, "userName"));
-        return allExtraBets.stream().filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
-                .collect(Collectors.toList());
+        return allExtraBets.stream()
+                .filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .sorted(Comparator.comparing(ExtraBet::getUserName, String.CASE_INSENSITIVE_ORDER))
+                .toList();
     }
 
     public Bet findBetById(Long betId) {
