@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     // 24 Stunden
@@ -41,21 +41,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
-        http.securityMatcher("/static/**", "/actuator/**", "/fonts/**", "/webjars/**", "/blueimpgallery/**", "/favicon.ico",
-                        "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration")
-                .authorizeHttpRequests((authz) -> authz.requestMatchers("/**").permitAll());
+//        http.securityMatcher("/static/**", "/actuator/**", "/fonts/**", "/webjars/**", "/blueimpgallery/**", "/favicon.ico",
+//                        "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration")
+//                .authorizeHttpRequests((authz) -> authz.requestMatchers("/**").permitAll());
 
 //        http.securityMatcher("/user/**").authorizeHttpRequests((authz) -> authz.anyRequest().hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
 //        http.securityMatcher("/user/**").authorizeHttpRequests((authz) -> authz.anyRequest().hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION));
 
-        http.securityMatcher("/**").authorizeHttpRequests((authz) -> authz
+        http.authorizeHttpRequests((authz) -> authz
+                .requestMatchers("/actuator/**", "/webjars/**", "**/favicon.ico", "/blueimpgallery/**",
+                        "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .requestMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)
                 .anyRequest().authenticated()
         );
         http.rememberMe((remember) -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
-        http.formLogin().loginPage("/login").defaultSuccessUrl("/matches/upcoming").failureUrl("/login?error=true");
+        http.formLogin(form -> form
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/matches/upcoming")
+                .failureUrl("/login?error=true")
+        );
         http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me");
 
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
