@@ -176,7 +176,6 @@ The following Microsoft Excel templates with matches are prepared for import:
 
 ## GitHub Build Status
 
-| dev                    | master        | 
-|------------------------|---------------|
-| [![Publish Docker latest image](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml/badge.svg?branch=dev)](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml) | [![Publish Release](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml/badge.svg?branch=master)](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml) |
+![Docker latest](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml/badge.svg)
 
+![Docker Release](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml/badge.svg)
