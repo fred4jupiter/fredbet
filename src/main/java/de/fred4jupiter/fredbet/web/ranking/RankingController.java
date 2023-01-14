@@ -43,7 +43,7 @@ public class RankingController {
     @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
     public ResponseEntity<byte[]> exportAllBets(@RequestParam(value = "mode", required = false, defaultValue = "mixed") String mode) {
         final RankingSelection rankingSelection = RankingSelection.fromMode(mode);
-        final String fileName = createFilename();
+        final String fileName = createFilename(mode);
         byte[] fileContent = this.rankingService.exportBetsToPdf(LocaleContextHolder.getLocale(), rankingSelection);
         if (fileContent == null) {
             return ResponseEntity.notFound().build();
@@ -52,8 +52,8 @@ public class RankingController {
         return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.INLINE);
     }
 
-    private String createFilename() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmss")) + "_FredBet-Ranking.pdf";
+    private String createFilename(String mode) {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmss")) + "_" + mode + "_fredbet_ranking.pdf ";
     }
 
     private String queryRanking(Model model, RankingSelection rankingSelection) {
@@ -66,26 +66,23 @@ public class RankingController {
         }
 
         for (int i = 0; i < rankings.size(); i++) {
-            UsernamePoints usernamePoints = rankings.get(i);
-            if (i == 0) {
-                usernamePoints.setCssRankClass("label-success");
-            } else if (i == 1) {
-                usernamePoints.setCssRankClass("label-primary");
-            } else if (i == 2) {
-                usernamePoints.setCssRankClass("label-warning");
-            } else if (i == 3) {
-                usernamePoints.setCssRankClass("label-rank4");
-            } else if (i == 4) {
-                usernamePoints.setCssRankClass("label-rank5");
-            } else if (i == 5) {
-                usernamePoints.setCssRankClass("label-rank6");
-            } else {
-                usernamePoints.setCssRankClass("label-default");
-            }
+            rankings.get(i).setCssRankClass(getCssRankingClassForPosition(i));
         }
 
         model.addAttribute("rankings", rankings);
         model.addAttribute("rankingSelection", rankingSelection);
         return PAGE_RANKING;
+    }
+
+    private String getCssRankingClassForPosition(int position) {
+        return switch (position) {
+            case 0 -> "label-success";
+            case 1 -> "label-primary";
+            case 2 -> "label-warning";
+            case 3 -> "label-rank4";
+            case 4 -> "label-rank5";
+            case 5 -> "label-rank6";
+            default -> "label-default";
+        };
     }
 }
