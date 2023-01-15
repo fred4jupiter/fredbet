@@ -18,7 +18,7 @@ logging:
   pattern:
     console: "%black(%d{ISO8601}) %highlight(%-5level) %yellow(%C{1.}): %msg%n%throwable"
   level:
-    de.fred4jupiter.fredbet: DEBUG
+    "de.fred4jupiter.fredbet": DEBUG
 
 fredbet:
   create-demo-data: false
