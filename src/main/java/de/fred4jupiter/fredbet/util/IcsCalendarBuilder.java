@@ -7,7 +7,9 @@ import net.fortuna.ical4j.model.TimeZoneRegistry;
 import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
-import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.Location;
+import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.util.UidGenerator;
 import org.slf4j.Logger;
@@ -17,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.Optional;
 
 public class IcsCalendarBuilder {
@@ -41,7 +42,7 @@ public class IcsCalendarBuilder {
     private final UidGenerator uidGenerator = new RandomUidGenerator();
 
     private IcsCalendarBuilder() {
-
+        // use factory method instead
     }
 
     public static IcsCalendarBuilder create() {
@@ -99,10 +100,5 @@ public class IcsCalendarBuilder {
             LOG.error(e.getMessage());
             return null;
         }
-    }
-
-    private net.fortuna.ical4j.model.DateTime toDate(LocalDateTime localDateTime) {
-        Date utilDate = Date.from(localDateTime.atZone(ZoneId.of(this.timeZone)).toInstant());
-        return new net.fortuna.ical4j.model.DateTime(utilDate);
     }
 }
