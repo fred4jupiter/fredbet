@@ -188,10 +188,13 @@
 							</ul>						
 						</li>
 						<li>
-							<a th:href="@{/logout}">
+							<a href="javascript: document.logoutForm.submit()">
 								<i class="fas fa-sign-out-alt"></i>
 								<span th:text="#{navigation.logout}" th:remove="tag"></span>
 							</a>
+							<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+								<input hidden type="submit" value="Sign Out"/>
+							</form>
 						</li>					
 					</ul>
 				</div>

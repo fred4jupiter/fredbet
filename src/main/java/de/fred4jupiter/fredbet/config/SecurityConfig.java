@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/matches/upcoming")
                 .failureUrl("/login?error=true")
         );
-        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me");
+        http.logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me");
 
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
         http.headers().cacheControl().disable();
