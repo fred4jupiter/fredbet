@@ -61,7 +61,7 @@ public class SecurityConfig {
             http.headers().frameOptions().disable();
 
             // otherwise the H2 console will not work
-            http.csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2/**")));
+            http.csrf().ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2/**"));
         }
 
         return http.build();
