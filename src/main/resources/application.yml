@@ -69,11 +69,7 @@ fredbet:
   thumbnail-size: 100
 #  additional-admin-users:
 #    - michael
-
-# -------- user groups and permissions ------------------------------------------------------------------------------
-
-fredbet-user-groups:
-  groups:
+  user-groups:
     - groupName: ROLE_USER
       permissions:
     - groupName: ROLE_USER_ENTER_RESULTS

@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet;
 
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.security.FredBetUserGroups;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,7 +25,7 @@ import java.util.List;
  * @author michael
  */
 @SpringBootApplication
-@EnableConfigurationProperties({FredbetProperties.class, FredBetUserGroups.class})
+@EnableConfigurationProperties(FredbetProperties.class)
 @EnableCaching
 @EnableAsync
 public class Application {

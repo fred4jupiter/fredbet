@@ -1,12 +1,17 @@
 package de.fred4jupiter.fredbet.props;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.fred4jupiter.fredbet.security.UserGroup;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Contains all configuration properties for FredBet application.
@@ -40,6 +45,8 @@ public class FredbetProperties {
     private Integer thumbnailSize;
 
     private List<String> additionalAdminUsers;
+
+    private Set<UserGroup> userGroups = new HashSet<>();
 
     public ImageLocation getImageLocation() {
         return imageLocation;
@@ -123,5 +130,28 @@ public class FredbetProperties {
 
     public void setThumbnailSize(Integer thumbnailSize) {
         this.thumbnailSize = thumbnailSize;
+    }
+
+    public Set<UserGroup> getUserGroups() {
+        return userGroups;
+    }
+
+    public void setUserGroups(Set<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getPermissionsForUserGroup(String userGroupName) {
+        UserGroup userGroup = getUserGroupByName(userGroupName);
+        return userGroup.getPermissions().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+    }
+
+    private UserGroup getUserGroupByName(String name) {
+        for (UserGroup userGroup : this.userGroups) {
+            if (userGroup.getGroupName().equals(name)) {
+                return userGroup;
+            }
+        }
+        throw new IllegalArgumentException("UserGroup with name: " + name + " not found!");
     }
 }
