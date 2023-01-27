@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet;
 
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
@@ -8,10 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -43,6 +46,13 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public ChangePasswordFirstLoginInterceptor changePasswordFirstLoginInterceptor() {
         return new ChangePasswordFirstLoginInterceptor(webSecurityUtil);
+    }
+
+    @Bean
+    public LocaleResolver localeResolver(FredbetProperties fredbetProperties) {
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+        sessionLocaleResolver.setDefaultLocale(fredbetProperties.getDefaultLocale());
+        return sessionLocaleResolver;
     }
 
     @Bean
