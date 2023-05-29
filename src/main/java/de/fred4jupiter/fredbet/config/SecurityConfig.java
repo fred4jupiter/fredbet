@@ -17,7 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -38,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
         http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/actuator/**", "/webjars/**", "**/favicon.ico", "/blueimpgallery/**",
+                .requestMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
                         "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
@@ -51,17 +50,17 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/matches/upcoming")
                 .failureUrl("/login?error=true")
         );
-        http.logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me");
+        http.logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me"));
 
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
-        http.headers().cacheControl().disable();
-        http.csrf().ignoringRequestMatchers("/info/editinfo");
+        http.headers((headers) -> headers.cacheControl((HeadersConfigurer.CacheControlConfig::disable)));
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/info/editinfo"));
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
             // this is for the embedded h2 console
-            http.headers().frameOptions().disable();
+            http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
             // otherwise the H2 console will not work
-            http.csrf().ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2/**"));
+            http.csrf((csrf) -> csrf.ignoringRequestMatchers("/h2/**"));
         }
 
         return http.build();
