@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
@@ -19,21 +18,18 @@ public class MatchController {
 
     private static final String VIEW_LIST_MATCHES = "matches/list";
 
-    private final SecurityService securityBean;
-
     private final WebMessageUtil messageUtil;
 
     private final MatchCommandMapper matchCommandMapper;
 
-    public MatchController(SecurityService securityBean, WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper) {
-        this.securityBean = securityBean;
+    public MatchController(WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper) {
         this.messageUtil = messageUtil;
         this.matchCommandMapper = matchCommandMapper;
     }
 
     @GetMapping
     public String listAllMatches(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findAllMatches(securityBean.getCurrentUserName());
+        List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findAllMatches);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("all.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES);
@@ -42,7 +38,7 @@ public class MatchController {
 
     @GetMapping("upcoming")
     public String upcomingMatches(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findAllUpcomingMatches(securityBean.getCurrentUserName());
+        List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findUpcomingMatches);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("upcoming.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_UPCOMING);
@@ -52,7 +48,7 @@ public class MatchController {
     @GetMapping("/group/{groupName}")
     public String listByGroup(@PathVariable("groupName") String groupName, Model model) {
         final Group group = Group.valueOf(groupName);
-        List<MatchCommand> matches = matchCommandMapper.findMatchesByGroup(securityBean.getCurrentUserName(), group);
+        List<MatchCommand> matches = matchCommandMapper.findMatches(matchService -> matchService.findMatchesByGroup(group));
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("group.entry." + groupName));
         model.addAttribute("redirectViewName", RedirectViewName.createRedirectForGroup(group));
@@ -61,7 +57,7 @@ public class MatchController {
 
     @GetMapping("/joker")
     public String jokerMatches(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findJokerMatches(securityBean.getCurrentUserName());
+        List<MatchCommand> matches = matchCommandMapper.findMatches((username, matchService) -> matchService.findJokerMatches(username));
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("joker.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_JOKER);
@@ -79,7 +75,7 @@ public class MatchController {
 
     @GetMapping("/finishednoresult")
     public String finishedMatchesWithoutResult(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findFinishedMatchesNoResult(securityBean.getCurrentUserName());
+        List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findFinishedMatchesWithoutResult);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("finishednoresult.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);

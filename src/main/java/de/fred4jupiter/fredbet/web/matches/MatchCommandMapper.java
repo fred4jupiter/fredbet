@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @Component
@@ -36,34 +37,13 @@ public class MatchCommandMapper {
         this.securityBean = securityBean;
     }
 
-    public List<MatchCommand> findAllMatches(String username) {
-        List<Match> allMatches = matchService.findAllMatches();
-        return toMatchCommandsWithBets(username, allMatches);
-    }
-
-    public List<MatchCommand> findAllUpcomingMatches(String username) {
-        List<Match> allMatches = matchService.findUpcomingMatches();
-        return toMatchCommandsWithBets(username, allMatches);
-    }
-
-    public List<MatchCommand> findMatchesByGroup(String currentUserName, Group group) {
-        List<Match> allMatches = matchService.findMatchesByGroup(group);
-        return toMatchCommandsWithBets(currentUserName, allMatches);
-    }
-
-    public List<MatchCommand> findJokerMatches(String currentUserName) {
-        List<Match> allMatches = matchService.findJokerMatches(currentUserName);
-        return toMatchCommandsWithBets(currentUserName, allMatches);
-    }
-
-    public List<MatchCommand> findFinishedMatchesNoResult(String currentUserName) {
-        List<Match> allMatches = matchService.findFinishedMatchesWithoutResult();
-        return toMatchCommandsWithBets(currentUserName, allMatches);
-    }
-
     public List<MatchCommand> findMatches(Function<MatchService, List<Match>> matchServiceCallback) {
+        return findMatches((username, matchService) -> matchServiceCallback.apply(matchService));
+    }
+
+    public List<MatchCommand> findMatches(BiFunction<String, MatchService, List<Match>> matchServiceCallback) {
         String currentUserName = securityBean.getCurrentUserName();
-        List<Match> matches = matchServiceCallback.apply(this.matchService);
+        List<Match> matches = matchServiceCallback.apply(currentUserName, this.matchService);
         return toMatchCommandsWithBets(currentUserName, matches);
     }
 
