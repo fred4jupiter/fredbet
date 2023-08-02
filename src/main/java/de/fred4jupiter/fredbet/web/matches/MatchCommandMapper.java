@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
@@ -13,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -87,8 +89,8 @@ public class MatchCommandMapper {
 
     private List<MatchCommand> toMatchCommandsWithBets(String username, List<Match> allMatches) {
         final Map<Long, Bet> matchToBetMap = findBetsForMatchIds(username);
-        final List<MatchCommand> resultList = new ArrayList<>();
-        for (Match match : allMatches) {
+
+        return allMatches.stream().map(match -> {
             MatchCommand matchCommand = toMatchCommand(match);
             Bet bet = matchToBetMap.get(match.getId());
             if (bet != null) {
@@ -98,9 +100,8 @@ public class MatchCommandMapper {
                 matchCommand.setPoints(bet.getPoints());
                 matchCommand.setJoker(bet.isJoker());
             }
-            resultList.add(matchCommand);
-        }
-        return resultList;
+            return matchCommand;
+        }).toList();
     }
 
 }
