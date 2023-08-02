@@ -16,6 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.util.Locale;
+
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
@@ -72,6 +74,7 @@ public class MvcConfig implements WebMvcConfigurer {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.addBasenames("classpath:org/springframework/security/messages", "classpath:/TranslationMessages", "classpath:/ValidationMessages");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultLocale(Locale.ENGLISH);
         return messageSource;
     }
 }
