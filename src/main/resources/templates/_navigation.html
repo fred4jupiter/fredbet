@@ -40,7 +40,11 @@
 								</li>
 								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" class="divider" role="separator"></li>
 					        	<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
-					        	<li class="divider" role="separator"></li>
+								<li class="divider" role="separator"></li>
+								<li th:class="${pageState_matches_yesterday}">
+									<a href="#matchesYesterday" th:href="@{/matches/yesterday}" th:text="#{yesterday.matches}"></a>
+								</li>
+								<li class="divider" role="separator"></li>
                                 <li th:class="${pageState_matches_today}"><a href="#matchesToday" th:href="@{/matches/today}" th:text="#{today.matches}"></a></li>
                                 <li class="divider" role="separator"></li>
 								<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>

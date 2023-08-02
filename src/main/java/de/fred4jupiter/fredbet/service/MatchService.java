@@ -126,6 +126,12 @@ public class MatchService {
         return matchRepository.findByKickOffDateBetweenOrderByKickOffDateAsc(startDateTime, endDateTime);
     }
 
+    public List<Match> findMatchesOfYesterday() {
+        LocalDateTime startDateTime = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime endDateTime = LocalDate.now().minusDays(1).atTime(23, 59, 59);
+        return matchRepository.findByKickOffDateBetweenOrderByKickOffDateAsc(startDateTime, endDateTime);
+    }
+
     public List<Match> findFinishedMatchesWithoutResult() {
         LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(105);
         return matchRepository.findFinishedMatchesWithMissingResult(localDateTime);

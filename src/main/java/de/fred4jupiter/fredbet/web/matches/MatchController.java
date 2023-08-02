@@ -73,6 +73,15 @@ public class MatchController {
         return VIEW_LIST_MATCHES;
     }
 
+    @GetMapping("/yesterday")
+    public String matchesOfYesterday(Model model) {
+        List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findMatchesOfYesterday);
+        model.addAttribute("allMatches", matches);
+        model.addAttribute("heading", messageUtil.getMessageFor("yesterday.matches"));
+        model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);
+        return VIEW_LIST_MATCHES;
+    }
+
     @GetMapping("/finishednoresult")
     public String finishedMatchesWithoutResult(Model model) {
         List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findFinishedMatchesWithoutResult);
