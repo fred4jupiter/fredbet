@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.util.Validator;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.*;
+import java.util.function.Function;
 
 @Component
 public class MatchCommandMapper {
@@ -25,10 +27,13 @@ public class MatchCommandMapper {
 
     private final WebMessageUtil webMessageUtil;
 
-    public MatchCommandMapper(BettingService bettingService, MatchService matchService, WebMessageUtil webMessageUtil) {
+    private final SecurityService securityBean;
+
+    public MatchCommandMapper(BettingService bettingService, MatchService matchService, WebMessageUtil webMessageUtil, SecurityService securityBean) {
         this.bettingService = bettingService;
         this.matchService = matchService;
         this.webMessageUtil = webMessageUtil;
+        this.securityBean = securityBean;
     }
 
     public List<MatchCommand> findAllMatches(String username) {
@@ -51,14 +56,15 @@ public class MatchCommandMapper {
         return toMatchCommandsWithBets(currentUserName, allMatches);
     }
 
-    public List<MatchCommand> findMatchesOfToday(String currentUserName) {
-        List<Match> allMatches = matchService.findMatchesOfToday();
-        return toMatchCommandsWithBets(currentUserName, allMatches);
-    }
-
     public List<MatchCommand> findFinishedMatchesNoResult(String currentUserName) {
         List<Match> allMatches = matchService.findFinishedMatchesWithoutResult();
         return toMatchCommandsWithBets(currentUserName, allMatches);
+    }
+
+    public List<MatchCommand> findMatches(Function<MatchService, List<Match>> matchServiceCallback) {
+        String currentUserName = securityBean.getCurrentUserName();
+        List<Match> matches = matchServiceCallback.apply(this.matchService);
+        return toMatchCommandsWithBets(currentUserName, matches);
     }
 
     public MatchCommand toMatchCommand(Match match) {

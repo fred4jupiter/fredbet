@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import org.springframework.stereotype.Controller;
@@ -69,7 +70,7 @@ public class MatchController {
 
     @GetMapping("/today")
     public String matchesOfToday(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findMatchesOfToday(securityBean.getCurrentUserName());
+        List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findMatchesOfToday);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("today.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);
