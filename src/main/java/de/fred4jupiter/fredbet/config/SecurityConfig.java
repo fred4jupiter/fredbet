@@ -53,7 +53,7 @@ public class SecurityConfig {
         http.logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me"));
 
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
-        http.headers((headers) -> headers.cacheControl((HeadersConfigurer.CacheControlConfig::disable)));
+        http.headers((headers) -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
         http.csrf((csrf) -> csrf.ignoringRequestMatchers("/info/editinfo"));
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
             // this is for the embedded h2 console
