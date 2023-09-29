@@ -30,6 +30,8 @@ public class RankingController {
 
     private final WebMessageUtil messageUtil;
 
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMyy_HHmmss");
+
     public RankingController(RankingService rankingService, WebMessageUtil messageUtil) {
         this.rankingService = rankingService;
         this.messageUtil = messageUtil;
@@ -53,7 +55,7 @@ public class RankingController {
     }
 
     private String createFilename(String mode) {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMyy_HHmmss")) + "_" + mode + "_fredbet_ranking.pdf ";
+        return String.format("%s_%s_fredbet_ranking.pdf", dateTimeFormatter.format(LocalDateTime.now()), mode);
     }
 
     private String queryRanking(Model model, RankingSelection rankingSelection) {
