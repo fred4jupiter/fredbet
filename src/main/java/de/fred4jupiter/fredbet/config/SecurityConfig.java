@@ -1,13 +1,11 @@
 package de.fred4jupiter.fredbet.config;
 
-import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,6 +24,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -35,23 +34,21 @@ public class SecurityConfig {
     // 24 Stunden
     private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
 
-    private final Environment environment;
+    private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
-    public SecurityConfig(Environment environment) {
-        this.environment = environment;
+    public SecurityConfig(Optional<H2ConsoleProperties> h2ConsoleProperties) {
+        this.h2ConsoleProperties = h2ConsoleProperties;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository, HandlerMappingIntrospector introspector) throws Exception {
         final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
-        final PathRequest.H2ConsoleRequestMatcher h2ConsoleRequestMatcher = PathRequest.toH2Console();
 
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**", "/lightbox/**",
                         "/css/**", "/fonts/**", "/images/**", "/js/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
-                .requestMatchers(h2ConsoleRequestMatcher).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/buildinfo/**")).hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)
                 .anyRequest().authenticated()
         );
@@ -69,8 +66,8 @@ public class SecurityConfig {
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
         http.headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
         final MvcRequestMatcher editInfoRequestMatcher = mvcMatcherBuilder.pattern("/info/editinfo");
-        if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
-            http.csrf(csrf -> csrf.ignoringRequestMatchers(editInfoRequestMatcher, h2ConsoleRequestMatcher));
+        if (h2ConsoleProperties.isPresent() && h2ConsoleProperties.get().getEnabled()) {
+            http.csrf(csrf -> csrf.ignoringRequestMatchers(editInfoRequestMatcher, PathRequest.toH2Console()));
 
             // this is for the embedded h2 console
             http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
