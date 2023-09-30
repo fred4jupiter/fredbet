@@ -47,7 +47,7 @@ public class SecurityConfig {
         final PathRequest.H2ConsoleRequestMatcher h2ConsoleRequestMatcher = PathRequest.toH2Console();
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(antMatcher("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**", "/lightbox/**",
+                .requestMatchers(antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**", "/lightbox/**",
                         "/css/**", "/fonts/**", "/images/**", "/js/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
@@ -81,7 +81,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private RequestMatcher[] antMatcher(String... patterns) {
+    private RequestMatcher[] antMatchers(String... patterns) {
         List<? extends RequestMatcher> matchers = Arrays.stream(patterns).map(AntPathRequestMatcher::antMatcher).toList();
         return matchers.toArray(new RequestMatcher[0]);
     }
