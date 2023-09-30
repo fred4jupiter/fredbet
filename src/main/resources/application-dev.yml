@@ -3,8 +3,7 @@ spring:
     cache: false
   h2:
     console:
-      # connect in console (http://localhost:8080/h2)
-      path: /h2
+      # connect in console (http://localhost:8080/console)
       enabled: true
       settings:
         web-allow-others: true

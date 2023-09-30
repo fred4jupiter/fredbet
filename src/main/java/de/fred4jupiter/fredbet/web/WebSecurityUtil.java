@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
+import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +22,12 @@ public class WebSecurityUtil {
 
     private final SecurityService securityService;
 
-    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService) {
+    private final H2ConsoleProperties h2ConsoleProperties;
+
+    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService, H2ConsoleProperties h2ConsoleProperties) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.securityService = securityService;
+        this.h2ConsoleProperties = h2ConsoleProperties;
     }
 
     public String getCurrentUserProfileImageKey() {
@@ -60,7 +64,7 @@ public class WebSecurityUtil {
     /**
      * Will be used in navigation bar.
      *
-     * @return
+     * @return true if demo data menu is enabled.
      */
     public boolean isDemoDataMenuEntryEnabled() {
         return runtimeSettingsService.loadRuntimeSettings().isShowDemoDataNavigationEntry();
@@ -76,5 +80,9 @@ public class WebSecurityUtil {
 
     public boolean isCurrentUserTheDefaultAdminUser() {
         return FredbetConstants.TECHNICAL_USERNAME.equals(getCurrentUsername());
+    }
+
+    public String resolveH2Path() {
+        return h2ConsoleProperties.getPath();
     }
 }
