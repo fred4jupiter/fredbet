@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +17,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -35,32 +40,41 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
-        http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**",
-                        "/lightbox/**", "/css/**", "/fonts/**", "/images/**", "/js/**", "/login", "/logout", "/console/*", "/registration").permitAll()
-                .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
-                .requestMatchers("/admin/**", "/administration/**", "/h2/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
-                .requestMatchers("/buildinfo/**").hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)
+    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository, HandlerMappingIntrospector introspector) throws Exception {
+        final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+        final PathRequest.H2ConsoleRequestMatcher h2ConsoleRequestMatcher = PathRequest.toH2Console();
+
+        http.authorizeHttpRequests(authz -> authz
+                .requestMatchers(antMatcher("/actuator/**"), antMatcher("/webjars/**"), antMatcher("/favicon.ico"), antMatcher("/blueimpgallery/**"),
+                        antMatcher("/lightbox/**"), antMatcher("/css/**"), antMatcher("/fonts/**"), antMatcher("/images/**"),
+                        antMatcher("/js/**"), antMatcher("/login/**"), antMatcher("/logout"), antMatcher("/console/*"), antMatcher("/registration")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
+                .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
+                .requestMatchers(h2ConsoleRequestMatcher).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
+                .requestMatchers(mvcMatcherBuilder.pattern("/buildinfo/**")).hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)
                 .anyRequest().authenticated()
         );
-        http.rememberMe((remember) -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
+        http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
         http.formLogin(form -> form
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/matches/upcoming")
                 .failureUrl("/login?error=true")
         );
-        http.logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me"));
+        http.logout(logout -> logout.logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me"));
 
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
-        http.headers((headers) -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/info/editinfo"));
+        http.headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
+        final MvcRequestMatcher editInfoRequestMatcher = mvcMatcherBuilder.pattern("/info/editinfo");
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV))) {
-            // this is for the embedded h2 console
-            http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+            http.csrf(csrf -> csrf.ignoringRequestMatchers(editInfoRequestMatcher, h2ConsoleRequestMatcher));
 
-            // otherwise the H2 console will not work
-            http.csrf((csrf) -> csrf.ignoringRequestMatchers("/h2/**"));
+            // this is for the embedded h2 console
+            http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+        } else {
+            http.csrf(csrf -> csrf.ignoringRequestMatchers(editInfoRequestMatcher));
         }
 
         return http.build();
