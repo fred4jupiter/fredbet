@@ -19,11 +19,13 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -45,9 +47,8 @@ public class SecurityConfig {
         final PathRequest.H2ConsoleRequestMatcher h2ConsoleRequestMatcher = PathRequest.toH2Console();
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(antMatcher("/actuator/**"), antMatcher("/webjars/**"), antMatcher("/favicon.ico"), antMatcher("/blueimpgallery/**"),
-                        antMatcher("/lightbox/**"), antMatcher("/css/**"), antMatcher("/fonts/**"), antMatcher("/images/**"),
-                        antMatcher("/js/**"), antMatcher("/login/**"), antMatcher("/logout"), antMatcher("/console/*"), antMatcher("/registration")).permitAll()
+                .requestMatchers(antMatcher("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**", "/lightbox/**",
+                        "/css/**", "/fonts/**", "/images/**", "/js/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .requestMatchers(h2ConsoleRequestMatcher).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
@@ -78,6 +79,11 @@ public class SecurityConfig {
         }
 
         return http.build();
+    }
+
+    private RequestMatcher[] antMatcher(String... patterns) {
+        List<? extends RequestMatcher> matchers = Arrays.stream(patterns).map(AntPathRequestMatcher::antMatcher).toList();
+        return matchers.toArray(new RequestMatcher[0]);
     }
 
     @Bean

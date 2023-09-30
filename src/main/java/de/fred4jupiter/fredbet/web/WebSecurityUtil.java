@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * Security utility class for access in Thymeleaf templates.
  *
@@ -22,9 +24,9 @@ public class WebSecurityUtil {
 
     private final SecurityService securityService;
 
-    private final H2ConsoleProperties h2ConsoleProperties;
+    private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
-    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService, H2ConsoleProperties h2ConsoleProperties) {
+    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService, Optional<H2ConsoleProperties> h2ConsoleProperties) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.securityService = securityService;
         this.h2ConsoleProperties = h2ConsoleProperties;
@@ -83,6 +85,6 @@ public class WebSecurityUtil {
     }
 
     public String resolveH2Path() {
-        return h2ConsoleProperties.getPath();
+        return h2ConsoleProperties.isPresent() ? h2ConsoleProperties.get().getPath() : "";
     }
 }
