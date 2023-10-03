@@ -26,7 +26,7 @@ public class FredbetProperties {
     /**
      * Selection of possible image storage locations.
      */
-    private ImageLocation imageLocation;
+    private ImageLocation imageLocation = ImageLocation.DATABASE;
 
     /**
      * Path in file system to store images in case of image location is set to
