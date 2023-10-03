@@ -45,8 +45,9 @@ public class SecurityConfig {
         final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(antMatchers("/actuator/**", "/webjars/**", "/favicon.ico", "/blueimpgallery/**", "/lightbox/**",
-                        "/css/**", "/fonts/**", "/images/**", "/js/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers(antMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**",
+                         "/fonts/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/buildinfo/**")).hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)
