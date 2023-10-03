@@ -50,7 +50,6 @@ public class SecurityConfig {
                          "/fonts/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
-                .requestMatchers(mvcMatcherBuilder.pattern("/buildinfo/**")).hasAnyAuthority(FredBetPermission.PERM_SYSTEM_INFO)
                 .anyRequest().authenticated()
         );
         http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
