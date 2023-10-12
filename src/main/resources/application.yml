@@ -13,8 +13,6 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: true
-    properties:
-      "jakarta.persistence.sharedCache.mode": "UNSPECIFIED" # workaround mentioned in: https://github.com/spring-projects/spring-data-jpa/issues/2717
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/liquibase-changelog.xml
