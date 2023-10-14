@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    volumes:
+      - postgres-only-vol:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=fred
+      - POSTGRES_PASSWORD=fred
+      - POSTGRES_DB=fredbetdb
+      - TZ=Europe/Berlin
+  fredbet:
+    profiles: ["app"] # run with 'docker compose --profile app build'
+    container_name: fredbet
+    build:
+      dockerfile: Dockerfile
+    ports: 
+    - 8080:8080
+    depends_on:
+    - postgres
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/fredbetdb"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+      SPRING_DATASOURCE_USERNAME: "fred"
+      SPRING_DATASOURCE_PASSWORD: "fred"
+volumes:
+  postgres-only-vol:
