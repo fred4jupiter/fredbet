@@ -76,11 +76,10 @@ public class ImageAdministrationService {
         return imageGroup;
     }
 
-    public void saveImage(byte[] binary, Long imageGroupId, String description) {
+    public void saveImage(byte[] binary, String galleryGroup, String description) {
+        final ImageGroup imageGroup = findOrCreateImageGroup(galleryGroup);
         final AppUser currentUser = securityService.getCurrentUser();
         checkIfImageUploadPerUserIsReached(currentUser);
-
-        final ImageGroup imageGroup = imageGroupRepository.getReferenceById(imageGroupId);
 
         final String key = imageKeyGenerator.generateKey();
 

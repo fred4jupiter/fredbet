@@ -77,9 +77,8 @@ public class ImageUploadController {
             return REDIRECT_SHOW_PAGE;
         }
 
-        final ImageGroup imageGroup = imageAdministrationService.findOrCreateImageGroup(imageUploadCommand.getGalleryGroup());
         try {
-            imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription());
+            imageAdministrationService.saveImage(imageByte, imageUploadCommand.getGalleryGroup(), imageUploadCommand.getDescription());
             messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
         } catch (ImageUploadLimitReachedException e) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.limitReached", e.getCurrentCount(), e.getLimit());
