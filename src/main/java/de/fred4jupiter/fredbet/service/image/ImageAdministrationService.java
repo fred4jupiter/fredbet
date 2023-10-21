@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +34,6 @@ public class ImageAdministrationService {
 
     private final ImageLocationStrategy imageLocationStrategy;
 
-    private final ImageKeyGenerator imageKeyGenerator;
-
     private final SecurityService securityService;
 
     private final UserService userService;
@@ -43,13 +42,12 @@ public class ImageAdministrationService {
 
     public ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
                                       ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
-                                      ImageKeyGenerator imageKeyGenerator, SecurityService securityService,
+                                      SecurityService securityService,
                                       UserService userService, RuntimeSettingsService runtimeSettingsService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.imageLocationStrategy = imageLocationStrategy;
-        this.imageKeyGenerator = imageKeyGenerator;
         this.securityService = securityService;
         this.userService = userService;
         this.runtimeSettingsService = runtimeSettingsService;
@@ -81,7 +79,7 @@ public class ImageAdministrationService {
         final AppUser currentUser = securityService.getCurrentUser();
         checkIfImageUploadPerUserIsReached(currentUser);
 
-        final String key = imageKeyGenerator.generateKey();
+        final String key = generateKey();
 
         ImageMetaData image = new ImageMetaData(key, imageGroup, currentUser);
         image.setDescription(description);
@@ -90,6 +88,10 @@ public class ImageAdministrationService {
         byte[] thumbnail = imageResizingService.createThumbnail(binary);
 
         imageLocationStrategy.saveImage(key, imageGroup.getId(), binary, thumbnail);
+    }
+
+    private String generateKey() {
+        return UUID.randomUUID().toString();
     }
 
     private void checkIfImageUploadPerUserIsReached(AppUser currentUser) {
@@ -116,7 +118,7 @@ public class ImageAdministrationService {
     }
 
     private void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
-        final String key = imageKeyGenerator.generateKey();
+        final String key = generateKey();
         if (imageMetaData == null) {
             // create new user profile image
             ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
