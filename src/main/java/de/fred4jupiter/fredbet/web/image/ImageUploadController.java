@@ -81,7 +81,7 @@ public class ImageUploadController {
             imageAdministrationService.saveImage(imageByte, imageUploadCommand.getGalleryGroup(), imageUploadCommand.getDescription());
             messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
         } catch (ImageUploadLimitReachedException e) {
-            messageUtil.addErrorMsg(redirect, "image.upload.msg.limitReached", e.getCurrentCount(), e.getLimit());
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.limitReached", e.getLimit());
         }
 
         return REDIRECT_SHOW_PAGE;

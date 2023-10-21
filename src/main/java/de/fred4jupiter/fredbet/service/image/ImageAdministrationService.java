@@ -101,7 +101,7 @@ public class ImageAdministrationService {
 
         Integer alreadyUploadedImages = imageMetaDataRepository.numberOfImagesOfUser(currentUser.getUsername());
         if (alreadyUploadedImages > imageUploadLimit) {
-            throw new ImageUploadLimitReachedException("The image upload limit has been reached!", alreadyUploadedImages, imageUploadLimit);
+            throw new ImageUploadLimitReachedException("The image upload limit has been reached!", imageUploadLimit);
         }
     }
 
