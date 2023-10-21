@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,8 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/imagegroup")
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class ImageGroupController {
 
     private static final String REDIRECT_SHOW_IMAGEGROUP = "redirect:/imagegroup/show";
+
+    private static final String PAGE_IMAGE_GROUP = "image/image_group";
 
     private final ImageGroupService imageGroupService;
 
@@ -41,11 +44,14 @@ public class ImageGroupController {
         return new ImageGroupCommand();
     }
 
-    @ModelAttribute("availableImageGroups")
-    public List<ImageGroupCommand> availableImageGroups() {
-        List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
-        return imageGroups.stream().map(this::mapToImageGroupCommand).sorted().collect(Collectors.toList());
-    }
+//    @ModelAttribute("availableImageGroups")
+//    public List<ImageGroupCommand> availableImageGroups() {
+//        List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
+//        return imageGroups.stream().map(this::mapToImageGroupCommand)
+//                .sorted(Comparator.comparing(ImageGroupCommand::getName, String.CASE_INSENSITIVE_ORDER))
+//                .toList();
+//
+//    }
 
     private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
         ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
@@ -55,8 +61,13 @@ public class ImageGroupController {
     }
 
     @GetMapping("/show")
-    public String show() {
-        return "image/image_group";
+    public String show(Model model) {
+        List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
+        List<ImageGroupCommand> availableImageGroups = imageGroups.stream().map(this::mapToImageGroupCommand)
+                .sorted(Comparator.comparing(ImageGroupCommand::getName, String.CASE_INSENSITIVE_ORDER))
+                .toList();
+        model.addAttribute("availableImageGroups", availableImageGroups);
+        return PAGE_IMAGE_GROUP;
     }
 
     @PostMapping("/delete")
@@ -76,7 +87,7 @@ public class ImageGroupController {
     @PostMapping("/save")
     public String addImageGroup(@Valid ImageGroupCommand imageGroupCommand, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            return "image/image_group";
+            return PAGE_IMAGE_GROUP;
         }
 
         try {
