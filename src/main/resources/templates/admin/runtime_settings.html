@@ -138,6 +138,8 @@
 							<div class="col-xs-4">
 								<div class="form-group">
 									<label for="runtimeSettings.imageUploadLimit" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
+									<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+										  th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
 									<input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
 									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
 								</div>
