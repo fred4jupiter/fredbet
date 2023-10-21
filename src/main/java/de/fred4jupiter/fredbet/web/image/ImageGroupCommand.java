@@ -1,9 +1,12 @@
 package de.fred4jupiter.fredbet.web.image;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class ImageGroupCommand implements Comparable<ImageGroupCommand>{
 
 	private Long id;
 
+	@NotBlank
 	private String name;
 
 	public Long getId() {

@@ -63,7 +63,7 @@ public class AdminController {
 
     @RequestMapping
     public String list() {
-        return "admin/administration";
+        return PAGE_ADMINISTRATION;
     }
 
     @GetMapping("/createRandomMatches")

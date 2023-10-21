@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.group.title}"></title>
 	</head>
@@ -30,12 +29,13 @@
 							<input id="imageGroupId" type="hidden" th:field="*{id}" class="form-control" />
 							<label for="imageGroupName" th:text="#{image.group.name}"></label>
 							<input id="imageGroupName" type="text" th:field="*{name}" class="form-control" />
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
 							<input type="submit" class="btn btn-primary" th:value="#{button.save}" />							
-					    	<a href="#" th:href="@{/image/show/}" class="btn btn-default" role="button" th:text="#{button.backToImageUpload}"></a>
+					    	<a href="#" th:href="@{/image/show}" class="btn btn-default" role="button" th:text="#{button.backToImageUpload}"></a>
 				    	</div>
 					</div>
 				</form>

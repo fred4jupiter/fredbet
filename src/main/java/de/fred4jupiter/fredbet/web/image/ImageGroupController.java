@@ -6,9 +6,11 @@ import de.fred4jupiter.fredbet.service.image.ImageGroupExistsException;
 import de.fred4jupiter.fredbet.service.image.ImageGroupNotDeletableException;
 import de.fred4jupiter.fredbet.service.image.ImageGroupService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,7 +74,11 @@ public class ImageGroupController {
     }
 
     @PostMapping("/save")
-    public String addImageGroup(@ModelAttribute("imageGroupCommand") ImageGroupCommand imageGroupCommand, RedirectAttributes redirect) {
+    public String addImageGroup(@Valid ImageGroupCommand imageGroupCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+        if (bindingResult.hasErrors()) {
+            return "image/image_group";
+        }
+
         try {
             if (imageGroupCommand.getId() == null) {
                 imageGroupService.addImageGroup(imageGroupCommand.getName());
