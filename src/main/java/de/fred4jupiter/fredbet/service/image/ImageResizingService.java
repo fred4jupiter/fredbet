@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * For resizing images and thumbnail generation.
@@ -33,22 +34,18 @@ class ImageResizingService {
         if (thumbnailSize == 0) {
             throw new IllegalArgumentException("Given thumbnailSize must be greather than 0!");
         }
-        try (ByteArrayInputStream byteIn = new ByteArrayInputStream(imageBinary);
-             ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
-
+        try (ByteArrayInputStream byteIn = new ByteArrayInputStream(imageBinary); ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
             BufferedImage bufferedImage = ImageIO.read(byteIn);
             if (bufferedImage.getWidth() <= thumbnailSize && bufferedImage.getHeight() <= thumbnailSize) {
-                LOG.info(
-                        "The original image does have the prefered thumbnailSize of {} or is smaller than that. Do not change image thumbnailSize. image with: {}, image height: {}",
-                        thumbnailSize, bufferedImage.getWidth(), bufferedImage.getHeight());
+                LOG.info("The original image does have the prefered thumbnailSize of {} or is smaller than that. Do not change image thumbnailSize. " +
+                        "image with: {}, image height: {}", thumbnailSize, bufferedImage.getWidth(), bufferedImage.getHeight());
                 return imageBinary;
             }
 
             Thumbnails.of(bufferedImage).crop(Positions.CENTER).size(thumbnailSize, thumbnailSize).outputFormat("JPEG").toOutputStream(byteOut);
             return byteOut.toByteArray();
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            return null;
+        } catch (IOException e) {
+            throw new ThumbnailCreationException(e.getMessage(), e);
         }
     }
 
