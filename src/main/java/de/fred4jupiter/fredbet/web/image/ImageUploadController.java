@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.service.image.ImageUploadLimitReachedException;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -77,8 +78,12 @@ public class ImageUploadController {
         }
 
         final ImageGroup imageGroup = imageAdministrationService.findOrCreateImageGroup(imageUploadCommand.getGalleryGroup());
-        imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription());
-        messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
+        try {
+            imageAdministrationService.saveImage(imageByte, imageGroup.getId(), imageUploadCommand.getDescription());
+            messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
+        } catch (ImageUploadLimitReachedException e) {
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.limitReached", e.getCurrentCount(), e.getLimit());
+        }
 
         return REDIRECT_SHOW_PAGE;
     }

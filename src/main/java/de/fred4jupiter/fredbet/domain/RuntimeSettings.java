@@ -62,6 +62,8 @@ public class RuntimeSettings {
     @Min(value = 0)
     private Integer jokerMaxCount = 3;
 
+    private Integer imageUploadLimit;
+
     private boolean selfRegistrationEnabled;
 
     @NotNull
@@ -203,5 +205,13 @@ public class RuntimeSettings {
             return "/webjars/bootstrap/css/bootstrap-theme.min.css";
         }
         return "/webjars/bootswatch/" + selectedTheme + "/bootstrap.min.css";
+    }
+
+    public Integer getImageUploadLimit() {
+        return imageUploadLimit;
+    }
+
+    public void setImageUploadLimit(Integer imageUploadLimit) {
+        this.imageUploadLimit = imageUploadLimit;
     }
 }

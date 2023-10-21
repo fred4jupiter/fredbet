@@ -29,4 +29,11 @@ public interface ImageMetaDataRepository extends JpaRepository<ImageMetaData, Lo
 
     List<ImageMetaData> findByOwner(AppUser owner);
 
+    @Query("""
+            select count(i)
+            from ImageMetaData i
+            where i.owner.username = :username
+    """)
+    Integer numberOfImagesOfUser(@Param("username") String username);
+
 }

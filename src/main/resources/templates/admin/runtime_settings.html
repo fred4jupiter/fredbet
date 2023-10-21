@@ -133,6 +133,18 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
+						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
+						<div class="row">
+							<div class="col-xs-4">
+								<div class="form-group">
+									<label for="runtimeSettings.imageUploadLimit" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
+									<input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
+									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
 						<ul class="list-group">
 							<li class="list-group-item">

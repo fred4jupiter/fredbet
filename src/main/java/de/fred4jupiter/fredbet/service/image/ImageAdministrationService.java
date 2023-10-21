@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -38,10 +39,12 @@ public class ImageAdministrationService {
 
     private final UserService userService;
 
+    private final RuntimeSettingsService runtimeSettingsService;
+
     public ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
                                       ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
                                       ImageKeyGenerator imageKeyGenerator, SecurityService securityService,
-                                      UserService userService) {
+                                      UserService userService, RuntimeSettingsService runtimeSettingsService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
@@ -49,6 +52,7 @@ public class ImageAdministrationService {
         this.imageKeyGenerator = imageKeyGenerator;
         this.securityService = securityService;
         this.userService = userService;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     public ImageGroup initUserProfileImageGroup() {
@@ -73,17 +77,33 @@ public class ImageAdministrationService {
     }
 
     public void saveImage(byte[] binary, Long imageGroupId, String description) {
+        final AppUser currentUser = securityService.getCurrentUser();
+        checkIfImageUploadPerUserIsReached(currentUser);
+
         final ImageGroup imageGroup = imageGroupRepository.getReferenceById(imageGroupId);
 
         final String key = imageKeyGenerator.generateKey();
 
-        ImageMetaData image = new ImageMetaData(key, imageGroup, securityService.getCurrentUser());
+        ImageMetaData image = new ImageMetaData(key, imageGroup, currentUser);
         image.setDescription(description);
         imageMetaDataRepository.save(image);
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary);
 
         imageLocationStrategy.saveImage(key, imageGroup.getId(), binary, thumbnail);
+    }
+
+    private void checkIfImageUploadPerUserIsReached(AppUser currentUser) {
+        Integer imageUploadLimit = runtimeSettingsService.loadRuntimeSettings().getImageUploadLimit();
+        if (imageUploadLimit == null) {
+            // no limit
+            return;
+        }
+
+        Integer alreadyUploadedImages = imageMetaDataRepository.numberOfImagesOfUser(currentUser.getUsername());
+        if (alreadyUploadedImages >= imageUploadLimit) {
+            throw new ImageUploadLimitReachedException("The image upload limit has been reached!", alreadyUploadedImages, imageUploadLimit);
+        }
     }
 
     public void saveUserProfileImage(byte[] binary) {
