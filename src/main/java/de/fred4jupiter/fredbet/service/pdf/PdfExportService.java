@@ -111,7 +111,7 @@ public class PdfExportService {
         }
     }
 
-    public static class RowContentAdder {
+    public static final class RowContentAdder {
         private final List<String> rowContent = new ArrayList<>();
 
         public void addCellContent(String content) {
