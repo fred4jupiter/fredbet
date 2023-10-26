@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 @Service
 public class PdfExportService {
@@ -34,7 +35,7 @@ public class PdfExportService {
         this.fontCreator = fontCreator;
     }
 
-    public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, RowCallback<T> rowCallback) {
+    public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
         final PdfTableData pdfTableData = pdfTableDataBuilder.build();
 
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -56,7 +57,7 @@ public class PdfExportService {
         }
     }
 
-    private <T> PdfPTable createTable(List<T> data, RowCallback<T> rowCallback, PdfTableData pdfTableData) {
+    private <T> PdfPTable createTable(List<T> data, BiConsumer<RowContentAdder, T> rowCallback, PdfTableData pdfTableData) {
         PdfPTable table = new PdfPTable(pdfTableData.getColumnWidths());
         table.setWidthPercentage(100);
 
@@ -64,7 +65,7 @@ public class PdfExportService {
 
         data.forEach(dataEntry -> {
             RowContentAdder rowContentAdder = new RowContentAdder();
-            rowCallback.onRow(rowContentAdder, dataEntry);
+            rowCallback.accept(rowContentAdder, dataEntry);
             List<String> rowContent = rowContentAdder.getRowContent();
             addRowToTable(table, rowContent, false);
         });
@@ -108,12 +109,6 @@ public class PdfExportService {
 
             table.addCell(cell);
         }
-    }
-
-    @FunctionalInterface
-    public interface RowCallback<T> {
-
-        void onRow(RowContentAdder rowContentAdder, T row);
     }
 
     public static class RowContentAdder {
