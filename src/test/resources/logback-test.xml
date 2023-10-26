@@ -6,12 +6,9 @@
 		</encoder>
 	</appender>
 
-	<logger name="de.fred4jupiter.fredbet">
-		<level value="DEBUG"/>
-	</logger>
+	<logger name="de.fred4jupiter.fredbet" level="DEBUG"/>
 
-	<root>
-		<level value="WARN" />
+	<root level="WARN">
 		<appender-ref ref="CONSOLE" />
 	</root>
 </configuration>

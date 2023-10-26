@@ -35,6 +35,8 @@ public class ImportExportServiceIT {
 
     @Test
     public void exportAllAsJsonAndImportAgain() {
+        extraBetRepository.deleteAll();
+        betRepository.deleteAll();
         appUserRepository.deleteAll();
 
         final int numberOfDemoUsers = 9;
