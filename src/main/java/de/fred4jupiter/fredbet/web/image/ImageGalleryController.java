@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -88,8 +89,7 @@ public class ImageGalleryController {
         return ResponseEntityUtil.createResponseEntity(zipFileName, zipFile, MediaType.APPLICATION_OCTET_STREAM_VALUE);
     }
 
-    private ResponseEntity<byte[]> createResponseEntityForImageId(String imageKey, WebRequest webRequest,
-                                                                  ImageLoadingCallback imageLoadingCallback) {
+    private ResponseEntity<byte[]> createResponseEntityForImageId(String imageKey, WebRequest webRequest, Function<ImageAdministrationService, BinaryImage> imageLoadingCallback) {
         final String etag = "" + imageKey;
         boolean notModified = webRequest.checkNotModified(etag);
         if (notModified) {
@@ -97,18 +97,12 @@ public class ImageGalleryController {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS)).eTag(etag).body(null);
         }
 
-        final BinaryImage binaryImage = imageLoadingCallback.loadImage(imageAdministrationService);
+        final BinaryImage binaryImage = imageLoadingCallback.apply(imageAdministrationService);
 
         if (binaryImage == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.ok().eTag(etag).header("Content-Type", MediaType.IMAGE_JPEG_VALUE).body(binaryImage.getImageBinary());
-    }
-
-    @FunctionalInterface
-    interface ImageLoadingCallback {
-
-        BinaryImage loadImage(ImageAdministrationService imageAdministrationService);
     }
 }

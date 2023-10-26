@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.info.pointcourse.ChartData;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 class PointCourseContainerImpl implements PointCourseContainer {
 
@@ -33,11 +34,11 @@ class PointCourseContainerImpl implements PointCourseContainer {
         }
     }
 
-    private void iteratePointsPerUser(PointCourseContainerImpl.ResultCallback resultCallback) {
+    private void iteratePointsPerUser(BiConsumer<String, List<Integer>> consumer) {
         Set<String> usernames = map.keySet();
         for (String username : usernames) {
             LinkedList<Integer> pointsPerUser = map.get(username);
-            resultCallback.doWith(username, pointsPerUser);
+            consumer.accept(username, pointsPerUser);
         }
     }
 
@@ -55,11 +56,5 @@ class PointCourseContainerImpl implements PointCourseContainer {
         ChartData chartData = new ChartData(this.getLabels());
         iteratePointsPerUser(chartData::addDataSet);
         return chartData;
-    }
-
-    @FunctionalInterface
-    public interface ResultCallback {
-
-        void doWith(String username, List<Integer> pointsList);
     }
 }
