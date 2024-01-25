@@ -90,9 +90,7 @@ public class MatchService {
     }
 
     public List<Match> findUpcomingMatches() {
-        LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
-        LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
-        return matchRepository.findUpcomingMatches(groupKickOffBeginSelectionDate, koKickOffBeginSelectionDate);
+        return matchRepository.findUpcomingMatches(HOURS_SHOW_UPCOMING_GROUP_MATCHES, HOURS_SHOW_UPCOMING_OTHER_MATCHES);
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)

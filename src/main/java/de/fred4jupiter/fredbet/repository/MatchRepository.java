@@ -16,9 +16,27 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	List<Match> findAllByOrderByKickOffDateAsc();
 
-	@Query("select m from Match m where (m.group like 'GROUP%' and m.kickOffDate > :groupKickOffDate) or (m.group not like 'GROUP%' and m.kickOffDate > :koKickOffDate) or (m.teamOne.goals is null and m.teamTwo.goals is null) order by m.kickOffDate asc")
+	@Query("""
+                select m
+                from Match m
+                where (m.group in :listOfGroup and m.kickOffDate > :groupKickOffDate)
+                or (m.group not in :listOfGroup and m.kickOffDate > :koKickOffDate)
+                or (m.teamOne.goals is null and m.teamTwo.goals is null)
+                order by m.kickOffDate asc
+            """)
 	List<Match> findUpcomingMatches(@Param("groupKickOffDate") LocalDateTime groupKickOffDate,
-			@Param("koKickOffDate") LocalDateTime koKickOffDate);
+									@Param("koKickOffDate") LocalDateTime koKickOffDate,
+									@Param("listOfGroup") List<Group> listOfGroup);
+
+	default List<Match> findUpcomingMatches(LocalDateTime groupKickOffDate, LocalDateTime koKickOffDate) {
+		return findUpcomingMatches(groupKickOffDate, koKickOffDate, Group.getMainGroups());
+	}
+
+	default List<Match> findUpcomingMatches(int hoursShowUpcomingGroupMatches, int hoursShowUpcomingOtherMatches) {
+		LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(hoursShowUpcomingGroupMatches);
+		LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(hoursShowUpcomingOtherMatches);
+		return findUpcomingMatches(groupKickOffBeginSelectionDate, koKickOffBeginSelectionDate, Group.getMainGroups());
+	}
 
 	List<Match> findByGroupOrderByKickOffDateAsc(Group group);
 
