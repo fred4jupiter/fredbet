@@ -27,7 +27,7 @@ jobs:
       - name: Extract jar for layered image building
         run: java -Djarmode=layertools -jar target/fredbet.jar extract
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-binary
           path: |
@@ -44,17 +44,17 @@ jobs:
       DOCKER_TARGET_PLATFORM: linux/arm64/v8,linux/amd64
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-binary
       - name: Create missing directories
         run: mkdir -p snapshot-dependencies
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
