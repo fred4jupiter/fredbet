@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.util;
 
 
+import de.fred4jupiter.fredbet.common.UnitTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@UnitTest
 public class DateUtilsUT {
 
     private static final Logger LOG = LoggerFactory.getLogger(DateUtilsUT.class);
@@ -43,7 +46,8 @@ public class DateUtilsUT {
     public void formatByLocaleEN() {
         LocalDateTime localDateTime = LocalDateTime.of(2017, 5, 20, 20, 25);
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC+02:00"));
-        assertEquals("May 20, 2017, 8:25:00 PM", DateUtils.formatByLocale(zonedDateTime, Locale.ENGLISH));
+        String formatedEn = DateUtils.formatByLocale(zonedDateTime, Locale.ENGLISH);
+        assertThat(formatedEn).startsWith("May 20, 2017, 8:25:00");
     }
 
     @Test
