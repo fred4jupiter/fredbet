@@ -30,7 +30,7 @@ public class StandingsServiceIT {
         databasePopulator.createDemoBetsForAllUsers();
         databasePopulator.createDemoResultsForAllMatches();
 
-        StandingsContainer standingsContainer = standingsService.calculateStandings(new Locale("de", "DE"));
+        StandingsContainer standingsContainer = standingsService.calculateStandings(Locale.of("de", "DE"));
         assertThat(standingsContainer).isNotNull();
         LOG.debug("groupPointsContainer: {}", standingsContainer);
 

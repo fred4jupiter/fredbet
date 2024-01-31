@@ -51,7 +51,7 @@ public class PdfExportServiceUT {
     @Test
     public void createPdfWithUmlauts() throws IOException {
         PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("października").withHeaderColumn("Prawidłowe zakłady").withHeaderColumn("Różnica goli");
-        builder.withColumnWidths(new float[]{3, 3, 3}).withTitle("Fredbet Resultsäöü").withLocale(new Locale("pl", "PL"));
+        builder.withColumnWidths(new float[]{3, 3, 3}).withTitle("Fredbet Resultsäöü").withLocale(Locale.of("pl", "PL"));
 
         byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, createTestData(), (rowContentAdder, row) -> {
             rowContentAdder.addCellContent(row.getUserName());

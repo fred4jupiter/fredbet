@@ -1,5 +1,5 @@
 # Step : Test and package
-FROM maven:3.8.5-openjdk-17 as builder
+FROM maven:3.9-eclipse-temurin-21 as builder
 WORKDIR /build
 COPY ../pom.xml .
 
@@ -8,7 +8,7 @@ COPY ../.git /build/.git/
 RUN mvn -B -DskipTests package
 
 # Step : Package image
-FROM eclipse-temurin:17-jre-focal
+FROM eclipse-temurin:21-jre-jammy
 LABEL maintainer="Michael Staehler"
 
 VOLUME /tmp

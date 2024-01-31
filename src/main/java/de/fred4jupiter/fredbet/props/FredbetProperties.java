@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -81,7 +80,7 @@ public class FredbetProperties {
             return Locale.getDefault();
         }
 
-        return new Locale(defaultLanguage);
+        return Locale.of(defaultLanguage);
     }
 
     public String getDefaultLanguage() {
