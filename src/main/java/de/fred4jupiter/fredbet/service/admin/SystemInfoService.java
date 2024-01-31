@@ -42,7 +42,7 @@ public class SystemInfoService {
     private void addStaticProperties() {
         add("Build Time", buildProperties.getTime());
         add("Build Version", buildProperties.getVersion());
-        add("Java Version", buildProperties.get("java.source"));
+        add("Java Version", buildProperties.get("java.version"));
 
         if (gitProperties.isPresent()) {
             GitProperties gitProps = gitProperties.get();
