@@ -30,16 +30,29 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - change UI design themes
 
 ## Testing it locally
+### Building and running with Java 21 and Maven installed
 
-You can run the application by issuing the following command:
+You can run the application locally if you have Java 21 and Maven installed. Run the following command:
 
 ```bash
 mvn install spring-boot:run
 ```
 
-The application is available under [http://localhost:8080/](http://localhost:8080/) and runs (by default) with an in-memory H2 database. Log in with the admin account `admin/admin`.
+It will build and run the application. The web UI will be available at [http://localhost:8080/](http://localhost:8080/) and runs (by default) with an in-memory H2 database. Log in with the admin account `admin/admin`.
 
-In the `dev` profile (which will be activated if no profile is specified) the application starts with an embedded in-memory H2 database.
+### Building and running with Docker and Docker Compose
+
+If you have Docker and Docker Compose installed you can build the application with:
+
+```bash
+docker compose --profile app build
+```
+
+The next command starts the container connecting to the postgres database:
+
+```bash
+docker compose --profile app up -d
+```
 
 ## Running the released Docker image
 
@@ -51,13 +64,15 @@ You can browse the available releases at [Docker Hub](https://hub.docker.com/r/f
 for the latest released version or use the `latest` tag for current development image (not stable).
 
 ```bash
-docker run -d -p 8080:8080 fred4jupiter/fredbet:2.8.2
+docker run -d -p 8080:8080 fred4jupiter/fredbet:<VERSION_TAG>
 ```
+
+Use the last version tag published or leave empty to use the latest one.
 
 ### Github Container Registry
 
 ```bash
-docker run -d -p 8080:8080 ghcr.io/fred4jupiter/fredbet:2.8.2
+docker run -d -p 8080:8080 ghcr.io/fred4jupiter/fredbet:<VERSION_TAG>
 ```
 
 ## Building your own Docker image
