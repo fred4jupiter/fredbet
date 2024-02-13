@@ -1,0 +1,16 @@
+FROM maven:3.9-eclipse-temurin-21 as builder
+COPY pom.xml .
+
+COPY src/ /src/
+COPY .git /.git/
+RUN mvn -B -DskipTests package
+
+COPY /target/fredbet.jar application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
+FROM eclipse-temurin:21-jre-jammy
+COPY --from=builder dependencies/ ./
+COPY --from=builder spring-boot-loader/ ./
+COPY --from=builder snapshot-dependencies/ ./
+COPY --from=builder application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

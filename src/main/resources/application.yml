@@ -1,6 +1,4 @@
 spring:
-  thymeleaf:
-    cache: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:h2:file:~/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -31,10 +29,10 @@ logging:
   pattern:
     console: "%d %-5level [%c] - %msg%n"
   level:
-    root: WARN
-    "org.springframework.web": WARN
-    "org.springframework.security": WARN
-    "de.fred4jupiter.fredbet": INFO
+    root: "WARN"
+    "org.springframework.web": "WARN"
+    "org.springframework.security": "WARN"
+    "de.fred4jupiter.fredbet": "INFO"
 
 server:
   servlet:
