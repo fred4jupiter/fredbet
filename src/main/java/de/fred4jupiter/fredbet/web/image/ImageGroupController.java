@@ -44,15 +44,6 @@ public class ImageGroupController {
         return new ImageGroupCommand();
     }
 
-//    @ModelAttribute("availableImageGroups")
-//    public List<ImageGroupCommand> availableImageGroups() {
-//        List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
-//        return imageGroups.stream().map(this::mapToImageGroupCommand)
-//                .sorted(Comparator.comparing(ImageGroupCommand::getName, String.CASE_INSENSITIVE_ORDER))
-//                .toList();
-//
-//    }
-
     private ImageGroupCommand mapToImageGroupCommand(ImageGroup imageGroup) {
         ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
         imageGroupCommand.setId(imageGroup.getId());
