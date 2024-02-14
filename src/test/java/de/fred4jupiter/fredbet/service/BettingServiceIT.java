@@ -79,9 +79,7 @@ public class BettingServiceIT {
         assertEquals(Integer.valueOf(3), joker.getNumberOfJokersUsed());
         assertEquals(Integer.valueOf(3), joker.getMax());
 
-        assertThrows(NumberOfJokersReachedException.class, () -> {
-            bettingService.save(bet4);
-        });
+        assertThrows(NumberOfJokersReachedException.class, () -> bettingService.save(bet4));
     }
 
     @Test

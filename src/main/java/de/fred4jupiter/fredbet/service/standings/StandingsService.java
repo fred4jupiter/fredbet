@@ -24,10 +24,8 @@ public class StandingsService {
     public StandingsContainer calculateStandings(Locale locale) {
         final StandingsContainer standingsContainer = new StandingsContainer(messageSourceUtil);
 
-        List<Match> matches = matchService.findAll().stream().filter(Match::hasResultSet).collect(Collectors.toList());
-        matches.forEach(match -> {
-            standingsContainer.registerResult(match, locale);
-        });
+        List<Match> matches = matchService.findAll().stream().filter(Match::hasResultSet).toList();
+        matches.forEach(match -> standingsContainer.registerResult(match, locale));
 
         return standingsContainer;
     }

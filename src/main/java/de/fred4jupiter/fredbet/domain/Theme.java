@@ -18,5 +18,5 @@ public enum Theme {
     SPACELAB,
     SUPERHERO,
     UNITED,
-    YETI;
+    YETI
 }

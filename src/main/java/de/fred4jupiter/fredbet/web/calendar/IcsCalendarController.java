@@ -30,7 +30,7 @@ public class IcsCalendarController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntityUtil.createResponseEntity(icsFile.getFileName(), icsFile.getBinary(), CONTENT_TYPE);
+        return ResponseEntityUtil.createResponseEntity(icsFile.fileName(), icsFile.binary(), CONTENT_TYPE);
     }
 
 }

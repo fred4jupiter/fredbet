@@ -209,9 +209,7 @@ public class DatabasePopulator {
 
         List<String> additionalAdminUsers = fredbetProperties.getAdditionalAdminUsers();
         if (additionalAdminUsers != null && !additionalAdminUsers.isEmpty()) {
-            additionalAdminUsers.forEach(username -> {
-                saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(username, username).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
-            });
+            additionalAdminUsers.forEach(username -> saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(username, username).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build()));
         }
     }
 

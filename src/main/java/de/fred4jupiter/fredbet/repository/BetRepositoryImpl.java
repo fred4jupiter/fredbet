@@ -23,9 +23,9 @@ class BetRepositoryImpl implements BetRepositoryCustom {
     @Override
     public Map<Long, PointCourseResultSimple> fetchPointCourseResultSimple() {
         final String sql = """
-                select m.match_id, b.user_name, b.points 
-                from matches m join bet b on m.match_id = b.match_id 
-                order by m.kick_off_date;                                
+                select m.match_id, b.user_name, b.points
+                from matches m join bet b on m.match_id = b.match_id
+                order by m.kick_off_date;
                 """;
         LOG.debug("sql={}", sql);
         final Map<Long, PointCourseResultSimple> map = new HashMap<>();

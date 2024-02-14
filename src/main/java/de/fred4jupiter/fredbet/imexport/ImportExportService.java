@@ -119,9 +119,7 @@ public class ImportExportService {
         final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
 
         final List<UserToExport> users = importExportContainer.getUsers();
-        users.forEach(userToExport -> {
-            userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
-        });
+        users.forEach(userToExport -> userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles()));
         LOG.debug("imported users");
 
         final List<MatchToExport> matchesToExportList = importExportContainer.getMatches();
@@ -148,11 +146,9 @@ public class ImportExportService {
         LOG.debug("imported bets");
 
         final List<ExtraBetToExport> extraBets = importExportContainer.getExtraBets();
-        extraBets.forEach(extraBetToExport -> {
-            bettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
-                    extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
-                    extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree());
-        });
+        extraBets.forEach(extraBetToExport -> bettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
+                extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
+                extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree()));
         LOG.debug("imported extrabets");
     }
 

@@ -95,10 +95,10 @@ public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 
     private void readImageInFolder(File imageFolder, Map<String, byte[]> imagesMap) {
         try {
-            Files.walkFileTree(Paths.get(imageFolder.getAbsolutePath()), new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(Paths.get(imageFolder.getAbsolutePath()), new SimpleFileVisitor<>() {
 
                 @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
                     final File file = path.toFile();
                     if (!attrs.isDirectory()) {
                         String imageKey = toImageKey(file.getName());

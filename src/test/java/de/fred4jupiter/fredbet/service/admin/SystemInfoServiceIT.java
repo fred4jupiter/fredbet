@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
@@ -25,9 +24,7 @@ public class SystemInfoServiceIT {
     public void fetchSystemInfo() {
         SortedMap<String, Object> map = systemInfoService.fetchSystemInfo();
         assertNotNull(map);
-        Iterator<Entry<String, Object>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<String, Object> entry = iterator.next();
+        for (Entry<String, Object> entry : map.entrySet()) {
             LOG.debug("{}: {}", entry.getKey(), entry.getValue());
         }
     }

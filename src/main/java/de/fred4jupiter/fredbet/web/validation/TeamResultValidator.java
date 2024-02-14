@@ -30,7 +30,7 @@ public class TeamResultValidator implements ConstraintValidator<TeamResultConstr
 			return true;
 		}
 		
-		return (teamResultOne != null && teamResultOne.intValue() >= 0) && (teamResultTwo != null && teamResultTwo.intValue() >= 0);
+		return (teamResultOne != null && teamResultOne >= 0) && (teamResultTwo != null && teamResultTwo >= 0);
 	}
 
 }

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,10 +35,10 @@ public class DownloadServiceUT {
 
         byte[] imageAsByteArray = FileUtils.readFileToByteArray(file);
 
-        when(binaryImage.getImageBinary()).thenReturn(imageAsByteArray);
-        when(binaryImage.getKey()).thenReturn("Gallery1.jpg");
+        when(binaryImage.imageBinary()).thenReturn(imageAsByteArray);
+        when(binaryImage.key()).thenReturn("Gallery1.jpg");
 
-        byte[] zipFileAsByteArray = downloadService.compressToZipFile(Arrays.asList(binaryImage));
+        byte[] zipFileAsByteArray = downloadService.compressToZipFile(List.of(binaryImage));
         assertNotNull(zipFileAsByteArray);
 
         File outputFile = createOutputFile(new File("result.zip"));

@@ -16,10 +16,10 @@ public class MiscMT {
     public void printFiles() throws IOException {
         File file = new File("d://development_synced/2_Github/fredbet/src/main/resources/static/images/flags/42_28");
 
-        Files.walkFileTree(Paths.get(file.getAbsolutePath()), new SimpleFileVisitor<Path>() {
+        Files.walkFileTree(Paths.get(file.getAbsolutePath()), new SimpleFileVisitor<>() {
 
             @Override
-            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)  {
                 final File file = path.toFile();
                 if (!attrs.isDirectory()) {
                     String isoCode = FilenameUtils.removeExtension(file.getName());

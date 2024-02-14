@@ -14,16 +14,12 @@ class SameRankingCollector {
     void markEntriesWithSameRanking(List<UsernamePoints> rankings) {
         final Multimap<Integer, UsernamePoints> map = ArrayListMultimap.create();
 
-        rankings.forEach(usernamePoints -> {
-            map.put(usernamePoints.getUniqueHash(), usernamePoints);
-        });
+        rankings.forEach(usernamePoints -> map.put(usernamePoints.getUniqueHash(), usernamePoints));
 
         map.keySet().forEach(key -> {
             Collection<UsernamePoints> valuesOfKey = map.get(key);
             if (valuesOfKey.size() > 1) {
-                valuesOfKey.forEach(usernamePoints -> {
-                    usernamePoints.setSameRankingPositionAsOtherUser(true);
-                });
+                valuesOfKey.forEach(usernamePoints -> usernamePoints.setSameRankingPositionAsOtherUser(true));
             }
         });
     }

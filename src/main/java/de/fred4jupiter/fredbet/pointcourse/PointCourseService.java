@@ -46,17 +46,15 @@ public class PointCourseService {
         final List<Match> finishedMatches = matchRepository.findFinishedMatches();
         final PointCourseContainerImpl pointCourseContainer = new PointCourseContainerImpl(messageSourceUtil, locale, finishedMatches);
 
-        finishedMatches.forEach(match -> {
-            usersToDisplay.forEach(user -> {
-                Optional<PointCourseResult> found = getFor(match, user, pointCourseResultList);
-                if (found.isPresent()) {
-                    PointCourseResult pointCourseResult = found.get();
-                    pointCourseContainer.add(pointCourseResult.getUsername(), pointCourseResult.getPoints());
-                } else {
-                    pointCourseContainer.add(user, 0);
-                }
-            });
-        });
+        finishedMatches.forEach(match -> usersToDisplay.forEach(user -> {
+            Optional<PointCourseResult> found = getFor(match, user, pointCourseResultList);
+            if (found.isPresent()) {
+                PointCourseResult pointCourseResult = found.get();
+                pointCourseContainer.add(pointCourseResult.getUsername(), pointCourseResult.getPoints());
+            } else {
+                pointCourseContainer.add(user, 0);
+            }
+        }));
 
         return pointCourseContainer;
     }

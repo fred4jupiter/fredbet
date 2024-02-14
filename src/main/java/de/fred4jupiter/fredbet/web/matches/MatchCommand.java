@@ -34,11 +34,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
     private boolean penaltyWinnerOneMatch;
 
     public boolean isBettable() {
-        if (hasMatchStarted() || hasMatchFinished()) {
-            return false;
-        }
-
-        return true;
+        return !hasMatchStarted() && !hasMatchFinished();
     }
 
     public boolean hasMatchFinished() {

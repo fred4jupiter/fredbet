@@ -41,13 +41,12 @@ public class DownloadService {
 
             zipOutput.setEncoding("UTF-8");
 
-            for (int i = 0; i < allImages.size(); i++) {
-                BinaryImage image = allImages.get(i);
-                String fileName = createEntryFileName(image, i + 1);
+            for (BinaryImage image : allImages) {
+                String fileName = createEntryFileName(image);
                 ZipArchiveEntry entry = new ZipArchiveEntry(fileName);
-                entry.setSize(image.getImageBinary().length);
+                entry.setSize(image.imageBinary().length);
                 zipOutput.putArchiveEntry(entry);
-                copyToOutputStream(zipOutput, image.getImageBinary());
+                copyToOutputStream(zipOutput, image.imageBinary());
                 zipOutput.closeArchiveEntry();
             }
             zipOutput.close();
@@ -64,8 +63,8 @@ public class DownloadService {
         }
     }
 
-    private String createEntryFileName(BinaryImage image, int index) {
-        String fileName = FilenameUtils.getName(image.getKey());
+    private String createEntryFileName(BinaryImage image) {
+        String fileName = FilenameUtils.getName(image.key());
         if (!FilenameUtils.isExtension(fileName, FredbetConstants.IMAGE_JPG_EXTENSION)) {
             return fileName + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT;
         }
