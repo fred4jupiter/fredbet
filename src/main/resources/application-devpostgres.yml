@@ -1,6 +1,6 @@
 spring:
   thymeleaf:
-    cache: false
+    cache: true
   jpa:
     hibernate:
       ddl-auto: validate
