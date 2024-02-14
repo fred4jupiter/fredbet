@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import org.springframework.context.MessageSource;
@@ -35,7 +34,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ActivePageHandlerInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
         registry.addInterceptor(changePasswordFirstLoginInterceptor());
 

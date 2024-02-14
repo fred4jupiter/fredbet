@@ -18,151 +18,181 @@
 				</div>
 				<div th:if="${@webSecurityUtil.isUserLoggedIn()}" id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li th:class="${pageState_ranking}"><a href="#bet" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a></li>
-						<li class="dropdown" th:classappend="${pageState_betting}">
+						<li>
+							<a th:href="@{/ranking}" th:text="#{navigation.ranking}"></a>
+						</li>
+						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				        		<span th:text="#{navigation.betting}" th:remove="tag"></span>			        		
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
-								<li th:class="${pageState_bet_open}"><a href="#bet" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a></li>
-								<li th:class="${pageState_extrabets}"><a href="#bet" th:href="@{/extrabets}" th:text="#{navigation.betting.extraBets}"></a></li>
+								<li>
+									<a th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a>
+								</li>
+								<li>
+									<a th:href="@{/extrabets}" th:text="#{navigation.betting.extraBets}"></a>
+								</li>
 							</ul>
 						</li>						
-						<li class="dropdown" th:classappend="${pageState_group}">
+						<li class="dropdown">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				        		<span th:text="#{matches.title}" th:remove="tag">Spiele</span>			        		
 				        		<span class="caret"></span>
 				        	</a>
 					        <ul class="dropdown-menu">
-								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" th:class="${pageState_matches_finishednoresult}">
-									<a href="#matchesFinishednoresult" th:href="@{/matches/finishednoresult}" th:text="#{finishednoresult.matches}"></a>
+								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')">
+									<a th:href="@{/matches/finishednoresult}" th:text="#{finishednoresult.matches}"></a>
 								</li>
 								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" class="divider" role="separator"></li>
-					        	<li th:class="${pageState_matches_upcoming}"><a href="#matchesUpcoming" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a></li>
-								<li class="divider" role="separator"></li>
-								<li th:class="${pageState_matches_yesterday}">
-									<a href="#matchesYesterday" th:href="@{/matches/yesterday}" th:text="#{yesterday.matches}"></a>
+					        	<li>
+									<a th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a>
 								</li>
 								<li class="divider" role="separator"></li>
-                                <li th:class="${pageState_matches_today}"><a href="#matchesToday" th:href="@{/matches/today}" th:text="#{today.matches}"></a></li>
+								<li>
+									<a th:href="@{/matches/yesterday}" th:text="#{yesterday.matches}"></a>
+								</li>
+								<li class="divider" role="separator"></li>
+                                <li>
+									<a th:href="@{/matches/today}" th:text="#{today.matches}"></a>
+								</li>
                                 <li class="divider" role="separator"></li>
-								<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
+								<li>
+									<a th:href="@{/matches}" th:text="#{all.matches}"></a>
+								</li>
 								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" class="divider" role="separator"></li>
-								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" th:class="${pageState_matches_joker}">
-					            	<a href="#matches" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
+								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}">
+					            	<a th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
 				            	</li>
 								<li class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}" th:class="${pageState_matches_group_GROUP_A}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}">
+					            	<a th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}" th:class="${pageState_matches_group_GROUP_B}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}">
+					            	<a th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}" th:class="${pageState_matches_group_GROUP_C}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}">
+					            	<a th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}" th:class="${pageState_matches_group_GROUP_D}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}">
+					            	<a th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}" th:class="${pageState_matches_group_GROUP_E}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}">
+					            	<a th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
 					            </li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}" th:class="${pageState_matches_group_GROUP_F}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}">
+					            	<a th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}" th:class="${pageState_matches_group_GROUP_G}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}">
+					            	<a th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}" th:class="${pageState_matches_group_GROUP_H}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}">
+					            	<a th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
 				            	</li>
-								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}" th:class="${pageState_matches_group_GROUP_I}">
-									<a href="#matches" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
+								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}">
+									<a th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
 								</li>
-								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}" th:class="${pageState_matches_group_GROUP_J}">
-									<a href="#matches" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
+								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}">
+									<a th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
 								</li>
 					            <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}" class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}" th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}">
-					            	<a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}">
+					            	<a  th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('QUARTER_FINAL')}" th:class="${pageState_matches_group_QUARTER_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('QUARTER_FINAL')}">
+					            	<a  th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a>
 				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}" th:class="${pageState_matches_group_SEMI_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}">
+					            	<a  th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a>
 				            	</li>
 				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" th:class="${pageState_matches_group_GAME_FOR_THIRD}">
-					            	<a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
+					            	<a  th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a>
 				            	</li>
 				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" th:class="${pageState_matches_group_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
+					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
+					            	<a  th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
 				            	</li>				            	
 					        </ul>
 				        </li>
-				        <li class="dropdown" th:classappend="${pageState_info}">
+				        <li class="dropdown">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				        		<span th:text="#{navigation.info}" th:remove="tag"></span>			        		
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
-								<li th:class="${pageState_standings}"><a href="#standings" th:href="@{/standings}" th:text="#{standings.title}"></a></li>
-								<li th:class="${pageState_info_statistic}"><a href="#misc" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
-								<li th:class="${pageState_info_pointsfrequency}"><a href="#misc" th:href="@{/info/pointsfrequency}" th:text="#{pointsfrequency.title}"></a></li>
-								<li th:class="${pageState_pointcourse_show}"><a href="#misc" th:href="@{/pointcourse/show}" th:text="#{pointcourse.title}"></a></li>
+								<li>
+									<a th:href="@{/standings}" th:text="#{standings.title}"></a>
+								</li>
+								<li>
+									<a th:href="@{/info/statistic}" th:text="#{statistics.title}"></a>
+								</li>
+								<li>
+									<a th:href="@{/info/pointsfrequency}" th:text="#{pointsfrequency.title}"></a>
+								</li>
+								<li>
+									<a th:href="@{/pointcourse/show}" th:text="#{pointcourse.title}"></a>
+								</li>
 								<li class="divider" role="separator"></li>
-					        	<li th:class="${pageState_info_rules}"><a href="#rules" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
-					        	<li th:class="${pageState_info_prices}"><a href="#prices" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
-					        	<li th:class="${pageState_info_misc}"><a href="#misc" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
+					        	<li>
+									<a th:href="@{/info/rules}" th:text="#{rules.title}"></a>
+								</li>
+					        	<li>
+									<a th:href="@{/info/prices}" th:text="#{prices.title}"></a>
+								</li>
+					        	<li>
+									<a th:href="@{/info/misc}" th:text="#{misc.title}"></a>
+								</li>
 								<li class="divider" role="separator"></li>
-					        	<li th:class="${pageState_gallery_show}"><a href="#misc" th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a></li>
-					        	<li th:class="${pageState_image_show}"><a href="#misc" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
+					        	<li>
+									<a th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a>
+								</li>
+					        	<li>
+									<a th:href="@{/image/show}" th:text="#{image.upload.title}"></a>
+								</li>
 				        	</ul>
 				        </li>			        
-				        <li class="dropdown" th:classappend="${pageState_administrationMenu}" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
+				        <li class="dropdown" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
-					        	<li th:class="${pageState_user}" sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
-					        		<a href="#user" th:href="@{/user}" th:text="#{navigation.user}"></a>
+					        	<li sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
+					        		<a th:href="@{/user}" th:text="#{navigation.user}"></a>
 				        		</li>
-								<li th:class="${pageState_user_importexport}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+								<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 									<a th:href="@{/user/importexport}" th:text="#{user.importexport.title}"></a>
 								</li>
-								<li th:class="${pageState_importexport}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+								<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 									<a th:href="@{/importexport}" th:text="#{importexport.title}"></a>
 								</li>
-						  		<li th:class="${pageState_systeminfo}" sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
-						  			<a href="#systeminfo" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
+						  		<li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
+						  			<a th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
 					  			</li>
-						  		<li th:class="${pageState_administration_active_users}" sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
-						  			<a href="#activeUsers" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
+						  		<li sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
+						  			<a th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
 					  			</li>
-						  		<li th:class="${pageState_administration_lastlogins}" sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
-						  			<a href="#lastlogin" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
+						  		<li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
+						  			<a th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
 					  			</li>
-						  		<li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" th:class="${pageState_administration}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#administration" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
+						  		<li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
 					  			</li>
-						  		<li th:class="${pageState_excelimport_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#excelimport" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
+						  		<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
 					  			</li>
-					  			<li th:class="${pageState_excelexport_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#excelexport" th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
+					  			<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
 					  			</li>
-					  			<li th:class="${pageState_config_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#config" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
+					  			<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
 					  			</li>					  			
-					  			<li th:class="${pageState_runtimesettings_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#config" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
+					  			<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
 					  			</li>
-					  			<li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" th:class="${pageState_backup_show}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-						  			<a href="#backup" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
+					  			<li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+						  			<a th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
 					  			</li>
 								<li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 									<a class="dropdown-item" th:href="${@webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
@@ -174,20 +204,21 @@
 						<li class="dropdown">
 							<div th:replace="~{fragments/language_selector :: language_selector('dropdown-toggle')}"></div>
 	                    </li>
-						<li class="dropdown" th:classappend="${pageState_profile}">
+						<li class="dropdown">
 							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 	                            <span th:replace="~{fragments/profile_image :: profile_image_small(${@webSecurityUtil.getCurrentUserProfileImageKey()})}"></span>
-	                            <span th:text="${@webSecurityUtil.getCurrentUsername()}"></span><span class="caret"></span>
+	                            <span th:text="${@webSecurityUtil.getCurrentUsername()}"></span>
+								<span class="caret"></span>
 	                        </a>
 							<ul class="dropdown-menu">
-								<li th:class="${pageState_profile_changePassword}">
-									<a href="#changePassword" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
+								<li>
+									<a th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
 								</li>
-								<li th:class="${pageState_cropping_show}">
+								<li>
 									<a th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
 								</li>
-								<li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}" th:class="${pageState_profile_changeUsername}">
-									<a href="#changeUsername" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
+								<li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
+									<a th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
 								</li>
 							</ul>						
 						</li>
