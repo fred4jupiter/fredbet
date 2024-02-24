@@ -47,7 +47,7 @@ public class PointCourseService {
         final List<PointCourseResult> pointCourseResultList = queryPointCourseResultList(username, pair);
 
         final List<Match> finishedMatches = matchRepository.findFinishedMatches();
-        final PointCourseContainerImpl pointCourseContainer = new PointCourseContainerImpl(messageSourceUtil, locale, finishedMatches);
+        final PointCourseContainer pointCourseContainer = new PointCourseContainer(messageSourceUtil, locale, finishedMatches);
 
         finishedMatches.forEach(match -> usersToDisplay.forEach(user -> {
             Optional<PointCourseResult> found = getFor(match, user, pointCourseResultList);

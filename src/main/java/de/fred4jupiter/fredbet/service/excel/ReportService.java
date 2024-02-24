@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.service.excel;
 
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.service.ranking.RankingService;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -31,14 +32,18 @@ public class ReportService {
 
     private final RankingService rankingService;
 
+    private final FredbetProperties fredbetProperties;
+
     public ReportService(ExcelExportService excelExportService, BetRepository betRepository, ExtraBetRepository extraBetRepository,
-                         MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService) {
+                         MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService,
+                         FredbetProperties fredbetProperties) {
         this.excelExportService = excelExportService;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.messageSourceUtil = messageSourceUtil;
         this.matchRepository = matchRepository;
         this.rankingService = rankingService;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public byte[] exportBetsToExcel(final Locale locale) {
@@ -144,9 +149,9 @@ public class ReportService {
     }
 
     public MultiValuedMap<Integer, PointCountResult> reportPointsFrequency() {
-        MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
+        final MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
 
-        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser(fredbetProperties.getAdminUsername());
         for (PointCountResult pointCountResult : resultList) {
             map.put(pointCountResult.points(), pointCountResult);
         }
@@ -154,9 +159,8 @@ public class ReportService {
         return map;
     }
 
-
     public byte[] exportNumberOfPointsInBets(final Locale locale) {
-        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser(fredbetProperties.getAdminUsername());
 
         return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<>() {
 

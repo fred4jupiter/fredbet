@@ -24,10 +24,11 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     @Query("""
             select new de.fred4jupiter.fredbet.repository.PointCountResult(b.userName, b.points, count(b))
             from Bet b
+            where b.userName != :adminUsername
             group by b.userName, b.points
             order by b.points desc, count(b) desc, b.userName asc
             """)
-    List<PointCountResult> countNumberOfPointsByUser();
+    List<PointCountResult> countNumberOfPointsByUser(@Param("adminUsername") String adminUsername);
 
     @Modifying
     @Query("update Bet b set b.userName = :newUsername where b.userName = :oldUsername")
