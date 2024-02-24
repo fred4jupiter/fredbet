@@ -130,16 +130,16 @@ public class DatabasePopulator {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
 
-        List<Match> allMatches = matchService.findAll();
-        List<AppUser> users = userService.findAll();
+        final List<Match> allMatches = matchService.findAll();
+        final List<AppUser> users = userService.findAll();
         users.forEach(appUser -> {
-            for (Match match : allMatches) {
+            allMatches.forEach(match -> {
                 boolean jokerAllowed = false;
                 if (randomValueGenerator.generateRandomBoolean()) {
                     jokerAllowed = jokerService.isSettingJokerAllowed(appUser.getUsername(), match.getId());
                 }
                 createBetForUser(appUser, match, jokerAllowed);
-            }
+            });
 
             bettingService.createExtraBetForUser(appUser.getUsername());
         });
