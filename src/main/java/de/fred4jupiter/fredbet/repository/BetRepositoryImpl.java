@@ -21,24 +21,6 @@ class BetRepositoryImpl implements BetRepositoryCustom {
     }
 
     @Override
-    public Map<Long, PointCourseResultSimple> fetchPointCourseResultSimple() {
-        final String sql = """
-                select m.match_id, b.user_name, b.points
-                from matches m join bet b on m.match_id = b.match_id
-                order by m.kick_off_date;
-                """;
-        LOG.debug("sql={}", sql);
-        final Map<Long, PointCourseResultSimple> map = new HashMap<>();
-
-        namedParameterJdbcOperations.query(sql, (ResultSet rs) -> {
-            Long matchId = rs.getLong(1);
-            PointCourseResultSimple entry = new PointCourseResultSimple(matchId, rs.getString(2), rs.getInt(3));
-            map.put(matchId, entry);
-        });
-        return map;
-    }
-
-    @Override
     public List<UsernamePoints> calculateRanging() {
         StringBuilder builder = new StringBuilder();
         builder.append("Select user_name, sum(total) as sum_all from (");
