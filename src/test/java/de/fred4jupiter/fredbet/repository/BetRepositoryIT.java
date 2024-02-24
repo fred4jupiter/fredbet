@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.repository;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ public class BetRepositoryIT {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FredbetProperties fredbetProperties;
 
     @BeforeEach
     public void setup() {
@@ -129,7 +133,7 @@ public class BetRepositoryIT {
 
     @Test
     public void countUserPoints() {
-        List<PointCountResult> resultList = betRepository.countNumberOfPointsByUser();
+        List<PointCountResult> resultList = betRepository.countNumberOfPointsByUser(fredbetProperties.getAdminUsername());
         assertNotNull(resultList);
 
         for (PointCountResult pointCountResult : resultList) {
