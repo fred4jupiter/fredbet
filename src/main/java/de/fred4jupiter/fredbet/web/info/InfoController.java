@@ -1,11 +1,11 @@
 package de.fred4jupiter.fredbet.web.info;
 
 import de.fred4jupiter.fredbet.domain.Info;
-import de.fred4jupiter.fredbet.domain.Statistic;
+import de.fred4jupiter.fredbet.statistic.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.InfoService;
-import de.fred4jupiter.fredbet.service.StatisticService;
+import de.fred4jupiter.fredbet.statistic.StatisticService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
