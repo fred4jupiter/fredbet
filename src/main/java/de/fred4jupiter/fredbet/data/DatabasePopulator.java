@@ -177,7 +177,6 @@ public class DatabasePopulator {
 
         for (int i = 1; i <= numberOfDemoUsers; i++) {
             final String usernameAndPassword = this.fakeDataPopulator.nextRandomUsername();
-//            final String usernameAndPassword = RandomStringUtils.randomAlphanumeric(6);
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
             boolean isNewUser = saveIfNotPresent(user);
@@ -200,7 +199,6 @@ public class DatabasePopulator {
         LOG.info("createDefaultUsers: creating default users ...");
 
         AppUser appUser = AppUserBuilder.create()
-//                .withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
                 .withUsernameAndPassword(fredbetProperties.getAdminUsername(), fredbetProperties.getAdminPassword())
                 .withUserGroup(FredBetUserGroup.ROLE_ADMIN)
                 .deletable(false)
