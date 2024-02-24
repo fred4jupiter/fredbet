@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -85,17 +84,10 @@ public class BettingService {
 
     public List<Match> findMatchesToBet(String username) {
         List<Bet> userBets = betRepository.findByUserName(username);
-        List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
+        List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).toList();
 
-        List<Match> matchesToBet = new ArrayList<>();
         List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
-        for (Match match : allMatches) {
-            if (!matchIds.contains(match.getId()) && match.isBettable()) {
-                matchesToBet.add(match);
-            }
-        }
-
-        return matchesToBet;
+        return allMatches.stream().filter(match -> !matchIds.contains(match.getId()) && match.isBettable()).toList();
     }
 
     public Long save(Bet bet) {
