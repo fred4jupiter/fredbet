@@ -31,7 +31,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     @Query("select count(joker) from Bet where joker = true and userName = :userName")
     Integer countNumberOfJokerUsed(@Param("userName") String userName);
 
-    @Query("select b from Bet b where joker = true and userName = :userName and b.match.id = :matchId")
+    @Query("select b from Bet b where b.joker = true and b.userName = :userName and b.match.id = :matchId")
     Bet findBetsOfGivenMatchWithJokerSet(@Param("userName") String username, @Param("matchId") Long matchId);
 
     @Query("Select b from Bet b LEFT JOIN FETCH b.match where b.goalsTeamOne is not null and b.goalsTeamTwo is not null and b.match.teamOne.goals is not null and b.match.teamTwo.goals is not null")
