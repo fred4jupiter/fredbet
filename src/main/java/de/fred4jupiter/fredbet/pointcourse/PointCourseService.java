@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.pointcourse;
 
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.PointCourseResult;
@@ -21,10 +22,13 @@ public class PointCourseService {
 
     private final MatchRepository matchRepository;
 
-    public PointCourseService(BetRepository betRepository, MessageSourceUtil messageSourceUtil, MatchRepository matchRepository) {
+    private final String adminUsername;
+
+    public PointCourseService(BetRepository betRepository, MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, FredbetProperties fredbetProperties) {
         this.betRepository = betRepository;
         this.messageSourceUtil = messageSourceUtil;
         this.matchRepository = matchRepository;
+        this.adminUsername = fredbetProperties.getAdminUsername();
     }
 
     public PointCourseContainer reportPointsCourse(String username, Locale locale) {
@@ -73,11 +77,11 @@ public class PointCourseService {
 
     private ImmutablePair<String, String> calculateMinMaxPointsUsernames(String currentUser, List<PointsPerUser> pointsPerUsers) {
         PointsPerUser min = pointsPerUsers.stream()
-                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(adminUsername))
                 .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(currentUser))
                 .min(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
         PointsPerUser max = pointsPerUsers.stream()
-                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(adminUsername))
                 .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(currentUser))
                 .max(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
         return min != null && max != null ? ImmutablePair.of(min.getUsername(), max.getUsername()) : ImmutablePair.nullPair();

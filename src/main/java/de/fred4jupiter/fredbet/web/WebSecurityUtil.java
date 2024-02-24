@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
@@ -26,10 +27,13 @@ public class WebSecurityUtil {
 
     private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
-    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService, Optional<H2ConsoleProperties> h2ConsoleProperties) {
+    private final String adminUsername;
+
+    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService, Optional<H2ConsoleProperties> h2ConsoleProperties, FredbetProperties fredbetProperties) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.securityService = securityService;
         this.h2ConsoleProperties = h2ConsoleProperties;
+        this.adminUsername = fredbetProperties.getAdminUsername();
     }
 
     public String getCurrentUserProfileImageKey() {
@@ -42,7 +46,7 @@ public class WebSecurityUtil {
     }
 
     public boolean isRoleSelectionDisabledForUser(String username) {
-        if (FredbetConstants.TECHNICAL_USERNAME.equals(username)) {
+        if (adminUsername.equals(username)) {
             return true;
         }
 
@@ -81,7 +85,7 @@ public class WebSecurityUtil {
     }
 
     public boolean isCurrentUserTheDefaultAdminUser() {
-        return FredbetConstants.TECHNICAL_USERNAME.equals(getCurrentUsername());
+        return adminUsername.equals(getCurrentUsername());
     }
 
     public String resolveH2Path() {

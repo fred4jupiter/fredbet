@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.statistic;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.statistic.Statistic;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,8 +17,11 @@ public class StatisticRepository {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public StatisticRepository(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    private final FredbetProperties fredbetProperties;
+
+    public StatisticRepository(NamedParameterJdbcOperations namedParameterJdbcOperations, FredbetProperties fredbetProperties) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public List<Statistic> createStatistic() {
@@ -30,7 +34,7 @@ public class StatisticRepository {
         builder.append("group by b.user_name, a.match_group");
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("username", FredbetConstants.TECHNICAL_USERNAME);
+        params.addValue("username", fredbetProperties.getAdminUsername());
 
         final StatisticsCollector statisticsCollector = new StatisticsCollector();
 
@@ -58,7 +62,7 @@ public class StatisticRepository {
         namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
             String userName = rs.getString(1);
             int points = rs.getInt(2);
-            if (!FredbetConstants.TECHNICAL_USERNAME.equals(userName)) {
+            if (!fredbetProperties.getAdminUsername().equals(userName)) {
                 userPoints.put(userName, points);
             }
         });

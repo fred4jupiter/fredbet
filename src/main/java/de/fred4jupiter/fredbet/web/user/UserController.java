@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.user;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
@@ -10,6 +10,7 @@ import de.fred4jupiter.fredbet.service.user.UserNotDeletableException;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,10 +46,14 @@ public class UserController {
 
     private final WebSecurityUtil webSecurityUtil;
 
-    public UserController(UserService userService, WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil) {
+    private final FredbetProperties fredbetProperties;
+
+    public UserController(UserService userService, WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil,
+                          FredbetProperties fredbetProperties) {
         this.userService = userService;
         this.webMessageUtil = webMessageUtil;
         this.webSecurityUtil = webSecurityUtil;
+        this.fredbetProperties = fredbetProperties;
     }
 
     @ModelAttribute("availableRoles")
@@ -76,7 +80,7 @@ public class UserController {
     @GetMapping("{id}")
     public String edit(@PathVariable("id") Long userId, Model model, RedirectAttributes redirect) {
         AppUser user = userService.findByUserId(userId);
-        if (!webSecurityUtil.isCurrentUserTheDefaultAdminUser() && FredbetConstants.TECHNICAL_USERNAME.equals(user.getUsername())) {
+        if (!webSecurityUtil.isCurrentUserTheDefaultAdminUser() && fredbetProperties.getAdminUsername().equals(user.getUsername())) {
             // other admin tries to update the default admin user
             webMessageUtil.addErrorMsg(redirect, "user.edited.notAllowed");
             return REDIRECT_USER_PAGE;

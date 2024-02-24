@@ -35,8 +35,6 @@ public class DatabasePopulator {
 
     private static final int NUMBER_OF_DEMO_USERS = 12;
 
-    private static final String DEFAULT_PASSWORD_ADMIN_USER = FredbetConstants.TECHNICAL_USERNAME;
-
     private static final Logger LOG = LoggerFactory.getLogger(DatabasePopulator.class);
 
     private final MatchService matchService;
@@ -201,8 +199,13 @@ public class DatabasePopulator {
     private void createDefaultUsers() {
         LOG.info("createDefaultUsers: creating default users ...");
 
-        saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
-                .withUserGroup(FredBetUserGroup.ROLE_ADMIN).deletable(false).build());
+        AppUser appUser = AppUserBuilder.create()
+//                .withUsernameAndPassword(FredbetConstants.TECHNICAL_USERNAME, DEFAULT_PASSWORD_ADMIN_USER)
+                .withUsernameAndPassword(fredbetProperties.getAdminUsername(), fredbetProperties.getAdminPassword())
+                .withUserGroup(FredBetUserGroup.ROLE_ADMIN)
+                .deletable(false)
+                .build();
+        saveIfNotPresent(appUser);
 
         List<String> additionalAdminUsers = fredbetProperties.getAdditionalAdminUsers();
         if (additionalAdminUsers != null && !additionalAdminUsers.isEmpty()) {

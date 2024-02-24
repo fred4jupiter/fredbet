@@ -136,7 +136,7 @@ public class BettingService {
         }
         List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
         return allBets.stream()
-                .filter(bet -> !bet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .filter(bet -> !bet.getUserName().equals(fredbetProperties.getAdminUsername()))
                 .sorted(Comparator.comparing(Bet::getUserName, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());
     }
@@ -203,7 +203,7 @@ public class BettingService {
     public List<ExtraBet> loadExtraBetDataOthers() {
         List<ExtraBet> allExtraBets = extraBetRepository.findAll(Sort.by(Direction.ASC, "userName"));
         return allExtraBets.stream()
-                .filter(extraBet -> !extraBet.getUserName().equals(FredbetConstants.TECHNICAL_USERNAME))
+                .filter(extraBet -> !extraBet.getUserName().equals(fredbetProperties.getAdminUsername()))
                 .sorted(Comparator.comparing(ExtraBet::getUserName, String.CASE_INSENSITIVE_ORDER))
                 .toList();
     }

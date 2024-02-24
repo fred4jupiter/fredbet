@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.ranking.RankingService;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
@@ -35,6 +35,9 @@ public class RankingServiceIT {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FredbetProperties fredbetProperties;
+
     @Test
     public void getRankingForUsersButWithoutTechnicalUser() {
         saveIfNotPresent(AppUserBuilder.create().withDemoData().build());
@@ -42,7 +45,7 @@ public class RankingServiceIT {
         saveIfNotPresent(AppUserBuilder.create().withDemoData().build());
         saveIfNotPresent(AppUserBuilder.create().withDemoData().build());
 
-        final String username = FredbetConstants.TECHNICAL_USERNAME;
+        final String username = fredbetProperties.getAdminUsername();
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword(username, "test").build());
 
         dataBasePopulator.createRandomMatches();

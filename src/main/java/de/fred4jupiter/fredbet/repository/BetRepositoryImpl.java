@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.repository;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;
@@ -12,8 +13,11 @@ class BetRepositoryImpl implements BetRepositoryCustom {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public BetRepositoryImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    private final FredbetProperties fredbetProperties;
+
+    public BetRepositoryImpl(NamedParameterJdbcOperations namedParameterJdbcOperations, FredbetProperties fredbetProperties) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
+        this.fredbetProperties = fredbetProperties;
     }
 
     @Override
@@ -34,7 +38,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
                 group by user_name order by sum_all desc
                 """;
         Map<String, Object> params = new HashMap<>();
-        params.put("username", FredbetConstants.TECHNICAL_USERNAME);
+        params.put("username", fredbetProperties.getAdminUsername());
 
         return namedParameterJdbcOperations.query(sql, params, (ResultSet rs, int rowNum) -> {
             UsernamePoints usernamePoints = new UsernamePoints();

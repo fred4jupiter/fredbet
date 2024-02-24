@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -233,10 +232,6 @@ public class AppUser implements UserDetails {
 
     public void setChild(boolean child) {
         this.child = child;
-    }
-
-    public boolean isTechnicalDefaultUser() {
-        return FredbetConstants.TECHNICAL_USERNAME.equals(this.username);
     }
 
     public boolean isFirstLogin() {

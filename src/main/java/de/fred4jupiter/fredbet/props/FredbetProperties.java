@@ -17,10 +17,8 @@ import java.util.stream.Collectors;
  *
  * @author michael
  */
-@ConfigurationProperties(prefix = FredbetProperties.PROPS_PREFIX)
+@ConfigurationProperties(prefix = "fredbet")
 public class FredbetProperties {
-
-    public static final String PROPS_PREFIX = "fredbet";
 
     /**
      * Selection of possible image storage locations.
@@ -42,6 +40,10 @@ public class FredbetProperties {
     private Integer diceMaxRange = 3;
 
     private Integer thumbnailSize;
+
+    private String adminUsername = "admin";
+
+    private String adminPassword = "admin";
 
     private List<String> additionalAdminUsers;
 
@@ -152,5 +154,21 @@ public class FredbetProperties {
             }
         }
         throw new IllegalArgumentException("UserGroup with name: " + name + " not found!");
+    }
+
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
+
+    public String getAdminPassword() {
+        return adminPassword;
+    }
+
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
     }
 }

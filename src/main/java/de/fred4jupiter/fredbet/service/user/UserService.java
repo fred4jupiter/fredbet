@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.service.user;
 
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.CacheNames;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
@@ -52,11 +52,13 @@ public class UserService {
 
     private final ImageBinaryRepository imageBinaryRepository;
 
+    private final String adminUsername;
+
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
                        ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
                        ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
                        RuntimeSettingsService runtimeSettingsService, ImageGroupRepository imageGroupRepository,
-                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository) {
+                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository, FredbetProperties fredbetProperties) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
@@ -68,6 +70,7 @@ public class UserService {
         this.imageGroupRepository = imageGroupRepository;
         this.bettingService = bettingService;
         this.imageBinaryRepository = imageBinaryRepository;
+        this.adminUsername = fredbetProperties.getAdminUsername();
     }
 
     public List<AppUser> findAll() {
@@ -78,7 +81,7 @@ public class UserService {
         if (withDefaultAdminUser) {
             return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));
         } else {
-            return appUserRepository.findByUsernameNotLike(FredbetConstants.TECHNICAL_USERNAME, Sort.by(Direction.ASC, "username"));
+            return appUserRepository.findByUsernameNotLike(adminUsername, Sort.by(Direction.ASC, "username"));
         }
     }
 
@@ -144,7 +147,7 @@ public class UserService {
 
         List<AppUser> allUsers = appUserRepository.findAll();
         allUsers.forEach(appUser -> {
-            if (!FredbetConstants.TECHNICAL_USERNAME.equals(appUser.getUsername())) {
+            if (!adminUsername.equals(appUser.getUsername())) {
                 deleteUser(appUser.getId());
             }
         });
@@ -207,7 +210,7 @@ public class UserService {
     }
 
     public void renameUser(String oldUsername, String newUsername) {
-        if (FredbetConstants.TECHNICAL_USERNAME.equals(oldUsername)) {
+        if (adminUsername.equals(oldUsername)) {
             throw new RenameUsernameNotAllowedException("This user is the default admin user which username cannot be renamed!");
         }
 

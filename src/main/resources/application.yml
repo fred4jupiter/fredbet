@@ -66,6 +66,8 @@ fredbet:
   dice-min-range: 0
   dice-max-range: 3
   thumbnail-size: 100
+  admin-username: "admin"
+  admin-password: "admin"
 #  additional-admin-users:
 #    - michael
   user-groups:

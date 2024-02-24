@@ -62,16 +62,6 @@ public class SecurityService {
         return imageMetaDataRepository.findImageMetaDataOfUserProfileImage(username);
     }
 
-    /**
-     * This is the user which is created by default and cannot be renamed.
-     *
-     * @return
-     */
-    public boolean isTechnicalUser(Long userId) {
-        Optional<AppUser> appUserOpt = appUserRepository.findById(userId);
-        return appUserOpt.map(AppUser::isTechnicalDefaultUser).orElse(true);
-    }
-
     public void resetFirstLogin(AppUser appUser) {
         appUser.setFirstLogin(false);
 
