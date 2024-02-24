@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web.info.pointcourse;
+package de.fred4jupiter.fredbet.pointcourse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +27,9 @@ public class ChartData {
 
     public List<DataSet> getDatasets() {
         return datasets;
+    }
+
+    public boolean isEmpty() {
+        return this.datasets.isEmpty();
     }
 }

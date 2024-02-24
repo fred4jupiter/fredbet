@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.pointcourse;
 
 import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+// Punkteverlauf
 @Service
 public class PointCourseService {
 
@@ -31,7 +31,7 @@ public class PointCourseService {
         this.adminUsername = fredbetProperties.getAdminUsername();
     }
 
-    public PointCourseContainer reportPointsCourse(String username, Locale locale) {
+    public ChartData reportPointsCourse(String username, Locale locale) {
         final List<PointsPerUser> pointsPerUsers = this.betRepository.queryPointsPerUser();
         final ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(username, pointsPerUsers);
 
@@ -44,7 +44,6 @@ public class PointCourseService {
             usersToDisplay.add(pair.getRight());
         }
 
-
         final List<PointCourseResult> pointCourseResultList = queryPointCourseResultList(username, pair);
 
         final List<Match> finishedMatches = matchRepository.findFinishedMatches();
@@ -54,17 +53,17 @@ public class PointCourseService {
             Optional<PointCourseResult> found = getFor(match, user, pointCourseResultList);
             if (found.isPresent()) {
                 PointCourseResult pointCourseResult = found.get();
-                pointCourseContainer.add(pointCourseResult.getUsername(), pointCourseResult.getPoints());
+                pointCourseContainer.add(pointCourseResult.username(), pointCourseResult.points());
             } else {
                 pointCourseContainer.add(user, 0);
             }
         }));
 
-        return pointCourseContainer;
+        return pointCourseContainer.createChartData();
     }
 
     private Optional<PointCourseResult> getFor(Match match, String user, List<PointCourseResult> pointCourseResultList) {
-        return pointCourseResultList.stream().filter(result -> result.getMatch().equals(match) && result.getUsername().equals(user)).findAny();
+        return pointCourseResultList.stream().filter(result -> result.match().equals(match) && result.username().equals(user)).findAny();
     }
 
     private List<PointCourseResult> queryPointCourseResultList(String username, ImmutablePair<String, String> pair) {
@@ -77,14 +76,14 @@ public class PointCourseService {
 
     private ImmutablePair<String, String> calculateMinMaxPointsUsernames(String currentUser, List<PointsPerUser> pointsPerUsers) {
         PointsPerUser min = pointsPerUsers.stream()
-                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(adminUsername))
-                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(currentUser))
-                .min(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
+                .filter(pointsPerUser -> !pointsPerUser.username().equals(adminUsername))
+                .filter(pointsPerUser -> !pointsPerUser.username().equals(currentUser))
+                .min(Comparator.comparing(PointsPerUser::points)).orElse(null);
         PointsPerUser max = pointsPerUsers.stream()
-                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(adminUsername))
-                .filter(pointsPerUser -> !pointsPerUser.getUsername().equals(currentUser))
-                .max(Comparator.comparing(PointsPerUser::getPoints)).orElse(null);
-        return min != null && max != null ? ImmutablePair.of(min.getUsername(), max.getUsername()) : ImmutablePair.nullPair();
+                .filter(pointsPerUser -> !pointsPerUser.username().equals(adminUsername))
+                .filter(pointsPerUser -> !pointsPerUser.username().equals(currentUser))
+                .max(Comparator.comparing(PointsPerUser::points)).orElse(null);
+        return min != null && max != null ? ImmutablePair.of(min.username(), max.username()) : ImmutablePair.nullPair();
     }
 }
 

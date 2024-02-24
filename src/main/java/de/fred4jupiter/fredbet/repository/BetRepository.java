@@ -50,7 +50,12 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
             """)
     List<Bet> findAllBetsWithMatches();
 
-    @Query("select new de.fred4jupiter.fredbet.repository.PointCourseResult(b.userName, b.points, b.match) from Bet b where b.userName in :usernames order by b.match.kickOffDate asc")
+    @Query("""
+            select new de.fred4jupiter.fredbet.repository.PointCourseResult(b.userName, b.points, b.match)
+            from Bet b
+            where b.userName in :usernames
+            order by b.match.kickOffDate asc
+            """)
     List<PointCourseResult> queryPointsCourse(@Param("usernames") List<String> usernames);
 
     @Query("select new de.fred4jupiter.fredbet.repository.PointsPerUser(b.userName, sum(b.points)) from Bet b group by b.userName")

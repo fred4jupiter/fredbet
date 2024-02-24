@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.web.info.pointcourse;
+package de.fred4jupiter.fredbet.pointcourse;
 
 import java.util.ArrayList;
 import java.util.List;

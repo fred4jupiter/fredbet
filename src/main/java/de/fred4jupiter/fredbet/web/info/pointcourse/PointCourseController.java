@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.info.pointcourse;
 
-import de.fred4jupiter.fredbet.pointcourse.PointCourseContainer;
+import de.fred4jupiter.fredbet.pointcourse.ChartData;
 import de.fred4jupiter.fredbet.pointcourse.PointCourseService;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -29,14 +29,12 @@ public class PointCourseController {
 
     @GetMapping("/show")
     public String showPage(Model model) {
-        PointCourseContainer pointCourseContainer = pointCourseService.reportPointsCourse(securityService.getCurrentUserName(), LocaleContextHolder.getLocale());
+        ChartData chartData = pointCourseService.reportPointsCourse(securityService.getCurrentUserName(), LocaleContextHolder.getLocale());
 
-        if (pointCourseContainer.isEmpty()) {
+        if (chartData.isEmpty()) {
             webMessageUtil.addInfoMsg(model, "pointsfrequency.noData");
             return "info/pointcourse";
         }
-
-        ChartData chartData = pointCourseContainer.createChartData();
 
         model.addAttribute("chartData", chartData);
         return "info/pointcourse";

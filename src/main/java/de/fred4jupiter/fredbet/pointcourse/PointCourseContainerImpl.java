@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.pointcourse;
 
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import de.fred4jupiter.fredbet.web.info.pointcourse.ChartData;
 
 import java.util.*;
 import java.util.function.BiConsumer;
