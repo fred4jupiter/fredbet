@@ -89,7 +89,7 @@ public class ImageUploadController {
     }
 
     @GetMapping("/delete/{imageKey}")
-    public String deleteImage(@PathVariable("imageKey") String imageKey, RedirectAttributes redirect, @AuthenticationPrincipal AppUser currentUser) {
+    public String deleteImage(@PathVariable String imageKey, RedirectAttributes redirect, @AuthenticationPrincipal AppUser currentUser) {
         if (!isAllowedToDeleteImageWithImageKey(currentUser, imageKey)) {
             messageUtil.addErrorMsg(redirect, "image.gallery.msg.delete.perm.denied");
             return REDIRECT_SHOW_PAGE;

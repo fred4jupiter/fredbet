@@ -46,7 +46,7 @@ public class MatchController {
     }
 
     @GetMapping("/group/{groupName}")
-    public String listByGroup(@PathVariable("groupName") String groupName, Model model) {
+    public String listByGroup(@PathVariable String groupName, Model model) {
         final Group group = Group.valueOf(groupName);
         List<MatchCommand> matches = matchCommandMapper.findMatches(matchService -> matchService.findMatchesByGroup(group));
         model.addAttribute("allMatches", matches);

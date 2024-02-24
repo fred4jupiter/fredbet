@@ -24,6 +24,9 @@ spring:
       max-request-size: 10MB
   jmx:
     enabled: false
+  threads:
+    virtual:
+      enabled: true
 
 logging:
   pattern:

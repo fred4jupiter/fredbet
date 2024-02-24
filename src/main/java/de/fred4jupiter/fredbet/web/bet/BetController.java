@@ -82,7 +82,7 @@ public class BetController {
     }
 
     @GetMapping("/createOrUpdate/{matchId}")
-    public String showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, Model model) {
+    public String showBet(@PathVariable Long matchId, @RequestParam(required = false) String redirectViewName, Model model) {
         Bet bet = bettingService.findOrCreateBetForMatch(matchId);
         if (bet == null) {
             return "redirect:/matches";
@@ -165,7 +165,7 @@ public class BetController {
     }
 
     @GetMapping("/others/match/{matchId}")
-    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
+    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable Long matchId, @RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
         AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
         if (allBetsCommand == null) {
             return new ModelAndView("redirect:/matches");

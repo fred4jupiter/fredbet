@@ -62,7 +62,7 @@ public class ImageGroupController {
     }
 
     @PostMapping("/delete")
-    public String deleteImage(@ModelAttribute("imageGroupCommand") ImageGroupCommand imageGroupCommand, RedirectAttributes redirect) {
+    public String deleteImage(@ModelAttribute ImageGroupCommand imageGroupCommand, RedirectAttributes redirect) {
         try {
             imageGroupService.deleteImageGroup(imageGroupCommand.getId());
             webMessageUtil.addInfoMsg(redirect, "image.group.msg.deleted");

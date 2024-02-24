@@ -67,13 +67,13 @@ public class ImageGalleryController {
     }
 
     @GetMapping(value = "/show/{imageKey}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> showImage(@PathVariable("imageKey") String imageKey, WebRequest webRequest) {
+    public ResponseEntity<byte[]> showImage(@PathVariable String imageKey, WebRequest webRequest) {
         return createResponseEntityForImageId(imageKey, webRequest,
                 imageAdministrationService -> imageAdministrationService.loadImageByImageKey(imageKey));
     }
 
     @GetMapping(value = "/showthumb/{imageKey}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> showThumbnail(@PathVariable("imageKey") String imageKey, WebRequest webRequest) {
+    public ResponseEntity<byte[]> showThumbnail(@PathVariable String imageKey, WebRequest webRequest) {
         return createResponseEntityForImageId(imageKey, webRequest,
                 imageAdministrationService -> imageAdministrationService.loadThumbnailByImageKey(imageKey));
     }

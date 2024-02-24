@@ -13,8 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,7 +62,7 @@ public class UserImportExportController {
         return ResponseEntityUtil.createResponseEntity(fileName, json.getBytes(StandardCharsets.UTF_8), CONTENT_TYPE_JSON);
     }
 
-    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @PostMapping("/import")
     public String uploadJsonFile(UserImportExportCommand command, RedirectAttributes redirect) {
         try {
             MultipartFile myFile = command.getJsonFile();

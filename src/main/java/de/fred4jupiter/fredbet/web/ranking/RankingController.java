@@ -38,12 +38,12 @@ public class RankingController {
     }
 
     @GetMapping
-    public String list(Model model, @RequestParam(value = "mode", required = false, defaultValue = "mixed") String mode) {
+    public String list(Model model, @RequestParam(required = false, defaultValue = "mixed") String mode) {
         return queryRanking(model, RankingSelection.fromMode(mode));
     }
 
     @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
-    public ResponseEntity<byte[]> exportAllBets(@RequestParam(value = "mode", required = false, defaultValue = "mixed") String mode) {
+    public ResponseEntity<byte[]> exportAllBets(@RequestParam(required = false, defaultValue = "mixed") String mode) {
         final RankingSelection rankingSelection = RankingSelection.fromMode(mode);
         final String fileName = createFilename(mode);
         byte[] fileContent = this.rankingService.exportBetsToPdf(LocaleContextHolder.getLocale(), rankingSelection);
@@ -55,7 +55,7 @@ public class RankingController {
     }
 
     private String createFilename(String mode) {
-        return String.format("%s_%s_fredbet_ranking.pdf", dateTimeFormatter.format(LocalDateTime.now()), mode);
+        return "%s_%s_fredbet_ranking.pdf".formatted(dateTimeFormatter.format(LocalDateTime.now()), mode);
     }
 
     private String queryRanking(Model model, RankingSelection rankingSelection) {

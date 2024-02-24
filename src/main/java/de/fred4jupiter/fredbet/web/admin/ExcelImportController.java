@@ -15,8 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -56,7 +56,7 @@ public class ExcelImportController {
         return "admin/excel_import";
     }
 
-    @RequestMapping(value = "/download/template", method = RequestMethod.GET, produces = CONTENT_TYPE_EXCEL)
+    @GetMapping(value = "/download/template", produces = CONTENT_TYPE_EXCEL)
     public ResponseEntity<byte[]> downloadTemplate() {
         final String fileName = "ImportTemplate.xlsx";
         byte[] templateFile = downloadResource(excelTemplateFile);
@@ -72,7 +72,7 @@ public class ExcelImportController {
         return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @PostMapping("/upload")
     public String uploadExcelFile(ExcelUploadCommand excelUploadCommand, RedirectAttributes redirect) {
         try {
             MultipartFile myFile = excelUploadCommand.getMyFile();

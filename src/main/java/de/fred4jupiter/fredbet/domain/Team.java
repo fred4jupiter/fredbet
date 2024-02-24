@@ -103,6 +103,6 @@ public class Team {
     }
 
     public String getBusinessKey() {
-        return String.format("team_%s_%s", this.country, this.name);
+        return "team_%s_%s".formatted(this.country, this.name);
     }
 }

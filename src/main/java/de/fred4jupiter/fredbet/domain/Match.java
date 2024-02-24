@@ -305,6 +305,6 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Override
     public String getMatchBusinessKey() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return String.format("match_%s_%s_%s_%s", this.teamOne.getBusinessKey(), this.teamTwo.getBusinessKey(), this.group, formatter.format(this.kickOffDate));
+        return "match_%s_%s_%s_%s".formatted(this.teamOne.getBusinessKey(), this.teamTwo.getBusinessKey(), this.group, formatter.format(this.kickOffDate));
     }
 }

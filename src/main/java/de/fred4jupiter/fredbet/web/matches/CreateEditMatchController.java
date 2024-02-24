@@ -97,7 +97,7 @@ public class CreateEditMatchController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
     @GetMapping("/delete/{matchId}")
-    public String delete(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
+    public String delete(@PathVariable Long matchId, RedirectAttributes redirect) {
         LOG.debug("deleted match with id={}", matchId);
 
         Match match = matchService.findByMatchId(matchId);

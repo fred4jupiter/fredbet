@@ -11,9 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class DatabaseBackupController {
         return new DatabaseBackupCommand();
     }
 
-    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    @GetMapping("/show")
     public String showPage(DatabaseBackupCommand databaseBackupCommand, Model model) {
         DatabaseBackup databaseBackup = databaseBackupService.loadDatabaseBackup();
         databaseBackupCommand.setBackupFolder(databaseBackup.getDatabaseBackupFolder());
@@ -47,7 +48,7 @@ public class DatabaseBackupController {
         return "admin/backup";
     }
 
-    @RequestMapping(value = "/execute", method = RequestMethod.GET)
+    @GetMapping("/execute")
     public String executeBackup(RedirectAttributes redirect) {
         try {
             String pathFilename = databaseBackupService.executeBackup();
@@ -67,7 +68,7 @@ public class DatabaseBackupController {
         return "redirect:/backup/show";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @PostMapping("/save")
     public String saveBackupSettings(@Valid DatabaseBackupCommand databaseBackupCommand, RedirectAttributes redirect) {
         databaseBackupService.saveBackupFolder(databaseBackupCommand.getBackupFolder());
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.databaseBackupFolderSaved", databaseBackupCommand.getBackupFolder());

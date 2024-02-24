@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +33,6 @@ public class FredBetUsageBuilder {
 
     private Bet bet;
 
-    @Autowired
     private FredBetUsageBuilder(RandomValueGenerator randomValueGenerator, UserService userService, MatchService matchService,
                                 BettingService bettingService) {
         this.randomValueGenerator = randomValueGenerator;

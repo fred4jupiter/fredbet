@@ -14,8 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -63,7 +63,7 @@ public class RuntimeSettingsController {
         return PAGE_RUNTIME_CONFIG;
     }
 
-    @RequestMapping(value = "/saveRuntimeSettings", method = RequestMethod.POST)
+    @PostMapping("/saveRuntimeSettings")
     public String saveRuntimeSettings(@Valid RuntimeSettingsCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_RUNTIME_CONFIG;
