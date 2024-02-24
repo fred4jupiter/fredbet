@@ -21,7 +21,12 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
 
     Long countByMatch(Match match);
 
-    @Query("select new de.fred4jupiter.fredbet.repository.PointCountResult(b.userName, b.points, count(b)) from Bet b group by b.userName, b.points order by b.points desc, count(b) desc, b.userName asc")
+    @Query("""
+            select new de.fred4jupiter.fredbet.repository.PointCountResult(b.userName, b.points, count(b))
+            from Bet b
+            group by b.userName, b.points
+            order by b.points desc, count(b) desc, b.userName asc
+            """)
     List<PointCountResult> countNumberOfPointsByUser();
 
     @Modifying
@@ -34,7 +39,15 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     @Query("select b from Bet b where b.joker = true and b.userName = :userName and b.match.id = :matchId")
     Bet findBetsOfGivenMatchWithJokerSet(@Param("userName") String username, @Param("matchId") Long matchId);
 
-    @Query("Select b from Bet b LEFT JOIN FETCH b.match where b.goalsTeamOne is not null and b.goalsTeamTwo is not null and b.match.teamOne.goals is not null and b.match.teamTwo.goals is not null")
+    @Query("""
+            Select b
+            from Bet b
+            LEFT JOIN FETCH b.match
+            where b.goalsTeamOne is not null
+            and b.goalsTeamTwo is not null
+            and b.match.teamOne.goals is not null
+            and b.match.teamTwo.goals is not null
+            """)
     List<Bet> findAllBetsWithMatches();
 
     @Query("select new de.fred4jupiter.fredbet.repository.PointCourseResult(b.userName, b.points, b.match) from Bet b where b.userName in :usernames order by b.match.kickOffDate asc")
