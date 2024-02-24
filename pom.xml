@@ -127,7 +127,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.6.3</version>
+            <version>3.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -174,7 +174,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.21</version>
+            <version>1.26.0</version>
         </dependency>
 
         <dependency>
