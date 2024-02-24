@@ -63,7 +63,7 @@ public class StatisticService {
             if (statistic.getSum() == statisticAgg.minPoints()) {
                 statistic.setMinPointsCandidate(true);
             }
-            if (statistic.getSum() == statisticAgg.minPoints()) {
+            if (statistic.getSum() == statisticAgg.maxPoints()) {
                 statistic.setMaxPointsCandidate(true);
             }
             if (statistic.getPointsGroup() == statisticAgg.maxGroupPoints()) {
