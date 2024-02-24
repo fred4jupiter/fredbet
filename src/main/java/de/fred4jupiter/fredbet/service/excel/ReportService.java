@@ -45,7 +45,7 @@ public class ReportService {
         List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
         if (Validator.isNotEmpty(finalMatches)) {
             // there should be only one final match (ignoring if more)
-            Match match = finalMatches.get(0);
+            Match match = finalMatches.getFirst();
             if (match.hasResultSet()) {
                 return exportBetsToExcel(locale, true);
             }
@@ -148,7 +148,7 @@ public class ReportService {
 
         final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
         for (PointCountResult pointCountResult : resultList) {
-            map.put(pointCountResult.getPoints(), pointCountResult);
+            map.put(pointCountResult.points(), pointCountResult);
         }
 
         return map;
@@ -170,8 +170,8 @@ public class ReportService {
 
             @Override
             public String[] getRowValues(PointCountResult pointCountResult) {
-                return new String[]{pointCountResult.getUsername(), "" + pointCountResult.getPoints(),
-                        "" + pointCountResult.getNumberOfPointsCount()};
+                return new String[]{pointCountResult.username(), "" + pointCountResult.points(),
+                        "" + pointCountResult.numberOfPointsCount()};
             }
         });
     }

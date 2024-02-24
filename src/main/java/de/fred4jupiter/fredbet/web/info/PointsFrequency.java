@@ -15,8 +15,8 @@ public class PointsFrequency {
         this.points = points;
         this.list = list;
 
-        Comparator<PointCountResult> comparator1 = Comparator.comparing(PointCountResult::getNumberOfPointsCount).reversed();
-        Comparator<PointCountResult> comparator2 = Comparator.comparing(PointCountResult::getUsername, String.CASE_INSENSITIVE_ORDER);
+        Comparator<PointCountResult> comparator1 = Comparator.comparing(PointCountResult::numberOfPointsCount).reversed();
+        Comparator<PointCountResult> comparator2 = Comparator.comparing(PointCountResult::username, String.CASE_INSENSITIVE_ORDER);
         this.list.sort(comparator1.thenComparing(comparator2));
     }
 
