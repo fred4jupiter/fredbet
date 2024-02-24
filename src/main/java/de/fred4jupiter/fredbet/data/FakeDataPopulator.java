@@ -17,4 +17,8 @@ public class FakeDataPopulator {
     public String nextRandomUsername() {
         return this.faker.name().firstName();
     }
+
+    public String nextStadium() {
+        return this.faker.country().capital();
+    }
 }

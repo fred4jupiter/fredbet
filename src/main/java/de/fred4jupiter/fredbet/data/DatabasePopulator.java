@@ -97,36 +97,33 @@ public class DatabasePopulator {
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
 
-        LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
+        final LocalDateTime localDateTime = LocalDateTime.now();
+        createRandomForGroup(localDateTime.plusDays(1), Group.GROUP_A, 4);
+        createRandomForGroup(localDateTime.plusDays(2), Group.GROUP_B, 4);
+        createRandomForGroup(localDateTime.plusDays(3), Group.GROUP_C, 4);
+        createRandomForGroup(localDateTime.plusDays(4), Group.GROUP_D, 4);
+        createRandomForGroup(localDateTime.plusDays(5), Group.GROUP_E, 4);
+        createRandomForGroup(localDateTime.plusDays(6), Group.GROUP_F, 4);
+        createRandomForGroup(localDateTime.plusDays(7), Group.GROUP_G, 4);
+        createRandomForGroup(localDateTime.plusDays(8), Group.GROUP_H, 4);
 
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_A, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_B, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_C, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_D, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_E, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_F, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_G, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_H, 4);
-
-        localDateTime = createRandomForGroup(localDateTime, Group.ROUND_OF_SIXTEEN, 8);
-        localDateTime = createRandomForGroup(localDateTime, Group.QUARTER_FINAL, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.SEMI_FINAL, 2);
-        localDateTime = createRandomForGroup(localDateTime, Group.FINAL, 1);
-        createRandomForGroup(localDateTime, Group.GAME_FOR_THIRD, 1);
+        createRandomForGroup(localDateTime.plusDays(9), Group.ROUND_OF_SIXTEEN, 8);
+        createRandomForGroup(localDateTime.plusDays(10), Group.QUARTER_FINAL, 4);
+        createRandomForGroup(localDateTime.plusDays(11), Group.SEMI_FINAL, 2);
+        createRandomForGroup(localDateTime.plusDays(12), Group.FINAL, 1);
+        createRandomForGroup(localDateTime.plusDays(13), Group.GAME_FOR_THIRD, 1);
     }
 
-    private LocalDateTime createRandomForGroup(LocalDateTime localDateTime, Group group, int numberOfMatches) {
-        LocalDateTime tmpTime = localDateTime;
+    private void createRandomForGroup(LocalDateTime localDateTime, Group group, int numberOfMatches) {
         for (int i = 0; i < numberOfMatches; i++) {
             ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
-            Match match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(group).withStadium("Somewhere")
-                    .withKickOffDate(tmpTime).build();
+            Match match = MatchBuilder.create()
+                    .withTeams(teamPair.getLeft(), teamPair.getRight())
+                    .withGroup(group)
+                    .withStadium(fakeDataPopulator.nextStadium())
+                    .withKickOffDate(localDateTime.plusHours(i)).build();
             matchService.save(match);
-
-            tmpTime = tmpTime.plusDays(1).plusMinutes(10);
         }
-
-        return tmpTime;
     }
 
     public void createDemoBetsForAllUsers() {
