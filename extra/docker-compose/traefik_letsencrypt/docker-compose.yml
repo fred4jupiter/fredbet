@@ -64,7 +64,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_DATABASE_NAME}
   backup:
-    image: eeshugerman/postgres-backup-s3:14 # run docker exec <backup container name> sh backup.sh for manual backup
+    image: eeshugerman/postgres-backup-s3:16 # run docker exec <backup container name> sh backup.sh for manual backup
     container_name: "backup"
     environment:
       - SCHEDULE=@hourly
