@@ -6,9 +6,12 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,8 @@ import java.util.List;
 
 @Service
 public class ExcelImportService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExcelImportService.class);
 
     private final MatchRepository matchRepository;
 
@@ -77,11 +82,18 @@ public class ExcelImportService {
             return null;
         }
 
-        String country1 = row.getCell(0).getStringCellValue();
-        String country2 = row.getCell(1).getStringCellValue();
-        String group = row.getCell(2).getStringCellValue();
+        String country1 = safeGetString(row, 0);
+        String country2 = safeGetString(row, 1);
+        String group = safeGetString(row, 2);
+        LOG.debug("countr1={}, country2={}, group={}", country1, country2, group);
+
+        if (country1 == null && country2 == null) {
+            // empty row
+            return null;
+        }
+
         Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
-        String stadium = row.getCell(4).getStringCellValue();
+        String stadium = safeGetString(row, 4);
 
         Match match = new Match();
 
@@ -101,6 +113,20 @@ public class ExcelImportService {
         match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
         match.setStadium(stadium);
         return match;
+    }
+
+    private String safeGetString(Row row, int cellNumber) {
+        if (row == null) {
+            return null;
+        }
+
+        Cell cell = row.getCell(cellNumber);
+        if (cell == null) {
+            return null;
+        }
+
+        String cellValue = cell.getStringCellValue();
+        return StringUtils.isNotBlank(cellValue) ? cellValue : null;
     }
 
 }
