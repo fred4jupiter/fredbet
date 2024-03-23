@@ -179,7 +179,7 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Microsoft Excel templates with matches are prepared for import:
 
-* [Women World Championship 2023 Template](extra/excel_templates/Women_WC_2023.xlsx?raw=true)
+* [EM 2024](extra/excel_templates/fredbet_em_2024.xlsx?raw=true)
 
 ## Screenshots
 
