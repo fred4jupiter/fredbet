@@ -84,13 +84,12 @@ public class ExcelImportService {
 
         String country1 = safeGetString(row, 0);
         String country2 = safeGetString(row, 1);
-        String group = safeGetString(row, 2);
-        LOG.debug("countr1={}, country2={}, group={}", country1, country2, group);
-
         if (country1 == null && country2 == null) {
             // empty row
             return null;
         }
+        String group = safeGetString(row, 2);
+        LOG.debug("countr1={}, country2={}, group={}", country1, country2, group);
 
         Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
         String stadium = safeGetString(row, 4);
