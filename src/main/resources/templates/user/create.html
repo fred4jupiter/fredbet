@@ -6,8 +6,7 @@
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
-			<div th:replace="~{fragments/alert :: alert_headline}"></div>
-			<form id="userForm" th:action="@{/user}" th:object="${createUserCommand}" action="#" method="post" role="form">				
+			<form id="userForm" th:action="@{/user}" th:object="${createUserCommand}" action="#" method="post" role="form">
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-4">
 						<input type="hidden" th:field="*{userId}" class="form-control" />

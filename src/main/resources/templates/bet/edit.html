@@ -6,10 +6,8 @@
 </head>
 <body>
 	<div layout:fragment="content" class="container">
-		<div th:replace="~{fragments/alert :: alert_headline}"></div>
-		<h1 th:text="#{bet.edit.heading}"></h1>		
-		
-		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">			
+		<h1 th:text="#{bet.edit.heading}"></h1>
+		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">					
 					<input type="hidden" th:field="*{betId}" class="form-control" />

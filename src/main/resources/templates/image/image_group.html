@@ -5,8 +5,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
-			<div th:replace="~{fragments/alert :: alert_headline}"></div>
-			
 			<div class="col-xs-12 col-sm-6 col-md-4">
 				<form th:action="@{/imagegroup/delete}" th:object="${imageGroupCommand}" method="post" role="form">
 					<div class="row">

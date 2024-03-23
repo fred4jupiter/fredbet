@@ -6,7 +6,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
-			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<form id="changePasswordForm" th:action="@{/profile/changeUsername}" th:object="${changeUsernameCommand}" action="#" method="post" role="form">
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-4">

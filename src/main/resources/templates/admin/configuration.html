@@ -6,9 +6,7 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<div th:replace="~{fragments/alert :: alert_headline}"></div>
-						
-			<div class="row">			
+			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<form id="changeLogLevelForm" th:action="@{/config/changeLogLevel}" th:object="${configurationCommand}" action="#" method="post" role="form">
 						<h2 th:text="#{administration.change.loglevel.title}"></h2>
