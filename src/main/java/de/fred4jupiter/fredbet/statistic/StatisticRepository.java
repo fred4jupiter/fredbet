@@ -3,8 +3,6 @@ package de.fred4jupiter.fredbet.statistic;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.statistic.Statistic;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -25,20 +23,21 @@ public class StatisticRepository {
     }
 
     public List<Statistic> createStatistic() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Select b.user_name, a.match_group, sum(b.points) ");
-        builder.append("from matches a join bet b on a.match_id = b.match_id ");
-        builder.append("where a.goals_team_one is not null  ");
-        builder.append("and a.goals_team_two is not null  ");
-        builder.append("and b.user_name not like :username ");
-        builder.append("group by b.user_name, a.match_group");
+        final String query = """
+                Select b.user_name, a.match_group, sum(b.points)
+                from matches a join bet b on a.match_id = b.match_id
+                where a.goals_team_one is not null
+                and a.goals_team_two is not null
+                and b.user_name not like :username
+                group by b.user_name, a.match_group
+                """;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("username", fredbetProperties.getAdminUsername());
 
         final StatisticsCollector statisticsCollector = new StatisticsCollector();
 
-        namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
+        namedParameterJdbcOperations.query(query, params, (ResultSet rs) -> {
             String userName = rs.getString(1);
             String group = rs.getString(2);
             int points = rs.getInt(3);
