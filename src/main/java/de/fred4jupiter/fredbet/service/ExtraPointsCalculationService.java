@@ -82,7 +82,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
             return 0;
         }
 
-        if (extraBet.getFinalWinner().equals(match.getWinner())) {
+        if (extraBet.getFinalWinner() != null && extraBet.getFinalWinner().equals(match.getWinner())) {
             return runtimeSettings.getPointsFinalWinner();
         }
 
