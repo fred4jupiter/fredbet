@@ -3,6 +3,7 @@ services:
   postgres:
     image: postgres:14.5-alpine
     restart: unless-stopped
+    container_name: "postgres"
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
     ports:
@@ -14,6 +15,7 @@ services:
   fredbet:
     image: fred4jupiter/fredbet:latest
     restart: unless-stopped
+    container_name: "fredbet"
     depends_on:
       - postgres
     ports:
@@ -26,9 +28,10 @@ services:
   proxy-manager:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
+    container_name: "proxymanager"
     ports:
       - '80:80'
-      - '81:81'
+      - '81:81' # admin interface
       - '443:443'
     volumes:
       - ./data:/data
