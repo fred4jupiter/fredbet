@@ -1,9 +1,9 @@
 version: "3.8"
 services:
   traefik:
-    image: traefik:v2.9
+    image: traefik:v2.11
     container_name: "traefik"
-    restart: always
+    restart: unless-stopped
     command:
       # - "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -28,7 +28,7 @@ services:
   fredbet:
     image: fred4jupiter/fredbet:latest
     container_name: "fredbet"
-    restart: always
+    restart: unless-stopped
     depends_on:
       - postgres
     ports:
@@ -54,7 +54,7 @@ services:
   postgres:
     image: postgres:14.5-alpine
     container_name: "postgres"
-    restart: always
+    restart: unless-stopped
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
     ports:
