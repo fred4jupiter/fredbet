@@ -12,20 +12,14 @@ import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -57,10 +51,13 @@ public class DatabasePopulator {
 
     private final FakeDataPopulator fakeDataPopulator;
 
+    private final StaticResourceLoader staticResourceLoader;
+
     public DatabasePopulator(MatchService matchService, Environment environment, UserService userService,
                              BettingService bettingService, RandomValueGenerator randomValueGenerator,
                              InfoService infoService, ImageAdministrationService imageAdministrationService,
-                             JokerService jokerService, FredbetProperties fredbetProperties, FakeDataPopulator fakeDataPopulator) {
+                             JokerService jokerService, FredbetProperties fredbetProperties, FakeDataPopulator fakeDataPopulator,
+                             StaticResourceLoader staticResourceLoader) {
         this.matchService = matchService;
         this.environment = environment;
         this.userService = userService;
@@ -71,6 +68,7 @@ public class DatabasePopulator {
         this.jokerService = jokerService;
         this.fredbetProperties = fredbetProperties;
         this.fakeDataPopulator = fakeDataPopulator;
+        this.staticResourceLoader = staticResourceLoader;
     }
 
     public void initDatabaseWithDemoData() {
@@ -85,6 +83,11 @@ public class DatabasePopulator {
         }
 
         imageAdministrationService.createDefaultImageGroup();
+    }
+
+    private void addRulesIfEmpty() {
+        String rulesInGerman = staticResourceLoader.loadDefaultRules();
+        infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, "de");
     }
 
     private boolean isRunInIntegrationTest() {
@@ -158,22 +161,10 @@ public class DatabasePopulator {
         });
     }
 
-    private void addRulesIfEmpty() {
-        ClassPathResource classPathResource = new ClassPathResource("content/rules_de.txt");
-        try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
-            IOUtils.copyLarge(classPathResource.getInputStream(), byteOut);
-            String rulesInGerman = byteOut.toString(StandardCharsets.UTF_8);
-
-            infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, "de");
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
-    }
-
     public void createDemoUsers(int numberOfDemoUsers) {
         LOG.info("createAdditionalUsers: creating {} additional demo users ...", numberOfDemoUsers);
 
-        final byte[] demoImage = loadDemoUserProfileImage();
+        final byte[] demoImage = staticResourceLoader.loadDemoUserProfileImage();
 
         IntStream.rangeClosed(1, numberOfDemoUsers).forEach(counter -> {
             final String usernameAndPassword = this.fakeDataPopulator.nextRandomUsername();
@@ -185,15 +176,6 @@ public class DatabasePopulator {
                 this.imageAdministrationService.saveUserProfileImage(demoImage, user);
             }
         });
-    }
-
-    private byte[] loadDemoUserProfileImage() {
-        ClassPathResource classPathResource = new ClassPathResource("static/images/profile_demo_image.jpg");
-        try (InputStream in = classPathResource.getInputStream()) {
-            return IOUtils.toByteArray(in);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not load demo image from classpath. " + e.getMessage());
-        }
     }
 
     private void createAdminUser() {
