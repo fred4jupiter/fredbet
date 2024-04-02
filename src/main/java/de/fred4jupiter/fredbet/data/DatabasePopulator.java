@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.BettingService;
@@ -29,6 +28,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class DatabasePopulator {
@@ -75,7 +75,7 @@ public class DatabasePopulator {
 
     public void initDatabaseWithDemoData() {
         if (!isRunInIntegrationTest()) {
-            createDefaultUsers();
+            createAdminUser();
             addRulesIfEmpty();
         }
 
@@ -175,15 +175,16 @@ public class DatabasePopulator {
 
         final byte[] demoImage = loadDemoUserProfileImage();
 
-        for (int i = 1; i <= numberOfDemoUsers; i++) {
+        IntStream.rangeClosed(1, numberOfDemoUsers).forEach(counter -> {
             final String usernameAndPassword = this.fakeDataPopulator.nextRandomUsername();
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
+            LOG.debug("creating demo user {}: {}", counter, usernameAndPassword);
             boolean isNewUser = saveIfNotPresent(user);
             if (isNewUser && fakeDataPopulator.nextRandomBoolean()) {
                 this.imageAdministrationService.saveUserProfileImage(demoImage, user);
             }
-        }
+        });
     }
 
     private byte[] loadDemoUserProfileImage() {
@@ -195,20 +196,14 @@ public class DatabasePopulator {
         }
     }
 
-    private void createDefaultUsers() {
-        LOG.info("createDefaultUsers: creating default users ...");
-
+    private void createAdminUser() {
         AppUser appUser = AppUserBuilder.create()
                 .withUsernameAndPassword(fredbetProperties.getAdminUsername(), fredbetProperties.getAdminPassword())
                 .withUserGroup(FredBetUserGroup.ROLE_ADMIN)
                 .deletable(false)
                 .build();
-        saveIfNotPresent(appUser);
-
-        List<String> additionalAdminUsers = fredbetProperties.getAdditionalAdminUsers();
-        if (additionalAdminUsers != null && !additionalAdminUsers.isEmpty()) {
-            additionalAdminUsers.forEach(username -> saveIfNotPresent(AppUserBuilder.create().withUsernameAndPassword(username, username).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build()));
-        }
+        boolean created = saveIfNotPresent(appUser);
+        LOG.info("created new admin user: {}", created);
     }
 
     public boolean saveIfNotPresent(AppUser appUser) {

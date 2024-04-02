@@ -68,8 +68,6 @@ fredbet:
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
-#  additional-admin-users:
-#    - michael
   user-groups:
     - groupName: ROLE_USER
       permissions:

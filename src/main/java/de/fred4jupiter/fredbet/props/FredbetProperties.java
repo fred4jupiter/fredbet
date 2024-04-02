@@ -45,8 +45,6 @@ public class FredbetProperties {
 
     private String adminPassword = "admin";
 
-    private List<String> additionalAdminUsers;
-
     private Set<UserGroup> userGroups = new HashSet<>();
 
     public ImageLocation getImageLocation() {
@@ -115,14 +113,6 @@ public class FredbetProperties {
 
     public void setDiceMaxRange(Integer diceMaxRange) {
         this.diceMaxRange = diceMaxRange;
-    }
-
-    public List<String> getAdditionalAdminUsers() {
-        return additionalAdminUsers;
-    }
-
-    public void setAdditionalAdminUsers(List<String> additionalAdminUsers) {
-        this.additionalAdminUsers = additionalAdminUsers;
     }
 
     public Integer getThumbnailSize() {
