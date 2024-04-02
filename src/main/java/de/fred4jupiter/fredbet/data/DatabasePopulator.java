@@ -116,15 +116,15 @@ public class DatabasePopulator {
     }
 
     private void createRandomForGroup(LocalDateTime localDateTime, Group group, int numberOfMatches) {
-        for (int i = 0; i < numberOfMatches; i++) {
+        IntStream.rangeClosed(1, numberOfMatches).forEach(counter -> {
             ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
             Match match = MatchBuilder.create()
                     .withTeams(teamPair.getLeft(), teamPair.getRight())
                     .withGroup(group)
                     .withStadium(fakeDataPopulator.nextStadium())
-                    .withKickOffDate(localDateTime.plusHours(i)).build();
+                    .withKickOffDate(localDateTime.plusHours(counter)).build();
             matchService.save(match);
-        }
+        });
     }
 
     public void createDemoBetsForAllUsers() {

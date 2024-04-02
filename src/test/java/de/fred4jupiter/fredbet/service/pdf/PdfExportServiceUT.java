@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class PdfExportServiceUT {
     private PdfExportService pdfExportService;
 
     @Spy
-    private FontCreator fontCreator = new FontCreator();
+    private FontCreator fontCreator = new FontCreator(new ClassPathResource("fonts/" + FontCreator.FONT_NAME));
 
     @Mock
     private MessageSourceUtil messageSourceUtil;
