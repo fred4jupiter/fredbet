@@ -2,6 +2,19 @@
 
 ## AWS S3 Backup
 
+### Schedule configuration
+
+You can use cron patterns for setting up the backup interval.
+
+Examples:
+
+    SCHEDULE=@hourly
+    SCHEDULE=0 0 */3 * * *
+
+## Backup and Restore from S3 bucket
+
+In the examples below the `container name` is the name of the backup container.
+
 ### Backup
 
 You can create a manual backup running with:
@@ -14,7 +27,7 @@ Example:
 
 ### Restore
 
-Restoring the latest backup:
+Restoring the latest backup. 
 
     docker exec <container name> sh restore.sh
 
