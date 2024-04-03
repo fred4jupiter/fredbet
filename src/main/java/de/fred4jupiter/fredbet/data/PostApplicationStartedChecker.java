@@ -1,7 +1,9 @@
 package de.fred4jupiter.fredbet.data;
 
+import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.util.TimeZoneUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.WebApplicationType;
@@ -23,11 +25,14 @@ public class PostApplicationStartedChecker {
 
     private final ImageAdministrationService imageAdministrationService;
 
+    private final TimeZoneUtil timeZoneUtil;
+
     public PostApplicationStartedChecker(DatabasePopulator databasePopulator, RuntimeSettingsService runtimeSettingsService,
-                                         ImageAdministrationService imageAdministrationService) {
+                                         ImageAdministrationService imageAdministrationService, TimeZoneUtil timeZoneUtil) {
         this.databasePopulator = databasePopulator;
         this.runtimeSettingsService = runtimeSettingsService;
         this.imageAdministrationService = imageAdministrationService;
+        this.timeZoneUtil = timeZoneUtil;
     }
 
     @EventListener
@@ -41,8 +46,13 @@ public class PostApplicationStartedChecker {
 
         databasePopulator.initDatabaseWithDemoData();
 
-        runtimeSettingsService.checkIfTimezoneIsCorrect();
+        ajustTimezone();
 
         imageAdministrationService.initUserProfileImageGroup();
+    }
+
+    private void ajustTimezone() {
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        timeZoneUtil.checkIfTimezoneIsCorrect(runtimeSettings.getTimeZone());
     }
 }
