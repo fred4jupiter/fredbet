@@ -6,10 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class UsernamePoints {
 
-    private String userName;
+    private final String userName;
 
     // 1. Criteria
-    private Integer totalPoints = 0;
+    private final Integer totalPoints;
 
     // 2. Criteria
     private Integer correctResultCount = 0;
@@ -22,6 +22,11 @@ public class UsernamePoints {
     private String cssRankClass;
 
     private boolean sameRankingPositionAsOtherUser;
+
+    public UsernamePoints(String userName, Integer totalPoints) {
+        this.userName = userName;
+        this.totalPoints = totalPoints;
+    }
 
     public boolean isSameRankingPositionAsOtherUser() {
         return sameRankingPositionAsOtherUser;
@@ -63,10 +68,6 @@ public class UsernamePoints {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -79,10 +80,6 @@ public class UsernamePoints {
 
     public Integer getTotalPoints() {
         return totalPoints;
-    }
-
-    public void setTotalPoints(Integer totalPoints) {
-        this.totalPoints = totalPoints;
     }
 
     public String getCssRankClass() {

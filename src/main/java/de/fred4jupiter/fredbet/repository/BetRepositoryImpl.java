@@ -39,12 +39,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
         Map<String, Object> params = new HashMap<>();
         params.put("username", fredbetProperties.adminUsername());
 
-        return namedParameterJdbcOperations.query(sql, params, (ResultSet rs, int rowNum) -> {
-            UsernamePoints usernamePoints = new UsernamePoints();
-            usernamePoints.setUserName(rs.getString(1));
-            usernamePoints.setTotalPoints(rs.getInt(2));
-            return usernamePoints;
-        });
+        return namedParameterJdbcOperations.query(sql, params, (ResultSet rs, int rowNum) -> new UsernamePoints(rs.getString(1), rs.getInt(2)));
     }
 
 }

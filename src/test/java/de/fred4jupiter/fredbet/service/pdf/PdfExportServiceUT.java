@@ -67,9 +67,7 @@ public class PdfExportServiceUT {
         List<UsernamePoints> data = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            UsernamePoints usernamePoints = new UsernamePoints();
-            usernamePoints.setUserName("Michael_üäö");
-            usernamePoints.setTotalPoints(100);
+            UsernamePoints usernamePoints = new UsernamePoints("Michael_üäö", 100);
             usernamePoints.setCorrectResultCount(23);
             usernamePoints.setGoalDifference(32);
             data.add(usernamePoints);

@@ -20,10 +20,10 @@ public class SameRankingCollectorUT {
     @Test
     public void markEntriesWithSameRanking() {
         List<UsernamePoints> list = Arrays.asList(
-                createFor(10, 2, 170),
-                createFor(10, 2, 170),
-                createFor(10, 2, 170),
-                createFor(10, 2, 171));
+                createFor("user1", 10, 2, 170),
+                createFor("user2", 10, 2, 170),
+                createFor("user3", 10, 2, 170),
+                createFor("user4", 10, 2, 171));
 
         sameRankingCollector.markEntriesWithSameRanking(list);
 
@@ -34,10 +34,10 @@ public class SameRankingCollectorUT {
     @Test
     public void markEntriesWithSameRankingAllDifferent() {
         List<UsernamePoints> list = Arrays.asList(
-                createFor(1, 4, 170),
-                createFor(2, 3, 170),
-                createFor(3, 2, 170),
-                createFor(4, 1, 171));
+                createFor("user1", 1, 4, 170),
+                createFor("user2", 2, 3, 170),
+                createFor("user3", 3, 2, 170),
+                createFor("user4", 4, 1, 171));
 
         sameRankingCollector.markEntriesWithSameRanking(list);
 
@@ -45,9 +45,8 @@ public class SameRankingCollectorUT {
         assertThat(sameResult).isEqualTo(0);
     }
 
-    private static UsernamePoints createFor(int totalPoints, int correctResults, int goalDifference) {
-        UsernamePoints usernamePoints = new UsernamePoints();
-        usernamePoints.setTotalPoints(totalPoints);
+    private UsernamePoints createFor(String username, int totalPoints, int correctResults, int goalDifference) {
+        UsernamePoints usernamePoints = new UsernamePoints(username, totalPoints);
         usernamePoints.setCorrectResultCount(correctResults);
         usernamePoints.setGoalDifference(goalDifference);
         return usernamePoints;
