@@ -45,7 +45,7 @@ public class RankingServiceIT {
         saveIfNotPresent(AppUserBuilder.create().withDemoData().build());
         saveIfNotPresent(AppUserBuilder.create().withDemoData().build());
 
-        final String username = fredbetProperties.getAdminUsername();
+        final String username = fredbetProperties.adminUsername();
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword(username, "test").build());
 
         dataBasePopulator.createRandomMatches();

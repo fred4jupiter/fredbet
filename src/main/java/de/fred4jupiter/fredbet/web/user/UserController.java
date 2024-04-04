@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping("{id}")
     public String edit(@PathVariable("id") Long userId, Model model, RedirectAttributes redirect) {
         AppUser user = userService.findByUserId(userId);
-        if (!webSecurityUtil.isCurrentUserTheDefaultAdminUser() && fredbetProperties.getAdminUsername().equals(user.getUsername())) {
+        if (!webSecurityUtil.isCurrentUserTheDefaultAdminUser() && fredbetProperties.adminUsername().equals(user.getUsername())) {
             // other admin tries to update the default admin user
             webMessageUtil.addErrorMsg(redirect, "user.edited.notAllowed");
             return REDIRECT_USER_PAGE;

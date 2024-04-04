@@ -33,7 +33,7 @@ public class StatisticRepository {
                 """;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("username", fredbetProperties.getAdminUsername());
+        params.addValue("username", fredbetProperties.adminUsername());
 
         final StatisticsCollector statisticsCollector = new StatisticsCollector();
 
@@ -61,7 +61,7 @@ public class StatisticRepository {
         namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
             String userName = rs.getString(1);
             int points = rs.getInt(2);
-            if (!fredbetProperties.getAdminUsername().equals(userName)) {
+            if (!fredbetProperties.adminUsername().equals(userName)) {
                 userPoints.put(userName, points);
             }
         });

@@ -28,7 +28,7 @@ public class PointCourseService {
         this.betRepository = betRepository;
         this.messageSourceUtil = messageSourceUtil;
         this.matchRepository = matchRepository;
-        this.adminUsername = fredbetProperties.getAdminUsername();
+        this.adminUsername = fredbetProperties.adminUsername();
     }
 
     public ChartData reportPointsCourse(String username, Locale locale) {

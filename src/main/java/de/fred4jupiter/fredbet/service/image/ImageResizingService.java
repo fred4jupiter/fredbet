@@ -30,7 +30,7 @@ class ImageResizingService {
     }
 
     public byte[] createThumbnail(byte[] imageBinary) {
-        Integer thumbnailSize = fredbetProperties.getThumbnailSize();
+        Integer thumbnailSize = fredbetProperties.thumbnailSize();
         if (thumbnailSize == 0) {
             throw new IllegalArgumentException("Given thumbnailSize must be greather than 0!");
         }

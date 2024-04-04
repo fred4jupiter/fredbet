@@ -53,7 +53,7 @@ public class DatabaseInitializer {
 
     private void createAdminUser() {
         AppUser appUser = AppUserBuilder.create()
-                .withUsernameAndPassword(fredbetProperties.getAdminUsername(), fredbetProperties.getAdminPassword())
+                .withUsernameAndPassword(fredbetProperties.adminUsername(), fredbetProperties.adminPassword())
                 .withUserGroup(FredBetUserGroup.ROLE_ADMIN)
                 .deletable(false)
                 .build();

@@ -33,7 +33,7 @@ public class ImageResizingServiceUT {
     @Test
     public void createThumbnail() throws IOException {
         final Integer thumbailSize = 75;
-        when(fredbetProperties.getThumbnailSize()).thenReturn(thumbailSize);
+        when(fredbetProperties.thumbnailSize()).thenReturn(thumbailSize);
 
         File file = new File("src/test/resources/sample_images/sampleImage_800.jpg");
         assertNotNull(file);
@@ -54,7 +54,6 @@ public class ImageResizingServiceUT {
 
     private File createOutputFile(File file) {
         String tempDir = System.getProperty("java.io.tmpdir");
-        File outputFile = new File(tempDir + File.separator + file.getName());
-        return outputFile;
+        return new File(tempDir + File.separator + file.getName());
     }
 }

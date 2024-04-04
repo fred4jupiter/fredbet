@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.service;
 
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.domain.*;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
@@ -136,7 +135,7 @@ public class BettingService {
         }
         List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
         return allBets.stream()
-                .filter(bet -> !bet.getUserName().equals(fredbetProperties.getAdminUsername()))
+                .filter(bet -> !bet.getUserName().equals(fredbetProperties.adminUsername()))
                 .sorted(Comparator.comparing(Bet::getUserName, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());
     }
@@ -203,7 +202,7 @@ public class BettingService {
     public List<ExtraBet> loadExtraBetDataOthers() {
         List<ExtraBet> allExtraBets = extraBetRepository.findAll(Sort.by(Direction.ASC, "userName"));
         return allExtraBets.stream()
-                .filter(extraBet -> !extraBet.getUserName().equals(fredbetProperties.getAdminUsername()))
+                .filter(extraBet -> !extraBet.getUserName().equals(fredbetProperties.adminUsername()))
                 .sorted(Comparator.comparing(ExtraBet::getUserName, String.CASE_INSENSITIVE_ORDER))
                 .toList();
     }
@@ -249,7 +248,7 @@ public class BettingService {
     }
 
     private Integer randomFromTo() {
-        return randomValueGenerator.generateRandomValueInRange(fredbetProperties.getDiceMinRange(), fredbetProperties.getDiceMaxRange());
+        return randomValueGenerator.generateRandomValueInRange(fredbetProperties.diceMinRange(), fredbetProperties.diceMaxRange());
     }
 
     public void createExtraBetForUser(String username) {

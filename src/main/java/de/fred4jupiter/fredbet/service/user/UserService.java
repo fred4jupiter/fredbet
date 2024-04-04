@@ -70,7 +70,7 @@ public class UserService {
         this.imageGroupRepository = imageGroupRepository;
         this.bettingService = bettingService;
         this.imageBinaryRepository = imageBinaryRepository;
-        this.adminUsername = fredbetProperties.getAdminUsername();
+        this.adminUsername = fredbetProperties.adminUsername();
     }
 
     public List<AppUser> findAll() {

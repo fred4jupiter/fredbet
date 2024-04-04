@@ -38,7 +38,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
                 group by user_name order by sum_all desc
                 """;
         Map<String, Object> params = new HashMap<>();
-        params.put("username", fredbetProperties.getAdminUsername());
+        params.put("username", fredbetProperties.adminUsername());
 
         return namedParameterJdbcOperations.query(sql, params, (ResultSet rs, int rowNum) -> {
             UsernamePoints usernamePoints = new UsernamePoints();

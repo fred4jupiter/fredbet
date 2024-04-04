@@ -18,11 +18,11 @@ public class ImageLocationConfig {
 
     @Bean
     public ImageLocationStrategy imageLocationStrategy(FredbetProperties fredbetProperties, ImageBinaryRepository imageBinaryRepository) {
-        final ImageLocation imageLocation = fredbetProperties.getImageLocation();
+        final ImageLocation imageLocation = fredbetProperties.imageLocation();
 
         if (ImageLocation.FILE_SYSTEM.equals(imageLocation)) {
             LOG.info("Storing images in filesystem.");
-            return new FilesystemImageLocationStrategy(fredbetProperties.getImageFileSystemBaseFolder());
+            return new FilesystemImageLocationStrategy(fredbetProperties.imageFileSystemBaseFolder());
         }
         LOG.info("Storing images in database.");
         return new DatabaseImageLocationStrategy(imageBinaryRepository);

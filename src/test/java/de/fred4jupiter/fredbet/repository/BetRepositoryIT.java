@@ -133,7 +133,7 @@ public class BetRepositoryIT {
 
     @Test
     public void countUserPoints() {
-        List<PointCountResult> resultList = betRepository.countNumberOfPointsByUser(fredbetProperties.getAdminUsername());
+        List<PointCountResult> resultList = betRepository.countNumberOfPointsByUser(fredbetProperties.adminUsername());
         assertNotNull(resultList);
 
         for (PointCountResult pointCountResult : resultList) {

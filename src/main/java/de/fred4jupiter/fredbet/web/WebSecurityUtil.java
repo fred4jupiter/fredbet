@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
@@ -29,11 +28,12 @@ public class WebSecurityUtil {
 
     private final String adminUsername;
 
-    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService, Optional<H2ConsoleProperties> h2ConsoleProperties, FredbetProperties fredbetProperties) {
+    public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService,
+                           Optional<H2ConsoleProperties> h2ConsoleProperties, FredbetProperties fredbetProperties) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.securityService = securityService;
         this.h2ConsoleProperties = h2ConsoleProperties;
-        this.adminUsername = fredbetProperties.getAdminUsername();
+        this.adminUsername = fredbetProperties.adminUsername();
     }
 
     public String getCurrentUserProfileImageKey() {

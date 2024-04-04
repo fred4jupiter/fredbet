@@ -151,7 +151,7 @@ public class ReportService {
     public MultiValuedMap<Integer, PointCountResult> reportPointsFrequency() {
         final MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
 
-        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser(fredbetProperties.getAdminUsername());
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser(fredbetProperties.adminUsername());
         for (PointCountResult pointCountResult : resultList) {
             map.put(pointCountResult.points(), pointCountResult);
         }
@@ -160,7 +160,7 @@ public class ReportService {
     }
 
     public byte[] exportNumberOfPointsInBets(final Locale locale) {
-        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser(fredbetProperties.getAdminUsername());
+        final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser(fredbetProperties.adminUsername());
 
         return excelExportService.exportEntriesToExcel("Bets point count export", resultList, new EntryCallback<>() {
 
