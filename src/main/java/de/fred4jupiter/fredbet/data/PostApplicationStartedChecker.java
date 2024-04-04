@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.util.TimeZoneUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,21 +18,14 @@ public class PostApplicationStartedChecker {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostApplicationStartedChecker.class);
 
-    private final DatabasePopulator databasePopulator;
-
     private final RuntimeSettingsService runtimeSettingsService;
-
-    private final ImageAdministrationService imageAdministrationService;
 
     private final TimeZoneUtil timeZoneUtil;
 
     private final DatabaseInitializer databaseInitializer;
 
-    public PostApplicationStartedChecker(DatabasePopulator databasePopulator, RuntimeSettingsService runtimeSettingsService,
-                                         ImageAdministrationService imageAdministrationService, TimeZoneUtil timeZoneUtil, DatabaseInitializer databaseInitializer) {
-        this.databasePopulator = databasePopulator;
+    public PostApplicationStartedChecker(RuntimeSettingsService runtimeSettingsService, TimeZoneUtil timeZoneUtil, DatabaseInitializer databaseInitializer) {
         this.runtimeSettingsService = runtimeSettingsService;
-        this.imageAdministrationService = imageAdministrationService;
         this.timeZoneUtil = timeZoneUtil;
         this.databaseInitializer = databaseInitializer;
     }
@@ -48,8 +40,6 @@ public class PostApplicationStartedChecker {
         LOG.debug("checking initialization...");
 
         databaseInitializer.initDatabase();
-
-//        databasePopulator.initDatabaseWithDemoData();
 
         ajustTimezone();
     }
