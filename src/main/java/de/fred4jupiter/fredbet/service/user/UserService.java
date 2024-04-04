@@ -106,6 +106,16 @@ public class UserService {
         appUserRepository.save(appUser);
     }
 
+    public boolean saveUserIfNotExists(AppUser appUser) {
+        try {
+            createUser(appUser);
+            return true;
+        } catch (UserAlreadyExistsException e) {
+            LOG.debug(e.getMessage());
+            return false;
+        }
+    }
+
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
     public AppUser updateUser(Long userId, boolean isChild) {
         return updateUser(userId, null, isChild);

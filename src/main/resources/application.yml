@@ -62,7 +62,6 @@ fredbet:
   # set folder where you want to store images to (defaults to user home dir)
   image-file-system-base-folder: ${user.home}/fredbet
   default-language: de
-  create-demo-data: false
   dice-min-range: 0
   dice-max-range: 3
   thumbnail-size: 100

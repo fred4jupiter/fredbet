@@ -1,22 +1,15 @@
 package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.domain.*;
-import de.fred4jupiter.fredbet.props.FredBetProfile;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
-import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.service.user.UserService;
-import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +20,9 @@ import java.util.stream.IntStream;
 @Component
 public class DatabasePopulator {
 
-    private static final int NUMBER_OF_DEMO_USERS = 12;
-
     private static final Logger LOG = LoggerFactory.getLogger(DatabasePopulator.class);
 
     private final MatchService matchService;
-
-    private final Environment environment;
 
     private final UserService userService;
 
@@ -41,57 +30,27 @@ public class DatabasePopulator {
 
     private final RandomValueGenerator randomValueGenerator;
 
-    private final InfoService infoService;
-
     private final ImageAdministrationService imageAdministrationService;
 
     private final JokerService jokerService;
-
-    private final FredbetProperties fredbetProperties;
 
     private final FakeDataPopulator fakeDataPopulator;
 
     private final StaticResourceLoader staticResourceLoader;
 
-    public DatabasePopulator(MatchService matchService, Environment environment, UserService userService,
+    public DatabasePopulator(MatchService matchService, UserService userService,
                              BettingService bettingService, RandomValueGenerator randomValueGenerator,
-                             InfoService infoService, ImageAdministrationService imageAdministrationService,
-                             JokerService jokerService, FredbetProperties fredbetProperties, FakeDataPopulator fakeDataPopulator,
+                             ImageAdministrationService imageAdministrationService,
+                             JokerService jokerService, FakeDataPopulator fakeDataPopulator,
                              StaticResourceLoader staticResourceLoader) {
         this.matchService = matchService;
-        this.environment = environment;
         this.userService = userService;
         this.bettingService = bettingService;
         this.randomValueGenerator = randomValueGenerator;
-        this.infoService = infoService;
         this.imageAdministrationService = imageAdministrationService;
         this.jokerService = jokerService;
-        this.fredbetProperties = fredbetProperties;
         this.fakeDataPopulator = fakeDataPopulator;
         this.staticResourceLoader = staticResourceLoader;
-    }
-
-    public void initDatabaseWithDemoData() {
-        if (!isRunInIntegrationTest()) {
-            createAdminUser();
-            addRulesIfEmpty();
-        }
-
-        if (!isRunInIntegrationTest() && fredbetProperties.isCreateDemoData()) {
-            createDemoUsers(NUMBER_OF_DEMO_USERS);
-            createRandomMatches();
-        }
-
-        imageAdministrationService.createDefaultImageGroup();
-    }
-
-    private void addRulesIfEmpty() {
-        String rulesInGerman = staticResourceLoader.loadDefaultRules();
-        infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, "de");
-    }
-
-    private boolean isRunInIntegrationTest() {
-        return environment.acceptsProfiles(Profiles.of(FredBetProfile.INTEGRATION_TEST));
     }
 
     public void createRandomMatches() {
@@ -171,31 +130,11 @@ public class DatabasePopulator {
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                     .withUserGroup(FredBetUserGroup.ROLE_USER).build();
             LOG.debug("creating demo user {}: {}", counter, usernameAndPassword);
-            boolean isNewUser = saveIfNotPresent(user);
+            boolean isNewUser = userService.saveUserIfNotExists(user);
             if (isNewUser && fakeDataPopulator.nextRandomBoolean()) {
                 this.imageAdministrationService.saveUserProfileImage(demoImage, user);
             }
         });
-    }
-
-    private void createAdminUser() {
-        AppUser appUser = AppUserBuilder.create()
-                .withUsernameAndPassword(fredbetProperties.getAdminUsername(), fredbetProperties.getAdminPassword())
-                .withUserGroup(FredBetUserGroup.ROLE_ADMIN)
-                .deletable(false)
-                .build();
-        boolean created = saveIfNotPresent(appUser);
-        LOG.info("created new admin user: {}", created);
-    }
-
-    public boolean saveIfNotPresent(AppUser appUser) {
-        try {
-            userService.createUser(appUser);
-            return true;
-        } catch (UserAlreadyExistsException e) {
-            LOG.debug(e.getMessage());
-            return false;
-        }
     }
 
     @Transactional

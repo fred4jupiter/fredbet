@@ -27,12 +27,15 @@ public class PostApplicationStartedChecker {
 
     private final TimeZoneUtil timeZoneUtil;
 
+    private final DatabaseInitializer databaseInitializer;
+
     public PostApplicationStartedChecker(DatabasePopulator databasePopulator, RuntimeSettingsService runtimeSettingsService,
-                                         ImageAdministrationService imageAdministrationService, TimeZoneUtil timeZoneUtil) {
+                                         ImageAdministrationService imageAdministrationService, TimeZoneUtil timeZoneUtil, DatabaseInitializer databaseInitializer) {
         this.databasePopulator = databasePopulator;
         this.runtimeSettingsService = runtimeSettingsService;
         this.imageAdministrationService = imageAdministrationService;
         this.timeZoneUtil = timeZoneUtil;
+        this.databaseInitializer = databaseInitializer;
     }
 
     @EventListener
@@ -44,11 +47,11 @@ public class PostApplicationStartedChecker {
 
         LOG.debug("checking initialization...");
 
-        databasePopulator.initDatabaseWithDemoData();
+        databaseInitializer.initDatabase();
+
+//        databasePopulator.initDatabaseWithDemoData();
 
         ajustTimezone();
-
-        imageAdministrationService.initUserProfileImageGroup();
     }
 
     private void ajustTimezone() {

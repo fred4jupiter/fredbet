@@ -33,8 +33,6 @@ public class FredbetProperties {
 
     private String defaultLanguage;
 
-    private boolean createDemoData;
-
     private Integer diceMinRange = 0;
 
     private Integer diceMaxRange = 3;
@@ -61,7 +59,6 @@ public class FredbetProperties {
                 .append("imageLocation", imageLocation)
                 .append("imageFileSystemBaseFolder", imageFileSystemBaseFolder)
                 .append("defaultLanguage", defaultLanguage)
-                .append("createDemoData", createDemoData)
                 .append("diceMinRange", diceMinRange)
                 .append("diceMaxRange", diceMaxRange)
                 .toString();
@@ -89,14 +86,6 @@ public class FredbetProperties {
 
     public void setDefaultLanguage(String defaultLanguage) {
         this.defaultLanguage = defaultLanguage;
-    }
-
-    public boolean isCreateDemoData() {
-        return createDemoData;
-    }
-
-    public void setCreateDemoData(boolean createDemoData) {
-        this.createDemoData = createDemoData;
     }
 
     public Integer getDiceMinRange() {
