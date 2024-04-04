@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -191,7 +190,7 @@ public class ImageAdministrationService {
 
     public List<String> findAvailableImageGroups() {
         return imageGroupRepository.findAllGroupsWithoutUserProfileImageGroup().stream().map(ImageGroup::getName).sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void createDefaultImageGroup() {

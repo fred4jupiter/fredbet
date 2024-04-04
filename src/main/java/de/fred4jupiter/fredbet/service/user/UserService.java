@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -198,7 +197,7 @@ public class UserService {
         return findAll(withDefaultAdminUser).stream()
                 .map(appUser -> toUserDto(appUser, map))
                 .sorted(Comparator.comparing(UserDto::getUsername, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Map<String, ImageMetaData> toMap(List<ImageMetaData> metaDataList) {

@@ -68,6 +68,6 @@ public class StandingsContainer {
 
         Comparator<TeamStandings> completeComparator = points.thenComparing(goalDifference)
                 .thenComparing(goals).thenComparing(goalsAgainst);
-        return teamPoints.stream().sorted(completeComparator).collect(Collectors.toList());
+        return teamPoints.stream().sorted(completeComparator).toList();
     }
 }

@@ -75,7 +75,7 @@ public class RankingService {
         Comparator<UsernamePoints> comparator2 = Comparator.comparingInt(UsernamePoints::getCorrectResultCount).reversed();
         Comparator<UsernamePoints> comparator3 = Comparator.comparingInt(UsernamePoints::getGoalDifference);
 
-        return usernamePointsStream.sorted(comparator1.thenComparing(comparator2).thenComparing(comparator3)).collect(Collectors.toList());
+        return usernamePointsStream.sorted(comparator1.thenComparing(comparator2).thenComparing(comparator3)).toList();
     }
 
     private Stream<UsernamePoints> prepareUsernamePoints(List<UsernamePoints> rankings, RankingSelection rankingSelection) {

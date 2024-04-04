@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author michael
@@ -128,7 +127,7 @@ public class AppUser implements UserDetails {
         if (CollectionUtils.isEmpty(roles)) {
             return Collections.emptyList();
         }
-        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return roles.stream().map(SimpleGrantedAuthority::new).toList();
     }
 
     public boolean hasPermission(String permission) {

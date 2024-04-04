@@ -137,7 +137,7 @@ public class BettingService {
         return allBets.stream()
                 .filter(bet -> !bet.getUserName().equals(fredbetProperties.adminUsername()))
                 .sorted(Comparator.comparing(Bet::getUserName, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {

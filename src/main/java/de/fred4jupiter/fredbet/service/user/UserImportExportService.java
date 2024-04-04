@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Service
 public class UserImportExportService {
@@ -32,7 +31,7 @@ public class UserImportExportService {
         List<AppUser> allUsers = appUserRepository.findAll();
 
         UserContainer userContainer = new UserContainer();
-        List<UserToExport> usersToExport = allUsers.stream().filter(AppUser::isDeletable).map(this::mapToUserToExport).collect(Collectors.toList());
+        List<UserToExport> usersToExport = allUsers.stream().filter(AppUser::isDeletable).map(this::mapToUserToExport).toList();
         userContainer.setUserList(usersToExport);
 
         return jsonObjectConverter.toJson(userContainer);

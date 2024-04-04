@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 class ImageCommandMapper {
@@ -16,7 +15,7 @@ class ImageCommandMapper {
             return Collections.emptyList();
         }
 
-        return imageMetaDataList.stream().map(this::toImageCommand).sorted(Comparator.comparing(ImageCommand::getGalleryGroup)).collect(Collectors.toList());
+        return imageMetaDataList.stream().map(this::toImageCommand).sorted(Comparator.comparing(ImageCommand::getGalleryGroup)).toList();
     }
 
     private ImageCommand toImageCommand(ImageMetaData imageMetaData) {

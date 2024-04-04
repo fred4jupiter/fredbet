@@ -8,7 +8,6 @@ import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CountryService {
@@ -71,7 +70,7 @@ public class CountryService {
      * for random matches
      */
     public List<Country> getAllCountriesWithoutNoneEntry() {
-        return Arrays.stream(Country.values()).filter(country -> !country.equals(Country.NONE)).collect(Collectors.toList());
+        return Arrays.stream(Country.values()).filter(country -> !country.equals(Country.NONE)).toList();
     }
 
     private List<Country> sortCountries(Locale locale, List<Country> countriesWithoutNoneEntry) {
