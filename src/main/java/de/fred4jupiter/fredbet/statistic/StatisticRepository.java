@@ -48,17 +48,18 @@ public class StatisticRepository {
     }
 
     public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Select a.user_name, sum(a.points) ");
-        builder.append("from bet a join matches b on a.match_id = b.match_id ");
-        builder.append("where b.country_one = :country or b.country_two = :country ");
-        builder.append("group by a.user_name ");
+        final String query = """
+                Select a.user_name, sum(a.points)
+                from bet a join matches b on a.match_id = b.match_id
+                where b.country_one = :country or b.country_two = :country
+                group by a.user_name
+                """;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("country", favoriteCountry.name());
 
         Map<String, Integer> userPoints = new HashMap<>();
-        namedParameterJdbcOperations.query(builder.toString(), params, (ResultSet rs) -> {
+        namedParameterJdbcOperations.query(query, params, (ResultSet rs) -> {
             String userName = rs.getString(1);
             int points = rs.getInt(2);
             if (!fredbetProperties.adminUsername().equals(userName)) {
