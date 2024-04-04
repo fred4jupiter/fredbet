@@ -312,6 +312,6 @@ public class Match implements MatchResult, MatchBusinessKey {
         builder.append(this.teamTwo.getBusinessKey());
         builder.append(this.group);
         builder.append(dateTimeFormatter.format(this.kickOffDate));
-        return ""+builder.hashCode();
+        return "" + builder.toHashCode();
     }
 }
