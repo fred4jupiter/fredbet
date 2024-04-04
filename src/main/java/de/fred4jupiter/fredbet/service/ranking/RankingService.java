@@ -69,18 +69,7 @@ public class RankingService {
     }
 
     private List<UsernamePoints> filterAndSortRankings(RankingSelection rankingSelection, List<UsernamePoints> rankings) {
-        final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
-        Stream<UsernamePoints> usernamePointsStream = rankings.stream().filter(Objects::nonNull);
-
-        if (RankingSelection.MIXED.equals(rankingSelection)) {
-            // nothing to filter
-        } else if (RankingSelection.ONLY_ADULTS.equals(rankingSelection))
-            usernamePointsStream = usernamePointsStream.filter(usernamePoints -> !isChild(relationMap, usernamePoints));
-        else if (RankingSelection.ONLY_CHILDREN.equals(rankingSelection)) {
-            usernamePointsStream = usernamePointsStream.filter(usernamePoints -> isChild(relationMap, usernamePoints));
-        } else {
-            throw new IllegalArgumentException("Unsupported ranking selection " + rankingSelection);
-        }
+        Stream<UsernamePoints> usernamePointsStream = prepareUsernamePoints(rankings, rankingSelection);
 
         Comparator<UsernamePoints> comparator1 = Comparator.comparingInt(UsernamePoints::getTotalPoints).reversed();
         Comparator<UsernamePoints> comparator2 = Comparator.comparingInt(UsernamePoints::getCorrectResultCount).reversed();
@@ -89,9 +78,21 @@ public class RankingService {
         return usernamePointsStream.sorted(comparator1.thenComparing(comparator2).thenComparing(comparator3)).collect(Collectors.toList());
     }
 
+    private Stream<UsernamePoints> prepareUsernamePoints(List<UsernamePoints> rankings, RankingSelection rankingSelection) {
+        final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
+
+        return switch (rankingSelection) {
+            case MIXED -> rankings.stream().filter(Objects::nonNull);
+            case ONLY_ADULTS ->
+                    rankings.stream().filter(Objects::nonNull).filter(usernamePoints -> !isChild(relationMap, usernamePoints));
+            case ONLY_CHILDREN ->
+                    rankings.stream().filter(Objects::nonNull).filter(usernamePoints -> isChild(relationMap, usernamePoints));
+        };
+    }
+
     private Boolean isChild(Map<String, Boolean> relationMap, UsernamePoints usernamePoints) {
         Boolean isChild = relationMap.get(usernamePoints.getUserName());
-        return isChild == null ? false : isChild;
+        return isChild != null && isChild;
     }
 
     public byte[] exportBetsToPdf(Locale locale, RankingSelection rankingSelection) {

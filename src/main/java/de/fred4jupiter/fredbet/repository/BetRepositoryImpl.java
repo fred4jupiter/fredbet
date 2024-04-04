@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
