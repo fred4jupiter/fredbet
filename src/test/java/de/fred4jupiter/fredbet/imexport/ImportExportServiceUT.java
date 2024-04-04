@@ -47,10 +47,12 @@ public class ImportExportServiceUT {
         match.setGroup(Group.GROUP_A);
         match.setStadium("Munich");
         match.setKickOffDate(LocalDateTime.now());
+
         Team teamOne = new Team();
         teamOne.setCountry(Country.GERMANY);
         teamOne.setGoals(1);
         match.setTeamOne(teamOne);
+
         Team teamTwo = new Team();
         teamTwo.setCountry(Country.GERMANY);
         teamTwo.setGoals(2);

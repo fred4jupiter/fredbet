@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Team;
 
@@ -16,7 +15,6 @@ class MatchToExport {
 
     private boolean penaltyWinnerOne;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime kickOffDate;
 
     private String stadium;
