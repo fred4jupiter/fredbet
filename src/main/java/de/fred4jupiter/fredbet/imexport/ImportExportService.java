@@ -74,7 +74,7 @@ public class ImportExportService {
             export.setGoalsTeamOne(bet.getGoalsTeamOne());
             export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
             if (bet.getMatch() != null) {
-                export.setMatchBusinessKey(bet.getMatch().getMatchBusinessKey());
+                export.setMatchBusinessKey(bet.getMatch().getBusinessHashcode());
             }
             export.setUsername(bet.getUserName());
             export.setPoints(bet.getPoints());
@@ -153,7 +153,7 @@ public class ImportExportService {
     }
 
     private Map<String, Match> loadAllMatches() {
-        return matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getMatchBusinessKey, e -> e));
+        return matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessHashcode, e -> e));
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {

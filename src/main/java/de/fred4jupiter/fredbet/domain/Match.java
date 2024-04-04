@@ -3,13 +3,13 @@ package de.fred4jupiter.fredbet.domain;
 import de.fred4jupiter.fredbet.imexport.MatchBusinessKey;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -52,6 +52,9 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     @Column(name = "STADIUM")
     private String stadium;
+
+    @Transient
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public boolean hasCountriesSet() {
         return teamOne.hasCountrySet() && teamTwo.hasCountrySet();
@@ -299,12 +302,16 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     public String getLabel(MessageSourceUtil messageSourceUtil, Locale locale) {
         return getTeamOne().getNameTranslated(messageSourceUtil, locale) + " - "
-                + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
+               + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
     }
 
     @Override
-    public String getMatchBusinessKey() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "match_%s_%s_%s_%s".formatted(this.teamOne.getBusinessKey(), this.teamTwo.getBusinessKey(), this.group, formatter.format(this.kickOffDate));
+    public String getBusinessHashcode() {
+        HashCodeBuilder builder = new HashCodeBuilder();
+        builder.append(this.teamOne.getBusinessKey());
+        builder.append(this.teamTwo.getBusinessKey());
+        builder.append(this.group);
+        builder.append(dateTimeFormatter.format(this.kickOffDate));
+        return ""+builder.hashCode();
     }
 }
