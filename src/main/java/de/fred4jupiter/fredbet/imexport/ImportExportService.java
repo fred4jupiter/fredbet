@@ -64,7 +64,7 @@ public class ImportExportService {
             export.setPointsTwo(extraBet.getPointsTwo());
             export.setPointsThree(extraBet.getPointsThree());
             return export;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private List<BetToExport> convertToBettings(List<Bet> bettings) {
@@ -80,7 +80,7 @@ public class ImportExportService {
             export.setPoints(bet.getPoints());
             export.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
             return export;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private List<MatchToExport> convertToMatches(List<Match> matches) {
@@ -93,7 +93,7 @@ public class ImportExportService {
             export.setKickOffDate(match.getKickOffDate());
             export.setPenaltyWinnerOne(match.isPenaltyWinnerOne());
             return export;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private List<UserToExport> convertToUsers(List<AppUser> allUsers) {
@@ -104,7 +104,7 @@ public class ImportExportService {
             userToExport.setChild(appUser.isChild());
             userToExport.setRoles(appUser.getRoles());
             return userToExport;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     public void importAllFromJson(String json) {
