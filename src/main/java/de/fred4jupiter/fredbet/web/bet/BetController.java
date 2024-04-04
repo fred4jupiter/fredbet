@@ -14,6 +14,7 @@ import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
+import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -121,8 +121,8 @@ public class BetController {
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 
         Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
-        betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
-        betCommand.setMaxJokers(joker.getMax());
+        betCommand.setNumberOfJokersUsed(joker.numberOfJokersUsed());
+        betCommand.setMaxJokers(joker.max());
         betCommand.setUseJoker(bet.isJoker());
         betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
 

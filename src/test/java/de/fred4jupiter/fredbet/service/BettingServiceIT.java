@@ -76,8 +76,8 @@ public class BettingServiceIT {
 
         Joker joker = jokerService.getJokerForUser(appUser.getUsername());
         assertNotNull(joker);
-        assertEquals(Integer.valueOf(3), joker.getNumberOfJokersUsed());
-        assertEquals(Integer.valueOf(3), joker.getMax());
+        assertEquals(Integer.valueOf(3), joker.numberOfJokersUsed());
+        assertEquals(Integer.valueOf(3), joker.max());
 
         assertThrows(NumberOfJokersReachedException.class, () -> bettingService.save(bet4));
     }
@@ -132,8 +132,8 @@ public class BettingServiceIT {
 
         Joker joker = jokerService.getJokerForUser(appUser.getUsername());
         assertNotNull(joker);
-        assertEquals(Integer.valueOf(3), joker.getNumberOfJokersUsed());
-        assertEquals(Integer.valueOf(3), joker.getMax());
+        assertEquals(Integer.valueOf(3), joker.numberOfJokersUsed());
+        assertEquals(Integer.valueOf(3), joker.max());
 
         Long matchWithoutJoker = bettingService.save(bet4);
         assertNotNull(matchWithoutJoker);
@@ -182,8 +182,8 @@ public class BettingServiceIT {
 
         Joker joker = jokerService.getJokerForUser(appUser.getUsername());
         assertNotNull(joker);
-        assertEquals(Integer.valueOf(3), joker.getNumberOfJokersUsed());
-        assertEquals(Integer.valueOf(3), joker.getMax());
+        assertEquals(Integer.valueOf(3), joker.numberOfJokersUsed());
+        assertEquals(Integer.valueOf(3), joker.max());
 
         Long matchWithoutJoker = bettingService.save(bet3);
         assertNotNull(matchWithoutJoker);

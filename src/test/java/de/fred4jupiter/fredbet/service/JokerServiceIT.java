@@ -35,8 +35,8 @@ public class JokerServiceIT {
 
         Joker joker = jokerService.getJokerForUser(appUser.getUsername());
         assertNotNull(joker);
-        assertEquals(Integer.valueOf(0), joker.getNumberOfJokersUsed());
-        assertEquals(Integer.valueOf(3), joker.getMax());
+        assertEquals(Integer.valueOf(0), joker.numberOfJokersUsed());
+        assertEquals(Integer.valueOf(3), joker.max());
     }
 
     @Test
@@ -61,8 +61,8 @@ public class JokerServiceIT {
 
         Joker joker = jokerService.getJokerForUser(appUser.getUsername());
         assertNotNull(joker);
-        assertEquals(Integer.valueOf(1), joker.getNumberOfJokersUsed());
-        assertEquals(Integer.valueOf(3), joker.getMax());
+        assertEquals(Integer.valueOf(1), joker.numberOfJokersUsed());
+        assertEquals(Integer.valueOf(3), joker.max());
     }
 
 }
