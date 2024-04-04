@@ -77,7 +77,7 @@ public class CountryService {
     private List<Country> sortCountries(Locale locale, List<Country> countriesWithoutNoneEntry) {
         return countriesWithoutNoneEntry.stream().filter(Objects::nonNull)
                 .sorted(Comparator.comparing((Country country) -> messageSourceUtil.getCountryName(country, locale)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Set<Country> toCountrySet(List<Match> matches) {

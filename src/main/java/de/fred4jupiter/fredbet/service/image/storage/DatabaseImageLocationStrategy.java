@@ -35,7 +35,7 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
         if (allImages.isEmpty()) {
             return Collections.emptyList();
         }
-        return allImages.stream().map(this::toImageData).collect(Collectors.toList());
+        return allImages.stream().map(this::toImageData).toList();
     }
 
     private BinaryImage toImageData(ImageBinary imageBinary) {

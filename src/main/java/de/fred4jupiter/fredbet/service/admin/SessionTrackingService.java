@@ -45,6 +45,6 @@ public class SessionTrackingService {
         return loggedInUsers.stream().filter(sessionTracking -> {
             Duration duration = Duration.between(sessionTracking.getLastLogin(), LocalDateTime.now());
             return duration.compareTo(Duration.ofDays(1)) < 0; // show only active users that are not older than 1 day
-        }).collect(Collectors.toList());
+        }).toList();
     }
 }

@@ -1,39 +1,38 @@
 package de.fred4jupiter.fredbet.service.image.storage;
 
-import java.util.List;
-
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
+
+import java.util.List;
 
 /**
  * Locator strategy for maintaining image storage.
- * 
- * @author michael
  *
+ * @author michael
  */
 public interface ImageLocationStrategy {
 
-	String THUMBNAIL_PREFIX = "TN_";
+    String THUMBNAIL_PREFIX = "TN_";
 
-	String IMAGE_PREFIX = "IM_";
+    String IMAGE_PREFIX = "IM_";
 
-	void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary);
+    void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary);
 
-	/**
-	 * For downloading all images as zip file.
-	 * 
-	 * @return
-	 */
-	List<BinaryImage> findAllImages();
+    /**
+     * For downloading all images as zip file.
+     *
+     * @return list of binary images.
+     */
+    List<BinaryImage> findAllImages();
 
-	/**
-	 * Delete image and thumbnail by given key.
-	 * 
-	 * @param imageKey
-	 * @param imageGroupId
-	 */
-	void deleteImage(String imageKey, Long imageGroupId);
+    /**
+     * Delete image and thumbnail by given key.
+     *
+     * @param imageKey     the image key
+     * @param imageGroupId the image group id
+     */
+    void deleteImage(String imageKey, Long imageGroupId);
 
-	BinaryImage getImageByKey(String imageKey, Long imageGroupId);
+    BinaryImage getImageByKey(String imageKey, Long imageGroupId);
 
-	BinaryImage getThumbnailByKey(String imageKey, Long imageGroupId);
+    BinaryImage getThumbnailByKey(String imageKey, Long imageGroupId);
 }
