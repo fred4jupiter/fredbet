@@ -122,7 +122,7 @@ public class ImportExportService {
         LOG.debug("imported allMatches");
 
         final List<BetToExport> bets = importExportContainer.getBets();
-        final Map<String, Match> savedMatchesByBusinessKey = loadAllMatches();
+        final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessHashcode, e -> e));
         bets.forEach(betToExport -> {
             Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
             bettingService.createAndSaveBetting(bet -> {
@@ -142,10 +142,6 @@ public class ImportExportService {
                 extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
                 extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree()));
         LOG.debug("imported extrabets");
-    }
-
-    private Map<String, Match> loadAllMatches() {
-        return matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessHashcode, e -> e));
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {
