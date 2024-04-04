@@ -67,40 +67,41 @@ fredbet:
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
-  user-groups:
-    - groupName: ROLE_USER
-      permissions:
-    - groupName: ROLE_USER_ENTER_RESULTS
-      permissions:
-        - PERM_EDIT_MATCH_RESULT
-    - groupName: ROLE_SUB_ADMIN
-      permissions:
-        - PERM_EDIT_MATCH
-        - PERM_EDIT_MATCH_RESULT
-        - PERM_CREATE_USER
-        - PERM_USER_ADMINISTRATION
-        - PERM_PASSWORD_RESET
-        - PERM_EDIT_USER
-        - PERM_EDIT_INFOS_RULES
-        - PERM_EDIT_INFOS_PRICES
-    - groupName: ROLE_ADMIN
-      permissions:
-        - PERM_CREATE_MATCH
-        - PERM_EDIT_MATCH
-        - PERM_EDIT_MATCH_RESULT
-        - PERM_DELETE_MATCH
-        - PERM_CREATE_USER
-        - PERM_EDIT_USER
-        - PERM_DELETE_USER
-        - PERM_PASSWORD_RESET
-        - PERM_USER_ADMINISTRATION
-        - PERM_SYSTEM_INFO
-        - PERM_ADMINISTRATION
-        - PERM_CHANGE_USER_ROLE
-        - PERM_EDIT_INFOS_RULES
-        - PERM_EDIT_INFOS_PRICES
-        - PERM_SHOW_ACTIVE_USERS
-        - PERM_SHOW_LAST_LOGINS
-        - PERM_EDIT_IMAGE_GROUP
-        - PERM_DOWNLOAD_IMAGES
-        - PERM_DELETE_ALL_IMAGES
+  authorization:
+    user-groups:
+      - groupName: ROLE_USER
+        permissions:
+      - groupName: ROLE_USER_ENTER_RESULTS
+        permissions:
+          - PERM_EDIT_MATCH_RESULT
+      - groupName: ROLE_SUB_ADMIN
+        permissions:
+          - PERM_EDIT_MATCH
+          - PERM_EDIT_MATCH_RESULT
+          - PERM_CREATE_USER
+          - PERM_USER_ADMINISTRATION
+          - PERM_PASSWORD_RESET
+          - PERM_EDIT_USER
+          - PERM_EDIT_INFOS_RULES
+          - PERM_EDIT_INFOS_PRICES
+      - groupName: ROLE_ADMIN
+        permissions:
+          - PERM_CREATE_MATCH
+          - PERM_EDIT_MATCH
+          - PERM_EDIT_MATCH_RESULT
+          - PERM_DELETE_MATCH
+          - PERM_CREATE_USER
+          - PERM_EDIT_USER
+          - PERM_DELETE_USER
+          - PERM_PASSWORD_RESET
+          - PERM_USER_ADMINISTRATION
+          - PERM_SYSTEM_INFO
+          - PERM_ADMINISTRATION
+          - PERM_CHANGE_USER_ROLE
+          - PERM_EDIT_INFOS_RULES
+          - PERM_EDIT_INFOS_PRICES
+          - PERM_SHOW_ACTIVE_USERS
+          - PERM_SHOW_LAST_LOGINS
+          - PERM_EDIT_IMAGE_GROUP
+          - PERM_DOWNLOAD_IMAGES
+          - PERM_DELETE_ALL_IMAGES

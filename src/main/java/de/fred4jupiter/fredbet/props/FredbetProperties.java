@@ -6,10 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +47,8 @@ public class FredbetProperties {
 
     private String adminPassword = "admin";
 
-    private Set<UserGroup> userGroups = new HashSet<>();
+    @NestedConfigurationProperty
+    private AuthorizationProperties authorization;
 
     public ImageLocation getImageLocation() {
         return imageLocation;
@@ -112,29 +117,6 @@ public class FredbetProperties {
         this.thumbnailSize = thumbnailSize;
     }
 
-    public Set<UserGroup> getUserGroups() {
-        return userGroups;
-    }
-
-    public void setUserGroups(Set<UserGroup> userGroups) {
-        this.userGroups = userGroups;
-    }
-
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getPermissionsForUserGroup(String userGroupName) {
-        UserGroup userGroup = getUserGroupByName(userGroupName);
-        return userGroup.getPermissions().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
-    }
-
-    private UserGroup getUserGroupByName(String name) {
-        for (UserGroup userGroup : this.userGroups) {
-            if (userGroup.getGroupName().equals(name)) {
-                return userGroup;
-            }
-        }
-        throw new IllegalArgumentException("UserGroup with name: " + name + " not found!");
-    }
-
     public String getAdminUsername() {
         return adminUsername;
     }
@@ -149,5 +131,13 @@ public class FredbetProperties {
 
     public void setAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
+    }
+
+    public AuthorizationProperties getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(AuthorizationProperties authorization) {
+        this.authorization = authorization;
     }
 }

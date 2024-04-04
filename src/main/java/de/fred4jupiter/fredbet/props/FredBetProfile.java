@@ -12,8 +12,6 @@ public final class FredBetProfile {
 
     public static final String DEV = "dev";
 
-    public static final String PROD = "prod";
-
     public static final String INTEGRATION_TEST = "integration_test";
 
     public static final String H2 = "h2";

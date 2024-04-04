@@ -24,6 +24,6 @@ class PermissionResolverImpl implements PermissionResolver {
     @Override
     public Collection<GrantedAuthority> resolvePermissions(Collection<? extends GrantedAuthority> roleAuthorities) {
         return roleAuthorities.stream().map(GrantedAuthority::getAuthority)
-                .flatMap(userGroup -> fredbetProperties.getPermissionsForUserGroup(userGroup).stream()).collect(Collectors.toSet());
+                .flatMap(userGroup -> fredbetProperties.getAuthorization().getPermissionsForUserGroup(userGroup).stream()).collect(Collectors.toSet());
     }
 }
