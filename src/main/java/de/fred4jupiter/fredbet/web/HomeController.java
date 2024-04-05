@@ -1,17 +1,16 @@
 package de.fred4jupiter.fredbet.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
 
-	@RequestMapping
-	public ModelAndView home(RedirectAttributes redirect) {
-		return new ModelAndView("redirect:/matches");
-	}
+    @GetMapping
+    public String home() {
+        return "redirect:/matches";
+    }
 
 }
