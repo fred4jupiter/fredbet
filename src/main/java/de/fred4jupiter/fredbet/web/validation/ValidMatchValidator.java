@@ -3,20 +3,15 @@ package de.fred4jupiter.fredbet.web.validation;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.matches.CreateEditMatchCommand;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-
 public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstraint, CreateEditMatchCommand> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValidMatchValidator.class);
-
-    @Override
-    public void initialize(ValidMatchConstraint constraintAnnotation) {
-    }
 
     @Override
     public boolean isValid(CreateEditMatchCommand value, ConstraintValidatorContext context) {
@@ -41,38 +36,6 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
         return true;
     }
 
-    private boolean isInvalidTeamSelection(CreateEditMatchCommand value) {
-        Country countryTeamOne = value.getCountryTeamOne();
-        Country countryTeamTwo = value.getCountryTeamTwo();
-
-        String teamNameOne = value.getTeamNameOne();
-        String teamNameTwo = value.getTeamNameTwo();
-
-        // nothing selected
-        if ((Validator.isNull(countryTeamOne) && Validator.isNull(countryTeamTwo))
-                && (StringUtils.isBlank(teamNameOne) && StringUtils.isBlank(teamNameTwo))) {
-            return true;
-        }
-
-        if (Validator.isNull(countryTeamOne) && Validator.isNotNull(countryTeamTwo)) {
-            return true;
-        }
-
-        if (Validator.isNotNull(countryTeamOne) && Validator.isNull(countryTeamTwo)) {
-            return true;
-        }
-
-        if (StringUtils.isBlank(teamNameOne) && StringUtils.isNotBlank(teamNameTwo)) {
-            return true;
-        }
-
-        if (StringUtils.isNotBlank(teamNameOne) && StringUtils.isBlank(teamNameTwo)) {
-            return true;
-        }
-
-        return false;
-    }
-
     private boolean oneTeamNotSelected(CreateEditMatchCommand value) {
         Country countryTeamOne = value.getCountryTeamOne();
         Country countryTeamTwo = value.getCountryTeamTwo();
@@ -81,9 +44,9 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
         String teamNameTwo = value.getTeamNameTwo();
 
         return (Validator.isNull(countryTeamOne) && StringUtils.isBlank(teamNameOne))
-                || (Validator.isNotNull(countryTeamOne) && StringUtils.isNotBlank(teamNameOne))
-                || (Validator.isNull(countryTeamTwo) && StringUtils.isBlank(teamNameTwo))
-                || (Validator.isNotNull(countryTeamTwo) && StringUtils.isNotBlank(teamNameTwo));
+               || (Validator.isNotNull(countryTeamOne) && StringUtils.isNotBlank(teamNameOne))
+               || (Validator.isNull(countryTeamTwo) && StringUtils.isBlank(teamNameTwo))
+               || (Validator.isNotNull(countryTeamTwo) && StringUtils.isNotBlank(teamNameTwo));
     }
 
     private boolean hasSameTeamsPlayingAgainstEachOther(CreateEditMatchCommand value) {
