@@ -2,12 +2,13 @@ package de.fred4jupiter.fredbet.service;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CountryService {
@@ -37,14 +38,6 @@ public class CountryService {
     }
 
     /*
-     * to show in runtime config
-     */
-    public List<Country> getAvailableCountriesSortedWithoutNoneEntry(Locale locale) {
-        List<Country> countriesWithoutNoneEntry = getAllCountriesWithoutNoneEntry();
-        return sortCountries(locale, countriesWithoutNoneEntry);
-    }
-
-    /*
      * show in extra bets and in runtime config
      */
     public List<Country> getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(Locale locale) {
@@ -62,8 +55,8 @@ public class CountryService {
      * for random extra bets
      */
     public Set<Country> getAvailableCountriesWithoutNoneEntry() {
-        List<Match> allMatches = matchRepository.findAll();
-        return toCountrySet(allMatches);
+        List<Country[]> allCountries = matchRepository.findAllCountries();
+        return allCountries.stream().flatMap(Stream::of).collect(Collectors.toSet());
     }
 
     /*
@@ -77,15 +70,5 @@ public class CountryService {
         return countriesWithoutNoneEntry.stream().filter(Objects::nonNull)
                 .sorted(Comparator.comparing((Country country) -> messageSourceUtil.getCountryName(country, locale)))
                 .toList();
-    }
-
-    private Set<Country> toCountrySet(List<Match> matches) {
-        final Set<Country> resultset = new HashSet<>();
-        matches.stream().filter(match -> match != null && (match.getTeamOne().getCountry() != null || match.getTeamTwo().getCountry() != null))
-                .forEach(match -> {
-                    resultset.add(match.getTeamOne().getCountry());
-                    resultset.add(match.getTeamTwo().getCountry());
-                });
-        return resultset;
     }
 }

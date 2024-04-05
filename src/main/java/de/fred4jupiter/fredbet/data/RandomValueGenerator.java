@@ -47,15 +47,13 @@ public class RandomValueGenerator {
         }
 
         Country countryOne = generateRandomCountry(availCountries);
-        availCountries.remove(countryOne);
+        List<Country> resultList = availCountries.stream().filter(country -> !country.equals(countryOne)).toList();
 
-        if (CollectionUtils.isEmpty(availCountries)) {
+        if (CollectionUtils.isEmpty(resultList)) {
             return ImmutablePair.of(countryOne, countryOne);
         }
 
-        Country countryTwo = generateRandomCountry(availCountries);
-        availCountries.remove(countryTwo);
-
+        Country countryTwo = generateRandomCountry(resultList);
         return ImmutablePair.of(countryOne, countryTwo);
     }
 
