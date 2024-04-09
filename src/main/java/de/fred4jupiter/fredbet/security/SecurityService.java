@@ -2,17 +2,14 @@ package de.fred4jupiter.fredbet.security;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
-import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
- * Provides security informations of the current user.
+ * Provides security information of the current user.
  *
  * @author mstaehler
  */
@@ -21,11 +18,8 @@ public class SecurityService {
 
     private final ImageMetaDataRepository imageMetaDataRepository;
 
-    private final AppUserRepository appUserRepository;
-
-    public SecurityService(ImageMetaDataRepository imageMetaDataRepository, AppUserRepository appUserRepository) {
+    public SecurityService(ImageMetaDataRepository imageMetaDataRepository) {
         this.imageMetaDataRepository = imageMetaDataRepository;
-        this.appUserRepository = appUserRepository;
     }
 
     public boolean isUserLoggedIn() {

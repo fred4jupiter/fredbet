@@ -7,10 +7,8 @@ import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -181,17 +178,9 @@ public class BettingService {
         return dateTimeNow.isAfter(firstMatchKickOffDate);
     }
 
-    public Match findFinalMatch() {
+    public Optional<Match> findFinalMatch() {
         List<Match> matches = matchRepository.findByGroup(Group.FINAL);
-        if (Validator.isEmpty(matches)) {
-            return null;
-        }
-
-        if (matches.size() > 1) {
-            throw new IllegalStateException("Found more than one final match!");
-        }
-
-        return matches.get(0);
+        return matches.stream().findFirst();
     }
 
     public boolean hasOpenExtraBet(String currentUserName) {
@@ -222,8 +211,7 @@ public class BettingService {
             if (randomValueGenerator.generateRandomBoolean()) {
                 jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
             }
-            Pair<Integer, Integer> goals = Pair.of(randomFromTo(), randomFromTo());
-            createAndSaveBetting(username, match, goals.getLeft(), goals.getRight(), jokerAllowed);
+            createAndSaveBetting(username, match, randomFromTo(), randomFromTo(), jokerAllowed);
         });
 
         if (hasFirstMatchStarted()) {
