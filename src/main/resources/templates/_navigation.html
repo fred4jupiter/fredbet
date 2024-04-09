@@ -60,10 +60,10 @@
 								<li>
 									<a th:href="@{/matches}" th:text="#{all.matches}"></a>
 								</li>
-								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" class="divider" role="separator"></li>
-								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}">
-					            	<a th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
-				            	</li>
+								<li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}" class="divider" role="separator"></li>
+								<li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+									<a th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
+								</li>
 								<li class="divider" role="separator"></li>
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}">
 					            	<a th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>

@@ -139,4 +139,8 @@ public class MatchService {
         List<Match> matches = matchRepository.findByGroup(Group.GAME_FOR_THIRD);
         return !matches.isEmpty();
     }
+
+    public boolean isKnockOutMatchesAvailable() {
+        return matchRepository.hasMatchesOfGroups(Group.getKnockoutGroups());
+    }
 }

@@ -282,4 +282,9 @@ public class BettingService {
         extraBet.setPointsThree(pointsThree);
         extraBetRepository.save(extraBet);
     }
+
+    public boolean hasUserBetsWithJoker() {
+        String currentUserName = securityService.getCurrentUserName();
+        return betRepository.hasBetsWithJoker(currentUserName);
+    }
 }

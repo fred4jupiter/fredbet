@@ -61,4 +61,12 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
 
     @Query("select new de.fred4jupiter.fredbet.repository.PointsPerUser(b.userName, sum(b.points)) from Bet b group by b.userName")
     List<PointsPerUser> queryPointsPerUser();
+
+    @Query("""
+            select case when (count(b) > 0) then true else false end
+            from Bet b
+            where b.joker is true
+            and b.userName = :currentUserName
+            """)
+    boolean hasBetsWithJoker(@Param("currentUserName") String currentUserName);
 }

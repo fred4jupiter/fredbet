@@ -60,8 +60,8 @@ public enum Group {
                 .sorted(Comparator.comparing(Group::name)).toList();
     }
 
-    public static List<Group> getFinalGroups() {
-        return Arrays.asList(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL);
+    public static List<Group> getKnockoutGroups() {
+        return Arrays.asList(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
     }
 
     public boolean isKnockoutRound() {
