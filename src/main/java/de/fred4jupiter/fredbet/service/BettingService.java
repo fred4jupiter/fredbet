@@ -57,7 +57,7 @@ public class BettingService {
         return createAndSaveBetting(username, match, goalsTeamOne, goalsTeamTwo, withJoker, false);
     }
 
-    public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker, boolean penaltyWinnerOne) {
+    private Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker, boolean penaltyWinnerOne) {
         Bet bet = new Bet();
         bet.setGoalsTeamOne(goalsTeamOne);
         bet.setGoalsTeamTwo(goalsTeamTwo);
