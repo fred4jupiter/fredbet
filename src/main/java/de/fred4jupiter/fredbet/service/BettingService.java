@@ -68,10 +68,10 @@ public class BettingService {
         return betRepository.save(bet);
     }
 
-    public Bet createAndSaveBetting(Consumer<Bet> consumer) {
-        Bet bet = new Bet();
-        consumer.accept(bet);
-        return betRepository.save(bet);
+    public Bet createAndSaveBetting(Consumer<BetBuilder> consumer) {
+        BetBuilder builder = BetBuilder.create();
+        consumer.accept(builder);
+        return betRepository.save(builder.build());
     }
 
     public List<Bet> findAllByUsername(String username) {

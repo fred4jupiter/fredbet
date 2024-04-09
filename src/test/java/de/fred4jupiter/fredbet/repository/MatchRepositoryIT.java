@@ -90,9 +90,9 @@ public class MatchRepositoryIT {
         matchRepository.save(match2);
 
         final String userName = "Albert";
-        betRepository.save(BetBuilder.create().withGoals(1, 2).withJoker(true).withMatch(match1).withUsername(userName).build());
+        betRepository.save(BetBuilder.create().withGoals(1, 2).withJoker(true).withMatch(match1).withUserName(userName).build());
 
-        betRepository.save(BetBuilder.create().withGoals(2, 6).withJoker(true).withMatch(match2).withUsername("Karl").build());
+        betRepository.save(BetBuilder.create().withGoals(2, 6).withJoker(true).withMatch(match2).withUserName("Karl").build());
 
         List<Match> matches = matchRepository.findMatchesOfJokerBetsForUser(userName);
         assertNotNull(matches);
