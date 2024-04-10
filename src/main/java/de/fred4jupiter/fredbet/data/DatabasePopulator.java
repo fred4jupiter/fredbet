@@ -109,7 +109,9 @@ public class DatabasePopulator {
     private void createBetForUser(AppUser appUser, Match match, boolean joker) {
         Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
         Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
-        bettingService.createAndSaveBetting(appUser.getUsername(), match, goalsTeamOne, goalsTeamTwo, joker);
+        bettingService.createAndSaveBetting(builder -> {
+            builder.withGoals(goalsTeamOne, goalsTeamTwo).withJoker(joker).withUserName(appUser.getUsername()).withMatch(match);
+        });
     }
 
     public void createDemoResultsForAllMatches() {

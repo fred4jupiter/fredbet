@@ -53,21 +53,6 @@ public class BettingService {
         this.fredbetProperties = fredbetProperties;
     }
 
-    public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
-        return createAndSaveBetting(username, match, goalsTeamOne, goalsTeamTwo, withJoker, false);
-    }
-
-    private Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker, boolean penaltyWinnerOne) {
-        Bet bet = new Bet();
-        bet.setGoalsTeamOne(goalsTeamOne);
-        bet.setGoalsTeamTwo(goalsTeamTwo);
-        bet.setMatch(match);
-        bet.setUserName(username);
-        bet.setJoker(withJoker);
-        bet.setPenaltyWinnerOne(penaltyWinnerOne);
-        return betRepository.save(bet);
-    }
-
     public Bet createAndSaveBetting(Consumer<BetBuilder> consumer) {
         BetBuilder builder = BetBuilder.create();
         consumer.accept(builder);
@@ -207,12 +192,12 @@ public class BettingService {
     public void diceAllMatchesForUser(String username) {
         List<Match> allMatches = findMatchesToBet(username);
         allMatches.forEach(match -> {
-            boolean jokerAllowed = false;
-            if (randomValueGenerator.generateRandomBoolean()) {
-                jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
-            }
-            createAndSaveBetting(username, match, randomFromTo(), randomFromTo(), jokerAllowed);
+            createAndSaveBetting(builder -> {
+                builder.withUserName(username).withMatch(match)
+                        .withGoals(randomFromTo(), randomFromTo()).withJoker(isJokerAllowed(username, match));
+            });
         });
+
 
         if (hasFirstMatchStarted()) {
             // Its too late for betting the extra bets. The first match has already started.
@@ -233,6 +218,13 @@ public class BettingService {
             }
             extraBetRepository.save(extraBet);
         }
+    }
+
+    private boolean isJokerAllowed(String username, Match match) {
+        if (randomValueGenerator.generateRandomBoolean()) {
+            return jokerService.isSettingJokerAllowed(username, match.getId());
+        }
+        return false;
     }
 
     private Integer randomFromTo() {
