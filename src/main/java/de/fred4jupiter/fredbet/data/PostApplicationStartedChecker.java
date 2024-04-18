@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * Central service for initialization after application startup.
  */
 @Component
-public class PostApplicationStartedChecker {
+class PostApplicationStartedChecker {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostApplicationStartedChecker.class);
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 
 @Component
-public class FakeDataPopulator {
+class FakeDataPopulator {
 
     private final Faker faker = new Faker(Locale.getDefault());
 

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DatabaseInitializer {
+class DatabaseInitializer {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseInitializer.class);
 

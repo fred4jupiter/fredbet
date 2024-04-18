@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public record StaticResourceLoader(Resource rules, Resource demoImage) {
+record StaticResourceLoader(Resource rules, Resource demoImage) {
 
     public StaticResourceLoader(@Value("classpath:/content/rules_de.txt") Resource rules,
                                 @Value("classpath:/static/images/profile_demo_image.jpg") Resource demoImage) {
