@@ -25,8 +25,6 @@ import java.util.Set;
 @Table(name = "APP_USER")
 public class AppUser implements UserDetails {
 
-    private static final long serialVersionUID = -2973861561213230375L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
