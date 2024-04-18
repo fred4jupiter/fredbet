@@ -9,6 +9,7 @@ import de.fred4jupiter.fredbet.service.admin.AdministrationService;
 import de.fred4jupiter.fredbet.service.admin.SessionTrackingService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @Controller

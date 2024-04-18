@@ -75,10 +75,10 @@ public class MatchServiceIT {
     @Test
     public void createTwoMatches() {
         matchService.save(MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
-                .withKickOffDate(11, 6, 15).build());
+            .withKickOffDate(11, 6, 15).build());
 
         matchService.save(MatchBuilder.create().withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
-                .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build());
+            .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build());
 
         assertEquals(2, matchRepository.count());
     }
@@ -86,7 +86,7 @@ public class MatchServiceIT {
     @Test
     public void changeTeamInMatch() {
         Match match = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
-                .withKickOffDate(11, 6, 15).build();
+            .withKickOffDate(11, 6, 15).build();
         matchService.save(match);
 
         Match found = matchRepository.getReferenceById(match.getId());
