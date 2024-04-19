@@ -9,7 +9,7 @@ public enum Country {
 
     NONE("none"), // non selected country placeholder
 
-    ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), ENGLAND("eng"), FRANCE("fra"),
+    ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), GREAT_BRITAIN("gbr"), ENGLAND("eng"), FRANCE("fra"),
     IRELAND("irl"), ICELAND("isl"), ITALY("ita"), CROATIA("hrv"), NORTH_IRELAND("north_ireland"),
     AUSTRIA("aut"), POLAND("pol"), PORTUGAL("prt"), ROMANIA("rou"), RUSSIA("rus"),
     SWEDEN("swe"), SWITZERLAND("che"),
