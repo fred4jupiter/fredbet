@@ -134,7 +134,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         IntStream.rangeClosed(1, numberOfDemoUsers).forEach(counter -> {
             final String usernameAndPassword = this.fakeDataPopulator.nextRandomUsername();
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
-                .withUserGroup(FredBetUserGroup.ROLE_USER).build();
+                .withUserGroup(FredBetUserGroup.ROLE_USER).withIsChild(fakeDataPopulator.nextRandomBoolean()).build();
             LOG.debug("creating demo user {}: {}", counter, usernameAndPassword);
             boolean isNewUser = userService.saveUserIfNotExists(user);
             if (isNewUser && fakeDataPopulator.nextRandomBoolean()) {
