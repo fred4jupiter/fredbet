@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   postgres:
     image: postgres
@@ -12,9 +11,9 @@ services:
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
   fredbet:
-    #    image: fred4jupiter/fredbet
-    build:
-      context: ../../../
+    image: fred4jupiter/fredbet:3.2.0
+#    build:
+#      context: ../../../
     depends_on:
       - postgres
     ports:
