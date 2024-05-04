@@ -98,7 +98,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
             return 0;
         }
 
-        if (extraBet.getSemiFinalWinner().equals(match.getLooser())) {
+        if (extraBet.getSemiFinalWinner()!= null && extraBet.getSemiFinalWinner().equals(match.getLooser())) {
             return runtimeSettings.getPointsSemiFinalWinner();
         }
 
@@ -114,11 +114,10 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
             return 0;
         }
 
-        if (extraBet.getThirdFinalWinner().equals(match.getWinner())) {
+        if (extraBet.getThirdFinalWinner() != null && extraBet.getThirdFinalWinner().equals(match.getWinner())) {
             return runtimeSettings.getPointsThirdFinalWinner();
         }
 
         return 0;
     }
-
 }
