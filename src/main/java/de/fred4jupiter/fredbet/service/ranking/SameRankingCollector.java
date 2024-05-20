@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.service.ranking;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -12,7 +12,7 @@ import java.util.List;
 class SameRankingCollector {
 
     void markEntriesWithSameRanking(List<UsernamePoints> rankings) {
-        final Multimap<Integer, UsernamePoints> map = ArrayListMultimap.create();
+        final ListValuedMap<Integer, UsernamePoints> map = new ArrayListValuedHashMap<>();
 
         rankings.forEach(usernamePoints -> map.put(usernamePoints.getUniqueHash(), usernamePoints));
 
