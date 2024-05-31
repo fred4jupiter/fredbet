@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -53,7 +52,8 @@ public class RankingService {
     }
 
     private void calculateAdditionalMetricsForRanking(List<UsernamePoints> rankings) {
-        List<Bet> allBetsWithMatches = betRepository.findAllBetsWithMatches();
+        final List<Bet> allBetsWithMatches = betRepository.findAllBetsWithMatches();
+        final List<String> topTipperUsernames = betRepository.queryPointsPerUserForToday();
 
         final CorrectResultVisitor correctResultVisitor = new CorrectResultVisitor();
         final GoalDifferenceVisitor goalDifferenceVisitor = new GoalDifferenceVisitor();
@@ -65,6 +65,9 @@ public class RankingService {
         rankings.stream().filter(Objects::nonNull).forEach(usernamePoints -> {
             usernamePoints.setCorrectResultCount(correctResultVisitor.getTotalCorrectResultCountForUser(usernamePoints.getUserName()));
             usernamePoints.setGoalDifference(goalDifferenceVisitor.getTotalGoalDifferenceForUser(usernamePoints.getUserName()));
+            if (topTipperUsernames.contains(usernamePoints.getUserName())) {
+                usernamePoints.setTopTipperOfToday(true);
+            }
         });
     }
 
@@ -84,9 +87,9 @@ public class RankingService {
         return switch (rankingSelection) {
             case MIXED -> rankings.stream().filter(Objects::nonNull);
             case ONLY_ADULTS ->
-                    rankings.stream().filter(Objects::nonNull).filter(usernamePoints -> !isChild(relationMap, usernamePoints));
+                rankings.stream().filter(Objects::nonNull).filter(usernamePoints -> !isChild(relationMap, usernamePoints));
             case ONLY_CHILDREN ->
-                    rankings.stream().filter(Objects::nonNull).filter(usernamePoints -> isChild(relationMap, usernamePoints));
+                rankings.stream().filter(Objects::nonNull).filter(usernamePoints -> isChild(relationMap, usernamePoints));
         };
     }
 
@@ -98,8 +101,8 @@ public class RankingService {
     public byte[] exportBetsToPdf(Locale locale, RankingSelection rankingSelection) {
         final String title = "FredBet " + messageSourceUtil.getMessageFor("ranking.list.title", locale);
         PdfTableDataBuilder builder = PdfTableDataBuilder.create()
-                .withHeaderColumn("#")
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale));
+            .withHeaderColumn("#")
+            .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale));
         final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
         if (runtimeSettings.isEnabledParentChildRanking()) {
             builder.withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.child", locale));
@@ -108,8 +111,8 @@ public class RankingService {
             builder.withColumnWidths(new float[]{1, 3, 3, 3, 3});
         }
         builder.withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale))
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale))
-                .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
+            .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale))
+            .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
 
         builder.withTitle(title).withLocale(locale);
 

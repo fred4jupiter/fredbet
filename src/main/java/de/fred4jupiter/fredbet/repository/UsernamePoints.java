@@ -23,6 +23,8 @@ public class UsernamePoints {
 
     private boolean sameRankingPositionAsOtherUser;
 
+    private boolean topTipperOfToday;
+
     public UsernamePoints(String userName, Integer totalPoints) {
         this.userName = userName;
         this.totalPoints = totalPoints;
@@ -88,5 +90,13 @@ public class UsernamePoints {
 
     public void setCssRankClass(String cssRankClass) {
         this.cssRankClass = cssRankClass;
+    }
+
+    public boolean isTopTipperOfToday() {
+        return topTipperOfToday;
+    }
+
+    public void setTopTipperOfToday(boolean topTipperOfToday) {
+        this.topTipperOfToday = topTipperOfToday;
     }
 }

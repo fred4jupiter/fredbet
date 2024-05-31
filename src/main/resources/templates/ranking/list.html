@@ -9,7 +9,7 @@
 			<div class="row">
 				<div class="col-xs-6">
 					<h1 th:text="#{ranking.list.title}"></h1>
-				</div> 
+				</div>
 				<div th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}" class="col-xs-6">
 					<div class="row pull-right btn-group no-left-right-margin" role="group">
 						<a href="#" th:href="@{/ranking(mode=mixed)}" class="btn"
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">				
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">
 					<div class="panel panel-default">
                         <div class="panel-heading collapse">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
@@ -43,6 +43,8 @@
                             </div>
                             <div class="col-xs-6 no-left-padding no-right-padding">
                                 <span class="ranking-name" th:text="${ranking.userName}"></span>
+                                <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                      th:title="#{ranking.topTipperOfToday.tooltip}"></span>
                             </div>
                             <div class="col-xs-2 no-left-padding no-right-padding">
                                 <span class="label label-warning label-as-badge ranking-badge" th:text="${ranking.totalPoints}"></span>
@@ -65,4 +67,7 @@
 			</div>
 		</div>
 	</body>
+    <th:block layout:fragment="scripts">
+        <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+    </th:block>
 </html>
