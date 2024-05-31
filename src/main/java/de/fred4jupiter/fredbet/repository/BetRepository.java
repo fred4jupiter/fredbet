@@ -82,13 +82,14 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         select new de.fred4jupiter.fredbet.repository.PointsPerUser(b.userName, sum(b.points))
         from Bet b join Match m on b.match.id = m.id
         where m.kickOffDate between :from and :to
+        and b.userName != :adminUsername
         group by b.userName
         """)
-    List<PointsPerUser> queryPointsPerUserForToday(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+    List<PointsPerUser> queryPointsPerUserForToday(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("adminUsername") String adminUsername);
 
-    default List<String> queryPointsPerUserForToday() {
+    default List<String> queryPointsPerUserForToday(String adminUsername) {
         LocalDate today = LocalDate.now();
-        List<PointsPerUser> pointsPerUsers = queryPointsPerUserForToday(today.atStartOfDay(), today.atTime(23, 59));
+        List<PointsPerUser> pointsPerUsers = queryPointsPerUserForToday(today.atStartOfDay(), today.atTime(23, 59), adminUsername);
         if (pointsPerUsers.isEmpty()) {
             return Collections.emptyList();
         }

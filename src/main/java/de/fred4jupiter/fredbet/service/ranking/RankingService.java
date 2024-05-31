@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.domain.Visitable;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
@@ -31,14 +32,18 @@ public class RankingService {
 
     private final SameRankingCollector sameRankingCollector;
 
+    private final FredbetProperties fredbetProperties;
+
     public RankingService(BetRepository betRepository, ChildRelationFetcher childRelationFetcher, PdfExportService pdfExportService,
-                          MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, SameRankingCollector sameRankingCollector) {
+                          MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService,
+                          SameRankingCollector sameRankingCollector, FredbetProperties fredbetProperties) {
         this.betRepository = betRepository;
         this.childRelationFetcher = childRelationFetcher;
         this.pdfExportService = pdfExportService;
         this.messageSourceUtil = messageSourceUtil;
         this.runtimeSettingsService = runtimeSettingsService;
         this.sameRankingCollector = sameRankingCollector;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
@@ -53,7 +58,7 @@ public class RankingService {
 
     private void calculateAdditionalMetricsForRanking(List<UsernamePoints> rankings) {
         final List<Bet> allBetsWithMatches = betRepository.findAllBetsWithMatches();
-        final List<String> topTipperUsernames = betRepository.queryPointsPerUserForToday();
+        final List<String> topTipperUsernames = betRepository.queryPointsPerUserForToday(fredbetProperties.adminUsername());
 
         final CorrectResultVisitor correctResultVisitor = new CorrectResultVisitor();
         final GoalDifferenceVisitor goalDifferenceVisitor = new GoalDifferenceVisitor();
