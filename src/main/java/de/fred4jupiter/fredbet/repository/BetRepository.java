@@ -83,6 +83,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         from Bet b join Match m on b.match.id = m.id
         where m.kickOffDate between :from and :to
         and b.userName != :adminUsername
+        and b.points != null
         group by b.userName
         """)
     List<PointsPerUser> queryPointsPerUserForToday(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("adminUsername") String adminUsername);
@@ -91,6 +92,11 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         LocalDate today = LocalDate.now();
         List<PointsPerUser> pointsPerUsers = queryPointsPerUserForToday(today.atStartOfDay(), today.atTime(23, 59), adminUsername);
         if (pointsPerUsers.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<PointsPerUser> pointsPerUsersFiltered = pointsPerUsers.stream().filter(user -> user.points() != null).toList();
+        if (pointsPerUsersFiltered.isEmpty()) {
             return Collections.emptyList();
         }
 
