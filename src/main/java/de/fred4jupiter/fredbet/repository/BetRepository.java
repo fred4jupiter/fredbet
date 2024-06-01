@@ -83,7 +83,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         from Bet b join Match m on b.match.id = m.id
         where m.kickOffDate between :from and :to
         and b.userName != :adminUsername
-        and b.points != null
+        and (b.points is not null and b.points > 0)
         group by b.userName
         """)
     List<PointsPerUser> queryPointsPerUserForToday(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("adminUsername") String adminUsername);
