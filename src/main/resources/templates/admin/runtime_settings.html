@@ -121,27 +121,31 @@
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.joker}"></h2>
 						<div class="row">
-							<div class="col-xs-5 col-sm-4">
-								<div class="form-group">
-									<label for="runtimeSettings.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
-									<input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <label for="runtimeSettings.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
+                                </div>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
+                            </div>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
 						<div class="row">
-							<div class="col-xs-5 col-sm-4">
-								<div class="form-group">
-									<label for="runtimeSettings.imageUploadLimit" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
-									<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-										  th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
-									<input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <label for="runtimeSettings.imageUploadLimit" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
+                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                          th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
+                                </div>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
+                            </div>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
