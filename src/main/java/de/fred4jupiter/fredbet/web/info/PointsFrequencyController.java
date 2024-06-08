@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/info/pointsfrequency")
@@ -32,7 +33,7 @@ public class PointsFrequencyController {
     public String show(Model model) {
         MultiValuedMap<Integer, PointCountResult> map = reportService.reportPointsFrequency();
 
-        if (map.isEmpty()) {
+        if (map.isEmpty() || allUsersHasNoPoints(map)) {
             webMessageUtil.addInfoMsg(model, "pointsfrequency.noData");
             return PAGE_INFO_POINTS_FREQ;
         }
@@ -44,5 +45,10 @@ public class PointsFrequencyController {
 
         model.addAttribute("pointsFrequencyCommand", command);
         return PAGE_INFO_POINTS_FREQ;
+    }
+
+    private boolean allUsersHasNoPoints(MultiValuedMap<Integer, PointCountResult> map) {
+        List<Integer> list = map.keySet().stream().filter(Objects::nonNull).filter(i -> i > 0).toList();
+        return list.isEmpty();
     }
 }

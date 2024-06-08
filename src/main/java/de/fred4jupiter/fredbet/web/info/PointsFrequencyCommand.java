@@ -18,11 +18,11 @@ public class PointsFrequencyCommand {
 		Collections.reverse(pointsList);
 
 		for (Integer points : pointsList) {
-			if (points > 0) {
+			if (points != null && points > 0) {
 				Collection<PointCountResult> collection = map.get(points);
 				PointsFrequency pointsFrequency = new PointsFrequency(points, new ArrayList<>(collection));
-				resultList.add(pointsFrequency);	
-			}			
+				resultList.add(pointsFrequency);
+			}
 		}
 	}
 

@@ -33,7 +33,9 @@ public class PointCourseService {
 
     public ChartData reportPointsCourse(String username, Locale locale) {
         final List<PointsPerUser> pointsPerUsers = this.betRepository.queryPointsPerUser();
-        final ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(username, pointsPerUsers);
+        final List<PointsPerUser> pointsPerUsersNonNull = pointsPerUsers.stream().filter(Objects::nonNull).toList();
+
+        final ImmutablePair<String, String> pair = calculateMinMaxPointsUsernames(username, pointsPerUsersNonNull);
 
         final List<String> usersToDisplay = new ArrayList<>();
         usersToDisplay.add(username);
