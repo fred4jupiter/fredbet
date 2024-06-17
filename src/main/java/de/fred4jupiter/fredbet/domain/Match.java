@@ -314,4 +314,8 @@ public class Match implements MatchResult, MatchBusinessKey {
         builder.append(dateTimeFormatter.format(this.kickOffDate));
         return "" + builder.toHashCode();
     }
+
+    public String getKickOffDateFormated() {
+        return this.kickOffDate == null ? null : dateTimeFormatter.format(this.kickOffDate);
+    }
 }

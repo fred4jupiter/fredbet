@@ -69,6 +69,11 @@ public class ImportExportServiceUT {
         verify(matchService).save(matchCaptor.capture());
 
         Match savedMatch = matchCaptor.getValue();
-        assertThat(match).isEqualTo(savedMatch);
+        assertThat(match.getId()).isEqualTo(savedMatch.getId());
+        assertThat(match.getTeamOne()).isEqualTo(savedMatch.getTeamOne());
+        assertThat(match.getTeamTwo()).isEqualTo(savedMatch.getTeamTwo());
+        assertThat(match.getGroup()).isEqualTo(savedMatch.getGroup());
+        assertThat(match.getKickOffDateFormated()).isEqualTo(savedMatch.getKickOffDateFormated());
+        assertThat(match.getStadium()).isEqualTo(savedMatch.getStadium());
     }
 }

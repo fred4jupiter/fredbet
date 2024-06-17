@@ -2,12 +2,11 @@ package de.fred4jupiter.fredbet.domain;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.service.ranking.Visitor;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BET")
@@ -152,7 +151,7 @@ public class Bet implements Visitable {
     }
 
     public Integer getPoints() {
-        return points;
+        return points != null ? points : 0;
     }
 
     public void setPoints(Integer points) {
