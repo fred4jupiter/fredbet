@@ -21,6 +21,8 @@ class MatchToExport {
 
     private String stadium;
 
+    private String matchBusinessKey;
+
     public Team getTeamOne() {
         return teamOne;
     }
@@ -69,5 +71,11 @@ class MatchToExport {
         this.stadium = stadium;
     }
 
+    public String getMatchBusinessKey() {
+        return matchBusinessKey;
+    }
 
+    public void setMatchBusinessKey(String matchBusinessKey) {
+        this.matchBusinessKey = matchBusinessKey;
+    }
 }

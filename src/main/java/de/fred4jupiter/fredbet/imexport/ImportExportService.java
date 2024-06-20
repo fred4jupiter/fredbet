@@ -87,6 +87,7 @@ public class ImportExportService {
         export.setStadium(match.getStadium());
         export.setKickOffDate(match.getKickOffDate());
         export.setPenaltyWinnerOne(match.isPenaltyWinnerOne());
+        export.setMatchBusinessKey(match.getBusinessHashcode());
         return export;
     }
 
@@ -125,6 +126,9 @@ public class ImportExportService {
         final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessHashcode, e -> e));
         bets.forEach(betToExport -> {
             Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
+            if (match == null) {
+                LOG.warn("Could not find match with business key={}", betToExport.getMatchBusinessKey());
+            }
             bettingService.createAndSaveBetting(builder -> {
                 builder.withMatch(match)
                         .withGoals(betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo())
