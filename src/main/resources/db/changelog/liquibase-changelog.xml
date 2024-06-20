@@ -261,4 +261,8 @@
         <renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
     </changeSet>
 
+    <changeSet id="12" author="michael" dbms="mariadb,mysql">
+        <modifyDataType columnName="image_bytes" newDataType="LONGBLOB" tableName="image_binary"/>
+    </changeSet>
+
 </databaseChangeLog>
