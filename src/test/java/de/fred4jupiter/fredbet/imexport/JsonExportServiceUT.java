@@ -21,10 +21,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @UnitTest
-public class ImportExportServiceUT {
+public class JsonExportServiceUT {
 
     @InjectMocks
-    private ImportExportService importExportService;
+    private JsonExportService jsonExportService;
+
+    @InjectMocks
+    private JsonImportService jsonImportService;
 
     @Spy
     private JsonObjectConverter jsonObjectConverter = new JsonObjectConverter();
@@ -60,11 +63,11 @@ public class ImportExportServiceUT {
 
         when(matchService.findAll()).thenReturn(List.of(match));
 
-        String json = importExportService.exportAllToJson();
+        String json = jsonExportService.exportAllToJson();
         boolean result = TempFileWriterUtil.writeToTempFolder(json.getBytes(), "fredbet_export.json");
         assertThat(result).isTrue();
 
-        importExportService.importAllFromJson(json);
+        jsonImportService.importAllFromJson(json);
 
         verify(matchService).save(matchCaptor.capture());
 

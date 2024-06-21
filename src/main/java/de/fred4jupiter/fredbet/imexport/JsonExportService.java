@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ImportExportService {
+public class JsonExportService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ImportExportService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JsonExportService.class);
 
     private final JsonObjectConverter jsonObjectConverter;
 
@@ -29,7 +29,7 @@ public class ImportExportService {
 
     private final UserService userService;
 
-    public ImportExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService, UserService userService) {
+    public JsonExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService, UserService userService) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
@@ -37,18 +37,23 @@ public class ImportExportService {
     }
 
     public String exportAllToJson() {
+        LOG.debug("start export to JSON...");
         final ImportExportContainer importExportContainer = new ImportExportContainer();
         List<AppUser> allUsers = userService.findAll();
         importExportContainer.setUsers(allUsers.stream().filter(AppUser::isDeletable).map(this::toUserToExport).toList());
+        LOG.debug("exported users");
 
         List<Match> allMatches = matchService.findAll();
         importExportContainer.setMatches(allMatches.stream().map(this::toMatchToExport).toList());
+        LOG.debug("exported matches");
 
         List<Bet> allBetting = bettingService.findAll();
         importExportContainer.setBets(allBetting.stream().map(this::toBetToExport).toList());
+        LOG.debug("exported bets");
 
         List<ExtraBet> allExtraBets = bettingService.findAllExtraBets();
         importExportContainer.setExtraBets(allExtraBets.stream().map(this::toExtraBetToExport).toList());
+        LOG.debug("exported extra bets");
 
         return jsonObjectConverter.toJson(importExportContainer);
     }
@@ -100,58 +105,4 @@ public class ImportExportService {
         return userToExport;
     }
 
-    public void importAllFromJson(String json) {
-        LOG.debug("importing all from json...");
-        userService.deleteAllUsers();
-        LOG.debug("deleted all users");
-        matchService.deleteAllMatches();
-        LOG.debug("deleted all allMatches");
-        bettingService.deleteAllBets();
-        LOG.debug("deleted all bets");
-
-        final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
-
-        final List<UserToExport> users = importExportContainer.getUsers();
-        users.forEach(userToExport -> userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles()));
-        LOG.debug("imported users");
-
-        final List<MatchToExport> matchesToExportList = importExportContainer.getMatches();
-        matchesToExportList.forEach(matchToExport -> {
-            Match match = mapToMatch(matchToExport);
-            matchService.save(match);
-        });
-        LOG.debug("imported allMatches");
-
-        final List<BetToExport> bets = importExportContainer.getBets();
-        final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessHashcode, e -> e));
-        bets.forEach(betToExport -> {
-            Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
-            if (match == null) {
-                LOG.warn("Could not find match with business key={}", betToExport.getMatchBusinessKey());
-            }
-            bettingService.createAndSaveBetting(builder -> {
-                builder.withMatch(match)
-                        .withGoals(betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo())
-                        .withUserName(betToExport.getUsername())
-                        .withJoker(betToExport.isJoker())
-                        .withPenaltyWinnerOne(betToExport.isPenaltyWinnerOne())
-                        .withPoints(betToExport.getPoints());
-            });
-        });
-        LOG.debug("imported bets");
-
-        final List<ExtraBetToExport> extraBets = importExportContainer.getExtraBets();
-        extraBets.forEach(extraBetToExport -> bettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
-                extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
-                extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree()));
-        LOG.debug("imported extrabets");
-    }
-
-    private Match mapToMatch(MatchToExport matchToExport) {
-        return MatchBuilder.create().withTeams(matchToExport.getTeamOne(), matchToExport.getTeamTwo())
-                .withGroup(matchToExport.getGroup())
-                .withKickOffDate(matchToExport.getKickOffDate())
-                .withStadium(matchToExport.getStadium())
-                .build();
-    }
 }

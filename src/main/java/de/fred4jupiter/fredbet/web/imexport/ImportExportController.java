@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.imexport;
 
-import de.fred4jupiter.fredbet.imexport.ImportExportService;
+import de.fred4jupiter.fredbet.imexport.JsonExportService;
+import de.fred4jupiter.fredbet.imexport.JsonImportService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
@@ -31,15 +32,18 @@ public class ImportExportController {
 
     private static final String CONTENT_TYPE_JSON = "application/json";
 
-    private final ImportExportService importExportService;
+    private final JsonExportService jsonExportService;
+
+    private final JsonImportService jsonImportService;
 
     private final WebMessageUtil messageUtil;
 
     private static final String REDIRECT_SHOW_PAGE = "redirect:/importexport";
 
-    public ImportExportController(ImportExportService importExportService, WebMessageUtil messageUtil) {
-        this.importExportService = importExportService;
+    public ImportExportController(JsonExportService jsonExportService, JsonImportService jsonImportService, WebMessageUtil messageUtil) {
+        this.jsonExportService = jsonExportService;
         this.messageUtil = messageUtil;
+        this.jsonImportService = jsonImportService;
     }
 
     @ModelAttribute("importExportCommand")
@@ -55,7 +59,7 @@ public class ImportExportController {
     @GetMapping(value = "/export", produces = CONTENT_TYPE_JSON)
     public ResponseEntity<byte[]> exportUsers() {
         final String fileName = "fredbet_all_data.json";
-        String json = this.importExportService.exportAllToJson();
+        String json = this.jsonExportService.exportAllToJson();
         if (StringUtils.isBlank(json)) {
             return ResponseEntity.notFound().build();
         }
@@ -77,7 +81,7 @@ public class ImportExportController {
                 return REDIRECT_SHOW_PAGE;
             }
 
-            importExportService.importAllFromJson(new String(myFile.getBytes(), StandardCharsets.UTF_8));
+            jsonImportService.importAllFromJson(new String(myFile.getBytes(), StandardCharsets.UTF_8));
 
             messageUtil.addInfoMsg(redirect, "importexport.upload.msg.saved");
         } catch (IOException | ExcelReadingException e) {
