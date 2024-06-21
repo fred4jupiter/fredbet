@@ -12,7 +12,7 @@
 
     <groupId>de.fred4jupiter.fredbet</groupId>
     <artifactId>fredbet</artifactId>
-    <version>3.3.2-SNAPSHOT</version>
+    <version>3.3.2</version>
 
     <packaging>jar</packaging>
 
