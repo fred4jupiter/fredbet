@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -76,7 +74,7 @@ public class JsonExportService {
         export.setGoalsTeamOne(bet.getGoalsTeamOne());
         export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
         if (bet.getMatch() != null) {
-            export.setMatchBusinessKey(bet.getMatch().getBusinessHashcode());
+            export.setMatchBusinessKey(bet.getMatch().getBusinessKey());
         }
         export.setUsername(bet.getUserName());
         export.setPoints(bet.getPoints());
@@ -92,7 +90,7 @@ public class JsonExportService {
         export.setStadium(match.getStadium());
         export.setKickOffDate(match.getKickOffDate());
         export.setPenaltyWinnerOne(match.isPenaltyWinnerOne());
-        export.setMatchBusinessKey(match.getBusinessHashcode());
+        export.setMatchBusinessKey(match.getBusinessKey());
         return export;
     }
 

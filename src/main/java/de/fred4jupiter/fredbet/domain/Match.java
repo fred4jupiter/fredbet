@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.imexport.MatchBusinessKey;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,17 +26,17 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_ONE")),
-            @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_ONE")),
-            @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_ONE"))
+        @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_ONE")),
+        @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_ONE")),
+        @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_ONE"))
     })
     private Team teamOne;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_TWO")),
-            @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_TWO")),
-            @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_TWO"))
+        @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_TWO")),
+        @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_TWO")),
+        @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_TWO"))
     })
     private Team teamTwo;
 
@@ -54,7 +55,7 @@ public class Match implements MatchResult, MatchBusinessKey {
     private String stadium;
 
     @Transient
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
     public boolean hasCountriesSet() {
         return teamOne.hasCountrySet() && teamTwo.hasCountrySet();
@@ -306,13 +307,9 @@ public class Match implements MatchResult, MatchBusinessKey {
     }
 
     @Override
-    public String getBusinessHashcode() {
-        HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(this.teamOne.getBusinessKey());
-        builder.append(this.teamTwo.getBusinessKey());
-        builder.append(this.group);
-        builder.append(dateTimeFormatter.format(this.kickOffDate));
-        return "" + builder.toHashCode();
+    public String getBusinessKey() {
+        return StringUtils.joinWith("_", this.teamOne.getBusinessKey(),
+            this.teamTwo.getBusinessKey(), this.group, dateTimeFormatter.format(this.kickOffDate));
     }
 
     public String getKickOffDateFormated() {

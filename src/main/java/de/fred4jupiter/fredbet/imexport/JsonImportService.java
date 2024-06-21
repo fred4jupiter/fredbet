@@ -59,7 +59,7 @@ public class JsonImportService {
         LOG.debug("imported allMatches");
 
         final List<BetToExport> bets = importExportContainer.getBets();
-        final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessHashcode, e -> e));
+        final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessKey, e -> e));
         bets.forEach(betToExport -> {
             Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
             if (match == null) {
