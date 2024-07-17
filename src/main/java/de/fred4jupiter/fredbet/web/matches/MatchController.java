@@ -36,7 +36,16 @@ public class MatchController {
         return VIEW_LIST_MATCHES;
     }
 
-    @GetMapping("upcoming")
+    @GetMapping("/past")
+    public String pastMatches(Model model) {
+        List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findAllPastMatches);
+        model.addAttribute("allMatches", matches);
+        model.addAttribute("heading", messageUtil.getMessageFor("all.past.matches"));
+        model.addAttribute("redirectViewName", RedirectViewName.MATCHES);
+        return VIEW_LIST_MATCHES;
+    }
+
+    @GetMapping("/upcoming")
     public String upcomingMatches(Model model) {
         List<MatchCommand> matches = matchCommandMapper.findMatches(MatchService::findUpcomingMatches);
         model.addAttribute("allMatches", matches);

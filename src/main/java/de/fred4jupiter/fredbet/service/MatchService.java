@@ -89,6 +89,10 @@ public class MatchService {
         return matchRepository.findAllByOrderByKickOffDateAsc();
     }
 
+    public List<Match> findAllPastMatches() {
+        return matchRepository.findAllPastMatches();
+    }
+
     public List<Match> findUpcomingMatches() {
         return matchRepository.findUpcomingMatches(HOURS_SHOW_UPCOMING_GROUP_MATCHES, HOURS_SHOW_UPCOMING_OTHER_MATCHES);
     }

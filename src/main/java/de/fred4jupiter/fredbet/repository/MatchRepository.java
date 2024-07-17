@@ -16,13 +16,13 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     List<Match> findAllByOrderByKickOffDateAsc();
 
     @Query("""
-                select m
-                from Match m
-                where (m.group in :listOfGroup and m.kickOffDate > :groupKickOffDate)
-                or (m.group not in :listOfGroup and m.kickOffDate > :koKickOffDate)
-                or (m.teamOne.goals is null and m.teamTwo.goals is null)
-                order by m.kickOffDate asc
-            """)
+            select m
+            from Match m
+            where (m.group in :listOfGroup and m.kickOffDate > :groupKickOffDate)
+            or (m.group not in :listOfGroup and m.kickOffDate > :koKickOffDate)
+            or (m.teamOne.goals is null and m.teamTwo.goals is null)
+            order by m.kickOffDate asc
+        """)
     List<Match> findUpcomingMatches(@Param("groupKickOffDate") LocalDateTime groupKickOffDate,
                                     @Param("koKickOffDate") LocalDateTime koKickOffDate,
                                     @Param("listOfGroup") List<Group> listOfGroup);
@@ -64,9 +64,19 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     List<Country[]> findAllCountries();
 
     @Query("""
-            select case when (count(m) > 0) then true else false end
-            from Match m
-            where m.group in (:groups)
-            """)
+        select case when (count(m) > 0) then true else false end
+        from Match m
+        where m.group in (:groups)
+        """)
     boolean hasMatchesOfGroups(@Param("groups") List<Group> groups);
+
+    @Query("""
+        select m
+        from Match m
+        where m.teamOne.goals is not null
+        and m.teamTwo.goals is not null
+        order by m.kickOffDate desc
+        """)
+    List<Match> findAllPastMatches();
+
 }

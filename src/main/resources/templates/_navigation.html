@@ -11,7 +11,7 @@
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
-						<span class="icon-bar"></span> 
+						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="#" th:href="@{/matches/upcoming}"><span class="fas fa-home"></span></a>
@@ -23,7 +23,7 @@
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				        		<span th:text="#{navigation.betting}" th:remove="tag"></span>			        		
+				        		<span th:text="#{navigation.betting}" th:remove="tag"></span>
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
@@ -34,10 +34,10 @@
 									<a th:href="@{/extrabets}" th:text="#{navigation.betting.extraBets}"></a>
 								</li>
 							</ul>
-						</li>						
+						</li>
 						<li class="dropdown">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				        		<span th:text="#{matches.title}" th:remove="tag">Spiele</span>			        		
+				        		<span th:text="#{matches.title}" th:remove="tag">Spiele</span>
 				        		<span class="caret"></span>
 				        	</a>
 					        <ul class="dropdown-menu">
@@ -48,6 +48,10 @@
 					        	<li>
 									<a th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a>
 								</li>
+                                <li class="divider" role="separator"></li>
+                                <li>
+                                    <a th:href="@{/matches/past}" th:text="#{all.past.matches}"></a>
+                                </li>
 								<li class="divider" role="separator"></li>
 								<li>
 									<a th:href="@{/matches/yesterday}" th:text="#{yesterday.matches}"></a>
@@ -112,12 +116,12 @@
 				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" class="divider" role="separator"></li>
 					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
 					            	<a  th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
-				            	</li>				            	
+				            	</li>
 					        </ul>
 				        </li>
 				        <li class="dropdown">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				        		<span th:text="#{navigation.info}" th:remove="tag"></span>			        		
+				        		<span th:text="#{navigation.info}" th:remove="tag"></span>
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
@@ -151,10 +155,10 @@
 									<a th:href="@{/image/show}" th:text="#{image.upload.title}"></a>
 								</li>
 				        	</ul>
-				        </li>			        
+				        </li>
 				        <li class="dropdown" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				        		<span th:text="#{navigation.administration}" th:remove="tag"></span>			        		
+				        		<span th:text="#{navigation.administration}" th:remove="tag"></span>
 				        		<span class="caret"></span>
 				        	</a>
 				        	<ul class="dropdown-menu">
@@ -187,7 +191,7 @@
 					  			</li>
 					  			<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
-					  			</li>					  			
+					  			</li>
 					  			<li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
 						  			<a th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
 					  			</li>
@@ -220,7 +224,7 @@
 								<li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
 									<a th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
 								</li>
-							</ul>						
+							</ul>
 						</li>
 						<li>
 							<a href="javascript: document.logoutForm.submit()">
@@ -230,7 +234,7 @@
 							<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
 								<input hidden type="submit" value="Sign Out"/>
 							</form>
-						</li>					
+						</li>
 					</ul>
 				</div>
 			</div>
