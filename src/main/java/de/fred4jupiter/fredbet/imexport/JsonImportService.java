@@ -1,20 +1,16 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,15 +29,15 @@ public class JsonImportService {
 
     private final UserService userService;
 
-    private final ImageAdministrationService imageAdministrationService;
+    private final UserImportExportHelper userImportExportHelper;
 
     public JsonImportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService,
-                             UserService userService, ImageAdministrationService imageAdministrationService) {
+                             UserService userService, UserImportExportHelper userImportExportHelper) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.userService = userService;
-        this.imageAdministrationService = imageAdministrationService;
+        this.userImportExportHelper = userImportExportHelper;
     }
 
     public void importAllFromJson(String json) {
@@ -100,14 +96,8 @@ public class JsonImportService {
 
     private void importUsers(ImportExportContainer importExportContainer) {
         final List<UserToExport> users = importExportContainer.getUsers();
-        users.forEach(userToExport -> {
-            AppUser appUser = userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
-            if (StringUtils.isNotBlank(userToExport.getUserAvatarBase64())) {
-                byte[] decoded = Base64.getDecoder().decode(userToExport.getUserAvatarBase64());
-                imageAdministrationService.saveUserProfileImage(decoded, appUser);
-            }
-        });
-        LOG.debug("imported users");
+        long count = userImportExportHelper.importUsers(users);
+        LOG.debug("imported {} users", count);
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {

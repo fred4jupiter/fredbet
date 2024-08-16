@@ -2,15 +2,5 @@ package de.fred4jupiter.fredbet.imexport;
 
 import java.util.List;
 
-public class UserContainer {
-
-    private List<UserToExport> userList;
-
-    public List<UserToExport> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<UserToExport> userList) {
-        this.userList = userList;
-    }
+public record UserContainer(List<UserToExport> userList) {
 }
