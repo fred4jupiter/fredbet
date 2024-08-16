@@ -195,9 +195,9 @@ public class UserService {
         Map<String, ImageMetaData> map = toMap(metaDataList);
 
         return findAll(withDefaultAdminUser).stream()
-                .map(appUser -> toUserDto(appUser, map))
-                .sorted(Comparator.comparing(UserDto::getUsername, String.CASE_INSENSITIVE_ORDER))
-                .toList();
+            .map(appUser -> toUserDto(appUser, map))
+            .sorted(Comparator.comparing(UserDto::getUsername, String.CASE_INSENSITIVE_ORDER))
+            .toList();
     }
 
     private Map<String, ImageMetaData> toMap(List<ImageMetaData> metaDataList) {
@@ -258,15 +258,14 @@ public class UserService {
         }
     }
 
-    public boolean createUserIfNotExists(String username, String password, boolean isChild, Set<String> roles) {
+    public AppUser createUserIfNotExists(String username, String password, boolean isChild, Set<String> roles) {
         AppUser appUser = appUserRepository.findByUsername(username);
         if (appUser != null) {
             LOG.warn("user with username={} already exists.", username);
-            return false;
+            return appUser;
         }
         AppUser newAppUser = AppUserBuilder.create().withUsernameAndPassword(username, password)
-                .withRoles(roles).withIsChild(isChild).build();
-        appUserRepository.save(newAppUser);
-        return true;
+            .withRoles(roles).withIsChild(isChild).build();
+        return appUserRepository.save(newAppUser);
     }
 }

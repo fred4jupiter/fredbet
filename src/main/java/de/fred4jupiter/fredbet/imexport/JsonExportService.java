@@ -1,8 +1,11 @@
 package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.service.image.BinaryImage;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.service.user.UserToExport;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -27,11 +31,19 @@ public class JsonExportService {
 
     private final UserService userService;
 
-    public JsonExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService, UserService userService) {
+    private final ImageMetaDataRepository imageMetaDataRepository;
+
+    private final ImageAdministrationService imageAdministrationService;
+
+    public JsonExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService,
+                             BettingService bettingService, UserService userService,
+                             ImageMetaDataRepository imageMetaDataRepository, ImageAdministrationService imageAdministrationService) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.userService = userService;
+        this.imageMetaDataRepository = imageMetaDataRepository;
+        this.imageAdministrationService = imageAdministrationService;
     }
 
     public String exportAllToJson() {
@@ -100,6 +112,15 @@ public class JsonExportService {
         userToExport.setPassword(appUser.getPassword());
         userToExport.setChild(appUser.isChild());
         userToExport.setRoles(appUser.getRoles());
+
+        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(appUser.getUsername());
+        if (imageMetaData != null) {
+            BinaryImage binaryImage = imageAdministrationService.loadImageByImageKey(imageMetaData.getImageKey());
+            byte[] encoded = Base64.getEncoder().encode(binaryImage.imageBinary());
+            userToExport.setUserAvatarBase64(new String(encoded));
+            userToExport.setImageGroupName(imageMetaData.getImageGroup().getName());
+        }
+
         return userToExport;
     }
 

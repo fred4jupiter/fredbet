@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserImportExportService {
@@ -37,16 +36,13 @@ public class UserImportExportService {
         return jsonObjectConverter.toJson(userContainer);
     }
 
-    public int importUsers(String json) {
-        final AtomicInteger counter = new AtomicInteger();
+    public long importUsers(String json) {
         UserContainer userContainer = jsonObjectConverter.fromJson(json, UserContainer.class);
         userContainer.getUserList().forEach(userToExport -> {
-            boolean result = userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
-            if (result) {
-                counter.incrementAndGet();
-            }
+            userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
         });
-        return counter.get();
+
+        return userContainer.getUserList().stream().map(UserToExport::getUsername).distinct().count();
     }
 
     private UserToExport mapToUserToExport(AppUser appUser) {

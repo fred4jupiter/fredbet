@@ -12,6 +12,10 @@ public class UserToExport {
 
     private boolean child;
 
+    private String userAvatarBase64;
+
+    private String imageGroupName;
+
     public String getUsername() {
         return username;
     }
@@ -42,5 +46,21 @@ public class UserToExport {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public String getUserAvatarBase64() {
+        return userAvatarBase64;
+    }
+
+    public void setUserAvatarBase64(String userAvatarBase64) {
+        this.userAvatarBase64 = userAvatarBase64;
+    }
+
+    public String getImageGroupName() {
+        return imageGroupName;
+    }
+
+    public void setImageGroupName(String imageGroupName) {
+        this.imageGroupName = imageGroupName;
     }
 }

@@ -76,7 +76,7 @@ public class UserImportExportController {
                 return REDIRECT_SHOW_PAGE;
             }
 
-            int importedCount = userImportExportService.importUsers(new String(myFile.getBytes(), StandardCharsets.UTF_8));
+            long importedCount = userImportExportService.importUsers(new String(myFile.getBytes(), StandardCharsets.UTF_8));
 
             messageUtil.addInfoMsg(redirect, "user.importexport.upload.msg.saved", importedCount);
         } catch (IOException | ExcelReadingException e) {
