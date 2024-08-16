@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.user;
+package de.fred4jupiter.fredbet.imexport;
 
 import java.util.Set;
 

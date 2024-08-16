@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import de.fred4jupiter.fredbet.service.user.UserToExport;
-
 import java.util.List;
 
 class ImportExportContainer {

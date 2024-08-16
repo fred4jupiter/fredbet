@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.user;
+package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.service.user.UserService;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

@@ -7,7 +7,6 @@ import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserService;
-import de.fred4jupiter.fredbet.service.user.UserToExport;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
