@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.domain.Country;
 
+// TODO: refactor to java record
 class ExtraBetToExport {
 
     private String userName;

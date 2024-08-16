@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.imexport;
 
 import java.util.Set;
 
+// TODO: refactor to java record
 public class UserToExport {
 
     private String username;
