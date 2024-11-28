@@ -338,7 +338,7 @@
                 </dependencies>
             </plugin>
             <!-- https://github.com/CycloneDX/cyclonedx-maven-plugin  -->
-            <!-- result see target/classes/META-INF/sbom/application.cdx.json-->
+            <!-- result see target/classes/META-INF/sbom/application.cdx.json, can then be analyzed in Dependency Track -->
 <!--            <plugin>-->
 <!--                <groupId>org.cyclonedx</groupId>-->
 <!--                <artifactId>cyclonedx-maven-plugin</artifactId>-->
