@@ -337,6 +337,20 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!-- https://github.com/CycloneDX/cyclonedx-maven-plugin  -->
+            <!-- result see target/classes/META-INF/sbom/application.cdx.json-->
+<!--            <plugin>-->
+<!--                <groupId>org.cyclonedx</groupId>-->
+<!--                <artifactId>cyclonedx-maven-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>makeAggregateBom</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
