@@ -13,22 +13,36 @@
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card shadow-2-strong" style="border-radius: 1rem;">
                         <div class="card-body p-5 text-center">
+                            <div class="logo text-center mb-5">
+                                <i class="fas fa-thumbs-up fa-8x"></i>
+                            </div>
                             <form id="login-form" class="form" th:action="@{/login}" method="post">
                                 <h3 class="mb-5" th:text="'FredBet - ' + #{login.title.short}">Sign in</h3>
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="text" id="typeEmailX-2" class="form-control form-control-lg" name="username"/>
-                                    <label class="form-label" for="typeEmailX-2">Email</label>
+                                    <input type="text" id="username" class="form-control form-control-lg" name="username"/>
+                                    <label class="form-label" for="username" th:text="#{login.placeholder.username}">Username</label>
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="password" id="typePasswordX-2" class="form-control form-control-lg" name="password"/>
-                                    <label class="form-label" for="typePasswordX-2">Password</label>
+                                    <input type="password" id="password" class="form-control form-control-lg" name="password"/>
+                                    <label class="form-label" for="password" th:text="#{login.placeholder.password}">Password</label>
                                 </div>
 
                                 <!-- Checkbox -->
                                 <div class="form-check d-flex justify-content-start mb-4">
-                                    <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
-                                    <label class="form-check-label" for="form1Example3"> Remember password </label>
+                                    <input class="form-check-input me-2" type="checkbox" value="" id="form1Example3" name="remember-me" />
+                                    <label class="form-check-label" for="form1Example3">Auto-Login</label>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <div th:replace="~{fragments/language_selector :: language_selector('btn btn-default language-button dropdown-toggle')}"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+                                    </div>
                                 </div>
 
                                 <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" type="submit">Login</button>

@@ -5,7 +5,7 @@
     <title>Navigation page</title>
 </head>
 <body>
-<nav th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" th:href="@{/matches/upcoming}"><i class="fas fa-home"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -208,27 +208,40 @@
                         </li>
                     </ul>
                 </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end" th:if="${@webSecurityUtil.isUserLoggedIn()}">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="dropdown">
                     <div th:replace="~{fragments/language_selector :: language_selector('dropdown-toggle')}"></div>
                 </li>
+                <li class="navbar d-flex flex-row me-auto">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
+                             th:alt="${@webSecurityUtil.getCurrentUsername()}" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
+                        </li>
+                        <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
+                            <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form name="logoutForm" th:action="@{/logout}" method="post">
+                                <input class="dropdown-item" type="submit" th:value="#{navigation.logout}"/>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
             </ul>
-            <div class="dropdown text-end">
-                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
-                         th:alt="${@webSecurityUtil.getCurrentUsername()}" width="32" height="32" class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu text-small">
-
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                </ul>
-            </div>
         </div>
     </div>
 </nav>
