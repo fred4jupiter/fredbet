@@ -9,6 +9,10 @@
 <div layout:fragment="content">
     <section class="vh-100" style="background-color: #508bfc;">
         <div class="container py-5 h-100">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert"
+                 th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+                <span th:text="${errorMsg}"></span>
+            </div>
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card shadow-2-strong" style="border-radius: 1rem;">
@@ -29,23 +33,38 @@
                                 </div>
 
                                 <!-- Checkbox -->
-                                <div class="form-check d-flex justify-content-start mb-4">
+                                <div class="form-check d-flex justify-content-start">
                                     <input class="form-check-input me-2" type="checkbox" value="" id="form1Example3" name="remember-me" />
-                                    <label class="form-check-label" for="form1Example3">Auto-Login</label>
+                                    <label class="form-check-label" for="form1Example3">Auto-Login&nbsp;</label>
+                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                          data-placement="top" th:title="#{login.autologin.tooltip}"></span>
                                 </div>
-
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <div th:replace="~{fragments/language_selector :: language_selector('btn btn-default language-button dropdown-toggle')}"></div>
+                                <div class="mb-4 row">
+                                    <div class="dropdown ms-3">
+                                        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img th:src="${@languageUtil.getImageLanguageIconPath()}" />
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="language">
+                                            <li><a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item"><img src="/images/lang/de.png" th:text="' '+#{language.de}" /></a></li>
+                                            <li><a th:href="${@languageUtil.buildUrl('en')}" class="dropdown-item"><img src="/images/lang/en.png" th:text="' '+#{language.en}" /></a></li>
+                                            <li><a th:href="${@languageUtil.buildUrl('pl')}" class="dropdown-item"><img src="/images/lang/pl.png" th:text="' '+#{language.pl}" /></a></li>
+                                            <li><a th:href="${@languageUtil.buildUrl('es')}" class="dropdown-item"><img src="/images/lang/es.png" th:text="' '+#{language.es}" /></a></li>
+                                            <li><a th:href="${@languageUtil.buildUrl('ca')}" class="dropdown-item"><img src="/images/lang/ca.png" th:text="' '+#{language.ca}" /></a></li>
+                                            <li><a th:href="${@languageUtil.buildUrl('cze')}" class="dropdown-item"><img src="/images/lang/cze.png" th:text="' '+#{language.cze}" /></a></li>
+                                            <li><a th:href="${@languageUtil.buildUrl('sv')}" class="dropdown-item"><img src="/images/lang/sv.png" th:text="' '+#{language.sv}" /></a></li>
+                                        </ul>
                                     </div>
                                 </div>
+
                                 <div class="col-6">
                                     <div class="form-group">
                                         <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
                                     </div>
                                 </div>
 
-                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                                <button type="submit" class="btn btn-block btn-lg btn-primary" th:value="#{login.button.login}">
+                                    <i class="fas fa-sign-in-alt"></i>&nbsp;<span th:text="#{login.button.login}"></span>
+                                </button>
                             </form>
                         </div>
                     </div>
