@@ -9,7 +9,7 @@
 	<div layout:fragment="content">
 		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
 			<div class="row">
-				<div class="col-6 col-md-4" th:each="matchCommand : ${allMatches}">
+				<div class="col-6 col-sm-4" th:each="matchCommand : ${allMatches}">
 					<a class="anchor" th:id="${matchCommand.matchId}"></a>
 					<div class="card card-default mb-3">
 						<div class="card-header">
@@ -22,7 +22,7 @@
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-									<span class="label label-warning label-as-badge big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
+									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
 									<br/>
 									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
 									<span th:text="${matchCommand.stadium}"></span>
