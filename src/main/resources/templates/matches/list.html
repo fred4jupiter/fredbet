@@ -3,6 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 <head>
 	<title th:text="${heading}"></title>
+    <link rel="stylesheet" th:href="@{/css/pages/matches_list.css}" />
 </head>
 <body>
 	<div layout:fragment="content">
@@ -10,7 +11,7 @@
 			<div class="row">
 				<div class="col-6 col-md-4" th:each="matchCommand : ${allMatches}">
 					<a class="anchor" th:id="${matchCommand.matchId}"></a>
-					<div class="card card-default">
+					<div class="card card-default mb-3">
 						<div class="card-header">
 							<div class="row">
 								<div class="col-12">
@@ -30,48 +31,46 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-2 center">
-									<div class="short-div goal_padding">
+								<div class="col-2">
+									<div class="mb-1">
 										<a th:if="${!matchCommand.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}">
 											<span class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
 										</a>
 										<span th:if="${matchCommand.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
 									</div>
-									<div class="short-div goal_padding">
+									<div class="mt-1">
 										<span class="fas fa-trophy fa-2x" th:title="#{matches.list.result}" data-toggle="tooltip" data-placement="bottom"></span>
 									</div>
 					  			</div>
-					  			<div class="col-4 goal-badges center">
-					  				<div class="short-div goal_padding_bigger">
-					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamOneCssClasses()}"
+					  			<div class="col-4">
+					  				<div class="mb-2 mt-2">
+					  					<span class="badge rounded-pill bg-primary big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamOneCssClasses()}"
 					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}"></span>
 								  		<span> : </span>
-							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamTwoCssClasses()}"
+							  			<span class="badge rounded-pill bg-primary big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamTwoCssClasses()}"
 							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
 					  				</div>
-					  				<div class="short-div goal_padding">
-					  					<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}"
+					  				<div class="">
+					  					<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}"
 					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
 								  		<span> : </span>
-							  			<span class="label label-as-badge big-badge" th:classappend="${matchCommand.getTeamResultTwoCssClasses()}"
+							  			<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getTeamResultTwoCssClasses()}"
 							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
 					  				</div>
 					  			</div>
-					  			<div class="col-6 button-bar">
-					  				<div class="row center">
-								        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/match/' + ${matchCommand.matchId}}"
-								              class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
-											  <span class="fas fa-edit"></span>
-				            			</a>
-				            			<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
-												   class="btn btn-success" role="button" th:title="#{matches.list.betMatch}">
-											<span class="fas fa-thumbs-up"></span>
-										</a>
-										<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
-				            			        class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
-				            					<span class="fas fa-trophy"></span>
-				            			</a>
-							        </div>
+					  			<div class="col-6 mt-3">
+                                    <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/match/' + ${matchCommand.matchId}}"
+                                       class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
+                                        <span class="fas fa-edit"></span>
+                                    </a>
+                                    <a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
+                                       class="btn btn-success" role="button" th:title="#{matches.list.betMatch}">
+                                        <span class="fas fa-thumbs-up"></span>
+                                    </a>
+                                    <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
+                                       class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
+                                        <span class="fas fa-trophy"></span>
+                                    </a>
 	       						</div>
        						</div>
 					   </div>

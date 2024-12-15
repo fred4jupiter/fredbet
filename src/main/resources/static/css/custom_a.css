@@ -1,0 +1,260 @@
+h1 {
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.2em;
+}
+
+body { 
+    padding-top: 70px; 
+}
+
+.form-group input.form-size-small {
+	width: 45px;
+	text-align: center;
+	display: inline;
+}
+
+.label-as-badge {
+	border-radius: 1em;
+}
+
+.big-badge {
+	font-size: 15px;
+}
+
+.ranking-badge {
+    font-size: 15px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.vcenter {
+	display: inline-block;
+	vertical-align: middle;
+	float: none;
+}
+
+.button-bar {
+	padding-top: 14px;
+}
+
+.list-group-item {
+	background-color: mintcream;
+}
+
+.goal_padding {
+	padding-top: 0;
+	padding-bottom: 5px;
+}
+
+.goal_padding_bigger {
+	padding-top: 3px;
+	padding-bottom: 13px;
+}
+
+.no-left-right-padding {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.goal-badges {
+	padding-left: 8px;
+	padding-right: 0;
+}
+
+.no-left-padding {
+	padding-left: 0;
+}
+
+.no-right-padding {
+	padding-right: 0;
+}
+
+.text-left {
+	text-align: left !important;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	float: right;
+}
+
+.ranking-name {
+	font-size: 16px;
+	vertical-align: sub;
+	padding-left: 20px;
+}
+
+.label.ranking {
+	font-size: 100%;
+}
+
+.panel-heading.user {
+	font-weight: bold;
+}
+
+.panel-body.user-panel-body {
+	height: 70px;
+	background-color: lavender;
+}
+
+.panel-text-responsive {
+	overflow-x: scroll;
+	white-space: nowrap;	
+}
+
+.custom-button-group {
+	float: right;
+	padding-right: 15px;
+}
+
+.teamName {
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+.user-label {
+	font-size: 1.3em;
+	padding-top: 7px;
+}
+
+.currentTime {
+	font-size: 1.2em;
+}
+
+.table-centered th, .table-centered td {
+	text-align: center;
+}
+
+img.flag {
+	vertical-align: baseline;
+}
+
+img.flag.big {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+img.displayed {
+	display: block;
+	margin-left: auto;
+	margin-right: auto
+}
+
+img.gallery {
+	vertical-align: baseline;
+}
+
+a.img-link  {
+	text-decoration: none !important;
+}
+
+.top-bottom-space {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.badge-penalty-winner-bet {	
+	background: -webkit-repeating-linear-gradient(180deg, #5CB85C, black 30%); /* For Safari 5.1 to 6.0 */
+    background: -o-repeating-linear-gradient(180deg, #5CB85C, black 30%); /* For Opera 11.1 to 12.0 */
+    background: -moz-repeating-linear-gradient(180deg, #5CB85C, black 30%); /* For Firefox 3.6 to 15 */
+    background: repeating-linear-gradient(180deg, #5CB85C, black 30%); /* Standard syntax (must be last) */	
+}
+
+.badge-penalty-winner-match {
+	background: -webkit-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Safari 5.1 to 6.0 */
+    background: -o-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Opera 11.1 to 12.0 */
+    background: -moz-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Firefox 3.6 to 15 */
+    background: repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* Standard syntax (must be last) */
+}
+
+.label-rank4 {
+	background-color: #1C8FBB;
+}
+
+.label-rank5 {
+	background-color: #65C5DB;
+}
+
+.label-rank6 {
+	background-color: #843127;
+}
+
+.anchor {
+	display: block;
+	position: relative;
+	top: -60px;
+	visibility: hidden;
+}
+
+.blue {
+	color: blue;
+}
+
+.red {
+	color: red;
+}
+
+button.vote {
+	width: 45%;
+}
+
+.goalsEnter .row {
+	margin-top: 15px;
+}
+
+.color-vote {
+	background-color: #DFF0D8;
+}
+
+.penalty-height {
+	padding: 6px 12px;
+}
+
+.color-result {
+	background-color: #D9EDF7;
+}
+
+.gallery-images  img {
+	display: inline;
+}
+
+.table tbody>tr>td.vert-align {
+	vertical-align: middle;
+}
+
+.icon-user {
+	font-size: 1.1em;
+}
+
+.panel-statistic {
+	height: 140px;
+}
+
+.field-alert {
+	padding: 5px;
+}
+
+.joker-betting {
+	color: #ff0101;
+}
+
+.ranking-same-position {
+	background-color: #ffe8b3;
+}
+
+.no-left-right-margin {
+	margin-left: 0;
+	margin-right: 0;
+}

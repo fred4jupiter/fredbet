@@ -1,0 +1,13 @@
+.big-badge {
+    font-size: 15px;
+}
+
+.goal_padding {
+    padding-top: 0;
+    padding-bottom: 5px;
+}
+
+.goal_padding_bigger {
+    padding-top: 3px;
+    padding-bottom: 13px;
+}
