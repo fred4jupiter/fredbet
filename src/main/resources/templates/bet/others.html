@@ -9,55 +9,55 @@
 			<h1 th:text="#{bet.others.title}"></h1>
             <div th:with="groupAvg=${allBetsCommand.avgGroupBet}">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+                        <div class="card card-default">
+                            <div class="card-header">
                                 <img class="flag" th:if="${allBetsCommand.getIconPathTeamOne() != null}" th:src="@{${allBetsCommand.getIconPathTeamOne()}}"/>
-                                <span class="bold" th:text="${allBetsCommand.teamNameOne}"></span>
+                                <span class="fw-bold" th:text="${allBetsCommand.teamNameOne}"></span>
                                 <span> - </span>
                                 <img class="flag" th:if="${allBetsCommand.getIconPathTeamTwo() != null}" th:src="@{${allBetsCommand.getIconPathTeamTwo()}}"/>
-                                <span class="bold" th:text="${allBetsCommand.teamNameTwo}"></span>
+                                <span class="fw-bold" th:text="${allBetsCommand.teamNameTwo}"></span>
                                 <br/>
                                 <span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-                                <div class="right">
-                                        <span class="label label-info label-as-badge big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
-                                              th:text="${allBetsCommand.match.goalsTeamOne}"></span>
-                                    <span th:if="${allBetsCommand.match.goalsTeamOne != null}"> : </span>
-                                    <span class="label label-info label-as-badge big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}"
-                                          th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
-                                </div>
                                 <br/>
                                 <span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
                                 <span th:text="${allBetsCommand.stadium}"></span>
                             </div>
+                            <div class="card-body text-center">
+                            <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
+                                    th:text="${allBetsCommand.match.goalsTeamOne}"></span>
+                                <span th:if="${allBetsCommand.match.goalsTeamOne != null}"> : </span>
+                                <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}"
+                                      th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
+                            </div>
+                            <div class="card-footer">
+                                <span th:text="#{others.bet.groupBet} + ':'"></span>
+                                <span class="badge rounded-pill bg-success" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
+                                <span> : </span>
+                                <span class="badge rounded-pill bg-success" th:text="${groupAvg.avgGoalsTeamTwo}">1</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <p>
-                    <span th:text="#{others.bet.groupBet} + ':'"></span>
-                    <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
-                    <span> : </span>
-                    <span class="label label-success label-as-badge" th:text="${groupAvg.avgGoalsTeamTwo}">1</span>
-                </p>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-4" th:each="bet : ${allBetsCommand.allBetsForMatch}">
-                        <div class="panel panel-default">
-                            <div class="panel-body result-item">
-                                <div class="col-xs-2 top-bottom-space no-right-padding">
+                    <div class="col-12 col-sm-6 col-md-4" th:each="bet : ${allBetsCommand.allBetsForMatch}">
+                        <div class="card card-default">
+                            <div class="card-body result-item">
+                                <div class="col-2 top-bottom-space no-right-padding">
                                     <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(bet.userName)})}"></span>
                                 </div>
-                                <div class="col-xs-5 top-bottom-space no-left-right-padding">
+                                <div class="col-5 top-bottom-space no-left-right-padding">
                                     <span th:text="${bet.userName}" class="ranking-name"></span>
                                 </div>
-                                <div class="col-xs-5 top-bottom-space no-left-padding">
+                                <div class="col-5 top-bottom-space no-left-padding">
                                     <div class="right">
-                                        <span class="label label-as-badge big-badge label-success" th:classappend="${bet.getCssClassPenaltyWinnerOne()}"
+                                        <span class="badge rounded-pill bg-success" th:classappend="${bet.getCssClassPenaltyWinnerOne()}"
                                             th:text="${bet.goalsTeamOne}"></span>
                                         <span> : </span>
-                                        <span class="label label-as-badge big-badge label-success" th:classappend="${bet.getCssClassPenaltyWinnerTwo()}"
+                                        <span class="badge rounded-pill bg-success" th:classappend="${bet.getCssClassPenaltyWinnerTwo()}"
                                             th:text="${bet.goalsTeamTwo}"></span>
                                         <span>&nbsp;</span>
-                                        <span class="label label-as-badge big-badge label-warning" th:text="${bet.points}"></span>
+                                        <span class="badge rounded-pill bg-warning" th:text="${bet.points}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -66,12 +66,9 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-4">
-                        <a href="#" th:href="@{${allBetsCommand.getBackUrl()}}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
+                    <div class="col-12 mt-3">
+                        <a href="#" th:href="@{${allBetsCommand.getBackUrl()}}" class="btn btn-light" th:text="#{button.back}"></a>
                     </div>
-                </div>
-                <div class="row">
-                    <br/>
                 </div>
 			</div>
 		</div>
