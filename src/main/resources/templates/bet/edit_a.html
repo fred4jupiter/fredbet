@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<head>
+	<title th:text="#{bet.edit.title}"></title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<h1 th:text="#{bet.edit.heading}"></h1>
+		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">					
+					<input type="hidden" th:field="*{betId}" class="form-control" />
+					<input type="hidden" th:field="*{matchId}" class="form-control" />					
+					<input type="hidden" th:field="*{redirectViewName}" class="form-control" />
+					<input type="hidden" th:field="*{teamNameOne}" class="form-control" />
+					<input type="hidden" th:field="*{teamNameTwo}" class="form-control" />
+					<input type="hidden" th:field="*{groupMatch}" class="form-control" />
+					<input type="hidden" th:field="*{iconPathTeamOne}" class="form-control" />
+					<input type="hidden" th:field="*{iconPathTeamTwo}" class="form-control" />
+
+					<input type="hidden" th:field="*{numberOfJokersUsed}" class="form-control" />
+					<input type="hidden" th:field="*{maxJokers}" class="form-control" />
+					<input type="hidden" th:field="*{jokerEditable}" class="form-control" />
+					
+					<div class="form-group">
+						<div class="row center">
+							<div class="col-xs-6">
+								<img class="flag big" th:if="${betCommand.getIconPathTeamOne() != null}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
+								<br/>
+								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
+							</div>
+							<div class="col-xs-6">
+								<img class="flag big" th:if="${betCommand.getIconPathTeamTwo() != null}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
+								<br/>
+								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
+							</div>
+						</div>
+						<div class="row center">
+							<div class="col-xs-6">
+								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small color-vote bold" onchange="checkPenalty()"/>
+								<br/>
+								<br/>
+								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</p>
+							</div>
+							<div class="col-xs-6">
+								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small color-vote bold" onchange="checkPenalty()"/>
+								<br/>
+								<br/>
+								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamTwo')}" th:errors="*{goalsTeamTwo}">goalsTeamTwo error</p>
+							</div>
+						</div>
+						<div class="row center">
+							<div class="col-xs-6">
+								<button type="button" class="btn vote" onclick="oneCountUp()"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+								<button type="button" class="btn vote" onclick="oneCountDown()"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+							</div>
+							<div class="col-xs-6">
+								<button type="button" class="btn vote" onclick="twoCountUp()"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+								<button type="button" class="btn vote" onclick="twoCountDown()"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+							</div>
+						</div>						
+						<div id="penaltyBox" th:if="${!betCommand.isGroupMatch()}">
+							<div class="row no-left-right-margin">
+								<span class="bold" th:text="#{penalty.box.heading}"></span>
+							</div>
+							<div class="row center color-vote penalty-height no-left-right-margin">
+								<div class="col-xs-6">
+									<input type="radio" th:field="*{penaltyWinnerOne}" value="true" />
+								</div>
+								<div class="col-xs-6">
+									<input type="radio" th:field="*{penaltyWinnerOne}" value="false" />
+								</div>
+							</div>								
+						</div>
+						<br/>
+						<div class="center" th:if="${betCommand.maxJokers gt 0}">
+							<div class="row" th:if="${betCommand.jokerEditable}">
+								<input id="useJoker" type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
+								<label for="useJoker" th:text="#{betting.joker}"></label>
+								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+									th:title="#{betting.joker.tooltip}"></span>
+							</div>	
+							<div class="row">
+								<span th:text="#{betting.joker.available(${betCommand.numberOfJokersUsed}, ${betCommand.maxJokers})}"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+								<button type="button" class="btn btn-info" onclick="runRandomDice()"><i class="fas fa-dice" aria-hidden="true"></i></button>
+								<a href="#" th:href="@{${betCommand.getBackUrl()}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<i class="fas fa-calendar-check" aria-hidden="true"></i>
+								<a href="#" th:href="@{'/ics/' + ${betCommand.matchId}}" th:text="#{calendar.ics.download.text}"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript" th:src="@{/js/pages/bet_and_result.js}" charset="UTF-8"></script>
+	<script type="text/javascript" th:src="@{/js/pages/random_dice.js}" charset="UTF-8"></script>
+	<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+</th:block>
+</html>
