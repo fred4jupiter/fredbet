@@ -4,3 +4,6 @@
     display: inline;
 }
 
+button.vote {
+    width: 45%;
+}

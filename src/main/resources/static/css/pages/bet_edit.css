@@ -4,8 +4,8 @@
     display: inline;
 }
 
-.color-vote {
-    background-color: #DFF0D8;
+button.vote {
+    width: 45%;
 }
 
 
