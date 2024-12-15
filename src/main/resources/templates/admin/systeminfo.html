@@ -6,9 +6,9 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<div class="row">			
+			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
-					<div class="panel panel-default">
+					<div class="panel ">
 						<div class="user panel-heading">
 							  <span th:text="${entry.key}"></span>
 						</div>

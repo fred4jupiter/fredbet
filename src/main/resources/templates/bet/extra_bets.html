@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 <head>
-	<title th:text="#{extra_bets.title}"></title>    
+	<title th:text="#{extra_bets.title}"></title>
 </head>
 <body>
-	<div layout:fragment="content" class="container">		
+	<div layout:fragment="content" class="container">
 		<form id="extraBetForm" th:action="@{/extrabets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
 			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
@@ -51,7 +51,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="panel panel-default">
+					<div class="panel ">
 						<div class="panel-heading">
 							<span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
 							<span class="right label label-as-badge big-badge" th:classappend="${extraBetCommand.points != null} ? 'label-warning' : 'label-default'"
@@ -65,14 +65,14 @@
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<a href="#" th:href="@{/bet/open}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+						<a href="#" th:href="@{/bet/open}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
 			</div>
 			<div class="row" th:if="${!extraBetCommand.isBettable()}">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<a href="#" th:href="@{/extrabets/others}" th:text="#{extrabet.bets.of.others}"></a>
-				</div>	
+				</div>
 			</div>
 		</form>
 	</div>

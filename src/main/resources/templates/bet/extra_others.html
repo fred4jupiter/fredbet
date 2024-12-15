@@ -8,7 +8,7 @@
 			<h1 th:text="#{bet.extra.others.title}"></h1>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
-					<div class="panel panel-default">
+					<div class="panel ">
 						<div class="panel-heading">
 							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
 							<span th:text="${extraBet.userName}"></span>
@@ -39,7 +39,7 @@
 					   	   </div>
 					   </div>
 					</div>
-				</div>			
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">

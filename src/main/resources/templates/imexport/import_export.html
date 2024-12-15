@@ -13,18 +13,18 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="panel panel-default">
+					<div class="panel ">
 						<div class="user panel-heading">
 							  <span th:text="#{importexport.export.name}"></span>
 						</div>
 						<div class="panel-body">
 							<a href="#" th:href="@{/importexport/export}" th:text="#{importexport.export.data}"></a>
 						</div>
-					</div>			
-				</div>	
+					</div>
+				</div>
 				<div class="row">
 					<form th:action="@{/importexport/import}" th:object="${importExportCommand}" method="post" enctype="multipart/form-data" role="form">
-						<div class="panel panel-default">
+						<div class="panel ">
 							<div class="user panel-heading">
 								<span th:text="#{importexport.import.file}"></span>
 							</div>

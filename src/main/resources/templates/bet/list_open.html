@@ -18,7 +18,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
-				<div class="panel panel-default">
+				<div class="panel ">
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-xs-12">
@@ -39,15 +39,15 @@
 								<span th:text="${matchCommand.stadium}"></span>
 							</div>
 							<div class="col-xs-3">
-								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" 
+								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'"
 									class="btn btn-success" role="button">
 									<span class="fas fa-thumbs-up fa-lg"></span>
 								</a>
 							</div>
 						</div>
-				   </div>					   
+				   </div>
 				</div>
-			</div>				
+			</div>
 		</div>
 	</div>
 </body>
