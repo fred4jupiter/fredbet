@@ -15,10 +15,10 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-12">
-									<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
+									<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}" th:src="@{${matchCommand.getIconPathTeamOne()}}" alt="icon team 1"/>
 							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 							  		<span> - </span>
-							  		<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+							  		<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}" th:src="@{${matchCommand.getIconPathTeamTwo()}}" alt="icon team 2"/>
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
