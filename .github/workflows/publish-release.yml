@@ -13,8 +13,8 @@ jobs:
     env:
       DOCKER_IMAGE: fred4jupiter/fredbet
       DOCKER_TARGET_PLATFORM: linux/arm64/v8,linux/amd64
-    outputs:
-      release_version: ${{steps.version_update.outputs.release-version}} # use in jobs: ${{needs.build_tag_repo.outputs.release_version}}
+#    outputs:
+#      release_version: ${{steps.version_update.outputs.release-version}} # use in jobs: ${{needs.build_tag_repo.outputs.release_version}}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -66,8 +66,8 @@ jobs:
         run: |
           docker buildx build \
             --platform ${DOCKER_TARGET_PLATFORM} \
-            --tag docker.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
-            --tag ghcr.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
+            --tag docker.io/${DOCKER_IMAGE}:${{steps.version_update.outputs.release-version}} \
+            --tag ghcr.io/${DOCKER_IMAGE}:${{steps.version_update.outputs.release-version}} \
             --file ./Dockerfile-single \
             --output type=image,push=true .
       - name: Generate changelog
@@ -81,8 +81,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{needs.build_tag_repo.outputs.release_version}}
-          release_name: Release ${{needs.build_tag_repo.outputs.release_version}}
+          tag_name: ${{steps.version_update.outputs.release-version}}
+          release_name: Release ${{steps.version_update.outputs.release-version}}
           draft: false
           prerelease: false
           body: ${{steps.changelog.outputs.changelog}}
