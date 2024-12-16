@@ -19,6 +19,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Cache local Maven repository
         uses: actions/cache@v4
         with:
@@ -56,5 +57,5 @@ jobs:
             --platform ${DOCKER_TARGET_PLATFORM} \
             --tag docker.io/${DOCKER_IMAGE}:latest \
             --tag ghcr.io/${DOCKER_IMAGE}:latest \
-            --file ./Dockerfile \
+            --file ./Dockerfile-single \
             --output type=image,push=true .
