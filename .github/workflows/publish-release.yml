@@ -20,6 +20,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Cache local Maven repository
         uses: actions/cache@v4
         with:
@@ -64,7 +65,7 @@ jobs:
             --platform ${DOCKER_TARGET_PLATFORM} \
             --tag docker.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
             --tag ghcr.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
-            --file ./Dockerfile \
+            --file ./Dockerfile-single \
             --output type=image,push=true .
       - name: Generate changelog
         id: changelog
