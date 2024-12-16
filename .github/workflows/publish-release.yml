@@ -8,8 +8,11 @@ on:
       - 'master'
 
 jobs:
-  build_tag_repo:
+  build_release:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: fred4jupiter/fredbet
+      DOCKER_TARGET_PLATFORM: linux/arm64/v8,linux/amd64
     outputs:
       release_version: ${{steps.version_update.outputs.release-version}} # use in jobs: ${{needs.build_tag_repo.outputs.release_version}}
     steps:
