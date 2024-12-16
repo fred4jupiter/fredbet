@@ -12,7 +12,7 @@
 
     <groupId>de.fred4jupiter.fredbet</groupId>
     <artifactId>fredbet</artifactId>
-    <version>3.3.4-SNAPSHOT</version>
+    <version>3.3.5-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -342,6 +342,35 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!-- https://github.com/CycloneDX/cyclonedx-maven-plugin  -->
+            <!-- result see target/classes/META-INF/sbom/application.cdx.json, can then be analyzed in Dependency Track -->
+<!--            <plugin>-->
+<!--                <groupId>org.cyclonedx</groupId>-->
+<!--                <artifactId>cyclonedx-maven-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>makeAggregateBom</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+            <!-- steps to perform: mvn verify, mvn jqassistant:server, open URL at https://localhost:7474 -->
+<!--            <plugin>-->
+<!--                <groupId>com.buschmais.jqassistant</groupId>-->
+<!--                <artifactId>jqassistant-maven-plugin</artifactId>-->
+<!--                <version>2.5.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>scan</goal>-->
+<!--                            <goal>analyze</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

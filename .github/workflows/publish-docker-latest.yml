@@ -1,8 +1,9 @@
 name: Publish Docker latest image
+
 on:
   push:
     branches:
-      - 'master'
+      - 'dev'
 
 jobs:
   build:
