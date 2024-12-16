@@ -8,7 +8,7 @@ on:
       - 'master'
 
 jobs:
-  build_release:
+  build_tag_repo:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE: fred4jupiter/fredbet
@@ -66,8 +66,8 @@ jobs:
         run: |
           docker buildx build \
             --platform ${DOCKER_TARGET_PLATFORM} \
-            --tag docker.io/${DOCKER_IMAGE}:${{needs.build_release.outputs.release_version}} \
-            --tag ghcr.io/${DOCKER_IMAGE}:${{needs.build_release.outputs.release_version}} \
+            --tag docker.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
+            --tag ghcr.io/${DOCKER_IMAGE}:${{needs.build_tag_repo.outputs.release_version}} \
             --file ./Dockerfile-single \
             --output type=image,push=true .
       - name: Generate changelog
