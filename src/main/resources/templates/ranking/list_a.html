@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+	<head>
+		<title th:text="#{ranking.list.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div class="row">
+				<div class="col-xs-6">
+					<h1 th:text="#{ranking.list.title}"></h1>
+				</div>
+				<div th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}" class="col-xs-6">
+					<div class="row pull-right btn-group no-left-right-margin" role="group">
+						<a href="#" th:href="@{/ranking(mode=mixed)}" class="btn"
+						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).MIXED ? 'btn-info' : 'btn-default'}">
+							<i class="fas fa-user" aria-hidden="true"></i>
+							<i class="fas fa-child" aria-hidden="true"></i>
+						</a>
+						<a href="#" th:href="@{/ranking(mode=adult)}" class="btn"
+						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_ADULTS ? 'btn-info' : 'btn-default'}">
+							<i class="fas fa-user" aria-hidden="true"></i>
+						</a>
+						<a href="#" th:href="@{/ranking(mode=child)}" class="btn"
+						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_CHILDREN? 'btn-info' : 'btn-default'}">
+							<i class="fas fa-child" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">
+					<div class="panel ">
+                        <div class="panel-heading collapse">
+                            <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
+                        </div>
+						<div class="panel-body" th:classappend="${ranking.sameRankingPositionAsOtherUser} ? 'ranking-same-position'">
+                            <div class="col-xs-3 no-left-padding">
+                                <span class="label ranking" th:classappend="${ranking.cssRankClass}" th:text="'# ' + ${status.count}"></span>
+                            </div>
+                            <div class="col-xs-1 no-left-padding">
+                                <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})}"></span>
+                            </div>
+                            <div class="col-xs-6 no-left-padding no-right-padding">
+                                <span class="ranking-name" th:text="${ranking.userName}"></span>
+                                <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                      th:title="#{ranking.topTipperOfToday.tooltip}"></span>
+                            </div>
+                            <div class="col-xs-2 no-left-padding no-right-padding">
+                                <span class="label label-warning label-as-badge ranking-badge" th:text="${ranking.totalPoints}"></span>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="row" th:if="${not #lists.isEmpty(rankings)}">
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target=".panel-heading"><span th:text="#{ranking.show.details.button}"></span></button>
+					<a class="btn btn-primary" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}">
+                        <i class="fas fa-file-pdf"></i>
+                        <span th:text="#{pdf.export.button}"></span>
+                    </a>
+                </div>
+            </div>
+			<div class="row">
+				<br/>
+			</div>
+			<div class="row">
+				<br/>
+			</div>
+		</div>
+	</body>
+    <th:block layout:fragment="scripts">
+        <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
+    </th:block>
+</html>

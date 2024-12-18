@@ -152,7 +152,7 @@
 						<h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
 						<ul class="list-group">
 							<li class="list-group-item">
-								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()"/>
+								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="showHideDetails()"/>
 								<label for="selfRegistrationEnabled" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
 								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 									  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
