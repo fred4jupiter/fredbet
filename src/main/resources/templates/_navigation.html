@@ -223,7 +223,7 @@
                         <li><a th:href="${@languageUtil.buildUrl('sv')}" class="dropdown-item language"><img src="/images/lang/sv.png" th:text="' '+#{language.sv}" /></a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown mt-1">
                     <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
                              th:alt="${@webSecurityUtil.getCurrentUsername()}" width="32" height="32" class="rounded-circle">
