@@ -230,7 +230,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <div class="text-bg-info p-2 text-center" th:text="${@webSecurityUtil.getCurrentUsername()}">Light with contrasting color</div>
+                            <div class="text-bg-info p-2 text-center fst-italic" th:text="${@webSecurityUtil.getCurrentUsername()}">Light with contrasting color</div>
                         </li>
                         <li>
                             <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
