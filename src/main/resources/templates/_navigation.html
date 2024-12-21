@@ -208,6 +208,10 @@
                         </li>
                     </ul>
                 </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end" th:if="${@webSecurityUtil.isUserLoggedIn()}">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" th:classappend="${classes}" id="language" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
@@ -230,7 +234,10 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <div class="text-bg-info p-2 text-center fst-italic" th:text="${@webSecurityUtil.getCurrentUsername()}">Light with contrasting color</div>
+                            <div class="dropdown-item fw-lighter p-2 text-center" th:text="${@webSecurityUtil.getCurrentUsername()}">Light with contrasting color</div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
                         </li>
                         <li>
                             <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
