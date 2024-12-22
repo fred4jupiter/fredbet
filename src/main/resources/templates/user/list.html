@@ -13,8 +13,8 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-2">
-                                    <a th:href="@{'/gallery/show/' + ${userDto.userProfileImageKey}}" th:attr="data-lightbox=${userDto.userProfileImageKey}" class="img-link">
-                                        <img th:if="${userDto.userProfileImageKey}" th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" width="34"  class="rounded-circle"/>
+                                    <a th:href="@{'/gallery/show/' + ${userDto.userProfileImageKey}}" th:attr="data-lightbox=${userDto.userProfileImageKey}">
+                                        <img th:if="${userDto.userProfileImageKey}" th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" width="34" class="rounded-circle" alt="userImage"/>
                                     </a>
 					  			</div>
                                 <div class="col-7">
