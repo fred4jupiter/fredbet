@@ -13,10 +13,12 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-2">
-									<span th:replace="~{fragments/profile_image :: profile_image_big_with_popup(${userDto.userProfileImageKey})}"></span>
+                                    <a th:href="@{'/gallery/show/' + ${userDto.userProfileImageKey}}" th:attr="data-lightbox=${userDto.userProfileImageKey}" class="img-link">
+                                        <img th:if="${userDto.userProfileImageKey}" th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" width="34"  class="rounded-circle"/>
+                                    </a>
 					  			</div>
                                 <div class="col-7">
-                                    <span th:text="${userDto.username}"></span>
+                                    <span class="align-middle fw-bold" th:text="${userDto.username}"></span>
                                 </div>
 					  			<div class="col-3">
                                     <a sec:authorize="hasAuthority('PERM_EDIT_USER')" th:href="@{'/user/' + ${userDto.userId}}" class="btn btn-primary" role="button">
