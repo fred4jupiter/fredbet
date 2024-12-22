@@ -9,108 +9,104 @@
 			<h1 th:text="#{administration.runtime.configuration}"></h1>
 			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" action="#" method="post" role="form">
 				<div class="row">
-					<div class="col-xs-12 col-sm-6">
+					<div class="col-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
-						<ul class="list-group">
-							<li class="list-group-item">
-								<input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeSettings.enabledParentChildRanking}"/>
-								<label for="enabledParentChildRanking" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>
-								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-								th:title="#{administration.runtime.configuration.enabledParentChildRanking.tooltip}"></span>
-							</li>
-							<li class="list-group-item">
-								<input id="enableChangingUsername" type="checkbox" th:field="*{runtimeSettings.enableChangingUsername}"/>
-								<label for="enableChangingUsername" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>
-								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-								th:title="#{administration.runtime.configuration.enableChangingUsername.tooltip}"></span>
-							</li>
-							<li class="list-group-item">
-								<input id="showDemoDataNavigationEntry" type="checkbox" th:field="*{runtimeSettings.showDemoDataNavigationEntry}"/>
-								<label for="showDemoDataNavigationEntry" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>
-								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-								th:title="#{administration.runtime.configuration.showDemoDataNavigationEntry.tooltip}"></span>
-							</li>
-							<li class="list-group-item">
-								<input id="changePasswordOnFirstLogin" type="checkbox" th:field="*{runtimeSettings.changePasswordOnFirstLogin}"/>
-								<label for="changePasswordOnFirstLogin" th:text="#{administration.runtime.configuration.changePasswordOnFirstLogin}"></label>
-								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-								th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>
-							</li>
-						</ul>
-						<div class="form-group">
-							<label for="favouriteCountry" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
-							<select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-control">
-								<option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-							</select>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
-						</div>
-						<div class="form-group">
-							<label for="passwordForReset" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
-							<input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}">passwordForReset Error</p>
-						</div>
-						<div class="row">
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="timeZone" th:text="#{administration.runtime.configuration.timeZone}"></label>
-									<select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-control">
-										<option th:each="timeZone : ${runtimeSettingsCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
-									</select>
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="currentTime" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
-									<br/>
-									<span id="currentTime" th:text="${runtimeSettingsCommand.currentTime}"></span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6">
+                        <div class="form-check mb-2">
+                            <input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeSettings.enabledParentChildRanking}" class="form-check-input"/>
+                            <label for="enabledParentChildRanking" class="form-check-label" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                  th:title="#{administration.runtime.configuration.enabledParentChildRanking.tooltip}"></span>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input id="enableChangingUsername" type="checkbox" th:field="*{runtimeSettings.enableChangingUsername}" class="form-check-input"/>
+                            <label for="enableChangingUsername" class="form-check-label" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                  th:title="#{administration.runtime.configuration.enableChangingUsername.tooltip}"></span>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input id="showDemoDataNavigationEntry" type="checkbox" th:field="*{runtimeSettings.showDemoDataNavigationEntry}" class="form-check-input"/>
+                            <label for="showDemoDataNavigationEntry" class="form-check-label" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                  th:title="#{administration.runtime.configuration.showDemoDataNavigationEntry.tooltip}"></span>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input id="changePasswordOnFirstLogin" type="checkbox" th:field="*{runtimeSettings.changePasswordOnFirstLogin}" class="form-check-input"/>
+                            <label for="changePasswordOnFirstLogin" class="form-check-label" th:text="#{administration.runtime.configuration.changePasswordOnFirstLogin}"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                  th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="mb-2">
+                            <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
+                            <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
+                                <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+                            </select>
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
+                        </div>
+                        <div class="mb-2">
+                            <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
+                            <input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control" />
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}">passwordForReset Error</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="row mt-3">
+                            <div class="col-6 mb-2">
+                                <label for="timeZone" class="form-label" th:text="#{administration.runtime.configuration.timeZone}"></label>
+                                <select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-select">
+                                    <option th:each="timeZone : ${runtimeSettingsCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
+                                </select>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <div class="mb-2">
+                                    <label for="currentTime" class="form-label" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
+                                    <br/>
+                                    <span id="currentTime" th:text="${runtimeSettingsCommand.currentTime}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="col-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
 						<div class="row">
-							<div class="col-xs-6">
-								<div class="form-group">
-									<label for="theme" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
-									<select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-control">
-										<option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
-									</select>
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
-								</div>
+							<div class="col-6 mb-3">
+                                <label for="theme" class="form-label" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
+                                <select id="theme" th:field="*{runtimeSettings.bootswatchTheme}" class="form-select">
+                                    <option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
+                                </select>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.bootswatchTheme')}" th:errors="*{runtimeSettings.bootswatchTheme}">bootswatchTheme Error</p>
 							</div>
-							<div class="col-xs-6">
-								<div class="form-group">
-									<label for="navbarlayout" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
-									<select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-control">
-										<option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
-									</select>
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.navbarLayout')}" th:errors="*{runtimeSettings.navbarLayout}">navbarlayout Error</p>
-								</div>
+							<div class="col-6 mb-3">
+                                <label for="navbarlayout" class="form-label" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
+                                <select id="navbarlayout" th:field="*{runtimeSettings.navbarLayout}" class="form-select">
+                                    <option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
+                                </select>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.navbarLayout')}" th:errors="*{runtimeSettings.navbarLayout}">navbarlayout Error</p>
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6">
+					<div class="col-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.extraBetPoints}"></h2>
 						<div class="row">
-							<div class="col-xs-4">
+							<div class="col-3">
 								<div class="form-group">
-									<label for="runtimeSettings.pointsFinalWinner" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label>
+									<label for="runtimeSettings.pointsFinalWinner" class="form-label" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label>
 									<input id="runtimeSettings.pointsFinalWinner" type="text" th:field="*{runtimeSettings.pointsFinalWinner}" class="form-control" />
 									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsFinalWinner')}" th:errors="*{runtimeSettings.pointsFinalWinner}"></p>
 								</div>
 							</div>
-							<div class="col-xs-4">
+							<div class="col-3">
 								<div class="form-group">
-									<label for="runtimeSettings.pointsSemiFinalWinner" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label>
+									<label for="runtimeSettings.pointsSemiFinalWinner" class="form-label" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label>
 									<input id="runtimeSettings.pointsSemiFinalWinner" type="text" th:field="*{runtimeSettings.pointsSemiFinalWinner}" class="form-control" />
 									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsSemiFinalWinner')}" th:errors="*{runtimeSettings.pointsSemiFinalWinner}"></p>
 								</div>
 							</div>
-							<div class="col-xs-4">
+							<div class="col-3">
 								<div class="form-group">
-									<label for="runtimeSettings.pointsThirdFinalWinner" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label>
+									<label for="runtimeSettings.pointsThirdFinalWinner" class="form-label" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label>
 									<input id="runtimeSettings.pointsThirdFinalWinner" type="text" th:field="*{runtimeSettings.pointsThirdFinalWinner}" class="form-control" />
 									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsThirdFinalWinner')}" th:errors="*{runtimeSettings.pointsThirdFinalWinner}"></p>
 								</div>
@@ -118,55 +114,50 @@
 						</div>
 					</div>
 
-					<div class="col-xs-12 col-sm-6">
+					<div class="col-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.joker}"></h2>
-						<div class="row">
-                            <div class="form-group">
-                                <div class="col-xs-12">
-                                    <label for="runtimeSettings.jokerMaxCount" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
-                                </div>
-                                <div class="col-xs-3">
-                                    <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
-                                </div>
-                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
+						<div class="row mb-3">
+                            <div class="col-12">
+                                <label for="runtimeSettings.jokerMaxCount" class="form-label" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
                             </div>
+                            <div class="col-2">
+                                <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
+                            </div>
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6">
+
+					<div class="col-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
-						<div class="row">
-                            <div class="form-group">
-                                <div class="col-xs-12">
-                                    <label for="runtimeSettings.imageUploadLimit" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
-                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                          th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
-                                </div>
-                                <div class="col-xs-3">
-                                    <input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
-                                </div>
-                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
+						<div class="row mb-3">
+                            <div class="col-12">
+                                <label for="runtimeSettings.imageUploadLimit" class="form-label" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
+                                <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                      th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
                             </div>
+                            <div class="col-3">
+                                <input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
+                            </div>
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6">
+					<div class="col-12 col-sm-6">
 						<h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
-						<ul class="list-group">
-							<li class="list-group-item">
-								<input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="showHideDetails()"/>
-								<label for="selfRegistrationEnabled" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
-								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-									  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
-							</li>
-						</ul>
+                        <div class="form-check">
+                            <input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="showHideDetails()" class="form-check-input"/>
+                            <label for="selfRegistrationEnabled" class="form-check-label" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
+                        </div>
 						<div id="registrationCodeBox" class="form-group">
-							<label for="runtimeSettings.registrationCode" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
+							<label for="runtimeSettings.registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
 							<input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-12">
+					<div class="col-12">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 					</div>
 				</div>
