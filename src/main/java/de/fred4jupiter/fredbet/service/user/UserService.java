@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.service.user;
 
-import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.ImageBinary;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.*;
@@ -106,7 +109,7 @@ public class UserService {
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public void createUser(AppUser appUser) throws UserAlreadyExistsException {
+    public AppUser createUser(AppUser appUser) throws UserAlreadyExistsException {
         AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
         if (foundUser != null) {
             throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
@@ -114,24 +117,19 @@ public class UserService {
 
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         LOG.info("creating user with username={}", appUser.getUsername());
-        saveNewAppUser(appUser);
-    }
-
-    public AppUser createUserIfNotExists(String username, String password, boolean isChild, Set<String> roles) {
-        AppUser appUser = appUserRepository.findByUsername(username);
-        if (appUser != null) {
-            LOG.warn("user with username={} already exists.", username);
-            return appUser;
-        }
-        AppUser newAppUser = AppUserBuilder.create().withUsernameAndPassword(username, password)
-            .withRoles(roles).withIsChild(isChild).build();
-        return saveNewAppUser(newAppUser);
-    }
-
-    private AppUser saveNewAppUser(AppUser appUser) {
         AppUser savedAppUser = appUserRepository.save(appUser);
         imageAdministrationService.saveUserProfileImage(getDefaultUserProfileImage(), savedAppUser);
         return savedAppUser;
+    }
+
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public AppUser createUserIfNotExists(AppUser appUser) {
+        AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
+        if (foundUser != null) {
+            return foundUser;
+        }
+
+        return createUser(appUser);
     }
 
     private byte[] getDefaultUserProfileImage() {
@@ -139,16 +137,6 @@ public class UserService {
             return this.defaultUserProfileImage.getContentAsByteArray();
         } catch (IOException e) {
             throw new IllegalStateException("Default user profile image could not be loaded. Cause: " + e.getMessage());
-        }
-    }
-
-    public boolean saveUserIfNotExists(AppUser appUser) {
-        try {
-            createUser(appUser);
-            return true;
-        } catch (UserAlreadyExistsException e) {
-            LOG.debug(e.getMessage());
-            return false;
         }
     }
 

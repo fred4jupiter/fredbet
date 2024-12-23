@@ -7,24 +7,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Component
-record StaticResourceLoader(Resource rules, Resource demoImage) {
+record StaticResourceLoader(Resource rules) {
 
-    public StaticResourceLoader(@Value("classpath:/content/rules_de.txt") Resource rules,
-                                @Value("classpath:/static/images/profile_demo_image.jpg") Resource demoImage) {
+    public StaticResourceLoader(@Value("classpath:/content/rules_de.txt") Resource rules) {
         this.rules = rules;
-        this.demoImage = demoImage;
-    }
-
-    public byte[] loadDemoUserProfileImage() {
-        try (InputStream in = demoImage.getInputStream()) {
-            return IOUtils.toByteArray(in);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not load demo image from classpath. " + e.getMessage());
-        }
     }
 
     public String loadDefaultRules() {

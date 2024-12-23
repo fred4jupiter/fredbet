@@ -129,17 +129,12 @@ class DatabasePopulatorImpl implements DatabasePopulator {
     public void createDemoUsers(int numberOfDemoUsers) {
         LOG.info("createAdditionalUsers: creating {} additional demo users ...", numberOfDemoUsers);
 
-        final byte[] demoImage = staticResourceLoader.loadDemoUserProfileImage();
-
         IntStream.rangeClosed(1, numberOfDemoUsers).forEach(counter -> {
             final String usernameAndPassword = this.fakeDataPopulator.nextRandomUsername();
             AppUser user = AppUserBuilder.create().withUsernameAndPassword(usernameAndPassword, usernameAndPassword)
                 .withUserGroup(FredBetUserGroup.ROLE_USER).withIsChild(fakeDataPopulator.nextRandomBoolean()).build();
             LOG.debug("creating demo user {}: {}", counter, usernameAndPassword);
-            boolean isNewUser = userService.saveUserIfNotExists(user);
-            if (isNewUser && fakeDataPopulator.nextRandomBoolean()) {
-                this.imageAdministrationService.saveUserProfileImage(demoImage, user);
-            }
+            userService.createUserIfNotExists(user);
         });
     }
 
