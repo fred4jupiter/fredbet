@@ -38,7 +38,7 @@ class ImageResizingService {
             BufferedImage bufferedImage = ImageIO.read(byteIn);
             if (bufferedImage.getWidth() <= thumbnailSize && bufferedImage.getHeight() <= thumbnailSize) {
                 LOG.info("The original image does have the prefered thumbnailSize of {} or is smaller than that. Do not change image thumbnailSize. " +
-                        "image with: {}, image height: {}", thumbnailSize, bufferedImage.getWidth(), bufferedImage.getHeight());
+                         "image with: {}, image height: {}", thumbnailSize, bufferedImage.getWidth(), bufferedImage.getHeight());
                 return imageBinary;
             }
 

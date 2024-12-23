@@ -9,7 +9,6 @@ import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.service.image.storage.ImageLocationStrategy;
-import de.fred4jupiter.fredbet.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,20 +34,17 @@ public class ImageAdministrationService {
 
     private final SecurityService securityService;
 
-    private final UserService userService;
-
     private final RuntimeSettingsService runtimeSettingsService;
 
-    public ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
-                                      ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
-                                      SecurityService securityService,
-                                      UserService userService, RuntimeSettingsService runtimeSettingsService) {
+    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
+                               ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
+                               SecurityService securityService,
+                               RuntimeSettingsService runtimeSettingsService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.imageLocationStrategy = imageLocationStrategy;
         this.securityService = securityService;
-        this.userService = userService;
         this.runtimeSettingsService = runtimeSettingsService;
     }
 
@@ -106,17 +102,11 @@ public class ImageAdministrationService {
         }
     }
 
-    public void saveUserProfileImage(byte[] binary) {
-        final AppUser appUser = userService.findByUserId(securityService.getCurrentUser().getId());
-        ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
-        saveUserProfileImage(binary, appUser, imageMetaData);
-    }
-
     public void saveUserProfileImage(byte[] binary, AppUser appUser) {
         saveUserProfileImage(binary, appUser, null);
     }
 
-    private void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
+    public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
         final String key = generateKey();
         if (imageMetaData == null) {
             // create new user profile image
@@ -190,7 +180,7 @@ public class ImageAdministrationService {
 
     public List<String> findAvailableImageGroups() {
         return imageGroupRepository.findAllGroupsWithoutUserProfileImageGroup().stream().map(ImageGroup::getName).sorted()
-                .toList();
+            .toList();
     }
 
     public void createDefaultImageGroup() {
