@@ -69,6 +69,9 @@
                         <li>
                             <a class="dropdown-item" th:href="@{/matches}" th:text="#{all.matches}"></a>
                         </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}" class="divider"
                             role="separator"></li>
                         <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
@@ -130,6 +133,9 @@
                         </li>
                         <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" class="divider"
                             role="separator"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
                             <a class="dropdown-item" th:href="@{/matches/group/FINAL}"
                                th:text="#{group.entry.FINAL}"></a>
