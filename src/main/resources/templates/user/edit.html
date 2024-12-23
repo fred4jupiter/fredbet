@@ -9,38 +9,36 @@
 		<form id="userForm" th:action="@{/user/edit}" th:object="${editUserCommand}" action="#" method="post" role="form">
 			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/user/' + ${editUserCommand.userId} + '/delete', id='confirm-delete')}"></div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{userId}" class="form-control" />
-					<div class="form-group">
-						<label for="username" th:text="#{user.edit.username} + ':'"></label> 
+					<div class="mb-3">
+						<label for="username" th:text="#{user.edit.username} + ':'" class="form-label"></label>
 						<input id="username" type="text" th:field="*{username}" class="form-control" readonly="readonly"/>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>						
-					</div>					
-					<div class="form-group">
-						<label for="roles" th:text="#{user.create.roles} + ':'"></label>
-						<ul class="list-group">
-							<li class="list-group-item" th:each="role : ${availableRoles}">
-								<input type="hidden" th:field="*{roles}" th:value="${role}" th:if="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
-								<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/> 
-								<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
-								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-								th:title="#{'user.edit.tooltip.' + ${role}}"></span>
-							</li>
-						</ul>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
+					</div>
+					<div class="mb-3">
+						<div class="mb-2" th:text="#{user.create.roles} + ':'"></div>
+                        <div class="form-check" th:each="role : ${availableRoles}">
+                            <input type="hidden" th:field="*{roles}" th:value="${role}" th:if="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
+                            <input class="form-check-input" type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
+                            <label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}" class="form-check-label"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                            th:title="#{'user.edit.tooltip.' + ${role}}"></span>
+                        </div>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles error</p>
 					</div>
-					<div class="form-group">
-						<input id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
-						<label for="child" th:text="#{user.create.child}"></label>
+					<div class="form-check mb-3">
+						<input class="form-check-input" id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
+						<label class="form-check-label" for="child" th:text="#{user.create.child}"></label>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child error</p>
-					</div>					
-					<div class="form-group">
+					</div>
+					<div class="mb-3">
 						<a href="#" th:href="@{'/user/' + ${editUserCommand.userId} + '/resetPwd'}" class="btn btn-warning" role="button" th:text="#{button.password.reset}"></a>
 					</div>
-					<div class="form-group">
+					<div class="mb-3">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<button type="button" sec:authorize="hasAuthority('PERM_DELETE_USER')" class="btn btn-danger"
-								data-toggle="modal" data-target="#confirm-delete" th:text="#{button.delete}"></button>
+								data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
 						<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
