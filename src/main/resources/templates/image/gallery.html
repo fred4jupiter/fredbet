@@ -4,23 +4,24 @@
 	<head>
 		<title th:text="#{image.gallery.title}"></title>
 		<link rel="stylesheet" th:href="@{/blueimpgallery-3.4.0/css/blueimp-gallery.min.css}" />
+        <link rel="stylesheet" th:href="@{/css/pages/gallery.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content" class="container">
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6 col-md-4">
 					<div id="links" class="gallery-images">
 						<div th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
 							<br/>
-							<label th:text="${galleryGroup}"></label>
+							<span class="fw-bold" th:text="${galleryGroup}"></span>
 							<br/>
-							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" 
+							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}"
 										th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}">
 								<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="img-responsive gallery"/>
 						    </a>
-						</div>												
+						</div>
 					</div>
-					
+
 					<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
 					    <div class="slides"></div>
 					    <h3 class="title"></h3>
@@ -34,15 +35,15 @@
 			</div>
 			<br/>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6 col-md-4">
 					<a href="#" th:href="@{/image/show}" class="btn btn-primary" th:text="#{image.gallery.toUploadImagePage}"></a>
-				</div>	
+				</div>
 			</div>
 			<br/>
 			<div class="row" th:if="${!groupedImageCommands.isEmpty()}" sec:authorize="hasAuthority('PERM_DOWNLOAD_IMAGES')">
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6 col-md-4">
 					<a href="#" th:href="@{/gallery/download/all}" th:text="#{image.gallery.downloadAll}"></a>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</body>

@@ -1,0 +1,11 @@
+img.gallery {
+    vertical-align: baseline;
+}
+
+a.img-link  {
+    text-decoration: none !important;
+}
+
+.gallery-images  img {
+    display: inline;
+}
