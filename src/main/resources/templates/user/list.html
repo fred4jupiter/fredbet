@@ -17,8 +17,8 @@
                                         <img th:if="${userDto.userProfileImageKey}" th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" width="34" class="rounded-circle" alt="userImage"/>
                                     </a>
 					  			</div>
-                                <div class="col-7">
-                                    <span class="align-middle fw-bold" th:text="${userDto.username}"></span>
+                                <div class="col-7 mt-2">
+                                    <span class="fw-bold" th:text="${userDto.username}"></span>
                                 </div>
 					  			<div class="col-3">
                                     <a sec:authorize="hasAuthority('PERM_EDIT_USER')" th:href="@{'/user/' + ${userDto.userId}}" class="btn btn-primary" role="button">
