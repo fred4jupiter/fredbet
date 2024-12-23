@@ -7,10 +7,10 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{standings.title}"></h1>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:if="${not #lists.isEmpty(standingsContainer.getForGroup(group))}" th:each="group : ${standingsContainer.groups}">
+				<div class="col-12 col-sm-6 col-md-4" th:if="${not #lists.isEmpty(standingsContainer.getForGroup(group))}" th:each="group : ${standingsContainer.groups}">
 					<h2 th:text="#{'group.entry.'+ ${group}}"></h2>
-					<div class="table-responsive">
-						<table class="table small table-condensed table-centered">
+					<div class="table-responsive bg-light">
+						<table class="table small table-condensed table-centered table-info">
 							<thead>
 								<tr class="active">
 									<th>#</th>
@@ -40,10 +40,10 @@
 						</table>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6 col-md-4">
 					<h2 th:text="#{standings.legend}"></h2>
 					<div class="table-responsive">
-						<table class="table small table-bordered">
+						<table class="table small table-bordered table-secondary">
 							<tbody>
 							<tr>
 								<td class="active center">MP</td>
