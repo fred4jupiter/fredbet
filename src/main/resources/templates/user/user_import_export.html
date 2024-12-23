@@ -5,19 +5,30 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h2 th:text="#{user.importexport.title}"></h2>
+			<h3 th:text="#{user.importexport.title}"></h3>
             <div class="row mt-3">
                 <div class="col-12 col-sm-6 col-md-4">
                     <form th:action="@{/user/import}" th:object="${userImportExportCommand}" method="post" enctype="multipart/form-data" role="form">
-                        <h3 th:text="#{user.importexport.import.file}"></h3>
-                        <input id="jsonFile" type="file" th:field="*{jsonFile}" class="btn btn-default btn-file" />
-                        <br/>
-                        <input type="submit" class="btn btn-primary mt-3" th:value="#{user.importexport.upload.button}" />
+                        <div class="card">
+                            <div class="card-header">
+                                <span th:text="#{user.importexport.import.file}"></span>
+                            </div>
+                            <div class="card-body">
+                                <input id="jsonFile" type="file" th:field="*{jsonFile}" class="btn btn-default btn-file" />
+                                <input type="submit" class="btn btn-primary mt-3" th:value="#{user.importexport.upload.button}" />
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
-                    <h3 th:text="#{user.importexport.export.name}"></h3>
-                    <a href="#" th:href="@{/user/export}" th:text="#{user.importexport.export.users}"></a>
+                    <div class="card">
+                        <div class="card-header">
+                            <span th:text="#{user.importexport.export.name}"></span>
+                        </div>
+                        <div class="card-body">
+                            <a href="#" th:href="@{/user/export}" th:text="#{user.importexport.export.users}"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
 		</div>
