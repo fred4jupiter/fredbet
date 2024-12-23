@@ -3,16 +3,17 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{systeminfo.title}"></title>
+        <link rel="stylesheet" th:href="@{/css/pages/systeminfo.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
-					<div class="panel ">
-						<div class="user panel-heading">
+				<div class="col-12 col-sm-6 col-md-4" th:each="entry: ${buildInfoMap.entrySet()}">
+					<div class="card mb-3">
+						<div class="card-header">
 							  <span th:text="${entry.key}"></span>
 						</div>
-						<div class="panel-body panel-text-responsive">
+						<div class="card-body panel-text-responsive">
 							 <span th:text="${entry.value}"></span>
 						</div>
 					</div>
