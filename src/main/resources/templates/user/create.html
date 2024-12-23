@@ -8,38 +8,36 @@
 		<div layout:fragment="content" class="container">
 			<form id="userForm" th:action="@{/user}" th:object="${createUserCommand}" action="#" method="post" role="form">
 				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-4">
+					<div class="col-12 col-sm-6 col-md-4">
 						<input type="hidden" th:field="*{userId}" class="form-control" />
-						<div class="form-group">
-							<label for="username" th:text="#{user.create.username} + ':'"></label> 
+						<div class="mb-3">
+							<label for="username" th:text="#{user.create.username} + ':'" class="form-label"></label>
 							<input id="username" type="text" th:field="*{username}" class="form-control" size="12" maxlength="12" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error</p>
 						</div>
-						<div class="form-group">
-							<label for="password" th:text="#{user.create.password} + ':'"></label>							
+						<div class="mb-3">
+							<label for="password" th:text="#{user.create.password} + ':'" class="form-label"></label>
 							<input id="password" type="password" th:field="*{password}" class="form-control" />
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</p>
 						</div>
-						<div class="form-group">
-							<label th:text="#{user.create.roles} + ':'"></label>
-							<ul class="list-group">
-								<li class="list-group-item" th:each="role : ${availableRoles}">
-									<input type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.username)}" />
-									<label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
-									<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-								th:title="#{'user.edit.tooltip.' + ${role}}"></span>
-								</li>							
-							</ul>
+						<div class="mb-3">
+							<div class="mb-2" th:text="#{user.create.roles} + ':'"></div>
+                            <div class="form-check" th:each="role : ${availableRoles}">
+                                <input class="form-check-input" type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.username)}" />
+                                <label class="form-check-label" th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}"></label>
+                                <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                      th:title="#{'user.edit.tooltip.' + ${role}}"></span>
+                            </div>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</p>
-						</div>						
-						<div class="form-group">
-							<input id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
-							<label for="child" th:text="#{user.create.child}"></label>
+						</div>
+						<div class="form-check mb-3">
+							<input class="form-check-input" id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
+							<label class="form-check-label" for="child" th:text="#{user.create.child}"></label>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child Error</p>
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-							<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+							<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 						</div>
 					</div>
 				</div>

@@ -21,7 +21,7 @@
                         <div class="form-check" th:each="role : ${availableRoles}">
                             <input type="hidden" th:field="*{roles}" th:value="${role}" th:if="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
                             <input class="form-check-input" type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
-                            <label th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}" class="form-check-label"></label>
+                            <label class="form-check-label" th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}" ></label>
                             <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                             th:title="#{'user.edit.tooltip.' + ${role}}"></span>
                         </div>
