@@ -43,8 +43,8 @@
                                 <div class="col-2">
                                     <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})}"></span>
                                 </div>
-                                <div class="col-6">
-                                    <span class="ranking-name" th:text="${ranking.userName}"></span>
+                                <div class="col-6 mt-1">
+                                    <span th:text="${ranking.userName}"></span>
                                     <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                                           th:title="#{ranking.topTipperOfToday.tooltip}"></span>
                                 </div>
