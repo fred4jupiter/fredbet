@@ -10,27 +10,33 @@
 				<div class="col-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
 					<div class="card">
 						<div class="card-header">
-							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
-							<span th:text="${extraBet.userName}"></span>
-							<span class="badge rounded-pill bg-warning big-badge right" th:text="${extraBet.points}"></span>
+                            <div class="row">
+                                <div class="col-9">
+                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
+                                    <span class="ms-3" th:text="${extraBet.userName}"></span>
+                                </div>
+                                <div class="col-3">
+                                    <span class="badge rounded-pill bg-warning big-badge" th:text="${extraBet.points}"></span>
+                                </div>
+                            </div>
 						</div>
 					   <div class="card-body">
 						   <div class="table-responsive">
 						   		<table class="table table-condensed">
 						   			<tr>
-										<td class="success">
+										<td class="bg-success">
 											1. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.finalWinner.getIsoCode()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr>
-										<td class="warning">
+										<td class="bg-warning">
 											2. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr th:if="${extraBet.thirdFinalWinner}">
-										<td class="info">
+										<td class="bg-info">
 											3. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getIsoCode()}}"></span>
 										</td>
@@ -43,8 +49,8 @@
 			</div>
 			<div class="row">
 				<div class="col-12 col-sm-6 col-md-4">
-					<div class="form-group">
-						<a href="#" th:href="@{/extrabets}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
+					<div class="mt-3">
+						<a href="#" th:href="@{/extrabets}" class="btn btn-light" role="button" th:text="#{button.back}"></a>
 					</div>
 				</div>
 			</div>
