@@ -26,12 +26,12 @@
 					<div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-								<img class="flag big" th:if="${betCommand.getIconPathTeamOne() != null}" th:src="@{${betCommand.getIconPathTeamOne()}}"/>
+								<img class="flag big" th:if="${betCommand.getIconPathTeamOne() != null}" th:src="@{${betCommand.getIconPathTeamOne()}}" alt="teamOne"/>
 								<br/>
 								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-6">
-								<img class="flag big" th:if="${betCommand.getIconPathTeamTwo() != null}" th:src="@{${betCommand.getIconPathTeamTwo()}}"/>
+								<img class="flag big" th:if="${betCommand.getIconPathTeamTwo() != null}" th:src="@{${betCommand.getIconPathTeamTwo()}}" alt="teamTwo"/>
 								<br/>
 								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
 							</div>
@@ -74,13 +74,15 @@
 							</div>
 						</div>
 						<br/>
-						<div class="center" th:if="${betCommand.maxJokers gt 0}">
+						<div th:if="${betCommand.maxJokers gt 0}">
 							<div class="row mb-3" th:if="${betCommand.jokerEditable}">
                                 <div class="col-10">
-                                    <input id="useJoker" type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
-                                    <label for="useJoker" th:text="#{betting.joker}"></label>
-                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                          th:title="#{betting.joker.tooltip}"></span>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="useJoker" type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
+                                        <label class="form-check-label" for="useJoker" th:text="#{betting.joker}"></label>
+                                        <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                              th:title="#{betting.joker.tooltip}"></span>
+                                    </div>
                                 </div>
 							</div>
 							<div class="row mb-3">
