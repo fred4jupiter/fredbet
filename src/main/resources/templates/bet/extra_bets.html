@@ -29,8 +29,8 @@
 							<span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsSemiFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{semiFinalWinner}" class="form-control">
-							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+							<select th:field="*{semiFinalWinner}" class="form-select">
+                                <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 						</div>
 					</div>
@@ -42,7 +42,7 @@
 							<span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsThirdFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{thirdFinalWinner}" class="form-control">
+							<select th:field="*{thirdFinalWinner}" class="form-select">
                                 <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 						</div>
@@ -54,7 +54,7 @@
 					<div class="card ">
 						<div class="card-header">
 							<span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
-							<span class="right label label-as-badge big-badge" th:classappend="${extraBetCommand.points != null} ? 'label-warning' : 'label-default'"
+							<span class="badge rounded-pill bg-warning big-badge" th:classappend="${extraBetCommand.points != null} ? 'label-warning' : 'label-default'"
 								  th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>
 						</div>
 					</div>
