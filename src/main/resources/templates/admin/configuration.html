@@ -7,7 +7,7 @@
 	<body>
 		<div layout:fragment="content">
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6 col-md-4 mb-3">
 					<form id="changeLogLevelForm" th:action="@{/config/changeLogLevel}" th:object="${configurationCommand}" action="#" method="post" role="form">
 						<h2 th:text="#{administration.change.loglevel.title}"></h2>
 						<ul class="list-group mb-3">
@@ -22,9 +22,6 @@
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						</div>
 					</form>
-				</div>
-				<div class="visible-xs col-12">
-					<hr/>
 				</div>
 				<div class="col-12 col-sm-6 col-md-4">
 					<h2 th:text="#{administration.cache.title}"></h2>
