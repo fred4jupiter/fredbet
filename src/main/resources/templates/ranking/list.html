@@ -3,6 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{ranking.list.title}"></title>
+        <link rel="stylesheet" th:href="@{/css/pages/ranking.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -37,19 +38,19 @@
                         </div>
 						<div class="card-body" th:classappend="${ranking.sameRankingPositionAsOtherUser} ? 'ranking-same-position'">
                             <div class="row">
-                                <div class="col-2">
-                                    <span class="badge bg-secondary big-badge" th:text="'# ' + ${status.count}">dfgdf</span>
+                                <div class="col-3">
+                                    <span class="badge bg-secondary rank-badge" th:text="'# ' + ${status.count}">dfgdf</span>
                                 </div>
                                 <div class="col-2">
                                     <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})}"></span>
                                 </div>
-                                <div class="col-6 mt-1">
+                                <div class="col-5 mt-1">
                                     <span th:text="${ranking.userName}"></span>
                                     <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                                           th:title="#{ranking.topTipperOfToday.tooltip}"></span>
                                 </div>
                                 <div class="col-2">
-                                    <span class="badge rounded-pill bg-warning big-badge" th:text="${ranking.totalPoints}"></span>
+                                    <span class="badge rounded-pill bg-warning rank-badge" th:text="${ranking.totalPoints}"></span>
                                 </div>
                             </div>
 						</div>
@@ -74,7 +75,6 @@
 		</div>
 	</body>
     <th:block layout:fragment="scripts">
-<!--        <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>-->
         <script type="text/javascript" th:src="@{/js/pages/ranking_list.js}" charset="UTF-8"></script>
     </th:block>
 </html>
