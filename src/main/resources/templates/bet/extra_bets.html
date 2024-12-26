@@ -16,7 +16,7 @@
 							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{finalWinner}" class="form-control">
+							<select th:field="*{finalWinner}" class="form-control" th:disabled="${!@bettingWebUtil.isBettable()}">
 							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 						</div>
@@ -29,7 +29,7 @@
 							<span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsSemiFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{semiFinalWinner}" class="form-select">
+							<select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 						</div>
@@ -42,7 +42,7 @@
 							<span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsThirdFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{thirdFinalWinner}" class="form-select">
+							<select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 						</div>
