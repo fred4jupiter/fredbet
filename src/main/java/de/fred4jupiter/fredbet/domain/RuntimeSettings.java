@@ -77,7 +77,7 @@ public class RuntimeSettings {
     private Theme bootswatchTheme = Theme.DEFAULT;
 
     @NotNull
-    private NavbarLayout navbarLayout = NavbarLayout.INVERSE;
+    private NavbarLayout navbarLayout = NavbarLayout.DARK;
 
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;

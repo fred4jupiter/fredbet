@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.domain;
 
 public enum NavbarLayout {
 
-    INVERSE("navbar-inverse"),
+    DARK("navbar-dark"),
 
-    DEFAULT("navbar-default");
+    LIGHT("navbar-light");
 
     private final String navbarTag;
 
