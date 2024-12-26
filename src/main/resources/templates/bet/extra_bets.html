@@ -62,13 +62,13 @@
 			</div>
 
 			<div class="row mt-3">
-				<div class="col-12 col-sm-6 col-md-4" th:if="${extraBetCommand.isBettable()}">
+				<div class="col-12 col-sm-6 col-md-4" th:if="${@bettingWebUtil.isBettable()}">
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a href="#" th:href="@{/bet/open}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
-                <div class="col-12 col-sm-6 col-md-4" th:if="${!extraBetCommand.isBettable()}">
+                <div class="col-12 col-sm-6 col-md-4" th:if="${!@bettingWebUtil.isBettable()}">
                     <a href="#" th:href="@{/extrabets/others}" th:text="#{extrabet.bets.of.others}"></a>
                 </div>
 			</div>

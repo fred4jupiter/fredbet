@@ -147,4 +147,8 @@ public class MatchService {
     public boolean isKnockOutMatchesAvailable() {
         return matchRepository.hasMatchesOfGroups(Group.getKnockoutGroups());
     }
+
+    public boolean hasMatchWithResult() {
+        return matchRepository.hasMatchWithResult();
+    }
 }

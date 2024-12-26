@@ -79,4 +79,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
         """)
     List<Match> findAllPastMatches();
 
+    @Query("""
+        select case when (count(m) > 0) then true else false end
+        from Match m
+        where (m.teamOne is not null and m.teamOne.goals is not null)
+        or (m.teamTwo is not null and m.teamTwo.goals is not null)
+        """)
+    boolean hasMatchWithResult();
 }
