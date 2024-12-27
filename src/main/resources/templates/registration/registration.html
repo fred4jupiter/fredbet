@@ -10,35 +10,35 @@
 	<form id="registrationForm" th:action="@{/registration}" th:object="${registrationCommand}" action="#" method="post" role="form">
 		<div class="alert alert-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<div class="form-group">
-					<label for="token" th:text="#{registration.token} + ':'"></label>
+			<div class="col-12 col-sm-6 col-md-4">
+				<div class="mb-3">
+					<label class="form-label" for="token" th:text="#{registration.token} + ':'"></label>
 					<input id="token" type="text" th:field="*{token}" class="form-control token-input" />
 					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('token')}" th:errors="*{token}">token error</p>
 				</div>
-				<div class="form-group">
-					<label for="username" th:text="#{registration.username} + ':'"></label>
+				<div class="mb-3">
+					<label class="form-label" for="username" th:text="#{registration.username} + ':'"></label>
 					<input id="username" type="text" th:field="*{username}" class="form-control" />
 					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
 				</div>
-				<div class="form-group">
-					<label for="password" th:text="#{registration.password} + ':'"></label>
+				<div class="mb-3">
+					<label class="form-label" for="password" th:text="#{registration.password} + ':'"></label>
 					<input id="password" type="password" th:field="*{password}" class="form-control" />
 					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">passwordRepeat error</p>
 				</div>
-				<div class="form-group">
-					<label for="passwordRepeat" th:text="#{registration.passwordRepeat} + ':'"></label>
+				<div class="mb-3">
+					<label class="form-label" for="passwordRepeat" th:text="#{registration.passwordRepeat} + ':'"></label>
 					<input id="passwordRepeat" type="password" th:field="*{passwordRepeat}" class="form-control" />
 					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}">passwordRepeat error</p>
 				</div>
-				<div th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}" class="form-group">
-					<input id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
-					<label for="child" th:text="#{registration.child}"></label>
+				<div class="mb-3" th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}">
+					<input class="form-check-input me-2" id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
+					<label class="form-check-label" for="child" th:text="#{registration.child}"></label>
 					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child error</p>
 				</div>
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-					<a href="#" th:href="@{/}" class="btn btn-default" role="button" th:text="#{back.to.login}"></a>
+					<a href="#" th:href="@{/}" class="btn btn-light" role="button" th:text="#{back.to.login}"></a>
 				</div>
 			</div>
 		</div>
