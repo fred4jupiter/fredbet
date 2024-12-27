@@ -3,79 +3,71 @@
       layout:decorate="~{_layout}">
 <head>
     <title th:text="#{login.title}"></title>
-    <link rel="stylesheet" th:href="@{css/bootstrap-toggle.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pages/login.css}" />
 </head>
 <body>
-<div layout:fragment="content">
-    <section class="vh-100" style="background-color: #508bfc;">
-        <div class="container py-5 h-100">
+    <div layout:fragment="content">
+        <main class="form-signin w-100 m-auto">
             <div th:if="${param.error}" class="alert alert-danger" role="alert"
                  th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
                 <span th:text="${errorMsg}"></span>
             </div>
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                        <div class="card-body p-5 text-center">
-                            <div class="logo text-center mb-5">
-                                <i class="fas fa-thumbs-up fa-8x"></i>
-                            </div>
-                            <form id="login-form" class="form" th:action="@{/login}" method="post">
-                                <h3 class="mb-5" th:text="'FredBet - ' + #{login.title.short}">Sign in</h3>
-                                <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="text" id="username" class="form-control form-control-lg" name="username"/>
-                                    <label class="form-label" for="username" th:text="#{login.placeholder.username}">Username</label>
-                                </div>
+            <form class="form" th:action="@{/login}" method="post">
+                <div class="logo text-center mb-5">
+                    <i class="fas fa-thumbs-up fa-8x"></i>
+                </div>
 
-                                <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="password" id="password" class="form-control form-control-lg" name="password"/>
-                                    <label class="form-label" for="password" th:text="#{login.placeholder.password}">Password</label>
-                                </div>
+                <h1 class="h3 mb-3 fw-normal" th:text="'FredBet - ' + #{login.title.short}">Please sign in</h1>
 
-                                <!-- Checkbox -->
-                                <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="form1Example3" name="remember-me" />
-                                    <label class="form-check-label" for="form1Example3">Auto-Login&nbsp;</label>
-                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                          data-placement="top" th:title="#{login.autologin.tooltip}"></span>
-                                </div>
-                                <div class="mb-4 row">
-                                    <div class="dropdown ms-3">
-                                        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img th:src="${@languageUtil.getImageLanguageIconPath()}" />
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="language">
-                                            <li><a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item"><img src="/images/lang/de.png" th:text="' '+#{language.de}" /></a></li>
-                                            <li><a th:href="${@languageUtil.buildUrl('en')}" class="dropdown-item"><img src="/images/lang/en.png" th:text="' '+#{language.en}" /></a></li>
-                                            <li><a th:href="${@languageUtil.buildUrl('pl')}" class="dropdown-item"><img src="/images/lang/pl.png" th:text="' '+#{language.pl}" /></a></li>
-                                            <li><a th:href="${@languageUtil.buildUrl('es')}" class="dropdown-item"><img src="/images/lang/es.png" th:text="' '+#{language.es}" /></a></li>
-                                            <li><a th:href="${@languageUtil.buildUrl('ca')}" class="dropdown-item"><img src="/images/lang/ca.png" th:text="' '+#{language.ca}" /></a></li>
-                                            <li><a th:href="${@languageUtil.buildUrl('cze')}" class="dropdown-item"><img src="/images/lang/cze.png" th:text="' '+#{language.cze}" /></a></li>
-                                            <li><a th:href="${@languageUtil.buildUrl('sv')}" class="dropdown-item"><img src="/images/lang/sv.png" th:text="' '+#{language.sv}" /></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="floatingInput" name="username" th:placeholder="#{login.placeholder.username}">
+                    <label for="floatingInput" th:text="#{login.placeholder.username}"></label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="password" th:placeholder="#{login.placeholder.password}">
+                    <label for="floatingPassword" th:text="#{login.placeholder.password}">Password</label>
+                </div>
 
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
-                                    </div>
-                                </div>
+                <div class="form-check text-start my-3">
+                    <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault" name="remember-me">
+                    <label class="form-check-label" for="flexCheckDefault">Auto-Login</label>
+                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                          data-placement="top" th:title="#{login.autologin.tooltip}"></span>
+                </div>
+                <button class="btn btn-primary w-100 py-2" type="submit" th:value="#{login.button.login}">
+                    <i class="fas fa-sign-in-alt"></i>&nbsp;<span th:text="#{login.button.login}"></span>
+                </button>
 
-                                <button type="submit" class="btn btn-block btn-lg btn-primary" th:value="#{login.button.login}">
-                                    <i class="fas fa-sign-in-alt"></i>&nbsp;<span th:text="#{login.button.login}"></span>
+                <div class="row mt-3">
+                    <div class="col-4 col-sm-2">
+                        <div class="form-group">
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img th:src="${@languageUtil.getImageLanguageIconPath()}" alt="language"/>
                                 </button>
-                            </form>
+                                <ul class="dropdown-menu">
+                                    <li><a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item language"><img src="/images/lang/de.png" th:text="' '+#{language.de}" alt="de"/></a></li>
+                                    <li><a th:href="${@languageUtil.buildUrl('en')}" class="dropdown-item language"><img src="/images/lang/en.png" th:text="' '+#{language.en}" alt="en"/></a></li>
+                                    <li><a th:href="${@languageUtil.buildUrl('pl')}" class="dropdown-item language"><img src="/images/lang/pl.png" th:text="' '+#{language.pl}" alt="pl"/></a></li>
+                                    <li><a th:href="${@languageUtil.buildUrl('es')}" class="dropdown-item language"><img src="/images/lang/es.png" th:text="' '+#{language.es}" alt="es"/></a></li>
+                                    <li><a th:href="${@languageUtil.buildUrl('ca')}" class="dropdown-item language"><img src="/images/lang/ca.png" th:text="' '+#{language.ca}" alt="ca"/></a></li>
+                                    <li><a th:href="${@languageUtil.buildUrl('cze')}" class="dropdown-item language"><img src="/images/lang/cze.png" th:text="' '+#{language.cze}" alt="cze"/></a></li>
+                                    <li><a th:href="${@languageUtil.buildUrl('sv')}" class="dropdown-item language"><img src="/images/lang/sv.png" th:text="' '+#{language.sv}" alt="sv"/></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                            <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-</div>
+            </form>
+        </main>
+    </div>
 </body>
 <th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{js/bootstrap-toggle.min.js}"></script>
     <script type="text/javascript" th:src="@{js/pages/tooltip.js}" charset="UTF-8"></script>
 </th:block>
 </html>
