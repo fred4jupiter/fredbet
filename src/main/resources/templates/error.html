@@ -7,30 +7,30 @@
 <body>
 	<div layout:fragment="content">
 		<div class="alert alert-danger" th:text="#{error.msg.unexpectedError}"></div>
-	
+
 		<p th:if="${url}">
 			<b>Page:</b> <span th:text="${url}">Page URL</span>
 		</p>
-	
+
 		<p th:if="${timestamp}" id='created'>
 			<b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
 		</p>
-	
+
 		<p th:if="${status}">
 			<b>Response Status:</b> <span th:text="${status}">status-code</span> <span th:if="${error}" th:text="'('+${error}+')'">error ...</span>
 		</p>
-		
+
 		<div th:if="${ex} or ${exception} or (${message} and ${message.length() != 0})">
 			<b>Cause:</b>
 			<span th:if="${ex}" th:text="${ex}">exception ...</span>
 			<span th:if="${exception}" th:text="${exception}">exception</span>
-			<span th:if="${message} and ${message.length() != 0}" th:text="${message}">message ...</span>		
+			<span th:if="${message} and ${message.length() != 0}" th:text="${message}">message ...</span>
 		</div>
-	
+
 		<p th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">Cause unknown (no exception details available)</p>
-		
+
 		<br/>
-		<a href="#" th:href="@{/matches/upcoming}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
+		<a href="#" th:href="@{/matches/upcoming}" class="btn btn-light" role="button" th:text="#{button.back}"></a>
 	</div>
 </body>
 </html>

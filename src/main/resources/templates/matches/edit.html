@@ -65,7 +65,7 @@
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
 								data-toggle="modal" data-target="#confirm-delete" th:text="#{button.delete}"></button>
-						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
 			</div>

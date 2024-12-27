@@ -39,7 +39,7 @@
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<button type="button" sec:authorize="hasAuthority('PERM_DELETE_USER')" class="btn btn-danger"
 								data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
-						<a href="#" th:href="@{/user}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>
+						<a href="#" th:href="@{/user}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
 			</div>

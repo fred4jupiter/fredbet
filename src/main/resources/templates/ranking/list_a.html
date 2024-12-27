@@ -13,16 +13,16 @@
 				<div th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}" class="col-xs-6">
 					<div class="row pull-right btn-group no-left-right-margin" role="group">
 						<a href="#" th:href="@{/ranking(mode=mixed)}" class="btn"
-						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).MIXED ? 'btn-info' : 'btn-default'}">
+						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).MIXED ? 'btn-info' : 'btn-light'}">
 							<i class="fas fa-user" aria-hidden="true"></i>
 							<i class="fas fa-child" aria-hidden="true"></i>
 						</a>
 						<a href="#" th:href="@{/ranking(mode=adult)}" class="btn"
-						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_ADULTS ? 'btn-info' : 'btn-default'}">
+						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_ADULTS ? 'btn-info' : 'btn-light'}">
 							<i class="fas fa-user" aria-hidden="true"></i>
 						</a>
 						<a href="#" th:href="@{/ranking(mode=child)}" class="btn"
-						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_CHILDREN? 'btn-info' : 'btn-default'}">
+						   th:classappend="${rankingSelection == T(de.fred4jupiter.fredbet.domain.RankingSelection).ONLY_CHILDREN? 'btn-info' : 'btn-light'}">
 							<i class="fas fa-child" aria-hidden="true"></i>
 						</a>
 					</div>
