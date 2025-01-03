@@ -16,7 +16,7 @@
 							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{finalWinner}" class="form-control" th:disabled="${!@bettingWebUtil.isBettable()}">
+							<select th:field="*{finalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
 							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
 							</select>
 						</div>
@@ -51,11 +51,17 @@
 			</div>
 			<div class="row">
 				<div class="col-12 col-sm-6 col-md-4">
-					<div class="card ">
+					<div class="card">
 						<div class="card-header">
-							<span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
-							<span class="badge rounded-pill bg-warning big-badge" th:classappend="${extraBetCommand.points != null} ? 'label-warning' : 'label-default'"
-								  th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="badge rounded-pill big-badge" th:classappend="${extraBetCommand.points != null} ? 'bg-warning' : 'bg-light'"
+                                          th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>
+                                </div>
+                            </div>
 						</div>
 					</div>
 				</div>
@@ -63,7 +69,7 @@
 
 			<div class="row mt-3">
 				<div class="col-12 col-sm-6 col-md-4" th:if="${@bettingWebUtil.isBettable()}">
-					<div class="form-group">
+					<div class="mb-3">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<a href="#" th:href="@{/bet/open}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 					</div>
