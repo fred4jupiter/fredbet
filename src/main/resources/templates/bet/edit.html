@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/pages/bet_edit.css}" />
 </head>
 <body>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content">
 		<h1 th:text="#{bet.edit.heading}"></h1>
 		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">
 			<div class="row">

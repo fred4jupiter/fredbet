@@ -5,13 +5,13 @@
 	<title th:text="#{bet.edit.title}"></title>
 </head>
 <body>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content">
 		<h1 th:text="#{bet.edit.heading}"></h1>
 		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">					
+				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{betId}" class="form-control" />
-					<input type="hidden" th:field="*{matchId}" class="form-control" />					
+					<input type="hidden" th:field="*{matchId}" class="form-control" />
 					<input type="hidden" th:field="*{redirectViewName}" class="form-control" />
 					<input type="hidden" th:field="*{teamNameOne}" class="form-control" />
 					<input type="hidden" th:field="*{teamNameTwo}" class="form-control" />
@@ -22,7 +22,7 @@
 					<input type="hidden" th:field="*{numberOfJokersUsed}" class="form-control" />
 					<input type="hidden" th:field="*{maxJokers}" class="form-control" />
 					<input type="hidden" th:field="*{jokerEditable}" class="form-control" />
-					
+
 					<div class="form-group">
 						<div class="row center">
 							<div class="col-xs-6">
@@ -59,7 +59,7 @@
 								<button type="button" class="btn vote" onclick="twoCountUp()"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
 								<button type="button" class="btn vote" onclick="twoCountDown()"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
 							</div>
-						</div>						
+						</div>
 						<div id="penaltyBox" th:if="${!betCommand.isGroupMatch()}">
 							<div class="row no-left-right-margin">
 								<span class="bold" th:text="#{penalty.box.heading}"></span>
@@ -71,7 +71,7 @@
 								<div class="col-xs-6">
 									<input type="radio" th:field="*{penaltyWinnerOne}" value="false" />
 								</div>
-							</div>								
+							</div>
 						</div>
 						<br/>
 						<div class="center" th:if="${betCommand.maxJokers gt 0}">
@@ -80,7 +80,7 @@
 								<label for="useJoker" th:text="#{betting.joker}"></label>
 								<span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
 									th:title="#{betting.joker.tooltip}"></span>
-							</div>	
+							</div>
 							<div class="row">
 								<span th:text="#{betting.joker.available(${betCommand.numberOfJokersUsed}, ${betCommand.maxJokers})}"></span>
 							</div>

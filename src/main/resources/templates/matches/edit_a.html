@@ -6,7 +6,7 @@
 	<link rel="stylesheet" th:href="@{/css/bootstrap-datetimepicker.min.css}" media="screen"/>
 </head>
 <body>
-	<div layout:fragment="content" class="container">		
+	<div layout:fragment="content">
 		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
 			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/match/delete/' + ${createEditMatchCommand.matchId}, id = 'confirm-delete')}"></div>
 			<div class="row">
@@ -18,12 +18,12 @@
 							<div class="col-xs-6">
 								<select th:field="*{countryTeamOne}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>								
-							</div>							
+								</select>
+							</div>
 							<div class="col-xs-6">
 								<select th:field="*{countryTeamTwo}" class="form-control">
 								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>								
+								</select>
 							</div>
 						</div>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('countryTeamOne')}" th:errors="*{countryTeamOne}">countryTeamOne error</p>
@@ -33,17 +33,17 @@
 						<label th:text="#{matches.form.teamNames} + ':'"></label>
 						<a href="#" onclick="clearTeamNameFields()"><i class="fas fa-times-circle" aria-hidden="true"></i></a>
 						<br/>
-						<div class="row">							
+						<div class="row">
 							<div class="col-xs-6">
-								<input type="text" th:field="*{teamNameOne}" class="form-control" />								
+								<input type="text" th:field="*{teamNameOne}" class="form-control" />
 							</div>
 							<div class="col-xs-6">
-								<input type="text" th:field="*{teamNameTwo}" class="form-control" />								
+								<input type="text" th:field="*{teamNameTwo}" class="form-control" />
 							</div>
 						</div>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamNameOne')}" th:errors="*{teamNameOne}">teamNameOne error</p>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamNameTwo')}" th:errors="*{teamNameTwo}">teamNameTwo error</p>
-					</div>												
+					</div>
 					<div class="form-group">
 		                <label for="kickOffDateString" th:text="#{matches.form.kickOff} + ':'"></label>
 		                <div class="input-group date form_datetime" data-link-field="kickOffDateString" data-date-format="dd.mm.yyyy hh:ii" data-link-format="dd.mm.yyyy hh:ii">
@@ -52,19 +52,19 @@
 		                </div>
 						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('kickOffDateString')}" th:errors="*{kickOffDateString}">kickOffDateString error</p>
-		            </div>					
+		            </div>
 					<div class="form-group">
 						<label for="stadium" th:text="#{matches.form.stadium} + ':'"></label>
 						<input id="stadium" type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('stadium')}" th:errors="*{stadium}">stadium error</p>
-					</div>					
+					</div>
 					<div class="form-group">
 						<label for="group" th:text="#{matches.form.group} + ':'"></label>
 						<select id="group" th:field="*{group}" class="form-control">
 						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}"></option>
-						</select>						
+						</select>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
-			        </div>					
+			        </div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 		</form>
-	</div>	
+	</div>
 </body>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.js}" charset="UTF-8"></script>

@@ -5,7 +5,7 @@
 	<title th:text="#{matches.form.title}"></title>
 </head>
 <body>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content">
         <h1 th:text="#{matches.form.title}"></h1>
 		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
 			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/match/delete/' + ${createEditMatchCommand.matchId}, id = 'confirm-delete')}"></div>
