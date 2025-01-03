@@ -5,7 +5,7 @@
 		<title th:text="#{user.create.title}"></title>
 	</head>
 	<body>
-		<div layout:fragment="content" class="container">
+		<div layout:fragment="content">
 			<form id="userForm" th:action="@{/user}" th:object="${createUserCommand}" action="#" method="post" role="form">
 				<div class="row">
 					<div class="col-12 col-sm-6 col-md-4">
