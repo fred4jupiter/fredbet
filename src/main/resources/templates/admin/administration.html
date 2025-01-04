@@ -7,7 +7,7 @@
 		<div layout:fragment="content">
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5 class="card-title">Test Data Creation</h5>
+                    <h5 class="card-title" th:text="#{administration.testdata.title}">Test Data Creation</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -32,7 +32,7 @@
             <form id="adminForm" th:action="@{/administration/save}" th:object="${adminFormCommand}" action="#" method="post" role="form">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h5 class="card-title">Test Demo Users</h5>
+                        <h5 class="card-title" th:text="#{administration.testdemousers.title}">Test Demo Users</h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
@@ -58,7 +58,7 @@
             <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Danger Zone</h5>
+                    <h5 class="card-title" th:text="#{administration.dangerzone.title}">Danger Zone</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
