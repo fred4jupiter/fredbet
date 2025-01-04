@@ -17,6 +17,8 @@
                         <div class="col-12 col-sm-6 mb-3">
                             <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}" th:text="#{administration.demoBetsAllUsers}"></a>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12 col-sm-6 mb-3">
                             <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}" th:text="#{administration.testResultsAllUsers}"></a>
                         </div>
@@ -61,7 +63,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-sm-4 mb-3">
-                            <button type="button" class="btn btn-danger mb-auto" data-bs-toggle="modal" data-bs-target="#deleteAllUsers" th:text="#{administration.deleteAllUsers}"></button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllUsers" th:text="#{administration.deleteAllUsers}"></button>
                         </div>
                         <div class="col-12 col-sm-4 mb-3">
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
