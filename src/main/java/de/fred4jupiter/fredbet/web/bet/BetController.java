@@ -113,8 +113,10 @@ public class BetController {
         final Team teamTwo = bet.getMatch().getTeamTwo();
         betCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
         betCommand.setIconPathTeamOne(teamOne.getIconPathBig());
+        betCommand.setCountryTeamOne(teamOne.getCountry());
         betCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
         betCommand.setIconPathTeamTwo(teamTwo.getIconPathBig());
+        betCommand.setCountryTeamTwo(teamTwo.getCountry());
 
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 

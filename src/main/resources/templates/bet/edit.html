@@ -22,16 +22,18 @@
 					<input type="hidden" th:field="*{numberOfJokersUsed}"  />
 					<input type="hidden" th:field="*{maxJokers}"  />
 					<input type="hidden" th:field="*{jokerEditable}"  />
+                    <input type="hidden" th:field="*{countryTeamOne}" />
+                    <input type="hidden" th:field="*{countryTeamTwo}" />
 
 					<div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-								<img class="flag big" th:if="${betCommand.getIconPathTeamOne() != null}" th:src="@{${betCommand.getIconPathTeamOne()}}" alt="teamOne"/>
+                                <span class="fi big-flag" th:classappend="${@countryIconUtil.cssClassFor(betCommand.getCountryTeamOne())}"></span>
 								<br/>
 								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-6">
-								<img class="flag big" th:if="${betCommand.getIconPathTeamTwo() != null}" th:src="@{${betCommand.getIconPathTeamTwo()}}" alt="teamTwo"/>
+                                <span class="fi big-flag" th:classappend="${@countryIconUtil.cssClassFor(betCommand.getCountryTeamTwo())}"></span>
 								<br/>
 								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
 							</div>

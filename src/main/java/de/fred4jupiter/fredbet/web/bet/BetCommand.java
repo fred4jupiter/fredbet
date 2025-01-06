@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.bet;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -30,8 +31,14 @@ public class BetCommand {
 
     private boolean penaltyWinnerOne;
 
+    private Country countryTeamOne;
+
+    private Country countryTeamTwo;
+
+    @Deprecated
     private String iconPathTeamOne;
 
+    @Deprecated
     private String iconPathTeamTwo;
 
     private boolean useJoker;
@@ -187,4 +194,19 @@ public class BetCommand {
         this.jokerEditable = jokerEditable;
     }
 
+    public Country getCountryTeamOne() {
+        return countryTeamOne;
+    }
+
+    public void setCountryTeamOne(Country countryTeamOne) {
+        this.countryTeamOne = countryTeamOne;
+    }
+
+    public Country getCountryTeamTwo() {
+        return countryTeamTwo;
+    }
+
+    public void setCountryTeamTwo(Country countryTeamTwo) {
+        this.countryTeamTwo = countryTeamTwo;
+    }
 }
