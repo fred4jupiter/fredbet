@@ -45,23 +45,23 @@ public class SecurityConfig {
         final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers(antMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**",
-                         "/fonts/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
-                .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
-                .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
-                .anyRequest().authenticated()
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
+            .requestMatchers(antMatchers("/static/**", "/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
+                "/fonts/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
+            .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
+            .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
+            .anyRequest().authenticated()
         );
         http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
         http.formLogin(form -> form
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/matches/upcoming")
-                .failureUrl("/login?error=true")
+            .loginPage("/login").permitAll()
+            .defaultSuccessUrl("/matches/upcoming")
+            .failureUrl("/login?error=true")
         );
         http.logout(logout -> logout.logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me"));
+            .logoutSuccessUrl("/login")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID", "remember-me"));
 
         // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
         http.headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));

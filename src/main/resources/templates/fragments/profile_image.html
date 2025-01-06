@@ -9,34 +9,34 @@
 		      'resizeDuration': 0
 		    })
 		</script>
-		
-		<div th:fragment="profile_image_small(imageKey)" th:remove="tag">			
+
+		<div th:fragment="profile_image_small(imageKey)" th:remove="tag">
 			<div th:if="${imageKey}" th:remove="tag">
 				<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="21" height="21" class="img-rounded"/>
-			</div>						
+			</div>
 	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
-		
-		<div th:fragment="profile_image_small_with_popup(imageKey)" th:remove="tag">			
+
+		<div th:fragment="profile_image_small_with_popup(imageKey)" th:remove="tag">
 			<div th:if="${imageKey}" th:remove="tag">
 				<a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="img-link">
-					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="17" height="17" class="img-rounded"/>
+					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="30"  class="rounded float-start"/>
 				</a>
-			</div>						
+			</div>
 	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
-		
+
 		<div th:fragment="profile_image_big(imageKey)" th:remove="tag">
 			<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
 	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
-		
-		<div th:fragment="profile_image_big_with_popup(imageKey)" th:remove="tag">			
+
+		<div th:fragment="profile_image_big_with_popup(imageKey)" th:remove="tag">
 			<div th:if="${imageKey}" th:remove="tag">
 				<a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="img-link">
 					<img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="28" height="28" class="img-rounded"/>
 				</a>
-			</div>						
+			</div>
 	        <span th:if="!${imageKey}" class="fas fa-user" aria-hidden="true"></span>
 		</div>
 	</body>

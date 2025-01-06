@@ -5,20 +5,19 @@
 		<title th:text="#{pointsfrequency.title}"></title>
 	</head>
 	<body>
-		<div layout:fragment="content" class="container">
+		<div layout:fragment="content">
 			<h1 th:text="#{pointsfrequency.title}"></h1>
 			<span th:text="#{pointsfrequency.title2}"></span>
-			<br/>
-			<br/>
-			<div class="row" th:if="${pointsFrequencyCommand != null}">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="pointsfrequency : ${pointsFrequencyCommand.resultList}">
+
+            <div class="row mt-3" th:if="${pointsFrequencyCommand != null}">
+				<div class="col-12 col-sm-6 col-md-4" th:each="pointsfrequency : ${pointsFrequencyCommand.resultList}">
 					<div class="table-responsive">
-				   		<table class="table table-centered">
+				   		<table class="table table-centered table-striped">
 							<thead>
 								<tr class="active">
 									<th th:text="#{pointsfrequency.table.header.name}"></th>
 									<th>
-										<span class="label label-warning label-as-badge big-badge" th:text="${pointsfrequency.points}">
+										<span class="badge rounded-pill bg-warning big-badge" th:text="${pointsfrequency.points}">
 										</span>
 										<span th:text="#{pointsfrequency.points}"></span>
 									</th>
@@ -32,7 +31,7 @@
 							</tbody>
 				   		</table>
 				   	</div>
-				</div>				
+				</div>
 			</div>
 		</div>
 	</body>

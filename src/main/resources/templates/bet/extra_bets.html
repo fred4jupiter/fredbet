@@ -2,77 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 <head>
-	<title th:text="#{extra_bets.title}"></title>    
+	<title th:text="#{extra_bets.title}"></title>
 </head>
 <body>
-	<div layout:fragment="content" class="container">		
+	<div layout:fragment="content">
 		<form id="extraBetForm" th:action="@{/extrabets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
 			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="panel panel-success">
-						<div class="panel-heading">
+				<div class="col-12 col-sm-6 col-md-4">
+					<div class="card mb-3">
+						<div class="card-header bg-success">
 							<span class="bold" th:text="#{extra_bets.finalWinner} + ':'"></span>
 							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsFinalWinner()})}"></span>
 						</div>
-						<div class="panel-body">
-							<select th:field="*{finalWinner}" class="form-control">
-							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+						<div class="card-body">
+							<select th:field="*{finalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.alpha3Code}}"></option>
 							</select>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="panel panel-warning">
-						<div class="panel-heading">
+				<div class="col-12 col-sm-6 col-md-4">
+					<div class="card mb-3">
+						<div class="card-header bg-warning">
 							<span class="bold" th:text="#{extra_bets.semiFinalWinner} + ':'"></span>
 							<span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsSemiFinalWinner()})}"></span>
 						</div>
-						<div class="panel-body">
-							<select th:field="*{semiFinalWinner}" class="form-control">
-							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+						<div class="card-body">
+							<select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+                                <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.alpha3Code}}"></option>
 							</select>
 						</div>
 					</div>
 				</div>
-				<div th:if="${gameForThirdAvailable}" class="col-xs-12 col-sm-6 col-md-4">
-					<div class="panel panel-info">
-						<div class="panel-heading">
+				<div th:if="${gameForThirdAvailable}" class="col-12 col-sm-6 col-md-4">
+					<div class="card mb-3">
+						<div class="card-header bg-info">
 							<span class="bold" th:text="#{extra_bets.thirdFinalWinner} + ':'"></span>
 							<span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsThirdFinalWinner()})}"></span>
 						</div>
-						<div class="panel-body">
-							<select th:field="*{thirdFinalWinner}" class="form-control">
-							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+						<div class="card-body">
+							<select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+                                <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="#{${'country.' + country.alpha3Code}}"></option>
 							</select>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
-							<span class="right label label-as-badge big-badge" th:classappend="${extraBetCommand.points != null} ? 'label-warning' : 'label-default'"
-								  th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>
+				<div class="col-12 col-sm-6 col-md-4">
+					<div class="card">
+						<div class="card-header">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="bold" th:text="#{extra_bets.reachedPoints} + ':'"></span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="badge rounded-pill big-badge" th:classappend="${extraBetCommand.points != null} ? 'bg-warning' : 'bg-light'"
+                                          th:text="${extraBetCommand.points != null ? extraBetCommand.points : '?'}"></span>
+                                </div>
+                            </div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="row" th:if="${extraBetCommand.isBettable()}">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="form-group">
+			<div class="row mt-3">
+				<div class="col-12 col-sm-6 col-md-4" th:if="${@bettingWebUtil.isBettable()}">
+					<div class="mb-3">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<a href="#" th:href="@{/bet/open}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+						<a href="#" th:href="@{/bet/open}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 					</div>
 				</div>
-			</div>
-			<div class="row" th:if="${!extraBetCommand.isBettable()}">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<a href="#" th:href="@{/extrabets/others}" th:text="#{extrabet.bets.of.others}"></a>
-				</div>	
+                <div class="col-12 col-sm-6 col-md-4" th:if="${!@bettingWebUtil.isBettable()}">
+                    <a href="#" th:href="@{/extrabets/others}" th:text="#{extrabet.bets.of.others}"></a>
+                </div>
 			</div>
 		</form>
 	</div>

@@ -8,8 +8,8 @@
 	<div layout:fragment="content">
 		<h1 th:text="#{bet.listOpen.title} + ' (' + ${#lists.size(matchesToBet)} + ')'"></h1>
 		<div th:if="${not #lists.isEmpty(matchesToBet)}" class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<div class="form-group">
+			<div class="col-12">
+				<div class="mb-3">
 					<a href="#" th:href="@{'/bet/dice'}" class="btn btn-info" role="button">
 						<span class="fas fa-dice"></span> <span th:text="#{bet.listOpen.dice.all}"></span>
 					</a>
@@ -17,37 +17,37 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
-				<div class="panel panel-default">
-					<div class="panel-body">
+			<div class="col-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
+				<div class="card mb-3">
+					<div class="card-body">
 						<div class="row">
-							<div class="col-xs-12">
-								<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
+							<div class="col-12">
+                                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
 								<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 								<span> - </span>
-								<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+                                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 								<br/>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-xs-9">
+							<div class="col-9">
 								<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 								<br/>
 								<span th:text="#{${matchCommand.group.titleMsgKey}}"></span>
 								<br/>
 								<span th:text="${matchCommand.stadium}"></span>
 							</div>
-							<div class="col-xs-3">
-								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId}} + '?redirectViewName=OPEN_BETS'" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'" 
+							<div class="col-3">
+								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=OPEN_BETS'}" th:classappend="${matchCommand.hasMatchStarted()}? 'disabled'"
 									class="btn btn-success" role="button">
 									<span class="fas fa-thumbs-up fa-lg"></span>
 								</a>
 							</div>
 						</div>
-				   </div>					   
+				   </div>
 				</div>
-			</div>				
+			</div>
 		</div>
 	</div>
 </body>

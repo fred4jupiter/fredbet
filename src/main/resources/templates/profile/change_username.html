@@ -5,18 +5,18 @@
 		<title th:text="#{userprofile.changeUsername.title}"></title>
 	</head>
 	<body>
-		<div layout:fragment="content" class="container">
+		<div layout:fragment="content">
 			<form id="changePasswordForm" th:action="@{/profile/changeUsername}" th:object="${changeUsernameCommand}" action="#" method="post" role="form">
 				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<div class="form-group">
-							<label for="newUsername" th:text="#{userprofile.changeUsername.newUsername} + ':'"></label> 
+					<div class="col-12 col-sm-6 col-md-4">
+						<div class="mb-3">
+							<label for="newUsername" class="form-label" th:text="#{userprofile.changeUsername.newUsername} + ':'"></label>
 							<input id="newUsername" type="text" th:field="*{newUsername}" class="form-control" size="12" maxlength="12"/>
 							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}">newUsername error</p>
-						</div>					
-						<div class="form-group">
+						</div>
+						<div class="mb-3">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-							<a href="#" th:href="@{/}" class="btn btn-default" role="button" th:text="#{button.cancel}"></a>	
+							<a href="#" th:href="@{/}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 						</div>
 					</div>
 				</div>

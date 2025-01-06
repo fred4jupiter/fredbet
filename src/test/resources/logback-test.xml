@@ -2,7 +2,7 @@
 <configuration>
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d %p [%c] - %m%n</pattern>
+			<pattern>%black(%d{ISO8601}) %highlight(%-5level) %highlight([%c]): %highlight(%msg%n%throwable)</pattern>
 		</encoder>
 	</appender>
 

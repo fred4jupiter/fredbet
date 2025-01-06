@@ -24,10 +24,6 @@ public class ExtraBetCommandMapper {
         extraBetCommand.setPointsOne(extraBet.getPointsOne());
         extraBetCommand.setPointsTwo(extraBet.getPointsTwo());
         extraBetCommand.setPointsThree(extraBet.getPointsThree());
-
-        boolean firstMatchStarted = bettingService.hasFirstMatchStarted();
-        extraBetCommand.setBettable(!firstMatchStarted);
-
         return extraBetCommand;
     }
 

@@ -10,3 +10,11 @@
 .no-left-padding {
 	padding-left: 0;
 }
+
+.big-badge {
+    font-size: 15px;
+}
+
+.right {
+    float: right;
+}

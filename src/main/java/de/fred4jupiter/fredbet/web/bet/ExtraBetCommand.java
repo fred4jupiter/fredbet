@@ -21,8 +21,6 @@ public class ExtraBetCommand {
 
     private Match finalMatch;
 
-    private boolean bettable;
-
     public Country getFinalWinner() {
         return finalWinner;
     }
@@ -64,14 +62,6 @@ public class ExtraBetCommand {
 
     public void setFinalMatch(Match finalMatch) {
         this.finalMatch = finalMatch;
-    }
-
-    public boolean isBettable() {
-        return bettable;
-    }
-
-    public void setBettable(boolean bettable) {
-        this.bettable = bettable;
     }
 
     public Country getThirdFinalWinner() {

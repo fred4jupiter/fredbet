@@ -7,38 +7,31 @@
 	<body>
 		<div layout:fragment="content">
 			<h1 th:text="#{administration.excel.export.title}"></h1>
-			<div class="row">			
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<p th:text="#{excel.export.hint}"></p>
+            <p th:text="#{excel.export.hint}"></p>
+			<div class="row">
+				<div class="col-12 col-sm-3 mb-3">
 					<a class="btn btn-primary" role="button" th:href="@{/excelexport/allBets}">
 						<i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.allBets}"></span>
 					</a>
 				</div>
-			</div>
-			<hr/>
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<a class="btn btn-primary" role="button" th:href="@{/excelexport/ranking}">
-						<i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.ranking}"></span>
-					</a>
-				</div>
-			</div>
-			<hr/>
-			<div class="row">			
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<a class="btn btn-primary" role="button" th:href="@{/excelexport/extraBets}">
-						<i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.extraBets}"></span>
-					</a>
-				</div>
-			</div>
-			<hr/>
-			<div class="row">			
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<a class="btn btn-primary" role="button" th:href="@{/excelexport/pointsCount}">
-						<i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.pointsCount}"></span>
-					</a>
-				</div>
-			</div>
+                <div class="col-12 col-sm-3 mb-3">
+                    <a class="btn btn-primary" role="button" th:href="@{/excelexport/extraBets}">
+                        <i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.extraBets}"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-3 mb-3">
+                    <a class="btn btn-primary" role="button" th:href="@{/excelexport/ranking}">
+                        <i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.ranking}"></span>
+                    </a>
+                </div>
+                <div class="col-12 col-sm-3 mb-3">
+                    <a class="btn btn-primary" role="button" th:href="@{/excelexport/pointsCount}">
+                        <i class="fas fa-file-excel"></i> <span th:text="#{administration.excel.export.pointsCount}"></span>
+                    </a>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>

@@ -3,68 +3,70 @@
       layout:decorate="~{_layout}">
 <head>
     <title th:text="#{login.title}"></title>
-    <link rel="stylesheet" th:href="@{css/bootstrap-toggle.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pages/login.css}" />
 </head>
 <body>
-<div layout:fragment="content">
-    <div id="login">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div th:if="${param.error}" class="alert alert-danger" role="alert"
-                     th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
-                    <span th:text="${errorMsg}"></span>
-                </div>
-                <div class="logo text-center">
-                    <i class="fas fa-thumbs-up fa-8x"></i>
-                </div>
-                <div class="modal-header">
-                    <h1 class="text-center" th:text="'FredBet - ' + #{login.title.short}">Welcome</h1>
-                </div>
-                <div class="modal-body">
-                    <form id="login-form" class="form" th:action="@{/login}" method="post">
-                        <div class="form-group">
-                            <input type="text" class="form-control input-lg" name="username"
-                                   th:placeholder="#{login.placeholder.username}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="password" class="form-control input-lg" name="password"
-                                   th:placeholder="#{login.placeholder.password}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-block btn-lg btn-primary" th:value="#{login.button.login}">
-                                <i class="fas fa-sign-in-alt"></i>&nbsp;<span th:text="#{login.button.login}"></span>
-                            </button>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-8 col-sm-4">
-                                <input id="remember-me" data-toggle="toggle" data-onstyle="success" type="checkbox" name="remember-me"/>
-                                <label for="remember-me">Auto-Login</label>
-                                <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                      data-placement="top" th:title="#{login.autologin.tooltip}"></span>
-                            </div>
-                            <div class="col-xs-4 col-sm-2">
-                                <div class="form-group">
-                                    <div th:replace="~{fragments/language_selector :: language_selector('btn btn-default language-button dropdown-toggle')}"></div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="form-group">
-                                    <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" href="#" class="btn btn-default" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <div layout:fragment="content">
+        <main class="form-signin w-100 m-auto">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert"
+                 th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+                <span th:text="${errorMsg}"></span>
             </div>
-        </div>
+            <form class="form" th:action="@{/login}" method="post">
+                <div class="text-center mb-5">
+                    <i class="fas fa-thumbs-up fa-8x logo-color"></i>
+                </div>
+
+                <h1 class="h3 mb-3 fw-normal" th:text="'FredBet - ' + #{login.title.short}">Please sign in</h1>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInput" name="username" th:placeholder="#{login.placeholder.username}">
+                    <label for="floatingInput" th:text="#{login.placeholder.username}"></label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="password" th:placeholder="#{login.placeholder.password}">
+                    <label for="floatingPassword" th:text="#{login.placeholder.password}">Password</label>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <div class="form-check text-start my-3">
+                            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault" name="remember-me" checked>
+                            <label class="form-check-label" for="flexCheckDefault">Auto-Login</label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                  data-placement="top" th:title="#{login.autologin.tooltip}"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mt-1">
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassCurrentUserLanguage()}"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li th:replace="~{fragments/language_selector :: language_selector}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary w-100 py-2" type="submit" th:value="#{login.button.login}">
+                    <i class="fas fa-sign-in-alt"></i>&nbsp;<span th:text="#{login.button.login}"></span>
+                </button>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" class="btn btn-light" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </main>
     </div>
-</div>
 </body>
 <th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{js/bootstrap-toggle.min.js}"></script>
     <script type="text/javascript" th:src="@{js/pages/tooltip.js}" charset="UTF-8"></script>
 </th:block>
 </html>

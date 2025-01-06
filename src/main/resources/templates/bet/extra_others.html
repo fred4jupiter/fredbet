@@ -7,44 +7,50 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{bet.extra.others.title}"></h1>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
-							<span th:text="${extraBet.userName}"></span>
-							<span class="label label-warning label-as-badge big-badge right" th:text="${extraBet.points}"></span>
+				<div class="col-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
+					<div class="card mb-3">
+						<div class="card-header">
+                            <div class="row">
+                                <div class="col-9">
+                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
+                                    <span class="ms-3" th:text="${extraBet.userName}"></span>
+                                </div>
+                                <div class="col-3">
+                                    <span class="badge rounded-pill bg-warning big-badge" th:text="${extraBet.points}"></span>
+                                </div>
+                            </div>
 						</div>
-					   <div class="panel-body">
+					   <div class="card-body">
 						   <div class="table-responsive">
 						   		<table class="table table-condensed">
 						   			<tr>
-										<td class="success">
+										<td class="bg-success">
 											1. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="#{${'country.' + extraBet.finalWinner.getIsoCode()}}"></span>
+											<span th:text="#{${'country.' + extraBet.finalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr>
-										<td class="warning">
+										<td class="bg-warning">
 											2. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></span>
+											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr th:if="${extraBet.thirdFinalWinner}">
-										<td class="info">
+										<td class="bg-info">
 											3. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getIsoCode()}}"></span>
+											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   		</table>
 					   	   </div>
 					   </div>
 					</div>
-				</div>			
+				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<div class="form-group">
-						<a href="#" th:href="@{/extrabets}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
+				<div class="col-12 col-sm-6 col-md-4">
+					<div class="mt-3">
+						<a href="#" th:href="@{/extrabets}" class="btn btn-light" role="button" th:text="#{button.back}"></a>
 					</div>
 				</div>
 			</div>
