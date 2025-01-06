@@ -36,19 +36,19 @@
                                   th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-3 mb-2">
+                    <div class="col-12 col-sm-3 mb-3">
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
                         <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
                             <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.alpha3Code}}"></option>
                         </select>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
                     </div>
-                    <div class="col-12 col-sm-3 mb-2">
+                    <div class="col-12 col-sm-3 mb-3">
                         <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
                         <input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control" />
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}">passwordForReset Error</p>
                     </div>
-                    <div class="col-12 col-sm-6">
+                    <div class="col-12 col-sm-6 mb-3">
                         <div class="row mt-3">
                             <div class="col-6 mb-2">
                                 <label for="timeZone" class="form-label" th:text="#{administration.runtime.configuration.timeZone}"></label>
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-					<div class="col-12 col-sm-6">
+					<div class="col-12 col-sm-6 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
 						<div class="row">
 							<div class="col-6 mb-3">
@@ -85,7 +85,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-12 col-sm-6">
+					<div class="col-12 col-sm-6 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.extraBetPoints}"></h2>
 						<div class="row">
 							<div class="col-3">
@@ -111,21 +111,35 @@
 							</div>
 						</div>
 					</div>
-
-					<div class="col-12 col-sm-6">
-						<h2 th:text="#{administration.runtime.configuration.joker}"></h2>
-						<div class="row mb-3">
-                            <div class="col-12">
-                                <label for="runtimeSettings.jokerMaxCount" class="form-label" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
+					<div class="col-12 col-sm-6 mb-3">
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <h2 th:text="#{administration.runtime.configuration.joker}"></h2>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="runtimeSettings.jokerMaxCount" class="form-label" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
+                                        <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
+                                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-2">
-                                <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control" />
+                            <div class="col-12 col-sm-6">
+                                <h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
+                                <div class="form-check">
+                                    <input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()" class="form-check-input"/>
+                                    <label for="selfRegistrationEnabled" class="form-check-label" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
+                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                          th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
+                                </div>
+                                <div id="registrationCodeBox" class="form-group">
+                                    <label for="runtimeSettings.registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
+                                    <input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
+                                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
+                                </div>
                             </div>
-                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
-						</div>
+                        </div>
 					</div>
-
-					<div class="col-12 col-sm-6">
+					<div class="col-12 col-sm-6 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
 						<div class="row mb-3">
                             <div class="col-12">
@@ -139,21 +153,8 @@
                             <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
 						</div>
 					</div>
-					<div class="col-12 col-sm-3">
-						<h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
-                        <div class="form-check">
-                            <input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()" class="form-check-input"/>
-                            <label for="selfRegistrationEnabled" class="form-check-label" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
-                        </div>
-						<div id="registrationCodeBox" class="form-group">
-							<label for="runtimeSettings.registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
-							<input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
-						</div>
-					</div>
 				</div>
+
 				<div class="row">
 					<div class="col-12">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
