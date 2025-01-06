@@ -40,7 +40,7 @@
                         <div class="mb-2">
                             <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
                             <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
-                                <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
+                                <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.alpha3Code}}"></option>
                             </select>
                             <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
                         </div>

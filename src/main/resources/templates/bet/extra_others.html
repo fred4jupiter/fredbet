@@ -26,19 +26,19 @@
 						   			<tr>
 										<td class="bg-success">
 											1. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="#{${'country.' + extraBet.finalWinner.getIsoCode()}}"></span>
+											<span th:text="#{${'country.' + extraBet.finalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr>
 										<td class="bg-warning">
 											2. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getIsoCode()}}"></span>
+											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr th:if="${extraBet.thirdFinalWinner}">
 										<td class="bg-info">
 											3. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getIsoCode()}}"></span>
+											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   		</table>

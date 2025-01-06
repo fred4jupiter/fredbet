@@ -2,18 +2,52 @@ package de.fred4jupiter.fredbet.web.util;
 
 import com.neovisionaries.i18n.CountryCode;
 import de.fred4jupiter.fredbet.domain.Country;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Component
 public class CountryIconUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CountryIconUtil.class);
+
+    private final Map<Country, String> alpha2Codes = new HashMap<>();
+
+    public CountryIconUtil() {
+        List<Country> countryList = Stream.of(Country.values()).filter(country -> !Country.NONE.equals(country)).toList();
+        countryList.forEach(country -> {
+            this.alpha2Codes.put(country, resolveFor(country));
+        });
+    }
+
+    private String resolveFor(Country country) {
+        if (StringUtils.isNotBlank(country.getFlagIconCode())) {
+            return country.getFlagIconCode();
+        }
+
+        String alpha3 = country.getAlpha3Code().toUpperCase();
+        CountryCode countryCode = CountryCode.getByAlpha3Code(alpha3);
+        if (countryCode != null && countryCode.getAlpha2() != null) {
+            return countryCode.getAlpha2();
+        }
+
+        LOG.error("missing alpha 2 code for country={}, alpha3={}", country, alpha3);
+        return null;
+    }
+
+
     public String cssClassFor(Country country) {
-        CountryCode countryCode = CountryCode.getByAlpha3Code(country.getIsoCode().toUpperCase());
-        if (countryCode == null) {
+        if (country == null) {
             return "";
         }
-        String alpha2 = countryCode.getAlpha2();
 
-        return "fi-%s".formatted(alpha2.toLowerCase());
+        String alpha2Code = this.alpha2Codes.get(country);
+        return "fi-%s".formatted(alpha2Code.toLowerCase());
     }
 }
