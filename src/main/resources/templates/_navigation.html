@@ -131,9 +131,7 @@
                             <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
                                th:text="#{group.entry.GAME_FOR_THIRD}"></a>
                         </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" class="divider"
-                            role="separator"></li>
-                        <li>
+                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
                             <hr class="dropdown-divider">
                         </li>
                         <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
