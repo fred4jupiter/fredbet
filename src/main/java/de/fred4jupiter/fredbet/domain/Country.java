@@ -76,10 +76,6 @@ public enum Country {
 
     CHILE("chl"), COLOMBIA("col"), ECUADOR("ecu"), PARAGUAY("pry"), PERU("per"), URUGUAY("ury"), VENEZUELA("ven");
 
-    public static final String ICON_BASE_PATH = "/images/flags/";
-
-    private static final String ICON_BASE_PATH_BIG = "/images/flags/42_28/";
-
     private final String alpha3Code;
 
     private final String flagIconCode;
@@ -112,17 +108,4 @@ public enum Country {
         return null;
     }
 
-    public String getIconPath() {
-        if (Country.NONE.equals(this)) {
-            return null;
-        }
-        return ICON_BASE_PATH + alpha3Code + ".png";
-    }
-
-    public String getIconPathBig() {
-        if (Country.NONE.equals(this)) {
-            return null;
-        }
-        return ICON_BASE_PATH_BIG + alpha3Code + ".png";
-    }
 }
