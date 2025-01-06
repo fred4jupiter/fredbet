@@ -11,10 +11,10 @@
 					<h2 th:text="#{'group.entry.'+ ${group}}"></h2>
 					<div class="table-responsive">
 						<table class="table small table-sm table-striped">
-							<thead>
-								<tr class="active">
+							<thead class="table-light">
+								<tr>
 									<th>#</th>
-									<th class="text-left">Team</th>
+									<th>Team</th>
 									<th title="Matches Played">MP</th>
 									<th title="Wins">W</th>
 									<th title="Draws">D</th>
@@ -27,7 +27,7 @@
 							<tbody>
 								<tr th:classappend="${teamStandings.getCssClass(iter.count)}" th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
 									<td th:text="${iter.count}"></td>
-									<td class="text-left" th:text="${teamStandings.teamName}"></td>
+									<td th:text="${teamStandings.teamName}"></td>
 									<td th:text="${teamStandings.numberOfMatches}"></td>
 									<td th:text="${teamStandings.numberOfWins}"></td>
 									<td th:text="${teamStandings.numberOfUndecided}"></td>
