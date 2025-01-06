@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<div th:fragment="language_selector" th:remove="tag">
+	<ul th:fragment="language_selector" th:remove="tag">
         <li>
             <a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item language">
                 <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('de')}"></span>
@@ -44,6 +44,6 @@
                 <span th:text="' '+#{language.sv}"></span>
             </a>
         </li>
-	</div>
+	</ul>
 </body>
 </html>
