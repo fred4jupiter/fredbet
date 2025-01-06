@@ -42,7 +42,6 @@ public class CountryIconUtil {
         return null;
     }
 
-
     public String cssClassFor(Country country) {
         if (country == null) {
             LOG.warn("Given country is null. Could not resolve css class for icon flag!");

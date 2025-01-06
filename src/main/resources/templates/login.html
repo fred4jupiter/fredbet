@@ -41,16 +41,10 @@
                         <div class="mt-1">
                             <div class="dropdown">
                                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img th:src="${@languageUtil.getImageLanguageIconPath()}" alt="language"/>
+                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassCurrentUserLanguage()}"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item language"><img src="/images/lang/de.png" th:text="' '+#{language.de}" alt="de"/></a></li>
-                                    <li><a th:href="${@languageUtil.buildUrl('en')}" class="dropdown-item language"><img src="/images/lang/en.png" th:text="' '+#{language.en}" alt="en"/></a></li>
-                                    <li><a th:href="${@languageUtil.buildUrl('pl')}" class="dropdown-item language"><img src="/images/lang/pl.png" th:text="' '+#{language.pl}" alt="pl"/></a></li>
-                                    <li><a th:href="${@languageUtil.buildUrl('es')}" class="dropdown-item language"><img src="/images/lang/es.png" th:text="' '+#{language.es}" alt="es"/></a></li>
-                                    <li><a th:href="${@languageUtil.buildUrl('ca')}" class="dropdown-item language"><img src="/images/lang/ca.png" th:text="' '+#{language.ca}" alt="ca"/></a></li>
-                                    <li><a th:href="${@languageUtil.buildUrl('cs')}" class="dropdown-item language"><img src="/images/lang/cs.png" th:text="' '+#{language.cs}" alt="cs"/></a></li>
-                                    <li><a th:href="${@languageUtil.buildUrl('sv')}" class="dropdown-item language"><img src="/images/lang/sv.png" th:text="' '+#{language.sv}" alt="sv"/></a></li>
+                                    <li th:replace="~{fragments/language_selector :: language_selector}"></li>
                                 </ul>
                             </div>
                         </div>
