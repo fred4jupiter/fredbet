@@ -12,16 +12,9 @@ public class MatchResultCommand {
     private String teamNameOne;
     private String teamNameTwo;
 
-
     private Country countryTeamOne;
 
     private Country countryTeamTwo;
-
-    @Deprecated
-    private String iconPathTeamOne;
-
-    @Deprecated
-    private String iconPathTeamTwo;
 
     private Integer teamResultOne;
 
@@ -100,22 +93,6 @@ public class MatchResultCommand {
 
     public void setTeamNameTwo(String teamNameTwo) {
         this.teamNameTwo = teamNameTwo;
-    }
-
-    public void setIconPathTeamOne(String iconPathTeamOne) {
-        this.iconPathTeamOne = iconPathTeamOne;
-    }
-
-    public void setIconPathTeamTwo(String iconPathTeamTwo) {
-        this.iconPathTeamTwo = iconPathTeamTwo;
-    }
-
-    public String getIconPathTeamOne() {
-        return iconPathTeamOne;
-    }
-
-    public String getIconPathTeamTwo() {
-        return iconPathTeamTwo;
     }
 
     public Country getCountryTeamOne() {
