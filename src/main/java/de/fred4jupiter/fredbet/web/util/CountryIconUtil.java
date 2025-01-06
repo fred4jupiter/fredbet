@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -48,7 +49,21 @@ public class CountryIconUtil {
             return "";
         }
 
-        String alpha2Code = this.alpha2Codes.get(country);
+        return cssClassFor(this.alpha2Codes.get(country));
+    }
+
+    public String cssClassFor(String alpha2Code) {
         return "fi-%s".formatted(alpha2Code.toLowerCase());
+    }
+
+    public String cssClassCurrentUserLanguage() {
+        String language = LocaleContextHolder.getLocale().getLanguage();
+        if ("en".equals(language)) {
+            return cssClassFor("gb");
+        }
+        if ("cs".equals(language)) {
+            return cssClassFor("cz");
+        }
+        return cssClassFor(language);
     }
 }
