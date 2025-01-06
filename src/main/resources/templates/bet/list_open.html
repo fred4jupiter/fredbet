@@ -22,10 +22,10 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-12">
-								<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}" th:src="@{${matchCommand.getIconPathTeamOne()}}" alt="teamOne"/>
+                                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
 								<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 								<span> - </span>
-								<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}" th:src="@{${matchCommand.getIconPathTeamTwo()}}" alt="teamTwo"/>
+                                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 								<br/>
 							</div>
