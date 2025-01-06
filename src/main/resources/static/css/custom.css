@@ -25,4 +25,6 @@ h3 {
 
 .big-flag {
     font-size: 3rem;
+    /*border: 1px solid #0d6efd;*/
+    border-radius: 5px;
 }
