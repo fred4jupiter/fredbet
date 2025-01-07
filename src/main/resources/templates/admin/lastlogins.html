@@ -12,7 +12,9 @@
                     <div class="card mb-3" th:each="appUser : ${userList}">
                         <div class="card-header">
                             <span th:text="${appUser.username}"></span>
-                            <span class="right" th:text="${#temporals.format(appUser.lastLogin, #messages.msg('app.dateformatWithSeconds'))}"></span>
+                        </div>
+                        <div class="card-body">
+                            <span th:text="${#temporals.format(appUser.lastLogin, #messages.msg('app.dateformatWithSeconds'))}"></span>
                         </div>
                     </div>
                 </div>
