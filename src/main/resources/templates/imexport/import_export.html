@@ -23,10 +23,13 @@
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <span th:text="#{importexport.export.name}"></span>
+                            <span th:text="#{importexport.export.data}"></span>
                         </div>
                         <div class="card-body">
-                            <a href="#" th:href="@{/importexport/export}" th:text="#{importexport.export.data}"></a>
+                            <a class="btn btn-secondary" role="button" th:href="@{/importexport/export}">
+                                <i class="fas fa-download"></i>
+                                <span th:text="#{importexport.export.name}"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
