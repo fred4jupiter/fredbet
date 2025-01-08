@@ -9,7 +9,7 @@
             <div class="row mt-3">
                 <div class="col-12 col-sm-6 col-md-4">
                     <form th:action="@{/user/import}" th:object="${userImportExportCommand}" method="post" enctype="multipart/form-data" role="form">
-                        <div class="card">
+                        <div class="card mb-3">
                             <div class="card-header">
                                 <span th:text="#{user.importexport.import.file}"></span>
                             </div>
