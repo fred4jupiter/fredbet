@@ -31,17 +31,17 @@
 			</div>
 
 			<div class="row mt-3">
-				<div class="col-12 col-sm-6 col-md-4 col-lg-4" th:each="ranking,status : ${rankings}">
+				<div class="col-12 col-sm-6 col-md-4" th:each="ranking,status : ${rankings}">
 					<div class="card mb-3">
                         <div class="card-header rankingDetails">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
                         </div>
 						<div class="card-body" th:classappend="${ranking.sameRankingPositionAsOtherUser} ? 'ranking-same-position'">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-3 pe-0">
                                     <span class="badge bg-secondary rank-badge" th:text="'# ' + ${status.count}">dfgdf</span>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 ps-0 pe-0">
                                     <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(ranking.userName)})}"></span>
                                 </div>
                                 <div class="col-5 mt-1">
@@ -49,7 +49,7 @@
                                     <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                                           th:title="#{ranking.topTipperOfToday.tooltip}"></span>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 ps-0 pe-0">
                                     <span class="badge rounded-pill bg-warning rank-badge" th:text="${ranking.totalPoints}"></span>
                                 </div>
                             </div>
