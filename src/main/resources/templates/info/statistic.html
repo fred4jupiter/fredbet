@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+	layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{statistics.title}"></title>
+        <link rel="stylesheet" th:href="@{/css/pages/statistic.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -16,10 +17,10 @@
                     <span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>
                 </div>
                 <div class="col-6 col-sm-2 mb-2">
-                    <span class="fas fa-star blue" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>
+                    <span class="fas fa-star" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>
                 </div>
 				<div class="col-6 col-sm-2 mb-2">
-					<span class="fas fa-lightbulb red" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
+					<span class="fas fa-lightbulb" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
 				</div>
 			</div>
 			<div class="row">
@@ -32,12 +33,12 @@
                                 </div>
                                 <div class="col-10">
                                     <span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
-                                    <span th:if="${statistic.minPointsCandidate}" class="fas fa-lightbulb red" aria-hidden="true"></span>
-                                    <span th:if="${statistic.maxPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
+                                    <span th:if="${statistic.minPointsCandidate}" class="fas fa-lightbulb" aria-hidden="true"></span>
+                                    <span th:if="${statistic.maxPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
                                     <span>,</span>
                                     <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(statistic.favoriteCountry)}"></span>
                                     <span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-                                    <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
+                                    <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star" aria-hidden="true"></span>
                                     <span>,</span>
                                     <span class="fas fa-magic" aria-hidden="true"></span>
                                     <span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
@@ -61,7 +62,7 @@
 										<tr>
 											<td class="success">
 												<span th:text="${statistic.pointsGroup}"></span>
-												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
+												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
 											</td>
 											<td class="warning" th:text="${statistic.pointsRoundOfSixteen}"></td>
 											<td class="warning" th:text="${statistic.pointsQuarterFinal}"></td>
