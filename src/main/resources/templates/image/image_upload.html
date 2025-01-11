@@ -18,8 +18,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-3 col-md-2">
-                        <div class="mb-3" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
+                    <div class="col-12 col-sm-3 col-md-2" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
+                        <div class="mb-3">
                             <label class="form-label" th:text="#{image.upload.editGroup}"></label><br/>
                             <a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
                         </div>
