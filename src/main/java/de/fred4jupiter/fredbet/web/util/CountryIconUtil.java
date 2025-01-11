@@ -63,6 +63,9 @@ public class CountryIconUtil {
         if ("cs".equals(language)) {
             return cssClassFor("cz");
         }
+        if ("ca".equals(language)) {
+            return cssClassFor("es-ct");
+        }
         return cssClassFor(language);
     }
 }
