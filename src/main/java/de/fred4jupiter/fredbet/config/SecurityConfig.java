@@ -52,7 +52,8 @@ public class SecurityConfig {
             .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
             .anyRequest().authenticated()
         );
-        http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
+        http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository)
+            .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
         http.formLogin(form -> form
             .loginPage("/login").permitAll()
             .defaultSuccessUrl("/matches/upcoming")
