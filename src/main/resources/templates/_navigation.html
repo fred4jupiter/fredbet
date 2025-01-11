@@ -5,268 +5,269 @@
     <title>Navigation page</title>
 </head>
 <body>
-<nav th:fragment="menu" class="navbar navbar-expand-lg bg-primary" th:classappend="${@runtimeSettingsUtil.getSettings().getNavbarLayout().getNavbarTag()}">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/matches/upcoming}"><i class="fas fa-home"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent" th:if="${@webSecurityUtil.isUserLoggedIn()}">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="betting" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false" th:text="#{navigation.betting}">
-                        Tippen
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="betting">
-                        <li><a class="dropdown-item" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a>
+    <div th:fragment="menu" th:remove="tag">
+        <nav th:if="${@webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${@runtimeSettingsUtil.getSettings().getNavbarLayout().getNavbarTag()}">
+            <div class="container">
+                <a class="navbar-brand" th:href="@{/matches/upcoming}"><i class="fas fa-home"></i></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/ranking}" th:text="#{navigation.ranking}"></a>
                         </li>
-                        <li><a class="dropdown-item" th:href="@{/extrabets}"
-                               th:text="#{navigation.betting.extraBets}"></a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="betting" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false" th:text="#{navigation.betting}">
+                                Tippen
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="betting">
+                                <li><a class="dropdown-item" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a>
+                                </li>
+                                <li><a class="dropdown-item" th:href="@{/extrabets}"
+                                       th:text="#{navigation.betting.extraBets}"></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="matches" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false" th:text="#{matches.title}">
+                                Spiele
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="matches">
+                                <li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')">
+                                    <a class="dropdown-item" th:href="@{/matches/finishednoresult}"
+                                       th:text="#{finishednoresult.matches}"></a>
+                                </li>
+                                <li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/matches/past}" th:text="#{all.past.matches}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/matches/yesterday}" th:text="#{yesterday.matches}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/matches/today}" th:text="#{today.matches}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/matches}" th:text="#{all.matches}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}" class="divider"
+                                    role="separator"></li>
+                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+                                    <a class="dropdown-item" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/ROUND_OF_SIXTEEN}"
+                                       th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('QUARTER_FINAL')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/QUARTER_FINAL}"
+                                       th:text="#{group.entry.QUARTER_FINAL}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/SEMI_FINAL}"
+                                       th:text="#{group.entry.SEMI_FINAL}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider"
+                                    role="separator"></li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
+                                       th:text="#{group.entry.GAME_FOR_THIRD}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/FINAL}"
+                                       th:text="#{group.entry.FINAL}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="info" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false" th:text="#{navigation.info}">
+                                Tippen
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="info">
+                                <li><a class="dropdown-item" th:href="@{/standings}" th:text="#{standings.title}"></a></li>
+                                <li><a class="dropdown-item" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
+                                <li><a class="dropdown-item" th:href="@{/info/pointsfrequency}"
+                                       th:text="#{pointsfrequency.title}"></a>
+                                </li>
+                                <li><a class="dropdown-item" th:href="@{/pointcourse/show}" th:text="#{pointcourse.title}"></a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
+                                <li><a class="dropdown-item" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
+                                <li><a class="dropdown-item" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a></li>
+                                <li><a class="dropdown-item" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
+                            <a class="nav-link dropdown-toggle" href="#" id="admin" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false" th:text="#{navigation.administration}">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="admin">
+                                <li sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/user}" th:text="#{navigation.user}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/user/importexport}" th:text="#{user.importexport.title}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/importexport}" th:text="#{importexport.title}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
+                                    <a class="dropdown-item" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
+                                    <a class="dropdown-item" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
+                                    <a class="dropdown-item" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
+                                </li>
+                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="${@webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
+                                </li>
+                            </ul>
                     </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="matches" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false" th:text="#{matches.title}">
-                        Spiele
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="matches">
-                        <li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')">
-                            <a class="dropdown-item" th:href="@{/matches/finishednoresult}"
-                               th:text="#{finishednoresult.matches}"></a>
+                    <div class="d-flex navbar-nav">
+                        <li class="nav-item dropdown me-2">
+                            <a class="nav-link dropdown-toggle" th:classappend="${classes}" id="language" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <span class="fi" th:classappend="${@countryIconUtil.cssClassCurrentUserLanguage()}"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="language">
+                                <li th:replace="~{fragments/language_selector :: language_selector}"></li>
+                            </ul>
                         </li>
-                        <li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')">
-                            <hr class="dropdown-divider">
+                        <span class="navbar-text me-3" th:text="${@webSecurityUtil.getCurrentUsername()}"></span>
+                        <li class="nav-item dropdown mt-1">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
+                                     th:alt="${@webSecurityUtil.getCurrentUsername()}" width="32" height="32" class="rounded-circle">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
+                                </li>
+                                <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
+                                    <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <form name="logoutForm" th:action="@{/logout}" method="post">
+                                        <input class="dropdown-item" type="submit" th:value="#{navigation.logout}"/>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/matches/upcoming}" th:text="#{upcoming.matches}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/matches/past}" th:text="#{all.past.matches}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/matches/yesterday}" th:text="#{yesterday.matches}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/matches/today}" th:text="#{today.matches}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/matches}" th:text="#{all.matches}"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}" class="divider"
-                            role="separator"></li>
-                        <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
-                            <a class="dropdown-item" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}">
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/ROUND_OF_SIXTEEN}"
-                               th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('QUARTER_FINAL')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/QUARTER_FINAL}"
-                               th:text="#{group.entry.QUARTER_FINAL}"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/SEMI_FINAL}"
-                               th:text="#{group.entry.SEMI_FINAL}"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider"
-                            role="separator"></li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
-                               th:text="#{group.entry.GAME_FOR_THIRD}"></a>
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
-                            <a class="dropdown-item" th:href="@{/matches/group/FINAL}"
-                               th:text="#{group.entry.FINAL}"></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="info" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false" th:text="#{navigation.info}">
-                        Tippen
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="info">
-                        <li><a class="dropdown-item" th:href="@{/standings}" th:text="#{standings.title}"></a></li>
-                        <li><a class="dropdown-item" th:href="@{/info/statistic}" th:text="#{statistics.title}"></a></li>
-                        <li><a class="dropdown-item" th:href="@{/info/pointsfrequency}"
-                               th:text="#{pointsfrequency.title}"></a>
-                        </li>
-                        <li><a class="dropdown-item" th:href="@{/pointcourse/show}" th:text="#{pointcourse.title}"></a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" th:href="@{/info/rules}" th:text="#{rules.title}"></a></li>
-                        <li><a class="dropdown-item" th:href="@{/info/prices}" th:text="#{prices.title}"></a></li>
-                        <li><a class="dropdown-item" th:href="@{/info/misc}" th:text="#{misc.title}"></a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a></li>
-                        <li><a class="dropdown-item" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
-                    <a class="nav-link dropdown-toggle" href="#" id="admin" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false" th:text="#{navigation.administration}">
-                        Admin
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="admin">
-                        <li sec:authorize="hasAuthority('PERM_USER_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/user}" th:text="#{navigation.user}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/user/importexport}" th:text="#{user.importexport.title}"></a>
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/importexport}" th:text="#{importexport.title}"></a>
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
-                            <a class="dropdown-item" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_SHOW_ACTIVE_USERS')">
-                            <a class="dropdown-item" th:href="@{/administration/active/users}" th:text="#{navigation.activeUserList}"></a>
-                        </li>
-                        <li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
-                            <a class="dropdown-item" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
-                        </li>
-                        <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                            <a class="dropdown-item" th:href="${@webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
-                        </li>
-                    </ul>
-            </ul>
-            <div class="d-flex navbar-nav">
-                <li class="nav-item dropdown me-2">
-                    <a class="nav-link dropdown-toggle" th:classappend="${classes}" id="language" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        <span class="fi" th:classappend="${@countryIconUtil.cssClassCurrentUserLanguage()}"></span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="language">
-                        <li th:replace="~{fragments/language_selector :: language_selector}"></li>
-                    </ul>
-                </li>
-                <span class="navbar-text me-3" th:text="${@webSecurityUtil.getCurrentUsername()}"></span>
-                <li class="nav-item dropdown mt-1">
-                    <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
-                             th:alt="${@webSecurityUtil.getCurrentUsername()}" width="32" height="32" class="rounded-circle">
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
-                        </li>
-                        <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
-                            <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <form name="logoutForm" th:action="@{/logout}" method="post">
-                                <input class="dropdown-item" type="submit" th:value="#{navigation.logout}"/>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-                </li>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
     </div>
-</nav>
 </body>
 </html>
