@@ -211,13 +211,13 @@
                                 <li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
                                     <a class="dropdown-item" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
                                 </li>
-                                <li>
+                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}">
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
                                 </li>
-                                <li>
+                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}">
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
