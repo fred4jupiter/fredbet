@@ -16,7 +16,7 @@
                                     <span th:text="${appUser.username}"></span>
                                 </div>
                                 <div class="col-9 text-end">
-                                    <span th:text="${#temporals.format(appUser.lastLogin, #messages.msg('app.dateformatWithSeconds'))}"></span>
+                                    <span th:text="${#temporals.format(appUser.lastLogin, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                 </div>
                             </div>
                         </div>
