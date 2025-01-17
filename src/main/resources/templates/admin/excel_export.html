@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{administration.excel.export.title}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content">
+            <div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<h1 th:text="#{administration.excel.export.title}"></h1>
             <p th:text="#{excel.export.hint}"></p>
 			<div class="row">

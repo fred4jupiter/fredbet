@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{misc.title}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h1 th:text="#{misc.title}"></h1>		
-			<div class="row">			
-				<div class="col-xs-12 col-sm-12 col-md-12">				
+            <div th:replace="~{fragments/alert :: alert_headline}"></div>
+			<h1 th:text="#{misc.title}"></h1>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div th:remove="tag" th:utext="${textContent}"></div>
 				</div>
 			</div>
-			<a href="#" th:href="@{/info/editinfo/misc}" class="btn btn-primary" role="button" th:text="#{info.misc.edit.button}"></a>		
+			<a href="#" th:href="@{/info/editinfo/misc}" class="btn btn-primary" role="button" th:text="#{info.misc.edit.button}"></a>
 		</div>
 	</body>
 </html>
