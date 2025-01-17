@@ -67,38 +67,38 @@ public class AdminController {
     }
 
     @GetMapping("/createRandomMatches")
-    public String createRandomMatches(Model model) {
+    public String createRandomMatches(RedirectAttributes redirect) {
         asyncDatabasePopulator.createRandomMatches();
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.randomMatchesCreated");
-        return PAGE_ADMINISTRATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.randomMatchesCreated");
+        return "redirect:/administration";
     }
 
     @GetMapping("/createDemoBets")
-    public String createDemoBets(Model model) {
+    public String createDemoBets(RedirectAttributes redirect) {
         asyncDatabasePopulator.createDemoBetsForAllUsers();
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.demoBetsCreated");
-        return PAGE_ADMINISTRATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoBetsCreated");
+        return "redirect:/administration";
     }
 
     @GetMapping("/createDemoResults")
-    public String createDemoResults(Model model) {
+    public String createDemoResults(RedirectAttributes redirect) {
         asyncDatabasePopulator.createDemoResultsForAllMatches();
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.demoResultsCreated");
-        return PAGE_ADMINISTRATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoResultsCreated");
+        return "redirect:/administration";
     }
 
     @GetMapping("/createTestDataForAll")
-    public String createTestDataForAll(Model model) {
+    public String createTestDataForAll(RedirectAttributes redirect) {
         asyncDatabasePopulator.createTestDataForAll();
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.createTestDataForAll");
-        return PAGE_ADMINISTRATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.createTestDataForAll");
+        return "redirect:/administration";
     }
 
     @GetMapping("/deleteAllBetsAndMatches")
-    public String deleteAllBetsAndMatches(Model model) {
+    public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
         databasePopulator.deleteAllBetsAndMatches();
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.allBetsAndMatchesDeleted");
-        return PAGE_ADMINISTRATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
+        return "redirect:/administration";
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
@@ -129,9 +129,9 @@ public class AdminController {
     }
 
     @GetMapping("/deleteAllUsers")
-    public String deleteAllUsers(Model model) {
+    public String deleteAllUsers(RedirectAttributes redirect) {
         userService.deleteAllUsers();
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.deleteAllUsers");
-        return PAGE_ADMINISTRATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.deleteAllUsers");
+        return "redirect:/administration";
     }
 }
