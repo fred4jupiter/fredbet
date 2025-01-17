@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{bet.edit.title}"></title>
     <link rel="stylesheet" th:href="@{/css/pages/bet_edit.css}" />
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1 th:text="#{bet.edit.heading}"></h1>
-		<form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">
+        <div th:replace="~{fragments/alert :: alert_headline}"></div>
+        <h1 th:text="#{bet.edit.heading}"></h1>
+        <form id="betForm" th:action="@{/bet}" th:object="${betCommand}" action="#" method="post" role="form" class="goalsEnter">
 			<div class="row">
 				<div class="col-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{betId}"  />

@@ -17,7 +17,6 @@
 	<body>
 		<nav th:replace="~{_navigation :: menu}"></nav>
 		<div class="container mt-3" role="main">
-			<div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<div layout:fragment="content" th:remove="tag">Content Placeholder</div>
 		</div>
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->

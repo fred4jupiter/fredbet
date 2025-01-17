@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{userprofile.changeUsername.title}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<form id="changePasswordForm" th:action="@{/profile/changeUsername}" th:object="${changeUsernameCommand}" action="#" method="post" role="form">
+            <div th:replace="~{fragments/alert :: alert_headline}"></div>
+            <form id="changePasswordForm" th:action="@{/profile/changeUsername}" th:object="${changeUsernameCommand}" action="#" method="post" role="form">
 				<div class="row">
 					<div class="col-12 col-sm-6 col-md-4">
 						<div class="mb-3">

@@ -5,6 +5,7 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
+            <div th:replace="~{fragments/alert :: alert_headline}"></div>
             <h3 class="mb-3" th:text="#{importexport.subtitle}"></h3>
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">

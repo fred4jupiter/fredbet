@@ -5,7 +5,8 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h3 th:text="#{user.importexport.title}"></h3>
+            <div th:replace="~{fragments/alert :: alert_headline}"></div>
+            <h3 th:text="#{user.importexport.title}"></h3>
             <div class="row mt-3">
                 <div class="col-12 col-sm-6 col-md-4">
                     <form th:action="@{/user/import}" th:object="${userImportExportCommand}" method="post" enctype="multipart/form-data" role="form">

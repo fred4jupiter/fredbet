@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{extra_bets.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<form id="extraBetForm" th:action="@{/extrabets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
+        <div th:replace="~{fragments/alert :: alert_headline}"></div>
+        <form id="extraBetForm" th:action="@{/extrabets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
 			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
 				<div class="col-12 col-sm-6 col-md-4">
