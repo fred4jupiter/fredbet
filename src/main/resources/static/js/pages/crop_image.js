@@ -6,8 +6,7 @@ function imageCroppingUpload() {
     var $uploadCrop;
 
     var opts = {
-        viewport: {width: 300, height: 300},
-        boundary: {width: 300, height: 300},
+        viewport: 'original',
         type: 'canvas',
         enableResize: true,
         enableExif: true,

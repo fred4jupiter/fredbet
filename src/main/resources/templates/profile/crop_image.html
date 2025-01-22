@@ -15,7 +15,7 @@
                     <input id="upload" value="Choose a file" accept="image/jpeg" type="file" class="mb-3"/>
                     <div id="croppie-container" class="mb-5"></div>
                     <div class="mt-3">
-                        <button id="crop-image" th:text="#{user.image.cropping.select.range}" class="btn btn-info"></button>
+                        <button id="crop-image" th:text="#{user.image.cropping.select.range}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
                         <button type="button" class="crop-image-rotate btn bg-secondary" data-deg="-90">
                             <i class="fas fa-undo" aria-hidden="true"></i>
                         </button>
@@ -24,18 +24,34 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mt-3 mt-md-0">
-                    <h2 th:text="#{user.image.cropping.result}"></h2>
-                    <br class="mt-4"/>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="croppedImageModal" aria-hidden="true">
+                <div class="modal-dialog">
                     <form th:action="@{/cropping/upload}" method="post" enctype="multipart/form-data" role="form">
-                        <input id="croppedFileBase64" type="hidden" name="croppedFileBase64" value="" />
-                        <img id="resultImage" src="" class="croppie-container"/>
-                        <div class="mt-3">
-                            <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="croppedImageModal" th:text="#{user.image.cropping.result}">Modal title</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <input id="croppedFileBase64" type="hidden" name="croppedFileBase64" value="" />
+                                        <img id="resultImage" src="" class="croppie-container" alt="croppedImage"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Close</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
 	</body>
 	<th:block layout:fragment="scripts">
