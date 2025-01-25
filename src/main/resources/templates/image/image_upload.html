@@ -78,18 +78,18 @@
 				   		<table class="table table-condensed table-striped table-responsive" data-toggle="table" data-pagination="true" data-page-size="5">
 				   			<thead>
 					   			<tr>
-					   				<th data-sortable="true" th:text="#{image.upload.id}" class="hidden-xs"></th>
+					   				<th data-sortable="true" th:text="#{image.upload.id}" class="d-none d-sm-block"></th>
 					   				<th data-sortable="true" th:text="#{image.upload.groupName}"></th>
-					   				<th data-sortable="true" th:text="#{image.upload.description}" class="hidden-xs"></th>
+					   				<th data-sortable="true" th:text="#{image.upload.description}" class="d-none d-sm-block"></th>
 					   				<th th:text="#{image.upload.thumbnail}"></th>
 					   				<th th:text="#{image.upload.deleteImage}"></th>
 					   			</tr>
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageCommand : ${availableImages}">
-					   				<td th:text="${imageCommand.imageId}" class="vert-align hidden-xs"></td>
+					   				<td th:text="${imageCommand.imageId}" class="vert-align"></td>
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
-					   				<td th:text="${imageCommand.description}" class="vert-align hidden-xs"></td>
+					   				<td th:text="${imageCommand.description}" class="vert-align"></td>
 					   				<td class="vert-align">
 										<span th:replace="~{fragments/image_popup :: image_popup(${imageCommand.imageKey})}"></span>
 					   				</td>
