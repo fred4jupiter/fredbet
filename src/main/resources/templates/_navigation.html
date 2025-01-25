@@ -238,13 +238,13 @@
                                 <li th:replace="~{fragments/language_selector :: language_selector}"></li>
                             </ul>
                         </li>
-                        <span class="navbar-text me-3" th:text="${@webSecurityUtil.getCurrentUsername()}"></span>
-                        <li class="nav-item dropdown mt-1">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
-                                     th:alt="${@webSecurityUtil.getCurrentUsername()}" width="32" height="32" class="rounded">
+                                     th:alt="${@webSecurityUtil.getCurrentUsername()}" height="24" class="rounded">
                             </a>
                             <ul class="dropdown-menu">
+                                <h6 class="dropdown-header" th:text="${'-- ' + @webSecurityUtil.getCurrentUsername() + ' --'}">Dropdown header</h6>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
                                 </li>
