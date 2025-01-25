@@ -244,7 +244,9 @@
                                      th:alt="${@webSecurityUtil.getCurrentUsername()}" height="24" class="rounded">
                             </a>
                             <ul class="dropdown-menu">
-                                <h6 class="dropdown-header" th:text="${'-- ' + @webSecurityUtil.getCurrentUsername() + ' --'}">Dropdown header</h6>
+                                <li>
+                                    <h6 class="dropdown-header" th:text="${'-- ' + @webSecurityUtil.getCurrentUsername() + ' --'}">Dropdown header</h6>
+                                </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
                                 </li>
