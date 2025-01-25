@@ -87,14 +87,16 @@
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageCommand : ${availableImages}">
-					   				<td th:text="${imageCommand.imageId}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.imageId}" class="vert-align d-none d-sm-block"></td>
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
-					   				<td th:text="${imageCommand.description}" class="vert-align"></td>
+					   				<td th:text="${imageCommand.description}" class="vert-align d-none d-sm-block"></td>
 					   				<td class="vert-align">
 										<span th:replace="~{fragments/image_popup :: image_popup(${imageCommand.imageKey})}"></span>
 					   				</td>
-					   				<td class="vert-align">
-					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>
+					   				<td class="vert-align text-center">
+					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger" role="button">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
 					   				</td>
 					   			</tr>
 				   			</tbody>
