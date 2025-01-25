@@ -21,7 +21,7 @@
             </form>
             <form th:action="@{/imagegroup/save}" th:object="${imageGroupCommand}" method="post" role="form">
                 <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4">
+                    <div class="col-12 col-sm-6 col-md-4 mt-3">
                         <div class="mb-3">
                             <input type="hidden" th:field="*{id}"  />
                             <label class="form-label" for="imageGroupName" th:text="#{image.group.name}"></label>
