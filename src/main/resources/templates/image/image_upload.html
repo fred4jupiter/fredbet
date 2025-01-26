@@ -73,7 +73,7 @@
             </form>
 
 			<div class="row mt-3">
-				<div class="col-12">
+				<div class="col-12 mb-3">
 					<div class="table-responsive">
 				   		<table class="table table-condensed table-striped table-responsive" data-toggle="table" data-pagination="true" data-page-size="5">
 				   			<thead>
@@ -104,6 +104,14 @@
 			   	   </div>
 				</div>
 			</div>
+            <div class="row">
+                <div class="col-12 col-sm-6" sec:authorize="hasAuthority('PERM_DOWNLOAD_IMAGES')">
+                    <a class="btn btn-secondary" role="button" th:href="@{/gallery/download/all}">
+                        <i class="fas fa-download"></i>
+                        <span th:text="#{image.gallery.downloadAll}"></span>
+                    </a>
+                </div>
+            </div>
 		</div>
 		<th:block layout:fragment="scripts">
 			<script type="text/javascript" th:src="@{/js/jquery-rotate.js}"></script>

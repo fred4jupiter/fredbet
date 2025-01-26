@@ -34,15 +34,9 @@
 			</div>
 
 			<div class="row">
-				<div class="col-12 col-sm-3 mb-3">
+				<div class="col-12 col-sm-3">
 					<a th:href="@{/image/show}" class="btn btn-primary" th:text="#{image.gallery.toUploadImagePage}"></a>
 				</div>
-                <div class="col-12 col-sm-6 mb-3" th:if="${!groupedImageCommands.isEmpty()}" sec:authorize="hasAuthority('PERM_DOWNLOAD_IMAGES')">
-                    <a class="btn btn-secondary" role="button" th:href="@{/gallery/download/all}">
-                        <i class="fas fa-download"></i>
-                        <span th:text="#{image.gallery.downloadAll}"></span>
-                    </a>
-                </div>
 			</div>
 		</div>
 	</body>
