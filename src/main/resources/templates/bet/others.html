@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{bet.others.title}"></title>
-        <link rel="stylesheet" th:href="@{/css/pages/others.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -54,13 +53,11 @@
                     <div class="card mt-3">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-6 pe-0">
                                     <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(bet.userName)})}"></span>
+                                    <span th:text="${bet.userName}" class="ps-2"></span>
                                 </div>
-                                <div class="col-4">
-                                    <span th:text="${bet.userName}" class="ranking-name"></span>
-                                </div>
-                                <div class="col-6">
+                                <div class="col-6 text-end">
                                     <span class="badge rounded-pill bg-success big-badge" th:classappend="${bet.getCssClassPenaltyWinnerOne()}"
                                           th:text="${bet.goalsTeamOne}"></span>
                                     <span> : </span>
