@@ -28,3 +28,22 @@ h3 {
     /*border: 1px solid #0d6efd;*/
     border-radius: 5px;
 }
+
+.badge-penalty-winner-bet {
+    background: -webkit-repeating-linear-gradient(180deg, #5CB85C, black 30%); /* For Safari 5.1 to 6.0 */
+    background: -o-repeating-linear-gradient(180deg, #5CB85C, black 30%); /* For Opera 11.1 to 12.0 */
+    background: -moz-repeating-linear-gradient(180deg, #5CB85C, black 30%); /* For Firefox 3.6 to 15 */
+    background: repeating-linear-gradient(180deg, #5CB85C, black 30%); /* Standard syntax (must be last) */
+}
+
+.badge-penalty-winner-match {
+    background: -webkit-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Safari 5.1 to 6.0 */
+    background: -o-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Opera 11.1 to 12.0 */
+    background: -moz-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Firefox 3.6 to 15 */
+    background: repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* Standard syntax (must be last) */
+}
+
+.ranking-same-position {
+    background-color: #ffe8b3;
+}
+
