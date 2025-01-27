@@ -12,12 +12,11 @@
 			<div class="row mb-3">
 				<div class="col-12">
 					<div id="links">
-						<div class="" th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
+						<div th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
 							<span class="fw-bold" th:text="${galleryGroup}"></span><br/>
 							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}"
-										th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}">
-								<img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}" class="rounded img-responsive mt-2 me-2 mb-2"/>
-						    </a>
+										th:title="${imageCommand.description}" th:attr="data-gallery='#blueimp-gallery-'+${imageCommand.galleryGroup}"><img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}"
+                                     class="rounded img-responsive mt-2 me-2 mb-2"/></a>
 						</div>
 					</div>
 
