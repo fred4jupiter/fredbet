@@ -14,7 +14,7 @@
 					<input type="hidden" th:field="*{userId}" class="form-control" />
 					<div class="mb-3">
 						<label for="username" th:text="#{user.edit.username} + ':'" class="form-label"></label>
-						<input id="username" type="text" th:field="*{username}" class="form-control" readonly="readonly"/>
+						<input id="username" type="text" th:field="*{username}" class="form-control" readonly />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
 					</div>
 					<div class="mb-3">
