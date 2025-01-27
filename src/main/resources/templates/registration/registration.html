@@ -19,7 +19,7 @@
 				</div>
 				<div class="mb-3">
 					<label class="form-label" for="username" th:text="#{registration.username} + ':'"></label>
-					<input id="username" type="text" th:field="*{username}" class="form-control" />
+					<input id="username" type="text" th:field="*{username}" class="form-control" size="12" maxlength="12" />
 					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
 				</div>
 				<div class="mb-3">
