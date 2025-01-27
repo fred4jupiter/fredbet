@@ -37,7 +37,7 @@
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="mb-3">
                             <input id="myFileBase64" type="hidden" name="myFileBase64" value="" />
-                            <img id="preview" class="img-thumbnail"/>
+                            <img id="preview" class="img-thumbnail" alt="preview"/>
                         </div>
                     </div>
                 </div>
@@ -75,8 +75,8 @@
 			<div class="row mt-3">
 				<div class="col-12 mb-3">
 					<div class="table-responsive">
-				   		<table class="table table-condensed table-striped table-responsive" data-toggle="table" data-pagination="true" data-page-size="5">
-				   			<thead>
+				   		<table class="table table-condensed" data-toggle="table" data-pagination="true" data-page-size="5">
+				   			<thead class="table-light">
 					   			<tr>
 					   				<th data-sortable="true" th:text="#{image.upload.id}" class="d-none d-sm-block"></th>
 					   				<th data-sortable="true" th:text="#{image.upload.groupName}"></th>
@@ -90,11 +90,14 @@
 					   				<td th:text="${imageCommand.imageId}" class="vert-align d-none d-sm-block"></td>
 					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
 					   				<td th:text="${imageCommand.description}" class="vert-align d-none d-sm-block"></td>
-					   				<td class="vert-align">
-										<span th:replace="~{fragments/image_popup :: image_popup(${imageCommand.imageKey})}"></span>
+					   				<td class="text-center">
+                                        <a th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" th:attr="data-lightbox=${imageCommand.imageKey}" class="img-link">
+                                            <img th:if="${imageCommand.imageKey}" th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}"
+                                                 height="35" class="rounded" alt="image"/>
+                                        </a>
 					   				</td>
-					   				<td class="vert-align text-center">
-					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger" role="button">
+					   				<td class="text-center">
+					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger btn-sm" role="button">
                                             <i class="fas fa-trash"></i>
                                         </a>
 					   				</td>
