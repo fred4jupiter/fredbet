@@ -4,15 +4,21 @@
 
 <h2>Wie hoch ist der Einsatz und was kann ich gewinnen?</h2>
 
-<p>Der Einsatz beträgt 5 € pro Teilnehmer(in), nachfolgend "Teili". Der Einsatz aller Teilis geht in den Jackpot und wird unter den 5 bestplatzierten Teilis aufgeteilt. Außerdem gibt es noch Sachpreise in der Tombola nach Ende der WM zu gewinnen. Hierfür können Lose gewonnen werden.</p>
+<p>Der Einsatz beträgt 5 € pro Teilnehmer(in), nachfolgend "Teili".
+Hinweis: in diesem Tippspiel wird bereits seit Gründung im Jahre 2006 auf diese
+Weise gegendert ;-)</p>
+<p>Kinder (bis 10 Jahre) <u>können</u>&nbsp;am Tippspiel kostenlos teilnehmen, dann aber keine Geldpreise gewinnen.
+Eine freiwillige Einzahlung des 5 € Einsatzes pro Kind ist möglich. Sie können dann selbstverständlich auch Geldpreise gewinnen.&nbsp;</p>
 
-<p>Auch&nbsp;in diesem Jahr: Kinder (Altersgrenze: 6 Jahren) der Teilis können&nbsp;kostenlos am Tippspiel teilnehmen. Kinder können nicht den Jackpot gewinnen, gewinnen aber Preise aus der Tombola.</p>
-
-<p>Näheres zu den Preisen unter dem Menüpunkt Preise.&nbsp;</p>
+<p>Jeder Teili, egal ob Kind oder Erwachsener kann bei der Verlosung der Sachpreise gewinnen.</p>
 
 <h2>Bis wann kann ich tippen?</h2>
 
-<p>Ihr könnt den Spieltipp bis unmittelbar vor Beginn einer Partie abgeben. Ebenso ist es aber auch möglich, alle Gruppenspiele schon im Vorfeld zu tippen. Der Bonustipp für den Weltmeister- und Vizeweltmeister und den 3. Platz ist in jedem Fall bis zu Beginn des Eröffnungsspiels&nbsp;(20.11.22 17.00Uhr MEZ) abzugeben.</p>
+<p>Ihr könnt den Spieltipp bis unmittelbar vor Beginn einer Partie
+abgeben. Ebenso ist es aber auch möglich, alle Gruppenspiele schon im
+Vorfeld zu tippen. Der Bonustipp für den Europameister- und
+Vizeeuropameister ist in jedem Fall bis zu Beginn des
+Eröffnungsspiels&nbsp;(14.06.24 21.00Uhr MESZ) abzugeben.</p>
 
 <h2>Wann werden die Tipps veröffentlicht?</h2>
 
@@ -20,38 +26,48 @@
 
 <h2>Wie werden die Tipps gewertet?</h2>
 
-<ul>
-	<li><b>Richtiger Tipp</b>: Für einen korrekten Tipp werden 3 Punkte gutgeschrieben.</li>
-	<li><b>Richtige Tendez</b>: Wenn das Ergebnis nicht korrekt, aber die Tendenz richtig getippt wurde (z. B. man tippt 3:1, das Spiel geht aber 1:0 aus) wird 1 Punkt gutgeschrieben.</li>
-	<li><b>Richtige Tordifferenz</b>: Wenn zusätzlich zur richtigen Tendenz, auch die richtige Tordifferenz getippt wurde, gibt es 2 Punkte. Diese Regelung gilt auch bei Unentschieden. Beispiele: Tipp 3:1 und Ergebnis 2:0 =&gt; 2 Punkte. Tipp 1:1 und Ergebnis 2:2 =&gt; 2 Punkte</li>
-	<li><b>Richtiger Gewinner des 11m Schießens</b>: Wird in der K. O. Runde der korrekte Sieger des Elfmeterschießens vorhergesagt, erhält man einen Extrapunkt.</li><li><b>Einsatz des Jokers</b>: Der Joker verdoppelt die Punktezahl. Im Extremfall sind somit 8 Punkte in einem Spiel möglich (3+1)*2=8</li><li>Es gibt keine Negativpunkte für falsch getippte Spiele oder nicht abgegebene Tipps.</li>
-</ul>
+<ul><li><b>Richtiger Tipp</b>: Für einen korrekten Tipp werden 3 Punkte gutgeschrieben.</li><li><b>Richtige Tendez</b>: Wenn das Ergebnis nicht korrekt, aber die
+Tendenz richtig getippt wurde (z. B. man tippt 3:1, das Spiel geht aber
+1:0 aus) wird 1 Punkt gutgeschrieben.</li><li><b>Richtige Tordifferenz</b>: Wenn zusätzlich zur richtigen
+Tendenz, auch die richtige Tordifferenz getippt wurde, gibt es 2 Punkte.
+ Diese Regelung gilt auch bei Unentschieden. Beispiele: Tipp 3:1 und
+Ergebnis 2:0 =&gt; 2 Punkte. Tipp 1:1 und Ergebnis 2:2 =&gt; 2 Punkte</li><li><b>Richtiger Gewinner des 11m Schießens</b>: Wird in der K. O. Runde der korrekte Sieger des Elfmeterschießens vorhergesagt, erhält man einen Extrapunkt.</li><li><b>Einsatz des Jokers</b>: Der Joker verdoppelt die Punktezahl. Im Extremfall sind somit 8 Punkte in einem Spiel möglich (3+1)*2=8</li><li>Es gibt keine Negativpunkte für falsch getippte Spiele oder nicht abgegebene Tipps.</li></ul>
 
 <p>Für die Bonustipps gilt folgendes:</p>
 
-<ul>
-	<li>Für den vor Beginn der&nbsp;WM richtig vorhergesagten&nbsp;Weltmeister werden 10 Bonuspunkte gutgeschrieben.</li>
-	<li>Für den vor Beginn der&nbsp;WM richtig vorhergesagten&nbsp;Vizeweltmeister&nbsp;werden 5 Bonuspunkte gutgeschrieben.</li>
-	<li>Für den vor Beginn der&nbsp;WM richtig vorhergesagten&nbsp;3. Platzierten&nbsp;werden 2 Bonuspunkte gutgeschrieben</li>
-</ul>
+<ul><li>Für den vor Beginn der EM richtig vorhergesagten Europameister werden 10 Bonuspunkte gutgeschrieben.</li><li>Für den vor Beginn der EM richtig vorhergesagten&nbsp;Vizeeuropameister&nbsp;werden 5 Bonuspunkte gutgeschrieben.</li></ul>
 
 <h2>Wie funktioniert das mit dem Joker?</h2>
 
-<p>Jeder Teili erhält zu WM Beginn 3 Joker.&nbsp;Der Joker verdoppelt&nbsp;für das Spiel, in dem der Joker gezogen wird die Punkteausbeute des Teilis. Aus einem korrekten Tipp, der normalerweise 3 Punkte einbringt,&nbsp;werden also 6 Punkte, oder bei einem 2 Punkte Tipp erhält der Teili 4 Punkte.</p>
+<p>Jeder Teili erhält zu EM Beginn 3 Joker.&nbsp;Der Joker verdoppelt&nbsp;für das
+ Spiel, in dem der Joker gezogen wird die Punkteausbeute des Teilis. Aus
+ einem korrekten Tipp, der normalerweise 3 Punkte einbringt,&nbsp;werden also
+ 6 Punkte, oder bei einem 2 Punkte Tipp erhält der Teili 4 Punkte.</p>
 
 <h2>Wie laufen die Tipps in der K-O Runde?</h2>
 
-<p>Auch in der K. O. Runde (also ab dem Achtelfinale) gelten die üblichen Regeln zur Punktevergabe. Es ist dabei unerheblich, ob ein Spiel nach 90 oder nach 120 Minuten endet. Der Tipp eines Unentschiedens ist somit möglich. Bei einem Tipp auf Unentschieden, ist zusätzlich ein Tipp über den Sieger des Elfmeterschießens abzugeben. Da ein konkretes Ergebnis im Elfmeterschießen schwer vorherzusagen ist, bezieht sich der Elfmetertipp ausschließlich auf den Gewinner. Ist der Gewinner richtig vorhergesagt, wird ein Extrapunkt gutgeschrieben. Der Tipp sieht also z. B. so aus:</p>
+<p>Auch in der K. O. Runde (also ab dem Achtelfinale) gelten die
+üblichen Regeln zur Punktevergabe. Es ist dabei unerheblich, ob ein
+Spiel nach 90 oder nach 120 Minuten endet. Der Tipp eines Unentschiedens
+ ist somit möglich. Bei einem Tipp auf Unentschieden, ist zusätzlich ein
+ Tipp über den Sieger des Elfmeterschießens abzugeben. Da ein konkretes
+Ergebnis im Elfmeterschießen schwer vorherzusagen ist, bezieht sich der
+Elfmetertipp ausschließlich auf den Gewinner. Ist der Gewinner richtig
+vorhergesagt, wird ein Extrapunkt gutgeschrieben. Der Tipp sieht also z.
+ B. so aus:</p>
 
 <p>Deutschland-Spanien 1:1 / Sieger im 11m Schießen Deutschland&nbsp;</p>
 
 <h2>Wer gewinnt?</h2>
 
-<p>Der Teili mit der höchsten Anzahl an Punkten nach der WM.</p>
+<p>Der Teili mit der höchsten Anzahl an Punkten nach der EM.</p>
 
 <h2>Und was geschieht bei Punktgleichheit?</h2>
 
-<ol>
-	<li value="NaN">Haben 2 oder mehr Teilis die gleiche Gesamtpunktzahl, entscheidet die höhere Anzahl an korrekt abgegebenen Einzeltipps.</li>
-	<li value="NaN">Ist dann immer noch keine Entscheidung zu treffen, wird die kleinere Gesamtabweichung berechnet. Dies geschieht folgendermaßen: Für jedes Spiel wird errechnet um wie viele Tore der Tipp vom tatsächlichen Ergebnis abweicht. (z. B. wenn der Tipp 3:1 lautet und das Spiel 0:0 ausgeht, ist die Abweichung 3+1=4). Diese Abweichung wird dann für alle Spiele aufsummiert. Derjenige mit der geringsten Abweichung gewinnt den Vergleich.</li>
-</ol>
+<ol><li value="NaN">Haben 2 oder mehr Teilis die gleiche Gesamtpunktzahl, entscheidet die höhere Anzahl an korrekt abgegebenen Einzeltipps.</li><li value="NaN">Ist dann immer noch keine Entscheidung zu treffen, wird
+ die kleinere Gesamtabweichung berechnet. Dies geschieht folgendermaßen:
+ Für jedes Spiel wird errechnet um wie viele Tore der Tipp vom
+tatsächlichen Ergebnis abweicht. (z. B. wenn der Tipp 3:1 lautet und das
+ Spiel 0:0 ausgeht, ist die Abweichung 3+1=4). Diese Abweichung wird
+dann für alle Spiele aufsummiert. Derjenige mit der geringsten
+Abweichung gewinnt den Vergleich.</li></ol>
