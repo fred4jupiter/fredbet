@@ -55,9 +55,9 @@ public class SecurityConfig {
         http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository)
             .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
         http.formLogin(form -> form
-            .loginPage("/login").permitAll()
+            .loginPage("/login")
             .defaultSuccessUrl("/matches/upcoming")
-            .failureUrl("/login?error=true")
+            .failureUrl("/login/error")
         );
         http.logout(logout -> logout.logoutUrl("/logout")
             .logoutSuccessUrl("/login")

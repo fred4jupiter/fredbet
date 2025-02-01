@@ -8,8 +8,7 @@
 <body>
     <div layout:fragment="content">
         <main class="form-signin w-100 m-auto">
-            <div th:if="${param.error}" class="alert alert-danger" role="alert"
-                 th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+            <div th:if="${loginError}" class="alert alert-danger" role="alert">
                 <span th:text="${errorMsg}"></span>
             </div>
             <form class="form" th:action="@{/login}" method="post">
