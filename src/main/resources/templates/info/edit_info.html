@@ -6,7 +6,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <div th:replace="~{fragments/alert :: alert_headline}"></div>
             <form id="editInfoForm" th:action="@{/info/editinfo}" th:object="${infoCommand}" method="post" role="form">
 				<div class="row">
 					<div class="col-xs-12">

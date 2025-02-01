@@ -5,7 +5,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <div th:replace="~{fragments/alert :: alert_headline}"></div>
             <h1 th:text="#{administration.runtime.configuration}"></h1>
 			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" action="#" method="post" role="form">
 				<div class="row">

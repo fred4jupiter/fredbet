@@ -5,7 +5,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<h1 th:text="#{bet.others.title}"></h1>
             <div class="row" th:with="groupAvg=${allBetsCommand.avgGroupBet}">
                 <div class="col-12 col-sm-6 col-md-4">

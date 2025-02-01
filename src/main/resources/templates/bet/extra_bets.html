@@ -5,7 +5,6 @@
 </head>
 <body>
 	<div layout:fragment="content">
-        <div th:replace="~{fragments/alert :: alert_headline}"></div>
         <form id="extraBetForm" th:action="@{/extrabets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
 			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
