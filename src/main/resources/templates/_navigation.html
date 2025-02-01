@@ -111,6 +111,12 @@
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}">
                                     <a class="dropdown-item" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
                                 </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_K')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_K}" th:text="#{group} + ' K'"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_L')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_L}" th:text="#{group} + ' L'"></a>
+                                </li>
                                 <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}">
                                     <hr class="dropdown-divider">
                                 </li>

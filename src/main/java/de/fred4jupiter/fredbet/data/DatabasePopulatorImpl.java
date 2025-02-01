@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserService;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
@@ -30,27 +29,19 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
     private final RandomValueGenerator randomValueGenerator;
 
-    private final ImageAdministrationService imageAdministrationService;
-
     private final JokerService jokerService;
 
     private final FakeDataPopulator fakeDataPopulator;
 
-    private final StaticResourceLoader staticResourceLoader;
-
     public DatabasePopulatorImpl(MatchService matchService, UserService userService,
                                  BettingService bettingService, RandomValueGenerator randomValueGenerator,
-                                 ImageAdministrationService imageAdministrationService,
-                                 JokerService jokerService, FakeDataPopulator fakeDataPopulator,
-                                 StaticResourceLoader staticResourceLoader) {
+                                 JokerService jokerService, FakeDataPopulator fakeDataPopulator) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
         this.randomValueGenerator = randomValueGenerator;
-        this.imageAdministrationService = imageAdministrationService;
         this.jokerService = jokerService;
         this.fakeDataPopulator = fakeDataPopulator;
-        this.staticResourceLoader = staticResourceLoader;
     }
 
     @Override
@@ -67,12 +58,16 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         createRandomForGroup(localDateTime.plusDays(6), Group.GROUP_F, 4);
         createRandomForGroup(localDateTime.plusDays(7), Group.GROUP_G, 4);
         createRandomForGroup(localDateTime.plusDays(8), Group.GROUP_H, 4);
+        createRandomForGroup(localDateTime.plusDays(9), Group.GROUP_I, 4);
+        createRandomForGroup(localDateTime.plusDays(10), Group.GROUP_J, 4);
+        createRandomForGroup(localDateTime.plusDays(11), Group.GROUP_K, 4);
+        createRandomForGroup(localDateTime.plusDays(12), Group.GROUP_L, 4);
 
-        createRandomForGroup(localDateTime.plusDays(9), Group.ROUND_OF_SIXTEEN, 8);
-        createRandomForGroup(localDateTime.plusDays(10), Group.QUARTER_FINAL, 4);
-        createRandomForGroup(localDateTime.plusDays(11), Group.SEMI_FINAL, 2);
-        createRandomForGroup(localDateTime.plusDays(12), Group.FINAL, 1);
-        createRandomForGroup(localDateTime.plusDays(13), Group.GAME_FOR_THIRD, 1);
+        createRandomForGroup(localDateTime.plusDays(13), Group.ROUND_OF_SIXTEEN, 8);
+        createRandomForGroup(localDateTime.plusDays(14), Group.QUARTER_FINAL, 4);
+        createRandomForGroup(localDateTime.plusDays(15), Group.SEMI_FINAL, 2);
+        createRandomForGroup(localDateTime.plusDays(16), Group.FINAL, 1);
+        createRandomForGroup(localDateTime.plusDays(17), Group.GAME_FOR_THIRD, 1);
     }
 
     private void createRandomForGroup(LocalDateTime localDateTime, Group group, int numberOfMatches) {

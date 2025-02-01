@@ -26,6 +26,10 @@ public enum Group {
 
     GROUP_J("group.title.J"),
 
+    GROUP_K("group.title.K"),
+
+    GROUP_L("group.title.L"),
+
     ROUND_OF_SIXTEEN("group.title.roundOfSixteen"), // Achtelfinale
 
     QUARTER_FINAL("group.title.quarterFinal"), // Viertelfinale
