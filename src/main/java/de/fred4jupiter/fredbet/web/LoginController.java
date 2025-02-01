@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class LoginController {
 
     @GetMapping("/error")
     public String loginError(Model model, HttpServletRequest httpServletRequest, RedirectAttributes redirect) {
-        Object authException = httpServletRequest.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+        Object authException = httpServletRequest.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         if (authException instanceof AuthenticationException authenticationException) {
             webMessageUtil.addErrorMsg(redirect, "login.error", authenticationException.getLocalizedMessage());
         }
