@@ -7,10 +7,8 @@
 </head>
 <body>
     <div layout:fragment="content">
+        <div th:replace="~{fragments/alert :: alert_headline}"></div>
         <main class="form-signin w-100 m-auto">
-            <div th:if="${loginError}" class="alert alert-danger" role="alert">
-                <span th:text="${errorMsg}"></span>
-            </div>
             <form class="form" th:action="@{/login}" method="post">
                 <div class="text-center mb-5">
                     <i class="fas fa-thumbs-up fa-8x logo-color"></i>
@@ -66,6 +64,6 @@
     </div>
 </body>
 <th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{js/pages/tooltip.js}" charset="UTF-8"></script>
+    <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 </th:block>
 </html>
