@@ -80,7 +80,4 @@
 			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
 	</div>
 </body>
-<th:block layout:fragment="scripts">
-	<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
-</th:block>
 </html>
