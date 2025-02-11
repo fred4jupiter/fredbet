@@ -50,7 +50,7 @@
 							  			<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamTwoCssClasses()}"
 							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
 					  				</div>
-					  				<div class="">
+					  				<div>
 					  					<span class="badge rounded-pill bg-info big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}"
 					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
 								  		<span> : </span>
@@ -58,19 +58,21 @@
 							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
 					  				</div>
 					  			</div>
-					  			<div class="col-6 mt-3">
-                                    <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/match/' + ${matchCommand.matchId}}"
-                                       class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-                                    <a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
-                                       class="btn btn-success" role="button" th:title="#{matches.list.betMatch}">
-                                        <span class="fas fa-thumbs-up"></span>
-                                    </a>
-                                    <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
-                                       class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
-                                        <span class="fas fa-trophy"></span>
-                                    </a>
+					  			<div class="col-5 mt-3">
+                                    <div class="d-flex justify-content-end">
+                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.matchId}}"
+                                           class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
+                                            <span class="fas fa-edit"></span>
+                                        </a>
+                                        <a th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
+                                           class="btn btn-success ms-2 me-2" role="button" th:title="#{matches.list.betMatch}">
+                                            <span class="fas fa-thumbs-up"></span>
+                                        </a>
+                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
+                                           class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
+                                            <span class="fas fa-trophy"></span>
+                                        </a>
+                                    </div>
 	       						</div>
        						</div>
 					   </div>
