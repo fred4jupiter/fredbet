@@ -58,7 +58,7 @@
 							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
 					  				</div>
 					  			</div>
-					  			<div class="col-5 mt-3">
+					  			<div class="col-6 mt-3">
                                     <div class="d-flex justify-content-end">
                                         <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.matchId}}"
                                            class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
