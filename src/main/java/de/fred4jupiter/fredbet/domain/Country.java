@@ -70,7 +70,7 @@ public enum Country {
 
     ST_VINCENT_GRENADINES("vct"), SURINAME("sur"), TRINIDAD_AND_TOBAGO("tto"), TURKS_AND_CAICOS_ISLANDS("tca"), US_VIRGIN_ISLANDS("vir"),
 
-    USA("usa"), AMERICAN_SAMOA("wsm"), COOK_ISLANDS("cok"), FIJI("fji"), NEW_CALEDONIA("ncl"), NEW_ZEALAND("nzl"), PAPUA_NEW_GUINEA("png"),
+    USA("usa"), COOK_ISLANDS("cok"), FIJI("fji"), NEW_CALEDONIA("ncl"), NEW_ZEALAND("nzl"), PAPUA_NEW_GUINEA("png"),
 
     SAMOA("wsm"), SOLOMON_ISLANDS("slb"), TAHITI("pyf"), TONGA("ton"), VANUATU("vut"), ARGENTINA("arg"), BOLIVIA("bol"), BRAZIL("bra"),
 
