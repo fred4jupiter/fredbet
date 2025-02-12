@@ -57,7 +57,7 @@
 					<div class="form-group mb-3">
 						<label class="form-label" for="group" th:text="#{matches.form.group} + ':'"></label>
 						<select id="group" th:field="*{group}" class="form-select">
-						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}"></option>
+						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${gr.getTitleMsgKey()}}"></option>
 						</select>
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
 			        </div>
