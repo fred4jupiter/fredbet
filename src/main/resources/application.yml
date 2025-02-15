@@ -20,13 +20,31 @@ spring:
       path: /console
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 30MB
+      max-request-size: 30MB
+      resolve-lazily: true
   jmx:
     enabled: false
   threads:
     virtual:
       enabled: true
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  tomcat:
+    max-swallow-size: 100MB
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+  endpoint:
+    health:
+      access: read_only
 
 logging:
   pattern:
@@ -36,24 +54,6 @@ logging:
     "org.springframework.web": "WARN"
     "org.springframework.security": "WARN"
     "de.fred4jupiter.fredbet": "INFO"
-
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
-  tomcat:
-    max-http-form-post-size: 10MB
-    max-swallow-size: 10MB
-
-management:
-  endpoints:
-    web:
-      base-path: /actuator
-  endpoint:
-    health:
-      access: read_only
 
 # -------- fredbet properties ------------------------------------------------------------------------------
 
