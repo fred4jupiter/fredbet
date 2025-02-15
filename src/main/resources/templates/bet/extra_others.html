@@ -10,10 +10,12 @@
 				<div class="col-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
 					<div class="card mb-3">
 						<div class="card-header">
-                            <div class="row">
+                            <div class="row align-items-center">
                                 <div class="col-9">
                                     <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
-                                    <span class="ms-3" th:text="${extraBet.userName}"></span>
+                                    <div class="mt-1">
+                                        <span class="ms-3" th:text="${extraBet.userName}"/>
+                                    </div>
                                 </div>
                                 <div class="col-3">
                                     <span class="badge rounded-pill bg-warning big-badge" th:text="${extraBet.points}"></span>
