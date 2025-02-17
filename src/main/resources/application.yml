@@ -36,7 +36,8 @@ server:
       enabled: true
       force: true
   tomcat:
-    max-swallow-size: 100MB
+    max-swallow-size: 30MB
+    max-http-form-post-size: 30MB
 
 management:
   endpoints:
