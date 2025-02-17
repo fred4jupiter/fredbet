@@ -1,10 +1,10 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
+import de.fred4jupiter.fredbet.domain.Country;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class BetCommand {
 
@@ -30,11 +30,12 @@ public class BetCommand {
 
     private boolean penaltyWinnerOne;
 
-    private String iconPathTeamOne;
+    private Country countryTeamOne;
 
-    private String iconPathTeamTwo;
+    private Country countryTeamTwo;
 
     private boolean useJoker;
+
     private Integer numberOfJokersUsed;
 
     /*
@@ -60,8 +61,6 @@ public class BetCommand {
         builder.append("teamNameTwo", teamNameTwo);
         builder.append("groupMatch", groupMatch);
         builder.append("penaltyWinnerOne", penaltyWinnerOne);
-        builder.append("iconPathTeamOne", iconPathTeamOne);
-        builder.append("iconPathTeamTwo", iconPathTeamTwo);
         builder.append("useJoker", useJoker);
         return builder.toString();
     }
@@ -106,15 +105,6 @@ public class BetCommand {
         this.matchId = matchId;
     }
 
-
-    public String getIconPathTeamOne() {
-        return iconPathTeamOne;
-    }
-
-    public String getIconPathTeamTwo() {
-        return iconPathTeamTwo;
-    }
-
     public String getRedirectViewName() {
         return redirectViewName;
     }
@@ -145,14 +135,6 @@ public class BetCommand {
 
     public void setGroupMatch(boolean groupMatch) {
         this.groupMatch = groupMatch;
-    }
-
-    public void setIconPathTeamOne(String iconPathTeamOne) {
-        this.iconPathTeamOne = iconPathTeamOne;
-    }
-
-    public void setIconPathTeamTwo(String iconPathTeamTwo) {
-        this.iconPathTeamTwo = iconPathTeamTwo;
     }
 
     public boolean isUseJoker() {
@@ -187,4 +169,19 @@ public class BetCommand {
         this.jokerEditable = jokerEditable;
     }
 
+    public Country getCountryTeamOne() {
+        return countryTeamOne;
+    }
+
+    public void setCountryTeamOne(Country countryTeamOne) {
+        this.countryTeamOne = countryTeamOne;
+    }
+
+    public Country getCountryTeamTwo() {
+        return countryTeamTwo;
+    }
+
+    public void setCountryTeamTwo(Country countryTeamTwo) {
+        this.countryTeamTwo = countryTeamTwo;
+    }
 }

@@ -5,38 +5,35 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h2 th:text="#{importexport.title}"></h2>
-			<div class="col-xs-12 col-sm-6 col-md-4">
-				<div class="row">
-					<div class="form-group">
-						<h3 class="label label-info" th:text="#{importexport.subtitle}"></h3>
-					</div>
-				</div>
-				<div class="row">
-					<div class="panel panel-default">
-						<div class="user panel-heading">
-							  <span th:text="#{importexport.export.name}"></span>
-						</div>
-						<div class="panel-body">
-							<a href="#" th:href="@{/importexport/export}" th:text="#{importexport.export.data}"></a>
-						</div>
-					</div>			
-				</div>	
-				<div class="row">
-					<form th:action="@{/importexport/import}" th:object="${importExportCommand}" method="post" enctype="multipart/form-data" role="form">
-						<div class="panel panel-default">
-							<div class="user panel-heading">
-								<span th:text="#{importexport.import.file}"></span>
-							</div>
-							<div class="panel-body">
-								<input id="jsonFile" type="file" th:field="*{jsonFile}" class="btn btn-default btn-file" />
-								<br/>
-								<input type="submit" class="btn btn-primary" th:value="#{importexport.upload.button}" />
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+            <h3 class="mb-3" th:text="#{importexport.subtitle}"></h3>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <form th:action="@{/importexport/import}" th:object="${importExportCommand}" method="post" enctype="multipart/form-data" role="form">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <span th:text="#{importexport.import.file}"></span>
+                            </div>
+                            <div class="card-body">
+                                <input id="jsonFile" type="file" th:field="*{jsonFile}" class="btn btn-light btn-file" />
+                                <input type="submit" class="btn btn-primary mt-2" th:value="#{importexport.upload.button}" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <span th:text="#{importexport.export.data}"></span>
+                        </div>
+                        <div class="card-body">
+                            <a class="btn btn-secondary" role="button" th:href="@{/importexport/export}">
+                                <i class="fas fa-download"></i>
+                                <span th:text="#{importexport.export.name}"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>

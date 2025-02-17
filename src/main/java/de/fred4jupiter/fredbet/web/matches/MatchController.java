@@ -59,7 +59,7 @@ public class MatchController {
         final Group group = Group.valueOf(groupName);
         List<MatchCommand> matches = matchCommandMapper.findMatches(matchService -> matchService.findMatchesByGroup(group));
         model.addAttribute("allMatches", matches);
-        model.addAttribute("heading", messageUtil.getMessageFor("group.entry." + groupName));
+        model.addAttribute("heading", messageUtil.getMessageFor(group.getTitleMsgKey()));
         model.addAttribute("redirectViewName", RedirectViewName.createRedirectForGroup(group));
         return VIEW_LIST_MATCHES;
     }

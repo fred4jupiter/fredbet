@@ -51,7 +51,7 @@ public class RuntimeSettingsService {
         runtimeSettings.setPasswordForReset(FredbetConstants.DEFAULT_RESET_PASSWORT);
         runtimeSettings.setChangePasswordOnFirstLogin(true);
         runtimeSettings.setSelfRegistrationEnabled(false);
-        runtimeSettings.setRegistrationCode(RandomStringUtils.randomAlphanumeric(6));
+        runtimeSettings.setRegistrationCode(RandomStringUtils.secure().nextAlphabetic(6));
         runtimeSettings.setTimeZone(timeZoneUtil.getTimeZoneId());
 
         if (environment.acceptsProfiles(Profiles.of(FredBetProfile.DEV, FredBetProfile.H2))) {

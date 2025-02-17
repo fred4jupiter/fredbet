@@ -35,7 +35,7 @@ public class MessageSourceUtil {
         if (country == null) {
             return null;
         }
-        return getMessageFor("country." + country.getIsoCode(), locale);
+        return getMessageFor("country." + country.getAlpha3Code(), locale);
     }
 
     public String getTeamNameOne(Match match, Locale locale) {

@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.service.user;
 
-import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.ImageBinary;
+import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.*;
@@ -9,11 +12,14 @@ import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -53,11 +60,17 @@ public class UserService {
 
     private final String adminUsername;
 
+    private final ImageAdministrationService imageAdministrationService;
+
+    private final Resource defaultUserProfileImage;
+
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
                        ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
                        ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
                        RuntimeSettingsService runtimeSettingsService, ImageGroupRepository imageGroupRepository,
-                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository, FredbetProperties fredbetProperties) {
+                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository,
+                       FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService,
+                       @Value("classpath:/content/default_profile_image.jpg") Resource defaultUserProfileImage) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
@@ -70,6 +83,8 @@ public class UserService {
         this.bettingService = bettingService;
         this.imageBinaryRepository = imageBinaryRepository;
         this.adminUsername = fredbetProperties.adminUsername();
+        this.imageAdministrationService = imageAdministrationService;
+        this.defaultUserProfileImage = defaultUserProfileImage;
     }
 
     public List<AppUser> findAll() {
@@ -94,7 +109,7 @@ public class UserService {
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public void createUser(AppUser appUser) throws UserAlreadyExistsException {
+    public AppUser createUser(AppUser appUser) throws UserAlreadyExistsException {
         AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
         if (foundUser != null) {
             throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
@@ -102,16 +117,26 @@ public class UserService {
 
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         LOG.info("creating user with username={}", appUser.getUsername());
-        appUserRepository.save(appUser);
+        AppUser savedAppUser = appUserRepository.save(appUser);
+        imageAdministrationService.saveUserProfileImage(getDefaultUserProfileImage(), savedAppUser);
+        return savedAppUser;
     }
 
-    public boolean saveUserIfNotExists(AppUser appUser) {
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public AppUser createUserIfNotExists(AppUser appUser) {
+        AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
+        if (foundUser != null) {
+            return foundUser;
+        }
+
+        return createUser(appUser);
+    }
+
+    private byte[] getDefaultUserProfileImage() {
         try {
-            createUser(appUser);
-            return true;
-        } catch (UserAlreadyExistsException e) {
-            LOG.debug(e.getMessage());
-            return false;
+            return this.defaultUserProfileImage.getContentAsByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException("Default user profile image could not be loaded. Cause: " + e.getMessage());
         }
     }
 
@@ -258,14 +283,9 @@ public class UserService {
         }
     }
 
-    public AppUser createUserIfNotExists(String username, String password, boolean isChild, Set<String> roles) {
-        AppUser appUser = appUserRepository.findByUsername(username);
-        if (appUser != null) {
-            LOG.warn("user with username={} already exists.", username);
-            return appUser;
-        }
-        AppUser newAppUser = AppUserBuilder.create().withUsernameAndPassword(username, password)
-            .withRoles(roles).withIsChild(isChild).build();
-        return appUserRepository.save(newAppUser);
+    public void saveUserProfileImage(byte[] binary) {
+        final AppUser appUser = findByUserId(securityService.getCurrentUser().getId());
+        ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
+        imageAdministrationService.saveUserProfileImage(binary, appUser, imageMetaData);
     }
 }

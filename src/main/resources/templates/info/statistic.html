@@ -1,43 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{statistics.title}"></title>
+        <link rel="stylesheet" th:href="@{/css/pages/statistic.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<h1 th:text="#{statistics.title}"></h1>
-			<div class="row" th:if="${not #lists.isEmpty(statisticList)}">
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">					
-					<img class="flag" th:src="@{${favouriteCountry.getIconPath()}}"/> <span th:text="#{statistics.legend.favouriteCountry}"></span>,
-					<span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>,
-					
+			<div class="row mb-3" th:if="${not #lists.isEmpty(statisticList)}">
+				<div class="col-6 col-sm-2 mb-2">
+                    <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(favouriteCountry)}"></span>
+                    <span th:text="#{statistics.legend.favouriteCountry}"></span>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
-					<span class="fas fa-star blue" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>,
-					<span class="fas fa-lightbulb red" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
+                <div class="col-6 col-sm-2 mb-2">
+                    <span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>
+                </div>
+                <div class="col-6 col-sm-2 mb-2">
+                    <span class="fas fa-star" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>
+                </div>
+				<div class="col-6 col-sm-2 mb-2">
+					<span class="fas fa-lightbulb" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
 				</div>
-			</div>		
-			<br/>
+			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}" style="max-height: 176px;">
-					<div class="panel panel-default panel-statistic">
-						<div class="panel-heading">
-							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(statistic.username)})}"></span>
-							<span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
-							<span th:if="${statistic.minPointsCandidate}" class="fas fa-lightbulb red" aria-hidden="true"></span>
-							<span th:if="${statistic.maxPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
-							<span>,</span>
-							<img class="flag" th:src="@{${statistic.favoriteCountry.getIconPath()}}"/>	
-							<span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-							<span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
-							<span>,</span>
-							<span class="fas fa-magic" aria-hidden="true"></span>
-							<span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
+				<div class="col-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
+					<div class="card mb-3">
+						<div class="card-header bg-info">
+                            <div class="row">
+                                <div class="col-2">
+                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(statistic.username)})}"></span>
+                                </div>
+                                <div class="col-10">
+                                    <span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
+                                    <span th:if="${statistic.minPointsCandidate}" class="fas fa-lightbulb" aria-hidden="true"></span>
+                                    <span th:if="${statistic.maxPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
+                                </div>
+                            </div>
 					   </div>
-					   <div class="panel-body">
+					   <div class="card-body">
 						   <div class="table-responsive">
-						   		<table class="table table-condensed table-centered">
+						   		<table class="table table-condensed table-centered table-striped">
 									<thead>
 										<tr class="active">
 											<th><i class="fas fa-users" aria-hidden="true"></i></th>
@@ -52,7 +54,7 @@
 										<tr>
 											<td class="success">
 												<span th:text="${statistic.pointsGroup}"></span>
-												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star blue" aria-hidden="true"></span>
+												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
 											</td>
 											<td class="warning" th:text="${statistic.pointsRoundOfSixteen}"></td>
 											<td class="warning" th:text="${statistic.pointsQuarterFinal}"></td>
@@ -64,8 +66,16 @@
 						   		</table>
 					   	   </div>
 					   </div>
+                       <div class="card-footer bg-light">
+                           <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(statistic.favoriteCountry)}"></span>
+                           <span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
+                           <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star" aria-hidden="true"></span>
+                           <span>,</span>
+                           <span class="fas fa-magic" aria-hidden="true"></span>
+                           <span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
+                       </div>
 					</div>
-				</div>				
+				</div>
 			</div>
 		</div>
 	</body>

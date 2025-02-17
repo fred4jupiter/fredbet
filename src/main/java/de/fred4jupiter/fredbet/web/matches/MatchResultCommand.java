@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 
@@ -11,8 +12,9 @@ public class MatchResultCommand {
     private String teamNameOne;
     private String teamNameTwo;
 
-    private String iconPathTeamOne;
-    private String iconPathTeamTwo;
+    private Country countryTeamOne;
+
+    private Country countryTeamTwo;
 
     private Integer teamResultOne;
 
@@ -93,19 +95,19 @@ public class MatchResultCommand {
         this.teamNameTwo = teamNameTwo;
     }
 
-    public void setIconPathTeamOne(String iconPathTeamOne) {
-        this.iconPathTeamOne = iconPathTeamOne;
+    public Country getCountryTeamOne() {
+        return countryTeamOne;
     }
 
-    public void setIconPathTeamTwo(String iconPathTeamTwo) {
-        this.iconPathTeamTwo = iconPathTeamTwo;
+    public void setCountryTeamOne(Country countryTeamOne) {
+        this.countryTeamOne = countryTeamOne;
     }
 
-    public String getIconPathTeamOne() {
-        return iconPathTeamOne;
+    public Country getCountryTeamTwo() {
+        return countryTeamTwo;
     }
 
-    public String getIconPathTeamTwo() {
-        return iconPathTeamTwo;
+    public void setCountryTeamTwo(Country countryTeamTwo) {
+        this.countryTeamTwo = countryTeamTwo;
     }
 }

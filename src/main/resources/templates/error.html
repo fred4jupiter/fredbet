@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
-<head>
-	<title th:text="#{error.title}"></title>
-</head>
+    <head>
+        <title th:text="#{error.title}"></title>
+    </head>
 
-<body>
-	<div layout:fragment="content">
-		<div class="alert alert-danger" th:text="#{error.msg.unexpectedError}"></div>
-	
-		<p th:if="${url}">
-			<b>Page:</b> <span th:text="${url}">Page URL</span>
-		</p>
-	
-		<p th:if="${timestamp}" id='created'>
-			<b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
-		</p>
-	
-		<p th:if="${status}">
-			<b>Response Status:</b> <span th:text="${status}">status-code</span> <span th:if="${error}" th:text="'('+${error}+')'">error ...</span>
-		</p>
-		
-		<div th:if="${ex} or ${exception} or (${message} and ${message.length() != 0})">
-			<b>Cause:</b>
-			<span th:if="${ex}" th:text="${ex}">exception ...</span>
-			<span th:if="${exception}" th:text="${exception}">exception</span>
-			<span th:if="${message} and ${message.length() != 0}" th:text="${message}">message ...</span>		
-		</div>
-	
-		<p th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">Cause unknown (no exception details available)</p>
-		
-		<br/>
-		<a href="#" th:href="@{/matches/upcoming}" class="btn btn-default" role="button" th:text="#{button.back}"></a>
-	</div>
-</body>
+    <body>
+        <div layout:fragment="content">
+            <div class="alert alert-danger mt-3" th:text="#{error.msg.unexpectedError}"></div>
+
+            <div class="row">
+                <label for="timestamp" class="col-sm-2 col-form-label fw-bold">Timestamp</label>
+                <div class="col-sm-10">
+                    <input id="timestamp" type="text" readonly class="form-control-plaintext" th:value="${timestamp}">
+                </div>
+                <label for="status" class="col-sm-2 col-form-label fw-bold">Response Status</label>
+                <div class="col-sm-10">
+                    <input id="status" type="text" readonly class="form-control-plaintext" th:value="${status}">
+                </div>
+                <label for="error" class="col-sm-2 col-form-label fw-bold">Error</label>
+                <div class="col-sm-10">
+                    <input id="error" type="text" readonly class="form-control-plaintext" th:value="${error}">
+                </div>
+                <label for="path" class="col-sm-2 col-form-label fw-bold">Path</label>
+                <div class="col-sm-10">
+                    <input id="path" type="text" readonly class="form-control-plaintext" th:value="${path}">
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <a href="#" th:href="@{/matches/upcoming}" class="btn btn-light" role="button" th:text="#{button.back}">Back to main screen</a>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

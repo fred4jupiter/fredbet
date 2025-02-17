@@ -2,6 +2,8 @@ package de.fred4jupiter.fredbet.statistic;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.ExtraBet;
+import de.fred4jupiter.fredbet.domain.RuntimeSettings;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,9 @@ public class StatisticService {
     }
 
     public Country getFavouriteCountry() {
-        return runtimeSettingsService.loadRuntimeSettings().getFavouriteCountry();
+        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        Country favouriteCountry = runtimeSettings.getFavouriteCountry();
+        return favouriteCountry != null && !Country.NONE.equals(favouriteCountry) ? favouriteCountry : FredbetConstants.DEFAULT_FAVOURITE_COUNTRY;
     }
 
     public List<Statistic> createStatistic() {

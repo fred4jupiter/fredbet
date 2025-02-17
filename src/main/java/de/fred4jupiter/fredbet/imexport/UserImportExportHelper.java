@@ -1,12 +1,14 @@
 package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.service.image.BinaryImage;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.service.user.UserService;
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Component
 class UserImportExportHelper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserImportExportHelper.class);
 
     private final ImageMetaDataRepository imageMetaDataRepository;
 
@@ -47,11 +51,9 @@ class UserImportExportHelper {
 
     public long importUsers(List<UserToExport> users) {
         users.forEach(userToExport -> {
-            AppUser appUser = userService.createUserIfNotExists(userToExport.getUsername(), userToExport.getPassword(), userToExport.isChild(), userToExport.getRoles());
-            if (StringUtils.isNotBlank(userToExport.getUserAvatarBase64())) {
-                byte[] decoded = Base64.getDecoder().decode(userToExport.getUserAvatarBase64());
-                imageAdministrationService.saveUserProfileImage(decoded, appUser);
-            }
+            AppUser userToImport = AppUserBuilder.create().withUsernameAndPassword(userToExport.getUsername(), userToExport.getPassword())
+                .withRoles(userToExport.getRoles()).withIsChild(userToExport.isChild()).build();
+            userService.createUserIfNotExists(userToImport);
         });
 
         return users.stream().map(UserToExport::getUsername).distinct().count();

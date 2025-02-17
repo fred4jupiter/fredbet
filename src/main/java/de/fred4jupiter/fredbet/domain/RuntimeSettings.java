@@ -77,7 +77,7 @@ public class RuntimeSettings {
     private Theme bootswatchTheme = Theme.DEFAULT;
 
     @NotNull
-    private NavbarLayout navbarLayout = NavbarLayout.INVERSE;
+    private NavbarLayout navbarLayout = NavbarLayout.DARK;
 
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
@@ -202,7 +202,7 @@ public class RuntimeSettings {
     public String getBootswatchThemeUrl() {
         final String selectedTheme = this.bootswatchTheme.toString().toLowerCase();
         if (Theme.DEFAULT.name().equalsIgnoreCase(selectedTheme)) {
-            return "/webjars/bootstrap/css/bootstrap-theme.min.css";
+            return "/webjars/bootstrap/css/bootstrap.min.css";
         }
         return "/webjars/bootswatch/" + selectedTheme + "/bootstrap.min.css";
     }

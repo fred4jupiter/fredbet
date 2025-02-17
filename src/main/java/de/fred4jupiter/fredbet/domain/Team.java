@@ -88,20 +88,6 @@ public class Team {
         return builder.build();
     }
 
-    public String getIconPath() {
-        if (this.country == null || Country.NONE.equals(this.country)) {
-            return null;
-        }
-        return this.country.getIconPath();
-    }
-
-    public String getIconPathBig() {
-        if (this.country == null || Country.NONE.equals(this.country)) {
-            return null;
-        }
-        return this.country.getIconPathBig();
-    }
-
     public String getBusinessKey() {
         return "team_%s_%s".formatted(this.country, this.name);
     }

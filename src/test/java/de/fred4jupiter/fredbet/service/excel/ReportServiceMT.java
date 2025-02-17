@@ -35,7 +35,7 @@ public class ReportServiceMT {
     @Test
     public void exportResultsToExcel() throws IOException {
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("fred", "feuerstein").withUserGroup(FredBetUserGroup.ROLE_USER).build();
-        userService.saveUserIfNotExists(appUser);
+        userService.createUserIfNotExists(appUser);
 
         dataBasePopulator.createRandomMatches();
         dataBasePopulator.createDemoBetsForAllUsers();

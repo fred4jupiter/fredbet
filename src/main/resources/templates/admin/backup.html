@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{administration.backup.title}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<h1 th:text="#{administration.backup.title}"></h1>
-			<div class="row">			
+			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div class="form-group">
 						<span class="label label-danger" th:text="#{administration.backup.warning.hint}"></span>
-					</div>	
+					</div>
 					<div class="form-group">
 						<a th:href="@{/backup/execute}" class="btn btn-primary" role="button" th:text="#{administration.backup.executeBackupButton}"></a>
 					</div>
 					<hr/>
-					<form id="backupForm" th:action="@{/backup/save}" th:object="${databaseBackupCommand}" action="#" method="post" role="form">						
+					<form id="backupForm" th:action="@{/backup/save}" th:object="${databaseBackupCommand}" action="#" method="post" role="form">
 						<div class="form-group">
-							<label for="backupFolder" th:text="#{backup.backupFolder} + ':'"></label> 
+							<label for="backupFolder" th:text="#{backup.backupFolder} + ':'"></label>
 							<input id="backupFolder" type="text" th:field="*{backupFolder}" class="form-control" />
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('backupFolder')}" th:errors="*{backupFolder}">backupFolder error</p>						
+							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('backupFolder')}" th:errors="*{backupFolder}">backupFolder error</p>
 						</div>
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>

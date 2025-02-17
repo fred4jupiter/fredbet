@@ -2,31 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" lang="de">
 	<head>
 		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">FredBet</title>
 
 		<link rel="stylesheet" th:href="@{/webjars/font-awesome/css/fontawesome.min.css}" />
 		<link rel="stylesheet" th:href="@{/webjars/font-awesome/css/brands.min.css}" />
 		<link rel="stylesheet" th:href="@{/webjars/font-awesome/css/solid.min.css}" />
-		<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-		<link rel="stylesheet" th:href="${@runtimeSettingsUtil.getSettings().getBootswatchThemeUrl()}" />
+        <link rel="stylesheet" th:href="${@runtimeSettingsUtil.getSettings().getBootswatchThemeUrl()}" />
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}" />
 		<link rel="stylesheet" th:href="@{/lightbox/css/lightbox.min.css}" />
+        <link rel="stylesheet" th:href="@{/flag-icons-7.2.3/css/flag-icons.min.css}" />
 		<link rel="stylesheet" th:href="@{/css/custom.css}" />
 	</head>
 	<body>
 		<nav th:replace="~{_navigation :: menu}"></nav>
-		<div class="container" role="main">
-			<div th:replace="~{fragments/alert :: alert_headline}"></div>
+		<div class="container mt-3" role="main">
+            <div th:replace="~{fragments/alert :: alert_headline}"></div>
 			<div layout:fragment="content" th:remove="tag">Content Placeholder</div>
 		</div>
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-		<script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-		<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-		<script type="text/javascript" th:src="@{/js/bootstrap-confirmation.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 		<script type="text/javascript" th:src="@{/lightbox/js/lightbox.min.js}"></script>
-
+        <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>
 		<th:block layout:fragment="scripts"></th:block>
 	</body>
 </html>
