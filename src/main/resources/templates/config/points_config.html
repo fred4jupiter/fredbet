@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+	<head>
+		<title th:text="#{points.config.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+            <h1 th:text="#{points.config.title}"></h1>
+			<form id="pointsConfigForm" th:action="@{/config/points}" th:object="${pointsConfig}" action="#" method="post" role="form">
+                <div class="col-12 mb-3">
+                    <h2 th:text="#{points.config.subtitle}"></h2>
+                    <div class="row">
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsCorrectResult" class="form-label" th:text="#{points.config.pointsCorrectResult} + ':'"></label>
+                                <input id="pointsCorrectResult" type="text" th:field="*{pointsCorrectResult}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectResult')}" th:errors="*{pointsCorrectResult}"></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsSameGoalDifference" class="form-label" th:text="#{points.config.pointsSameGoalDifference} + ':'"></label>
+                                <input id="pointsSameGoalDifference" type="text" th:field="*{pointsSameGoalDifference}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsSameGoalDifference')}" th:errors="*{pointsSameGoalDifference}"></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsCorrectWinner" class="form-label" th:text="#{points.config.pointsCorrectWinner} + ':'"></label>
+                                <input id="pointsCorrectWinner" type="text" th:field="*{pointsCorrectWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectWinner')}" th:errors="*{pointsCorrectWinner}"></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsCorrectNumberOfGoalsOneTeam" class="form-label" th:text="#{points.config.pointsCorrectNumberOfGoalsOneTeam} + ':'"></label>
+                                <input id="pointsCorrectNumberOfGoalsOneTeam" type="text" th:field="*{pointsCorrectNumberOfGoalsOneTeam}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectNumberOfGoalsOneTeam')}" th:errors="*{pointsCorrectNumberOfGoalsOneTeam}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 mb-3">
+                    <h2 th:text="#{points.config.extraBetPoints}"></h2>
+                    <div class="row">
+                        <div class="col-4 col-sm-3">
+                            <div class="mb-3">
+                                <label for="pointsFinalWinner" class="form-label" th:text="#{points.config.pointsFinalWinner.title} + ':'"></label>
+                                <input id="pointsFinalWinner" type="text" th:field="*{extraPointsConfig.pointsFinalWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsFinalWinner')}" th:errors="*{extraPointsConfig.pointsFinalWinner}"></p>
+                            </div>
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <div class="mb-3">
+                                <label for="pointsSemiFinalWinner" class="form-label" th:text="#{points.config.pointsSemiFinalWinner.title} + ':'"></label>
+                                <input id="pointsSemiFinalWinner" type="text" th:field="*{extraPointsConfig.pointsSemiFinalWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsSemiFinalWinner')}" th:errors="*{extraPointsConfig.pointsSemiFinalWinner}"></p>
+                            </div>
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <div class="mb-3">
+                                <label for="pointsThirdFinalWinner" class="form-label" th:text="#{points.config.pointsThirdFinalWinner.title} + ':'"></label>
+                                <input id="pointsThirdFinalWinner" type="text" th:field="*{extraPointsConfig.pointsThirdFinalWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsThirdFinalWinner')}" th:errors="*{extraPointsConfig.pointsThirdFinalWinner}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="row">
+					<div class="col-auto">
+						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+					</div>
+                    <div class="col-auto">
+                        <a th:href="@{/config/points/reset}" class="btn btn-light" th:text="#{points.config.reset.defaults}"></a>
+                    </div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

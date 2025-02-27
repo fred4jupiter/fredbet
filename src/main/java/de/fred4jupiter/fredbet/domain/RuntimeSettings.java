@@ -1,10 +1,9 @@
 package de.fred4jupiter.fredbet.domain;
 
-import org.hibernate.validator.constraints.Length;
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 
 /**
@@ -31,27 +30,6 @@ public class RuntimeSettings {
      */
     @NotEmpty
     private String passwordForReset;
-
-    /**
-     * Extra betting points for final winner.
-     */
-    @NotNull
-    @Min(value = 0)
-    private Integer pointsFinalWinner = 10;
-
-    /**
-     * Extra betting points for semi final winner.
-     */
-    @NotNull
-    @Min(value = 0)
-    private Integer pointsSemiFinalWinner = 5;
-
-    /**
-     * Extra betting points for third winner.
-     */
-    @NotNull
-    @Min(value = 0)
-    private Integer pointsThirdFinalWinner = 2;
 
     /**
      * If users have to change their password at first login.
@@ -117,30 +95,6 @@ public class RuntimeSettings {
 
     public void setPasswordForReset(String passwordForReset) {
         this.passwordForReset = passwordForReset;
-    }
-
-    public Integer getPointsFinalWinner() {
-        return pointsFinalWinner;
-    }
-
-    public void setPointsFinalWinner(Integer pointsFinalWinner) {
-        this.pointsFinalWinner = pointsFinalWinner;
-    }
-
-    public Integer getPointsSemiFinalWinner() {
-        return pointsSemiFinalWinner;
-    }
-
-    public void setPointsSemiFinalWinner(Integer pointsSemiFinalWinner) {
-        this.pointsSemiFinalWinner = pointsSemiFinalWinner;
-    }
-
-    public Integer getPointsThirdFinalWinner() {
-        return pointsThirdFinalWinner;
-    }
-
-    public void setPointsThirdFinalWinner(Integer pointsThirdFinalWinner) {
-        this.pointsThirdFinalWinner = pointsThirdFinalWinner;
     }
 
     public boolean isChangePasswordOnFirstLogin() {

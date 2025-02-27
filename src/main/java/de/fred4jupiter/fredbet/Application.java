@@ -42,6 +42,7 @@ public class Application {
         caches.add(new ConcurrentMapCache(CacheNames.AVAIL_GROUPS));
         caches.add(new ConcurrentMapCache(CacheNames.CHILD_RELATION));
         caches.add(new ConcurrentMapCache(CacheNames.RUNTIME_SETTINGS));
+        caches.add(new ConcurrentMapCache(CacheNames.POINTS_CONFIG));
         cacheManager.setCaches(caches);
         return cacheManager;
     }

@@ -12,7 +12,7 @@
 					<div class="card mb-3">
 						<div class="card-header bg-success">
 							<span class="bold" th:text="#{extra_bets.finalWinner} + ':'"></span>
-							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsFinalWinner()})}"></span>
+							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
 							<select th:field="*{finalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
@@ -25,7 +25,7 @@
 					<div class="card mb-3">
 						<div class="card-header bg-warning">
 							<span class="bold" th:text="#{extra_bets.semiFinalWinner} + ':'"></span>
-							<span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsSemiFinalWinner()})}"></span>
+							<span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsSemiFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
 							<select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
@@ -38,7 +38,7 @@
 					<div class="card mb-3">
 						<div class="card-header bg-info">
 							<span class="bold" th:text="#{extra_bets.thirdFinalWinner} + ':'"></span>
-							<span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getSettings().getPointsThirdFinalWinner()})}"></span>
+							<span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsThirdFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
 							<select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">

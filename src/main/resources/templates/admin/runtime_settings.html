@@ -84,32 +84,6 @@
 						</div>
 					</div>
 					<div class="col-12 col-sm-6 mb-3">
-						<h2 th:text="#{administration.runtime.configuration.extraBetPoints}"></h2>
-						<div class="row">
-							<div class="col-4 col-sm-3">
-								<div class="form-group">
-									<label for="runtimeSettings.pointsFinalWinner" class="form-label" th:text="#{administration.runtime.configuration.pointsFinalWinner.title} + ':'"></label>
-									<input id="runtimeSettings.pointsFinalWinner" type="text" th:field="*{runtimeSettings.pointsFinalWinner}" class="form-control" />
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsFinalWinner')}" th:errors="*{runtimeSettings.pointsFinalWinner}"></p>
-								</div>
-							</div>
-							<div class="col-4 col-sm-3">
-								<div class="form-group">
-									<label for="runtimeSettings.pointsSemiFinalWinner" class="form-label" th:text="#{administration.runtime.configuration.pointsSemiFinalWinner.title} + ':'"></label>
-									<input id="runtimeSettings.pointsSemiFinalWinner" type="text" th:field="*{runtimeSettings.pointsSemiFinalWinner}" class="form-control" />
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsSemiFinalWinner')}" th:errors="*{runtimeSettings.pointsSemiFinalWinner}"></p>
-								</div>
-							</div>
-							<div class="col-4 col-sm-3">
-								<div class="form-group">
-									<label for="runtimeSettings.pointsThirdFinalWinner" class="form-label" th:text="#{administration.runtime.configuration.pointsThirdFinalWinner.title} + ':'"></label>
-									<input id="runtimeSettings.pointsThirdFinalWinner" type="text" th:field="*{runtimeSettings.pointsThirdFinalWinner}" class="form-control" />
-									<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.pointsThirdFinalWinner')}" th:errors="*{runtimeSettings.pointsThirdFinalWinner}"></p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-6 mb-3">
                         <div class="row">
                             <div class="col-12 col-sm-6 mb-3">
                                 <h2 th:text="#{administration.runtime.configuration.joker}"></h2>

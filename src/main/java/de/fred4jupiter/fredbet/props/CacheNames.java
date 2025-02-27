@@ -24,4 +24,9 @@ public final class CacheNames {
      * Runtime config parameters that will be cached.
      */
     public static final String RUNTIME_SETTINGS = "runtimeSettings";
+
+    /**
+     * Runtime config parameters for points.
+     */
+    public static final String POINTS_CONFIG = "pointsConfig";
 }
