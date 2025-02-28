@@ -26,19 +26,19 @@
 						   <div class="table-responsive">
 						   		<table class="table table-condensed">
 						   			<tr>
-										<td class="bg-success">
+										<td class="bg-success-subtle">
 											1. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.finalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr>
-										<td class="bg-warning">
+										<td class="bg-warning-subtle">
 											2. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.semiFinalWinner.getAlpha3Code()}}"></span>
 										</td>
 						   			</tr>
 						   			<tr th:if="${extraBet.thirdFinalWinner}">
-										<td class="bg-info">
+										<td class="bg-info-subtle">
 											3. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
 											<span th:text="#{${'country.' + extraBet.thirdFinalWinner.getAlpha3Code()}}"></span>
 										</td>
