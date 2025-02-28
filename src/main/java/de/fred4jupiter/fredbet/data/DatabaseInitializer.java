@@ -6,7 +6,7 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.service.InfoService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
-import de.fred4jupiter.fredbet.service.user.UserService;
+import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

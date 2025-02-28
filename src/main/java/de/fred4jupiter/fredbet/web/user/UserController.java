@@ -5,9 +5,10 @@ import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
-import de.fred4jupiter.fredbet.service.user.UserNotDeletableException;
-import de.fred4jupiter.fredbet.service.user.UserService;
+import de.fred4jupiter.fredbet.user.UserAdministrationService;
+import de.fred4jupiter.fredbet.user.UserAlreadyExistsException;
+import de.fred4jupiter.fredbet.user.UserNotDeletableException;
+import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import jakarta.validation.Valid;
@@ -48,12 +49,15 @@ public class UserController {
 
     private final FredbetProperties fredbetProperties;
 
+    private final UserAdministrationService userAdministrationService;
+
     public UserController(UserService userService, WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil,
-                          FredbetProperties fredbetProperties) {
+                          FredbetProperties fredbetProperties, UserAdministrationService userAdministrationService) {
         this.userService = userService;
         this.webMessageUtil = webMessageUtil;
         this.webSecurityUtil = webSecurityUtil;
         this.fredbetProperties = fredbetProperties;
+        this.userAdministrationService = userAdministrationService;
     }
 
     @ModelAttribute("availableRoles")
@@ -185,7 +189,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_PASSWORD_RESET + "')")
     @GetMapping("{id}/resetPwd")
     public String resetPassword(@PathVariable("id") Long userId, RedirectAttributes redirect) {
-        String username = userService.resetPasswordForUser(userId);
+        String username = userAdministrationService.resetPasswordForUser(userId);
         webMessageUtil.addInfoMsg(redirect, "user.password.reset", username);
         return REDIRECT_USER_PAGE;
     }

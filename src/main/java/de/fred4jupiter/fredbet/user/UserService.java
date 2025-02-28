@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.service.user;
+package de.fred4jupiter.fredbet.user;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageBinary;
@@ -9,9 +9,7 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
-import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
@@ -50,8 +48,6 @@ public class UserService {
 
     private final SessionTrackingRepository sessionTrackingRepository;
 
-    private final RuntimeSettingsService runtimeSettingsService;
-
     private final ImageGroupRepository imageGroupRepository;
 
     private final BettingService bettingService;
@@ -67,7 +63,7 @@ public class UserService {
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
                        ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
                        ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
-                       RuntimeSettingsService runtimeSettingsService, ImageGroupRepository imageGroupRepository,
+                       ImageGroupRepository imageGroupRepository,
                        BettingService bettingService, ImageBinaryRepository imageBinaryRepository,
                        FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService,
                        @Value("classpath:/content/default_profile_image.jpg") Resource defaultUserProfileImage) {
@@ -78,7 +74,6 @@ public class UserService {
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.sessionTrackingRepository = sessionTrackingRepository;
-        this.runtimeSettingsService = runtimeSettingsService;
         this.imageGroupRepository = imageGroupRepository;
         this.bettingService = bettingService;
         this.imageBinaryRepository = imageBinaryRepository;
@@ -97,15 +92,6 @@ public class UserService {
         } else {
             return appUserRepository.findByUsernameNotLike(adminUsername, Sort.by(Direction.ASC, "username"));
         }
-    }
-
-    public AppUser findByUserId(Long userId) {
-        Optional<AppUser> appUser = appUserRepository.findById(userId);
-        if (appUser.isPresent()) {
-            return appUser.get();
-        }
-
-        throw new IllegalArgumentException("Given user with userId=" + userId + " does not exists.");
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
@@ -148,7 +134,7 @@ public class UserService {
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
     public AppUser updateUser(Long userId, Set<String> roles, boolean isChild) {
         Assert.notNull(userId, "userId must be given");
-        AppUser appUser = findByUserId(userId);
+        AppUser appUser = appUserRepository.findByUserId(userId);
         if (Validator.isNotEmpty(roles)) {
             appUser.setRoles(roles);
         }
@@ -160,7 +146,7 @@ public class UserService {
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
     public void deleteUser(Long userId) {
-        AppUser appUser = findByUserId(userId);
+        AppUser appUser = appUserRepository.findByUserId(userId);
         if (!appUser.isDeletable()) {
             throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
         }
@@ -185,33 +171,6 @@ public class UserService {
                 deleteUser(appUser.getId());
             }
         });
-    }
-
-    public String resetPasswordForUser(Long userId) {
-        AppUser appUser = findByUserId(userId);
-        String passwordForReset = runtimeSettingsService.loadRuntimeSettings().getPasswordForReset();
-        appUser.setPassword(passwordEncoder.encode(passwordForReset));
-        // user has to change his password when password is reset
-        appUser.setFirstLogin(true);
-        appUserRepository.save(appUser);
-        return appUser.getUsername();
-    }
-
-    public void changePassword(Long userId, String enteredOldPasswordPlain, String newPassword) {
-        AppUser appUser = findByUserId(userId);
-
-        final String oldSavedEncryptedPassword = appUser.getPassword();
-
-        if (!passwordEncoder.matches(enteredOldPasswordPlain, oldSavedEncryptedPassword)) {
-            throw new OldPasswordWrongException("The old password is wrong!");
-        }
-
-        appUser.setPassword(passwordEncoder.encode(newPassword));
-
-        // reset firstLogin flag
-        securityService.resetFirstLogin(appUser);
-
-        appUserRepository.save(appUser);
     }
 
     public List<UserDto> findAllAsUserDto(boolean withDefaultAdminUser) {
@@ -284,8 +243,12 @@ public class UserService {
     }
 
     public void saveUserProfileImage(byte[] binary) {
-        final AppUser appUser = findByUserId(securityService.getCurrentUser().getId());
+        final AppUser appUser = appUserRepository.findByUserId(securityService.getCurrentUser().getId());
         ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
         imageAdministrationService.saveUserProfileImage(binary, appUser, imageMetaData);
+    }
+
+    public AppUser findByUserId(Long userId) {
+        return appUserRepository.findByUserId(userId);
     }
 }

@@ -3,10 +3,12 @@ package de.fred4jupiter.fredbet.web.profile;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
-import de.fred4jupiter.fredbet.service.user.UserAlreadyExistsException;
-import de.fred4jupiter.fredbet.service.user.UserService;
+import de.fred4jupiter.fredbet.user.UserAdministrationService;
+import de.fred4jupiter.fredbet.user.UserAlreadyExistsException;
+import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
-
 @Controller
 @RequestMapping("/profile")
 public class UserProfileController {
@@ -27,13 +27,17 @@ public class UserProfileController {
 
     private static final String CHANGE_USERNAME_PAGE = "profile/change_username";
 
+    private final UserAdministrationService userAdministrationService;
+
     private final UserService userService;
 
     private final WebMessageUtil webMessageUtil;
 
     private final WebSecurityUtil webSecurityUtil;
 
-    public UserProfileController(UserService userService, WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil) {
+    public UserProfileController(UserAdministrationService userAdministrationService, UserService userService,
+                                 WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil) {
+        this.userAdministrationService = userAdministrationService;
         this.userService = userService;
         this.webMessageUtil = webMessageUtil;
         this.webSecurityUtil = webSecurityUtil;
@@ -56,7 +60,7 @@ public class UserProfileController {
         }
 
         try {
-            userService.changePassword(currentUser.getId(), changePasswordCommand.getOldPassword(), changePasswordCommand.getNewPassword());
+            userAdministrationService.changePassword(currentUser.getId(), changePasswordCommand.getOldPassword(), changePasswordCommand.getNewPassword());
         } catch (OldPasswordWrongException e) {
             webMessageUtil.addErrorMsg(model, "msg.bet.betting.error.oldPasswordWrong");
             model.addAttribute("changePasswordCommand", changePasswordCommand);

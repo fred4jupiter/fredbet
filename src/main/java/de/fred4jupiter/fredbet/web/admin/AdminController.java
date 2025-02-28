@@ -7,7 +7,7 @@ import de.fred4jupiter.fredbet.domain.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.admin.AdministrationService;
 import de.fred4jupiter.fredbet.service.admin.SessionTrackingService;
-import de.fred4jupiter.fredbet.service.user.UserService;
+import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;

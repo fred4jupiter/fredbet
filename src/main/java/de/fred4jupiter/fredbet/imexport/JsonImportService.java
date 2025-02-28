@@ -4,7 +4,7 @@ import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.MatchBuilder;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.MatchService;
-import de.fred4jupiter.fredbet.service.user.UserService;
+import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

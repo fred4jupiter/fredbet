@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
@@ -15,4 +16,13 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     List<AppUser> fetchLastLoginUsers();
 
     List<AppUser> findByUsernameNotLike(String username, Sort sort);
+
+    default AppUser findByUserId(Long userId) {
+        Optional<AppUser> appUser = findById(userId);
+        if (appUser.isPresent()) {
+            return appUser.get();
+        }
+
+        throw new IllegalArgumentException("Given user with userId=" + userId + " does not exists.");
+    }
 }
