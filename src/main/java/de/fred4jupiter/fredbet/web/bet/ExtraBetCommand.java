@@ -1,9 +1,7 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Match;
-
-import jakarta.persistence.Column;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 
 public class ExtraBetCommand {
 

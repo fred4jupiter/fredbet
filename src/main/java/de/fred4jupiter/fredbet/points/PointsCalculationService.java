@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.points;
 
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import org.slf4j.Logger;

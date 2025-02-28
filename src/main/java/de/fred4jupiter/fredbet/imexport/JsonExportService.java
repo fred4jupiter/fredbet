@@ -1,9 +1,9 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.Bet;
-import de.fred4jupiter.fredbet.domain.ExtraBet;
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.user.UserService;

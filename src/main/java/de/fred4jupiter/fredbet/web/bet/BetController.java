@@ -1,9 +1,9 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.Joker;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;

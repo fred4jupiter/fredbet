@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.user;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;

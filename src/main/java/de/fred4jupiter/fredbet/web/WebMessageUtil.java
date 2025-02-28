@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;

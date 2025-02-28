@@ -3,8 +3,7 @@ package de.fred4jupiter.fredbet.excel;
 import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.excel.ExcelImportService;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

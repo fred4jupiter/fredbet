@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.image;
 
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.image.DownloadService;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;

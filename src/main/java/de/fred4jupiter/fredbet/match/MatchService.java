@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import org.slf4j.Logger;

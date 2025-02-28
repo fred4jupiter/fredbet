@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.registration;
 
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.user.UserService;

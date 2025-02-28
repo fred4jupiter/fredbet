@@ -1,6 +1,10 @@
 package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;

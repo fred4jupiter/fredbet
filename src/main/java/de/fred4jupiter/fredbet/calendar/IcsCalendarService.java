@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.calendar;
 
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.util.IcsCalendarBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;

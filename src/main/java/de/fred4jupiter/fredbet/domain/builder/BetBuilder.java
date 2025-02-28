@@ -1,4 +1,7 @@
-package de.fred4jupiter.fredbet.domain;
+package de.fred4jupiter.fredbet.domain.builder;
+
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 
 public final class BetBuilder {
     private String userName;

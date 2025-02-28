@@ -1,5 +1,6 @@
-package de.fred4jupiter.fredbet.domain;
+package de.fred4jupiter.fredbet.domain.entity;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.util;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

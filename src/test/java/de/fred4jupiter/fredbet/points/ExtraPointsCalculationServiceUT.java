@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.points;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import org.junit.jupiter.api.BeforeEach;

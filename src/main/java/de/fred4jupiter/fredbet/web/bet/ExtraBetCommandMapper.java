@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.domain.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import org.springframework.stereotype.Component;
 

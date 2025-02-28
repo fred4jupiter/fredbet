@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.imexport;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 
 import java.time.LocalDateTime;
 

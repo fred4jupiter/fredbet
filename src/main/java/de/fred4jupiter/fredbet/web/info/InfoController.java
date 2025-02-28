@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import de.fred4jupiter.fredbet.domain.Info;
+import de.fred4jupiter.fredbet.domain.entity.Info;
 import de.fred4jupiter.fredbet.statistic.Statistic;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;

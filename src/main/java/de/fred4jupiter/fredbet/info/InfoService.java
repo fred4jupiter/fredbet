@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.info;
 
-import de.fred4jupiter.fredbet.domain.Info;
-import de.fred4jupiter.fredbet.domain.InfoPK;
+import de.fred4jupiter.fredbet.domain.entity.Info;
+import de.fred4jupiter.fredbet.domain.entity.InfoPK;
 import de.fred4jupiter.fredbet.repository.InfoRepository;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.springframework.stereotype.Service;

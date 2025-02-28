@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.user;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.ImageBinary;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
+import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;

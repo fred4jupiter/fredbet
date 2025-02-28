@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.standings;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.MatchResult;
-import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 

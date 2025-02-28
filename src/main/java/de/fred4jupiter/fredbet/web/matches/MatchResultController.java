@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.Match;
-import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;

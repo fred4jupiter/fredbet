@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.springframework.stereotype.Service;

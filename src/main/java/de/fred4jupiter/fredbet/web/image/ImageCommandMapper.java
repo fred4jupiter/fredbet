@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.image;
 
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

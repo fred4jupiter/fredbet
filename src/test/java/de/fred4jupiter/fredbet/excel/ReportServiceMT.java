@@ -2,9 +2,8 @@ package de.fred4jupiter.fredbet.excel;
 
 import de.fred4jupiter.fredbet.Application;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
-import de.fred4jupiter.fredbet.excel.ReportService;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.user.UserService;

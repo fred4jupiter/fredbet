@@ -2,6 +2,9 @@ package de.fred4jupiter.fredbet.points;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

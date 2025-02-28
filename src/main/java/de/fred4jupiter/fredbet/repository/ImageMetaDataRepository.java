@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
+import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

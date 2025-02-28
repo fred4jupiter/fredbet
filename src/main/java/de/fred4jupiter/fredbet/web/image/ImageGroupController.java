@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.image;
 
-import de.fred4jupiter.fredbet.domain.ImageGroup;
+import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.image.ImageGroupExistsException;
 import de.fred4jupiter.fredbet.image.ImageGroupNotDeletableException;

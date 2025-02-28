@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.ranking;
 
-import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.domain.Visitable;

@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.domain;
+package de.fred4jupiter.fredbet.domain.entity;
 
 import java.time.LocalDateTime;
 
@@ -19,13 +19,13 @@ public class SessionTracking {
 	@Id
 	@Column(name = "USER_NAME")
 	private String userName;
-	
+
 	@Column(name = "SESSION_ID")
 	private String sessionId;
-	
+
 	@Column(name = "LAST_LOGIN")
 	private LocalDateTime lastLogin;
-	
+
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;

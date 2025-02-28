@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import de.fred4jupiter.fredbet.domain.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 
 public interface ExtraBetRepository extends JpaRepository<ExtraBet, Long>{
 

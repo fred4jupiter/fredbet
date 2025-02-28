@@ -2,8 +2,8 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.data.AsyncDatabasePopulator;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.SessionTracking;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.admin.AdministrationService;
 import de.fred4jupiter.fredbet.admin.SessionTrackingService;

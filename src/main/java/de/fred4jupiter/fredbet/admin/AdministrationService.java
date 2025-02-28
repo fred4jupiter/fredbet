@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.admin;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import org.springframework.stereotype.Service;
 

@@ -2,6 +2,10 @@ package de.fred4jupiter.fredbet.betting;
 
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;

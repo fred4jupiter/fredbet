@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.domain;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

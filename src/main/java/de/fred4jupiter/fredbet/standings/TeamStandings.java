@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.standings;
 
-import de.fred4jupiter.fredbet.domain.Team;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

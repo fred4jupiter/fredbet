@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.image;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.image.ImageUploadLimitReachedException;

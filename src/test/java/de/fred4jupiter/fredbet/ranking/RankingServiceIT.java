@@ -2,8 +2,8 @@ package de.fred4jupiter.fredbet.ranking;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;

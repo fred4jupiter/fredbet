@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.pointcourse;
 
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 
 import java.util.*;

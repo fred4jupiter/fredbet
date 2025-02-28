@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.image;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
-import de.fred4jupiter.fredbet.domain.ImageMetaData;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
+import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.ImageGroupRepository;

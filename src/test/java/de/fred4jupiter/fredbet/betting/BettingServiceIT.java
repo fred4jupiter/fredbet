@@ -2,6 +2,11 @@ package de.fred4jupiter.fredbet.betting;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.user.UserService;

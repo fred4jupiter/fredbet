@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.domain;
 
+import de.fred4jupiter.fredbet.domain.entity.Team;
+
 public interface MatchResult {
 
     boolean isTeamOneWinner();

@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.country.CountryService;

@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.excel;
 
 import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.ranking.RankingService;

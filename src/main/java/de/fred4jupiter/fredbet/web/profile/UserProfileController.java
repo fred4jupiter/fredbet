@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.profile;
 
-import de.fred4jupiter.fredbet.domain.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.user.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.user.RenameUsernameNotAllowedException;
 import de.fred4jupiter.fredbet.user.UserAdministrationService;
