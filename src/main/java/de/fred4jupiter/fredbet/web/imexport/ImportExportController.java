@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.web.imexport;
 import de.fred4jupiter.fredbet.imexport.JsonExportService;
 import de.fred4jupiter.fredbet.imexport.JsonImportService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
+import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.user.UserImportExportCommand;

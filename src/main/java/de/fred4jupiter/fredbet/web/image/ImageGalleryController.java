@@ -1,9 +1,9 @@
 package de.fred4jupiter.fredbet.web.image;
 
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
-import de.fred4jupiter.fredbet.service.image.BinaryImage;
-import de.fred4jupiter.fredbet.service.image.DownloadService;
-import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.image.BinaryImage;
+import de.fred4jupiter.fredbet.image.DownloadService;
+import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;

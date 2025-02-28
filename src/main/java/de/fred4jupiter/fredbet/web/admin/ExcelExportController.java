@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.excel.ReportService;
+import de.fred4jupiter.fredbet.excel.ReportService;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;

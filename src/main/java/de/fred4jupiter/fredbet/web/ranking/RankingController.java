@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.ranking;
 
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.repository.UsernamePoints;
-import de.fred4jupiter.fredbet.service.ranking.RankingService;
+import de.fred4jupiter.fredbet.ranking.RankingService;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;

@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.domain.DatabaseBackup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException;
-import de.fred4jupiter.fredbet.service.admin.DatabaseBackupCreationException.ErrorCode;
-import de.fred4jupiter.fredbet.service.admin.DatabaseBackupService;
+import de.fred4jupiter.fredbet.admin.DatabaseBackupCreationException;
+import de.fred4jupiter.fredbet.admin.DatabaseBackupCreationException.ErrorCode;
+import de.fred4jupiter.fredbet.admin.DatabaseBackupService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

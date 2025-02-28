@@ -5,8 +5,6 @@ import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.repository.BetRepository;
-import de.fred4jupiter.fredbet.service.FredBetUsageBuilder;
-import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;

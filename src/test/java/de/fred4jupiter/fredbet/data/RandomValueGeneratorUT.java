@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.service.CountryService;
+import de.fred4jupiter.fredbet.country.CountryService;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

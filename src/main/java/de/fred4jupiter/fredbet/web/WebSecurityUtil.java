@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;

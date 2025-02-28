@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.registration;
 
-import de.fred4jupiter.fredbet.service.registration.RegistrationService;
+import de.fred4jupiter.fredbet.registration.RegistrationService;
 import de.fred4jupiter.fredbet.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;

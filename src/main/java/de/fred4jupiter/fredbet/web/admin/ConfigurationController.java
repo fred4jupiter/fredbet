@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.admin.CacheAdministrationService;
+import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.util.LogLevel;
 import de.fred4jupiter.fredbet.util.LogLevelChangable;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;

@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.domain.Match;
 import de.fred4jupiter.fredbet.domain.Team;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import org.springframework.context.i18n.LocaleContextHolder;

@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.JokerService;
-import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.betting.JokerService;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;

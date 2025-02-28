@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.web.image;
 
 import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.image.ImageGroupExistsException;
-import de.fred4jupiter.fredbet.service.image.ImageGroupNotDeletableException;
-import de.fred4jupiter.fredbet.service.image.ImageGroupService;
+import de.fred4jupiter.fredbet.image.ImageGroupExistsException;
+import de.fred4jupiter.fredbet.image.ImageGroupNotDeletableException;
+import de.fred4jupiter.fredbet.image.ImageGroupService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;

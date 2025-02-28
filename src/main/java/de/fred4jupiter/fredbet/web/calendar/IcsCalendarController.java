@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.calendar;
 
-import de.fred4jupiter.fredbet.service.calendar.IcsCalendarService;
-import de.fred4jupiter.fredbet.service.calendar.IcsFile;
+import de.fred4jupiter.fredbet.calendar.IcsCalendarService;
+import de.fred4jupiter.fredbet.calendar.IcsFile;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;

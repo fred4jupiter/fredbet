@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.admin.SystemInfoService;
+import de.fred4jupiter.fredbet.admin.SystemInfoService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Component;
 
 @Component

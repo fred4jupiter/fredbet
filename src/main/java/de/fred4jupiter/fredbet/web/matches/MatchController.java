@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.service.MatchService;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import org.springframework.stereotype.Controller;

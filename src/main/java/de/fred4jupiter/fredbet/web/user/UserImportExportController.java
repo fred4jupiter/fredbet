@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.user;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.service.excel.ExcelReadingException;
+import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.imexport.UserImportExportService;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;

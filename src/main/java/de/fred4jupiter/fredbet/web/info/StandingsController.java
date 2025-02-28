@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import de.fred4jupiter.fredbet.service.standings.StandingsContainer;
-import de.fred4jupiter.fredbet.service.standings.StandingsService;
+import de.fred4jupiter.fredbet.standings.StandingsContainer;
+import de.fred4jupiter.fredbet.standings.StandingsService;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

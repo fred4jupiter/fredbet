@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.ExtraBet;
 import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;

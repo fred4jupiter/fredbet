@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.domain.RuntimeSettings;
-import de.fred4jupiter.fredbet.service.config.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.util.TimeZoneUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
