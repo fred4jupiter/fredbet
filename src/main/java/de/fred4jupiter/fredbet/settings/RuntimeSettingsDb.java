@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.domain;
+package de.fred4jupiter.fredbet.settings;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

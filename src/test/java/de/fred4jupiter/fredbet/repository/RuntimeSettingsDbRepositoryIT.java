@@ -1,7 +1,8 @@
 package de.fred4jupiter.fredbet.repository;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.domain.RuntimeSettingsDb;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsDb;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsDbRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

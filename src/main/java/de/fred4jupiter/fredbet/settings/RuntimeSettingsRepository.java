@@ -1,6 +1,5 @@
-package de.fred4jupiter.fredbet.repository;
+package de.fred4jupiter.fredbet.settings;
 
-import de.fred4jupiter.fredbet.domain.RuntimeSettingsDb;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

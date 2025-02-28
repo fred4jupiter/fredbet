@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.betting;
 
 import de.fred4jupiter.fredbet.domain.Bet;
 import de.fred4jupiter.fredbet.domain.Joker;
-import de.fred4jupiter.fredbet.domain.RuntimeSettings;
+import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.springframework.stereotype.Service;

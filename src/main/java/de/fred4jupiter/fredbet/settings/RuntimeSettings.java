@@ -1,5 +1,8 @@
-package de.fred4jupiter.fredbet.domain;
+package de.fred4jupiter.fredbet.settings;
 
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.NavbarLayout;
+import de.fred4jupiter.fredbet.domain.Theme;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

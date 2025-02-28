@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web;
 
-import de.fred4jupiter.fredbet.domain.RuntimeSettings;
+import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.points.ExtraPointsConfiguration;
 import de.fred4jupiter.fredbet.points.PointsConfigService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;

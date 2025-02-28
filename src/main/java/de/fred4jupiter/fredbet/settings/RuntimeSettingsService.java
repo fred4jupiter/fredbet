@@ -1,10 +1,8 @@
 package de.fred4jupiter.fredbet.settings;
 
-import de.fred4jupiter.fredbet.domain.RuntimeSettings;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
 import de.fred4jupiter.fredbet.util.TimeZoneUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;

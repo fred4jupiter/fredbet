@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.points;
 
 import de.fred4jupiter.fredbet.props.CacheNames;
-import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;

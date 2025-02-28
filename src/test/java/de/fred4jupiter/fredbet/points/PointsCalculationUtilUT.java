@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.points;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.*;
-import de.fred4jupiter.fredbet.repository.RuntimeSettingsRepository;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
