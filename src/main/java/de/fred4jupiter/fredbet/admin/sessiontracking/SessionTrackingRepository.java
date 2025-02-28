@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.repository;
+package de.fred4jupiter.fredbet.admin.sessiontracking;
 
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import org.springframework.data.jpa.repository.JpaRepository;

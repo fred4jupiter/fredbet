@@ -1,12 +1,14 @@
 package de.fred4jupiter.fredbet.user;
 
+import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingRepository;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
+import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
+import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.repository.*;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.slf4j.Logger;

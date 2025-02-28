@@ -6,7 +6,7 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.admin.AdministrationService;
-import de.fred4jupiter.fredbet.admin.SessionTrackingService;
+import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;

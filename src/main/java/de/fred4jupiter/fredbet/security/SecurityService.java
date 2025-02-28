@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.security;
 
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
-import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

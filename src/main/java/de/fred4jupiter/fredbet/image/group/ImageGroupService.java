@@ -1,7 +1,6 @@
-package de.fred4jupiter.fredbet.image;
+package de.fred4jupiter.fredbet.image.group;
 
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
-import de.fred4jupiter.fredbet.repository.ImageGroupRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

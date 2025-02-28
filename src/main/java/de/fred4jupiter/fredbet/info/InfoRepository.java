@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.repository;
+package de.fred4jupiter.fredbet.info;
 
 import de.fred4jupiter.fredbet.domain.entity.Info;
 import de.fred4jupiter.fredbet.domain.entity.InfoPK;

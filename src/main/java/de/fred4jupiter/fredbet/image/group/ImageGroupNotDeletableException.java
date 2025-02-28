@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.image;
+package de.fred4jupiter.fredbet.image.group;
 
 public class ImageGroupNotDeletableException extends RuntimeException {
 

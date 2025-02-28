@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.props.ImageLocation;
-import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
+import de.fred4jupiter.fredbet.image.storage.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.image.storage.DatabaseImageLocationStrategy;
 import de.fred4jupiter.fredbet.image.storage.FilesystemImageLocationStrategy;
 import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;

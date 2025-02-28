@@ -1,7 +1,6 @@
-package de.fred4jupiter.fredbet.admin;
+package de.fred4jupiter.fredbet.admin.sessiontracking;
 
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
-import de.fred4jupiter.fredbet.repository.SessionTrackingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

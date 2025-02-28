@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.image.storage;
 
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
-import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.image.BinaryImage;
 
 import java.util.Collections;

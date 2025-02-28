@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.event;
 
-import de.fred4jupiter.fredbet.admin.SessionTrackingService;
+import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
