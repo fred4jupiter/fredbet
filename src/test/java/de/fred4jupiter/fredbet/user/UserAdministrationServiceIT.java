@@ -3,14 +3,20 @@ package de.fred4jupiter.fredbet.user;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.Bet;
+import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.service.FredBetUsageBuilder;
 import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TransactionalIntegrationTest
 public class UserAdministrationServiceIT {
@@ -23,6 +29,12 @@ public class UserAdministrationServiceIT {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private BeanFactory beanFactory;
+
+    @Autowired
+    private BetRepository betRepository;
 
     @Test
     public void changePassword() {
@@ -56,5 +68,29 @@ public class UserAdministrationServiceIT {
         } catch (OldPasswordWrongException e) {
             // OK
         }
+    }
+
+    @Test
+    public void renameUser() {
+        FredBetUsageBuilder fredBetUsageBuilder = beanFactory.getBean(FredBetUsageBuilder.class);
+
+        AppUser appUser = fredBetUsageBuilder.withAppUser().withMatch().withBet().build();
+
+        final String oldUserName = appUser.getUsername();
+
+        final String newUsername = "Klarky";
+
+        userAdministrationService.renameUser(oldUserName, newUsername);
+
+        AppUser foundUser = userService.findByUserId(appUser.getId());
+        assertNotNull(foundUser);
+        assertEquals(newUsername, foundUser.getUsername());
+
+        List<Bet> betsByOldName = this.betRepository.findByUserName(oldUserName);
+        assertThat(betsByOldName.size()).isEqualTo(0);
+
+        List<Bet> betsByNewName = this.betRepository.findByUserName(newUsername);
+        assertNotNull(betsByNewName);
+        assertThat(betsByNewName.size()).isGreaterThan(0);
     }
 }

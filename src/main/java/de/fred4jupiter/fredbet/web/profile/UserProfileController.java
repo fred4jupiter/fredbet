@@ -84,7 +84,7 @@ public class UserProfileController {
         }
 
         try {
-            userService.renameUser(currentUser.getUsername(), changeUsernameCommand.getNewUsername());
+            userAdministrationService.renameUser(currentUser.getUsername(), changeUsernameCommand.getNewUsername());
         } catch (UserAlreadyExistsException e) {
             webMessageUtil.addErrorMsg(model, "user.username.duplicate");
             model.addAttribute("changeUsernameCommand", changeUsernameCommand);

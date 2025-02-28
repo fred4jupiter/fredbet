@@ -2,14 +2,14 @@ package de.fred4jupiter.fredbet.user;
 
 import de.fred4jupiter.fredbet.domain.AppUser;
 import de.fred4jupiter.fredbet.domain.ImageBinary;
-import de.fred4jupiter.fredbet.domain.ImageGroup;
 import de.fred4jupiter.fredbet.domain.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.repository.*;
+import de.fred4jupiter.fredbet.repository.AppUserRepository;
+import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.service.BettingService;
-import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
 import de.fred4jupiter.fredbet.service.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
@@ -42,28 +42,18 @@ public class UserService {
 
     private final ImageMetaDataRepository imageMetaDataRepository;
 
-    private final BetRepository betRepository;
-
-    private final ExtraBetRepository extraBetRepository;
-
-    private final SessionTrackingRepository sessionTrackingRepository;
-
-    private final ImageGroupRepository imageGroupRepository;
-
     private final BettingService bettingService;
 
     private final ImageBinaryRepository imageBinaryRepository;
 
-    private final String adminUsername;
+    private final FredbetProperties fredbetProperties;
 
     private final ImageAdministrationService imageAdministrationService;
 
     private final Resource defaultUserProfileImage;
 
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
-                       ImageMetaDataRepository imageMetaDataRepository, BetRepository betRepository,
-                       ExtraBetRepository extraBetRepository, SessionTrackingRepository sessionTrackingRepository,
-                       ImageGroupRepository imageGroupRepository,
+                       ImageMetaDataRepository imageMetaDataRepository,
                        BettingService bettingService, ImageBinaryRepository imageBinaryRepository,
                        FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService,
                        @Value("classpath:/content/default_profile_image.jpg") Resource defaultUserProfileImage) {
@@ -71,13 +61,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
         this.imageMetaDataRepository = imageMetaDataRepository;
-        this.betRepository = betRepository;
-        this.extraBetRepository = extraBetRepository;
-        this.sessionTrackingRepository = sessionTrackingRepository;
-        this.imageGroupRepository = imageGroupRepository;
         this.bettingService = bettingService;
         this.imageBinaryRepository = imageBinaryRepository;
-        this.adminUsername = fredbetProperties.adminUsername();
+        this.fredbetProperties = fredbetProperties;
         this.imageAdministrationService = imageAdministrationService;
         this.defaultUserProfileImage = defaultUserProfileImage;
     }
@@ -90,7 +76,7 @@ public class UserService {
         if (withDefaultAdminUser) {
             return appUserRepository.findAll(Sort.by(Direction.ASC, "username"));
         } else {
-            return appUserRepository.findByUsernameNotLike(adminUsername, Sort.by(Direction.ASC, "username"));
+            return appUserRepository.findByUsernameNotLike(fredbetProperties.adminUsername(), Sort.by(Direction.ASC, "username"));
         }
     }
 
@@ -167,7 +153,7 @@ public class UserService {
 
         List<AppUser> allUsers = appUserRepository.findAll();
         allUsers.forEach(appUser -> {
-            if (!adminUsername.equals(appUser.getUsername())) {
+            if (!fredbetProperties.adminUsername().equals(appUser.getUsername())) {
                 deleteUser(appUser.getId());
             }
         });
@@ -199,46 +185,6 @@ public class UserService {
             return new UserDto(appUser.getId(), appUser.getUsername(), userProfileImageMetaData.getImageKey());
         } else {
             return new UserDto(appUser.getId(), appUser.getUsername());
-        }
-    }
-
-    public void renameUser(String oldUsername, String newUsername) {
-        if (adminUsername.equals(oldUsername)) {
-            throw new RenameUsernameNotAllowedException("This user is the default admin user which username cannot be renamed!");
-        }
-
-        AppUser foundUser = appUserRepository.findByUsername(newUsername);
-        if (foundUser != null) {
-            throw new UserAlreadyExistsException("User with username=" + newUsername + " already exists.");
-        }
-
-        AppUser userToBeRenamed = appUserRepository.findByUsername(oldUsername);
-        if (userToBeRenamed == null) {
-            LOG.error("User with username={} could not be found.", oldUsername);
-            return;
-        }
-
-        userToBeRenamed.setUsername(newUsername);
-        this.appUserRepository.save(userToBeRenamed);
-
-        this.betRepository.renameUser(oldUsername, newUsername);
-        this.extraBetRepository.renameUser(oldUsername, newUsername);
-        this.sessionTrackingRepository.renameUser(oldUsername, newUsername);
-
-        if (this.securityService.isUserLoggedIn()) {
-            this.securityService.getCurrentUser().setUsername(newUsername);
-        }
-
-        renameUserProfileImageName(userToBeRenamed, newUsername);
-    }
-
-    private void renameUserProfileImageName(AppUser userToBeRenamed, String newUsername) {
-        ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
-
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByOwnerAndImageGroup(userToBeRenamed, imageGroup);
-        if (imageMetaData != null) {
-            imageMetaData.setDescription(newUsername);
-            imageMetaDataRepository.save(imageMetaData);
         }
     }
 
