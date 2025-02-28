@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.repository;
 
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.*;

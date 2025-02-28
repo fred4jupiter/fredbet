@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.common.DatabaseIntegrationTest;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.user.AppUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -8,7 +8,7 @@ import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
-import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.Test;

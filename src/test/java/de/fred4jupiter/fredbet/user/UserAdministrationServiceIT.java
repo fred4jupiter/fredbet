@@ -4,7 +4,7 @@ import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
-import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;

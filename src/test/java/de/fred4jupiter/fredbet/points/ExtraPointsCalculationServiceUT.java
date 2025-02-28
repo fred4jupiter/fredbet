@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

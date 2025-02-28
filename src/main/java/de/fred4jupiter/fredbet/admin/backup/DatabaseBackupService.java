@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.admin.backup;
 
 import de.fred4jupiter.fredbet.admin.backup.DatabaseBackupCreationException.ErrorCode;
-import de.fred4jupiter.fredbet.repository.DatabaseBackupRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;

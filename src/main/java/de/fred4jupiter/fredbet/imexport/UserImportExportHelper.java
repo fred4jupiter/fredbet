@@ -1,14 +1,12 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
-import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -16,8 +14,6 @@ import java.util.List;
 
 @Component
 class UserImportExportHelper {
-
-    private static final Logger LOG = LoggerFactory.getLogger(UserImportExportHelper.class);
 
     private final ImageMetaDataRepository imageMetaDataRepository;
 

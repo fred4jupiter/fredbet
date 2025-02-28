@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.pointcourse;
 
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.repository.BetRepository;
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.repository.PointCourseResult;
 import de.fred4jupiter.fredbet.repository.PointsPerUser;

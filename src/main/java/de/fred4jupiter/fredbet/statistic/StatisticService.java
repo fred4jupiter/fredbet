@@ -4,7 +4,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.springframework.stereotype.Service;
 

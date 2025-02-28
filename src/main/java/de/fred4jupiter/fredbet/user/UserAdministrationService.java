@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.user;
 
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;

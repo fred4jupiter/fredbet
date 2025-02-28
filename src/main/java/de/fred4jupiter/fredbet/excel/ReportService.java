@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.excel;
 
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;

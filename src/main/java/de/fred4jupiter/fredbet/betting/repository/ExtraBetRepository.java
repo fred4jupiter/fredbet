@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.repository;
+package de.fred4jupiter.fredbet.betting.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

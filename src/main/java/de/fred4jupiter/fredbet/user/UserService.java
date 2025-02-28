@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.repository.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
