@@ -17,25 +17,29 @@
                                     <span> - </span>
                                     <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(allBetsCommand.getCountryTeamTwo())}"></span>
                                     <span class="fw-bold" th:text="${allBetsCommand.teamNameTwo}"></span>
-                                    <br/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
                                     <span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
                                     <br/>
                                     <span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
                                     <span th:text="${allBetsCommand.stadium}"></span>
                                 </div>
+                                <div class="col-4">
+                                    <div class="ps-4">
+                                        <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
+                                              th:text="${allBetsCommand.match.goalsTeamOne}"></span>
+                                        <span th:if="${allBetsCommand.match.goalsTeamOne != null}" class=""> : </span>
+                                        <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}"
+                                              th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-6 pe-0">
-                                    <span th:text="#{matches.form.result} + ':'"></span>
-                                    <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
-                                          th:text="${allBetsCommand.match.goalsTeamOne}"></span>
-                                    <span th:if="${allBetsCommand.match.goalsTeamOne != null}" class=""> : </span>
-                                    <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}"
-                                          th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
-                                </div>
-                                <div class="col-6 ps-0 pe-0">
+                                <div class="col-12">
                                     <span th:text="#{others.bet.groupBet} + ':'"></span>
                                     <span class="badge rounded-pill bg-success" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
                                     <span> : </span>
