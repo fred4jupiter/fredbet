@@ -1,10 +1,10 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.domain.DatabaseBackup;
+import de.fred4jupiter.fredbet.admin.backup.DatabaseBackup;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.admin.DatabaseBackupCreationException;
-import de.fred4jupiter.fredbet.admin.DatabaseBackupCreationException.ErrorCode;
-import de.fred4jupiter.fredbet.admin.DatabaseBackupService;
+import de.fred4jupiter.fredbet.admin.backup.DatabaseBackupCreationException;
+import de.fred4jupiter.fredbet.admin.backup.DatabaseBackupCreationException.ErrorCode;
+import de.fred4jupiter.fredbet.admin.backup.DatabaseBackupService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class DatabaseBackupController {
     @GetMapping("/show")
     public String showPage(DatabaseBackupCommand databaseBackupCommand, Model model) {
         DatabaseBackup databaseBackup = databaseBackupService.loadDatabaseBackup();
-        databaseBackupCommand.setBackupFolder(databaseBackup.getDatabaseBackupFolder());
+        databaseBackupCommand.setBackupFolder(databaseBackup.databaseBackupFolder());
         model.addAttribute("databaseBackupCommand", databaseBackupCommand);
         return "admin/backup";
     }

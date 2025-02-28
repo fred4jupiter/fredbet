@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.admin;
+package de.fred4jupiter.fredbet.admin.backup;
 
 /**
  * Exception that will be thrown if the database backup could not be created.
