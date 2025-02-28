@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.country;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.stereotype.Service;
 

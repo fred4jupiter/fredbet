@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
-import de.fred4jupiter.fredbet.repository.MatchRepository;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.betting.repository;
 
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 
 import java.util.List;
 

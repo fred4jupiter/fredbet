@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.repository;
+package de.fred4jupiter.fredbet.pointcourse;
 
 public record PointsPerUser(String username, Long points) {
 

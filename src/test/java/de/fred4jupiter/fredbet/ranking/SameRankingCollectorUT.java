@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.ranking;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 

@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.domain.Visitable;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.pdf.PdfTableDataBuilder;

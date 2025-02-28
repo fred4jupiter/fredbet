@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.ranking;
 
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.stereotype.Component;

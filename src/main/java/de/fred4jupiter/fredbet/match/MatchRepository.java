@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.repository;
+package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;

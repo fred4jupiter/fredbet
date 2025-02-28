@@ -5,7 +5,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.repository.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.util.TempFileWriterUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

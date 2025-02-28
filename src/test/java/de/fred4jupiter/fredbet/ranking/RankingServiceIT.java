@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
 import de.fred4jupiter.fredbet.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.Test;

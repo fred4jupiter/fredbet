@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import de.fred4jupiter.fredbet.repository.PointCountResult;
+import de.fred4jupiter.fredbet.excel.PointCountResult;
 
 import java.util.Comparator;
 import java.util.List;

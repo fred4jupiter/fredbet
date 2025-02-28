@@ -1,10 +1,7 @@
 package de.fred4jupiter.fredbet.pdf;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
-import de.fred4jupiter.fredbet.pdf.FontCreator;
-import de.fred4jupiter.fredbet.pdf.PdfExportService;
-import de.fred4jupiter.fredbet.pdf.PdfTableDataBuilder;
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.betting.repository;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.repository.UsernamePoints;
+import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;

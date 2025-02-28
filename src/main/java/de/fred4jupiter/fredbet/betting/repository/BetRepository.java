@@ -2,9 +2,9 @@ package de.fred4jupiter.fredbet.betting.repository;
 
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.repository.PointCountResult;
-import de.fred4jupiter.fredbet.repository.PointCourseResult;
-import de.fred4jupiter.fredbet.repository.PointsPerUser;
+import de.fred4jupiter.fredbet.excel.PointCountResult;
+import de.fred4jupiter.fredbet.pointcourse.PointCourseResult;
+import de.fred4jupiter.fredbet.pointcourse.PointsPerUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,7 +29,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     Long countByMatch(Match match);
 
     @Query("""
-        select new de.fred4jupiter.fredbet.repository.PointCountResult(b.userName, b.points, count(b))
+        select new de.fred4jupiter.fredbet.excel.PointCountResult(b.userName, b.points, count(b))
         from Bet b
         where b.userName != :adminUsername
         group by b.userName, b.points
@@ -59,7 +59,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     List<Bet> findAllBetsWithMatches();
 
     @Query("""
-        select new de.fred4jupiter.fredbet.repository.PointCourseResult(b.userName, b.points, b.match)
+        select new de.fred4jupiter.fredbet.pointcourse.PointCourseResult(b.userName, b.points, b.match)
         from Bet b
         where b.userName in :usernames
         order by b.match.kickOffDate asc
@@ -67,7 +67,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     List<PointCourseResult> queryPointsCourse(@Param("usernames") List<String> usernames);
 
     @Query("""
-        select new de.fred4jupiter.fredbet.repository.PointsPerUser(b.userName, sum(b.points))
+        select new de.fred4jupiter.fredbet.pointcourse.PointsPerUser(b.userName, sum(b.points))
         from Bet b
         group by b.userName
         """)
@@ -82,7 +82,7 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     boolean hasBetsWithJoker(@Param("currentUserName") String currentUserName);
 
     @Query("""
-        select new de.fred4jupiter.fredbet.repository.PointsPerUser(b.userName, sum(b.points))
+        select new de.fred4jupiter.fredbet.pointcourse.PointsPerUser(b.userName, sum(b.points))
         from Bet b join Match m on b.match.id = m.id
         where m.kickOffDate between :from and :to
         and b.userName != :adminUsername

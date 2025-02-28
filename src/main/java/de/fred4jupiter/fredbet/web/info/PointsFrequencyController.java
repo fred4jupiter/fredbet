@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import de.fred4jupiter.fredbet.repository.PointCountResult;
+import de.fred4jupiter.fredbet.excel.PointCountResult;
 import de.fred4jupiter.fredbet.excel.ReportService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.collections4.MultiValuedMap;

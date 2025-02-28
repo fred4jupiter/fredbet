@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.MultiValuedMap;
 
-import de.fred4jupiter.fredbet.repository.PointCountResult;
+import de.fred4jupiter.fredbet.excel.PointCountResult;
 
 public class PointsFrequencyCommand {
 
