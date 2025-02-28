@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.service.OldPasswordWrongException;
 import de.fred4jupiter.fredbet.service.RenameUsernameNotAllowedException;
 import de.fred4jupiter.fredbet.user.UserAdministrationService;
 import de.fred4jupiter.fredbet.user.UserAlreadyExistsException;
-import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import jakarta.validation.Valid;
@@ -29,16 +28,13 @@ public class UserProfileController {
 
     private final UserAdministrationService userAdministrationService;
 
-    private final UserService userService;
-
     private final WebMessageUtil webMessageUtil;
 
     private final WebSecurityUtil webSecurityUtil;
 
-    public UserProfileController(UserAdministrationService userAdministrationService, UserService userService,
+    public UserProfileController(UserAdministrationService userAdministrationService,
                                  WebMessageUtil webMessageUtil, WebSecurityUtil webSecurityUtil) {
         this.userAdministrationService = userAdministrationService;
-        this.userService = userService;
         this.webMessageUtil = webMessageUtil;
         this.webSecurityUtil = webSecurityUtil;
     }
