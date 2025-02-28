@@ -20,14 +20,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-8 pe-0">
                                     <span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
                                     <br/>
                                     <span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
                                     <span th:text="${allBetsCommand.stadium}"></span>
                                 </div>
-                                <div class="col-4">
-                                    <div class="ps-4">
+                                <div class="col-4 ps-0">
+                                    <div class="text-end mt-2">
                                         <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
                                               th:text="${allBetsCommand.match.goalsTeamOne}"></span>
                                         <span th:if="${allBetsCommand.match.goalsTeamOne != null}" class=""> : </span>
