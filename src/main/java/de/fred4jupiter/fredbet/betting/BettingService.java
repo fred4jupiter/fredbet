@@ -1,21 +1,20 @@
 package de.fred4jupiter.fredbet.betting;
 
-import de.fred4jupiter.fredbet.data.RandomValueGenerator;
-import de.fred4jupiter.fredbet.domain.*;
-import de.fred4jupiter.fredbet.domain.entity.Bet;
-import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
-import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
-import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
+import de.fred4jupiter.fredbet.data.RandomValueGenerator;
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchRepository;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +44,11 @@ public class BettingService {
 
     private final FredbetProperties fredbetProperties;
 
+    private final ExtraBettingService extraBettingService;
+
     public BettingService(MatchRepository matchRepository, BetRepository betRepository, ExtraBetRepository extraBetRepository,
                           SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator,
-                          MatchService matchService, FredbetProperties fredbetProperties) {
+                          MatchService matchService, FredbetProperties fredbetProperties, ExtraBettingService extraBettingService) {
         this.matchRepository = matchRepository;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
@@ -56,6 +57,7 @@ public class BettingService {
         this.randomValueGenerator = randomValueGenerator;
         this.matchService = matchService;
         this.fredbetProperties = fredbetProperties;
+        this.extraBettingService = extraBettingService;
     }
 
     public Bet createAndSaveBetting(Consumer<BetBuilder> consumer) {
@@ -122,41 +124,9 @@ public class BettingService {
         }
         List<Bet> allBets = betRepository.findByMatchIdOrderByUserNameAsc(matchId);
         return allBets.stream()
-                .filter(bet -> !bet.getUserName().equals(fredbetProperties.adminUsername()))
-                .sorted(Comparator.comparing(Bet::getUserName, String.CASE_INSENSITIVE_ORDER))
-                .toList();
-    }
-
-    public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {
-        ExtraBet found = extraBetRepository.findByUserName(username);
-        if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && found != null) {
-            // reset/delete existing extra bet
-            extraBetRepository.delete(found);
-            return;
-        }
-
-        if (found == null) {
-            found = new ExtraBet();
-        }
-
-        found.setFinalWinner(finalWinner);
-        found.setSemiFinalWinner(semiFinalWinner);
-        if (matchService.isGameForThirdAvailable()) {
-            found.setThirdFinalWinner(thirdFinalWinner);
-        }
-        found.setUserName(username);
-
-        extraBetRepository.save(found);
-    }
-
-    public ExtraBet loadExtraBetForUser(String username) {
-        ExtraBet extraBet = extraBetRepository.findByUserName(username);
-        if (extraBet == null) {
-            extraBet = new ExtraBet();
-            extraBet.setUserName(username);
-        }
-
-        return extraBet;
+            .filter(bet -> !bet.getUserName().equals(fredbetProperties.adminUsername()))
+            .sorted(Comparator.comparing(Bet::getUserName, String.CASE_INSENSITIVE_ORDER))
+            .toList();
     }
 
     public boolean hasFirstMatchStarted() {
@@ -173,19 +143,6 @@ public class BettingService {
         return matches.stream().findFirst();
     }
 
-    public boolean hasOpenExtraBet(String currentUserName) {
-        ExtraBet extraBet = extraBetRepository.findByUserName(currentUserName);
-        return extraBet == null;
-    }
-
-    public List<ExtraBet> loadExtraBetDataOthers() {
-        List<ExtraBet> allExtraBets = extraBetRepository.findAll(Sort.by(Direction.ASC, "userName"));
-        return allExtraBets.stream()
-                .filter(extraBet -> !extraBet.getUserName().equals(fredbetProperties.adminUsername()))
-                .sorted(Comparator.comparing(ExtraBet::getUserName, String.CASE_INSENSITIVE_ORDER))
-                .toList();
-    }
-
     public Bet findBetById(Long betId) {
         return betRepository.getReferenceById(betId);
     }
@@ -199,7 +156,7 @@ public class BettingService {
         allMatches.forEach(match -> {
             createAndSaveBetting(builder -> {
                 builder.withUserName(username).withMatch(match)
-                        .withGoals(randomFromTo(), randomFromTo()).withJoker(isJokerAllowed(username, match));
+                    .withGoals(randomFromTo(), randomFromTo()).withJoker(isJokerAllowed(username, match));
             });
         });
 
@@ -209,7 +166,7 @@ public class BettingService {
             return;
         }
 
-        ExtraBet extraBet = loadExtraBetForUser(username);
+        ExtraBet extraBet = extraBettingService.loadExtraBetForUser(username);
         if (extraBet.noExtraBetsSet()) {
             ImmutableTriple<Country, Country, Country> teamTriple = randomValueGenerator.generateTeamTriple();
             if (!extraBet.isFinalWinnerSet()) {
@@ -236,36 +193,8 @@ public class BettingService {
         return randomValueGenerator.generateRandomValueInRange(fredbetProperties.diceMinRange(), fredbetProperties.diceMaxRange());
     }
 
-    public void createExtraBetForUser(String username) {
-        ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
-        if (triple != null) {
-            Country extraBetCountryFinalWinner = triple.getLeft();
-            Country extraBetCountrySemiFinalWinner = triple.getMiddle();
-            Country extraBetCountryThirdFinalWinner = triple.getRight();
-            saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
-                    username);
-        }
-    }
-
     public List<Bet> findAll() {
         return this.betRepository.findAll();
-    }
-
-    public List<ExtraBet> findAllExtraBets() {
-        return extraBetRepository.findAll();
-    }
-
-    public void createExtraBetForUser(String userName, Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner,
-                                      Integer pointsOne, Integer pointsTwo, Integer pointsThree) {
-        ExtraBet extraBet = new ExtraBet();
-        extraBet.setUserName(userName);
-        extraBet.setFinalWinner(finalWinner);
-        extraBet.setSemiFinalWinner(semiFinalWinner);
-        extraBet.setThirdFinalWinner(thirdFinalWinner);
-        extraBet.setPointsOne(pointsOne);
-        extraBet.setPointsTwo(pointsTwo);
-        extraBet.setPointsThree(pointsThree);
-        extraBetRepository.save(extraBet);
     }
 
     public boolean hasUserBetsWithJoker() {

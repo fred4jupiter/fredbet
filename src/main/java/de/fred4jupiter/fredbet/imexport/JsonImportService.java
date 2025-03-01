@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.imexport;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.betting.BettingService;
@@ -31,13 +32,16 @@ public class JsonImportService {
 
     private final UserImportExportHelper userImportExportHelper;
 
+    private final ExtraBettingService extraBettingService;
+
     public JsonImportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService,
-                             UserService userService, UserImportExportHelper userImportExportHelper) {
+                             UserService userService, UserImportExportHelper userImportExportHelper, ExtraBettingService extraBettingService) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.userService = userService;
         this.userImportExportHelper = userImportExportHelper;
+        this.extraBettingService = extraBettingService;
     }
 
     public void importAllFromJson(String json) {
@@ -59,7 +63,7 @@ public class JsonImportService {
 
     private void importExtraBets(ImportExportContainer importExportContainer) {
         final List<ExtraBetToExport> extraBets = importExportContainer.getExtraBets();
-        extraBets.forEach(extraBetToExport -> bettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
+        extraBets.forEach(extraBetToExport -> extraBettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
             extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
             extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree()));
         LOG.debug("imported extrabets");

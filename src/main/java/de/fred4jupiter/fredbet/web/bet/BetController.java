@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.bet;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.Joker;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -50,9 +51,11 @@ public class BetController {
 
     private final JokerService jokerService;
 
+    private final ExtraBettingService extraBettingService;
+
     public BetController(BettingService bettingService, SecurityService securityService, WebMessageUtil messageUtil,
                          MessageSourceUtil messageSourceUtil, MatchCommandMapper matchCommandMapper, MatchService matchService,
-                         AllBetsCommandMapper allBetsCommandMapper, JokerService jokerService) {
+                         AllBetsCommandMapper allBetsCommandMapper, JokerService jokerService, ExtraBettingService extraBettingService) {
         this.bettingService = bettingService;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
@@ -61,6 +64,7 @@ public class BetController {
         this.matchService = matchService;
         this.allBetsCommandMapper = allBetsCommandMapper;
         this.jokerService = jokerService;
+        this.extraBettingService = extraBettingService;
     }
 
     @GetMapping("/open")
@@ -70,7 +74,7 @@ public class BetController {
             messageUtil.addInfoMsg(model, "msg.bet.betting.info.allBetted");
         }
 
-        if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName()) && !bettingService.hasFirstMatchStarted()) {
+        if (extraBettingService.hasOpenExtraBet(securityService.getCurrentUserName()) && !bettingService.hasFirstMatchStarted()) {
             messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
         }
 

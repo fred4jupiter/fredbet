@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.data;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
@@ -37,15 +38,18 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
     private final FakeDataPopulator fakeDataPopulator;
 
+    private final ExtraBettingService extraBettingService;
+
     public DatabasePopulatorImpl(MatchService matchService, UserService userService,
                                  BettingService bettingService, RandomValueGenerator randomValueGenerator,
-                                 JokerService jokerService, FakeDataPopulator fakeDataPopulator) {
+                                 JokerService jokerService, FakeDataPopulator fakeDataPopulator, ExtraBettingService extraBettingService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
         this.randomValueGenerator = randomValueGenerator;
         this.jokerService = jokerService;
         this.fakeDataPopulator = fakeDataPopulator;
+        this.extraBettingService = extraBettingService;
     }
 
     @Override
@@ -102,7 +106,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
                 createBetForUser(appUser, match, jokerAllowed);
             });
 
-            bettingService.createExtraBetForUser(appUser.getUsername());
+            extraBettingService.createExtraBetForUser(appUser.getUsername());
         });
         LOG.debug("created demo bets for all users finished.");
     }

@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.imexport;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
@@ -27,16 +28,19 @@ public class JsonExportService {
 
     private final BettingService bettingService;
 
+    private final ExtraBettingService extraBettingService;
+
     private final UserService userService;
 
     private final UserImportExportHelper userImportExportHelper;
 
     public JsonExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService,
-                             BettingService bettingService, UserService userService,
+                             BettingService bettingService, ExtraBettingService extraBettingService, UserService userService,
                              UserImportExportHelper userImportExportHelper) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
+        this.extraBettingService = extraBettingService;
         this.userService = userService;
         this.userImportExportHelper = userImportExportHelper;
     }
@@ -56,7 +60,7 @@ public class JsonExportService {
         importExportContainer.setBets(allBetting.stream().map(this::toBetToExport).toList());
         LOG.debug("exported bets");
 
-        List<ExtraBet> allExtraBets = bettingService.findAllExtraBets();
+        List<ExtraBet> allExtraBets = extraBettingService.findAllExtraBets();
         importExportContainer.setExtraBets(allExtraBets.stream().map(this::toExtraBetToExport).toList());
         LOG.debug("exported extra bets");
 

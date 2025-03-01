@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.bet;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.security.SecurityService;
@@ -35,14 +36,17 @@ public class ExtraBetController {
 
     private final MatchService matchService;
 
+    private final ExtraBettingService extraBettingService;
+
     public ExtraBetController(BettingService bettingService, ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
-                              WebMessageUtil messageUtil, CountryService countryService, MatchService matchService) {
+                              WebMessageUtil messageUtil, CountryService countryService, MatchService matchService, ExtraBettingService extraBettingService) {
         this.bettingService = bettingService;
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
         this.countryService = countryService;
         this.matchService = matchService;
+        this.extraBettingService = extraBettingService;
     }
 
     @ModelAttribute("availableCountriesExtraBets")
@@ -57,7 +61,7 @@ public class ExtraBetController {
 
     @GetMapping
     public String showExtraBets(Model model) {
-        ExtraBet extraBet = bettingService.loadExtraBetForUser(securityService.getCurrentUserName());
+        ExtraBet extraBet = extraBettingService.loadExtraBetForUser(securityService.getCurrentUserName());
         ExtraBetCommand extraBetCommand = extraBetCommandMapper.toExtraBetCommand(extraBet);
         model.addAttribute("extraBetCommand", extraBetCommand);
         return "bet/extra_bets";
@@ -65,7 +69,7 @@ public class ExtraBetController {
 
     @PostMapping
     public String saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
-        bettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
+        extraBettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
                 extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
 
         messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
@@ -74,7 +78,7 @@ public class ExtraBetController {
 
     @GetMapping("/others")
     public ModelAndView showExtraBetResults() {
-        List<ExtraBet> allExtraBets = bettingService.loadExtraBetDataOthers();
+        List<ExtraBet> allExtraBets = extraBettingService.loadExtraBetDataOthers();
         return new ModelAndView("bet/extra_others", "allExtraBets", allExtraBets);
     }
 }
