@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.points;
 
-import de.fred4jupiter.fredbet.points.PointsConfiguration;
 import de.fred4jupiter.fredbet.points.PointsConfigService;
+import de.fred4jupiter.fredbet.points.PointsConfiguration;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -33,9 +33,10 @@ public class PointsConfigController {
     }
 
     @GetMapping("/reset")
-    public String resetToDefaults() {
-        pointsConfigService.resetToDefaults();
-        return "redirect:/config/points";
+    public String resetToDefaults(Model model) {
+        PointsConfiguration pointsConfig = pointsConfigService.createDefaultPointsConfig();
+        model.addAttribute("pointsConfig", pointsConfig);
+        return "config/points_config";
     }
 
     @PostMapping

@@ -33,11 +33,6 @@ public class PointsConfigService {
         runtimeSettingsRepository.saveRuntimeSettings(POINTS_CONFIG_ID, pointsConfig);
     }
 
-    @CacheEvict(cacheNames = CacheNames.POINTS_CONFIG, allEntries = true)
-    public void resetToDefaults() {
-        runtimeSettingsRepository.saveRuntimeSettings(POINTS_CONFIG_ID, createDefaultPointsConfig());
-    }
-
     public PointsConfiguration createDefaultPointsConfig() {
         PointsConfiguration pointsConfig = new PointsConfiguration();
 
