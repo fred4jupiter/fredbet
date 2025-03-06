@@ -1,5 +1,7 @@
 $(document).ready(function () {
     imageCroppingUpload();
+
+    $('#spinner').hide();
 });
 
 function imageCroppingUpload() {
@@ -47,4 +49,8 @@ function imageCroppingUpload() {
             $("#croppedFileBase64").attr("value", resp);
         });
     });
+}
+
+function showSpinner() {
+    $('#spinner').show();
 }

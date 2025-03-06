@@ -43,7 +43,10 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                                <button class="btn btn-primary" type="submit" onclick="showSpinner()">
+                                    <span id="spinner" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span role="status" th:text="#{button.save}"></span>
+                                </button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Close</button>
                             </div>
                         </div>
