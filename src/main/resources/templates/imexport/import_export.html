@@ -5,7 +5,8 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <h3 class="mb-3" th:text="#{importexport.subtitle}"></h3>
+            <h1 class="mb-3" th:text="#{importexport.title}"></h1>
+            <p class="mb-3" th:text="#{importexport.subtitle}"></p>
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
                     <form th:action="@{/importexport/import}" th:object="${importExportCommand}" method="post" enctype="multipart/form-data" role="form">
