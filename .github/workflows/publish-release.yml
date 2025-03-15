@@ -1,11 +1,11 @@
 name: Publish Release
 
-#on: workflow_dispatch # only manual trigger for release creation is allowed
+on: workflow_dispatch # only manual trigger for release creation is allowed
 
-on:
-  push:
-    branches:
-      - 'master'
+#on:
+#  push:
+#    branches:
+#      - 'master'
 
 jobs:
   build_tag_repo:
