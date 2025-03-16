@@ -50,6 +50,6 @@ jobs:
         with:
           name: fredbet.jar
           path: target/fredbet.jar
-          # retention-days: 1
+          retention-days: 1
       - name: Output artifact ID
         run: echo 'Artifact ID is ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}'
