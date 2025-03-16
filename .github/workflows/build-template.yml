@@ -13,6 +13,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      jar-file-id: ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -38,3 +40,12 @@ jobs:
           path: target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
+      - name: Upload jar file
+        id: fredbet-jar-artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: fredbet-jar-artifact
+          path: target/fredbet.jar
+          # retention-days: 1
+      - name: Output artifact ID
+        run: echo 'Artifact ID is ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}'
