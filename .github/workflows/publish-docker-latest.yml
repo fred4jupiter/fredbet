@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build-template.yml
     with:
       maven_command: 'mvn -B verify'
   docker:
