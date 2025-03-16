@@ -9,7 +9,7 @@ on:
     outputs:
       jar_file_id:
         description: "The id of the uploaded fredbet.jar file"
-        value: ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}
+        value: ${{ jobs.build.outputs.jar-file-id }}
   #    secrets:
 #      personal_access_token:
 #        required: true
