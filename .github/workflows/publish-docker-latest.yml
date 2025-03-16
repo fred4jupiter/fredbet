@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
+    with:
+      maven_command: 'mvn -B verify'
   docker:
     runs-on: ubuntu-latest
     env:

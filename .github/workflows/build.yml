@@ -6,7 +6,6 @@ on:
       maven_command:
         required: true
         type: string
-        default: 'mvn -B verify'
 #    secrets:
 #      personal_access_token:
 #        required: true
