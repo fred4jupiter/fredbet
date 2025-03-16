@@ -11,9 +11,7 @@ services:
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
   fredbet:
-    image: fred4jupiter/fredbet:3.2.0
-#    build:
-#      context: ../../../
+    image: fred4jupiter/fredbet:4.1.1
     depends_on:
       - postgres
     ports:
@@ -23,7 +21,5 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/fredbetdb
       - SPRING_DATASOURCE_USERNAME=fred
       - SPRING_DATASOURCE_PASSWORD=fred
-    volumes:
-      - "./logs:/logs/fredbet"
 volumes:
   postgres-vol:
