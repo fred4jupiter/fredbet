@@ -46,7 +46,7 @@ jobs:
           fail-on-error: true
       - name: Upload jar file
         id: fredbet-jar-artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: fredbet.jar
           path: target/fredbet.jar
