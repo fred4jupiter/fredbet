@@ -86,7 +86,10 @@
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 					</div>
                     <div class="col-auto">
-                        <a th:href="@{/config/points/reset}" class="btn btn-light" th:text="#{points.config.reset.defaults}"></a>
+                        <a th:href="@{/config/points/reset}" class="btn btn-info" th:text="#{points.config.reset.defaults}"></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#" th:href="@{/matches/today}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
                     </div>
 				</div>
 			</form>
