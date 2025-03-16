@@ -20,7 +20,7 @@ jobs:
       - name: Download jar file
         uses: actions/download-artifact@v4
         with:
-          run-id: ${{needs.build.outputs.jar-file-id}}
+          run-id: ${{needs.build.outputs.jar_file_id}}
           name: fredbet.jar
           path: target
       - name: Set up Docker Buildx

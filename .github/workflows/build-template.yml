@@ -6,6 +6,10 @@ on:
       maven_command:
         required: true
         type: string
+    outputs:
+      jar_file_id:
+        description: "The id of the uploaded fredbet.jar file"
+        value: ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}
   #    secrets:
 #      personal_access_token:
 #        required: true
