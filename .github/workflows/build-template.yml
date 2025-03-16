@@ -44,7 +44,7 @@ jobs:
         id: fredbet-jar-artifact
         uses: actions/upload-artifact@v2
         with:
-          name: fredbet-jar-artifact
+          name: fredbet.jar
           path: target/fredbet.jar
           # retention-days: 1
       - name: Output artifact ID
