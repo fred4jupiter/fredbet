@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/build-template.yml
     with:
       maven_command: 'mvn -B verify'
+      upload_artifact: true
   docker:
     runs-on: ubuntu-latest
     needs: build

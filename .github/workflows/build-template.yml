@@ -6,6 +6,9 @@ on:
       maven_command:
         required: true
         type: string
+      upload_artifact:
+        required: true
+        type: boolean
     outputs:
       jar_file_id:
         description: "The id of the uploaded fredbet.jar file"
@@ -45,6 +48,7 @@ jobs:
           reporter: java-junit
           fail-on-error: true
       - name: Upload jar file
+        if: ${{ inputs.upload_artifact }}
         id: fredbet-jar-artifact
         uses: actions/upload-artifact@v4
         with:
@@ -52,4 +56,5 @@ jobs:
           path: target/fredbet.jar
           retention-days: 1
       - name: Output artifact ID
+        if: ${{ inputs.upload_artifact }}
         run: echo 'Artifact ID is ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}'
