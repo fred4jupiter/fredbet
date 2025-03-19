@@ -37,13 +37,13 @@
 						</div>
 						<div class="row center">
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small bg-success fw-bold" onchange="checkPenalty()"/>
+								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()"/>
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</p>
 							</div>
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small bg-success fw-bold" onchange="checkPenalty()"/>
+								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()"/>
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamTwo')}" th:errors="*{goalsTeamTwo}">goalsTeamTwo error</p>

@@ -1,0 +1,60 @@
+name: Build and Test Template
+
+on:
+  workflow_call:
+    inputs:
+      maven_command:
+        required: true
+        type: string
+      upload_artifact:
+        required: true
+        type: boolean
+    outputs:
+      jar_file_id:
+        description: "The id of the uploaded fredbet.jar file"
+        value: ${{ jobs.build.outputs.jar-file-id }}
+  #    secrets:
+#      personal_access_token:
+#        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      jar-file-id: ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Cache local Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Build with Maven
+        run: ${{ inputs.maven_command }}
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+      - name: Upload jar file
+        if: ${{ inputs.upload_artifact }}
+        id: fredbet-jar-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fredbet.jar
+          path: target/fredbet.jar
+          retention-days: 1
+      - name: Output artifact ID
+        if: ${{ inputs.upload_artifact }}
+        run: echo 'Artifact ID is ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}'
