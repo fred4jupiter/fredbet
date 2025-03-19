@@ -37,13 +37,13 @@
 						</div>
 						<div class="row center mb-3">
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{teamResultOne}" class="form-control form-size-small bg-info fw-bold" onchange="checkPenalty()"/>
+								<input type="text" th:field="*{teamResultOne}" class="form-control form-size-small bg-info-subtle fw-bold" onchange="checkPenalty()"/>
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamResultOne')}" th:errors="*{teamResultOne}">teamResultOne error</p>
 							</div>
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small bg-info fw-bold" onchange="checkPenalty()"/>
+								<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small bg-info-subtle fw-bold" onchange="checkPenalty()"/>
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamResultTwo')}" th:errors="*{teamResultTwo}">teamResultTwo error</p>
