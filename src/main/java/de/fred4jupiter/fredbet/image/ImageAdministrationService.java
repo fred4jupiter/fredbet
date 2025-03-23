@@ -35,16 +35,19 @@ public class ImageAdministrationService {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
+    private final DefaultProfileImageLoader defaultProfileImageLoader;
+
     ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
                                ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
                                SecurityService securityService,
-                               RuntimeSettingsService runtimeSettingsService) {
+                               RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.imageLocationStrategy = imageLocationStrategy;
         this.securityService = securityService;
         this.runtimeSettingsService = runtimeSettingsService;
+        this.defaultProfileImageLoader = defaultProfileImageLoader;
     }
 
     public ImageGroup initUserProfileImageGroup() {
@@ -142,7 +145,7 @@ public class ImageAdministrationService {
     public BinaryImage loadImageByImageKey(String imageKey) {
         ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
         if (imageMetaData == null) {
-            return null;
+            return defaultProfileImageLoader.getDefaultProfileImage();
         }
 
         return imageLocationStrategy.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
@@ -151,7 +154,7 @@ public class ImageAdministrationService {
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
         ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
         if (imageMetaData == null) {
-            return null;
+            return defaultProfileImageLoader.getDefaultThumbProfileImage();
         }
 
         return imageLocationStrategy.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());

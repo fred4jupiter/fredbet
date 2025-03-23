@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public record FredbetProperties(ImageLocation imageLocation, String imageFileSystemBaseFolder, String defaultLanguage,
                                 Integer diceMinRange, Integer diceMaxRange, Integer thumbnailSize,
                                 String adminUsername, String adminPassword,
-                                @NestedConfigurationProperty AuthorizationProperties authorization) {
+                                @NestedConfigurationProperty AuthorizationProperties authorization,
+                                @NestedConfigurationProperty DefaultImageProperties defaultImages) {
 
 }

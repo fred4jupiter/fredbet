@@ -33,7 +33,7 @@ public class RankingService {
 
     private final FredbetProperties fredbetProperties;
 
-    public RankingService(BetRepository betRepository, ChildRelationFetcher childRelationFetcher, PdfExportService pdfExportService,
+    RankingService(BetRepository betRepository, ChildRelationFetcher childRelationFetcher, PdfExportService pdfExportService,
                           MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService,
                           SameRankingCollector sameRankingCollector, FredbetProperties fredbetProperties) {
         this.betRepository = betRepository;

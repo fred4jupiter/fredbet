@@ -68,6 +68,9 @@ fredbet:
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
+  default-images:
+    profile-image-resource: "classpath:/content/default_profile_image.jpg"
+    thumb-profile-image-resource: "classpath:/content/default_profile_image_thumb.jpg"
   authorization:
     user-groups:
       - groupName: ROLE_USER
