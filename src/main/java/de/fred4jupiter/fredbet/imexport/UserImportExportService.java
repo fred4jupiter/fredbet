@@ -16,7 +16,7 @@ public class UserImportExportService {
 
     private final UserImportExportHelper userImportExportHelper;
 
-    public UserImportExportService(AppUserRepository appUserRepository, JsonObjectConverter jsonObjectConverter,
+    UserImportExportService(AppUserRepository appUserRepository, JsonObjectConverter jsonObjectConverter,
                                    UserImportExportHelper userImportExportHelper) {
         this.appUserRepository = appUserRepository;
         this.jsonObjectConverter = jsonObjectConverter;
@@ -34,6 +34,6 @@ public class UserImportExportService {
 
     public long importUsers(String json) {
         UserContainer userContainer = jsonObjectConverter.fromJson(json, UserContainer.class);
-        return userImportExportHelper.importUsers(userContainer.userList());
+        return userImportExportHelper.importUsers(userContainer.users());
     }
 }
