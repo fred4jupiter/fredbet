@@ -3,9 +3,9 @@ package de.fred4jupiter.fredbet.image;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
+import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
 import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
@@ -104,8 +104,8 @@ public class ImageAdministrationService {
         }
     }
 
-    public void saveUserProfileImage(byte[] binary, AppUser appUser) {
-        saveUserProfileImage(binary, appUser, null);
+    public void saveUserWithDefaultProfileImage(AppUser appUser) {
+        saveUserProfileImage(defaultProfileImageLoader.getDefaultProfileImage().imageBinary(), appUser, null);
     }
 
     public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
