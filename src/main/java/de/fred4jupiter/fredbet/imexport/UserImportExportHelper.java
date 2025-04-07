@@ -29,33 +29,31 @@ class UserImportExportHelper {
     }
 
     public UserToExport mapToUserToExport(AppUser appUser) {
-        UserToExport userToExport = new UserToExport();
-        userToExport.setUsername(appUser.getUsername());
-        userToExport.setPassword(appUser.getPassword());
-        userToExport.setChild(appUser.isChild());
-        userToExport.setRoles(appUser.getRoles());
+        String userProfileImage = loadUserProfileImage(appUser.getUsername());
+        return new UserToExport(appUser.getUsername(), appUser.getPassword(), appUser.getRoles(), appUser.isChild(), userProfileImage);
+    }
 
-        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(appUser.getUsername());
-        if (imageMetaData != null) {
-            BinaryImage binaryImage = imageAdministrationService.loadImageByImageKey(imageMetaData.getImageKey());
-            byte[] encoded = Base64.getEncoder().encode(binaryImage.imageBinary());
-            userToExport.setUserAvatarBase64(new String(encoded));
-            userToExport.setImageKey(imageMetaData.getImageKey());
+    private String loadUserProfileImage(String username) {
+        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(username);
+        if (imageMetaData == null) {
+            return "";
         }
 
-        return userToExport;
+        BinaryImage binaryImage = imageAdministrationService.loadImageByImageKey(imageMetaData.getImageKey());
+        byte[] encoded = Base64.getEncoder().encode(binaryImage.imageBinary());
+        return new String(encoded);
     }
 
     public long importUsers(List<UserToExport> users) {
         users.forEach(userToExport -> {
-            AppUser userToImport = AppUserBuilder.create().withUsernameAndPassword(userToExport.getUsername(), userToExport.getPassword())
-                .withRoles(userToExport.getRoles()).withIsChild(userToExport.isChild()).build();
+            AppUser userToImport = AppUserBuilder.create().withUsernameAndPassword(userToExport.username(), userToExport.password())
+                .withRoles(userToExport.roles()).withIsChild(userToExport.child()).build();
             userService.createUserIfNotExists(userToImport);
 
-            byte[] decoded = Base64.getDecoder().decode(userToExport.getUserAvatarBase64());
+            byte[] decoded = Base64.getDecoder().decode(userToExport.userAvatarBase64());
             userService.saveUserProfileImage(decoded, userToImport.getUsername());
         });
 
-        return users.stream().map(UserToExport::getUsername).distinct().count();
+        return users.stream().map(UserToExport::username).distinct().count();
     }
 }
