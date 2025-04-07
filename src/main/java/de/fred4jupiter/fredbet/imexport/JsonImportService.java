@@ -63,9 +63,9 @@ public class JsonImportService {
 
     private void importExtraBets(ImportExportContainer importExportContainer) {
         final List<ExtraBetToExport> extraBets = importExportContainer.extraBets();
-        extraBets.forEach(extraBetToExport -> extraBettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
-            extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
-            extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree()));
+        extraBets.forEach(extraBetToExport -> extraBettingService.createExtraBetForUser(extraBetToExport.userName(), extraBetToExport.finalWinner(),
+            extraBetToExport.semiFinalWinner(), extraBetToExport.thirdFinalWinner(),
+            extraBetToExport.pointsOne(), extraBetToExport.pointsTwo(), extraBetToExport.pointsThree()));
         LOG.debug("imported extrabets");
     }
 

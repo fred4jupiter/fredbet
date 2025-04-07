@@ -68,15 +68,8 @@ public class JsonExportService {
     }
 
     private ExtraBetToExport toExtraBetToExport(ExtraBet extraBet) {
-        ExtraBetToExport export = new ExtraBetToExport();
-        export.setUserName(extraBet.getUserName());
-        export.setFinalWinner(extraBet.getFinalWinner());
-        export.setSemiFinalWinner(extraBet.getSemiFinalWinner());
-        export.setThirdFinalWinner(extraBet.getThirdFinalWinner());
-        export.setPointsOne(extraBet.getPointsOne());
-        export.setPointsTwo(extraBet.getPointsTwo());
-        export.setPointsThree(extraBet.getPointsThree());
-        return export;
+        return new ExtraBetToExport(extraBet.getUserName(), extraBet.getFinalWinner(), extraBet.getSemiFinalWinner(), extraBet.getThirdFinalWinner(),
+            extraBet.getPointsOne(), extraBet.getPointsTwo(), extraBet.getPointsThree());
     }
 
     private BetToExport toBetToExport(Bet bet) {
