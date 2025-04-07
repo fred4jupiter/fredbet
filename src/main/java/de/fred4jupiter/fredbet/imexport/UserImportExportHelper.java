@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
-import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.springframework.stereotype.Component;
 
@@ -22,14 +21,11 @@ class UserImportExportHelper {
 
     private final UserService userService;
 
-    private final ImageLocationStrategy imageLocationStrategy;
-
     public UserImportExportHelper(ImageMetaDataRepository imageMetaDataRepository, ImageAdministrationService imageAdministrationService,
-                                  UserService userService, ImageLocationStrategy imageLocationStrategy) {
+                                  UserService userService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageAdministrationService = imageAdministrationService;
         this.userService = userService;
-        this.imageLocationStrategy = imageLocationStrategy;
     }
 
     public UserToExport mapToUserToExport(AppUser appUser) {
@@ -44,12 +40,7 @@ class UserImportExportHelper {
             BinaryImage binaryImage = imageAdministrationService.loadImageByImageKey(imageMetaData.getImageKey());
             byte[] encoded = Base64.getEncoder().encode(binaryImage.imageBinary());
             userToExport.setUserAvatarBase64(new String(encoded));
-            userToExport.setImageGroupName(imageMetaData.getImageGroup().getName());
             userToExport.setImageKey(imageMetaData.getImageKey());
-
-            BinaryImage thumbBinary = imageAdministrationService.loadThumbnailByImageKey(imageMetaData.getImageKey());
-            byte[] encodedThumb = Base64.getEncoder().encode(thumbBinary.imageBinary());
-            userToExport.setUserAvatarThumbBase64(new String(encodedThumb));
         }
 
         return userToExport;
