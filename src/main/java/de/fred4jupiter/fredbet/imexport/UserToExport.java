@@ -13,9 +13,13 @@ public class UserToExport {
 
     private boolean child;
 
+    private String imageKey;
+
     private String userAvatarBase64;
 
     private String imageGroupName;
+
+    private String userAvatarThumbBase64;
 
     public String getUsername() {
         return username;
@@ -63,5 +67,21 @@ public class UserToExport {
 
     public void setImageGroupName(String imageGroupName) {
         this.imageGroupName = imageGroupName;
+    }
+
+    public String getUserAvatarThumbBase64() {
+        return userAvatarThumbBase64;
+    }
+
+    public void setUserAvatarThumbBase64(String userAvatarThumbBase64) {
+        this.userAvatarThumbBase64 = userAvatarThumbBase64;
+    }
+
+    public String getImageKey() {
+        return imageKey;
+    }
+
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 }

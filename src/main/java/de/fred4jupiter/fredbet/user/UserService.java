@@ -173,8 +173,12 @@ public class UserService {
     }
 
     public void saveUserProfileImage(byte[] binary) {
-        final AppUser appUser = appUserRepository.findByUserId(securityService.getCurrentUser().getId());
-        ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
+        saveUserProfileImage(binary, securityService.getCurrentUserName());
+    }
+
+    public void saveUserProfileImage(byte[] binary, String username) {
+        final AppUser appUser = appUserRepository.findByUsername(username);
+        ImageMetaData imageMetaData = securityService.getProfileImageMetaDataFor(username);
         imageAdministrationService.saveUserProfileImage(binary, appUser, imageMetaData);
     }
 
