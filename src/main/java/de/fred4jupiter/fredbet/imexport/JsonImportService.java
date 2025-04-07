@@ -105,10 +105,10 @@ public class JsonImportService {
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {
-        return MatchBuilder.create().withTeams(matchToExport.getTeamOne(), matchToExport.getTeamTwo())
-            .withGroup(matchToExport.getGroup())
-            .withKickOffDate(matchToExport.getKickOffDate())
-            .withStadium(matchToExport.getStadium())
+        return MatchBuilder.create().withTeams(matchToExport.teamOne(), matchToExport.teamTwo())
+            .withGroup(matchToExport.group())
+            .withKickOffDate(matchToExport.kickOffDate())
+            .withStadium(matchToExport.stadium())
             .build();
     }
 }

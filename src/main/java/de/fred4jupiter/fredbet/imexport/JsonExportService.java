@@ -78,14 +78,7 @@ public class JsonExportService {
     }
 
     private MatchToExport toMatchToExport(Match match) {
-        MatchToExport export = new MatchToExport();
-        export.setTeamOne(match.getTeamOne());
-        export.setTeamTwo(match.getTeamTwo());
-        export.setGroup(match.getGroup());
-        export.setStadium(match.getStadium());
-        export.setKickOffDate(match.getKickOffDate());
-        export.setPenaltyWinnerOne(match.isPenaltyWinnerOne());
-        export.setMatchBusinessKey(match.getBusinessKey());
-        return export;
+        return new MatchToExport(match.getTeamOne(), match.getTeamTwo(), match.getGroup(), match.isPenaltyWinnerOne(),
+            match.getKickOffDate(), match.getStadium(), match.getBusinessKey());
     }
 }
