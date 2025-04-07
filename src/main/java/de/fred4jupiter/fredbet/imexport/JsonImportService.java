@@ -73,17 +73,17 @@ public class JsonImportService {
         final List<BetToExport> bets = importExportContainer.bets();
         final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessKey, e -> e));
         bets.forEach(betToExport -> {
-            Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
+            Match match = savedMatchesByBusinessKey.get(betToExport.matchBusinessKey());
             if (match == null) {
-                LOG.warn("Could not find match with business key={}", betToExport.getMatchBusinessKey());
+                LOG.warn("Could not find match with business key={}", betToExport.matchBusinessKey());
             }
             bettingService.createAndSaveBetting(builder -> {
                 builder.withMatch(match)
-                    .withGoals(betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo())
-                    .withUserName(betToExport.getUsername())
-                    .withJoker(betToExport.isJoker())
-                    .withPenaltyWinnerOne(betToExport.isPenaltyWinnerOne())
-                    .withPoints(betToExport.getPoints());
+                    .withGoals(betToExport.goalsTeamOne(), betToExport.goalsTeamTwo())
+                    .withUserName(betToExport.username())
+                    .withJoker(betToExport.joker())
+                    .withPenaltyWinnerOne(betToExport.penaltyWinnerOne())
+                    .withPoints(betToExport.points());
             });
         });
         LOG.debug("imported bets");

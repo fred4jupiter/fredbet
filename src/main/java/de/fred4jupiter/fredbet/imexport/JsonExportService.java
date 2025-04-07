@@ -80,17 +80,8 @@ public class JsonExportService {
     }
 
     private BetToExport toBetToExport(Bet bet) {
-        BetToExport export = new BetToExport();
-        export.setJoker(bet.isJoker());
-        export.setGoalsTeamOne(bet.getGoalsTeamOne());
-        export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-        if (bet.getMatch() != null) {
-            export.setMatchBusinessKey(bet.getMatch().getBusinessKey());
-        }
-        export.setUsername(bet.getUserName());
-        export.setPoints(bet.getPoints());
-        export.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
-        return export;
+        return new BetToExport(bet.getUserName(), bet.getMatch().getBusinessKey(), bet.getGoalsTeamOne(),
+            bet.getGoalsTeamTwo(), bet.getPoints(), bet.isPenaltyWinnerOne(), bet.isJoker());
     }
 
     private MatchToExport toMatchToExport(Match match) {
