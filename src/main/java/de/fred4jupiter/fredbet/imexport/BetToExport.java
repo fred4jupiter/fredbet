@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import net.fortuna.ical4j.model.component.VToDo;
-
 // TODO: refactor to java record
 class BetToExport {
 
