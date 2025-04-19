@@ -17,10 +17,8 @@ public class CreateEditMatchCommand {
     private String teamNameOne;
     private String teamNameTwo;
 
-    @NotNull
     private Country countryTeamOne;
 
-    @NotNull
     private Country countryTeamTwo;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -30,7 +28,6 @@ public class CreateEditMatchCommand {
     @NotNull
     private Group group;
 
-    @NotBlank
     private String stadium;
 
     private boolean deletable;

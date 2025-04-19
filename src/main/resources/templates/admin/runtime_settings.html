@@ -38,7 +38,7 @@
                     <div class="col-12 col-sm-3 mb-3">
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
                         <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
-                            <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.alpha3Code}}"></option>
+                            <option th:each="country : ${availableCountries}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
                         </select>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
                     </div>
@@ -125,6 +125,18 @@
                             <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
 						</div>
 					</div>
+                    <div class="col-12 col-sm-3 mb-3">
+                        <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
+                        <div class="row mb-3">
+                            <div class="col-auto">
+                                <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
+                                <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select">
+                                    <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
+                                </select>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.teamBundle')}" th:errors="*{runtimeSettings.teamBundle}"></p>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 
 				<div class="row">

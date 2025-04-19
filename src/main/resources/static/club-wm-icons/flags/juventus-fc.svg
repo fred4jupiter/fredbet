@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Livello_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 162.7 323.3"
+	 style="enable-background:new 0 0 162.7 323.3;" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="323.3" width="162.7" x="0" y="0.4"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<path d="M129.6,200.8c0,62.6-26.5,78.4-80.2,105c6.9,4.6,16.2,10.1,32,17.6c41.4-19.6,81.4-45.3,81.4-113.8V65.1h-33.2V200.8z
+	 M98.1,65.1H0v28.7h65v91.9c0,42-2.5,45.9-57.1,70.5c3.8,9.6,9.3,19,16.5,27.5c61.7-27.5,73.7-41.7,73.7-89.3V65.1z M12.9,0.1v25.5
+	c0,6.5-3.8,10.9-11.8,10.9H0v-5.4h1c3.7,0,5.8-1.9,5.8-5.7v-20H1.2V0.1H12.9z M23.9,31.3h5.6V0.1h6v30.7c0,3.8-2,5.8-6,5.8h-5.6
+	c-4,0-6-2-6-5.8V0.1h6V31.3z M52.2,22.3V0.1h6v22.4c0,10.1-5.3,13.9-14.8,13.9h-3V0.1h6v30.4h0.3C50.7,30.5,52.2,26.8,52.2,22.3
+	 M69.2,5.6v9.7h7l-1,5.2h-5.9v10.4H78l-1,5.5H63.1V0.1h13.4l1,5.5H69.2z M93.5,0.1h5.8v36.3h-5.8V24l-5.7-12.6h-0.3v25h-5.8V0.1h5.7
+	l5.7,13.7h0.4V0.1z M120.2,5.6h-5.8v30.8h-6V5.6h-5.8l1-5.5h15.6L120.2,5.6z M129.4,31.3h5.6V0.1h6v30.6c0,3.8-2,5.8-6,5.8h-5.6
+	c-4,0-6-2-6-5.8V0.1h6V31.3z M145.5,24.4h5.9v7.2h5.5v-5.1c0-2.5-0.6-3.6-2.5-4.7l-5.7-3.6c-2.1-1.4-3.1-3.8-3.1-5.7V5.8
+	c0-3.8,2.5-5.8,5.6-5.8h5.6c4,0,5.6,2,5.6,5.8v4.5l-5.8,1.6V4.7h-5.2v5.5c0,1.8,0.6,3,2.3,4.1l5.5,3.4c2.3,1.4,3.5,3.6,3.5,6.5v7
+	c0,3.9-2.5,5.4-5.7,5.4h-5.5c-4,0-6-1.6-6-5.4V24.4z"/>
+</svg>

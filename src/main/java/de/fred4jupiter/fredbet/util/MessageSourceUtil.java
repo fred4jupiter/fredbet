@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.util;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -35,7 +36,12 @@ public class MessageSourceUtil {
         if (country == null) {
             return null;
         }
-        return getMessageFor("country." + country.getAlpha3Code(), locale);
+
+        if (StringUtil.isNotBlank(country.getAlpha3Code())) {
+            return getMessageFor("country." + country.getAlpha3Code(), locale);
+        }
+
+        return getMessageFor("team." + country.name(), locale);
     }
 
     public String getTeamNameOne(Match match, Locale locale) {

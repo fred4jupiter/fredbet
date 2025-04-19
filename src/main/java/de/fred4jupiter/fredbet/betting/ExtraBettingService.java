@@ -7,6 +7,8 @@ import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Service
 public class ExtraBettingService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExtraBettingService.class);
 
     private final ExtraBetRepository extraBetRepository;
 
@@ -34,9 +38,10 @@ public class ExtraBettingService {
 
     public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {
         ExtraBet found = extraBetRepository.findByUserName(username);
-        if (Country.NONE.equals(finalWinner) && Country.NONE.equals(semiFinalWinner) && found != null) {
+        if (finalWinner == null && semiFinalWinner == null && found != null) {
             // reset/delete existing extra bet
             extraBetRepository.delete(found);
+            LOG.info("Deleted extra bet for user={}", username);
             return;
         }
 

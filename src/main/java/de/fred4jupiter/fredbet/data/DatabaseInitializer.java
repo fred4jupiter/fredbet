@@ -38,6 +38,7 @@ class DatabaseInitializer {
     }
 
     public void initDatabase() {
+        LOG.debug("init database...");
         imageAdministrationService.createDefaultImageGroup();
 
         imageAdministrationService.initUserProfileImageGroup();
@@ -52,6 +53,7 @@ class DatabaseInitializer {
     }
 
     private void createAdminUser() {
+        LOG.debug("create admin user...");
         AppUser appUser = AppUserBuilder.create()
             .withUsernameAndPassword(fredbetProperties.adminUsername(), fredbetProperties.adminPassword())
             .withUserGroup(FredBetUserGroup.ROLE_ADMIN)

@@ -184,6 +184,12 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
+                                </li>
+                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}">
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/user/importexport}" th:text="#{user.importexport.title}"></a>
                                 </li>
@@ -199,17 +205,17 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
-                                    <a class="dropdown-item" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
-                                </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/config/points}" th:text="#{points.config.title}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
+                                    <a class="dropdown-item" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/config/show}" th:text="#{navigation.loggingAndCaching}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -219,12 +225,6 @@
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
                                     <a class="dropdown-item" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
-                                </li>
-                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}">
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
                                 </li>
                                 <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}">
                                     <hr class="dropdown-divider">
@@ -241,7 +241,7 @@
                         <li class="nav-item dropdown me-2">
                             <a class="nav-link dropdown-toggle" th:classappend="${classes}" id="language" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <span class="fi" th:classappend="${@countryIconUtil.cssClassCurrentUserLanguage()}"></span>
+                                <span class="fi" th:classappend="${@languageIconUtil.cssClassCurrentUserLanguage()}"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="language">
                                 <li th:replace="~{fragments/language_selector :: language_selector}"></li>

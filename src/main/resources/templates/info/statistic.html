@@ -9,7 +9,7 @@
 			<h1 th:text="#{statistics.title}"></h1>
 			<div class="row mb-3" th:if="${not #lists.isEmpty(statisticList)}">
 				<div class="col-6 col-sm-2 mb-2">
-                    <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(favouriteCountry)}"></span>
+                    <span class="" th:classappend="${@teamUtil.cssClassFor(favouriteCountry)}"></span>
                     <span th:text="#{statistics.legend.favouriteCountry}"></span>
 				</div>
                 <div class="col-6 col-sm-2 mb-2">
@@ -67,7 +67,7 @@
 					   	   </div>
 					   </div>
                        <div class="card-footer bg-light">
-                           <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(statistic.favoriteCountry)}"></span>
+                           <span class="" th:classappend="${@teamUtil.cssClassFor(statistic.favoriteCountry)}"></span>
                            <span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
                            <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star" aria-hidden="true"></span>
                            <span>,</span>

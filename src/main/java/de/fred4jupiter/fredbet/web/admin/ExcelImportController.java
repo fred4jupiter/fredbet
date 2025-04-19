@@ -1,26 +1,27 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.excel.ExcelImportService;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
+import de.fred4jupiter.fredbet.props.ExcelTemplateProperties;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/excelimport")
@@ -37,13 +38,16 @@ public class ExcelImportController {
 
     private final WebMessageUtil messageUtil;
 
-    private final Resource excelTemplateFile;
+    private final FredbetProperties fredbetProperties;
+
+    private final ApplicationContext applicationContext;
 
     public ExcelImportController(ExcelImportService excelImportService, WebMessageUtil messageUtil,
-                                 @Value("classpath:/excelimport/ImportTemplate.xlsx") Resource excelTemplateFile) {
+                                 FredbetProperties fredbetProperties, ApplicationContext applicationContext) {
         this.excelImportService = excelImportService;
         this.messageUtil = messageUtil;
-        this.excelTemplateFile = excelTemplateFile;
+        this.fredbetProperties = fredbetProperties;
+        this.applicationContext = applicationContext;
     }
 
     @ModelAttribute("excelUploadCommand")
@@ -52,16 +56,22 @@ public class ExcelImportController {
     }
 
     @GetMapping("/show")
-    public String showUploadPage() {
+    public String showUploadPage(Model model) {
+        model.addAttribute("templateFiles", fredbetProperties.excelTemplates().templateFiles());
         return "admin/excel_import";
     }
 
-    @GetMapping(value = "/download/template", produces = CONTENT_TYPE_EXCEL)
-    public ResponseEntity<byte[]> downloadTemplate() {
-        final String fileName = "ImportTemplate.xlsx";
-        byte[] templateFile = downloadResource(excelTemplateFile);
+    @GetMapping(value = "/download/template/{filename}", produces = CONTENT_TYPE_EXCEL)
+    public ResponseEntity<byte[]> downloadTemplate(@PathVariable String filename, Model model) {
+        ExcelTemplateProperties templateProps = fredbetProperties.excelTemplates();
+        Optional<String> resourceLocation = templateProps.getResourceLocationByFilename(filename);
+        if (resourceLocation.isEmpty()) {
+            return null;
+        }
 
-        return createResponseEntityFor(templateFile, fileName);
+        Resource resource = applicationContext.getResource(resourceLocation.get());
+        byte[] templateFile = downloadResource(resource);
+        return createResponseEntityFor(templateFile, filename);
     }
 
     private ResponseEntity<byte[]> createResponseEntityFor(byte[] fileContent, String fileName) {

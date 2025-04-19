@@ -2,13 +2,13 @@ package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Locale;
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ public class Team {
     private Integer goals;
 
     public boolean hasCountrySet() {
-        return this.country != null && !Country.NONE.equals(this.country);
+        return this.country != null;
     }
 
     public boolean hasResultSet() {
@@ -46,7 +46,7 @@ public class Team {
     }
 
     public String getNameTranslated(MessageSourceUtil messageSourceUtil, Locale locale) {
-        if (this.country == null || Country.NONE.equals(this.country)) {
+        if (this.country == null) {
             return name;
         }
 
@@ -71,8 +71,8 @@ public class Team {
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
         return country == team.country &&
-                Objects.equals(name, team.name) &&
-                Objects.equals(goals, team.goals);
+            Objects.equals(name, team.name) &&
+            Objects.equals(goals, team.goals);
     }
 
     @Override

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TransactionalIntegrationTest
 public class CountryServiceIT {
@@ -40,26 +39,22 @@ public class CountryServiceIT {
     }
 
     @Test
-    public void getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale() {
+    public void getAvailableCountriesForExtraBets() {
         createSomeMatches();
         matchRepository.flush();
 
-        List<Country> countries = countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(Locale.GERMAN);
-        assertNotNull(countries);
-        assertThat(countries.size()).isEqualTo(5);
-        assertThat(countries.get(0)).isEqualTo(Country.NONE);
-        assertThat(countries.get(1)).isEqualTo(Country.BULGARIA);
-        assertThat(countries.get(2)).isEqualTo(Country.GERMANY);
-        assertThat(countries.get(3)).isEqualTo(Country.FRANCE);
-        assertThat(countries.get(4)).isEqualTo(Country.IRELAND);
+        List<Country> countries = countryService.getAvailableCountriesBasedOnMatches(Locale.GERMAN);
+        assertThat(countries).hasSize(4);
+        assertThat(countries.get(0)).isEqualTo(Country.BULGARIA);
+        assertThat(countries.get(1)).isEqualTo(Country.GERMANY);
+        assertThat(countries.get(2)).isEqualTo(Country.FRANCE);
+        assertThat(countries.get(3)).isEqualTo(Country.IRELAND);
     }
 
     @Test
     public void getAvailableCountries() {
-        List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(Locale.GERMAN, Group.GROUP_A);
-        assertNotNull(countries);
-
-        assertThat(countries).contains(Country.NONE);
+        List<Country> countries = countryService.getAvailableCountries(Locale.GERMAN);
+        assertThat(countries).isNotEmpty();
     }
 
     private void createSomeMatches() {

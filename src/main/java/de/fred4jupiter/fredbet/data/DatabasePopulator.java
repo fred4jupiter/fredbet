@@ -1,11 +1,12 @@
 package de.fred4jupiter.fredbet.data;
 
+import java.util.function.Consumer;
+
 public interface DatabasePopulator {
-    void createRandomMatches();
 
-    void createDemoBetsForAllUsers();
+    void executeAsync(Consumer<DatabasePopulator> populatorCallback);
 
-    void createDemoResultsForAllMatches();
+    void createDemoData(DemoDataCreation demoDataCreation);
 
     void createDemoUsers(int numberOfDemoUsers);
 

@@ -1,13 +1,13 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.country.CountryService;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 @RequestMapping("/match")
@@ -71,7 +69,7 @@ public class CreateEditMatchController {
         }
 
         model.addAttribute("createEditMatchCommand", createEditMatchCommand);
-        addCountriesAndGroups(model, match.getGroup());
+        addCountriesAndGroups(model);
         return VIEW_EDIT_MATCH;
     }
 
@@ -114,13 +112,8 @@ public class CreateEditMatchController {
     }
 
     private void addCountriesAndGroups(Model model) {
-        addCountriesAndGroups(model, null);
-    }
-
-    private void addCountriesAndGroups(Model model, Group group) {
         model.addAttribute("availableGroups", Group.getAllGroups());
-        List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale(), group);
-        model.addAttribute("availableCountries", countries);
+        model.addAttribute("availableCountries", countryService.getAvailableCountries(LocaleContextHolder.getLocale()));
     }
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {

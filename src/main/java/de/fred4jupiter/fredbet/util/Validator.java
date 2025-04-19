@@ -31,7 +31,7 @@ public final class Validator {
     }
 
     public static boolean isNull(Country country) {
-        return country == null || Country.NONE.equals(country);
+        return country == null;
     }
 
     public static boolean isNotNull(Country country) {

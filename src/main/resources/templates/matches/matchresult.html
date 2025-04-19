@@ -25,12 +25,12 @@
                     <div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-                                <span class="fi big-flag" th:classappend="${@countryIconUtil.cssClassFor(matchResultCommand.getCountryTeamOne())}"></span>
+                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamOne())}"></span>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-6">
-                                <span class="fi big-flag" th:classappend="${@countryIconUtil.cssClassFor(matchResultCommand.getCountryTeamTwo())}"></span>
+                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamTwo())}"></span>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
 							</div>

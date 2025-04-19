@@ -1,0 +1,144 @@
+.kwm {
+    position: relative;
+    display: inline-block;
+    width: 1.333333em;
+    line-height: 1em;
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.kwm:before {
+    content: " ";
+}
+
+.kwm-al-ahly {
+    background-image: url(../flags/al-ahly.svg);
+}
+
+.kwm-atletico-madrid {
+    background-image: url(../flags/atletico-madrid.svg);
+}
+
+.kwm-botafogo {
+    background-image: url(../flags/botafogo.svg);
+}
+
+.kwm-fc-porto {
+    background-image: url(../flags/fc-porto.svg);
+}
+
+.kwm-inter-miami {
+    background-image: url(../flags/inter-miami-cf.svg);
+}
+
+.kwm-manchester {
+    background-image: url(../flags/manchester-city.svg);
+}
+
+.kwm-palmeiras {
+    background-image: url(../flags/palmeiras.svg);
+}
+
+.kwm-paris-saint-germain {
+    background-image: url(../flags/paris-saint-germain.svg);
+}
+
+.kwm-seattle-sounders {
+    background-image: url(../flags/seattle-sounders.svg);
+}
+
+.kwm-al-ain-fc {
+    background-image: url(../flags/al-ain-fc.svg);
+}
+
+.kwm-al-hilal {
+    background-image: url(../flags/al-hilal.svg);
+}
+
+.kwm-auckland-city {
+    background-image: url(../flags/auckland-city.svg);
+}
+
+.kwm-bayern-muenchen {
+    background-image: url(../flags/bayern-muenchen.svg);
+}
+
+.kwm-benfica-lissabon {
+    background-image: url(../flags/benfica-lissabon.svg);
+}
+
+.kwm-boca-juniors {
+    background-image: url(../flags/boca-juniors.svg);
+}
+
+.kwm-borussia-dortmund {
+    background-image: url(../flags/borussia-dortmund.svg);
+}
+
+.kwm-ca-river-plate-montevideo {
+    background-image: url(../flags/ca-river-plate-montevideo.svg);
+}
+
+.kwm-cf-monterrey {
+    background-image: url(../flags/cf-monterrey.svg);
+}
+
+.kwm-cf-pachuca {
+    background-image: url(../flags/cf-pachuca.svg);
+}
+
+.kwm-chelsea-crest {
+    background-image: url(../flags/chelsea-crest.svg);
+}
+
+.kwm-club-leon {
+    background-image: url(../flags/club-leon.svg);
+}
+
+.kwm-cr-flamengo {
+    background-image: url(../flags/cr-flamengo.svg);
+}
+
+.kwm-esperance-sportive-tunis {
+    background-image: url(../flags/esperance-sportive-tunis.svg);
+}
+
+.kwm-fc-internazionale-milano {
+    background-image: url(../flags/fc-internazionale-milano.svg);
+}
+
+.kwm-fc-salzburg {
+    background-image: url(../flags/fc-salzburg.svg);
+}
+
+.kwm-fluminense-fc {
+    background-image: url(../flags/fluminense-fc.svg);
+}
+
+.kwm-juventus-fc {
+    background-image: url(../flags/juventus-fc.svg);
+}
+
+.kwm-mamelodi-sundowns-fc {
+    background-image: url(../flags/mamelodi-sundowns-fc.svg);
+}
+
+.kwm-real-madrid {
+    background-image: url(../flags/real-madrid.svg);
+}
+
+.kwm-ulsan-hd {
+    background-image: url(../flags/ulsan-hd.svg);
+}
+
+.kwm-urawa-red-diamonds {
+    background-image: url(../flags/urawa-red-diamonds.svg);
+}
+
+.kwm-wydad-casablanca {
+    background-image: url(../flags/wydad-casablanca.svg);
+}
+
+
+

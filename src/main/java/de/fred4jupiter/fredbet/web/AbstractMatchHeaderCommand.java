@@ -30,15 +30,7 @@ public abstract class AbstractMatchHeaderCommand {
     }
 
     protected boolean isNotBlank(Country country) {
-        if (country == null) {
-            return false;
-        }
-
-        if (Country.NONE.equals(country)) {
-            return false;
-        }
-
-        return true;
+        return country != null;
     }
 
     @Override

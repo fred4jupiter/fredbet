@@ -3,6 +3,8 @@ package de.fred4jupiter.fredbet.settings;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -60,6 +62,9 @@ public class RuntimeSettings {
     @NotNull
     private NavbarLayout navbarLayout = NavbarLayout.DARK;
 
+    @NotNull
+    private TeamBundle teamBundle = TeamBundle.WORLD_CUP;
+
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
     }
@@ -85,7 +90,7 @@ public class RuntimeSettings {
     }
 
     public Country getFavouriteCountry() {
-        return favouriteCountry;
+        return favouriteCountry != null ? favouriteCountry : FredbetConstants.DEFAULT_FAVOURITE_COUNTRY;
     }
 
     public void setFavouriteCountry(Country favouriteCountry) {
@@ -170,5 +175,13 @@ public class RuntimeSettings {
 
     public void setImageUploadLimit(Integer imageUploadLimit) {
         this.imageUploadLimit = imageUploadLimit;
+    }
+
+    public @NotNull TeamBundle getTeamBundle() {
+        return teamBundle;
+    }
+
+    public void setTeamBundle(@NotNull TeamBundle teamBundle) {
+        this.teamBundle = teamBundle;
     }
 }

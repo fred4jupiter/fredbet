@@ -1,12 +1,11 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "EXTRA_BET")
@@ -163,14 +162,14 @@ public class ExtraBet {
     }
 
     public boolean isFinalWinnerSet() {
-        return this.finalWinner != null && !Country.NONE.equals(this.finalWinner);
+        return this.finalWinner != null;
     }
 
     public boolean isSemiFinalWinnerSet() {
-        return this.semiFinalWinner != null && !Country.NONE.equals(this.semiFinalWinner);
+        return this.semiFinalWinner != null;
     }
 
     public boolean isThirdFinalWinnerSet() {
-        return this.thirdFinalWinner != null && !Country.NONE.equals(this.thirdFinalWinner);
+        return this.thirdFinalWinner != null;
     }
 }

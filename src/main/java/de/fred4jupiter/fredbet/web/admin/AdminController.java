@@ -1,12 +1,13 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.data.AsyncDatabasePopulator;
+import de.fred4jupiter.fredbet.admin.AdministrationService;
+import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
+import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.admin.AdministrationService;
-import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
@@ -35,8 +36,6 @@ public class AdminController {
 
     private final DatabasePopulator databasePopulator;
 
-    private final AsyncDatabasePopulator asyncDatabasePopulator;
-
     private final WebMessageUtil webMessageUtil;
 
     private final SessionTrackingService sessionTrackingService;
@@ -45,11 +44,10 @@ public class AdminController {
 
     private final UserService userService;
 
-    public AdminController(DatabasePopulator databasePopulator, AsyncDatabasePopulator asyncDatabasePopulator,
-                           WebMessageUtil webMessageUtil, SessionTrackingService sessionTrackingService,
+    public AdminController(DatabasePopulator databasePopulator, WebMessageUtil webMessageUtil,
+                           SessionTrackingService sessionTrackingService,
                            AdministrationService administrationService, UserService userService) {
         this.databasePopulator = databasePopulator;
-        this.asyncDatabasePopulator = asyncDatabasePopulator;
         this.webMessageUtil = webMessageUtil;
         this.sessionTrackingService = sessionTrackingService;
         this.administrationService = administrationService;
@@ -61,42 +59,40 @@ public class AdminController {
         return new AdminFormCommand();
     }
 
+    @ModelAttribute("testDataCommand")
+    public TestDataCommand testDataCommand() {
+        TestDataCommand testDataCommand = new TestDataCommand();
+        testDataCommand.setNumberOfGroups(12);
+        return testDataCommand;
+    }
+
     @RequestMapping
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("availableTeamBundles", TeamBundle.values());
         return PAGE_ADMINISTRATION;
     }
 
-    @GetMapping("/createRandomMatches")
-    public String createRandomMatches(RedirectAttributes redirect) {
-        asyncDatabasePopulator.createRandomMatches();
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.randomMatchesCreated");
-        return "redirect:/administration";
-    }
+    @PostMapping("/testdata")
+    public String createTestData(@Valid TestDataCommand command, Model model, BindingResult bindingResult, RedirectAttributes redirect) {
+        if (bindingResult.hasErrors()) {
+            return PAGE_ADMINISTRATION;
+        }
 
-    @GetMapping("/createDemoBets")
-    public String createDemoBets(RedirectAttributes redirect) {
-        asyncDatabasePopulator.createDemoBetsForAllUsers();
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoBetsCreated");
-        return "redirect:/administration";
-    }
+        if (command.getNumberOfGroups() > 12) {
+            webMessageUtil.addErrorMsg(model, "administration.testdata.tooManyGroups", 12);
+            return PAGE_ADMINISTRATION;
+        }
 
-    @GetMapping("/createDemoResults")
-    public String createDemoResults(RedirectAttributes redirect) {
-        asyncDatabasePopulator.createDemoResultsForAllMatches();
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoResultsCreated");
-        return "redirect:/administration";
-    }
-
-    @GetMapping("/createTestDataForAll")
-    public String createTestDataForAll(RedirectAttributes redirect) {
-        asyncDatabasePopulator.createTestDataForAll();
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.createTestDataForAll");
+        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getTeamBundle(), command.getNumberOfGroups(), command.getIncludeBets(), command.getIncludeResults());
+        databasePopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
         return "redirect:/administration";
     }
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
-        databasePopulator.deleteAllBetsAndMatches();
+        databasePopulator.executeAsync(DatabasePopulator::deleteAllBetsAndMatches);
+
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/administration";
     }
@@ -118,12 +114,12 @@ public class AdminController {
     }
 
     @PostMapping("/save")
-    public String saveRuntimeSettings(@Valid AdminFormCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String createDemoUsers(@Valid AdminFormCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_ADMINISTRATION;
         }
 
-        asyncDatabasePopulator.createDemoUsers(command.getNumberOfTestUsers());
+        databasePopulator.executeAsync(populator -> populator.createDemoUsers(command.getNumberOfTestUsers()));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }

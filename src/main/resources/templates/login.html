@@ -37,7 +37,7 @@
                         <div class="mt-1">
                             <div class="dropdown">
                                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassCurrentUserLanguage()}"></span>
+                                    <span class="fi" th:classappend="${@languageIconUtil.cssClassCurrentUserLanguage()}"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li th:replace="~{fragments/language_selector :: language_selector}"></li>

@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class UserAdministrationServiceIT {
     public void renameUser() {
         FredBetUsageBuilder fredBetUsageBuilder = beanFactory.getBean(FredBetUsageBuilder.class);
 
-        AppUser appUser = fredBetUsageBuilder.withAppUser().withMatch().withBet().build();
+        AppUser appUser = fredBetUsageBuilder.withAppUser().withMatch(TeamBundle.WORLD_CUP).withBet().build();
 
         final String oldUserName = appUser.getUsername();
 
