@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.user;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
+import de.fred4jupiter.fredbet.data.TeamPair;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
@@ -58,8 +59,8 @@ public class FredBetUsageBuilder {
     }
 
     public FredBetUsageBuilder withMatch(TeamBundle teamBundle) {
-        ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair(teamBundle);
-        this.match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(Group.GROUP_A)
+        TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
+        this.match = MatchBuilder.create().withTeams(teamPair.teamOne(), teamPair.teamTwo()).withGroup(Group.GROUP_A)
                 .withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
         return this;
     }

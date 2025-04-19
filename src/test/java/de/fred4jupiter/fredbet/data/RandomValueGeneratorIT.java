@@ -3,8 +3,6 @@ package de.fred4jupiter.fredbet.data;
 import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,9 +26,9 @@ public class RandomValueGeneratorIT {
     @Test
     public void generateTeamPair() {
         for (int i = 0; i < 100; i++) {
-            ImmutablePair<Country, Country> teeamPair = randomValueGenerator.generateTeamPair(TeamBundle.WORLD_CUP);
-            Country countryOne = teeamPair.getLeft();
-            Country countryTwo = teeamPair.getRight();
+            TeamPair teeamPair = randomValueGenerator.generateTeamPair(TeamBundle.WORLD_CUP);
+            Country countryOne = teeamPair.teamOne();
+            Country countryTwo = teeamPair.teamTwo();
             assertThat(countryOne).isNotNull();
             assertThat(countryTwo).isNotNull();
             assertThat(countryOne).isNotEqualTo(countryTwo);
@@ -42,11 +40,11 @@ public class RandomValueGeneratorIT {
         dataBasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 6, false, false));
 
         for (int i = 0; i < 100; i++) {
-            ImmutableTriple<Country, Country, Country> triple = randomValueGenerator.generateTeamTriple();
+            TeamTriple triple = randomValueGenerator.generateTeamTriple();
             assertThat(triple).isNotNull();
-            Country countryOne = triple.getLeft();
-            Country countryTwo = triple.getMiddle();
-            Country countryThree = triple.getRight();
+            Country countryOne = triple.finalWinner();
+            Country countryTwo = triple.semiFinalWinner();
+            Country countryThree = triple.thirdFinalWinner();
             assertThat(countryOne).isNotNull();
             assertThat(countryTwo).isNotNull();
             assertThat(countryThree).isNotNull();

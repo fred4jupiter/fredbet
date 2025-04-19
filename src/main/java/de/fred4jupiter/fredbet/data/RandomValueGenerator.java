@@ -40,11 +40,11 @@ public class RandomValueGenerator {
         return availableCountries.get(randomVal);
     }
 
-    public ImmutablePair<Country, Country> generateTeamPair(TeamBundle teamBundle) {
+    public TeamPair generateTeamPair(TeamBundle teamBundle) {
         return generateTeamPair(teamBundle.getTeams());
     }
 
-    public ImmutablePair<Country, Country> generateTeamPair(List<Country> availCountries) {
+    public TeamPair generateTeamPair(List<Country> availCountries) {
         if (CollectionUtils.isEmpty(availCountries)) {
             return null;
         }
@@ -53,14 +53,14 @@ public class RandomValueGenerator {
         List<Country> resultList = availCountries.stream().filter(country -> !country.equals(countryOne)).toList();
 
         if (CollectionUtils.isEmpty(resultList)) {
-            return ImmutablePair.of(countryOne, countryOne);
+            return new TeamPair(countryOne, countryOne);
         }
 
         Country countryTwo = generateRandomCountry(resultList);
-        return ImmutablePair.of(countryOne, countryTwo);
+        return new TeamPair(countryOne, countryTwo);
     }
 
-    public ImmutableTriple<Country, Country, Country> generateTeamTriple() {
+    public TeamTriple generateTeamTriple() {
         final List<Country> availCountries = new ArrayList<>(countryService.getAllCountriesOfMatches());
         if (CollectionUtils.isEmpty(countryService.getAllCountriesOfMatches())) {
             return null;
@@ -70,19 +70,19 @@ public class RandomValueGenerator {
         availCountries.remove(countryOne);
 
         if (CollectionUtils.isEmpty(availCountries)) {
-            return ImmutableTriple.of(countryOne, countryOne, countryOne);
+            return new TeamTriple(countryOne, countryOne, countryOne);
         }
 
         Country countryTwo = generateRandomCountry(availCountries);
         availCountries.remove(countryTwo);
 
         if (CollectionUtils.isEmpty(availCountries)) {
-            return ImmutableTriple.of(countryOne, countryTwo, countryTwo);
+            return new TeamTriple(countryOne, countryTwo, countryTwo);
         }
 
         Country countryThree = generateRandomCountry(availCountries);
 
-        return ImmutableTriple.of(countryOne, countryTwo, countryThree);
+        return new TeamTriple(countryOne, countryTwo, countryThree);
     }
 
 }

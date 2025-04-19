@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.betting;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.data.TeamTriple;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
@@ -14,7 +14,6 @@ import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -168,15 +167,15 @@ public class BettingService {
 
         ExtraBet extraBet = extraBettingService.loadExtraBetForUser(username);
         if (extraBet.noExtraBetsSet()) {
-            ImmutableTriple<Country, Country, Country> teamTriple = randomValueGenerator.generateTeamTriple();
+            TeamTriple teamTriple = randomValueGenerator.generateTeamTriple();
             if (!extraBet.isFinalWinnerSet()) {
-                extraBet.setFinalWinner(teamTriple.getLeft());
+                extraBet.setFinalWinner(teamTriple.finalWinner());
             }
             if (!extraBet.isSemiFinalWinnerSet()) {
-                extraBet.setSemiFinalWinner(teamTriple.getMiddle());
+                extraBet.setSemiFinalWinner(teamTriple.semiFinalWinner());
             }
             if (matchService.isGameForThirdAvailable() && (!extraBet.isThirdFinalWinnerSet())) {
-                extraBet.setThirdFinalWinner(teamTriple.getRight());
+                extraBet.setThirdFinalWinner(teamTriple.thirdFinalWinner());
             }
             extraBetRepository.save(extraBet);
         }
