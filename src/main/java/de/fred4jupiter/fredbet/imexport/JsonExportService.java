@@ -1,11 +1,11 @@
 package de.fred4jupiter.fredbet.imexport;
 
+import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
@@ -34,9 +34,9 @@ public class JsonExportService {
 
     private final UserImportExportHelper userImportExportHelper;
 
-    public JsonExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService,
-                             BettingService bettingService, ExtraBettingService extraBettingService, UserService userService,
-                             UserImportExportHelper userImportExportHelper) {
+    JsonExportService(JsonObjectConverter jsonObjectConverter, MatchService matchService,
+                      BettingService bettingService, ExtraBettingService extraBettingService, UserService userService,
+                      UserImportExportHelper userImportExportHelper) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
@@ -47,61 +47,38 @@ public class JsonExportService {
 
     public String exportAllToJson() {
         LOG.debug("start export to JSON...");
-        final ImportExportContainer importExportContainer = new ImportExportContainer();
         List<AppUser> allUsers = userService.findAll();
-        importExportContainer.setUsers(allUsers.stream().filter(AppUser::isDeletable).map(userImportExportHelper::mapToUserToExport).toList());
+        List<UserToExport> exportUsers = allUsers.stream().filter(AppUser::isDeletable).map(userImportExportHelper::mapToUserToExport).toList();
         LOG.debug("exported users");
 
         List<Match> allMatches = matchService.findAll();
-        importExportContainer.setMatches(allMatches.stream().map(this::toMatchToExport).toList());
+        List<MatchToExport> exportMatches = allMatches.stream().map(this::toMatchToExport).toList();
         LOG.debug("exported matches");
 
         List<Bet> allBetting = bettingService.findAll();
-        importExportContainer.setBets(allBetting.stream().map(this::toBetToExport).toList());
+        List<BetToExport> exportBets = allBetting.stream().map(this::toBetToExport).toList();
         LOG.debug("exported bets");
 
         List<ExtraBet> allExtraBets = extraBettingService.findAllExtraBets();
-        importExportContainer.setExtraBets(allExtraBets.stream().map(this::toExtraBetToExport).toList());
+        List<ExtraBetToExport> exportExtraBets = allExtraBets.stream().map(this::toExtraBetToExport).toList();
         LOG.debug("exported extra bets");
 
+        ImportExportContainer importExportContainer = new ImportExportContainer(exportUsers, exportMatches, exportBets, exportExtraBets);
         return jsonObjectConverter.toJson(importExportContainer);
     }
 
     private ExtraBetToExport toExtraBetToExport(ExtraBet extraBet) {
-        ExtraBetToExport export = new ExtraBetToExport();
-        export.setUserName(extraBet.getUserName());
-        export.setFinalWinner(extraBet.getFinalWinner());
-        export.setSemiFinalWinner(extraBet.getSemiFinalWinner());
-        export.setThirdFinalWinner(extraBet.getThirdFinalWinner());
-        export.setPointsOne(extraBet.getPointsOne());
-        export.setPointsTwo(extraBet.getPointsTwo());
-        export.setPointsThree(extraBet.getPointsThree());
-        return export;
+        return new ExtraBetToExport(extraBet.getUserName(), extraBet.getFinalWinner(), extraBet.getSemiFinalWinner(), extraBet.getThirdFinalWinner(),
+            extraBet.getPointsOne(), extraBet.getPointsTwo(), extraBet.getPointsThree());
     }
 
     private BetToExport toBetToExport(Bet bet) {
-        BetToExport export = new BetToExport();
-        export.setJoker(bet.isJoker());
-        export.setGoalsTeamOne(bet.getGoalsTeamOne());
-        export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-        if (bet.getMatch() != null) {
-            export.setMatchBusinessKey(bet.getMatch().getBusinessKey());
-        }
-        export.setUsername(bet.getUserName());
-        export.setPoints(bet.getPoints());
-        export.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
-        return export;
+        return new BetToExport(bet.getUserName(), bet.getMatch().getBusinessKey(), bet.getGoalsTeamOne(),
+            bet.getGoalsTeamTwo(), bet.getPoints(), bet.isPenaltyWinnerOne(), bet.isJoker());
     }
 
     private MatchToExport toMatchToExport(Match match) {
-        MatchToExport export = new MatchToExport();
-        export.setTeamOne(match.getTeamOne());
-        export.setTeamTwo(match.getTeamTwo());
-        export.setGroup(match.getGroup());
-        export.setStadium(match.getStadium());
-        export.setKickOffDate(match.getKickOffDate());
-        export.setPenaltyWinnerOne(match.isPenaltyWinnerOne());
-        export.setMatchBusinessKey(match.getBusinessKey());
-        return export;
+        return new MatchToExport(match.getTeamOne(), match.getTeamTwo(), match.getGroup(), match.isPenaltyWinnerOne(),
+            match.getKickOffDate(), match.getStadium(), match.getBusinessKey());
     }
 }

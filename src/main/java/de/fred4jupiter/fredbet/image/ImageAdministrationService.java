@@ -3,9 +3,9 @@ package de.fred4jupiter.fredbet.image;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
+import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
 import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
@@ -35,16 +35,19 @@ public class ImageAdministrationService {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
+    private final DefaultProfileImageLoader defaultProfileImageLoader;
+
     ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
                                ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
                                SecurityService securityService,
-                               RuntimeSettingsService runtimeSettingsService) {
+                               RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.imageLocationStrategy = imageLocationStrategy;
         this.securityService = securityService;
         this.runtimeSettingsService = runtimeSettingsService;
+        this.defaultProfileImageLoader = defaultProfileImageLoader;
     }
 
     public ImageGroup initUserProfileImageGroup() {
@@ -101,8 +104,8 @@ public class ImageAdministrationService {
         }
     }
 
-    public void saveUserProfileImage(byte[] binary, AppUser appUser) {
-        saveUserProfileImage(binary, appUser, null);
+    public void saveUserWithDefaultProfileImage(AppUser appUser) {
+        saveUserProfileImage(defaultProfileImageLoader.getDefaultProfileImage().imageBinary(), appUser, null);
     }
 
     public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
@@ -142,7 +145,7 @@ public class ImageAdministrationService {
     public BinaryImage loadImageByImageKey(String imageKey) {
         ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
         if (imageMetaData == null) {
-            return null;
+            return defaultProfileImageLoader.getDefaultProfileImage();
         }
 
         return imageLocationStrategy.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
@@ -151,7 +154,7 @@ public class ImageAdministrationService {
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
         ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
         if (imageMetaData == null) {
-            return null;
+            return defaultProfileImageLoader.getDefaultThumbProfileImage();
         }
 
         return imageLocationStrategy.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());

@@ -1,22 +1,20 @@
 package de.fred4jupiter.fredbet.user;
 
+import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
+import de.fred4jupiter.fredbet.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
+import de.fred4jupiter.fredbet.image.storage.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.image.storage.ImageBinaryRepository;
-import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.betting.BettingService;
-import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -49,13 +46,10 @@ public class UserService {
 
     private final ImageAdministrationService imageAdministrationService;
 
-    private final Resource defaultUserProfileImage;
-
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
                        ImageMetaDataRepository imageMetaDataRepository,
                        BettingService bettingService, ImageBinaryRepository imageBinaryRepository,
-                       FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService,
-                       @Value("classpath:/content/default_profile_image.jpg") Resource defaultUserProfileImage) {
+                       FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
@@ -64,7 +58,6 @@ public class UserService {
         this.imageBinaryRepository = imageBinaryRepository;
         this.fredbetProperties = fredbetProperties;
         this.imageAdministrationService = imageAdministrationService;
-        this.defaultUserProfileImage = defaultUserProfileImage;
     }
 
     public List<AppUser> findAll() {
@@ -89,7 +82,7 @@ public class UserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         LOG.info("creating user with username={}", appUser.getUsername());
         AppUser savedAppUser = appUserRepository.save(appUser);
-        imageAdministrationService.saveUserProfileImage(getDefaultUserProfileImage(), savedAppUser);
+        imageAdministrationService.saveUserWithDefaultProfileImage(savedAppUser);
         return savedAppUser;
     }
 
@@ -101,14 +94,6 @@ public class UserService {
         }
 
         return createUser(appUser);
-    }
-
-    private byte[] getDefaultUserProfileImage() {
-        try {
-            return this.defaultUserProfileImage.getContentAsByteArray();
-        } catch (IOException e) {
-            throw new IllegalStateException("Default user profile image could not be loaded. Cause: " + e.getMessage());
-        }
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
@@ -188,8 +173,12 @@ public class UserService {
     }
 
     public void saveUserProfileImage(byte[] binary) {
-        final AppUser appUser = appUserRepository.findByUserId(securityService.getCurrentUser().getId());
-        ImageMetaData imageMetaData = securityService.getCurrentUserProfileImageMetaData();
+        saveUserProfileImage(binary, securityService.getCurrentUserName());
+    }
+
+    public void saveUserProfileImage(byte[] binary, String username) {
+        final AppUser appUser = appUserRepository.findByUsername(username);
+        ImageMetaData imageMetaData = securityService.getProfileImageMetaDataFor(username);
         imageAdministrationService.saveUserProfileImage(binary, appUser, imageMetaData);
     }
 

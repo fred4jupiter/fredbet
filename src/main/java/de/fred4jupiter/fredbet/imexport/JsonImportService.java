@@ -1,9 +1,9 @@
 package de.fred4jupiter.fredbet.imexport;
 
-import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
@@ -34,8 +34,8 @@ public class JsonImportService {
 
     private final ExtraBettingService extraBettingService;
 
-    public JsonImportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService,
-                             UserService userService, UserImportExportHelper userImportExportHelper, ExtraBettingService extraBettingService) {
+    JsonImportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService,
+                      UserService userService, UserImportExportHelper userImportExportHelper, ExtraBettingService extraBettingService) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
@@ -62,35 +62,35 @@ public class JsonImportService {
     }
 
     private void importExtraBets(ImportExportContainer importExportContainer) {
-        final List<ExtraBetToExport> extraBets = importExportContainer.getExtraBets();
-        extraBets.forEach(extraBetToExport -> extraBettingService.createExtraBetForUser(extraBetToExport.getUserName(), extraBetToExport.getFinalWinner(),
-            extraBetToExport.getSemiFinalWinner(), extraBetToExport.getThirdFinalWinner(),
-            extraBetToExport.getPointsOne(), extraBetToExport.getPointsTwo(), extraBetToExport.getPointsThree()));
+        final List<ExtraBetToExport> extraBets = importExportContainer.extraBets();
+        extraBets.forEach(extraBetToExport -> extraBettingService.createExtraBetForUser(extraBetToExport.userName(), extraBetToExport.finalWinner(),
+            extraBetToExport.semiFinalWinner(), extraBetToExport.thirdFinalWinner(),
+            extraBetToExport.pointsOne(), extraBetToExport.pointsTwo(), extraBetToExport.pointsThree()));
         LOG.debug("imported extrabets");
     }
 
     private void importBets(ImportExportContainer importExportContainer) {
-        final List<BetToExport> bets = importExportContainer.getBets();
+        final List<BetToExport> bets = importExportContainer.bets();
         final Map<String, Match> savedMatchesByBusinessKey = matchService.findAllMatches().stream().collect(Collectors.toMap(Match::getBusinessKey, e -> e));
         bets.forEach(betToExport -> {
-            Match match = savedMatchesByBusinessKey.get(betToExport.getMatchBusinessKey());
+            Match match = savedMatchesByBusinessKey.get(betToExport.matchBusinessKey());
             if (match == null) {
-                LOG.warn("Could not find match with business key={}", betToExport.getMatchBusinessKey());
+                LOG.warn("Could not find match with business key={}", betToExport.matchBusinessKey());
             }
             bettingService.createAndSaveBetting(builder -> {
                 builder.withMatch(match)
-                    .withGoals(betToExport.getGoalsTeamOne(), betToExport.getGoalsTeamTwo())
-                    .withUserName(betToExport.getUsername())
-                    .withJoker(betToExport.isJoker())
-                    .withPenaltyWinnerOne(betToExport.isPenaltyWinnerOne())
-                    .withPoints(betToExport.getPoints());
+                    .withGoals(betToExport.goalsTeamOne(), betToExport.goalsTeamTwo())
+                    .withUserName(betToExport.username())
+                    .withJoker(betToExport.joker())
+                    .withPenaltyWinnerOne(betToExport.penaltyWinnerOne())
+                    .withPoints(betToExport.points());
             });
         });
         LOG.debug("imported bets");
     }
 
     private void importMatches(ImportExportContainer importExportContainer) {
-        final List<MatchToExport> matchesToExportList = importExportContainer.getMatches();
+        final List<MatchToExport> matchesToExportList = importExportContainer.matches();
         matchesToExportList.forEach(matchToExport -> {
             Match match = mapToMatch(matchToExport);
             matchService.save(match);
@@ -99,16 +99,16 @@ public class JsonImportService {
     }
 
     private void importUsers(ImportExportContainer importExportContainer) {
-        final List<UserToExport> users = importExportContainer.getUsers();
+        final List<UserToExport> users = importExportContainer.users();
         long count = userImportExportHelper.importUsers(users);
         LOG.debug("imported {} users", count);
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {
-        return MatchBuilder.create().withTeams(matchToExport.getTeamOne(), matchToExport.getTeamTwo())
-            .withGroup(matchToExport.getGroup())
-            .withKickOffDate(matchToExport.getKickOffDate())
-            .withStadium(matchToExport.getStadium())
+        return MatchBuilder.create().withTeams(matchToExport.teamOne(), matchToExport.teamTwo())
+            .withGroup(matchToExport.group())
+            .withKickOffDate(matchToExport.kickOffDate())
+            .withStadium(matchToExport.stadium())
             .build();
     }
 }
