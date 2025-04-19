@@ -13,6 +13,7 @@ public record FredbetProperties(ImageLocation imageLocation, String imageFileSys
                                 Integer diceMinRange, Integer diceMaxRange, Integer thumbnailSize,
                                 String adminUsername, String adminPassword,
                                 @NestedConfigurationProperty AuthorizationProperties authorization,
-                                @NestedConfigurationProperty DefaultImageProperties defaultImages) {
+                                @NestedConfigurationProperty DefaultImageProperties defaultImages,
+                                @NestedConfigurationProperty ExcelTemplateProperties excelTemplates) {
 
 }

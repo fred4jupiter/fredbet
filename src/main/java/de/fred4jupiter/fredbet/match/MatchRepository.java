@@ -61,7 +61,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     List<Match> findFinishedMatches();
 
     @Query("Select m.teamOne.country, m.teamTwo.country from Match m")
-    List<Country[]> findAllCountries();
+    List<Country[]> findAllCountriesOfMatches();
 
     @Query("""
         select case when (count(m) > 0) then true else false end

@@ -3,9 +3,11 @@ package de.fred4jupiter.fredbet.web.admin;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
+import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,7 +45,8 @@ public class RuntimeSettingsController {
 
     @ModelAttribute("availableCountries")
     public List<Country> availableCountries() {
-        return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+        List<Country> availCountries = countryService.getAvailableCountriesBasedOnMatches(LocaleContextHolder.getLocale());
+        return availCountries.isEmpty() ? List.of(FredbetConstants.DEFAULT_FAVOURITE_COUNTRY) : availCountries;
     }
 
     @ModelAttribute("availableThemes")
@@ -60,6 +63,7 @@ public class RuntimeSettingsController {
     public String showPage(RuntimeSettingsCommand runtimeSettingsCommand, Model model) {
         runtimeSettingsCommand.setRuntimeSettings(runtimeSettingsService.loadRuntimeSettings());
         model.addAttribute("runtimeSettingsCommand", runtimeSettingsCommand);
+        model.addAttribute("availableTeamBundles", TeamBundle.values());
         return PAGE_RUNTIME_CONFIG;
     }
 

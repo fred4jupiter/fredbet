@@ -55,7 +55,7 @@ public enum Group {
     }
 
     public static List<Group> getAllGroups() {
-        return Arrays.asList(Group.values());
+        return List.of(Group.values());
     }
 
     public static List<Group> getMainGroups() {
@@ -65,7 +65,7 @@ public enum Group {
     }
 
     public static List<Group> getKnockoutGroups() {
-        return Arrays.asList(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
+        return List.of(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
     }
 
     public boolean isKnockoutRound() {

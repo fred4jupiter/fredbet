@@ -51,7 +51,7 @@ public class ExtraBetController {
 
     @ModelAttribute("availableCountriesExtraBets")
     public List<Country> availableCountriesExtraBets() {
-        return countryService.getAvailableCountriesExtraBetsSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale());
+        return countryService.getAvailableCountriesBasedOnMatches(LocaleContextHolder.getLocale());
     }
 
     @ModelAttribute("gameForThirdAvailable")

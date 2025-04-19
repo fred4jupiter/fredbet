@@ -1,13 +1,13 @@
 package de.fred4jupiter.fredbet.domain;
 
+import de.fred4jupiter.fredbet.teambundle.TeamKey;
+
 /**
  * Country ISO Code 3166 ALPHA-3
  *
  * @author michael
  */
-public enum Country {
-
-    NONE("none"), // non selected country placeholder
+public enum Country implements TeamKey {
 
     ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), GREAT_BRITAIN("gbr"), ENGLAND("eng", "gb-eng"), FRANCE("fra"),
     IRELAND("irl"), ICELAND("isl"), ITALY("ita"), CROATIA("hrv"),
@@ -74,20 +74,96 @@ public enum Country {
 
     SAMOA("wsm"), SOLOMON_ISLANDS("slb"), TAHITI("pyf"), TONGA("ton"), VANUATU("vut"), ARGENTINA("arg"), BOLIVIA("bol"), BRAZIL("bra"),
 
-    CHILE("chl"), COLOMBIA("col"), ECUADOR("ecu"), PARAGUAY("pry"), PERU("per"), URUGUAY("ury"), VENEZUELA("ven");
+    CHILE("chl"), COLOMBIA("col"), ECUADOR("ecu"), PARAGUAY("pry"), PERU("per"), URUGUAY("ury"), VENEZUELA("ven"),
+
+    // start of Club WM teams
+    AL_AHLY("", "", "kwm kwm-al-ahly"),
+
+    ATLETICO_MADRID("", "", "kwm kwm-atletico-madrid"),
+
+    BOTAFOGO("", "", "kwm kwm-botafogo"),
+
+    FC_PORTO("", "", "kwm kwm-fc-porto"),
+
+    INTER_MIAMI("", "", "kwm kwm-inter-miami"),
+
+    MANCHESTER_CITY("", "", "kwm kwm-manchester"),
+
+    PALMEIRAS("", "", "kwm kwm-palmeiras"),
+
+    PARIS_SAINT_GERMAIN("", "", "kwm kwm-paris-saint-germain"),
+
+    SEATLE_SOUNDERS("", "", "kwm kwm-seattle-sounders"),
+
+    AL_AIN_FC("", "", "kwm kwm-al-ain-fc"),
+
+    AL_HILAL("", "", "kwm kwm-al-hilal"),
+
+    AUCKLAND_CITY("", "", "kwm kwm-auckland-city"),
+
+    BAYERN_MUENCHEN("", "", "kwm kwm-bayern-muenchen"),
+
+    BENFICA_LISSABON("", "", "kwm kwm-benfica-lissabon"),
+
+    BOCA_JUNIORS("", "", "kwm kwm-boca-juniors"),
+
+    BORUSSIA_DORTMUND("", "", "kwm kwm-borussia-dortmund"),
+
+    CA_RIVER_PLATE_MONTEVIDEO("", "", "kwm kwm-ca-river-plate-montevideo"),
+
+    CF_MONTERREY("", "", "kwm kwm-cf-monterrey"),
+
+    CF_PACHUCA("", "", "kwm kwm-cf-pachuca"),
+
+    CHELSEA_CREST("", "", "kwm kwm-chelsea-crest"),
+
+    CLUB_LEON("", "", "kwm kwm-club-leon"),
+
+    CR_FLAMENGO("", "", "kwm kwm-cr-flamengo"),
+
+    ESPERANCE_SPORTIVE_TUNIS("", "", "kwm kwm-esperance-sportive-tunis"),
+
+    FC_INTERNAZIONALE_MILANO("", "", "kwm kwm-fc-internazionale-milano"),
+
+    FC_SALZBURG("", "", "kwm kwm-fc-salzburg"),
+
+    FLUMINENSE_FC("", "", "kwm kwm-fluminense-fc"),
+
+    JUVENTUS_FC("", "", "kwm kwm-juventus-fc"),
+
+    MAMELODI_SUNDOWNS_FC("", "", "kwm kwm-mamelodi-sundowns-fc"),
+
+    REAL_MADRID("", "", "kwm kwm-real-madrid"),
+
+    ULSAN_HD("", "", "kwm kwm-ulsan-hd"),
+
+    URAWA_RED_DIAMONDS("", "", "kwm kwm-urawa-red-diamonds"),
+
+    WYDAD_CASABLANCA("", "", "kwm kwm-wydad-casablanca");
 
     private final String alpha3Code;
 
+    // special code for the flag in flag icons lib which differ from the ISO country code
     private final String flagIconCode;
+
+    private final String cssIconClass;
 
     Country(String alpha3Code) {
         this.alpha3Code = alpha3Code;
         this.flagIconCode = null;
+        this.cssIconClass = null;
     }
 
     Country(String alpha3Code, String flagIconCode) {
         this.alpha3Code = alpha3Code;
         this.flagIconCode = flagIconCode;
+        this.cssIconClass = null;
+    }
+
+    Country(String alpha3Code, String flagIconCode, String cssIconClass) {
+        this.alpha3Code = alpha3Code;
+        this.flagIconCode = flagIconCode;
+        this.cssIconClass = cssIconClass;
     }
 
     public String getAlpha3Code() {
@@ -96,6 +172,10 @@ public enum Country {
 
     public String getFlagIconCode() {
         return flagIconCode;
+    }
+
+    public String getCssIconClass() {
+        return cssIconClass;
     }
 
     public static Country fromName(String name) {

@@ -25,10 +25,6 @@
                             <div class="col-6">
                                 <input type="submit" class="btn btn-primary" th:value="#{excel.upload.button}"/>
                             </div>
-                            <div class="col-6">
-                                <a href="#" th:href="@{/excelimport/download/template}"
-                                   th:text="#{excel.download.template}"></a>
-                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -36,6 +32,14 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+    <h3 class="mt-3" th:text="#{excel.download.template}">Templates</h3>
+    <div class="row">
+        <div class="col-auto">
+            <div class="mb-2" th:id="${templateFile}" th:each="templateFile : ${templateFiles}">
+                <a th:href="@{'/excelimport/download/template/' + ${templateFile}}" th:title="${templateFile}" th:text="${templateFile}"></a>
+            </div>
         </div>
     </div>
 </div>

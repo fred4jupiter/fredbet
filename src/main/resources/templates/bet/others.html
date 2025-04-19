@@ -12,10 +12,10 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12">
-                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(allBetsCommand.getCountryTeamOne())}"></span>
+                                    <span class="" th:classappend="${@teamUtil.cssClassFor(allBetsCommand.getCountryTeamOne())}"></span>
                                     <span class="fw-bold" th:text="${allBetsCommand.teamNameOne}"></span>
                                     <span> - </span>
-                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(allBetsCommand.getCountryTeamTwo())}"></span>
+                                    <span class="" th:classappend="${@teamUtil.cssClassFor(allBetsCommand.getCountryTeamTwo())}"></span>
                                     <span class="fw-bold" th:text="${allBetsCommand.teamNameTwo}"></span>
                                 </div>
                             </div>

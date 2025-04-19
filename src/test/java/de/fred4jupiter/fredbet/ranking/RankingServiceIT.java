@@ -2,10 +2,12 @@ package de.fred4jupiter.fredbet.ranking;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
+import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserAlreadyExistsException;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -46,9 +48,7 @@ public class RankingServiceIT {
         final String username = fredbetProperties.adminUsername();
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword(username, "test").build());
 
-        dataBasePopulator.createRandomMatches();
-        dataBasePopulator.createDemoBetsForAllUsers();
-        dataBasePopulator.createDemoResultsForAllMatches();
+        dataBasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 6, true, true));
 
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.MIXED);
         assertNotNull(rankings);
@@ -62,9 +62,7 @@ public class RankingServiceIT {
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("fred", "fred").withIsChild(true).build());
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("holger", "holger").withIsChild(false).build());
 
-        dataBasePopulator.createRandomMatches();
-        dataBasePopulator.createDemoBetsForAllUsers();
-        dataBasePopulator.createDemoResultsForAllMatches();
+        dataBasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 6, true, true));
 
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.ONLY_ADULTS);
         assertNotNull(rankings);
@@ -79,9 +77,7 @@ public class RankingServiceIT {
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("fred", "fred").withIsChild(true).build());
         saveIfNotPresent(AppUserBuilder.create().withDemoData().withUsernameAndPassword("holger", "holger").withIsChild(false).build());
 
-        dataBasePopulator.createRandomMatches();
-        dataBasePopulator.createDemoBetsForAllUsers();
-        dataBasePopulator.createDemoResultsForAllMatches();
+        dataBasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 6, true, true));
 
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.ONLY_CHILDREN);
         assertNotNull(rankings);

@@ -68,6 +68,10 @@ fredbet:
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
+  excel-templates:
+    template-files:
+      - "ImportTemplateWorldCup.xlsx"
+      - "ImportTemplateClubWorldCup.xlsx"
   default-images:
     profile-image-resource: "classpath:/content/default_profile_image.jpg"
     thumb-profile-image-resource: "classpath:/content/default_profile_image_thumb.jpg"

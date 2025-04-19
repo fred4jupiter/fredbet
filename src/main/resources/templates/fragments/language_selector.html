@@ -4,43 +4,43 @@
 	<ul th:fragment="language_selector" th:remove="tag">
         <li>
             <a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('de')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('de')}"></span>
                 <span th:text="' '+#{language.de}"></span>
             </a>
         </li>
         <li>
             <a th:href="${@languageUtil.buildUrl('en')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('gb')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('gb')}"></span>
                 <span th:text="' '+#{language.en}"></span>
             </a>
         </li>
         <li>
             <a th:href="${@languageUtil.buildUrl('pl')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('pl')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('pl')}"></span>
                 <span th:text="' '+#{language.pl}"></span>
             </a>
         </li>
         <li>
             <a th:href="${@languageUtil.buildUrl('es')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('es')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('es')}"></span>
                 <span th:text="' '+#{language.es}"></span>
             </a>
         </li>
         <li>
             <a th:href="${@languageUtil.buildUrl('ca')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('es-ct')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('es-ct')}"></span>
                 <span th:text="' '+#{language.ca}"></span>
             </a>
         </li>
         <li>
             <a th:href="${@languageUtil.buildUrl('cs')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('cz')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('cz')}"></span>
                 <span th:text="' '+#{language.cs}"></span>
             </a>
         </li>
         <li>
             <a th:href="${@languageUtil.buildUrl('sv')}" class="dropdown-item language">
-                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor('sv')}"></span>
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('sv')}"></span>
                 <span th:text="' '+#{language.sv}"></span>
             </a>
         </li>

@@ -15,17 +15,17 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-12">
-                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
+                                    <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
 							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 							  		<span> - </span>
-                                    <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
+                                    <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
 									<br/>
-									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span><span>,</span>
-									<span th:text="${matchCommand.stadium}"></span>
+									<span th:text="#{${matchCommand.group.titleMsgKey}}"></span>
+									<span th:if="${matchCommand.stadium != null and !#strings.isEmpty(matchCommand.stadium)}" th:text="${', ' + matchCommand.stadium}"></span>
 					  			</div>
 				  			</div>
 						</div>

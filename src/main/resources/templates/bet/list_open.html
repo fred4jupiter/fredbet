@@ -22,10 +22,10 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-12">
-                                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
+                                <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
 								<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 								<span> - </span>
-                                <span class="fi" th:classappend="${@countryIconUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
+                                <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
 								<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 								<br/>
 							</div>

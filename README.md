@@ -179,7 +179,7 @@ While running in `dev` profile the H2 web console is available at [http://localh
 
 The following Microsoft Excel templates with matches are prepared for import:
 
-* [EM 2024](extra/excel_templates/fredbet_em_2024.xlsx?raw=true)
+* [Club World Cup](extra/excel_templates/ClubWorldCup_2025.xlsx?raw=true)
 
 ## Screenshots
 

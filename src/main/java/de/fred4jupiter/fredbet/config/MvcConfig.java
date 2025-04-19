@@ -71,7 +71,8 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.addBasenames("classpath:org/springframework/security/messages", "classpath:/TranslationMessages", "classpath:/ValidationMessages");
+        messageSource.addBasenames("classpath:org/springframework/security/messages", "classpath:/msgs/TranslationMessages",
+            "classpath:/msgs/ValidationMessages", "classpath:/msgs/TeamKey");
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setDefaultLocale(Locale.ENGLISH);
         return messageSource;

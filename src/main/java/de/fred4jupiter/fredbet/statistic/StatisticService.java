@@ -32,8 +32,7 @@ public class StatisticService {
 
     public Country getFavouriteCountry() {
         RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        Country favouriteCountry = runtimeSettings.getFavouriteCountry();
-        return favouriteCountry != null && !Country.NONE.equals(favouriteCountry) ? favouriteCountry : FredbetConstants.DEFAULT_FAVOURITE_COUNTRY;
+        return runtimeSettings.getFavouriteCountry();
     }
 
     public List<Statistic> createStatistic() {

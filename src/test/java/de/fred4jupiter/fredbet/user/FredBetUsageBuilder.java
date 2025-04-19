@@ -10,6 +10,7 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -56,8 +57,8 @@ public class FredBetUsageBuilder {
         return this;
     }
 
-    public FredBetUsageBuilder withMatch() {
-        ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair();
+    public FredBetUsageBuilder withMatch(TeamBundle teamBundle) {
+        ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair(teamBundle);
         this.match = MatchBuilder.create().withTeams(teamPair.getLeft(), teamPair.getRight()).withGroup(Group.GROUP_A)
                 .withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
         return this;
@@ -83,7 +84,7 @@ public class FredBetUsageBuilder {
         }
 
         if (this.match == null) {
-            withMatch();
+            withMatch(TeamBundle.WORLD_CUP);
         }
 
         if (this.bet == null) {

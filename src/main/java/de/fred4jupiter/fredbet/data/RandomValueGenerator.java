@@ -1,7 +1,8 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.country.CountryService;
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 @Component
 public class RandomValueGenerator {
@@ -40,8 +40,11 @@ public class RandomValueGenerator {
         return availableCountries.get(randomVal);
     }
 
-    public ImmutablePair<Country, Country> generateTeamPair() {
-        List<Country> availCountries = countryService.getAllCountriesWithoutNoneEntry();
+    public ImmutablePair<Country, Country> generateTeamPair(TeamBundle teamBundle) {
+        return generateTeamPair(teamBundle.getTeams());
+    }
+
+    public ImmutablePair<Country, Country> generateTeamPair(List<Country> availCountries) {
         if (CollectionUtils.isEmpty(availCountries)) {
             return null;
         }
@@ -58,9 +61,8 @@ public class RandomValueGenerator {
     }
 
     public ImmutableTriple<Country, Country, Country> generateTeamTriple() {
-        Set<Country> countries = countryService.getAvailableCountriesWithoutNoneEntry();
-        List<Country> availCountries = new ArrayList<>(countries);
-        if (CollectionUtils.isEmpty(availCountries)) {
+        final List<Country> availCountries = new ArrayList<>(countryService.getAllCountriesOfMatches());
+        if (CollectionUtils.isEmpty(countryService.getAllCountriesOfMatches())) {
             return null;
         }
 
