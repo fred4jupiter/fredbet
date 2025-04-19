@@ -66,6 +66,20 @@ public class AdminController {
         return testDataCommand;
     }
 
+    @GetMapping("/createDemoBets")
+    public String createDemoBets(RedirectAttributes redirect) {
+        databasePopulator.executeAsync(DatabasePopulator::createDemoBetsForAllUsers);
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoBetsCreated");
+        return "redirect:/administration";
+    }
+
+    @GetMapping("/createDemoResults")
+    public String createDemoResults(RedirectAttributes redirect) {
+        databasePopulator.executeAsync(DatabasePopulator::createDemoResultsForAllMatches);
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoResultsCreated");
+        return "redirect:/administration";
+    }
+
     @RequestMapping
     public String list(Model model) {
         model.addAttribute("availableTeamBundles", TeamBundle.values());

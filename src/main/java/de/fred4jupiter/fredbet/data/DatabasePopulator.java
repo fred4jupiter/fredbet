@@ -8,6 +8,10 @@ public interface DatabasePopulator {
 
     void createDemoData(DemoDataCreation demoDataCreation);
 
+    void createDemoBetsForAllUsers();
+
+    void createDemoResultsForAllMatches();
+
     void createDemoUsers(int numberOfDemoUsers);
 
     void deleteAllBetsAndMatches();
