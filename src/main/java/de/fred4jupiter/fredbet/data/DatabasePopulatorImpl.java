@@ -118,7 +118,8 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         });
     }
 
-    private void createDemoBetsForAllUsers() {
+    @Override
+    public void createDemoBetsForAllUsers() {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
 
@@ -146,7 +147,8 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         });
     }
 
-    private void createDemoResultsForAllMatches() {
+    @Override
+    public void createDemoResultsForAllMatches() {
         LOG.info("createDemoResultsForAllUsers...");
         matchService.enterMatchResultsForAllMatches(match -> {
             match.setGoalsTeamOne(randomValueGenerator.generateRandomValue());
