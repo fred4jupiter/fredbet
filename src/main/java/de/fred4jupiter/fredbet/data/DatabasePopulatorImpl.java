@@ -4,7 +4,6 @@ import com.github.javafaker.Faker;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -14,7 +13,6 @@ import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -110,9 +108,9 @@ class DatabasePopulatorImpl implements DatabasePopulator {
     private void createRandomForGroup(TeamBundle teamBundle, LocalDateTime localDateTime, Group group, int numberOfMatches) {
         LOG.debug("creating group {} with {} matches.", group, numberOfMatches);
         IntStream.rangeClosed(1, numberOfMatches).forEach(counter -> {
-            ImmutablePair<Country, Country> teamPair = randomValueGenerator.generateTeamPair(teamBundle);
+            TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
             Match match = MatchBuilder.create()
-                .withTeams(teamPair.getLeft(), teamPair.getRight())
+                .withTeams(teamPair.teamOne(), teamPair.teamTwo())
                 .withGroup(group)
                 .withStadium(nextStadium())
                 .withKickOffDate(localDateTime.plusHours(counter)).build();
