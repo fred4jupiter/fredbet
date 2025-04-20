@@ -8,7 +8,7 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{statistics.title}"></h1>
 			<div class="row mb-3" th:if="${not #lists.isEmpty(statisticList)}">
-				<div class="col-6 col-sm-2 mb-2">
+				<div th:if="${favouriteCountry != null}" class="col-6 col-sm-2 mb-2">
                     <span class="" th:classappend="${@teamUtil.cssClassFor(favouriteCountry)}"></span>
                     <span th:text="#{statistics.legend.favouriteCountry}"></span>
 				</div>
@@ -67,12 +67,17 @@
 					   	   </div>
 					   </div>
                        <div class="card-footer bg-light">
-                           <span class="" th:classappend="${@teamUtil.cssClassFor(statistic.favoriteCountry)}"></span>
-                           <span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-                           <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star" aria-hidden="true"></span>
-                           <span>,</span>
-                           <span class="fas fa-magic" aria-hidden="true"></span>
-                           <span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
+                           <div class="row">
+                               <div th:if="${favouriteCountry != null}" class="col-auto">
+                                   <span class="" th:classappend="${@teamUtil.cssClassFor(statistic.favoriteCountry)}"></span>
+                                   <span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
+                                   <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star" aria-hidden="true"></span>
+                               </div>
+                               <div class="col-auto">
+                                   <span class="fas fa-magic" aria-hidden="true"></span>
+                                   <span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
+                               </div>
+                           </div>
                        </div>
 					</div>
 				</div>

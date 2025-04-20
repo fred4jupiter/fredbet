@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.props;
 
-import de.fred4jupiter.fredbet.domain.Country;
-
 /**
  * Misc constants used in FredBet.
  *
@@ -20,8 +18,6 @@ public final class FredbetConstants {
     public static final String BADGE_PENALTY_WINNER_MATCH_CSS_CLASS = "badge-penalty-winner-match";
 
     public static final String JOKER_CSS_CLASS = "joker-betting";
-
-    public static final Country DEFAULT_FAVOURITE_COUNTRY = Country.GERMANY;
 
     public static final String DEFAULT_RESET_PASSWORT = "fredbet";
 

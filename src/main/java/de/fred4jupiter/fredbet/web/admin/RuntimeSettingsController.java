@@ -1,14 +1,14 @@
 package de.fred4jupiter.fredbet.web.admin;
 
+import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,8 +44,7 @@ public class RuntimeSettingsController {
 
     @ModelAttribute("availableCountries")
     public List<Country> availableCountries() {
-        List<Country> availCountries = countryService.getAvailableCountriesBasedOnMatches(LocaleContextHolder.getLocale());
-        return availCountries.isEmpty() ? List.of(FredbetConstants.DEFAULT_FAVOURITE_COUNTRY) : availCountries;
+        return countryService.getAvailableCountriesBasedOnMatches(LocaleContextHolder.getLocale());
     }
 
     @ModelAttribute("availableThemes")

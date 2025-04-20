@@ -90,7 +90,7 @@ public class RuntimeSettings {
     }
 
     public Country getFavouriteCountry() {
-        return favouriteCountry != null ? favouriteCountry : FredbetConstants.DEFAULT_FAVOURITE_COUNTRY;
+        return favouriteCountry;
     }
 
     public void setFavouriteCountry(Country favouriteCountry) {
