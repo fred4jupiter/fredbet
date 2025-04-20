@@ -48,6 +48,9 @@ public class StatisticRepository {
     }
 
     public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
+        if (favoriteCountry == null) {
+            return Collections.emptyMap();
+        }
         final String query = """
                 Select a.user_name, sum(a.points)
                 from bet a join matches b on a.match_id = b.match_id
