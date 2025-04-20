@@ -8,7 +8,15 @@
             <h1 th:text="#{administration.runtime.configuration}"></h1>
 			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" action="#" method="post" role="form">
 				<div class="row">
-					<div class="col-12 col-sm-6">
+                    <div class="col-12 col-sm-3 mb-3">
+                        <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
+                        <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
+                        <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select">
+                            <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
+                        </select>
+                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.teamBundle')}" th:errors="*{runtimeSettings.teamBundle}"></p>
+                    </div>
+					<div class="col-12 col-sm-3">
 						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
                         <div class="form-check mb-2">
                             <input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeSettings.enabledParentChildRanking}" class="form-check-input"/>
@@ -125,18 +133,6 @@
                             <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
 						</div>
 					</div>
-                    <div class="col-12 col-sm-3 mb-3">
-                        <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
-                        <div class="row mb-3">
-                            <div class="col-auto">
-                                <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
-                                <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select">
-                                    <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
-                                </select>
-                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.teamBundle')}" th:errors="*{runtimeSettings.teamBundle}"></p>
-                            </div>
-                        </div>
-                    </div>
 				</div>
 
 				<div class="row">
