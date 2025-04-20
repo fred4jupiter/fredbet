@@ -1,12 +1,11 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
+import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
-import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.betting.BettingService;
-import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,8 +23,6 @@ import java.util.List;
 @RequestMapping("/extrabets")
 public class ExtraBetController {
 
-    private final BettingService bettingService;
-
     private final ExtraBetCommandMapper extraBetCommandMapper;
 
     private final SecurityService securityService;
@@ -38,9 +35,8 @@ public class ExtraBetController {
 
     private final ExtraBettingService extraBettingService;
 
-    public ExtraBetController(BettingService bettingService, ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
+    public ExtraBetController(ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
                               WebMessageUtil messageUtil, CountryService countryService, MatchService matchService, ExtraBettingService extraBettingService) {
-        this.bettingService = bettingService;
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
@@ -70,7 +66,7 @@ public class ExtraBetController {
     @PostMapping
     public String saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
         extraBettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
-                extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
+            extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
 
         messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
         return "redirect:/extrabets";
