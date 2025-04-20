@@ -50,6 +50,9 @@ public class TeamUtil {
     }
 
     public String i18n(Country country) {
+        if (country == null) {
+            return "";
+        }
         if (StringUtils.isNotBlank(country.getAlpha3Code())) {
             return getMessageFor("country." + country.getAlpha3Code());
         }
