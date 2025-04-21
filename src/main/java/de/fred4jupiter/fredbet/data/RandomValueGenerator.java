@@ -1,10 +1,8 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -15,10 +13,10 @@ import java.util.Random;
 @Component
 public class RandomValueGenerator {
 
-    private final CountryService countryService;
+    private final MatchRepository matchRepository;
 
-    public RandomValueGenerator(CountryService countryService) {
-        this.countryService = countryService;
+    public RandomValueGenerator(MatchRepository matchRepository) {
+        this.matchRepository = matchRepository;
     }
 
     public Integer generateRandomValue() {
@@ -61,11 +59,12 @@ public class RandomValueGenerator {
     }
 
     public TeamTriple generateTeamTriple() {
-        final List<Country> availCountries = new ArrayList<>(countryService.getAllCountriesOfMatches());
-        if (CollectionUtils.isEmpty(countryService.getAllCountriesOfMatches())) {
+        List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
+        if (allCountriesOfMatches.isEmpty()) {
             return null;
         }
 
+        final List<Country> availCountries = new ArrayList<>(allCountriesOfMatches);
         Country countryOne = generateRandomCountry(availCountries);
         availCountries.remove(countryOne);
 

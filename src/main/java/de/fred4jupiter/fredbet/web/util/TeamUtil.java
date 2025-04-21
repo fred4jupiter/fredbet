@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.util;
 
 import com.neovisionaries.i18n.CountryCode;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -27,9 +28,12 @@ public class TeamUtil {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
-    public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService) {
+    private final MatchRepository matchRepository;
+
+    public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, MatchRepository matchRepository) {
         this.messageSourceUtil = messageSourceUtil;
         this.runtimeSettingsService = runtimeSettingsService;
+        this.matchRepository = matchRepository;
 
         List<Country> countryList = Stream.of(Country.values()).toList();
         countryList.forEach(country -> {
@@ -87,7 +91,16 @@ public class TeamUtil {
 
     public List<TeamView> getAvailableTeams() {
         List<Country> allPossibleCountries = runtimeSettingsService.loadRuntimeSettings().getTeamBundle().getTeams();
-        return allPossibleCountries.stream()
+        return toListOfTeamViews(allPossibleCountries);
+    }
+
+    public List<TeamView> getAvailableTeamsBasedOnMatches() {
+        List<Country> allPossibleCountries = matchRepository.getAllCountriesOfMatches();
+        return toListOfTeamViews(allPossibleCountries);
+    }
+
+    private List<TeamView> toListOfTeamViews(List<Country> countries) {
+        return countries.stream()
             .map(country -> new TeamView(country, i18n(country)))
             .sorted(Comparator.comparing(TeamView::teamName))
             .toList();
