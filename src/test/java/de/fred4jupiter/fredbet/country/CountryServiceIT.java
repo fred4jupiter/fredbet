@@ -51,12 +51,6 @@ public class CountryServiceIT {
         assertThat(countries.get(3)).isEqualTo(Country.IRELAND);
     }
 
-    @Test
-    public void getAvailableCountries() {
-        List<Country> countries = countryService.getAvailableCountries(Locale.GERMAN);
-        assertThat(countries).isNotEmpty();
-    }
-
     private void createSomeMatches() {
         matchRepository.save(MatchBuilder.create().withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_B)
             .withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build());

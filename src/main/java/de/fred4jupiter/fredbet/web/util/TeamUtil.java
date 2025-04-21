@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.util;
 
 import com.neovisionaries.i18n.CountryCode;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +25,11 @@ public class TeamUtil {
 
     private final Map<Country, String> alpha2Codes = new HashMap<>();
 
-    public TeamUtil(MessageSourceUtil messageSourceUtil) {
+    private final RuntimeSettingsService runtimeSettingsService;
+
+    public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService) {
         this.messageSourceUtil = messageSourceUtil;
+        this.runtimeSettingsService = runtimeSettingsService;
 
         List<Country> countryList = Stream.of(Country.values()).toList();
         countryList.forEach(country -> {
@@ -78,5 +83,13 @@ public class TeamUtil {
 
     public String cssClassFor(String alpha2Code) {
         return "fi fi-%s".formatted(alpha2Code.toLowerCase());
+    }
+
+    public List<TeamView> getAvailableTeams() {
+        List<Country> allPossibleCountries = runtimeSettingsService.loadRuntimeSettings().getTeamBundle().getTeams();
+        return allPossibleCountries.stream()
+            .map(country -> new TeamView(country, i18n(country)))
+            .sorted(Comparator.comparing(TeamView::teamName))
+            .toList();
     }
 }

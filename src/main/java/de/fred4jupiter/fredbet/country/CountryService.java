@@ -25,11 +25,6 @@ public class CountryService {
         this.runtimeSettingsService = runtimeSettingsService;
     }
 
-    public List<Country> getAvailableCountries(Locale locale) {
-        List<Country> allPossibleCountries = runtimeSettingsService.loadRuntimeSettings().getTeamBundle().getTeams();
-        return translateAndSort(locale, allPossibleCountries);
-    }
-
     public List<Country> getAvailableCountriesBasedOnMatches(Locale locale) {
         return translateAndSort(locale, getAllCountriesOfMatches());
     }
