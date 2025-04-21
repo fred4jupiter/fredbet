@@ -7,10 +7,10 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.util.TeamUtil;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,12 +39,15 @@ public class CreateEditMatchController {
 
     private final BettingService bettingService;
 
+    private final TeamUtil teamUtil;
+
     public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService, CountryService countryService,
-                                     BettingService bettingService) {
+                                     BettingService bettingService, TeamUtil teamUtil) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
         this.countryService = countryService;
         this.bettingService = bettingService;
+        this.teamUtil = teamUtil;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
@@ -113,7 +116,7 @@ public class CreateEditMatchController {
 
     private void addCountriesAndGroups(Model model) {
         model.addAttribute("availableGroups", Group.getAllGroups());
-        model.addAttribute("availableCountries", countryService.getAvailableCountries(LocaleContextHolder.getLocale()));
+        model.addAttribute("availableTeams", teamUtil.getAvailableTeams());
     }
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {

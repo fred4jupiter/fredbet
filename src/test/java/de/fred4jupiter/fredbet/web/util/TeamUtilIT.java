@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,5 +31,17 @@ public class TeamUtilIT {
     @Test
     void resolveTeamNameForChampionsLeagueMember() {
         assertThat(teamUtil.i18n(Country.MANCHESTER_CITY)).isEqualTo("Manchester City");
+    }
+
+    @Test
+    void getAvailableTeams() {
+        List<TeamView> availableTeams = teamUtil.getAvailableTeams();
+        assertThat(availableTeams).isNotEmpty();
+        availableTeams.forEach(teamView -> {
+            assertThat(teamView).isNotNull();
+            assertThat(teamView.country()).isNotNull();
+            assertThat(teamView.teamName()).isNotNull();
+        });
+
     }
 }

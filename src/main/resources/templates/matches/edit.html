@@ -18,13 +18,13 @@
 							<div class="col-6">
 								<select th:field="*{countryTeamOne}" class="form-select">
                                     <option th:value="null" th:text="#{country.none}"></option>
-                                    <option th:each="country : ${availableCountries}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
+                                    <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
 								</select>
 							</div>
 							<div class="col-6">
 								<select th:field="*{countryTeamTwo}" class="form-select">
                                     <option th:value="null" th:text="#{country.none}"></option>
-                                    <option th:each="country : ${availableCountries}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
+                                    <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
 								</select>
 							</div>
 						</div>
