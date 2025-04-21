@@ -1,12 +1,13 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.util.TeamUtil;
+import de.fred4jupiter.fredbet.web.util.TeamView;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,25 +30,26 @@ public class ExtraBetController {
 
     private final WebMessageUtil messageUtil;
 
-    private final CountryService countryService;
+    private final TeamUtil teamUtil;
 
     private final MatchService matchService;
 
     private final ExtraBettingService extraBettingService;
 
     public ExtraBetController(ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
-                              WebMessageUtil messageUtil, CountryService countryService, MatchService matchService, ExtraBettingService extraBettingService) {
+                              WebMessageUtil messageUtil, TeamUtil teamUtil, MatchService matchService,
+                              ExtraBettingService extraBettingService) {
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
-        this.countryService = countryService;
+        this.teamUtil = teamUtil;
         this.matchService = matchService;
         this.extraBettingService = extraBettingService;
     }
 
-    @ModelAttribute("availableCountriesExtraBets")
-    public List<Country> availableCountriesExtraBets() {
-        return countryService.getAvailableCountriesBasedOnMatches(LocaleContextHolder.getLocale());
+    @ModelAttribute("availableTeams")
+    public List<TeamView> availableTeams() {
+        return teamUtil.getAvailableTeamsBasedOnMatches();
     }
 
     @ModelAttribute("gameForThirdAvailable")

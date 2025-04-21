@@ -86,6 +86,9 @@ public class TeamUtil {
     }
 
     public String cssClassFor(String alpha2Code) {
+        if (StringUtils.isBlank(alpha2Code)) {
+            return "";
+        }
         return "fi fi-%s".formatted(alpha2Code.toLowerCase());
     }
 
