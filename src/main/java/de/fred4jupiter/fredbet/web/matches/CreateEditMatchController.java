@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
-import de.fred4jupiter.fredbet.country.CountryService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
@@ -35,17 +34,14 @@ public class CreateEditMatchController {
 
     private final MatchService matchService;
 
-    private final CountryService countryService;
-
     private final BettingService bettingService;
 
     private final TeamUtil teamUtil;
 
-    public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService, CountryService countryService,
+    public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService,
                                      BettingService bettingService, TeamUtil teamUtil) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
-        this.countryService = countryService;
         this.bettingService = bettingService;
         this.teamUtil = teamUtil;
     }
