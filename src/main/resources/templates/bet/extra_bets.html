@@ -17,7 +17,7 @@
 						<div class="card-body">
 							<select th:field="*{finalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
-							  <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
+                                <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
 							</select>
 						</div>
 					</div>
@@ -31,7 +31,7 @@
 						<div class="card-body">
 							<select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
+                                <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
 							</select>
 						</div>
 					</div>
@@ -45,7 +45,7 @@
 						<div class="card-body">
 							<select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="country : ${availableCountriesExtraBets}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
+                                <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
 							</select>
 						</div>
 					</div>

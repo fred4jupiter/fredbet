@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -69,7 +70,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     default List<Country> getAllCountriesOfMatches() {
         List<Country[]> allCountries = findAllCountriesOfMatches();
-        return allCountries.stream().flatMap(Stream::of).distinct().toList();
+        return allCountries.stream().flatMap(Stream::of).distinct().filter(Objects::nonNull).toList();
     }
 
     @Query("""
