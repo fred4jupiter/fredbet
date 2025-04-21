@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.country.CountryService;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,11 +23,11 @@ public class RandomValueGeneratorUT {
     private RandomValueGenerator randomValueGenerator;
 
     @Mock
-    private CountryService countryService;
+    private MatchRepository matchRepository;
 
     @Test
     public void generateTripleButOnlyOneCountryAvailable() {
-        when(countryService.getAllCountriesOfMatches()).thenReturn(List.of(Country.GERMANY));
+        when(matchRepository.getAllCountriesOfMatches()).thenReturn(List.of(Country.GERMANY));
 
         TeamTriple triple = randomValueGenerator.generateTeamTriple();
         LOG.debug("triple: {}", triple);
@@ -39,7 +39,7 @@ public class RandomValueGeneratorUT {
 
     @Test
     public void threeDistinct() {
-        when(countryService.getAllCountriesOfMatches()).thenReturn(List.of(Country.GERMANY, Country.FRANCE, Country.CHILE));
+        when(matchRepository.getAllCountriesOfMatches()).thenReturn(List.of(Country.GERMANY, Country.FRANCE, Country.CHILE));
 
         TeamTriple triple = randomValueGenerator.generateTeamTriple();
         LOG.debug("triple: {}", triple);

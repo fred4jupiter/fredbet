@@ -1,15 +1,14 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.country.CountryService;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.util.TeamUtil;
+import de.fred4jupiter.fredbet.web.util.TeamView;
 import jakarta.validation.Valid;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,20 +30,22 @@ public class RuntimeSettingsController {
     private static final String PAGE_RUNTIME_CONFIG = "admin/runtime_settings";
 
     private final RuntimeSettingsService runtimeSettingsService;
+
     private final WebMessageUtil webMessageUtil;
-    private final CountryService countryService;
+
+    private final TeamUtil teamUtil;
 
     public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, WebMessageUtil webMessageUtil,
-                                     CountryService countryService) {
+                                     TeamUtil teamUtil) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.webMessageUtil = webMessageUtil;
-        this.countryService = countryService;
+        this.teamUtil = teamUtil;
     }
 
 
-    @ModelAttribute("availableCountries")
-    public List<Country> availableCountries() {
-        return countryService.getAvailableCountriesBasedOnMatches(LocaleContextHolder.getLocale());
+    @ModelAttribute("availableTeams")
+    public List<TeamView> availableTeams() {
+        return teamUtil.getAvailableTeamsBasedOnMatches();
     }
 
     @ModelAttribute("availableThemes")

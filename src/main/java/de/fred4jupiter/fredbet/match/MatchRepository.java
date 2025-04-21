@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public interface MatchRepository extends JpaRepository<Match, Long> {
 
@@ -60,8 +61,16 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("select m from Match m where m.teamOne.goals is not null and m.teamTwo.goals is not null order by m.kickOffDate asc")
     List<Match> findFinishedMatches();
 
-    @Query("Select m.teamOne.country, m.teamTwo.country from Match m")
+    @Query("""
+        Select m.teamOne.country, m.teamTwo.country
+        from Match m
+        """)
     List<Country[]> findAllCountriesOfMatches();
+
+    default List<Country> getAllCountriesOfMatches() {
+        List<Country[]> allCountries = findAllCountriesOfMatches();
+        return allCountries.stream().flatMap(Stream::of).distinct().toList();
+    }
 
     @Query("""
         select case when (count(m) > 0) then true else false end

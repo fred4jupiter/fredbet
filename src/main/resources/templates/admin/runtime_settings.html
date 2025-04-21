@@ -47,7 +47,7 @@
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
                         <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
                             <option th:value="null" th:text="#{country.none}"></option>
-                            <option th:each="country : ${availableCountries}" th:value="${country}" th:text="${@teamUtil.i18n(country)}"></option>
+                            <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
                         </select>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
                     </div>
