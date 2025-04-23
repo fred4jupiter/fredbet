@@ -49,4 +49,13 @@ public class RandomValueGeneratorUT {
         assertThat(triple.thirdFinalWinner()).isNotNull();
     }
 
+    @Test
+    public void distinctRandomElements() {
+        List<Country> list = List.of(Country.GERMANY, Country.FRANCE, Country.CHILE, Country.BELIZE, Country.GREECE);
+
+        List<Country> countries = randomValueGenerator.distinctRandomElements(list, 3);
+        LOG.debug("countries: {}", countries);
+        assertThat(countries).hasSize(3);
+    }
+
 }

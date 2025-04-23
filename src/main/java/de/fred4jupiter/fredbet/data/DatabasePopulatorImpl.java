@@ -140,10 +140,10 @@ class DatabasePopulatorImpl implements DatabasePopulator {
     }
 
     private void createBetForUser(AppUser appUser, Match match, boolean joker) {
-        Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
-        Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
+        GoalResult goalResult = randomValueGenerator.generateGoalResult();
+
         bettingService.createAndSaveBetting(builder -> {
-            builder.withGoals(goalsTeamOne, goalsTeamTwo).withJoker(joker).withUserName(appUser.getUsername()).withMatch(match);
+            builder.withGoals(goalResult.goalsTeamOne(), goalResult.goalsTeamTwo()).withJoker(joker).withUserName(appUser.getUsername()).withMatch(match);
         });
     }
 
@@ -151,8 +151,9 @@ class DatabasePopulatorImpl implements DatabasePopulator {
     public void createDemoResultsForAllMatches() {
         LOG.info("createDemoResultsForAllUsers...");
         matchService.enterMatchResultsForAllMatches(match -> {
-            match.setGoalsTeamOne(randomValueGenerator.generateRandomValue());
-            match.setGoalsTeamTwo(randomValueGenerator.generateRandomValue());
+            GoalResult goalResult = randomValueGenerator.generateGoalResult();
+            match.setGoalsTeamOne(goalResult.goalsTeamOne());
+            match.setGoalsTeamTwo(goalResult.goalsTeamTwo());
         });
     }
 
