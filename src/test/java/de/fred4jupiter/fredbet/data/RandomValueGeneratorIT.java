@@ -19,8 +19,12 @@ public class RandomValueGeneratorIT {
 
     @Test
     public void valueFromOneToTen() {
-        assertThat(randomValueGenerator.generateRandomValueInRange(1, 10)).isGreaterThanOrEqualTo(1);
-        assertThat(randomValueGenerator.generateRandomValueInRange(1, 10)).isLessThanOrEqualTo(10);
+        GoalResult goalResult = randomValueGenerator.generateGoalResult(1, 10);
+        assertThat(goalResult).isNotNull();
+        assertThat(goalResult.goalsTeamOne()).isGreaterThanOrEqualTo(1);
+        assertThat(goalResult.goalsTeamOne()).isLessThanOrEqualTo(10);
+        assertThat(goalResult.goalsTeamTwo()).isGreaterThanOrEqualTo(1);
+        assertThat(goalResult.goalsTeamTwo()).isLessThanOrEqualTo(10);
     }
 
     @Test

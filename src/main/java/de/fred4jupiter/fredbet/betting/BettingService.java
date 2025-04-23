@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.betting;
 
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
+import de.fred4jupiter.fredbet.data.GoalResult;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamTriple;
 import de.fred4jupiter.fredbet.domain.Group;
@@ -154,8 +155,10 @@ public class BettingService {
         List<Match> allMatches = findMatchesToBet(username);
         allMatches.forEach(match -> {
             createAndSaveBetting(builder -> {
+                GoalResult goalResult = randomValueGenerator.generateGoalResult(fredbetProperties.diceMinRange(), fredbetProperties.diceMaxRange());
                 builder.withUserName(username).withMatch(match)
-                    .withGoals(randomFromTo(), randomFromTo()).withJoker(isJokerAllowed(username, match));
+                    .withGoals(goalResult.goalsTeamOne(), goalResult.goalsTeamTwo())
+                    .withJoker(isJokerAllowed(username, match));
             });
         });
 
@@ -186,10 +189,6 @@ public class BettingService {
             return jokerService.isSettingJokerAllowed(username, match.getId());
         }
         return false;
-    }
-
-    private Integer randomFromTo() {
-        return randomValueGenerator.generateRandomValueInRange(fredbetProperties.diceMinRange(), fredbetProperties.diceMaxRange());
     }
 
     public List<Bet> findAll() {

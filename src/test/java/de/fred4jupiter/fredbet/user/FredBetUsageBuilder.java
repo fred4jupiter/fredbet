@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.user;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.data.GoalResult;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamPair;
 import de.fred4jupiter.fredbet.domain.*;
@@ -12,7 +13,6 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -66,12 +66,11 @@ public class FredBetUsageBuilder {
     }
 
     public FredBetUsageBuilder withBet() {
-        Integer goalsTeamOne = randomValueGenerator.generateRandomValue();
-        Integer goalsTeamTwo = randomValueGenerator.generateRandomValue();
+        GoalResult goalResult = randomValueGenerator.generateGoalResult();
 
         Bet bet = new Bet();
-        bet.setGoalsTeamOne(goalsTeamOne);
-        bet.setGoalsTeamTwo(goalsTeamTwo);
+        bet.setGoalsTeamOne(goalResult.goalsTeamOne());
+        bet.setGoalsTeamTwo(goalResult.goalsTeamTwo());
         bet.setMatch(match);
         bet.setUserName(appUser.getUsername());
 

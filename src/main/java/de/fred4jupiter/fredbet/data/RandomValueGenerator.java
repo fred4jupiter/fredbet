@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -19,11 +20,15 @@ public class RandomValueGenerator {
         this.matchRepository = matchRepository;
     }
 
-    public Integer generateRandomValue() {
-        return generateRandomValueInRange(1, 5);
+    public GoalResult generateGoalResult() {
+        return new GoalResult(generateRandomValueInRange(1, 5), generateRandomValueInRange(1, 5));
     }
 
-    public Integer generateRandomValueInRange(int min, int max) {
+    public GoalResult generateGoalResult(int min, int max) {
+        return new GoalResult(generateRandomValueInRange(min, max), generateRandomValueInRange(min, max));
+    }
+
+    private Integer generateRandomValueInRange(int min, int max) {
         Random rn = new Random();
         int range = max - min + 1;
         return rn.nextInt(range) + min;
@@ -31,11 +36,6 @@ public class RandomValueGenerator {
 
     public Boolean generateRandomBoolean() {
         return Math.random() < 0.5;
-    }
-
-    private Country generateRandomCountry(List<Country> availableCountries) {
-        Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
-        return availableCountries.get(randomVal);
     }
 
     public TeamPair generateTeamPair(TeamBundle teamBundle) {
@@ -56,6 +56,11 @@ public class RandomValueGenerator {
 
         Country countryTwo = generateRandomCountry(resultList);
         return new TeamPair(countryOne, countryTwo);
+    }
+
+    private Country generateRandomCountry(List<Country> availableCountries) {
+        Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
+        return availableCountries.get(randomVal);
     }
 
     public TeamTriple generateTeamTriple() {
@@ -84,4 +89,16 @@ public class RandomValueGenerator {
         return new TeamTriple(countryOne, countryTwo, countryThree);
     }
 
+    public <T> List<T> distinctRandomElements(List<T> list, int numberOfElements) {
+        if (list.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        if (list.size() < numberOfElements) {
+            throw new IllegalArgumentException("Could not return " + numberOfElements + ", because there are only " + list.size() + " elements in list.");
+        }
+
+        Collections.shuffle(new ArrayList<>(list), new Random());
+        return list.subList(0, numberOfElements);
+    }
 }
