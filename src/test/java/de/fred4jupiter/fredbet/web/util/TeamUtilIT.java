@@ -1,10 +1,12 @@
 package de.fred4jupiter.fredbet.web.util;
 
+import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,18 @@ public class TeamUtilIT {
     @Autowired
     private MatchRepository matchRepository;
 
+    @Autowired
+    private BettingService bettingService;
+
+    @Autowired
+    private MatchService matchService;
+
     @BeforeEach
     public void setup() {
-        matchRepository.deleteAllInBatch();
         LocaleContextHolder.setDefaultLocale(Locale.ENGLISH);
+
+        bettingService.deleteAllBets();
+        matchService.deleteAllMatches();
     }
 
     @Test
