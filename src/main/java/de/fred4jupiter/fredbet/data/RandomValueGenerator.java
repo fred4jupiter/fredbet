@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,24 +38,25 @@ public class RandomValueGenerator {
     }
 
     public TeamPair generateTeamPair(TeamBundle teamBundle) {
-        return generateTeamPair(teamBundle.getTeams());
+        List<Country> countries = distinctRandomElements(teamBundle.getTeams(), 2);
+        return new TeamPair(countries.get(0), countries.get(1));
     }
 
-    public TeamPair generateTeamPair(List<Country> availCountries) {
-        if (CollectionUtils.isEmpty(availCountries)) {
-            return null;
-        }
-
-        Country countryOne = generateRandomCountry(availCountries);
-        List<Country> resultList = availCountries.stream().filter(country -> !country.equals(countryOne)).toList();
-
-        if (CollectionUtils.isEmpty(resultList)) {
-            return new TeamPair(countryOne, countryOne);
-        }
-
-        Country countryTwo = generateRandomCountry(resultList);
-        return new TeamPair(countryOne, countryTwo);
-    }
+//    public TeamPair generateTeamPair(List<Country> availCountries) {
+//        if (CollectionUtils.isEmpty(availCountries)) {
+//            return null;
+//        }
+//
+//        Country countryOne = generateRandomCountry(availCountries);
+//        List<Country> resultList = availCountries.stream().filter(country -> !country.equals(countryOne)).toList();
+//
+//        if (CollectionUtils.isEmpty(resultList)) {
+//            return new TeamPair(countryOne, countryOne);
+//        }
+//
+//        Country countryTwo = generateRandomCountry(resultList);
+//        return new TeamPair(countryOne, countryTwo);
+//    }
 
     private Country generateRandomCountry(List<Country> availableCountries) {
         Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
@@ -66,30 +66,27 @@ public class RandomValueGenerator {
     public TeamTriple generateTeamTriple() {
         List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
         if (allCountriesOfMatches.isEmpty()) {
-            return null;
+            throw new IllegalArgumentException("Could not create triple, because not matches found.");
         }
 
-        final List<Country> availCountries = new ArrayList<>(allCountriesOfMatches);
-        Country countryOne = generateRandomCountry(availCountries);
-        availCountries.remove(countryOne);
-
-        if (CollectionUtils.isEmpty(availCountries)) {
-            return new TeamTriple(countryOne, countryOne, countryOne);
+        if (allCountriesOfMatches.size() == 1) {
+            Country country = allCountriesOfMatches.getFirst();
+            return new TeamTriple(country, country, country);
         }
 
-        Country countryTwo = generateRandomCountry(availCountries);
-        availCountries.remove(countryTwo);
-
-        if (CollectionUtils.isEmpty(availCountries)) {
-            return new TeamTriple(countryOne, countryTwo, countryTwo);
+        if (allCountriesOfMatches.size() == 2) {
+            return new TeamTriple(allCountriesOfMatches.getFirst(), allCountriesOfMatches.get(1), allCountriesOfMatches.get(1));
         }
 
-        Country countryThree = generateRandomCountry(availCountries);
+        if (allCountriesOfMatches.size() == 3) {
+            return new TeamTriple(allCountriesOfMatches.getFirst(), allCountriesOfMatches.get(1), allCountriesOfMatches.get(2));
+        }
 
-        return new TeamTriple(countryOne, countryTwo, countryThree);
+        List<Country> countries = distinctRandomElements(allCountriesOfMatches, 3);
+        return new TeamTriple(countries.get(0), countries.get(1), countries.get(2));
     }
 
-    public <T> List<T> distinctRandomElements(List<T> list, int numberOfElements) {
+    <T> List<T> distinctRandomElements(List<T> list, int numberOfElements) {
         if (list.isEmpty()) {
             return Collections.emptyList();
         }

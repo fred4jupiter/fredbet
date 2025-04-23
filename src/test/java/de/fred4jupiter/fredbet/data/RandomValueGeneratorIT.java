@@ -1,14 +1,17 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.common.IntegrationTest;
+import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
+@TransactionalIntegrationTest
 public class RandomValueGeneratorIT {
 
     @Autowired
@@ -16,6 +19,9 @@ public class RandomValueGeneratorIT {
 
     @Autowired
     private DatabasePopulator dataBasePopulator;
+
+    @Autowired
+    private MatchRepository matchRepository;
 
     @Test
     public void valueFromOneToTen() {
@@ -43,6 +49,8 @@ public class RandomValueGeneratorIT {
     public void generateTeamTriple() {
         dataBasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 6, false, false));
 
+        List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
+
         for (int i = 0; i < 100; i++) {
             TeamTriple triple = randomValueGenerator.generateTeamTriple();
             assertThat(triple).isNotNull();
@@ -53,9 +61,11 @@ public class RandomValueGeneratorIT {
             assertThat(countryTwo).isNotNull();
             assertThat(countryThree).isNotNull();
 
-            assertThat(countryOne).isNotEqualTo(countryTwo);
-            assertThat(countryTwo).isNotEqualTo(countryThree);
-            assertThat(countryThree).isNotEqualTo(countryOne);
+            if (allCountriesOfMatches.size() > 3) {
+                assertThat(countryOne).isNotEqualTo(countryTwo);
+                assertThat(countryTwo).isNotEqualTo(countryThree);
+                assertThat(countryThree).isNotEqualTo(countryOne);
+            }
         }
     }
 
