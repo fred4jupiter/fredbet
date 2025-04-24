@@ -95,7 +95,8 @@ public class RandomValueGenerator {
             throw new IllegalArgumentException("Could not return " + numberOfElements + ", because there are only " + list.size() + " elements in list.");
         }
 
-        Collections.shuffle(new ArrayList<>(list));
-        return list.subList(0, numberOfElements);
+        ArrayList<T> tmpList = new ArrayList<>(list);
+        Collections.shuffle(tmpList);
+        return tmpList.subList(0, numberOfElements);
     }
 }
