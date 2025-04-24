@@ -31,7 +31,7 @@ public class ReportServiceMT {
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("fred", "feuerstein").withUserGroup(FredBetUserGroup.ROLE_USER).build();
         userService.createUserIfNotExists(appUser);
 
-        dataBasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 12, true, true));
+        dataBasePopulator.createDemoData();
 
         byte[] export = reportService.exportBetsToExcel(Locale.GERMAN);
 

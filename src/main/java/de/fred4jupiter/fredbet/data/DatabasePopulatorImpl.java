@@ -11,6 +11,7 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.slf4j.Logger;
@@ -45,15 +46,19 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
     private final Faker faker = new Faker(Locale.getDefault());
 
+    private final RuntimeSettingsService runtimeSettingsService;
+
     public DatabasePopulatorImpl(MatchService matchService, UserService userService,
                                  BettingService bettingService, RandomValueGenerator randomValueGenerator,
-                                 JokerService jokerService, ExtraBettingService extraBettingService) {
+                                 JokerService jokerService, ExtraBettingService extraBettingService,
+                                 RuntimeSettingsService runtimeSettingsService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
         this.randomValueGenerator = randomValueGenerator;
         this.jokerService = jokerService;
         this.extraBettingService = extraBettingService;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     @Async
@@ -62,22 +67,28 @@ class DatabasePopulatorImpl implements DatabasePopulator {
     }
 
     @Override
+    public void createDemoData() {
+        createDemoData(new DemoDataCreation(8, true, true));
+    }
+
+    @Override
     public void createDemoData(DemoDataCreation demoDataCreation) {
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
 
         final LocalDateTime localDateTime = LocalDateTime.now();
+        final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
 
         IntStream.rangeClosed(1, demoDataCreation.numberOfGroups()).forEach(count -> {
-            createRandomForGroup(demoDataCreation.teamBundle(), localDateTime.plusDays(count), countToGroup(count), 4);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(count), countToGroup(count), 4);
         });
 
         int numberOfGroups = demoDataCreation.numberOfGroups();
-        createRandomForGroup(demoDataCreation.teamBundle(), localDateTime.plusDays(numberOfGroups + 1), Group.ROUND_OF_SIXTEEN, 8);
-        createRandomForGroup(demoDataCreation.teamBundle(), localDateTime.plusDays(numberOfGroups + 2), Group.QUARTER_FINAL, 4);
-        createRandomForGroup(demoDataCreation.teamBundle(), localDateTime.plusDays(numberOfGroups + 3), Group.SEMI_FINAL, 2);
-        createRandomForGroup(demoDataCreation.teamBundle(), localDateTime.plusDays(numberOfGroups + 4), Group.FINAL, 1);
-        createRandomForGroup(demoDataCreation.teamBundle(), localDateTime.plusDays(numberOfGroups + 5), Group.GAME_FOR_THIRD, 1);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 1), Group.ROUND_OF_SIXTEEN, 8);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 2), Group.QUARTER_FINAL, 4);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 3), Group.SEMI_FINAL, 2);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 4), Group.FINAL, 1);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 5), Group.GAME_FOR_THIRD, 1);
 
         if (demoDataCreation.withBets()) {
             createDemoBetsForAllUsers();

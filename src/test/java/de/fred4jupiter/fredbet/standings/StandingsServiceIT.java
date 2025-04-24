@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ public class StandingsServiceIT {
 
     @Test
     public void calculateGroupTablePoints() {
-        databasePopulator.createDemoData(new DemoDataCreation(TeamBundle.WORLD_CUP, 12, true, true));
+        databasePopulator.createDemoData(new DemoDataCreation(12, true, true));
 
         StandingsContainer standingsContainer = standingsService.calculateStandings(Locale.of("de", "DE"));
         assertThat(standingsContainer).isNotNull();

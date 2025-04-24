@@ -97,7 +97,7 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getTeamBundle(), command.getNumberOfGroups(), command.getIncludeBets(), command.getIncludeResults());
+        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getNumberOfGroups(), command.getIncludeBets(), command.getIncludeResults());
         databasePopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
         return "redirect:/administration";
