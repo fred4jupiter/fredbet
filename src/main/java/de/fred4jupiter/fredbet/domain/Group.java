@@ -61,11 +61,23 @@ public enum Group {
     public static List<Group> getMainGroups() {
         List<Group> groups = Arrays.asList(values());
         return groups.stream().filter(group -> group.name().startsWith("GROUP_"))
-                .sorted(Comparator.comparing(Group::name)).toList();
+            .sorted(Comparator.comparing(Group::name)).toList();
     }
 
     public static List<Group> getKnockoutGroups() {
         return List.of(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
+    }
+
+    public boolean isMainGroup() {
+        return !isKnockoutGroup();
+    }
+
+    public boolean isKnockoutGroup() {
+        return isOneOf(this, ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
+    }
+
+    private boolean isOneOf(Group group, Group... comparingGroups) {
+        return Arrays.asList(comparingGroups).contains(group);
     }
 
     public boolean isKnockoutRound() {
