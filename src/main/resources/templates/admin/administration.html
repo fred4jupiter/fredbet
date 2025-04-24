@@ -12,15 +12,6 @@
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6">
                                 <div class="mb-3">
-                                    <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
-                                    <select id="teamBundle" th:field="*{teamBundle}" class="form-select">
-                                        <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
-                                    </select>
-                                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamBundle')}" th:errors="*{teamBundle}"></p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="mb-3">
                                     <label for="numberOfGroups" class="form-label" th:text="#{testdata.numberOfGroups}"></label><br/>
                                     <input id="numberOfGroups" type="text" th:field="*{numberOfGroups}" class="form-control" required max="12" />
                                     <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('numberOfGroups')}" th:errors="*{numberOfGroups}"></p>

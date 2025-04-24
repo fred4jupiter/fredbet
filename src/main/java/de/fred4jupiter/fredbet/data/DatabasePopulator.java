@@ -6,6 +6,8 @@ public interface DatabasePopulator {
 
     void executeAsync(Consumer<DatabasePopulator> populatorCallback);
 
+    void createDemoData();
+
     void createDemoData(DemoDataCreation demoDataCreation);
 
     void createDemoBetsForAllUsers();
