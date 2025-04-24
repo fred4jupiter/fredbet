@@ -25,7 +25,7 @@ public class GroupAvailabilityUtil {
         return isGroupAvailable(Group.valueOf(groupName));
     }
 
-    public boolean isGroupAvailable(Group group) {
+    private boolean isGroupAvailable(Group group) {
         return matchService.availableGroups().contains(group);
     }
 
