@@ -1,9 +1,13 @@
 package de.fred4jupiter.fredbet.web;
 
-import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @Component
 public class GroupAvailabilityUtil {
@@ -31,5 +35,10 @@ public class GroupAvailabilityUtil {
 
     public boolean hasUserBetsWithJoker() {
         return bettingService.hasUserBetsWithJoker();
+    }
+
+    public List<Group> getMainGroups() {
+        Set<Group> groups = matchService.availableGroups();
+        return groups.stream().filter(Group::isMainGroup).toList();
     }
 }

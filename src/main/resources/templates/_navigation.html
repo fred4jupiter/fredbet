@@ -81,41 +81,8 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_K')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_K}" th:text="#{group} + ' K'"></a>
-                                </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_L')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GROUP_L}" th:text="#{group} + ' L'"></a>
+                                <li th:each="group : ${@groupAvailabilityUtil.getMainGroups()}">
+                                    <a class="dropdown-item" th:href="${'/matches/group/' + group.getName() }" th:text="#{${group.getTitleMsgKey()}}"></a>
                                 </li>
                                 <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}">
                                     <hr class="dropdown-divider">
