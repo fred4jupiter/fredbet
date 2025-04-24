@@ -10,27 +10,29 @@
                     <h5 th:text="#{administration.testdata.title}">Test Data Creation</h5>
                     <form id="testDataForm" th:action="@{/administration/testdata}" th:object="${testDataCommand}" action="#" method="post" role="form">
                         <div class="row mb-3">
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 col-sm-4">
                                 <div class="mb-3">
                                     <label for="numberOfGroups" class="form-label" th:text="#{testdata.numberOfGroups}"></label><br/>
                                     <input id="numberOfGroups" type="text" th:field="*{numberOfGroups}" class="form-control" required max="12" />
                                     <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('numberOfGroups')}" th:errors="*{numberOfGroups}"></p>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-check mb-3">
+                                        <input id="includeBets" type="checkbox" th:field="*{includeBets}" class="form-check-input"/>
+                                        <label for="includeBets" class="form-check-label" th:text="#{testdata.includeBets}"></label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-check mb-3">
+                                        <input id="includeResults" type="checkbox" th:field="*{includeResults}" class="form-check-input"/>
+                                        <label for="includeResults" class="form-check-label" th:text="#{testdata.includeResults}"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-12 col-sm-6">
-                                <div class="form-check mb-3">
-                                    <input id="includeBets" type="checkbox" th:field="*{includeBets}" class="form-check-input"/>
-                                    <label for="includeBets" class="form-check-label" th:text="#{testdata.includeBets}"></label>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="form-check mb-3">
-                                    <input id="includeResults" type="checkbox" th:field="*{includeResults}" class="form-check-input"/>
-                                    <label for="includeResults" class="form-check-label" th:text="#{testdata.includeResults}"></label>
-                                </div>
-                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6">
