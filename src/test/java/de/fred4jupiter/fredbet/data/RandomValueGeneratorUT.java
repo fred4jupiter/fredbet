@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.data;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -51,11 +52,19 @@ public class RandomValueGeneratorUT {
 
     @Test
     public void distinctRandomElements() {
-        List<Country> list = List.of(Country.GERMANY, Country.FRANCE, Country.CHILE, Country.BELIZE, Country.GREECE);
+        final List<Country> list = TeamBundle.WORLD_CUP.getTeams();
 
         List<Country> countries = randomValueGenerator.distinctRandomElements(list, 3);
         LOG.debug("countries: {}", countries);
         assertThat(countries).hasSize(3);
+
+        Country one = countries.get(0);
+        Country two = countries.get(1);
+        Country three = countries.get(2);
+
+        assertThat(one).isNotEqualTo(two);
+        assertThat(one).isNotEqualTo(three);
+        assertThat(two).isNotEqualTo(three);
     }
 
 }
