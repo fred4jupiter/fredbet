@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.domain;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public enum Group {
 
@@ -59,13 +60,14 @@ public enum Group {
     }
 
     public static List<Group> getMainGroups() {
-        List<Group> groups = Arrays.asList(values());
-        return groups.stream().filter(group -> group.name().startsWith("GROUP_"))
-            .sorted(Comparator.comparing(Group::name)).toList();
+        return Stream.of(values())
+            .filter(Group::isMainGroup)
+            .sorted(Comparator.comparing(Group::name))
+            .toList();
     }
 
     public static List<Group> getKnockoutGroups() {
-        return List.of(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
+        return Stream.of(values()).filter(Group::isKnockoutGroup).toList();
     }
 
     public boolean isMainGroup() {
@@ -78,9 +80,5 @@ public enum Group {
 
     private boolean isOneOf(Group group, Group... comparingGroups) {
         return Arrays.asList(comparingGroups).contains(group);
-    }
-
-    public boolean isKnockoutRound() {
-        return !this.name().startsWith("GROUP_");
     }
 }
