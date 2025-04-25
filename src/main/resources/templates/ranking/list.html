@@ -6,7 +6,6 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-
 			<div class="row">
 				<div class="col-6">
 					<h1 th:text="#{ranking.list.title}"></h1>
@@ -31,7 +30,7 @@
 			</div>
 
 			<div class="row mt-3">
-				<div class="col-12 col-sm-6 col-md-4" th:each="ranking,status : ${rankings}">
+				<div class="col-12 col-sm-6" th:each="ranking,status : ${rankings}">
 					<div class="card mb-3">
                         <div class="card-header rankingDetails">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
@@ -58,20 +57,16 @@
 				</div>
 			</div>
             <div class="row" th:if="${not #lists.isEmpty(rankings)}">
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-auto mb-3">
                     <button type="button" class="btn btn-info" onclick="showHideDetails()"><span th:text="#{ranking.show.details.button}"></span></button>
-					<a class="btn btn-primary" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}">
+                </div>
+                <div class="col-auto mb-3">
+                    <a class="btn btn-primary" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}">
                         <i class="fas fa-file-pdf"></i>
                         <span th:text="#{pdf.export.button}"></span>
                     </a>
                 </div>
             </div>
-			<div class="row">
-				<br/>
-			</div>
-			<div class="row">
-				<br/>
-			</div>
 		</div>
 	</body>
     <th:block layout:fragment="scripts">
