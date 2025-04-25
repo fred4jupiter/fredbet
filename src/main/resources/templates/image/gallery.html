@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.gallery.title}"></title>
 		<link rel="stylesheet" th:href="@{/blueimpgallery-3.4.0/css/blueimp-gallery.min.css}" />
@@ -32,7 +31,7 @@
 			</div>
 
 			<div class="row">
-				<div class="col-12 col-sm-3">
+				<div class="col-auto">
 					<a th:href="@{/image/show}" class="btn btn-primary" th:text="#{image.gallery.toUploadImagePage}"></a>
 				</div>
 			</div>
