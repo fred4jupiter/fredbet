@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{bet.listOpen.title}"></title>
 </head>
 <body>
 	<div layout:fragment="content">
 		<h1 th:text="#{bet.listOpen.title} + ' (' + ${#lists.size(matchesToBet)} + ')'"></h1>
-		<div th:if="${not #lists.isEmpty(matchesToBet)}" class="row">
-			<div class="col-12">
-				<div class="mb-3">
-					<a href="#" th:href="@{'/bet/dice'}" class="btn btn-info" role="button">
-						<span class="fas fa-dice"></span> <span th:text="#{bet.listOpen.dice.all}"></span>
-					</a>
-				</div>
+		<div class="row" th:if="${not #lists.isEmpty(matchesToBet)}">
+			<div class="col-12 mb-3">
+                <a href="#" th:href="@{'/bet/dice'}" class="btn btn-info" role="button">
+                    <span class="fas fa-dice"></span> <span th:text="#{bet.listOpen.dice.all}"></span>
+                </a>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-sm-6 col-md-4" th:each="matchCommand : ${matchesToBet}">
+			<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="matchCommand : ${matchesToBet}">
 				<div class="card mb-3">
 					<div class="card-body">
 						<div class="row">
