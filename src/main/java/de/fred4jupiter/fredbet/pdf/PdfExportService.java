@@ -35,9 +35,7 @@ public class PdfExportService {
         this.fontCreator = fontCreator;
     }
 
-    public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
-        final PdfTableData pdfTableData = pdfTableDataBuilder.build();
-
+    public <T> byte[] createPdfFileFrom(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
         try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             PdfWriter.getInstance(document, out);
             document.setFooter(createFooter(pdfTableData));
