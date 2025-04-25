@@ -9,7 +9,7 @@
         <form id="userForm" th:action="@{/user/edit}" th:object="${editUserCommand}" action="#" method="post" role="form">
 			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/user/' + ${editUserCommand.userId} + '/delete', id='confirm-delete')}"></div>
 			<div class="row">
-				<div class="col-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6">
 					<input type="hidden" th:field="*{userId}" class="form-control" />
 					<div class="mb-3">
 						<label for="username" th:text="#{user.edit.username} + ':'" class="form-label"></label>
