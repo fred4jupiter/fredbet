@@ -8,7 +8,7 @@
             <h1 th:text="#{administration.runtime.configuration}"></h1>
 			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" action="#" method="post" role="form">
 				<div class="row">
-                    <div class="col-12 col-sm-3 mb-3">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
                         <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
                         <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select">
@@ -16,7 +16,7 @@
                         </select>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.teamBundle')}" th:errors="*{runtimeSettings.teamBundle}"></p>
                     </div>
-					<div class="col-12 col-sm-3">
+					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
                         <div class="form-check mb-2">
                             <input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeSettings.enabledParentChildRanking}" class="form-check-input"/>
@@ -43,7 +43,7 @@
                                   th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-3 mb-3">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
                         <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
                             <option th:value="null" th:text="#{country.none}"></option>
@@ -51,12 +51,12 @@
                         </select>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
                     </div>
-                    <div class="col-12 col-sm-3 mb-3">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
                         <input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control" />
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}">passwordForReset Error</p>
                     </div>
-                    <div class="col-12 col-sm-6 mb-3">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <h2 th:text="#{administration.runtime.configuration.timeZone}"></h2>
                         <div class="row">
                             <div class="col-8 mb-2">
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-					<div class="col-12 col-sm-6 mb-3">
+					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.layout}"></h2>
 						<div class="row">
 							<div class="col-6 mb-3">
@@ -92,7 +92,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-12 col-sm-6 mb-3">
+					<div class="col-12 col-sm-8 mb-3">
                         <div class="row">
                             <div class="col-12 col-sm-6 mb-3">
                                 <h2 th:text="#{administration.runtime.configuration.joker}"></h2>
@@ -120,7 +120,7 @@
                             </div>
                         </div>
 					</div>
-					<div class="col-12 col-sm-6 mb-3">
+					<div class="col-12 col-sm-8 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
 						<div class="row mb-3">
                             <div class="col-12">
