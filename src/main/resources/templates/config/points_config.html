@@ -15,28 +15,28 @@
 			<form id="pointsConfigForm" th:action="@{/config/points}" th:object="${pointsConfig}" action="#" method="post" role="form">
                 <div class="row">
                     <h2 th:text="#{points.config.subtitle}"></h2>
-                    <div class="col-auto mb-3">
+                    <div class="col-12 col-sm-4 col-md-3 mb-3">
                         <label for="pointsCorrectResult" class="form-label" th:text="#{points.config.pointsCorrectResult} + ':'"></label>
                         <div class="col-5">
                             <input id="pointsCorrectResult" type="text" th:field="*{pointsCorrectResult}" class="form-control" />
                         </div>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectResult')}" th:errors="*{pointsCorrectResult}"></p>
                     </div>
-                    <div class="col-auto mb-3">
+                    <div class="col-12 col-sm-4 col-md-3 mb-3">
                         <label for="pointsSameGoalDifference" class="form-label" th:text="#{points.config.pointsSameGoalDifference} + ':'"></label>
                         <div class="col-5">
                             <input id="pointsSameGoalDifference" type="text" th:field="*{pointsSameGoalDifference}" class="form-control" />
                         </div>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsSameGoalDifference')}" th:errors="*{pointsSameGoalDifference}"></p>
                     </div>
-                    <div class="col-auto mb-3">
+                    <div class="col-12 col-sm-4 col-md-3 mb-3">
                         <label for="pointsCorrectWinner" class="form-label" th:text="#{points.config.pointsCorrectWinner} + ':'"></label>
                         <div class="col-5">
                             <input id="pointsCorrectWinner" type="text" th:field="*{pointsCorrectWinner}" class="form-control" />
                         </div>
                         <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectWinner')}" th:errors="*{pointsCorrectWinner}"></p>
                     </div>
-                    <div class="col-auto mb-3">
+                    <div class="col-12 col-sm-4 col-md-3 mb-3">
                         <label for="pointsCorrectNumberOfGoalsOneTeam" class="form-label" th:text="#{points.config.pointsCorrectNumberOfGoalsOneTeam} + ':'"></label>
                         <div class="col-5">
                             <input id="pointsCorrectNumberOfGoalsOneTeam" type="text" th:field="*{pointsCorrectNumberOfGoalsOneTeam}" class="form-control" />
