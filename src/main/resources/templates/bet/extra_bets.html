@@ -8,7 +8,7 @@
         <form id="extraBetForm" th:action="@{/extrabets}" th:object="${extraBetCommand}" action="#" method="post" role="form">
 			<input type="hidden" th:field="*{extraBetId}" class="form-control" />
 			<div class="row">
-				<div class="col-12 col-sm-6">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-4">
 					<div class="card mb-3">
 						<div class="card-header bg-success-subtle">
 							<span class="bold" th:text="#{extra_bets.finalWinner} + ':'"></span>
@@ -22,38 +22,38 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-12 col-sm-6">
-					<div class="card mb-3">
-						<div class="card-header bg-warning-subtle">
-							<span class="bold" th:text="#{extra_bets.semiFinalWinner} + ':'"></span>
-							<span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsSemiFinalWinner()})}"></span>
-						</div>
-						<div class="card-body">
-							<select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                    <div class="card mb-3">
+                        <div class="card-header bg-warning-subtle">
+                            <span class="bold" th:text="#{extra_bets.semiFinalWinner} + ':'"></span>
+                            <span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsSemiFinalWinner()})}"></span>
+                        </div>
+                        <div class="card-body">
+                            <select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
                                 <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-sm-6" th:if="${gameForThirdAvailable}">
-					<div class="card mb-3">
-						<div class="card-header bg-info-subtle">
-							<span class="bold" th:text="#{extra_bets.thirdFinalWinner} + ':'"></span>
-							<span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsThirdFinalWinner()})}"></span>
-						</div>
-						<div class="card-body">
-							<select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4" th:if="${gameForThirdAvailable}">
+                    <div class="card mb-3">
+                        <div class="card-header bg-info-subtle">
+                            <span class="bold" th:text="#{extra_bets.thirdFinalWinner} + ':'"></span>
+                            <span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsThirdFinalWinner()})}"></span>
+                        </div>
+                        <div class="card-body">
+                            <select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
                                 <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
-							</select>
-						</div>
-					</div>
-				</div>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 			</div>
 
 			<div class="row">
-				<div class="col-12 col-sm-6">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-4">
 					<div class="card">
 						<div class="card-header">
                             <div class="row">

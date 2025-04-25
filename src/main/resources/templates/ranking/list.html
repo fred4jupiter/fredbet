@@ -30,7 +30,7 @@
 			</div>
 
 			<div class="row mt-3">
-				<div class="col-12 col-sm-6" th:each="ranking,status : ${rankings}">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="ranking,status : ${rankings}">
 					<div class="card mb-3">
                         <div class="card-header rankingDetails">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
