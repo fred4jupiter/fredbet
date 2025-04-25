@@ -7,7 +7,7 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{bet.others.title}"></h1>
             <div class="row" th:with="groupAvg=${allBetsCommand.avgGroupBet}">
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -52,7 +52,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-3" th:each="bet : ${allBetsCommand.allBetsForMatch}">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="bet : ${allBetsCommand.allBetsForMatch}">
                     <div class="card mt-3">
                         <div class="card-body">
                             <div class="row align-items-center">
