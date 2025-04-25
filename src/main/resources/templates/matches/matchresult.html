@@ -6,13 +6,10 @@
 </head>
 <body>
 	<div layout:fragment="content">
-
         <h1 th:text="#{matchresult.heading}"></h1>
-
-		<form id="matchresultForm" th:action="@{/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form" class="goalsEnter">
-			<div class="alert alert-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
+		<form id="matchresultForm" th:action="@{/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form">
 			<div class="row">
-				<div class="col-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-4">
 					<input type="hidden" th:field="*{matchId}" />
 					<input type="hidden" th:field="*{redirectViewName}" />
 					<input type="hidden" th:field="*{groupMatch}" />
