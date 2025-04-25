@@ -10,7 +10,7 @@
                     <h5 th:text="#{administration.testdata.title}">Test Data Creation</h5>
                     <form id="testDataForm" th:action="@{/administration/testdata}" th:object="${testDataCommand}" action="#" method="post" role="form">
                         <div class="row mb-3">
-                            <div class="col-12 col-sm-4">
+                            <div class="col-12 col-sm-6">
                                 <div class="mb-3">
                                     <label for="numberOfGroups" class="form-label" th:text="#{testdata.numberOfGroups}"></label><br/>
                                     <input id="numberOfGroups" type="text" th:field="*{numberOfGroups}" class="form-control" required max="12" />
@@ -18,13 +18,15 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12 col-sm-4">
+                                <div class="col-12 col-sm-8">
                                     <div class="form-check mb-3">
                                         <input id="includeBets" type="checkbox" th:field="*{includeBets}" class="form-check-input"/>
                                         <label for="includeBets" class="form-check-label" th:text="#{testdata.includeBets}"></label>
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-8">
                                     <div class="form-check mb-3">
                                         <input id="includeResults" type="checkbox" th:field="*{includeResults}" class="form-check-input"/>
                                         <label for="includeResults" class="form-check-label" th:text="#{testdata.includeResults}"></label>
@@ -72,10 +74,10 @@
             <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
             <h5 class="mt-3 mb-3" th:text="#{administration.dangerzone.title}">Danger Zone</h5>
             <div class="row">
-                <div class="col-12 col-sm-3 mb-3">
+                <div class="col-auto mb-3">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllUsers" th:text="#{administration.deleteAllUsers}"></button>
                 </div>
-                <div class="col-12 col-sm-3 mb-3">
+                <div class="col-auto mb-3">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
                 </div>
             </div>
