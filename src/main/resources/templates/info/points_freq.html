@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{pointsfrequency.title}"></title>
 	</head>
@@ -10,9 +9,9 @@
 			<span th:text="#{pointsfrequency.title2}"></span>
 
             <div class="row mt-3" th:if="${pointsFrequencyCommand != null}">
-				<div class="col-12 col-sm-6 col-md-4" th:each="pointsfrequency : ${pointsFrequencyCommand.resultList}">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-3" th:each="pointsfrequency : ${pointsFrequencyCommand.resultList}">
 					<div class="table-responsive">
-				   		<table class="table table-centered table-striped">
+				   		<table class="table table-centered small table-sm table-striped">
 							<thead>
 								<tr class="active">
 									<th th:text="#{pointsfrequency.table.header.name}"></th>
