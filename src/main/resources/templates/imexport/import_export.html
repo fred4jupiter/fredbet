@@ -8,7 +8,7 @@
             <h1 class="mb-3" th:text="#{importexport.title}"></h1>
             <p class="mb-3" th:text="#{importexport.subtitle}"></p>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                     <form th:action="@{/importexport/import}" th:object="${importExportCommand}" method="post" enctype="multipart/form-data" role="form">
                         <div class="card mb-3">
                             <div class="card-header">
@@ -21,7 +21,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="card-header">
                             <span th:text="#{importexport.export.data}"></span>

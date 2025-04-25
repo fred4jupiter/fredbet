@@ -7,7 +7,7 @@
 <div layout:fragment="content">
     <h2 th:text="#{excel.import.title}"></h2>
     <div class="row">
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
             <form th:action="@{/excelimport/upload}" th:object="${excelUploadCommand}" method="post"
                   enctype="multipart/form-data" role="form">
                 <div class="card">
