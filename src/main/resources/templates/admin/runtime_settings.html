@@ -92,52 +92,40 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-12 col-sm-8 mb-3">
-                        <div class="row">
-                            <div class="col-12 col-sm-6 mb-3">
-                                <h2 th:text="#{administration.runtime.configuration.joker}"></h2>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <label for="runtimeSettings.jokerMaxCount" class="form-label" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
-                                        <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control w-25" />
-                                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6 mb-3">
-                                <h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
-                                <div class="form-check">
-                                    <input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()" class="form-check-input"/>
-                                    <label for="selfRegistrationEnabled" class="form-check-label" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
-                                    <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                          th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
-                                </div>
-                                <div id="registrationCodeBox" class="form-group">
-                                    <label for="runtimeSettings.registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
-                                    <input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
-                                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
-                                </div>
-                            </div>
-                        </div>
+					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
+                        <h2 th:text="#{administration.runtime.configuration.joker}"></h2>
+                        <label for="runtimeSettings.jokerMaxCount" class="form-label" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
+                        <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control w-25" />
+                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
 					</div>
-					<div class="col-12 col-sm-8 mb-3">
+
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
+                        <h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
+                        <div class="form-check">
+                            <input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()" class="form-check-input"/>
+                            <label for="selfRegistrationEnabled" class="form-check-label" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
+                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
+                        </div>
+                        <div id="registrationCodeBox" class="form-group">
+                            <label for="runtimeSettings.registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
+                            <input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
+                        </div>
+                    </div>
+
+					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
-						<div class="row mb-3">
-                            <div class="col-12">
-                                <label for="runtimeSettings.imageUploadLimit" class="form-label" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
-                                <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                      th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
-                            </div>
-                            <div class="col-3">
-                                <input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
-                            </div>
-                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
-						</div>
+                        <label for="runtimeSettings.imageUploadLimit" class="form-label" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
+                        <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                              th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
+                        <input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
+                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
 					</div>
 				</div>
 
 				<div class="row">
-					<div class="col-12">
+					<div class="col-auto">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 					</div>
 				</div>
