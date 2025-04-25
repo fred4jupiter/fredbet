@@ -7,7 +7,7 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{bet.extra.others.title}"></h1>
 			<div class="row">
-				<div class="col-12 col-sm-6 col-md-4" th:each="extraBet : ${allExtraBets}">
+				<div class="col-12 col-sm-6" th:each="extraBet : ${allExtraBets}">
 					<div class="card mb-3">
 						<div class="card-header">
                             <div class="row align-items-center">
@@ -49,8 +49,9 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
-				<div class="col-12 col-sm-6 col-md-4">
+				<div class="col-12 col-sm-6">
 					<div class="mt-3">
 						<a href="#" th:href="@{/extrabets}" class="btn btn-light" role="button" th:text="#{button.back}"></a>
 					</div>
