@@ -151,6 +151,15 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/config/points}" th:text="#{points.config.title}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
                                 </li>
@@ -171,12 +180,6 @@
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/config/points}" th:text="#{points.config.title}"></a>
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
                                     <a class="dropdown-item" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
