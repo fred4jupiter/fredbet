@@ -7,17 +7,24 @@
 		<div layout:fragment="content">
             <form th:action="@{/imagegroup/delete}" th:object="${imageGroupCommand}" method="post" role="form">
                 <div class="row">
-                    <div class="col-12 col-sm-3 col-md-2">
+                    <div class="col-12 col-sm-3 col-md-2 mb-3">
                         <select id="groupSelection" th:field="*{id}" class="form-select">
                             <option th:each="imageGroupCommand : ${availableImageGroups}" th:value="${imageGroupCommand.id}" th:text="${imageGroupCommand.name}"></option>
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
-                        <button type="button" class="btn btn-info" onclick="editImageGroup()" th:text="#{button.edit}"></button>
-                        <input type="submit" class="btn btn-danger" th:value="#{button.delete}"/>
+                        <div class="row">
+                            <div class="col-auto mb-3">
+                                <button type="button" class="btn btn-info" onclick="editImageGroup()" th:text="#{button.edit}"></button>
+                            </div>
+                            <div class="col-auto mb-3">
+                                <input type="submit" class="btn btn-danger" th:value="#{button.delete}"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
+
             <form th:action="@{/imagegroup/save}" th:object="${imageGroupCommand}" method="post" role="form">
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4 mt-3">
@@ -30,11 +37,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="mb-3">
-                            <input type="submit" class="btn btn-primary" th:value="#{button.save}" />
-                            <a href="#" th:href="@{/image/show}" class="btn btn-light" role="button" th:text="#{button.backToImageUpload}"></a>
-                        </div>
+                    <div class="col-auto">
+                        <input type="submit" class="btn btn-primary" th:value="#{button.save}" />
+                    </div>
+                    <div class="col-auto">
+                        <a href="#" th:href="@{/image/show}" class="btn btn-light" role="button" th:text="#{button.backToImageUpload}"></a>
                     </div>
                 </div>
             </form>
