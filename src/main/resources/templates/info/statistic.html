@@ -8,22 +8,23 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{statistics.title}"></h1>
 			<div class="row mb-3" th:if="${not #lists.isEmpty(statisticList)}">
-				<div th:if="${favouriteCountry != null}" class="col-6 col-sm-2 mb-2">
+				<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2" th:if="${favouriteCountry != null}">
                     <span class="" th:classappend="${@teamUtil.cssClassFor(favouriteCountry)}"></span>
                     <span th:text="#{statistics.legend.favouriteCountry}"></span>
 				</div>
-                <div class="col-6 col-sm-2 mb-2">
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
                     <span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>
                 </div>
-                <div class="col-6 col-sm-2 mb-2">
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
                     <span class="fas fa-star" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>
                 </div>
-				<div class="col-6 col-sm-2 mb-2">
+				<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
 					<span class="fas fa-lightbulb" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
 				</div>
 			</div>
+
 			<div class="row">
-				<div class="col-12 col-sm-6 col-md-4" th:each="statistic : ${statisticList}">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="statistic : ${statisticList}">
 					<div class="card mb-3">
 						<div class="card-header bg-info-subtle">
                             <div class="row">
