@@ -30,7 +30,7 @@ public class PdfExportService {
 
     private final FontCreator fontCreator;
 
-    public PdfExportService(MessageSourceUtil messageSourceUtil, FontCreator fontCreator) {
+    PdfExportService(MessageSourceUtil messageSourceUtil, FontCreator fontCreator) {
         this.messageSourceUtil = messageSourceUtil;
         this.fontCreator = fontCreator;
     }
@@ -58,10 +58,10 @@ public class PdfExportService {
     }
 
     private <T> PdfPTable createTable(List<T> data, BiConsumer<RowContentAdder, T> rowCallback, PdfTableData pdfTableData) {
-        PdfPTable table = new PdfPTable(pdfTableData.getColumnWidths());
+        PdfPTable table = new PdfPTable(pdfTableData.columnWidths());
         table.setWidthPercentage(100);
 
-        addRowToTable(table, pdfTableData.getHeaderColumns(), true);
+        addRowToTable(table, pdfTableData.headerColumns(), true);
 
         data.forEach(dataEntry -> {
             RowContentAdder rowContentAdder = new RowContentAdder();
@@ -73,7 +73,7 @@ public class PdfExportService {
     }
 
     private HeaderFooter createFooter(PdfTableData pdfTableData) {
-        String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.getLocale());
+        String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.locale());
         HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", fontCreator.createFont()), true);
         footer.setBorder(Rectangle.NO_BORDER);
         footer.setAlignment(Element.ALIGN_RIGHT);
@@ -82,7 +82,7 @@ public class PdfExportService {
 
     private Paragraph createCurrenteDateTimeParagraph(PdfTableData pdfTableData) {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-                .withLocale(pdfTableData.getLocale());
+            .withLocale(pdfTableData.locale());
         Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), fontCreator.createFont());
         dateParagraph.setSpacingAfter(10);
         return dateParagraph;
@@ -92,7 +92,7 @@ public class PdfExportService {
         Font font = fontCreator.createFont();
         font.setSize(18);
         font.setStyle(Font.BOLD);
-        Paragraph headline = new Paragraph(pdfTableData.getTitle(), font);
+        Paragraph headline = new Paragraph(pdfTableData.title(), font);
         headline.setSpacingAfter(20);
         return headline;
     }
