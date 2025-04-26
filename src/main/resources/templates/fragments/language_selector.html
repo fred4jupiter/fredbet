@@ -44,6 +44,12 @@
                 <span th:text="' '+#{language.sv}"></span>
             </a>
         </li>
+        <li>
+            <a th:href="${@languageUtil.buildUrl('fr')}" class="dropdown-item language">
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('fr')}"></span>
+                <span th:text="' '+#{language.fr}"></span>
+            </a>
+        </li>
 	</ul>
 </body>
 </html>
