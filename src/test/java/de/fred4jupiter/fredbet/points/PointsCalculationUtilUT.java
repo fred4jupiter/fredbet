@@ -8,6 +8,9 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,10 +21,13 @@ public class PointsCalculationUtilUT {
 
     private PointsCalculationUtil pointsCalculationUtil;
 
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @BeforeEach
     public void setup() {
         RuntimeSettingsRepository runtimeSettingsRepository = mock(RuntimeSettingsRepository.class);
-        PointsConfigService pointsConfigService = new PointsConfigService(runtimeSettingsRepository);
+        PointsConfigService pointsConfigService = new PointsConfigService(runtimeSettingsRepository, applicationEventPublisher);
         PointsConfiguration pointsConfig = pointsConfigService.createDefaultPointsConfig();
         lenient().when(runtimeSettingsRepository.loadRuntimeSettings(eq(2L), eq(PointsConfiguration.class))).thenReturn(pointsConfig);
 

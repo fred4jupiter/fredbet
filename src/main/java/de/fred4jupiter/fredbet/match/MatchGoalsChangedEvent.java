@@ -1,19 +1,17 @@
 package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import org.springframework.context.ApplicationEvent;
 
 /**
  * Will be triggered if a match has been finished and the goals are fixed.
  *
  * @author michael
  */
-public class MatchGoalsChangedEvent extends ApplicationEvent {
+public class MatchGoalsChangedEvent {
 
     private final Match match;
 
-    public MatchGoalsChangedEvent(Object source, Match match) {
-        super(source);
+    public MatchGoalsChangedEvent(Match match) {
         this.match = match;
     }
 

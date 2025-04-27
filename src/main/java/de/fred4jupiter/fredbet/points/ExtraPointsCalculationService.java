@@ -1,13 +1,13 @@
 package de.fred4jupiter.fredbet.points;
 
-import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author michael
  */
 @Service
-public class ExtraPointsCalculationService implements ApplicationListener<MatchGoalsChangedEvent> {
+public class ExtraPointsCalculationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
@@ -31,7 +31,7 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
         this.pointsConfigService = pointsConfigService;
     }
 
-    @Override
+    @EventListener
     public void onApplicationEvent(MatchGoalsChangedEvent event) {
         final Match match = event.getMatch();
 
@@ -47,6 +47,11 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
             calculatePointsFor(match, extraBet);
             LOG.debug("User {} has {} points", extraBet.getUserName(), extraBet.getPoints());
         });
+    }
+
+    @EventListener
+    public void onApplicationEvent(PointsConfigurationChangedEvent event) {
+        // TODO: implement me
     }
 
     private void calculatePointsFor(Match match, ExtraBet extraBet) {

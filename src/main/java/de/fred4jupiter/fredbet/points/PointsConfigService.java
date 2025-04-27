@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +18,11 @@ public class PointsConfigService {
 
     private final RuntimeSettingsRepository runtimeSettingsRepository;
 
-    public PointsConfigService(RuntimeSettingsRepository runtimeSettingsRepository) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public PointsConfigService(RuntimeSettingsRepository runtimeSettingsRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.runtimeSettingsRepository = runtimeSettingsRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Cacheable(CacheNames.POINTS_CONFIG)
@@ -31,6 +35,8 @@ public class PointsConfigService {
     @CacheEvict(cacheNames = CacheNames.POINTS_CONFIG, allEntries = true)
     public void savePointsConfig(PointsConfiguration pointsConfig) {
         runtimeSettingsRepository.saveRuntimeSettings(POINTS_CONFIG_ID, pointsConfig);
+
+        applicationEventPublisher.publishEvent(new PointsConfigurationChangedEvent(pointsConfig));
     }
 
     public PointsConfiguration createDefaultPointsConfig() {

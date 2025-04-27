@@ -77,7 +77,7 @@ public class MatchService {
 
     private void publishMatchGoalsChangedEvent(Match match) {
         LOG.debug("fire MatchGoalsChangedEvent...");
-        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(this, match));
+        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(match));
     }
 
     public List<Match> findMatchesByGroup(Group group) {
