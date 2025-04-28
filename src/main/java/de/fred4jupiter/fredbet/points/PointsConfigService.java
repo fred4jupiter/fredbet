@@ -44,7 +44,7 @@ public class PointsConfigService {
         // clear cache before recalculating the points...
         cacheAdministrationService.clearCacheByCacheName(CacheNames.POINTS_CONFIG);
 
-        applicationEventPublisher.publishEvent(new PointsConfigurationChangedEvent(pointsConfig));
+        applicationEventPublisher.publishEvent(new PointsConfigurationChangedEvent());
     }
 
     public PointsConfiguration createDefaultPointsConfig() {

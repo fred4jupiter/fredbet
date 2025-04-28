@@ -1,14 +1,15 @@
 package de.fred4jupiter.fredbet.points;
 
+import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.common.UnitTest;
-import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -24,10 +25,13 @@ public class PointsCalculationUtilUT {
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;
 
+    @Mock
+    private CacheAdministrationService cacheAdministrationService;
+
     @BeforeEach
     public void setup() {
         RuntimeSettingsRepository runtimeSettingsRepository = mock(RuntimeSettingsRepository.class);
-        PointsConfigService pointsConfigService = new PointsConfigService(runtimeSettingsRepository, applicationEventPublisher);
+        PointsConfigService pointsConfigService = new PointsConfigService(runtimeSettingsRepository, applicationEventPublisher, cacheAdministrationService);
         PointsConfiguration pointsConfig = pointsConfigService.createDefaultPointsConfig();
         lenient().when(runtimeSettingsRepository.loadRuntimeSettings(eq(2L), eq(PointsConfiguration.class))).thenReturn(pointsConfig);
 
