@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.points;
 
+import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
 import org.slf4j.Logger;
@@ -20,9 +21,13 @@ public class PointsConfigService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public PointsConfigService(RuntimeSettingsRepository runtimeSettingsRepository, ApplicationEventPublisher applicationEventPublisher) {
+    private final CacheAdministrationService cacheAdministrationService;
+
+    public PointsConfigService(RuntimeSettingsRepository runtimeSettingsRepository, ApplicationEventPublisher applicationEventPublisher,
+                               CacheAdministrationService cacheAdministrationService) {
         this.runtimeSettingsRepository = runtimeSettingsRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.cacheAdministrationService = cacheAdministrationService;
     }
 
     @Cacheable(CacheNames.POINTS_CONFIG)
@@ -35,6 +40,9 @@ public class PointsConfigService {
     @CacheEvict(cacheNames = CacheNames.POINTS_CONFIG, allEntries = true)
     public void savePointsConfig(PointsConfiguration pointsConfig) {
         runtimeSettingsRepository.saveRuntimeSettings(POINTS_CONFIG_ID, pointsConfig);
+
+        // clear cache before recalculating the points...
+        cacheAdministrationService.clearCacheByCacheName(CacheNames.POINTS_CONFIG);
 
         applicationEventPublisher.publishEvent(new PointsConfigurationChangedEvent(pointsConfig));
     }

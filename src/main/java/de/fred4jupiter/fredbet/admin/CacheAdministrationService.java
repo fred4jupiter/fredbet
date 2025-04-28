@@ -34,12 +34,14 @@ public class CacheAdministrationService {
             return;
         }
 
-        for (String cacheName : cacheNames) {
-            Cache cache = this.cacheManager.getCache(cacheName);
-            if (cache != null) {
-                LOG.info("Clearing cache: {}", cache.getName());
-                cache.clear();
-            }
+        cacheNames.forEach(this::clearCacheByCacheName);
+    }
+
+    public void clearCacheByCacheName(String cacheName) {
+        Cache cache = this.cacheManager.getCache(cacheName);
+        if (cache != null) {
+            LOG.info("Clearing cache: {}", cache.getName());
+            cache.clear();
         }
     }
 }

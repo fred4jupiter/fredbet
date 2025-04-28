@@ -4,10 +4,12 @@ import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
  * @author michael
  */
 @Service
+@Transactional
 public class PointsCalculationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PointsCalculationService.class);
@@ -25,9 +28,12 @@ public class PointsCalculationService {
 
     private final PointsCalculationUtil pointsCalculationUtil;
 
-    PointsCalculationService(BetRepository betRepository, PointsCalculationUtil pointsCalculationUtil) {
+    private final MatchRepository matchRepository;
+
+    PointsCalculationService(BetRepository betRepository, PointsCalculationUtil pointsCalculationUtil, MatchRepository matchRepository) {
         this.betRepository = betRepository;
         this.pointsCalculationUtil = pointsCalculationUtil;
+        this.matchRepository = matchRepository;
     }
 
     @EventListener
@@ -40,7 +46,9 @@ public class PointsCalculationService {
 
     @EventListener
     public void onPointsConfigurationChangedEvent(PointsConfigurationChangedEvent event) {
-        // TODO: implement me
+        LOG.info("recalculating points...");
+        List<Match> matchesWithResult = matchRepository.findAllWithMatchResult();
+        matchesWithResult.forEach(this::calculatePointsFor);
     }
 
     void calculatePointsFor(final Match match) {
