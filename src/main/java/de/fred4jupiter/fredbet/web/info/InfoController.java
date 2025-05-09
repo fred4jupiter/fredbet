@@ -79,6 +79,10 @@ public class InfoController {
         final InfoType infoType = InfoType.valueOf(infoTypeString.toUpperCase());
         final String content = loadContentFor(infoType);
 
+        if (StringUtils.isBlank(content)) {
+            return ResponseEntity.notFound().build();
+        }
+
         byte[] fileContent = this.pdfExportService.createPdfFromHtml(content);
         if (fileContent == null) {
             return ResponseEntity.notFound().build();
