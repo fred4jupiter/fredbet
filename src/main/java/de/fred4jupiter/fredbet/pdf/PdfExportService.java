@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.pdf;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.*;
+import com.lowagie.text.html.simpleparser.HTMLWorker;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -46,6 +48,22 @@ public class PdfExportService {
             document.add(createCurrenteDateTimeParagraph(pdfTableData));
             document.add(createTable(data, rowCallback, pdfTableData));
 
+            document.close();
+            out.flush();
+            return out.toByteArray();
+        } catch (DocumentException | IOException e) {
+            LOG.error(e.getMessage());
+            return null;
+        }
+    }
+
+    public byte[] createPdfFromHtml(String html) {
+        try (Document document = new Document();
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            PdfWriter.getInstance(document, out);
+            document.open();
+            HTMLWorker htmlWorker = new HTMLWorker(document);
+            htmlWorker.parse(new StringReader(html));
             document.close();
             out.flush();
             return out.toByteArray();
