@@ -9,11 +9,21 @@
 
 		<h1 th:text="#{rules.title}"></h1>
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-12 col-sm-12 col-md-12">
 				<div th:remove="tag" th:utext="${textContent}"></div>
 			</div>
 		</div>
-		<a sec:authorize="hasAuthority('PERM_EDIT_INFOS_RULES')" href="#" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>
+        <div class="row">
+            <div class="col-auto mb-3">
+                <a sec:authorize="hasAuthority('PERM_EDIT_INFOS_RULES')" href="#" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>
+            </div>
+            <div class="col-auto mb-3">
+                <a class="btn btn-info" role="button" th:href="@{/info/pdf(type='rules')}">
+                    <i class="fas fa-file-pdf"></i>
+                    <span th:text="#{pdf.export.button}"></span>
+                </a>
+            </div>
+        </div>
 	</div>
 </body>
 </html>

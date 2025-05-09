@@ -1,14 +1,17 @@
 package de.fred4jupiter.fredbet.web.info;
 
 import de.fred4jupiter.fredbet.domain.entity.Info;
-import de.fred4jupiter.fredbet.statistic.Statistic;
+import de.fred4jupiter.fredbet.info.InfoService;
+import de.fred4jupiter.fredbet.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.info.InfoService;
+import de.fred4jupiter.fredbet.statistic.Statistic;
 import de.fred4jupiter.fredbet.statistic.StatisticService;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,8 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,7 +33,10 @@ public class InfoController {
     private static final String TEXT_CONTENT = "textContent";
 
     private static final String PAGE_EDIT_INFO = "info/edit_info";
+
     public static final String PAGE_INFO_STATISTIC = "info/statistic";
+
+    private static final String CONTENT_TYPE_PDF = "application/pdf";
 
     private final WebMessageUtil webMessageUtil;
 
@@ -38,12 +46,17 @@ public class InfoController {
 
     private final SecurityService securityService;
 
+    private final PdfExportService pdfExportService;
+
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+
     public InfoController(WebMessageUtil webMessageUtil, InfoService infoService, StatisticService statisticService,
-                          SecurityService securityService) {
+                          SecurityService securityService, PdfExportService pdfExportService) {
         this.webMessageUtil = webMessageUtil;
         this.infoService = infoService;
         this.statisticService = statisticService;
         this.securityService = securityService;
+        this.pdfExportService = pdfExportService;
     }
 
     @GetMapping("/rules")
@@ -59,6 +72,24 @@ public class InfoController {
     @GetMapping("/misc")
     public ModelAndView showMiscellaneous() {
         return prepareModelAndViewFor(InfoType.MISC);
+    }
+
+    @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
+    public ResponseEntity<byte[]> exportToPdf(@RequestParam("type") String infoTypeString) {
+        final InfoType infoType = InfoType.valueOf(infoTypeString.toUpperCase());
+        final String content = loadContentFor(infoType);
+
+        byte[] fileContent = this.pdfExportService.createPdfFromHtml(content);
+        if (fileContent == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final String fileName = createFileNameFor(infoType);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.ATTACHMENT);
+    }
+
+    private String createFileNameFor(InfoType infoType) {
+        return "%s_export".formatted(infoType.name().toLowerCase());
     }
 
     private ModelAndView prepareModelAndViewFor(InfoType infoType) {
@@ -114,7 +145,7 @@ public class InfoController {
         if (InfoType.RULES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_RULES)) {
             throw new AccessDeniedException("No enough privileges!");
         } else if (InfoType.PRICES.equals(infoType)
-                && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
+            && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
             throw new AccessDeniedException("No enough privileges!");
         }
 
