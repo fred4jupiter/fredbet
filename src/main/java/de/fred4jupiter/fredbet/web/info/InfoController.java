@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.statistic.Statistic;
 import de.fred4jupiter.fredbet.statistic.StatisticService;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -50,13 +51,16 @@ public class InfoController {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
+    private final MessageSourceUtil messageSourceUtil;
+
     public InfoController(WebMessageUtil webMessageUtil, InfoService infoService, StatisticService statisticService,
-                          SecurityService securityService, PdfExportService pdfExportService) {
+                          SecurityService securityService, PdfExportService pdfExportService, MessageSourceUtil messageSourceUtil) {
         this.webMessageUtil = webMessageUtil;
         this.infoService = infoService;
         this.statisticService = statisticService;
         this.securityService = securityService;
         this.pdfExportService = pdfExportService;
+        this.messageSourceUtil = messageSourceUtil;
     }
 
     @GetMapping("/rules")
@@ -83,13 +87,19 @@ public class InfoController {
             return ResponseEntity.notFound().build();
         }
 
-        byte[] fileContent = this.pdfExportService.createPdfFromHtml(content);
+        final String finalContent = createPdfContent(infoType, content);
+        byte[] fileContent = this.pdfExportService.createPdfFromHtml(finalContent);
         if (fileContent == null) {
             return ResponseEntity.notFound().build();
         }
 
         final String fileName = createFileNameFor(infoType);
         return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.ATTACHMENT);
+    }
+
+    private String createPdfContent(InfoType infoType, String content) {
+        String title = messageSourceUtil.getMessageFor(infoType.getMsgKey());
+        return "<h1>%s</h1>".formatted(title) + content;
     }
 
     private String createFileNameFor(InfoType infoType) {
@@ -149,7 +159,7 @@ public class InfoController {
         if (InfoType.RULES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_RULES)) {
             throw new AccessDeniedException("No enough privileges!");
         } else if (InfoType.PRICES.equals(infoType)
-            && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
+                   && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
             throw new AccessDeniedException("No enough privileges!");
         }
 
