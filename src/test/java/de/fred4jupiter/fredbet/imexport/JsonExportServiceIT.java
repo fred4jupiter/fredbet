@@ -47,7 +47,7 @@ public class JsonExportServiceIT {
 
         matchRepository.save(match);
 
-        String json = jsonExportService.exportAllToJson();
+        String json = jsonExportService.exportAllToJson(false);
         boolean result = TempFileWriterUtil.writeToTempFolder(json.getBytes(), "fredbet_export.json");
         assertThat(result).isTrue();
 
