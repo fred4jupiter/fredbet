@@ -17,7 +17,7 @@
             <div class="col-auto mb-3">
                 <a sec:authorize="hasAuthority('PERM_EDIT_INFOS_RULES')" href="#" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>
             </div>
-            <div class="col-auto mb-3">
+            <div class="col-auto mb-3" th:if="${showPdfExportButton}">
                 <a class="btn btn-info" role="button" th:href="@{/info/pdf(type='rules')}">
                     <i class="fas fa-file-pdf"></i>
                     <span th:text="#{pdf.export.button}"></span>

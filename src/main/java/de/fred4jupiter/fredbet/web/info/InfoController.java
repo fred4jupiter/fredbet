@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -110,7 +111,16 @@ public class InfoController {
         final String content = loadContentFor(infoType);
         ModelAndView modelAndView = new ModelAndView(infoType.getPageName());
         modelAndView.addObject(TEXT_CONTENT, prepareForImages(content));
+        modelAndView.addObject("showPdfExportButton", !isEmpty(content));
         return modelAndView;
+    }
+
+    private boolean isEmpty(String content) {
+        if (StringUtils.isBlank(content)) {
+            return true;
+        }
+
+        return "<p><br></p>".equals(content);
     }
 
     private String prepareForImages(String content) {
