@@ -13,7 +13,7 @@
                         <h2 th:text="#{importexport.export.data}"></h2>
                         <div class="mb-3">
                             <input class="form-check-input" type="checkbox" id="usersOnly" th:field="*{usersOnly}">
-                            <label class="form-check-label" for="usersOnly">user data only</label>
+                            <label class="form-check-label" for="usersOnly" th:text="#{importexport.usersOnly}"></label>
                         </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">
@@ -31,10 +31,12 @@
                         <h2 th:text="#{importexport.import.file}"></h2>
                         <div class="mb-3">
                             <input id="jsonFile" type="file" th:field="*{jsonFile}" class="btn btn-light btn-file" />
-
                         </div>
                         <div class="mb-3">
-                            <input type="submit" class="btn btn-primary mt-2" th:value="#{importexport.upload.button}" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-file-import"></i>
+                                <span th:text="#{importexport.upload.button}"></span>
+                            </button>
                         </div>
                     </form>
                 </div>
