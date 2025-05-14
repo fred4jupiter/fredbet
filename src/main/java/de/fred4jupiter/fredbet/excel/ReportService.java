@@ -40,7 +40,7 @@ public class ReportService {
 
     private final FredbetProperties fredbetProperties;
 
-    public ReportService(ExcelExportService excelExportService, BetRepository betRepository, ExtraBetRepository extraBetRepository,
+    ReportService(ExcelExportService excelExportService, BetRepository betRepository, ExtraBetRepository extraBetRepository,
                          MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService,
                          FredbetProperties fredbetProperties) {
         this.excelExportService = excelExportService;
