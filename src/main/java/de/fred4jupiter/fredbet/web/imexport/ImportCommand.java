@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.imexport;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImportExportCommand {
+public class ImportCommand {
 
     private MultipartFile jsonFile;
 

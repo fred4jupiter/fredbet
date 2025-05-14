@@ -66,7 +66,7 @@ public class JsonImportService {
         extraBets.forEach(extraBetToExport -> extraBettingService.createExtraBetForUser(extraBetToExport.userName(), extraBetToExport.finalWinner(),
             extraBetToExport.semiFinalWinner(), extraBetToExport.thirdFinalWinner(),
             extraBetToExport.pointsOne(), extraBetToExport.pointsTwo(), extraBetToExport.pointsThree()));
-        LOG.debug("imported extrabets");
+        LOG.debug("imported {} extrabets", extraBets.size());
     }
 
     private void importBets(ImportExportContainer importExportContainer) {
@@ -86,7 +86,7 @@ public class JsonImportService {
                     .withPoints(betToExport.points());
             });
         });
-        LOG.debug("imported bets");
+        LOG.debug("imported {} bets", bets.size());
     }
 
     private void importMatches(ImportExportContainer importExportContainer) {
@@ -95,7 +95,7 @@ public class JsonImportService {
             Match match = mapToMatch(matchToExport);
             matchService.save(match);
         });
-        LOG.debug("imported allMatches");
+        LOG.debug("imported {} matches", matchesToExportList.size());
     }
 
     private void importUsers(ImportExportContainer importExportContainer) {
