@@ -34,8 +34,6 @@ public class PdfExportServiceUT {
 
     @Test
     public void createPdf() throws IOException {
-        when(messageSourceUtil.getMessageFor(eq("page"), eq(Locale.getDefault()))).thenReturn("Seite");
-
         PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("username").withHeaderColumn("correct results").withHeaderColumn("goal difference").withHeaderColumn("total points");
         builder.withColumnWidths(new float[]{3, 3, 3, 3}).withTitle("Fredbet Results").withLocale(Locale.getDefault());
 

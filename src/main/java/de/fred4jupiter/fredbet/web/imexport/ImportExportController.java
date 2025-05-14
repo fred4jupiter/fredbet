@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.user.UserImportExportCommand;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -74,7 +73,7 @@ public class ImportExportController {
     }
 
     @PostMapping("/import")
-    public String uploadJsonFile(UserImportExportCommand command, RedirectAttributes redirect) {
+    public String uploadJsonFile(ImportCommand command, RedirectAttributes redirect) {
         try {
             MultipartFile myFile = command.getJsonFile();
             if (myFile == null || myFile.getBytes().length == 0) {
