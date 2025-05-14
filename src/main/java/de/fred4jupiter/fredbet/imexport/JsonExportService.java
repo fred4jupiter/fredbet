@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,11 +46,20 @@ public class JsonExportService {
         this.userImportExportHelper = userImportExportHelper;
     }
 
-    public String exportAllToJson() {
+    public String exportAllToJson(boolean usersOnly) {
+        ImportExportContainer importExportContainer = prepareExport(usersOnly);
+        return jsonObjectConverter.toJson(importExportContainer);
+    }
+
+    private ImportExportContainer prepareExport(boolean usersOnly) {
         LOG.debug("start export to JSON...");
         List<AppUser> allUsers = userService.findAll();
         List<UserToExport> exportUsers = allUsers.stream().filter(AppUser::isDeletable).map(userImportExportHelper::mapToUserToExport).toList();
         LOG.debug("exported users");
+
+        if (usersOnly) {
+            return new ImportExportContainer(exportUsers, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+        }
 
         List<Match> allMatches = matchService.findAll();
         List<MatchToExport> exportMatches = allMatches.stream().map(this::toMatchToExport).toList();
@@ -63,8 +73,7 @@ public class JsonExportService {
         List<ExtraBetToExport> exportExtraBets = allExtraBets.stream().map(this::toExtraBetToExport).toList();
         LOG.debug("exported extra bets");
 
-        ImportExportContainer importExportContainer = new ImportExportContainer(exportUsers, exportMatches, exportBets, exportExtraBets);
-        return jsonObjectConverter.toJson(importExportContainer);
+        return new ImportExportContainer(exportUsers, exportMatches, exportBets, exportExtraBets);
     }
 
     private ExtraBetToExport toExtraBetToExport(ExtraBet extraBet) {
