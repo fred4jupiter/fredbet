@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.pdf;
 
+import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.*;
 import com.lowagie.text.html.simpleparser.HTMLWorker;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -38,32 +38,25 @@ public class PdfExportService {
     }
 
     public <T> byte[] createPdfFileFrom(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
-        try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            PdfWriter.getInstance(document, out);
-            document.setFooter(createFooter(pdfTableData));
-
-            document.open();
-
+        return createPdf(document -> {
             document.add(createHeadline(pdfTableData));
             document.add(createCurrenteDateTimeParagraph(pdfTableData));
             document.add(createTable(data, rowCallback, pdfTableData));
-
-            document.close();
-            out.flush();
-            return out.toByteArray();
-        } catch (DocumentException | IOException e) {
-            LOG.error(e.getMessage());
-            return null;
-        }
+        });
     }
 
     public byte[] createPdfFromHtml(String html) {
-        try (Document document = new Document();
-             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            PdfWriter.getInstance(document, out);
-            document.open();
+        return createPdf(document -> {
             HTMLWorker htmlWorker = new HTMLWorker(document);
             htmlWorker.parse(new StringReader(html));
+        });
+    }
+
+    private byte[] createPdf(DocumentCallback documentCallback) {
+        try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            PdfWriter.getInstance(document, out);
+            document.open();
+            documentCallback.onDocument(document);
             document.close();
             out.flush();
             return out.toByteArray();
@@ -137,5 +130,11 @@ public class PdfExportService {
         public List<String> getRowContent() {
             return rowContent;
         }
+    }
+
+    @FunctionalInterface
+    private interface DocumentCallback {
+
+        void onDocument(Document document) throws IOException;
     }
 }
