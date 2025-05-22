@@ -281,12 +281,22 @@
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
-                <version>4.0.0</version>
+                <version>4.9.10</version>
                 <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <verbose>false</verbose>
                     <failOnNoGitDirectory>false</failOnNoGitDirectory>
                     <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

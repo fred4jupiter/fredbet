@@ -22,7 +22,7 @@ public class SystemInfoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SystemInfoService.class);
 
-    private final BuildProperties buildProperties;
+    private final Optional<BuildProperties> buildProperties;
 
     private final Environment environment;
 
@@ -32,7 +32,7 @@ public class SystemInfoService {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z");
 
-    public SystemInfoService(BuildProperties buildProperties, Environment environment, Optional<GitProperties> gitProperties) {
+    public SystemInfoService(Optional<BuildProperties> buildProperties, Environment environment, Optional<GitProperties> gitProperties) {
         this.buildProperties = buildProperties;
         this.environment = environment;
         this.gitProperties = gitProperties;
@@ -40,17 +40,18 @@ public class SystemInfoService {
     }
 
     private void addStaticProperties() {
-        add("Build Time", buildProperties.getTime());
-        add("Build Version", buildProperties.getVersion());
-        add("Java Version", buildProperties.get("java.version"));
+        buildProperties.ifPresent(props -> {
+            add("Build: Build Time", props.getTime());
+            add("Build: Build Version", props.getVersion());
+            add("Build: Java Version", props.get("java.source"));
+        });
 
-        if (gitProperties.isPresent()) {
-            GitProperties gitProps = gitProperties.get();
-            add("Commit ID", gitProps.getCommitId());
-            add("Branch", gitProps.getBranch());
-            add("Commit Message", gitProps.get("commit.message.full"));
-            add("Commit Time", gitProps.getCommitTime());
-        }
+        gitProperties.ifPresent(props -> {
+            add("GIT: Commit ID", props.getCommitId());
+            add("GIT: Branch", props.getBranch());
+            add("GIT: Commit Message", props.get("commit.message.full"));
+            add("GIT: Commit Time", props.getCommitTime());
+        });
 
         addSpringProfiles();
         addEnvProperty("JDBC Driver Class", "spring.datasource.driver-class-name");
