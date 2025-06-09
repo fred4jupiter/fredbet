@@ -42,7 +42,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
                 .requestMatchers("/static/**", "/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
-                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/console/*", "/registration").permitAll()
+                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .anyRequest().authenticated()
