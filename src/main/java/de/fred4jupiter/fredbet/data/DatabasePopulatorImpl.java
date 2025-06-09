@@ -166,6 +166,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
             match.setGoalsTeamOne(goalResult.goalsTeamOne());
             match.setGoalsTeamTwo(goalResult.goalsTeamTwo());
         });
+        LOG.info("created demo results for all users...");
     }
 
     @Override
