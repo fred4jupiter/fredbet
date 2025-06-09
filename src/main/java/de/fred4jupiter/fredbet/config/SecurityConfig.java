@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
 import java.util.Optional;
@@ -36,13 +35,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository, HandlerMappingIntrospector introspector) throws Exception {
-//        final PathPatternRequestMatcher.Builder mvcMatcherBuilder = PathPatternRequestMatcher.withDefaults();
-
+    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
                 .requestMatchers("/static/**", "/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
-                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration").permitAll()
+                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration", "/console/").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .anyRequest().authenticated()
@@ -59,42 +56,14 @@ public class SecurityConfig {
             // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
             .headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
 
+        if (h2ConsoleProperties.isPresent() && h2ConsoleProperties.get().isEnabled()) {
+            // this is for the embedded h2 console
+            http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+            http.csrf(csrf -> csrf.ignoringRequestMatchers("/console/**"));
+        }
+
         return http.build();
-
-//        http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository)
-//            .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
-//        http.formLogin(form -> form
-//            .loginPage("/login")
-//            .defaultSuccessUrl("/matches/upcoming")
-//            .failureUrl("/login/error")
-//        );
-//        http.logout(logout -> logout.logoutUrl("/logout")
-//            .logoutSuccessUrl("/login")
-//            .invalidateHttpSession(true)
-//            .deleteCookies("JSESSIONID", "remember-me"));
-//
-//        // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
-//        http.headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
-//
-////        final PathPatternRequestMatcher.Builder editInfoRequestMatcher = PathPatternRequestMatcher.withDefaults();
-//
-////        final MvcRequestMatcher editInfoRequestMatcher = mvcMatcherBuilder.pattern("/info/editinfo");
-//        if (h2ConsoleProperties.isPresent() && h2ConsoleProperties.get().isEnabled()) {
-//            http.csrf(csrf -> csrf.ignoringRequestMatchers("/info/editinfo"));
-//
-//            // this is for the embedded h2 console
-//            http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-//        } else {
-//            http.csrf(csrf -> csrf.ignoringRequestMatchers(mvcMatcherBuilder.));
-//        }
-//
-//        return http.build();
     }
-
-//    private RequestMatcher[] antMatchers(String... patterns) {
-//        List<? extends RequestMatcher> matchers = Arrays.stream(patterns).map(AntPathRequestMatcher::antMatcher).toList();
-//        return matchers.toArray(new RequestMatcher[0]);
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
