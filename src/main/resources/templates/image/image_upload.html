@@ -12,13 +12,13 @@
                 <div class="row">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                         <div class="row">
-                            <div class="col-4 mb-3">
+                            <div class="col-auto mb-3">
                                 <label for="groupName" class="form-label" th:text="#{image.upload.groupName}"></label><br/>
                                 <select id="groupName" th:field="*{galleryGroup}" class="form-select">
                                     <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
                                 </select>
                             </div>
-                            <div class="col-8 mb-3" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
+                            <div class="col-auto mb-3" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
                                 <label class="form-label" th:text="#{image.upload.editGroup}"></label><br/>
                                 <a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
                             </div>
