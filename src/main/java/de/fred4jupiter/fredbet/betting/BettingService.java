@@ -194,9 +194,4 @@ public class BettingService {
     public List<Bet> findAll() {
         return this.betRepository.findAll();
     }
-
-    public boolean hasUserBetsWithJoker() {
-        String currentUserName = securityService.getCurrentUserName();
-        return betRepository.hasBetsWithJoker(currentUserName);
-    }
 }

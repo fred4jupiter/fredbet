@@ -70,12 +70,10 @@
                                 <li>
                                     <a class="dropdown-item" th:href="@{/matches}" th:text="#{all.matches}"></a>
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+                                <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}" class="divider"
-                                    role="separator"></li>
-                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+                                <li>
                                     <a class="dropdown-item" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
                                 </li>
                                 <li>
