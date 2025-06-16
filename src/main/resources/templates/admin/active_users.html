@@ -11,10 +11,10 @@
                 <div class="card mb-3" th:each="sessionTracking : ${userList}">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-6">
                                 <span th:text="${sessionTracking.userName}"></span>
                             </div>
-                            <div class="col-9 text-end">
+                            <div class="col-6 text-end">
                                 <span th:text="${#temporals.format(sessionTracking.lastLogin, 'yyyy-MM-dd HH:mm')}"></span>
                             </div>
                         </div>
