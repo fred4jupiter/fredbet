@@ -1,9 +1,6 @@
-version: "3.3"
-
 services:
-
   traefik:
-    image: "traefik:v2.4.8"
+    image: "traefik:v3.4.3"
     container_name: "traefik"
     command:
       #- "--log.level=DEBUG"
@@ -18,7 +15,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   fredbet:
-    image: "fred4jupiter/fredbet"   
+    image: "fred4jupiter/fredbet:latest"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.fredbet.rule=Host(`fredbet.localhost`)"
