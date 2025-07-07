@@ -24,8 +24,11 @@ Default admin user:
 
 ### Add Proxy Host
 
-You have to add a proxy host. Use `http://fredbet:8080` for the destination.
+You have to add a proxy host. Here is an example for testing it locally: 
 
+    Domain Name: localhost (in real scenario use the domain name you have configured)
+    Scheme: http
+    Forwarded Hostname: fredbet
+    Forwarded Port: 8080
 
-
-    
+You can reach `FredBet` with http://localhost. 

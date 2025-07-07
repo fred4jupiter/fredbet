@@ -1,11 +1,10 @@
-version: '3.8'
 services:
   postgres:
-    image: postgres:14.5-alpine
-    restart: unless-stopped
-    container_name: "postgres"
+    image: postgres:14
+#    restart: unless-stopped
+#    container_name: "postgres"
     volumes:
-      - "./pgdata:/var/lib/postgresql/data"
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
@@ -14,8 +13,8 @@ services:
       - POSTGRES_DB=${DB_DATABASE_NAME}
   fredbet:
     image: fred4jupiter/fredbet:latest
-    restart: unless-stopped
-    container_name: "fredbet"
+#    restart: unless-stopped
+#    container_name: "fredbet"
     depends_on:
       - postgres
     ports:
@@ -26,13 +25,21 @@ services:
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
   proxy-manager:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    container_name: "proxymanager"
+    image: 'jc21/nginx-proxy-manager:2.12.4'
+#    restart: unless-stopped
+#    container_name: "proxymanager"
+    environment:
+      INITIAL_ADMIN_EMAIL: admin@admin.de
+      INITIAL_ADMIN_PASSWORD: admin123
     ports:
       - '80:80'
       - '81:81' # admin interface
       - '443:443'
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - proxy-manager-data:/data
+      - proxy-manager-letsencrypt:/etc/letsencrypt
+
+volumes:
+  postgres-data:
+  proxy-manager-data:
+  proxy-manager-letsencrypt:
