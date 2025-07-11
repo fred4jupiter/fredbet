@@ -1,9 +1,8 @@
-version: "3.8"
 services:
   traefik:
-    image: traefik:v2.11
+    image: traefik:v3.4.3
     container_name: "traefik"
-    restart: unless-stopped
+    restart: always
     command:
       # - "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -28,33 +27,32 @@ services:
   fredbet:
     image: fred4jupiter/fredbet:latest
     container_name: "fredbet"
-    restart: unless-stopped
+    restart: always
     depends_on:
       - postgres
     ports:
       - "8080:8080"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fredbet.rule=Host(${DOMAIN_NAMES})"
+      - "traefik.http.routers.fredbet.rule=${DOMAIN_NAMES}"
       - "traefik.http.routers.fredbet.entrypoints=websecure"
       - "traefik.http.routers.fredbet.tls=true"
       - "traefik.http.routers.fredbet.tls.certresolver=letsencrypt"
       - "traefik.http.routers.fredbet.service=fredbet"
       - "traefik.http.services.fredbet.loadbalancer.server.port=8080"
+      - "traefik.http.routers.fredbet.middlewares=fredbet-headers"
+      - "traefik.http.middlewares.fredbet-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
     environment:
       - SPRING_PROFILES_ACTIVE=postgres
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-    logging: # use if running on EC2 in AWS
-      driver: awslogs
-      options:
-        awslogs-region: eu-central-1
-        awslogs-group: fredbet # create log group manually
+    logging:
+      driver: "json-file"
   postgres:
     image: postgres:14.5-alpine
     container_name: "postgres"
-    restart: unless-stopped
+    restart: always
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
     ports:
@@ -66,6 +64,7 @@ services:
   backup:
     image: eeshugerman/postgres-backup-s3:16 # run docker exec <backup container name> sh backup.sh for manual backup
     container_name: "backup"
+    restart: always
     environment:
       - SCHEDULE=@hourly
       - BACKUP_KEEP_DAYS=7     # optional
@@ -77,4 +76,3 @@ services:
       - POSTGRES_DATABASE=${DB_DATABASE_NAME}
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      

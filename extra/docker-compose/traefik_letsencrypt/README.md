@@ -39,6 +39,16 @@ Example:
 
     docker exec fredbet-backup-1 sh restore.sh 2022-10-24T09:54:52
 
+## docker-compose adjustments
+
+You can use the build in AWS logging driver:
+
+    logging: # use if running on EC2 in AWS
+      driver: awslogs
+      options:
+        awslogs-region: eu-central-1
+        awslogs-group: fredbet # create log group manually
+
 ### Links
 
 * https://github.com/eeshugerman/postgres-backup-s3
