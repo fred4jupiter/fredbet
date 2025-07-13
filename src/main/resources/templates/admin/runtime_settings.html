@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
-                        <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select" th:fragment="favouriteCountryOptions">
+                        <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
                             <option th:value="null" th:text="#{country.none}"></option>
                             <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
                         </select>
@@ -131,6 +131,10 @@
 			</form>
 		</div>
 	</body>
+    <div th:fragment="favouriteCountryOptions" th:remove="tag">
+        <option th:value="null" th:text="#{country.none}"></option>
+        <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
+    </div>
 	<th:block layout:fragment="scripts">
         <script type="text/javascript" th:src="@{/js/htmx-2.0.3.min.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/runtime_settings.js}" charset="UTF-8"></script>
