@@ -11,7 +11,7 @@
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
                         <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
-                        <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select" hx-post="/runtimesettings/team-bundle" hx-on="change" hx-target="#favouriteCountry" hx-swap="innerHTML">
+                        <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select" hx-get="/runtimesettings/team-bundle" hx-on="change" hx-target="#favouriteCountry" hx-swap="innerHTML">
                             <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
                         </select>
                     </div>
@@ -45,13 +45,8 @@
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
                         <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
-                            <option th:value="null" th:text="#{country.none}"></option>
                             <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}" th:fragment="favouriteCountryOptions"></option>
                         </select>
-<!--                        <div th:fragment="favouriteCountryOptions" th:remove="tag">-->
-<!--                            <option th:value="null" th:text="#{country.none}"></option>-->
-<!--                            <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>-->
-<!--                        </div>-->
                     </div>
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>

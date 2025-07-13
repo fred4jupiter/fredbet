@@ -42,10 +42,10 @@ public class RuntimeSettingsController {
         this.teamUtil = teamUtil;
     }
 
-    @ModelAttribute("availableTeams")
-    public List<TeamView> availableTeams() {
-        return teamUtil.getAvailableTeamsBasedOnMatches();
-    }
+//    @ModelAttribute("availableTeams")
+//    public List<TeamView> availableTeams() {
+//        return teamUtil.getAvailableTeamsBasedOnMatches();
+//    }
 
     @ModelAttribute("availableThemes")
     public List<Theme> availableThemes() {
@@ -59,9 +59,11 @@ public class RuntimeSettingsController {
 
     @GetMapping("/show")
     public String showPage(RuntimeSettingsCommand runtimeSettingsCommand, Model model) {
-        runtimeSettingsCommand.setRuntimeSettings(runtimeSettingsService.loadRuntimeSettings());
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        runtimeSettingsCommand.setRuntimeSettings(runtimeSettings);
         model.addAttribute("runtimeSettingsCommand", runtimeSettingsCommand);
         model.addAttribute("availableTeamBundles", TeamBundle.values());
+        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(runtimeSettings.getTeamBundle()));
         return PAGE_RUNTIME_CONFIG;
     }
 
@@ -79,11 +81,11 @@ public class RuntimeSettingsController {
     }
 
     @HxRequest
-    @PostMapping("/team-bundle")
-    public String favouriteCountryOptions(@Valid RuntimeSettingsCommand command, Model model) {
-        RuntimeSettings runtimeSettings = command.getRuntimeSettings();
-
-        TeamBundle teamBundle = runtimeSettings.getTeamBundle();
+    @GetMapping("/team-bundle")
+    public String favouriteCountryOptions(@RequestParam(name = "runtimeSettings.teamBundle") TeamBundle teamBundle, Model model) {
+//        RuntimeSettings runtimeSettings = command.getRuntimeSettings();
+//
+//        TeamBundle teamBundle = runtimeSettings.getTeamBundle();
 
 //        model.addAttribute("runtimeSettingsCommand", command);
 //        model.addAttribute("availableTeamBundles", TeamBundle.values());
