@@ -4,6 +4,7 @@ import com.neovisionaries.i18n.CountryCode;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -93,7 +94,11 @@ public class TeamUtil {
     }
 
     public List<TeamView> getAvailableTeams() {
-        List<Country> allPossibleCountries = runtimeSettingsService.loadRuntimeSettings().getTeamBundle().getTeams();
+        return getAvailableTeams(runtimeSettingsService.loadRuntimeSettings().getTeamBundle());
+    }
+
+    public List<TeamView> getAvailableTeams(TeamBundle teamBundle) {
+        List<Country> allPossibleCountries = teamBundle.getTeams();
         return toListOfTeamViews(allPossibleCountries);
     }
 

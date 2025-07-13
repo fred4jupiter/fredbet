@@ -11,10 +11,9 @@
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
                         <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
-                        <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select">
+                        <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select" hx-get="/runtimesettings/team-bundle" hx-on="change" hx-target="#favouriteCountry" hx-swap="innerHTML">
                             <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
                         </select>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.teamBundle')}" th:errors="*{runtimeSettings.teamBundle}"></p>
                     </div>
 					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
@@ -45,7 +44,7 @@
                     </div>
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
-                        <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
+                        <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select" th:fragment="favouriteCountryOptions">
                             <option th:value="null" th:text="#{country.none}"></option>
                             <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
                         </select>
@@ -133,6 +132,7 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
+        <script type="text/javascript" th:src="@{/js/htmx-2.0.3.min.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/runtime_settings.js}" charset="UTF-8"></script>
 	</th:block>
 </html>
