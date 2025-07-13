@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.admin;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -78,9 +79,18 @@ public class RuntimeSettingsController {
     }
 
     @HxRequest
-    @GetMapping("/team-bundle")
-    public String favouriteCountryOptions(@RequestParam(name = "runtimeSettings.teamBundle") TeamBundle teamBundle, Model model) {
+    @PostMapping("/team-bundle")
+    public String favouriteCountryOptions(@Valid RuntimeSettingsCommand command, Model model) {
+        RuntimeSettings runtimeSettings = command.getRuntimeSettings();
+
+        TeamBundle teamBundle = runtimeSettings.getTeamBundle();
+
+//        model.addAttribute("runtimeSettingsCommand", command);
+//        model.addAttribute("availableTeamBundles", TeamBundle.values());
+//        model.addAttribute("runtimeSettings", runtimeSettings);
         model.addAttribute("availableTeams", teamUtil.getAvailableTeams(teamBundle));
+
+
         return PAGE_RUNTIME_CONFIG + " :: favouriteCountryOptions";
     }
 }
