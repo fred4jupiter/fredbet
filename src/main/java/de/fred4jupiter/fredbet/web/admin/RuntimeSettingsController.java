@@ -1,22 +1,22 @@
 package de.fred4jupiter.fredbet.web.admin;
 
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.Theme;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.util.TeamUtil;
 import de.fred4jupiter.fredbet.web.util.TeamView;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -42,11 +42,10 @@ public class RuntimeSettingsController {
         this.teamUtil = teamUtil;
     }
 
-
-    @ModelAttribute("availableTeams")
-    public List<TeamView> availableTeams() {
-        return teamUtil.getAvailableTeamsBasedOnMatches();
-    }
+//    @ModelAttribute("availableTeams")
+//    public List<TeamView> availableTeams() {
+//        return teamUtil.getAvailableTeamsBasedOnMatches();
+//    }
 
     @ModelAttribute("availableThemes")
     public List<Theme> availableThemes() {
@@ -60,9 +59,11 @@ public class RuntimeSettingsController {
 
     @GetMapping("/show")
     public String showPage(RuntimeSettingsCommand runtimeSettingsCommand, Model model) {
-        runtimeSettingsCommand.setRuntimeSettings(runtimeSettingsService.loadRuntimeSettings());
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        runtimeSettingsCommand.setRuntimeSettings(runtimeSettings);
         model.addAttribute("runtimeSettingsCommand", runtimeSettingsCommand);
         model.addAttribute("availableTeamBundles", TeamBundle.values());
+        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(runtimeSettings.getTeamBundle()));
         return PAGE_RUNTIME_CONFIG;
     }
 
@@ -77,5 +78,21 @@ public class RuntimeSettingsController {
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
 
         return "redirect:/runtimesettings/show";
+    }
+
+    @HxRequest
+    @GetMapping("/team-bundle")
+    public String favouriteCountryOptions(@RequestParam(name = "runtimeSettings.teamBundle") TeamBundle teamBundle, Model model) {
+//        RuntimeSettings runtimeSettings = command.getRuntimeSettings();
+//
+//        TeamBundle teamBundle = runtimeSettings.getTeamBundle();
+
+//        model.addAttribute("runtimeSettingsCommand", command);
+//        model.addAttribute("availableTeamBundles", TeamBundle.values());
+//        model.addAttribute("runtimeSettings", runtimeSettings);
+        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(teamBundle));
+
+
+        return PAGE_RUNTIME_CONFIG + " :: favouriteCountryOptions";
     }
 }
