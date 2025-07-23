@@ -10,11 +10,18 @@
 				<div class="row">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <h2 th:text="#{administration.runtime.configuration.presets}"></h2>
-                        <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
-                        <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select">
-                            <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
-                        </select>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.teamBundle')}" th:errors="*{runtimeSettings.teamBundle}"></p>
+                        <div class="mb-3">
+                            <label for="teamBundle" class="form-label" th:text="#{testdata.teambundle}"></label><br/>
+                            <select id="teamBundle" th:field="*{runtimeSettings.teamBundle}" class="form-select" hx-get="/runtimesettings/team-bundle" hx-on="change" hx-target="#favouriteCountry" hx-swap="innerHTML">
+                                <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
+                            <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
+                                <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}" th:fragment="favouriteCountryOptions"></option>
+                            </select>
+                        </div>
                     </div>
 					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
 						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
@@ -42,14 +49,6 @@
                             <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
                                   th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                        <label for="favouriteCountry" class="form-label" th:text="#{administration.runtime.configuration.favouriteCountry} + ':'"></label>
-                        <select id="favouriteCountry" th:field="*{runtimeSettings.favouriteCountry}" class="form-select">
-                            <option th:value="null" th:text="#{country.none}"></option>
-                            <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
-                        </select>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.favouriteCountry')}" th:errors="*{runtimeSettings.favouriteCountry}">favouriteCountry Error</p>
                     </div>
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
                         <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
@@ -133,6 +132,7 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
+        <script type="text/javascript" th:src="@{/js/htmx-2.0.6.min.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/runtime_settings.js}" charset="UTF-8"></script>
 	</th:block>
 </html>

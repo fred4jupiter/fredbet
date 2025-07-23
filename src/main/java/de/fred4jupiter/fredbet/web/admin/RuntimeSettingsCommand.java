@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
