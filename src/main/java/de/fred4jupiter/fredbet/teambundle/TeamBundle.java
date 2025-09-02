@@ -12,12 +12,15 @@ public enum TeamBundle {
 
     WORLD_CUP,
 
-    CLUB_WM;
+    CLUB_WM,
+
+    EUROPEAN_CHAMPIONSHIP;
 
     public List<Country> getTeams() {
         return switch (this) {
             case WORLD_CUP -> getTeamsForWorldCup();
             case CLUB_WM -> getTeamsForClubWm();
+            case EUROPEAN_CHAMPIONSHIP -> getTeamsForEuropeanChampionship();
         };
     }
 
@@ -60,6 +63,46 @@ public enum TeamBundle {
             ULSAN_HD,
             URAWA_RED_DIAMONDS,
             WYDAD_CASABLANCA
+        );
+    }
+
+    private List<Country> getTeamsForEuropeanChampionship() {
+        return List.of(
+            ALBANIA,
+            BELGIUM,
+            GERMANY,
+            GREAT_BRITAIN,
+            ENGLAND,
+            FRANCE,
+            IRELAND,
+            ICELAND,
+            ITALY,
+            CROATIA,
+            NORTH_IRELAND,
+            AUSTRIA,
+            POLAND,
+            PORTUGAL,
+            ROMANIA,
+            SWEDEN,
+            SWITZERLAND,
+            SLOVAKIA,
+            SPAIN,
+            CZECH_REPUBLIC,
+            TURKEY,
+            UKRAINE,
+            HUNGARY,
+            WALES,
+            BULGARIA,
+            CYPRUS,
+            FINLAND,
+            GREECE,
+            LUXEMBOURG,
+            MONTENEGRO,
+            NETHERLANDS,
+            NORWAY,
+            SCOTLAND,
+            SERBIA,
+            SLOVENIA
         );
     }
 
