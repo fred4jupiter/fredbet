@@ -85,6 +85,10 @@
                                 <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}">
                                     <hr class="dropdown-divider">
                                 </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/ROUND_OF_THIRTY_TWO}"
+                                       th:text="#{group.title.roundOfThirtyTwo}"></a>
+                                </li>
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}">
                                     <a class="dropdown-item" th:href="@{/matches/group/ROUND_OF_SIXTEEN}"
                                        th:text="#{group.title.roundOfSixteen}"></a>
@@ -97,18 +101,19 @@
                                     <a class="dropdown-item" th:href="@{/matches/group/SEMI_FINAL}"
                                        th:text="#{group.title.semiFinal}"></a>
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider"
-                                    role="separator"></li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
-                                       th:text="#{group.title.gameForThird}"></a>
-                                </li>
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
                                     <a class="dropdown-item" th:href="@{/matches/group/FINAL}"
                                        th:text="#{group.title.final}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
+                                       th:text="#{group.title.gameForThird}"></a>
                                 </li>
                             </ul>
                         </li>

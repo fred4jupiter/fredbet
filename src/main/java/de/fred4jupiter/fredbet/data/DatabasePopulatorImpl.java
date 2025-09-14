@@ -84,11 +84,12 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         });
 
         int numberOfGroups = demoDataCreation.numberOfGroups();
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 1), Group.ROUND_OF_SIXTEEN, 8);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 2), Group.QUARTER_FINAL, 4);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 3), Group.SEMI_FINAL, 2);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 4), Group.FINAL, 1);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 5), Group.GAME_FOR_THIRD, 1);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 1), Group.ROUND_OF_THIRTY_TWO, 16);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 2), Group.ROUND_OF_SIXTEEN, 8);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 3), Group.QUARTER_FINAL, 4);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 4), Group.SEMI_FINAL, 2);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 5), Group.FINAL, 1);
+        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 6), Group.GAME_FOR_THIRD, 1);
 
         if (demoDataCreation.withBets()) {
             createDemoBetsForAllUsers();
