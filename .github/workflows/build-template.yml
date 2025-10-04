@@ -29,6 +29,9 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: Dockerfile-single
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
