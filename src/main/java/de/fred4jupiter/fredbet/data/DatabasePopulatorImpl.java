@@ -68,7 +68,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
     @Override
     public void createDemoData() {
-        createDemoData(new DemoDataCreation(8, true, true));
+        createDemoData(new DemoDataCreation(GroupSelection.GROUPS_16, true, true));
     }
 
     @Override
@@ -78,18 +78,39 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
         final LocalDateTime localDateTime = LocalDateTime.now();
         final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
+        final GroupSelection groupSelection = demoDataCreation.groupSelection();
 
-        IntStream.rangeClosed(1, demoDataCreation.numberOfGroups()).forEach(count -> {
+        IntStream.rangeClosed(1, groupSelection.getNumberOfGroups()).forEach(count -> {
             createRandomForGroup(teamBundle, localDateTime.plusDays(count), countToGroup(count), 4);
         });
 
-        int numberOfGroups = demoDataCreation.numberOfGroups();
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 1), Group.ROUND_OF_THIRTY_TWO, 16);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 2), Group.ROUND_OF_SIXTEEN, 8);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 3), Group.QUARTER_FINAL, 4);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 4), Group.SEMI_FINAL, 2);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 5), Group.FINAL, 1);
-        createRandomForGroup(teamBundle, localDateTime.plusDays(numberOfGroups + 6), Group.GAME_FOR_THIRD, 1);
+        if (GroupSelection.GROUPS_32.equals(groupSelection)) {
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.ROUND_OF_THIRTY_TWO, 16);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.ROUND_OF_SIXTEEN, 8);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 3), Group.QUARTER_FINAL, 4);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 4), Group.SEMI_FINAL, 2);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 5), Group.FINAL, 1);
+        }
+        if (GroupSelection.GROUPS_16.equals(groupSelection)) {
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.ROUND_OF_SIXTEEN, 8);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.QUARTER_FINAL, 4);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 3), Group.SEMI_FINAL, 2);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 4), Group.FINAL, 1);
+        }
+        if (GroupSelection.GROUPS_08.equals(groupSelection)) {
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.QUARTER_FINAL, 4);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.SEMI_FINAL, 2);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 3), Group.FINAL, 1);
+        }
+        if (GroupSelection.GROUPS_04.equals(groupSelection)) {
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.SEMI_FINAL, 2);
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.FINAL, 1);
+        }
+        if (GroupSelection.GROUPS_02.equals(groupSelection)) {
+            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 5), Group.FINAL, 1);
+        }
+
+        createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 6), Group.GAME_FOR_THIRD, 1);
 
         if (demoDataCreation.withBets()) {
             createDemoBetsForAllUsers();

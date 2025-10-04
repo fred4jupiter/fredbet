@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.standings;
 import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
+import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.Group;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -27,7 +28,7 @@ public class StandingsServiceIT {
 
     @Test
     public void calculateGroupTablePoints() {
-        databasePopulator.createDemoData(new DemoDataCreation(12, true, true));
+        databasePopulator.createDemoData(new DemoDataCreation(GroupSelection.GROUPS_16, true, true));
 
         StandingsContainer standingsContainer = standingsService.calculateStandings(Locale.of("de", "DE"));
         assertThat(standingsContainer).isNotNull();

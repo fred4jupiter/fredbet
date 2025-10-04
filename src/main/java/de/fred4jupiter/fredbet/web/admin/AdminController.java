@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.admin.AdministrationService;
 import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
+import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -62,7 +63,7 @@ public class AdminController {
     @ModelAttribute("testDataCommand")
     public TestDataCommand testDataCommand() {
         TestDataCommand testDataCommand = new TestDataCommand();
-        testDataCommand.setNumberOfGroups(12);
+        testDataCommand.setGroupSelection(GroupSelection.GROUPS_16);
         return testDataCommand;
     }
 
@@ -92,12 +93,7 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        if (command.getNumberOfGroups() > 12) {
-            webMessageUtil.addErrorMsg(model, "administration.testdata.tooManyGroups", 12);
-            return PAGE_ADMINISTRATION;
-        }
-
-        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getNumberOfGroups(), command.getIncludeBets(), command.getIncludeResults());
+        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(), command.getIncludeResults());
         databasePopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
         return "redirect:/administration";
