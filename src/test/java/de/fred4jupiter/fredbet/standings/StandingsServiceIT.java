@@ -28,7 +28,7 @@ public class StandingsServiceIT {
 
     @Test
     public void calculateGroupTablePoints() {
-        databasePopulator.createDemoData(new DemoDataCreation(GroupSelection.GROUPS_16, true, true));
+        databasePopulator.createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, false));
 
         StandingsContainer standingsContainer = standingsService.calculateStandings(Locale.of("de", "DE"));
         assertThat(standingsContainer).isNotNull();

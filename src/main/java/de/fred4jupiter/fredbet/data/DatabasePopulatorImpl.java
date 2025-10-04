@@ -68,7 +68,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
     @Override
     public void createDemoData() {
-        createDemoData(new DemoDataCreation(GroupSelection.GROUPS_16, true, true));
+        createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, true));
     }
 
     @Override
@@ -80,37 +80,33 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
         final GroupSelection groupSelection = demoDataCreation.groupSelection();
 
-        IntStream.rangeClosed(1, groupSelection.getNumberOfGroups()).forEach(count -> {
-            createRandomForGroup(teamBundle, localDateTime.plusDays(count), countToGroup(count), 4);
-        });
+        // create group matches
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_A, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_B, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_C, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_D, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_E, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_F, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_G, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_H, 4);
 
-        if (GroupSelection.GROUPS_32.equals(groupSelection)) {
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.ROUND_OF_THIRTY_TWO, 16);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.ROUND_OF_SIXTEEN, 8);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 3), Group.QUARTER_FINAL, 4);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 4), Group.SEMI_FINAL, 2);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 5), Group.FINAL, 1);
-        }
-        if (GroupSelection.GROUPS_16.equals(groupSelection)) {
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.ROUND_OF_SIXTEEN, 8);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.QUARTER_FINAL, 4);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 3), Group.SEMI_FINAL, 2);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 4), Group.FINAL, 1);
-        }
-        if (GroupSelection.GROUPS_08.equals(groupSelection)) {
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.QUARTER_FINAL, 4);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.SEMI_FINAL, 2);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 3), Group.FINAL, 1);
-        }
-        if (GroupSelection.GROUPS_04.equals(groupSelection)) {
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 1), Group.SEMI_FINAL, 2);
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 2), Group.FINAL, 1);
-        }
-        if (GroupSelection.GROUPS_02.equals(groupSelection)) {
-            createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 5), Group.FINAL, 1);
+        if (GroupSelection.ROUND_OF_THIRTY_TWO.equals(groupSelection)) {
+            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_I, 4);
+            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_J, 4);
+            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_K, 4);
+            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_L, 4);
+
+            createMatchesForGroup(teamBundle, localDateTime, Group.ROUND_OF_THIRTY_TWO, 16);
         }
 
-        createRandomForGroup(teamBundle, localDateTime.plusDays(groupSelection.getNumberOfGroups() + 6), Group.GAME_FOR_THIRD, 1);
+        createMatchesForGroup(teamBundle, localDateTime, Group.ROUND_OF_SIXTEEN, 8);
+        createMatchesForGroup(teamBundle, localDateTime, Group.QUARTER_FINAL, 4);
+        createMatchesForGroup(teamBundle, localDateTime, Group.SEMI_FINAL, 2);
+        createMatchesForGroup(teamBundle, localDateTime, Group.FINAL, 1);
+
+        if (demoDataCreation.withGameOfThird()) {
+            createMatchesForGroup(teamBundle, localDateTime, Group.GAME_FOR_THIRD, 1);
+        }
 
         if (demoDataCreation.withBets()) {
             createDemoBetsForAllUsers();
@@ -120,25 +116,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         }
     }
 
-    private Group countToGroup(int count) {
-        return switch (count) {
-            case 1 -> Group.GROUP_A;
-            case 2 -> Group.GROUP_B;
-            case 3 -> Group.GROUP_C;
-            case 4 -> Group.GROUP_D;
-            case 5 -> Group.GROUP_E;
-            case 6 -> Group.GROUP_F;
-            case 7 -> Group.GROUP_G;
-            case 8 -> Group.GROUP_H;
-            case 9 -> Group.GROUP_I;
-            case 10 -> Group.GROUP_J;
-            case 11 -> Group.GROUP_K;
-            case 12 -> Group.GROUP_L;
-            default -> throw new IllegalArgumentException("More than 12 groups are not supported");
-        };
-    }
-
-    private void createRandomForGroup(TeamBundle teamBundle, LocalDateTime localDateTime, Group group, int numberOfMatches) {
+    private void createMatchesForGroup(TeamBundle teamBundle, LocalDateTime localDateTime, Group group, int numberOfMatches) {
         LOG.debug("creating group {} with {} matches.", group, numberOfMatches);
         IntStream.rangeClosed(1, numberOfMatches).forEach(counter -> {
             TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
