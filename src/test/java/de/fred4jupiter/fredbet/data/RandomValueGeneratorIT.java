@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ public class RandomValueGeneratorIT {
 
     @Test
     public void generateTeamTriple() {
-        dataBasePopulator.createDemoData(new DemoDataCreation(GroupSelection.GROUPS_04, false, false));
+        dataBasePopulator.createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, false, false, false));
 
         List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
 

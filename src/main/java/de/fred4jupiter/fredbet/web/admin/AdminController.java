@@ -63,7 +63,7 @@ public class AdminController {
     @ModelAttribute("testDataCommand")
     public TestDataCommand testDataCommand() {
         TestDataCommand testDataCommand = new TestDataCommand();
-        testDataCommand.setGroupSelection(GroupSelection.GROUPS_16);
+        testDataCommand.setGroupSelection(GroupSelection.ROUND_OF_SIXTEEN);
         return testDataCommand;
     }
 
@@ -88,12 +88,12 @@ public class AdminController {
     }
 
     @PostMapping("/testdata")
-    public String createTestData(@Valid TestDataCommand command, Model model, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String createTestData(@Valid TestDataCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_ADMINISTRATION;
         }
 
-        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(), command.getIncludeResults());
+        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(), command.getIncludeResults(), true);
         databasePopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
         return "redirect:/administration";
