@@ -12,7 +12,7 @@ on:
       java_version:
         required: true
         type: string
-        default: "21"
+        default: '21'
     outputs:
       jar_file_id:
         description: "The id of the uploaded fredbet.jar file"
