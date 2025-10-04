@@ -1,20 +1,18 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-public class TestDataCommand {
+import de.fred4jupiter.fredbet.data.GroupSelection;
 
-    private Integer numberOfGroups;
+import java.util.List;
+
+public class TestDataCommand {
 
     private Boolean includeBets;
 
     private Boolean includeResults;
 
-    public Integer getNumberOfGroups() {
-        return numberOfGroups;
-    }
+    private final List<GroupSelection> groupSelections = List.of(GroupSelection.values());
 
-    public void setNumberOfGroups(Integer numberOfGroups) {
-        this.numberOfGroups = numberOfGroups;
-    }
+    private GroupSelection groupSelection;
 
     public Boolean getIncludeBets() {
         return includeBets;
@@ -30,5 +28,17 @@ public class TestDataCommand {
 
     public void setIncludeResults(Boolean includeResults) {
         this.includeResults = includeResults;
+    }
+
+    public List<GroupSelection> getGroupSelections() {
+        return groupSelections;
+    }
+
+    public GroupSelection getGroupSelection() {
+        return groupSelection;
+    }
+
+    public void setGroupSelection(GroupSelection groupSelection) {
+        this.groupSelection = groupSelection;
     }
 }

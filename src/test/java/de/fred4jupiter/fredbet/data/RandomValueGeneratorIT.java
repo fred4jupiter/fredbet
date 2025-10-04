@@ -47,7 +47,7 @@ public class RandomValueGeneratorIT {
 
     @Test
     public void generateTeamTriple() {
-        dataBasePopulator.createDemoData(new DemoDataCreation(6, false, false));
+        dataBasePopulator.createDemoData(new DemoDataCreation(GroupSelection.GROUPS_04, false, false));
 
         List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
 
