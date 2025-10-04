@@ -10,7 +10,7 @@ on:
         required: true
         type: boolean
       java_version:
-        required: true
+        required: false
         type: string
         default: '21'
     outputs:
