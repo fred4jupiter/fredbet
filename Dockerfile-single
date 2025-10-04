@@ -9,5 +9,8 @@ EXPOSE 8080
 
 COPY target/fredbet.jar fredbet.jar
 
+RUN useradd -m freddy
+USER freddy
+
 ENTRYPOINT ["java", "-jar", "fredbet.jar"]
 CMD ["exec"]
