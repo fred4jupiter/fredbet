@@ -46,5 +46,5 @@ jobs:
             --platform ${DOCKER_TARGET_PLATFORM} \
             --tag docker.io/${DOCKER_IMAGE}:latest \
             --tag ghcr.io/${DOCKER_IMAGE}:latest \
-            --file ./Dockerfile-single \
+            --file ./Dockerfile \
             --output type=image,push=true .

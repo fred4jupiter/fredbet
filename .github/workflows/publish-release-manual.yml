@@ -51,7 +51,7 @@ jobs:
             --platform ${DOCKER_TARGET_PLATFORM} \
             --tag docker.io/${DOCKER_IMAGE}:${{ github.event.inputs.release_version }} \
             --tag ghcr.io/${DOCKER_IMAGE}:${{ github.event.inputs.release_version }} \
-            --file ./Dockerfile-single \
+            --file ./Dockerfile \
             --output type=image,push=true .
       - name: Generate changelog
         id: changelog
