@@ -9,13 +9,23 @@ RUN mvn -B -DskipTests package
 
 # Step : Package image
 FROM eclipse-temurin:21-jre-jammy
+
 LABEL maintainer="Michael Staehler"
 
-VOLUME /tmp
+RUN apt-get update && apt-get upgrade -y \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin"
+WORKDIR /
+
+ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
 COPY --from=builder /build/target/fredbet.jar fredbet.jar
-CMD exec java $JAVA_OPTS -jar fredbet.jar
+
+RUN useradd -m appuser
+USER appuser
+
+ENTRYPOINT ["java", "-jar", "fredbet.jar"]
+CMD ["exec"]
