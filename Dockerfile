@@ -4,9 +4,9 @@ FROM ${JRE_BASE_IMAGE}
 
 LABEL maintainer="Michael Staehler"
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get clean
+RUN apt-get update && apt-get upgrade -y \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 
