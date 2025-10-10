@@ -1,4 +1,9 @@
+ARG JRE_BASE_IMAGE=eclipse-temurin:21-jre-alpine
+
+FROM ${JRE_BASE_IMAGE}
+
 FROM eclipse-temurin:21-jre-jammy
+
 LABEL maintainer="Michael Staehler"
 
 WORKDIR /
