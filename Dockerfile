@@ -4,6 +4,10 @@ FROM ${JRE_BASE_IMAGE}
 
 LABEL maintainer="Michael Staehler"
 
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get clean
+
 WORKDIR /
 
 ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
