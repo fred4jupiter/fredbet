@@ -11,6 +11,7 @@ import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -124,7 +125,7 @@ public class InfoController {
 
     private String prepareForImages(String content) {
         if (StringUtils.isNotBlank(content) && content.contains("<img ")) {
-            return StringUtils.replace(content, "<img ", "<img class=\"img-responsive\" ");
+            return Strings.CS.replace(content, "<img ", "<img class=\"img-responsive\" ");
         }
         return content;
     }

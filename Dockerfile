@@ -1,4 +1,4 @@
-ARG JRE_BASE_IMAGE=eclipse-temurin:21-jre-jammy
+ARG JRE_BASE_IMAGE=eclipse-temurin:25-jre-jammy
 
 FROM ${JRE_BASE_IMAGE}
 
