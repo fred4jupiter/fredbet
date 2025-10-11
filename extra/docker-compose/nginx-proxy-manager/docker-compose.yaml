@@ -25,7 +25,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
   proxy-manager:
-    image: 'jc21/nginx-proxy-manager:2.12.4'
+    image: 'jc21/nginx-proxy-manager:latest'
 #    restart: unless-stopped
 #    container_name: "proxymanager"
     environment:

@@ -2,9 +2,9 @@ version: "3"
 
 services:
   mariadb:
-    image: mariadb:11.4
+    image: mariadb:12.0
     volumes:
-      - mariadb-only-vol:/var/lib/mysql
+      - database_data:/var/lib/mysql
     ports:
       - "3306:3306"
     environment:
@@ -13,4 +13,4 @@ services:
      - MYSQL_USER=fred
      - MYSQL_PASSWORD=fred
 volumes:
-  mariadb-only-vol:
+  database_data:

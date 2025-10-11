@@ -66,6 +66,7 @@ public class SystemInfoService {
         props.put("Current Date", ZonedDateTime.now().format(dateTimeFormatter));
         props.put("Host Name", getHostName());
         props.put("Timezone", ZoneId.systemDefault().toString());
+        props.put("Current User", System.getProperty("user.name"));
         return props;
     }
 

@@ -9,6 +9,10 @@ on:
       upload_artifact:
         required: true
         type: boolean
+      java_version:
+        required: false
+        type: string
+        default: '21'
     outputs:
       jar_file_id:
         description: "The id of the uploaded fredbet.jar file"
@@ -25,10 +29,13 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - uses: hadolint/hadolint-action@v3.3.0
         with:
-          java-version: '21'
+          dockerfile: Dockerfile
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ inputs.java_version }}
           distribution: 'temurin'
       - name: Cache local Maven repository
         uses: actions/cache@v4
