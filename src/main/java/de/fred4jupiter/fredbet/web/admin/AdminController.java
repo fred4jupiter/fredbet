@@ -93,7 +93,8 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(), command.getIncludeResults(), true);
+        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(),
+            command.getIncludeResults(), command.getCreateGameOfThird());
         databasePopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
         return "redirect:/administration";
