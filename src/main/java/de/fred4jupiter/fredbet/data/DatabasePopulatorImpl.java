@@ -20,7 +20,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -76,36 +75,37 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
 
-        final LocalDateTime localDateTime = LocalDateTime.now();
+        final KickOffDateCreator kickOffDateCreator = new KickOffDateCreator();
+
         final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
         final GroupSelection groupSelection = demoDataCreation.groupSelection();
 
         // create group matches
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_A, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_B, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_C, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_D, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_E, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_F, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_G, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_H, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_A, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_B, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_C, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_D, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_E, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_F, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_G, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_H, 4);
 
         if (GroupSelection.ROUND_OF_THIRTY_TWO.equals(groupSelection)) {
-            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_I, 4);
-            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_J, 4);
-            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_K, 4);
-            createMatchesForGroup(teamBundle, localDateTime, Group.GROUP_L, 4);
+            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_I, 4);
+            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_J, 4);
+            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_K, 4);
+            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_L, 4);
 
-            createMatchesForGroup(teamBundle, localDateTime, Group.ROUND_OF_THIRTY_TWO, 16);
+            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.ROUND_OF_THIRTY_TWO, 16);
         }
 
-        createMatchesForGroup(teamBundle, localDateTime, Group.ROUND_OF_SIXTEEN, 8);
-        createMatchesForGroup(teamBundle, localDateTime, Group.QUARTER_FINAL, 4);
-        createMatchesForGroup(teamBundle, localDateTime, Group.SEMI_FINAL, 2);
-        createMatchesForGroup(teamBundle, localDateTime, Group.FINAL, 1);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.ROUND_OF_SIXTEEN, 8);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.QUARTER_FINAL, 4);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.SEMI_FINAL, 2);
+        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.FINAL, 1);
 
         if (demoDataCreation.withGameOfThird()) {
-            createMatchesForGroup(teamBundle, localDateTime, Group.GAME_FOR_THIRD, 1);
+            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GAME_FOR_THIRD, 1);
         }
 
         if (demoDataCreation.withBets()) {
@@ -116,15 +116,17 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         }
     }
 
-    private void createMatchesForGroup(TeamBundle teamBundle, LocalDateTime localDateTime, Group group, int numberOfMatches) {
+    private void createMatchesForGroup(TeamBundle teamBundle, KickOffDateCreator kickOffDateCreator,
+                                       Group group, int numberOfMatches) {
         LOG.debug("creating group {} with {} matches.", group, numberOfMatches);
+
         IntStream.rangeClosed(1, numberOfMatches).forEach(counter -> {
             TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
             Match match = MatchBuilder.create()
                 .withTeams(teamPair.teamOne(), teamPair.teamTwo())
                 .withGroup(group)
                 .withStadium(nextStadium())
-                .withKickOffDate(localDateTime.plusHours(counter)).build();
+                .withKickOffDate(kickOffDateCreator.createNextKickOffDate()).build();
             matchService.save(match);
         });
     }
