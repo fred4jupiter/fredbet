@@ -40,11 +40,11 @@
 					   </div>
 					   <div class="card-body">
 						   <div class="table-responsive">
-						   		<table class="table table-condensed table-centered table-striped">
+						   		<table class="table table-condensed table-centered table-striped center">
 									<thead>
 										<tr class="active">
 											<th><i class="fas fa-users" aria-hidden="true"></i></th>
-                                            <th>1/16</th>
+                                            <th th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')}">1/16</th>
                                             <th>1/8</th>
 											<th>1/4</th>
 											<th>1/2</th>
@@ -58,7 +58,7 @@
 												<span th:text="${statistic.pointsGroup}"></span>
 												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
 											</td>
-                                            <td class="warning" th:text="${statistic.pointsRoundOfThirtyTwo}"></td>
+                                            <td th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')}" class="warning" th:text="${statistic.pointsRoundOfThirtyTwo}"></td>
 											<td class="warning" th:text="${statistic.pointsRoundOfSixteen}"></td>
 											<td class="warning" th:text="${statistic.pointsQuarterFinal}"></td>
 											<td class="warning" th:text="${statistic.pointsSemiFinal}"></td>
