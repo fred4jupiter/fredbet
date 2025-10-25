@@ -30,6 +30,6 @@ public class GroupAvailabilityUtil {
 
     public List<Group> getMainGroups() {
         Set<Group> groups = matchService.availableGroups();
-        return groups.stream().filter(Group::isMainGroup).toList();
+        return groups.stream().filter(Group::isMainGroup).sorted().toList();
     }
 }
