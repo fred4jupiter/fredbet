@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -148,33 +147,6 @@ public class AppUser implements UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public String getRolesAsString() {
-        if (CollectionUtils.isEmpty(roles)) {
-            return null;
-        }
-        return String.join(", ", roles);
-    }
-
     public Set<String> getRoles() {
         return roles;
     }
@@ -193,10 +165,6 @@ public class AppUser implements UserDetails {
 
     public void setDeletable(boolean deletable) {
         this.deletable = deletable;
-    }
-
-    public int roleCount() {
-        return this.roles.size();
     }
 
     public LocalDateTime getCreatedAt() {

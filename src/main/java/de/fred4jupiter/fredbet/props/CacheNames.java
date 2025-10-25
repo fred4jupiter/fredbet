@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.props;
 
 /**
- * Please NOTE: Add the cache name in config. Application -> CacheManager
+ * Please NOTE: Add the cache name in config. See class CacheConfig.
  *
  * @author michael
  */
