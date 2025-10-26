@@ -265,4 +265,12 @@
         <modifyDataType columnName="image_bytes" newDataType="LONGBLOB" tableName="image_binary"/>
     </changeSet>
 
+    <changeSet id="13" author="michael">
+        <addColumn tableName="app_user">
+            <column name="setting_theme" type="varchar(20)" defaultValue="white">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

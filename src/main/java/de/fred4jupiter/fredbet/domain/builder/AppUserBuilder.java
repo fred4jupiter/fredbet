@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.AppUserSetting;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 
 import java.time.LocalDateTime;
@@ -83,6 +84,7 @@ public class AppUserBuilder {
     }
 
     public AppUser build() {
+        this.appUser.setAppUserSetting(new AppUserSetting());
         return this.appUser;
     }
 }

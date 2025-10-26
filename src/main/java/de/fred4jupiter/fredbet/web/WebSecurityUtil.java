@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.AppUserSetting;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -90,5 +91,13 @@ public class WebSecurityUtil {
 
     public String resolveH2Path() {
         return h2ConsoleProperties.isPresent() ? h2ConsoleProperties.get().getPath() : "";
+    }
+
+    public String getCurrentUserTheme() {
+        if (!isUserLoggedIn() ) {
+            return AppUserSetting.DEFAULT_THEME;
+        }
+
+        return securityService.getCurrentUser().getAppUserSetting().getTheme();
     }
 }
