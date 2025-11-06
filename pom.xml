@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>3.5.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -145,11 +145,13 @@
             <artifactId>font-awesome</artifactId>
             <version>5.12.0</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.webjars</groupId>-->
-        <!--            <artifactId>popper.js</artifactId>-->
-        <!--            <version>2.11.7</version>-->
-        <!--        </dependency>-->
+
+        <!-- direct classgraph dependency to avoid un.misc.Unsafe warning. Dependency is used in webjars-locator-core -->
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.184</version>
+        </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator-core</artifactId>
