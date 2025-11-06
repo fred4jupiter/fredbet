@@ -14,6 +14,8 @@ public class TestDataCommand {
 
     private GroupSelection groupSelection;
 
+    private Boolean createGameOfThird;
+
     public Boolean getIncludeBets() {
         return includeBets;
     }
@@ -40,5 +42,13 @@ public class TestDataCommand {
 
     public void setGroupSelection(GroupSelection groupSelection) {
         this.groupSelection = groupSelection;
+    }
+
+    public Boolean getCreateGameOfThird() {
+        return createGameOfThird;
+    }
+
+    public void setCreateGameOfThird(Boolean createGameOfThird) {
+        this.createGameOfThird = createGameOfThird;
     }
 }

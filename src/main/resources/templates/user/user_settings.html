@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+	<head>
+		<title th:text="#{user.setting.title}">User Settings</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+            <h2 th:text="#{user.setting.title}">User Settings</h2>
+            <form id="userSettingForm" th:action="@{/user/setting}" th:object="${userSettingCommand}" action="#" method="post" role="form">
+                <div class="row">
+                    <div class="col-12 col-sm-8">
+                        <div class="form-check mb-3">
+                            <input id="darkMode" type="checkbox" th:field="*{darkMode}" class="form-check-input"/>
+                            <label for="darkMode" class="form-check-label" th:text="#{user.setting.darkMode}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-8">
+                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    </div>
+                </div>
+            </form>
+		</div>
+	</body>
+</html>

@@ -24,13 +24,13 @@ public class StatisticRepository {
 
     public List<Statistic> createStatistic() {
         final String query = """
-                Select b.user_name, a.match_group, sum(b.points)
-                from matches a join bet b on a.match_id = b.match_id
-                where a.goals_team_one is not null
-                and a.goals_team_two is not null
-                and b.user_name not like :username
-                group by b.user_name, a.match_group
-                """;
+            Select b.user_name, a.match_group, sum(b.points)
+            from matches a join bet b on a.match_id = b.match_id
+            where a.goals_team_one is not null
+            and a.goals_team_two is not null
+            and b.user_name not like :username
+            group by b.user_name, a.match_group
+            """;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("username", fredbetProperties.adminUsername());
@@ -52,11 +52,11 @@ public class StatisticRepository {
             return Collections.emptyMap();
         }
         final String query = """
-                Select a.user_name, sum(a.points)
-                from bet a join matches b on a.match_id = b.match_id
-                where b.country_one = :country or b.country_two = :country
-                group by a.user_name
-                """;
+            Select a.user_name, sum(a.points)
+            from bet a join matches b on a.match_id = b.match_id
+            where b.country_one = :country or b.country_two = :country
+            group by a.user_name
+            """;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("country", favoriteCountry.name());
@@ -83,6 +83,8 @@ public class StatisticRepository {
             }
             if (group.startsWith("GROUP")) {
                 statistic.setPointsGroup(statistic.getPointsGroup() + points);
+            } else if (Group.ROUND_OF_THIRTY_TWO.getName().equals(group)) {
+                statistic.setPointsRoundOfThirtyTwo(points);
             } else if (Group.ROUND_OF_SIXTEEN.getName().equals(group)) {
                 statistic.setPointsRoundOfSixteen(points);
             } else if (Group.QUARTER_FINAL.getName().equals(group)) {

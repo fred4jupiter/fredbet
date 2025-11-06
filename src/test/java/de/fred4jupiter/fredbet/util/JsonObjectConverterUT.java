@@ -19,6 +19,9 @@ public class JsonObjectConverterUT {
 
         AppUser convertedBack = converter.fromJson(json, AppUser.class);
         assertThat(convertedBack).isNotNull();
-        assertThat(appUser).isEqualTo(convertedBack);
+        assertThat(appUser.getUsername()).isEqualTo(convertedBack.getUsername());
+        assertThat(appUser.getPassword()).isEqualTo(convertedBack.getPassword());
+        assertThat(appUser.getRoles()).isEqualTo(convertedBack.getRoles());
+        assertThat(appUser.getAppUserSetting()).isEqualTo(convertedBack.getAppUserSetting());
     }
 }

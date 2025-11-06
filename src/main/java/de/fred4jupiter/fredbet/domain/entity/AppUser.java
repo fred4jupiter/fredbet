@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,6 +55,12 @@ public class AppUser implements UserDetails {
     @Column(name = "FIRST_LOGIN")
     private boolean firstLogin;
 
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "theme", column = @Column(name = "setting_theme")),
+    })
+    private AppUserSetting appUserSetting;
+
     public void addUserGroup(FredBetUserGroup... fredBetUserGroups) {
         if (this.roles == null) {
             this.roles = new HashSet<>();
@@ -63,52 +68,6 @@ public class AppUser implements UserDetails {
         for (FredBetUserGroup fredBetUserGroup : fredBetUserGroups) {
             this.roles.add(fredBetUserGroup.name());
         }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        AppUser other = (AppUser) obj;
-        EqualsBuilder builder = new EqualsBuilder();
-        builder.append(id, other.id);
-        builder.append(username, other.username);
-        builder.append(password, other.password);
-        builder.append(roles, other.roles);
-        builder.append(deletable, other.deletable);
-        builder.append(firstLogin, other.firstLogin);
-        return builder.isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        HashCodeBuilder builder = new HashCodeBuilder();
-        builder.append(id);
-        builder.append(username);
-        builder.append(password);
-        builder.append(roles);
-        builder.append(deletable);
-        builder.append(firstLogin);
-        return builder.toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("id", id);
-        builder.append("username", username);
-        builder.append("password", password != null ? "is set" : "is null");
-        builder.append("roles", roles);
-        builder.append("deletable", deletable);
-        builder.append("firstLogin", firstLogin);
-        return builder.toString();
     }
 
     public Long getId() {
@@ -148,33 +107,6 @@ public class AppUser implements UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public String getRolesAsString() {
-        if (CollectionUtils.isEmpty(roles)) {
-            return null;
-        }
-        return String.join(", ", roles);
-    }
-
     public Set<String> getRoles() {
         return roles;
     }
@@ -193,10 +125,6 @@ public class AppUser implements UserDetails {
 
     public void setDeletable(boolean deletable) {
         this.deletable = deletable;
-    }
-
-    public int roleCount() {
-        return this.roles.size();
     }
 
     public LocalDateTime getCreatedAt() {
@@ -234,5 +162,23 @@ public class AppUser implements UserDetails {
         this.firstLogin = firstLogin;
     }
 
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+        builder.append("id", id);
+        builder.append("username", username);
+        builder.append("password", password != null ? "is set" : "is null");
+        builder.append("roles", roles);
+        builder.append("deletable", deletable);
+        builder.append("firstLogin", firstLogin);
+        return builder.toString();
+    }
 
+    public AppUserSetting getAppUserSetting() {
+        return appUserSetting;
+    }
+
+    public void setAppUserSetting(AppUserSetting appUserSetting) {
+        this.appUserSetting = appUserSetting;
+    }
 }

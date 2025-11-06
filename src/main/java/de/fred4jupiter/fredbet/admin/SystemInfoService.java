@@ -43,7 +43,7 @@ public class SystemInfoService {
         buildProperties.ifPresent(props -> {
             add("Build: Build Time", props.getTime());
             add("Build: Build Version", props.getVersion());
-            add("Build: Java Version", props.get("java.source"));
+            add("Build: Java Version", props.get("build.java.version"));
         });
 
         gitProperties.ifPresent(props -> {
