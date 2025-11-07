@@ -27,9 +27,9 @@ import java.util.stream.IntStream;
 
 @Component
 @Transactional
-class DatabasePopulatorImpl implements DatabasePopulator {
+public class DataPopulator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DatabasePopulatorImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DataPopulator.class);
 
     private final MatchService matchService;
 
@@ -47,10 +47,10 @@ class DatabasePopulatorImpl implements DatabasePopulator {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
-    public DatabasePopulatorImpl(MatchService matchService, UserService userService,
-                                 BettingService bettingService, RandomValueGenerator randomValueGenerator,
-                                 JokerService jokerService, ExtraBettingService extraBettingService,
-                                 RuntimeSettingsService runtimeSettingsService) {
+    public DataPopulator(MatchService matchService, UserService userService,
+                         BettingService bettingService, RandomValueGenerator randomValueGenerator,
+                         JokerService jokerService, ExtraBettingService extraBettingService,
+                         RuntimeSettingsService runtimeSettingsService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
@@ -61,16 +61,16 @@ class DatabasePopulatorImpl implements DatabasePopulator {
     }
 
     @Async
-    public void executeAsync(Consumer<DatabasePopulator> populatorCallback) {
+    public void executeAsync(Consumer<DataPopulator> populatorCallback) {
         populatorCallback.accept(this);
     }
 
-    @Override
+
     public void createDemoData() {
         createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, true));
     }
 
-    @Override
+
     public void createDemoData(DemoDataCreation demoDataCreation) {
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
@@ -131,7 +131,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         });
     }
 
-    @Override
+
     public void createDemoBetsForAllUsers() {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
@@ -160,7 +160,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         });
     }
 
-    @Override
+
     public void createDemoResultsForAllMatches() {
         LOG.info("createDemoResultsForAllUsers...");
         matchService.enterMatchResultsForAllMatches(match -> {
@@ -171,7 +171,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         LOG.info("created demo results for all users...");
     }
 
-    @Override
+
     public void createDemoUsers(int numberOfDemoUsers) {
         LOG.info("createAdditionalUsers: creating {} additional demo users ...", numberOfDemoUsers);
 
@@ -184,7 +184,7 @@ class DatabasePopulatorImpl implements DatabasePopulator {
         });
     }
 
-    @Override
+
     @Transactional
     public void deleteAllBetsAndMatches() {
         bettingService.deleteAllBets();

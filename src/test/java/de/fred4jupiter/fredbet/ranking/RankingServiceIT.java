@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.ranking;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.data.DatabasePopulator;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
@@ -25,7 +25,7 @@ public class RankingServiceIT {
     private static final Logger LOG = LoggerFactory.getLogger(RankingServiceIT.class);
 
     @Autowired
-    private DatabasePopulator dataBasePopulator;
+    private DataPopulator dataBasePopulator;
 
     @Autowired
     private RankingService rankingService;
