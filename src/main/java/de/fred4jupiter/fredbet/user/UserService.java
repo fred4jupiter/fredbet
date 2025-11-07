@@ -82,7 +82,7 @@ public class UserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         LOG.info("creating user with username={}", appUser.getUsername());
         AppUser savedAppUser = appUserRepository.save(appUser);
-        imageAdministrationService.saveUserWithDefaultProfileImage(savedAppUser);
+        imageAdministrationService.saveDefaultProfileImageFor(savedAppUser);
         return savedAppUser;
     }
 

@@ -104,7 +104,7 @@ public class ImageAdministrationService {
         }
     }
 
-    public void saveUserWithDefaultProfileImage(AppUser appUser) {
+    public void saveDefaultProfileImageFor(AppUser appUser) {
         saveUserProfileImage(defaultProfileImageLoader.getDefaultProfileImage().imageBinary(), appUser, null);
     }
 

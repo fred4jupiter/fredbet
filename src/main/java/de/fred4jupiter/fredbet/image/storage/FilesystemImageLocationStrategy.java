@@ -21,7 +21,11 @@ import java.util.Map;
  * Storing images of the image gallery in file system.
  *
  * @author michael
+ *
+ * @deprecated saving the images in database is more straight forward. The images are not so big that they cannot be saved
+ * in DB. Therefore the database storage for images is still enough.
  */
+@Deprecated
 public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 
     private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationStrategy.class);
