@@ -28,6 +28,10 @@ import java.util.Map;
 @Deprecated
 public class FilesystemImageLocationStrategy implements ImageLocationStrategy {
 
+    private static final String THUMBNAIL_PREFIX = "TN_";
+
+    private static final String IMAGE_PREFIX = "IM_";
+
     private static final Logger LOG = LoggerFactory.getLogger(FilesystemImageLocationStrategy.class);
 
     private final String basePath;

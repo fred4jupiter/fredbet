@@ -11,10 +11,6 @@ import java.util.List;
  */
 public interface ImageLocationStrategy {
 
-    String THUMBNAIL_PREFIX = "TN_";
-
-    String IMAGE_PREFIX = "IM_";
-
     void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary);
 
     /**
