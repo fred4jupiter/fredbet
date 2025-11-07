@@ -15,4 +15,7 @@ public interface ExtraBetRepository extends JpaRepository<ExtraBet, Long>{
 	@Query("update ExtraBet b set b.userName = :newUsername where b.userName = :oldUsername")
 	void renameUser(@Param("oldUsername") String oldUsername, @Param("newUsername") String newUsername);
 
+    @Modifying
+    @Query("delete ExtraBet b where b.userName = :username")
+    int deleteAllExtraBetsOfUser(@Param("username") String username);
 }

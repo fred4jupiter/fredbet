@@ -136,7 +136,6 @@ public class DataPopulator {
         });
     }
 
-
     public void createDemoBetsForAllUsers() {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
@@ -165,7 +164,6 @@ public class DataPopulator {
         });
     }
 
-
     public void createDemoResultsForAllMatches() {
         LOG.info("createDemoResultsForAllUsers...");
         matchService.enterMatchResultsForAllMatches(match -> {
@@ -175,7 +173,6 @@ public class DataPopulator {
         });
         LOG.info("created demo results for all users...");
     }
-
 
     public void createDemoUsers(int numberOfDemoUsers) {
         LOG.info("createAdditionalUsers: creating {} additional demo users ...", numberOfDemoUsers);

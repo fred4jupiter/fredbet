@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamTriple;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -15,6 +16,8 @@ import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,8 @@ import java.util.function.Consumer;
 @Service
 @Transactional
 public class BettingService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BettingService.class);
 
     private final MatchRepository matchRepository;
 
@@ -193,5 +198,13 @@ public class BettingService {
 
     public List<Bet> findAll() {
         return this.betRepository.findAll();
+    }
+
+    public void deleteAllBetsOfUser(AppUser appUser) {
+        int deletedExtraBets = extraBetRepository.deleteAllExtraBetsOfUser(appUser.getUsername());
+        LOG.debug("deleted {} extraBets of user={}", deletedExtraBets, appUser.getUsername());
+
+        int deletedBets = betRepository.deleteAllBetsOfUser(appUser.getUsername());
+        LOG.debug("deleted {} bets of user={}", deletedBets, appUser.getUsername());
     }
 }

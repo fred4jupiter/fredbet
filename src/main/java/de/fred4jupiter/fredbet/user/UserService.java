@@ -121,14 +121,22 @@ public class UserService {
             throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
         }
 
+        // delete all images of the user
+        deleteUserImages(appUser);
+
+        // delete all bets
+        bettingService.deleteAllBetsOfUser(appUser);
+
+        appUserRepository.deleteById(userId);
+    }
+
+    private void deleteUserImages(AppUser appUser) {
         List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
         imageMetaDataList.forEach(imageMetaData -> {
             Optional<ImageBinary> imageOpt = imageBinaryRepository.findById(imageMetaData.getImageKey());
             imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
         });
         imageMetaDataRepository.deleteAll(imageMetaDataList);
-
-        appUserRepository.deleteById(userId);
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
