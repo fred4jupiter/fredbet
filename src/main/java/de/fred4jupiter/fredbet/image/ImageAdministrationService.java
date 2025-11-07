@@ -78,9 +78,9 @@ public class ImageAdministrationService {
 
         final String key = generateKey();
 
-        ImageMetaData image = new ImageMetaData(key, imageGroup, currentUser);
-        image.setDescription(description);
-        imageMetaDataRepository.save(image);
+        ImageMetaData imageMetaData = new ImageMetaData(key, imageGroup, currentUser);
+        imageMetaData.setDescription(description);
+        imageMetaDataRepository.save(imageMetaData);
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary);
 
