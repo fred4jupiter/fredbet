@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
 import com.github.javafaker.Faker;
+import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;
@@ -47,10 +48,12 @@ public class DataPopulator {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
+    private final CacheAdministrationService cacheAdministrationService;
+
     public DataPopulator(MatchService matchService, UserService userService,
                          BettingService bettingService, RandomValueGenerator randomValueGenerator,
                          JokerService jokerService, ExtraBettingService extraBettingService,
-                         RuntimeSettingsService runtimeSettingsService) {
+                         RuntimeSettingsService runtimeSettingsService, CacheAdministrationService cacheAdministrationService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
@@ -58,6 +61,7 @@ public class DataPopulator {
         this.jokerService = jokerService;
         this.extraBettingService = extraBettingService;
         this.runtimeSettingsService = runtimeSettingsService;
+        this.cacheAdministrationService = cacheAdministrationService;
     }
 
     @Async
@@ -65,11 +69,9 @@ public class DataPopulator {
         populatorCallback.accept(this);
     }
 
-
     public void createDemoData() {
         createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, true));
     }
-
 
     public void createDemoData(DemoDataCreation demoDataCreation) {
         bettingService.deleteAllBets();
@@ -114,6 +116,9 @@ public class DataPopulator {
         if (demoDataCreation.withResults()) {
             createDemoResultsForAllMatches();
         }
+
+        // clear all caches
+        cacheAdministrationService.clearCaches();
     }
 
     private void createMatchesForGroup(TeamBundle teamBundle, KickOffDateCreator kickOffDateCreator,
