@@ -31,7 +31,7 @@ public class ImageBinaryRepositoryIT {
         assertNotNull(fileAsByteArray);
 
         final String key = UUID.randomUUID().toString();
-        ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, 1L, fileAsByteArray);
+        ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, fileAsByteArray);
 
         ImageBinary saved = imageBinaryRepository.save(imageBinary);
         assertNotNull(saved);

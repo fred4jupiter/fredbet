@@ -23,7 +23,7 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 
     @Override
     public void saveImage(String imageKey, Long imageGroupId, byte[] imageBytes, byte[] thumbImageBinary) {
-        ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, imageGroupId, thumbImageBinary);
+        ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, thumbImageBinary);
         imageBinaryRepository.save(imageBinary);
     }
 
@@ -59,10 +59,8 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 
     @Override
     public void deleteImage(String imageKey, Long imageGroupId) {
-        ImageBinary imageBinary = imageBinaryRepository.findByKeyAndImageGroupId(imageKey, imageGroupId);
-        if (imageBinary != null) {
-            imageBinaryRepository.delete(imageBinary);
-        }
+        Optional<ImageBinary> binaryOpt = imageBinaryRepository.findById(imageKey);
+        binaryOpt.ifPresent(imageBinaryRepository::delete);
     }
 
 }

@@ -273,4 +273,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="14" author="michael">
+        <dropColumn tableName="image_binary">
+            <column name="image_group_id"/>
+        </dropColumn>
+    </changeSet>
+
 </databaseChangeLog>
