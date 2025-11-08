@@ -7,8 +7,6 @@ package de.fred4jupiter.fredbet.image;
  */
 public interface ImageLocationStrategy {
 
-    void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary);
-
     /**
      * Delete image and thumbnail by given key.
      *

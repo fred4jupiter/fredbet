@@ -3,8 +3,6 @@ package de.fred4jupiter.fredbet.image;
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,12 +18,6 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
     public DatabaseImageLocationStrategy(ImageBinaryRepository imageBinaryRepository) {
         super();
         this.imageBinaryRepository = imageBinaryRepository;
-    }
-
-    @Override
-    public void saveImage(String imageKey, Long imageGroupId, byte[] imageBytes, byte[] thumbImageBinary) {
-        ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, thumbImageBinary);
-        imageBinaryRepository.save(imageBinary);
     }
 
     @Override

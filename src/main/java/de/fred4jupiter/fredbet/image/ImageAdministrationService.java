@@ -24,6 +24,8 @@ public class ImageAdministrationService {
 
     private final ImageMetaDataRepository imageMetaDataRepository;
 
+    private final ImageBinaryRepository imageBinaryRepository;
+
     private final ImageGroupRepository imageGroupRepository;
 
     private final ImageResizingService imageResizingService;
@@ -36,11 +38,12 @@ public class ImageAdministrationService {
 
     private final DefaultProfileImageLoader defaultProfileImageLoader;
 
-    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
+    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository, ImageGroupRepository imageGroupRepository,
                                ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
                                SecurityService securityService,
                                RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
         this.imageMetaDataRepository = imageMetaDataRepository;
+        this.imageBinaryRepository = imageBinaryRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.imageLocationStrategy = imageLocationStrategy;
@@ -83,7 +86,7 @@ public class ImageAdministrationService {
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary);
 
-        imageLocationStrategy.saveImage(key, imageGroup.getId(), binary, thumbnail);
+        imageBinaryRepository.saveImage(key, binary, thumbnail);
     }
 
     private String generateKey() {
@@ -125,7 +128,7 @@ public class ImageAdministrationService {
         imageMetaDataRepository.save(imageMetaData);
 
         byte[] thumbnail = imageResizingService.createThumbnail(binary);
-        imageLocationStrategy.saveImage(key, imageMetaData.getImageGroup().getId(), binary, thumbnail);
+        imageBinaryRepository.saveImage(key, binary, thumbnail);
     }
 
     public List<ImageMetaData> fetchAllImages() {

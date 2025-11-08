@@ -16,6 +16,11 @@ public interface ImageBinaryRepository extends JpaRepository<ImageBinary, String
         return allImages.stream().map(this::toImageData).toList();
     }
 
+    default void saveImage(String imageKey, byte[] imageBytes, byte[] thumbImageBinary) {
+        ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, thumbImageBinary);
+        save(imageBinary);
+    }
+
     private BinaryImage toImageData(ImageBinary imageBinary) {
         return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
     }
