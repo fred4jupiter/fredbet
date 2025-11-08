@@ -170,7 +170,7 @@ public class ImageAdministrationService {
         }
 
         imageMetaDataRepository.delete(imageMetaData);
-        imageLocationStrategy.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        imageBinaryRepository.deleteImage(imageMetaData.getImageKey());
     }
 
     public boolean isImageOfUser(String imageKey, AppUser appUser) {

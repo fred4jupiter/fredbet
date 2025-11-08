@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
 
@@ -19,6 +20,11 @@ public interface ImageBinaryRepository extends JpaRepository<ImageBinary, String
     default void saveImage(String imageKey, byte[] imageBytes, byte[] thumbImageBinary) {
         ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, thumbImageBinary);
         save(imageBinary);
+    }
+
+    default void deleteImage(String imageKey) {
+        Optional<ImageBinary> binaryOpt = findById(imageKey);
+        binaryOpt.ifPresent(this::delete);
     }
 
     private BinaryImage toImageData(ImageBinary imageBinary) {

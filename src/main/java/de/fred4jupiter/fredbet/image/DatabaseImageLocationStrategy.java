@@ -36,11 +36,4 @@ public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
         ImageBinary imageBinary = findOne(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
-
-    @Override
-    public void deleteImage(String imageKey, Long imageGroupId) {
-        Optional<ImageBinary> binaryOpt = imageBinaryRepository.findById(imageKey);
-        binaryOpt.ifPresent(imageBinaryRepository::delete);
-    }
-
 }
