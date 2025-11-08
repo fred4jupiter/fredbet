@@ -17,13 +17,4 @@ interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
     @Query("delete ImageBinary i where i.key = :imageKey")
     int deleteImage(@Param("imageKey") String imageKey);
 
-    default BinaryImage getImageByKey(String imageKey) {
-        ImageBinary imageBinary = getReferenceById(imageKey);
-        return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
-    }
-
-    default BinaryImage getThumbnailByKey(String imageKey) {
-        ImageBinary imageBinary = getReferenceById(imageKey);
-        return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
-    }
 }

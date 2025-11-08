@@ -150,7 +150,8 @@ public class ImageAdministrationService {
             return defaultProfileImageLoader.getDefaultProfileImage();
         }
 
-        return imageBinaryRepository.getImageByKey(imageMetaData.getImageKey());
+        ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
+        return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
     }
 
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
@@ -159,7 +160,8 @@ public class ImageAdministrationService {
             return defaultProfileImageLoader.getDefaultThumbProfileImage();
         }
 
-        return imageBinaryRepository.getThumbnailByKey(imageMetaData.getImageKey());
+        ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
+        return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
 
     public void deleteImageByImageKey(String imageKey) {
