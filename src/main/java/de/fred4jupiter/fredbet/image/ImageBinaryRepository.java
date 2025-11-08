@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
-
 interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
 
     default void saveImage(String imageKey, byte[] imageBytes, byte[] thumbImageBinary) {
@@ -20,17 +18,12 @@ interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
     int deleteImage(@Param("imageKey") String imageKey);
 
     default BinaryImage getImageByKey(String imageKey) {
-        ImageBinary imageBinary = findOne(imageKey);
+        ImageBinary imageBinary = getReferenceById(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
     }
 
-    private ImageBinary findOne(String imageKey) {
-        Optional<ImageBinary> imageBinaryOpt = findById(imageKey);
-        return imageBinaryOpt.orElse(null);
-    }
-
     default BinaryImage getThumbnailByKey(String imageKey) {
-        ImageBinary imageBinary = findOne(imageKey);
+        ImageBinary imageBinary = getReferenceById(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
 }
