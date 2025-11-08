@@ -2,6 +2,9 @@ package de.fred4jupiter.fredbet.image;
 
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -12,10 +15,9 @@ interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
         save(imageBinary);
     }
 
-    default void deleteImage(String imageKey) {
-        Optional<ImageBinary> binaryOpt = findById(imageKey);
-        binaryOpt.ifPresent(this::delete);
-    }
+    @Modifying
+    @Query("delete ImageBinary i where i.key = :imageKey")
+    int deleteImage(@Param("imageKey") String imageKey);
 
     default BinaryImage getImageByKey(String imageKey) {
         ImageBinary imageBinary = findOne(imageKey);
