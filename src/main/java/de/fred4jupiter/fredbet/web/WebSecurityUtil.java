@@ -90,6 +90,10 @@ public class WebSecurityUtil {
         return securityService.getCurrentUserName();
     }
 
+    public AppUser getCurrentUser() {
+        return securityService.getCurrentUser();
+    }
+
     public boolean isCurrentUserTheDefaultAdminUser() {
         return adminUsername.equals(getCurrentUsername());
     }

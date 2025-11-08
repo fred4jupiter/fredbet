@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,8 +31,6 @@ public class ImageAdministrationService {
 
     private final ImageResizingService imageResizingService;
 
-    private final SecurityService securityService;
-
     private final RuntimeSettingsService runtimeSettingsService;
 
     private final DefaultProfileImageLoader defaultProfileImageLoader;
@@ -41,13 +38,11 @@ public class ImageAdministrationService {
     ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository,
                                ImageGroupRepository imageGroupRepository,
                                ImageResizingService imageResizingService,
-                               SecurityService securityService,
                                RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageBinaryRepository = imageBinaryRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
-        this.securityService = securityService;
         this.runtimeSettingsService = runtimeSettingsService;
         this.defaultProfileImageLoader = defaultProfileImageLoader;
     }
@@ -73,9 +68,8 @@ public class ImageAdministrationService {
         return imageGroup;
     }
 
-    public void saveImage(byte[] binary, String galleryGroup, String description) {
+    public void saveImage(byte[] binary, String galleryGroup, String description, AppUser currentUser) {
         final ImageGroup imageGroup = findOrCreateImageGroup(galleryGroup);
-        final AppUser currentUser = securityService.getCurrentUser();
         checkIfImageUploadPerUserIsReached(currentUser);
 
         final String key = generateKey();
