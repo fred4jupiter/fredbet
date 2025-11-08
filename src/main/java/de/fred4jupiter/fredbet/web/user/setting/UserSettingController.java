@@ -71,4 +71,15 @@ public class UserSettingController {
         webMessageUtil.addInfoMsg(redirect, "user.setting.updated");
         return "redirect:/setting";
     }
+
+    @GetMapping("/default")
+    public String resetToDefaults(Model model) {
+        UserSettingCommand command = new UserSettingCommand();
+        command.setDarkMode(false);
+        command.setBootswatchTheme(AppUserSetting.DEFAULT_BOOTSWATCH_THEME);
+        command.setNavbarLayout(AppUserSetting.DEFAULT_NAVBAR_LAYOUT);
+
+        model.addAttribute("userSettingCommand", command);
+        return "user/user_settings";
+    }
 }

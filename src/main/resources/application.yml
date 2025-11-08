@@ -53,7 +53,7 @@ logging:
   level:
     root: "WARN"
     "org.springframework.web": "WARN"
-    "org.springframework.security": "DEBUG"
+    "org.springframework.security": "WARN"
     "de.fred4jupiter.fredbet": "INFO"
 
 # -------- fredbet properties ------------------------------------------------------------------------------
