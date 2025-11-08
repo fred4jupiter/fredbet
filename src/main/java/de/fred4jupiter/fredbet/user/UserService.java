@@ -7,7 +7,6 @@ import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
@@ -32,8 +31,6 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final SecurityService securityService;
-
     private final ImageMetaDataRepository imageMetaDataRepository;
 
     private final BettingService bettingService;
@@ -42,12 +39,11 @@ public class UserService {
 
     private final FredbetProperties fredbetProperties;
 
-    public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
+    public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder,
                        ImageMetaDataRepository imageMetaDataRepository, BettingService bettingService,
                        ImageAdministrationService imageAdministrationService, FredbetProperties fredbetProperties) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
-        this.securityService = securityService;
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.bettingService = bettingService;
         this.imageAdministrationService = imageAdministrationService;
@@ -163,16 +159,6 @@ public class UserService {
         } else {
             return new UserDto(appUser.getId(), appUser.getUsername());
         }
-    }
-
-    public void saveUserProfileImage(byte[] binary) {
-        saveUserProfileImage(binary, securityService.getCurrentUserName());
-    }
-
-    public void saveUserProfileImage(byte[] binary, String username) {
-        final AppUser appUser = appUserRepository.findByUsername(username);
-        ImageMetaData imageMetaData = securityService.getProfileImageMetaDataFor(username);
-        imageAdministrationService.saveUserProfileImage(binary, appUser, imageMetaData);
     }
 
     public AppUser findByUserId(Long userId) {

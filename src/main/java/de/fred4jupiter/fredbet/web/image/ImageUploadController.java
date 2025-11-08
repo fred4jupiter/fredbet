@@ -27,7 +27,7 @@ public class ImageUploadController {
 
     private final ImageCommandMapper imageCommandMapper;
 
-    public ImageUploadController(ImageAdministrationService imageAdministrationService, WebMessageUtil messageUtil,
+    ImageUploadController(ImageAdministrationService imageAdministrationService, WebMessageUtil messageUtil,
                                  ImageCommandMapper imageCommandMapper) {
         this.imageAdministrationService = imageAdministrationService;
         this.messageUtil = messageUtil;

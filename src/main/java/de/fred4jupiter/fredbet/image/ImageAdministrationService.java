@@ -205,4 +205,13 @@ public class ImageAdministrationService {
         });
         imageMetaDataRepository.deleteAll(imageMetaDataList);
     }
+
+    public void saveUserProfileImage(byte[] binary, AppUser appUser) {
+        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(appUser.getUsername());
+        saveUserProfileImage(binary, appUser, imageMetaData);
+    }
+
+    public ImageMetaData getProfileImageMetaDataFor(String username) {
+        return imageMetaDataRepository.findImageMetaDataOfUserProfileImage(username);
+    }
 }
