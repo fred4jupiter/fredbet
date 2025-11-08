@@ -1,8 +1,4 @@
-package de.fred4jupiter.fredbet.image.storage;
-
-import de.fred4jupiter.fredbet.image.BinaryImage;
-
-import java.util.List;
+package de.fred4jupiter.fredbet.image;
 
 /**
  * Locator strategy for maintaining image storage.
@@ -12,13 +8,6 @@ import java.util.List;
 public interface ImageLocationStrategy {
 
     void saveImage(String imageKey, Long imageGroupId, byte[] imageBinary, byte[] thumbImageBinary);
-
-    /**
-     * For downloading all images as zip file.
-     *
-     * @return list of binary images.
-     */
-    List<BinaryImage> findAllImages();
 
     /**
      * Delete image and thumbnail by given key.

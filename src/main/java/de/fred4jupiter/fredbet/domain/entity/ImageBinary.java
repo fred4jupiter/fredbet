@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
+import de.fred4jupiter.fredbet.image.ImageLocationStrategy;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

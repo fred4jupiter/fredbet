@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.image;
 
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FilenameUtils;
@@ -20,14 +19,14 @@ public class DownloadService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DownloadService.class);
 
-    private final ImageLocationStrategy imageLocationService;
+    private final ImageBinaryRepository imageBinaryRepository;
 
-    public DownloadService(ImageLocationStrategy imageLocationService) {
-        this.imageLocationService = imageLocationService;
+    public DownloadService(ImageBinaryRepository imageBinaryRepository) {
+        this.imageBinaryRepository = imageBinaryRepository;
     }
 
     public byte[] downloadAllImagesAsZipFile() {
-        List<BinaryImage> allImages = imageLocationService.findAllImages();
+        List<BinaryImage> allImages = imageBinaryRepository.findAllImages();
         if (allImages.isEmpty()) {
             return null;
         }
