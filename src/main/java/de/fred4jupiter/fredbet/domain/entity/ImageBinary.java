@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.image.ImageLocationStrategy;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * Will only be used if the images are stored within the database.
  *
  * @author michael
- * @see ImageLocationStrategy
  *
  */
 @Entity

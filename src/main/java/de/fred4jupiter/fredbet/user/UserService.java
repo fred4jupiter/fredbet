@@ -2,11 +2,9 @@ package de.fred4jupiter.fredbet.user;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
-import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
-import de.fred4jupiter.fredbet.image.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.SecurityService;
@@ -40,24 +38,20 @@ public class UserService {
 
     private final BettingService bettingService;
 
-    private final ImageBinaryRepository imageBinaryRepository;
+    private final ImageAdministrationService imageAdministrationService;
 
     private final FredbetProperties fredbetProperties;
 
-    private final ImageAdministrationService imageAdministrationService;
-
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
-                       ImageMetaDataRepository imageMetaDataRepository,
-                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository,
-                       FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService) {
+                       ImageMetaDataRepository imageMetaDataRepository, BettingService bettingService,
+                       ImageAdministrationService imageAdministrationService, FredbetProperties fredbetProperties) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.bettingService = bettingService;
-        this.imageBinaryRepository = imageBinaryRepository;
-        this.fredbetProperties = fredbetProperties;
         this.imageAdministrationService = imageAdministrationService;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public List<AppUser> findAll() {
@@ -122,21 +116,12 @@ public class UserService {
         }
 
         // delete all images of the user
-        deleteUserImages(appUser);
+        imageAdministrationService.deleteUserImages(appUser);
 
         // delete all bets
         bettingService.deleteAllBetsOfUser(appUser);
 
         appUserRepository.deleteById(userId);
-    }
-
-    private void deleteUserImages(AppUser appUser) {
-        List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
-        imageMetaDataList.forEach(imageMetaData -> {
-            Optional<ImageBinary> imageOpt = imageBinaryRepository.findById(imageMetaData.getImageKey());
-            imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
-        });
-        imageMetaDataRepository.deleteAll(imageMetaDataList);
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)

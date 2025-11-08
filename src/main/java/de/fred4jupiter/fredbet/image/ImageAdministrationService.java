@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.image;
 
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,23 +32,21 @@ public class ImageAdministrationService {
 
     private final ImageResizingService imageResizingService;
 
-    private final ImageLocationStrategy imageLocationStrategy;
-
     private final SecurityService securityService;
 
     private final RuntimeSettingsService runtimeSettingsService;
 
     private final DefaultProfileImageLoader defaultProfileImageLoader;
 
-    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository, ImageGroupRepository imageGroupRepository,
-                               ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
+    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository,
+                               ImageGroupRepository imageGroupRepository,
+                               ImageResizingService imageResizingService,
                                SecurityService securityService,
                                RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageBinaryRepository = imageBinaryRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
-        this.imageLocationStrategy = imageLocationStrategy;
         this.securityService = securityService;
         this.runtimeSettingsService = runtimeSettingsService;
         this.defaultProfileImageLoader = defaultProfileImageLoader;
@@ -150,7 +150,7 @@ public class ImageAdministrationService {
             return defaultProfileImageLoader.getDefaultProfileImage();
         }
 
-        return imageLocationStrategy.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        return imageBinaryRepository.getImageByKey(imageMetaData.getImageKey());
     }
 
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
@@ -159,7 +159,7 @@ public class ImageAdministrationService {
             return defaultProfileImageLoader.getDefaultThumbProfileImage();
         }
 
-        return imageLocationStrategy.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        return imageBinaryRepository.getThumbnailByKey(imageMetaData.getImageKey());
     }
 
     public void deleteImageByImageKey(String imageKey) {
@@ -193,5 +193,14 @@ public class ImageAdministrationService {
             // if there is only one image group then it is the users group
             findOrCreateImageGroup(FredbetConstants.DEFAULT_IMAGE_GROUP_NAME);
         }
+    }
+
+    public void deleteUserImages(AppUser appUser) {
+        List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
+        imageMetaDataList.forEach(imageMetaData -> {
+            Optional<ImageBinary> imageOpt = imageBinaryRepository.findById(imageMetaData.getImageKey());
+            imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
+        });
+        imageMetaDataRepository.deleteAll(imageMetaDataList);
     }
 }

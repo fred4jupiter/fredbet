@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class DefaultProfileImageLoader {
+class DefaultProfileImageLoader {
 
     public static final String DEFAULT_USER_PROFILE_KEY = "1";
 

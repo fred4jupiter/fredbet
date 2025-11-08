@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
+interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
 
     default List<BinaryImage> findAllImages() {
         List<ImageBinary> allImages = findAll();
@@ -25,6 +25,21 @@ public interface ImageBinaryRepository extends JpaRepository<ImageBinary, String
     default void deleteImage(String imageKey) {
         Optional<ImageBinary> binaryOpt = findById(imageKey);
         binaryOpt.ifPresent(this::delete);
+    }
+
+    default BinaryImage getImageByKey(String imageKey) {
+        ImageBinary imageBinary = findOne(imageKey);
+        return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
+    }
+
+    private ImageBinary findOne(String imageKey) {
+        Optional<ImageBinary> imageBinaryOpt = findById(imageKey);
+        return imageBinaryOpt.orElse(null);
+    }
+
+    default BinaryImage getThumbnailByKey(String imageKey) {
+        ImageBinary imageBinary = findOne(imageKey);
+        return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
 
     private BinaryImage toImageData(ImageBinary imageBinary) {
