@@ -1,9 +1,6 @@
 package de.fred4jupiter.fredbet.settings;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.NavbarLayout;
-import de.fred4jupiter.fredbet.domain.Theme;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -55,12 +52,6 @@ public class RuntimeSettings {
 
     @NotNull
     private String timeZone;
-
-    @NotNull
-    private Theme bootswatchTheme = Theme.DEFAULT;
-
-    @NotNull
-    private NavbarLayout navbarLayout = NavbarLayout.DARK;
 
     @NotNull
     private TeamBundle teamBundle = TeamBundle.WORLD_CUP;
@@ -143,30 +134,6 @@ public class RuntimeSettings {
 
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
-    }
-
-    public Theme getBootswatchTheme() {
-        return bootswatchTheme;
-    }
-
-    public void setBootswatchTheme(Theme bootswatchTheme) {
-        this.bootswatchTheme = bootswatchTheme;
-    }
-
-    public NavbarLayout getNavbarLayout() {
-        return navbarLayout;
-    }
-
-    public void setNavbarLayout(NavbarLayout navbarLayout) {
-        this.navbarLayout = navbarLayout;
-    }
-
-    public String getBootswatchThemeUrl() {
-        final String selectedTheme = this.bootswatchTheme.toString().toLowerCase();
-        if (Theme.DEFAULT.name().equalsIgnoreCase(selectedTheme)) {
-            return "/webjars/bootstrap/css/bootstrap.min.css";
-        }
-        return "/webjars/bootswatch/" + selectedTheme + "/bootstrap.min.css";
     }
 
     public Integer getImageUploadLimit() {

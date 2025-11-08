@@ -103,10 +103,26 @@ public class WebSecurityUtil {
     }
 
     public String getCurrentUserTheme() {
-        if (!isUserLoggedIn() ) {
+        if (!isUserLoggedIn()) {
             return AppUserSetting.DEFAULT_THEME;
         }
 
         return securityService.getCurrentUser().getAppUserSetting().getTheme();
+    }
+
+    public String getBootswatchThemeUrl() {
+        if (!isUserLoggedIn()) {
+            return AppUserSetting.DEFAULT_BOOTSWATCH_THEME.getBootswatchThemeUrl();
+        }
+
+        return securityService.getCurrentUser().getAppUserSetting().getBootswatchTheme().getBootswatchThemeUrl();
+    }
+
+    public String getNavbarTag() {
+        if (!isUserLoggedIn()) {
+            return AppUserSetting.DEFAULT_NAVBAR_LAYOUT.getNavbarTag();
+        }
+
+        return securityService.getCurrentUser().getAppUserSetting().getNavbarLayout().getNavbarTag();
     }
 }

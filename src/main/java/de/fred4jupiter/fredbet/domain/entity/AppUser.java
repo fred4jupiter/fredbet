@@ -58,6 +58,8 @@ public class AppUser implements UserDetails {
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "theme", column = @Column(name = "setting_theme")),
+        @AttributeOverride(name = "bootswatchTheme", column = @Column(name = "setting_bootswatch_theme")),
+        @AttributeOverride(name = "navbarLayout", column = @Column(name = "setting_navbar_layout")),
     })
     private AppUserSetting appUserSetting;
 

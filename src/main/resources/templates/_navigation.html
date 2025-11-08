@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:fragment="menu" th:remove="tag">
-        <nav th:if="${@webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${@runtimeSettingsUtil.getSettings().getNavbarLayout().getNavbarTag()}">
+        <nav th:if="${@webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${@webSecurityUtil.getNavbarTag()}">
             <div class="container">
                 <a class="navbar-brand" th:href="@{/matches/upcoming}"><i class="fas fa-home"></i></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

@@ -15,6 +15,25 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
+                    <h2 th:text="#{administration.runtime.configuration.layout}"></h2>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="theme" class="form-label" th:text="#{administration.runtime.configuration.theme} + ':'"></label>
+                            <select id="theme" th:field="*{bootswatchTheme}" class="form-select">
+                                <option th:each="theme : ${availableThemes}" th:value="${theme}" th:text="${theme}"></option>
+                            </select>
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('bootswatchTheme')}" th:errors="*{bootswatchTheme}">bootswatchTheme Error</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="navbarlayout" class="form-label" th:text="#{administration.runtime.configuration.navbarlayout} + ':'"></label>
+                            <select id="navbarlayout" th:field="*{navbarLayout}" class="form-select">
+                                <option th:each="navbarLayout : ${availableNavbarLayouts}" th:value="${navbarLayout}" th:text="${navbarLayout}"></option>
+                            </select>
+                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('navbarLayout')}" th:errors="*{navbarLayout}">navbarlayout Error</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 col-sm-8">
                         <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>

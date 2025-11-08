@@ -279,4 +279,15 @@
         </dropColumn>
     </changeSet>
 
+    <changeSet id="15" author="michael">
+        <addColumn tableName="app_user">
+            <column name="setting_bootswatch_theme" type="varchar(20)" defaultValue="DEFAULT">
+                <constraints nullable="false" />
+            </column>
+            <column name="setting_navbar_layout" type="varchar(20)" defaultValue="DARK">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
