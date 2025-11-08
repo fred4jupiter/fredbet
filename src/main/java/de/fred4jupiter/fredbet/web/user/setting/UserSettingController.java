@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user/setting")
+@RequestMapping("/setting")
 public class UserSettingController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserSettingController.class);
@@ -69,6 +69,6 @@ public class UserSettingController {
         LOG.debug("save user setting command: {}", command);
 
         webMessageUtil.addInfoMsg(redirect, "user.setting.updated");
-        return "redirect:/user/setting";
+        return "redirect:/setting";
     }
 }
