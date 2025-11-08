@@ -6,10 +6,10 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 
 ## Features
 
-- simple betting of football championchips
+- simple betting of football championships
 - responsive design (mobile first design)
 - extra betting of 1st, 2nd and 3rd winner
-- image gallery (image storage support: filesystem, database)
+- image gallery
 - user profile image
 - multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
 - integrated user administration
@@ -99,8 +99,6 @@ These properties has to be set at application startup.
 | Key | Default Value | Description |
 |--------|--------|--------|
 | spring.profiles.active | h2 | Active Spring profile at startup. Possible values: `h2,dev,maria,mysql,postgres`.  |
-| fredbet.image-location | DATABASE | Location where to store the images/photos. Possible values: `FILE_SYSTEM, DATABASE` |
-| fredbet.image-file-system-base-folder | user home folder | In case you selected to save the images in file system this is the path to the folder. |
 | fredbet.default-language | de | The default language you prefer. |
 
 Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.

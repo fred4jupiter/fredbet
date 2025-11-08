@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.image.storage;
 
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.image.BinaryImage;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
  *
  * @author michael
  */
+@Component
 public class DatabaseImageLocationStrategy implements ImageLocationStrategy {
 
     private final ImageBinaryRepository imageBinaryRepository;

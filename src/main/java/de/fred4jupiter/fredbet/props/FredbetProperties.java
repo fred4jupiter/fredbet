@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * @author michael
  */
 @ConfigurationProperties(prefix = "fredbet")
-public record FredbetProperties(ImageLocation imageLocation, String imageFileSystemBaseFolder, String defaultLanguage,
+public record FredbetProperties(String defaultLanguage,
                                 Integer diceMinRange, Integer diceMaxRange, Integer thumbnailSize,
                                 String adminUsername, String adminPassword,
                                 @NestedConfigurationProperty AuthorizationProperties authorization,
