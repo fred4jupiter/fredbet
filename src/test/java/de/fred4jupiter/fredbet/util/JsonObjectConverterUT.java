@@ -22,6 +22,8 @@ public class JsonObjectConverterUT {
         assertThat(appUser.getUsername()).isEqualTo(convertedBack.getUsername());
         assertThat(appUser.getPassword()).isEqualTo(convertedBack.getPassword());
         assertThat(appUser.getRoles()).isEqualTo(convertedBack.getRoles());
-        assertThat(appUser.getAppUserSetting()).isEqualTo(convertedBack.getAppUserSetting());
+        assertThat(appUser.getAppUserSetting().getTheme()).isEqualTo(convertedBack.getAppUserSetting().getTheme());
+        assertThat(appUser.getAppUserSetting().getBootswatchTheme()).isEqualTo(convertedBack.getAppUserSetting().getBootswatchTheme());
+        assertThat(appUser.getAppUserSetting().getNavbarLayout()).isEqualTo(convertedBack.getAppUserSetting().getNavbarLayout());
     }
 }
