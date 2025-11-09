@@ -10,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TransactionalIntegrationTest
 public class ImageBinaryRepositoryIT {
@@ -27,19 +24,17 @@ public class ImageBinaryRepositoryIT {
     @Test
     public void saveImageInDatabase() throws IOException {
         byte[] fileAsByteArray = FileUtils.readFileToByteArray(new File("src/test/resources/sample_images/kitten.jpg"));
-        assertNotNull(fileAsByteArray);
+        assertThat(fileAsByteArray).isNotNull();
 
-        final String key = UUID.randomUUID().toString();
-        ImageBinary imageBinary = new ImageBinary(key, fileAsByteArray, fileAsByteArray);
+        final String imageKey = imageBinaryRepository.saveImage(fileAsByteArray, fileAsByteArray);
+        assertThat(imageKey).isNotBlank();
 
-        ImageBinary saved = imageBinaryRepository.save(imageBinary);
-        assertNotNull(saved);
-        assertEquals(key, saved.getKey());
-
-        ImageBinary retrievedFromDb = imageBinaryRepository.getReferenceById(saved.getKey());
-        assertNotNull(retrievedFromDb);
-        assertEquals(saved.getKey(), retrievedFromDb.getKey());
-        assertNotNull(retrievedFromDb.getImageBinary());
+        ImageBinary retrievedFromDb = imageBinaryRepository.getReferenceById(imageKey);
+        assertThat(retrievedFromDb).isNotNull();
+        assertThat(retrievedFromDb.getKey()).isNotNull();
+        assertThat(retrievedFromDb.getKey()).isEqualTo(imageKey);
+        assertThat(retrievedFromDb.getImageBinary()).isNotNull();
+        assertThat(retrievedFromDb.getThumbImageBinary()).isNotNull();
 
         String tempDir = System.getProperty("java.io.tmpdir");
 

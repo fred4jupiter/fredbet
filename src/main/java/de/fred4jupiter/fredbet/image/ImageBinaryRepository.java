@@ -8,9 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
 
-    default void saveImage(String imageKey, byte[] imageBytes, byte[] thumbImageBinary) {
-        ImageBinary imageBinary = new ImageBinary(imageKey, imageBytes, thumbImageBinary);
-        save(imageBinary);
+    default String saveImage(byte[] imageBytes, byte[] thumbImageBinary) {
+        ImageBinary imageBinary = new ImageBinary(imageBytes, thumbImageBinary);
+        ImageBinary savedImage = save(imageBinary);
+        return savedImage.getKey();
     }
 
     @Modifying

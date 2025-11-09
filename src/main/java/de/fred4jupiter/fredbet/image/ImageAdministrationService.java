@@ -69,18 +69,15 @@ public class ImageAdministrationService {
     }
 
     public void saveImage(byte[] binary, String galleryGroup, String description, AppUser currentUser) {
+        final byte[] thumbnail = imageResizingService.createThumbnail(binary);
+        final String imageKey = imageBinaryRepository.saveImage(binary, thumbnail);
+
         final ImageGroup imageGroup = findOrCreateImageGroup(galleryGroup);
         checkIfImageUploadPerUserIsReached(currentUser);
 
-        final String key = generateKey();
-
-        ImageMetaData imageMetaData = new ImageMetaData(key, imageGroup, currentUser);
+        ImageMetaData imageMetaData = new ImageMetaData(imageKey, imageGroup, currentUser);
         imageMetaData.setDescription(description);
         imageMetaDataRepository.save(imageMetaData);
-
-        byte[] thumbnail = imageResizingService.createThumbnail(binary);
-
-        imageBinaryRepository.saveImage(key, binary, thumbnail);
     }
 
     private String generateKey() {
@@ -105,7 +102,9 @@ public class ImageAdministrationService {
     }
 
     public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
-        final String key = generateKey();
+        final byte[] thumbnail = imageResizingService.createThumbnail(binary);
+        final String imageKey = imageBinaryRepository.saveImage(binary, thumbnail);
+
         if (imageMetaData == null) {
             // create new user profile image
             ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
@@ -113,16 +112,13 @@ public class ImageAdministrationService {
                 imageGroup = initUserProfileImageGroup();
             }
 
-            imageMetaData = new ImageMetaData(key, imageGroup, appUser);
+            imageMetaData = new ImageMetaData(imageKey, imageGroup, appUser);
             imageMetaData.setDescription(appUser.getUsername());
         } else {
-            imageMetaData.setImageKey(key);
+            imageMetaData.setImageKey(imageKey);
         }
 
         imageMetaDataRepository.save(imageMetaData);
-
-        byte[] thumbnail = imageResizingService.createThumbnail(binary);
-        imageBinaryRepository.saveImage(key, binary, thumbnail);
     }
 
     public List<ImageMetaData> fetchAllImages() {

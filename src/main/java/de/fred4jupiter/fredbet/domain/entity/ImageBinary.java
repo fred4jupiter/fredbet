@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ImageBinary {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "IMAGE_KEY")
     private String key;
 
@@ -35,7 +36,7 @@ public class ImageBinary {
         // for hibernate
     }
 
-    public ImageBinary(String key, byte[] imageBinary, byte[] thumbImageBinary) {
+    public ImageBinary(byte[] imageBinary, byte[] thumbImageBinary) {
         this.key = key;
         this.imageBinary = imageBinary;
         this.thumbImageBinary = thumbImageBinary;
