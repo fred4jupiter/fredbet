@@ -51,7 +51,7 @@ public class RankingController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.INLINE);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.ATTACHMENT);
     }
 
     private String createFilename(String mode) {
