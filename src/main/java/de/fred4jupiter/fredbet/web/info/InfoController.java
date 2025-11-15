@@ -95,7 +95,7 @@ public class InfoController {
         }
 
         final String fileName = createFileNameFor(infoType);
-        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.ATTACHMENT);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF);
     }
 
     private String createPdfContent(InfoType infoType, String content) {
