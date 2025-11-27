@@ -15,7 +15,7 @@ spring:
 
 logging:
   pattern:
-    console: "%black(%d{ISO8601}) %highlight(%-5level) %yellow(%C{1}): %msg%n%throwable"
+    console: "%black(%d{ISO8601}) %highlight(%-5level) %yellow(%C): %msg%n%throwable"
   level:
     root: "WARN"
     "org.springframework.security.web.csrf": "WARN"
