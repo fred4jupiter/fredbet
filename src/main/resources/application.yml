@@ -29,6 +29,7 @@ spring:
     virtual:
       enabled: true
 
+
 server:
   servlet:
     encoding:
