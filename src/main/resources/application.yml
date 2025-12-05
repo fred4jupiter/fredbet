@@ -19,6 +19,10 @@ spring:
       enabled: false
       path: /console
   servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
     multipart:
       max-file-size: 30MB
       max-request-size: 30MB
@@ -29,13 +33,7 @@ spring:
     virtual:
       enabled: true
 
-
 server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
   tomcat:
     max-swallow-size: 30MB
     max-http-form-post-size: 30MB
