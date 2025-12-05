@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.web.ranking;
 
 import de.fred4jupiter.fredbet.domain.RankingSelection;
-import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import de.fred4jupiter.fredbet.ranking.RankingService;
+import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -51,7 +51,7 @@ public class RankingController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF, ResponseEntityUtil.DownloadType.INLINE);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF);
     }
 
     private String createFilename(String mode) {

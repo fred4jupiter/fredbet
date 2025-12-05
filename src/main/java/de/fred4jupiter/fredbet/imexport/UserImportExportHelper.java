@@ -51,7 +51,7 @@ class UserImportExportHelper {
             userService.createUserIfNotExists(userToImport);
 
             byte[] decoded = Base64.getDecoder().decode(userToExport.userAvatarBase64());
-            userService.saveUserProfileImage(decoded, userToImport.getUsername());
+            imageAdministrationService.saveUserProfileImage(decoded, userToImport);
         });
 
         return users.stream().map(UserToExport::username).distinct().count();

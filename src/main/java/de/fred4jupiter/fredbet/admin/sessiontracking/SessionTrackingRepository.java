@@ -12,9 +12,11 @@ public interface SessionTrackingRepository extends JpaRepository<SessionTracking
 
     List<SessionTracking> findAllByOrderByLastLoginDesc();
 
-    SessionTracking findBySessionId(String sessionId);
-
     @Modifying
     @Query("update SessionTracking t set t.userName = :newUsername where t.userName = :oldUsername")
     void renameUser(@Param("oldUsername") String oldUsername, @Param("newUsername") String newUsername);
+
+    @Modifying
+    @Query("delete SessionTracking t where t.sessionId = :sessionId")
+    int deleteBySessionId(@Param("sessionId") String sessionId);
 }

@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ public class RandomValueGeneratorIT {
     private RandomValueGenerator randomValueGenerator;
 
     @Autowired
-    private DatabasePopulator dataBasePopulator;
+    private DataPopulator dataBasePopulator;
 
     @Autowired
     private MatchRepository matchRepository;

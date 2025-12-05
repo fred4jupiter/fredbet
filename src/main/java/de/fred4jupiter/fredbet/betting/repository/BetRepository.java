@@ -83,6 +83,10 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         """)
     List<PointsPerUser> queryPointsPerUserForToday(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("adminUsername") String adminUsername);
 
+    @Modifying
+    @Query("delete Bet b where b.userName = :username")
+    int deleteAllBetsOfUser(@Param("username") String username);
+
     default List<String> queryPointsPerUserForToday(String adminUsername) {
         LocalDate today = LocalDate.now();
         List<PointsPerUser> pointsPerUsers = queryPointsPerUserForToday(today.atStartOfDay(), today.atTime(23, 59), adminUsername);

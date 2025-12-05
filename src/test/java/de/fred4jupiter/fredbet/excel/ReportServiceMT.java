@@ -1,12 +1,10 @@
 package de.fred4jupiter.fredbet.excel;
 
 import de.fred4jupiter.fredbet.common.IntegrationTest;
-import de.fred4jupiter.fredbet.data.DatabasePopulator;
-import de.fred4jupiter.fredbet.data.DemoDataCreation;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.TempFileWriterUtil;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,7 @@ public class ReportServiceMT {
     private ReportService reportService;
 
     @Autowired
-    private DatabasePopulator dataBasePopulator;
+    private DataPopulator dataBasePopulator;
 
     @Autowired
     private UserService userService;

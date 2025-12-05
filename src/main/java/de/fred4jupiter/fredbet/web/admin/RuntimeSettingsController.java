@@ -1,15 +1,13 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
-import de.fred4jupiter.fredbet.domain.Theme;
+import de.fred4jupiter.fredbet.domain.BootswatchTheme;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.util.TeamUtil;
-import de.fred4jupiter.fredbet.web.util.TeamView;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,21 +40,6 @@ public class RuntimeSettingsController {
         this.teamUtil = teamUtil;
     }
 
-//    @ModelAttribute("availableTeams")
-//    public List<TeamView> availableTeams() {
-//        return teamUtil.getAvailableTeamsBasedOnMatches();
-//    }
-
-    @ModelAttribute("availableThemes")
-    public List<Theme> availableThemes() {
-        return Arrays.asList(Theme.values());
-    }
-
-    @ModelAttribute("availableNavbarLayouts")
-    public List<NavbarLayout> availableNavbarLayouts() {
-        return Arrays.asList(NavbarLayout.values());
-    }
-
     @GetMapping("/show")
     public String showPage(RuntimeSettingsCommand runtimeSettingsCommand, Model model) {
         final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
@@ -83,16 +66,7 @@ public class RuntimeSettingsController {
     @HxRequest
     @GetMapping("/team-bundle")
     public String favouriteCountryOptions(@RequestParam(name = "runtimeSettings.teamBundle") TeamBundle teamBundle, Model model) {
-//        RuntimeSettings runtimeSettings = command.getRuntimeSettings();
-//
-//        TeamBundle teamBundle = runtimeSettings.getTeamBundle();
-
-//        model.addAttribute("runtimeSettingsCommand", command);
-//        model.addAttribute("availableTeamBundles", TeamBundle.values());
-//        model.addAttribute("runtimeSettings", runtimeSettings);
         model.addAttribute("availableTeams", teamUtil.getAvailableTeams(teamBundle));
-
-
         return PAGE_RUNTIME_CONFIG + " :: favouriteCountryOptions";
     }
 }

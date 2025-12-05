@@ -4,8 +4,7 @@ import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @TransactionalIntegrationTest
 public class RuntimeSettingsServiceIT {
@@ -16,14 +15,14 @@ public class RuntimeSettingsServiceIT {
     @Test
     public void loadAndSaveConfiguration() {
         RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        assertNotNull(runtimeSettings);
+        assertThat(runtimeSettings).isNotNull();
 
         runtimeSettings.setEnabledParentChildRanking(true);
 
         runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
 
         RuntimeSettings loaded = runtimeSettingsService.loadRuntimeSettings();
-        assertNotNull(loaded);
-        assertTrue(loaded.isEnabledParentChildRanking());
+        assertThat(loaded).isNotNull();
+        assertThat(loaded.isEnabledParentChildRanking()).isTrue();
     }
 }

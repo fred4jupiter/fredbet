@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.excel;
 
-import de.fred4jupiter.fredbet.data.DatabasePopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -12,6 +11,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +27,9 @@ public class ExcelImportService {
 
     private final MatchRepository matchRepository;
 
-    private final DatabasePopulator dataBasePopulator;
+    private final DataPopulator dataBasePopulator;
 
-    public ExcelImportService(MatchRepository matchRepository, DatabasePopulator dataBasePopulator) {
+    public ExcelImportService(MatchRepository matchRepository, DataPopulator dataBasePopulator) {
         this.matchRepository = matchRepository;
         this.dataBasePopulator = dataBasePopulator;
     }

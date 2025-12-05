@@ -1,8 +1,10 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
+import de.fred4jupiter.fredbet.domain.BootswatchTheme;
+import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import jakarta.persistence.Embeddable;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.io.Serializable;
 
@@ -11,15 +13,17 @@ public class AppUserSetting implements Serializable {
 
     public static final String DEFAULT_THEME = "white";
 
-    private String theme;
+    public static final BootswatchTheme DEFAULT_BOOTSWATCH_THEME = BootswatchTheme.DEFAULT;
 
-    public AppUserSetting() {
-        this.theme = DEFAULT_THEME;
-    }
+    public static final NavbarLayout DEFAULT_NAVBAR_LAYOUT = NavbarLayout.DARK;
 
-    public AppUserSetting(String theme) {
-        this.theme = theme;
-    }
+    private String theme = DEFAULT_THEME;
+
+    @Enumerated(EnumType.STRING)
+    private BootswatchTheme bootswatchTheme = DEFAULT_BOOTSWATCH_THEME;
+
+    @Enumerated(EnumType.STRING)
+    private NavbarLayout navbarLayout = DEFAULT_NAVBAR_LAYOUT;
 
     public String getTheme() {
         if (this.theme == null) {
@@ -36,19 +40,19 @@ public class AppUserSetting implements Serializable {
         return "dark".equals(getTheme());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AppUserSetting that = (AppUserSetting) o;
-
-        return new EqualsBuilder().append(theme, that.theme).isEquals();
+    public BootswatchTheme getBootswatchTheme() {
+        return bootswatchTheme;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(theme).toHashCode();
+    public void setBootswatchTheme(BootswatchTheme bootswatchTheme) {
+        this.bootswatchTheme = bootswatchTheme;
+    }
+
+    public NavbarLayout getNavbarLayout() {
+        return navbarLayout;
+    }
+
+    public void setNavbarLayout(NavbarLayout navbarLayout) {
+        this.navbarLayout = navbarLayout;
     }
 }

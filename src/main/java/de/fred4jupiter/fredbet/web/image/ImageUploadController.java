@@ -2,10 +2,11 @@ package de.fred4jupiter.fredbet.web.image;
 
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
-import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.image.ImageUploadLimitReachedException;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.WebSecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,12 +26,16 @@ public class ImageUploadController {
 
     private final WebMessageUtil messageUtil;
 
+    private final WebSecurityUtil webSecurityUtil;
+
     private final ImageCommandMapper imageCommandMapper;
 
-    public ImageUploadController(ImageAdministrationService imageAdministrationService, WebMessageUtil messageUtil,
-                                 ImageCommandMapper imageCommandMapper) {
+    ImageUploadController(ImageAdministrationService imageAdministrationService, WebMessageUtil messageUtil,
+                          WebSecurityUtil webSecurityUtil,
+                          ImageCommandMapper imageCommandMapper) {
         this.imageAdministrationService = imageAdministrationService;
         this.messageUtil = messageUtil;
+        this.webSecurityUtil = webSecurityUtil;
         this.imageCommandMapper = imageCommandMapper;
     }
 
@@ -77,7 +82,8 @@ public class ImageUploadController {
         }
 
         try {
-            imageAdministrationService.saveImage(imageByte, imageUploadCommand.getGalleryGroup(), imageUploadCommand.getDescription());
+            imageAdministrationService.saveImage(imageByte, imageUploadCommand.getGalleryGroup(),
+                imageUploadCommand.getDescription(), webSecurityUtil.getCurrentUser());
             messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
         } catch (ImageUploadLimitReachedException e) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.limitReached", e.getLimit());
