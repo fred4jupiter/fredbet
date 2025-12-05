@@ -154,15 +154,9 @@
             <version>5.12.0</version>
         </dependency>
 
-        <!-- direct classgraph dependency to avoid un.misc.Unsafe warning. Dependency is used in webjars-locator-core -->
-        <dependency>
-            <groupId>io.github.classgraph</groupId>
-            <artifactId>classgraph</artifactId>
-            <version>4.8.184</version>
-        </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
-            <artifactId>webjars-locator-core</artifactId>
+            <artifactId>webjars-locator-lite</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
