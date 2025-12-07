@@ -10,6 +10,7 @@ import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.immutable.ImmutableVersion;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.util.UidGenerator;
 import org.slf4j.Logger;
@@ -90,6 +91,7 @@ public class IcsCalendarBuilder {
 
         net.fortuna.ical4j.model.Calendar icsCalendar = new net.fortuna.ical4j.model.Calendar();
         icsCalendar.add(new ProdId("-//FredBet//iCal4j 1.0//EN"));
+        icsCalendar.add(ImmutableVersion.VERSION_2_0);
         icsCalendar.add(vEvent);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
