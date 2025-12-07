@@ -39,8 +39,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
-                .requestMatchers("/static/**", "/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
-                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration", "/console/",
+                .requestMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
+                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
                     "/webjars/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
