@@ -8,8 +8,11 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * Security utility class for access in Thymeleaf templates.
@@ -25,14 +28,17 @@ public class WebSecurityUtil {
 
     private final ImageAdministrationService imageAdministrationService;
 
+    private final Optional<H2ConsoleProperties> h2ConsoleProperties;
+
     private final String adminUsername;
 
     public WebSecurityUtil(RuntimeSettingsService runtimeSettingsService, SecurityService securityService,
                            ImageAdministrationService imageAdministrationService,
-                           FredbetProperties fredbetProperties) {
+                           Optional<H2ConsoleProperties> h2ConsoleProperties, FredbetProperties fredbetProperties) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.securityService = securityService;
         this.imageAdministrationService = imageAdministrationService;
+        this.h2ConsoleProperties = h2ConsoleProperties;
         this.adminUsername = fredbetProperties.adminUsername();
     }
 
@@ -93,7 +99,7 @@ public class WebSecurityUtil {
     }
 
     public String resolveH2Path() {
-        return "/console"; // TODO: read from config
+        return h2ConsoleProperties.map(H2ConsoleProperties::getPath).orElse("");
     }
 
     public String getCurrentUserTheme() {

@@ -91,6 +91,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-liquibase</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-h2console</artifactId>
+        </dependency>
 
         <!-- JDBC drivers -->
         <dependency>
@@ -209,7 +213,7 @@
         <dependency>
             <groupId>org.mnode.ical4j</groupId>
             <artifactId>ical4j</artifactId>
-            <version>4.0.0-rc6</version>
+            <version>4.2.1</version>
         </dependency>
 
         <dependency>
