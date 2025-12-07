@@ -24,8 +24,12 @@ public class IcsCalendarServiceIT {
 
     @Test
     void createCalendarEventFromMatch() {
-        Match match1 = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
-        Match savedMatch = matchRepository.save(match1);
+        Match match = MatchBuilder.create()
+            .withGroup(Group.GROUP_A)
+            .withTeams("A", "B")
+            .withKickOffDate(LocalDateTime.now())
+            .build();
+        Match savedMatch = matchRepository.save(match);
 
         IcsFile icsFile = icsCalendarService.createCalendarEventFromMatch(savedMatch.getId(), Locale.GERMAN);
         assertThat(icsFile).isNotNull();
