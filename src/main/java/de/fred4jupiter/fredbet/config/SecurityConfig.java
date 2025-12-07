@@ -26,8 +26,7 @@ import java.util.Optional;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    // 24 Stunden
-    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
+    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60; // 24 hours
 
     private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
