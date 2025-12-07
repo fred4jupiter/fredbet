@@ -1,8 +1,9 @@
 package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +26,7 @@ import java.util.Optional;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    // 24 Stunden
-    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
+    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60; // 24 hours
 
     private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
@@ -38,8 +38,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
-                .requestMatchers("/static/**", "/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
-                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration", "/console/").permitAll()
+                .requestMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
+                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
+                    "/webjars/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .anyRequest().authenticated()

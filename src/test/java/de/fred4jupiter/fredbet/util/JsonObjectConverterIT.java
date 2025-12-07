@@ -1,19 +1,24 @@
 package de.fred4jupiter.fredbet.util;
 
-import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JsonObjectConverterUT {
+@IntegrationTest
+public class JsonObjectConverterIT {
+
+    @Autowired
+    private JsonObjectConverter converter;
 
     @Test
     public void fromObjectToJsonAndBack() {
         AppUser appUser = AppUserBuilder.create().withDemoData().build();
         assertThat(appUser).isNotNull();
 
-        JsonObjectConverter converter = new JsonObjectConverter();
         String json = converter.toJson(appUser);
         assertThat(json).isNotNull();
 

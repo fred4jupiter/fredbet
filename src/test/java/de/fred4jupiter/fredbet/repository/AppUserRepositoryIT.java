@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.repository;
 
-import de.fred4jupiter.fredbet.common.DatabaseIntegrationTest;
-import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
+import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.user.AppUserRepository;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DatabaseIntegrationTest
+@TransactionalIntegrationTest
 public class AppUserRepositoryIT {
 
     @Autowired
@@ -33,12 +33,10 @@ public class AppUserRepositoryIT {
 
     @Test
     public void fetchUsersWithLastLoginSortAsc() {
-        appUserRepository.deleteAll();
-
         appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("robert", "robert")
-                .withLastLogin(LocalDateTime.now()).build());
+            .withLastLogin(LocalDateTime.now()).build());
         appUserRepository.save(AppUserBuilder.create().withDemoData().withUsernameAndPassword("albert", "albert")
-                .withLastLogin(LocalDateTime.now().plusHours(1)).build());
+            .withLastLogin(LocalDateTime.now().plusHours(1)).build());
 
         List<AppUser> resultList = appUserRepository.fetchLastLoginUsers();
         assertEquals(2, resultList.size());
@@ -49,7 +47,7 @@ public class AppUserRepositoryIT {
     @Test
     public void appUserCanHaveMultipleRoles() {
         AppUser appUser = appUserRepository.save(AppUserBuilder.create().withDemoData()
-                .withUserGroup(FredBetUserGroup.ROLE_USER).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
+            .withUserGroup(FredBetUserGroup.ROLE_USER).withUserGroup(FredBetUserGroup.ROLE_ADMIN).build());
         appUserRepository.flush();
         assertNotNull(appUser.getId());
 
