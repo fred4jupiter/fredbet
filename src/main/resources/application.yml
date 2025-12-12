@@ -32,6 +32,9 @@ spring:
   threads:
     virtual:
       enabled: true
+  devtools:
+    livereload:
+      enabled: false
 
 server:
   tomcat:
