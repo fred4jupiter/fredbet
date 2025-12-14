@@ -10,7 +10,8 @@
         <main class="form-signin w-100 m-auto">
             <form class="form" th:action="@{/login}" method="post">
                 <div class="text-center mb-5">
-                    <i class="fas fa-thumbs-up fa-8x logo-color"></i>
+                    <i th:if="${loginLogo == null}" class="fas fa-thumbs-up fa-8x logo-color"></i>
+                    <img th:if="${loginLogo != null}" th:src="${loginLogo}" class="img-fluid"/>
                 </div>
 
                 <h1 class="h3 mb-3 fw-normal" th:text="'FredBet - ' + #{login.title.short}">Please sign in</h1>

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
+public interface ImageBinaryRepository extends JpaRepository<ImageBinary, String> {
 
     default String saveImage(byte[] imageBytes, byte[] thumbImageBinary) {
         ImageBinary imageBinary = new ImageBinary(imageBytes, thumbImageBinary);

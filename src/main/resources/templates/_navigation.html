@@ -160,6 +160,9 @@
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/config/points}" th:text="#{points.config.title}"></a>
                                 </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/loginlogo}" th:text="#{login.logo.title}"></a>
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

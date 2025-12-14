@@ -80,10 +80,6 @@ public class ImageAdministrationService {
         imageMetaDataRepository.save(imageMetaData);
     }
 
-    private String generateKey() {
-        return UUID.randomUUID().toString();
-    }
-
     private void checkIfImageUploadPerUserIsReached(AppUser currentUser) {
         Integer imageUploadLimit = runtimeSettingsService.loadRuntimeSettings().getImageUploadLimit();
         if (imageUploadLimit == null) {
