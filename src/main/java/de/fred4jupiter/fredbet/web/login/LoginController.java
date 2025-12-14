@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.login;
 
 import de.fred4jupiter.fredbet.admin.LoginLogoService;
+import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.AuthenticationException;
@@ -29,8 +30,8 @@ public class LoginController {
 
     @GetMapping
     public String loginPage(Model model) {
-        Optional<byte[]> bytes = loginLogoService.loadLoginLogo();
-        bytes.ifPresent(value -> model.addAttribute("loginLogo", "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(value)));
+        Optional<BinaryImage> bytes = loginLogoService.loadLoginLogo();
+        bytes.ifPresent(value -> model.addAttribute("loginLogo", value.getAsBase64()));
         return "login";
     }
 

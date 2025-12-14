@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.admin;
 
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
+import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.image.ImageBinaryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,10 @@ public class LoginLogoService {
         }
     }
 
-    public Optional<byte[]> loadLoginLogo() {
+    public Optional<BinaryImage> loadLoginLogo() {
         try {
             ImageBinary imageBinary = imageBinaryRepository.getReferenceById(LOGIN_LOGO_KEY);
-            return Optional.of(imageBinary.getImageBinary());
+            return Optional.of(new BinaryImage(LOGIN_LOGO_KEY, imageBinary.getImageBinary()));
         } catch (EntityNotFoundException e) {
             return Optional.empty();
         }
