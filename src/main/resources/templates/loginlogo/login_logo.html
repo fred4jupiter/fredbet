@@ -7,9 +7,9 @@
 		<div layout:fragment="content">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
-                    <h2>Current Login Logo</h2>
+                    <h2 th:text="#{login.logo.current.title}"></h2>
                     <div th:if="${currentLoginLogo == null}" class="mb-3">
-                        <p>There is no custom login logo defined.</p>
+                        <p th:value="#{login.logo.current}"></p>
                     </div>
                     <div th:if="${currentLoginLogo != null}" class="mb-3">
                         <img th:src="${currentLoginLogo}" class="img-fluid rounded-3"/>
@@ -25,7 +25,7 @@
             <form th:action="@{/loginlogo}" th:object="${loginLogoCommand}" method="post" enctype="multipart/form-data" role="form">
                 <div class="row">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                        <h2>Update Login Logo</h2>
+                        <h2 th:text="#{login.logo.update.title}"></h2>
                         <div class="mb-3">
                             <label class="form-label" th:text="#{image.upload.file}"></label><br/>
                             <input class="form-control" id="upload" type="file" accept="image/jpeg"/>
