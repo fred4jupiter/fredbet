@@ -5,9 +5,27 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <h2>Current Login Logo</h2>
+                    <div th:if="${currentLoginLogo == null}" class="mb-3">
+                        <p>There is no custom login logo defined.</p>
+                    </div>
+                    <div th:if="${currentLoginLogo != null}" class="mb-3">
+                        <img th:src="${currentLoginLogo}" class="img-fluid rounded-3"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto mb-3">
+                    <a href="#" th:href="@{/loginlogo/delete}" class="btn btn-danger" role="button" th:text="#{button.delete}" th:classappend="${currentLoginLogo == null} ? 'disabled' : ''" ></a>
+                </div>
+            </div>
+
             <form th:action="@{/loginlogo}" th:object="${loginLogoCommand}" method="post" enctype="multipart/form-data" role="form">
                 <div class="row">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                        <h2>Update Login Logo</h2>
                         <div class="mb-3">
                             <label class="form-label" th:text="#{image.upload.file}"></label><br/>
                             <input class="form-control" id="upload" type="file" accept="image/jpeg"/>
@@ -19,7 +37,7 @@
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="mb-3">
                             <input id="myFileBase64" type="hidden" name="myFileBase64" />
-                            <img id="preview" class="img-thumbnail" alt="preview" />
+                            <img id="preview" class="img-thumbnail" />
                         </div>
                     </div>
                 </div>
@@ -41,9 +59,6 @@
                 <div class="row mt-3">
                     <div class="col-auto mb-3">
                         <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
-                    </div>
-                    <div class="col-auto mb-3">
-                        <a href="#" th:href="@{/loginlogo/delete}" class="btn btn-danger" role="button" th:text="#{button.delete}"></a>
                     </div>
                 </div>
             </form>
