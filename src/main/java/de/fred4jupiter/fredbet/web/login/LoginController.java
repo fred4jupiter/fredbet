@@ -1,5 +1,8 @@
-package de.fred4jupiter.fredbet.web;
+package de.fred4jupiter.fredbet.web.login;
 
+import de.fred4jupiter.fredbet.admin.LoginLogoService;
+import de.fred4jupiter.fredbet.image.BinaryImage;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
@@ -9,18 +12,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Base64;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 
     private final WebMessageUtil webMessageUtil;
 
-    public LoginController(WebMessageUtil webMessageUtil) {
+    private final LoginLogoService loginLogoService;
+
+    public LoginController(WebMessageUtil webMessageUtil, LoginLogoService loginLogoService) {
         this.webMessageUtil = webMessageUtil;
+        this.loginLogoService = loginLogoService;
     }
 
     @GetMapping
-    public String loginPage() {
+    public String loginPage(Model model) {
+        Optional<BinaryImage> bytes = loginLogoService.loadLoginLogo();
+        bytes.ifPresent(value -> model.addAttribute("loginLogo", value.getAsBase64()));
         return "login";
     }
 

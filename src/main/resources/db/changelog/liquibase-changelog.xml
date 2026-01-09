@@ -290,4 +290,8 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="16" author="michael">
+        <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes"/>
+    </changeSet>
+
 </databaseChangeLog>

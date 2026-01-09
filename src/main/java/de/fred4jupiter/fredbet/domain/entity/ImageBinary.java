@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.UUID;
+
 /**
  * Will only be used if the images are stored within the database.
  *
@@ -15,7 +17,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ImageBinary {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "IMAGE_KEY")
     private String key;
 
@@ -36,7 +37,16 @@ public class ImageBinary {
         // for hibernate
     }
 
+    public ImageBinary(String key, byte[] imageBinary) {
+        this.key = key;
+        this.imageBinary = imageBinary;
+    }
+
     public ImageBinary(byte[] imageBinary, byte[] thumbImageBinary) {
+        this(UUID.randomUUID().toString(), imageBinary, thumbImageBinary);
+    }
+
+    public ImageBinary(String key, byte[] imageBinary, byte[] thumbImageBinary) {
         this.key = key;
         this.imageBinary = imageBinary;
         this.thumbImageBinary = thumbImageBinary;
@@ -52,6 +62,14 @@ public class ImageBinary {
 
     public byte[] getThumbImageBinary() {
         return thumbImageBinary;
+    }
+
+    public void setImageBinary(byte[] imageBinary) {
+        this.imageBinary = imageBinary;
+    }
+
+    public void setThumbImageBinary(byte[] thumbImageBinary) {
+        this.thumbImageBinary = thumbImageBinary;
     }
 
     public Integer getVersion() {
