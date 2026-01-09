@@ -8,7 +8,7 @@ import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
+import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -99,7 +99,7 @@ public class WebSecurityUtil {
     }
 
     public String resolveH2Path() {
-        return h2ConsoleProperties.isPresent() ? h2ConsoleProperties.get().getPath() : "";
+        return h2ConsoleProperties.map(H2ConsoleProperties::getPath).orElse("");
     }
 
     public String getCurrentUserTheme() {
