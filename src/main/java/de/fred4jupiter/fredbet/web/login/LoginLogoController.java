@@ -1,9 +1,11 @@
 package de.fred4jupiter.fredbet.web.login;
 
 import de.fred4jupiter.fredbet.admin.LoginLogoService;
+import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Base64;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/loginlogo")
@@ -33,7 +36,9 @@ public class LoginLogoController {
     }
 
     @GetMapping
-    public String showPage() {
+    public String showPage(Model model) {
+        Optional<BinaryImage> bytes = loginLogoService.loadLoginLogo();
+        bytes.ifPresent(value -> model.addAttribute("currentLoginLogo", value.getAsBase64()));
         return "loginlogo/login_logo";
     }
 
