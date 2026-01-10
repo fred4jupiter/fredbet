@@ -1,28 +1,102 @@
-html, body {
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Full-Height Background Image */
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    background: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/6-col/img%20(122).jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login Container */
+.login-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
+    width: 100%;
 }
 
-.form-signin {
-    max-width: 330px;
-    padding: 1rem;
+/* Login Box Styling */
+.login-box {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 
-.form-signin .form-floating:focus-within {
-    z-index: 2;
+/* Heading */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.form-signin input[type="text"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+/* Input Fields */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
 }
 
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
 }
 
-.logo-color {
-    color: #0b5ed7;
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #007BFF;
+}
+
+/* Submit Button */
+.input-group button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.input-group button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .login-box {
+        padding: 20px;
+        width: 90%;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .input-group input, .input-group button {
+        font-size: 14px;
+    }
 }
