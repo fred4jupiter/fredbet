@@ -2,6 +2,8 @@ name: Build and Test
 
 on:
   push:
+    paths-ignore:
+      - '.github/**'
     branches:
       - 'bugfix/*'
       - 'feature/*'
