@@ -63,27 +63,44 @@ public class UserService {
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public AppUser createUser(AppUser appUser) throws UserAlreadyExistsException {
-        AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
-        if (foundUser != null) {
-            throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
-        }
-
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        LOG.info("creating user with username={}", appUser.getUsername());
-        AppUser savedAppUser = appUserRepository.save(appUser);
-        imageAdministrationService.saveDefaultProfileImageFor(savedAppUser);
-        return savedAppUser;
+    public AppUser createUserIfNotExists(AppUser appUser) {
+        return createUserIfNotExists(appUser, true);
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public AppUser createUserIfNotExists(AppUser appUser) {
+    public AppUser createUserIfNotExists(AppUser appUser, boolean encryptPassword) {
         AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
         if (foundUser != null) {
             return foundUser;
         }
 
-        return createUser(appUser);
+        return createUser(appUser, encryptPassword);
+    }
+
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public AppUser createUser(AppUser appUser) throws UserAlreadyExistsException {
+        return createUser(appUser, true);
+    }
+
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public AppUser createUser(AppUser appUser, boolean encryptPassword) throws UserAlreadyExistsException {
+        AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
+        if (foundUser != null) {
+            throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
+        }
+
+        if (encryptPassword) {
+            // new user has unencrypted password that needs to be encrypted
+            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        } else {
+            // password of exported user is still encrypted
+            appUser.setPassword(appUser.getPassword());
+        }
+
+        LOG.info("creating user with username={}", appUser.getUsername());
+        AppUser savedAppUser = appUserRepository.save(appUser);
+        imageAdministrationService.saveDefaultProfileImageFor(savedAppUser);
+        return savedAppUser;
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
