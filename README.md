@@ -26,13 +26,13 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - use a joker to double your points
 - self registration (can be disabled)
 - PDF export of user ranking 
-- Group standings
+- group standings
 - change UI design themes
 
 ## Testing it locally
-### Building and running with Java 21 and Maven installed
+### Building and running with Java 25 and Maven installed
 
-You can run the application locally if you have Java 21 and Maven installed. Run the following command:
+You can run the application locally if you have Java 25 and Maven installed. Run the following command:
 
 ```bash
 mvn install spring-boot:run
@@ -94,34 +94,9 @@ You can find the docker compose example files in folder `extra/docker-compose` a
 
 ## FredBet Properties
 
-These properties has to be set at application startup.
-
-| Key | Default Value | Description |
-|--------|--------|--------|
-| spring.profiles.active | h2 | Active Spring profile at startup. Possible values: `h2,dev,maria,mysql,postgres`.  |
-| fredbet.default-language | de | The default language you prefer. |
-
-Please have a look at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) on how to setup these properties as JVM parameters or environment variables.
-
-## Database Properties
-
-| Key | Default Value | Description |
-|--------|--------|--------|
-| spring.datasource.url | jdbc:h2:file:~/fredbet/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE | JDBC connection URL. |
-| spring.datasource.username | sa | The database username. |
-| spring.datasource.password | | The database password. |
-| spring.datasource.driver-class-name | org.h2.Driver | see driver class below |
-
-### Driver class names
-
-| Database | Driver Class | Spring Profile | 
-|--------|--------|--------|
-| H2 | org.h2.Driver | h2 |
-| MySQL | com.mysql.jdbc.Driver | mysql |
-| MariaDB | org.mariadb.jdbc.Driver |  maria |
-| PostgreSQL | org.postgresql.Driver | postgres |
-
-Activate the spring profile via JVM (e.g. `-Dspring.profiles.active=h2`) or system environment variable (e.g. `SPRING_PROFILES_ACTIVE=h2`).
+You can override all properties setup in the `src/main/resources/application.yml`. Please have a look 
+at [Spring Boots externalized configuration documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) 
+on how to setup these properties as JVM parameters or environment variables.
 
 ## Runtime Configuration
 
@@ -138,16 +113,53 @@ Following settings can be changed at runtime:
 - points for extra bets
 - UI design theme
 
-## Production Environment
+## Production Setup
 
-FredBet is designed to run within the Amazon Web Services (AWS) cloud as production environment. 
-Typically you run the docker container in EC2 container service (ECS) with these environment properties:
+### Database Setup for Production Use
 
-| Key | Value | Description |
-|--------|--------|--------|
-| spring.profiles.active | e.g. postgres | see section `Driver class names` |
+There are different **database** options to use with FredBet. The default one is a `h2` file-based database, but this is for **development 
+and testing purposes only**. For production setup you need to use a supported database (PostgreSQL, Maria DB or MySQL).
 
-Other properties depend on your production setup (see possible properties above). Add also the properties for your database connection (see above).
+#### H2 (default, but NOT for production use)
+
+| JVM Key                             | ENV KEY                             | example value                                                     |
+|-------------------------------------|-------------------------------------|-------------------------------------------------------------------|
+| spring.datasource.driver-class-name | SPRING_DATASOURCE_DRIVER_CLASS_NAME | org.h2.Driver                                                     |
+| spring.datasource.url               | SPRING_DATASOURCE_URL               | jdbc:h2:file:~/fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE |
+| spring.datasource.username          | SPRING_DATASOURCE_USERNAME          | sa                                                                |
+| spring.datasource.password          | SPRING_DATASOURCE_PASSWORD          |                                                                   |
+
+These databases are supported for production use:
+
+#### PostgreSQL
+
+| JVM Key                             | ENV KEY                             | example value                            |
+|-------------------------------------|-------------------------------------|------------------------------------------|
+| spring.datasource.driver-class-name | SPRING_DATASOURCE_DRIVER_CLASS_NAME | org.postgresql.Driver                    |
+| spring.datasource.url               | SPRING_DATASOURCE_URL               | jdbc:postgresql://localhost:5432/fredbet |
+| spring.datasource.username          | SPRING_DATASOURCE_USERNAME          | fred                                     |
+| spring.datasource.password          | SPRING_DATASOURCE_PASSWORD          | fred                                     |
+
+
+#### MySQL
+
+| JVM Key                             | ENV KEY                             | example value                        |
+|-------------------------------------|-------------------------------------|--------------------------------------|
+| spring.datasource.driver-class-name | SPRING_DATASOURCE_DRIVER_CLASS_NAME | com.mysql.jdbc.Driver                |
+| spring.datasource.url               | SPRING_DATASOURCE_URL               | jdbc:mysql://localhost:3306/fredbet  |
+| spring.datasource.username          | SPRING_DATASOURCE_USERNAME          | fred                                 |
+| spring.datasource.password          | SPRING_DATASOURCE_PASSWORD          | fred                                 |
+
+
+#### Maria DB
+
+| JVM Key                            | ENV KEY                             | example value                        |
+|------------------------------------|-------------------------------------|--------------------------------------|
+| spring.datasource.driver-class-name | SPRING_DATASOURCE_DRIVER_CLASS_NAME | org.mariadb.jdbc.Driver              |
+| spring.datasource.url              | SPRING_DATASOURCE_URL               | jdbc:mariadb://mariadb:3306/fredbet  |
+| spring.datasource.username         | SPRING_DATASOURCE_USERNAME          | fred                                 |
+| spring.datasource.password         | SPRING_DATASOURCE_PASSWORD          | fred                                 |
+
 
 ### Docker Compose with Traefik, Postgres, Let´s Encrypt Integration and AWS S3 Backup
 
@@ -171,7 +183,8 @@ You will see a response of `{"status":"UP"}`. The health check URL is callable w
 
 ## H2-Console
 
-While running in `dev` profile the H2 web console is available at [http://localhost:8080/console](http://localhost:8080/console).
+While running in `dev` profile (JVM param: `spring.profiles.active=dev`) the H2 web console is available 
+at [http://localhost:8080/console](http://localhost:8080/console).
 
 ## MS Excel-Templates ready to import
 
