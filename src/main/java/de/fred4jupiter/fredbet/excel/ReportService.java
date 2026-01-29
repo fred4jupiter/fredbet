@@ -2,17 +2,16 @@ package de.fred4jupiter.fredbet.excel;
 
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import de.fred4jupiter.fredbet.ranking.RankingService;
+import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.springframework.data.domain.Sort;
@@ -41,8 +40,8 @@ public class ReportService {
     private final FredbetProperties fredbetProperties;
 
     ReportService(ExcelExportService excelExportService, BetRepository betRepository, ExtraBetRepository extraBetRepository,
-                         MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService,
-                         FredbetProperties fredbetProperties) {
+                  MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService,
+                  FredbetProperties fredbetProperties) {
         this.excelExportService = excelExportService;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
@@ -53,19 +52,6 @@ public class ReportService {
     }
 
     public byte[] exportBetsToExcel(final Locale locale) {
-        List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
-        if (Validator.isNotEmpty(finalMatches)) {
-            // there should be only one final match (ignoring if more)
-            Match match = finalMatches.getFirst();
-            if (match.hasResultSet()) {
-                return exportBetsToExcel(locale, true);
-            }
-        }
-
-        return exportBetsToExcel(locale, false);
-    }
-
-    private byte[] exportBetsToExcel(final Locale locale, boolean withBets) {
         Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
         final List<Bet> bets = this.betRepository.findAll(sort);
 
@@ -79,33 +65,30 @@ public class ReportService {
                 header.add(messageSourceUtil.getMessageFor("excel.export.date", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.resultTeam1", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.resultTeam2", locale));
-
-                if (withBets) {
-                    header.add(messageSourceUtil.getMessageFor("excel.export.bet1", locale));
-                    header.add(messageSourceUtil.getMessageFor("excel.export.bet2", locale));
-                }
-
+                header.add(messageSourceUtil.getMessageFor("excel.export.bet1", locale));
+                header.add(messageSourceUtil.getMessageFor("excel.export.bet2", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.joker", locale));
                 header.add(messageSourceUtil.getMessageFor("excel.export.points", locale));
             }
 
             @Override
             public void addValueRow(Bet bet, List<String> row) {
+                final Match match = bet.getMatch();
+
                 row.add(bet.getUserName());
-                row.add(messageSourceUtil.getCountryName(bet.getMatch().getTeamOne().getCountry(), locale));
-                row.add(messageSourceUtil.getCountryName(bet.getMatch().getTeamTwo().getCountry(), locale));
-                row.add(DateUtils.formatByLocale(bet.getMatch().getKickOffDate(), locale));
-                if (bet.getMatch().hasResultSet()) {
-                    row.add("" + bet.getMatch().getGoalsTeamOne());
-                    row.add("" + bet.getMatch().getGoalsTeamTwo());
+                row.add(messageSourceUtil.getCountryName(match.getTeamOne().getCountry(), locale));
+                row.add(messageSourceUtil.getCountryName(match.getTeamTwo().getCountry(), locale));
+                row.add(DateUtils.formatByLocale(match.getKickOffDate(), locale));
+                if (match.hasResultSet()) {
+                    row.add("" + match.getGoalsTeamOne());
+                    row.add("" + match.getGoalsTeamTwo());
+                    row.add("" + bet.getGoalsTeamOne());
+                    row.add("" + bet.getGoalsTeamTwo());
                 } else {
                     row.add("");
                     row.add("");
-                }
-
-                if (withBets) {
-                    row.add("" + bet.getGoalsTeamOne());
-                    row.add("" + bet.getGoalsTeamTwo());
+                    row.add("");
+                    row.add("");
                 }
 
                 row.add(jokerYesNoLocalized(bet.isJoker(), locale));
@@ -181,7 +164,7 @@ public class ReportService {
             @Override
             public String[] getRowValues(PointCountResult pointCountResult) {
                 return new String[]{pointCountResult.username(), "" + pointCountResult.points(),
-                        "" + pointCountResult.numberOfPointsCount()};
+                    "" + pointCountResult.numberOfPointsCount()};
             }
         });
     }
