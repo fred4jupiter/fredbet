@@ -22,7 +22,7 @@ public class StatisticRepository {
         this.fredbetProperties = fredbetProperties;
     }
 
-    public List<Statistic> createStatistic() {
+    public Collection<Statistic> createStatistic() {
         final String query = """
             Select b.user_name, a.match_group, sum(b.points)
             from matches a join bet b on a.match_id = b.match_id
@@ -99,8 +99,8 @@ public class StatisticRepository {
             statisticsMap.put(username, statistic);
         }
 
-        public List<Statistic> getResult() {
-            return new ArrayList<>(statisticsMap.values());
+        public Collection<Statistic> getResult() {
+            return statisticsMap.values();
         }
     }
 
