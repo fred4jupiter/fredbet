@@ -5,19 +5,18 @@ FROM ${JRE_BASE_IMAGE}
 LABEL maintainer="Michael Staehler"
 
 RUN apt-get update && apt-get upgrade -y \
- && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /
+RUN useradd -m appuser
+
+WORKDIR /home/appuser
 
 ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
-COPY target/fredbet.jar fredbet.jar
+COPY --chown=appuser:appuser target/fredbet.jar fredbet.jar
 
-RUN useradd -m appuser
 USER appuser
 
 ENTRYPOINT ["java", "-jar", "fredbet.jar"]
-CMD ["exec"]
