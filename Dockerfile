@@ -4,8 +4,7 @@ FROM ${JRE_BASE_IMAGE}
 
 LABEL maintainer="Michael Staehler"
 
-RUN apt-get update && apt-get upgrade -y \
- && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m appuser
 
