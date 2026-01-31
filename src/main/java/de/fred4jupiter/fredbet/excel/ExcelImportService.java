@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.excel;
 
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -11,7 +12,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import de.fred4jupiter.fredbet.data.DataPopulator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,10 +91,10 @@ public class ExcelImportService {
         String group = safeGetString(row, 2);
         LOG.debug("countr1={}, country2={}, group={}", country1, country2, group);
 
-        Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
-        String stadium = safeGetString(row, 4);
+        final Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
+        final String stadium = safeGetString(row, 4);
 
-        Match match = new Match();
+        final Match match = new Match();
 
         if (Country.fromName(country1) != null) {
             match.getTeamOne().setCountry(Country.fromName(country1));
@@ -110,7 +110,7 @@ public class ExcelImportService {
 
         match.setGroup(Group.valueOf(group));
         match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
-        match.setStadium(stadium);
+        match.setStadium(StringUtils.substring(stadium, 0, 20));
         return match;
     }
 
