@@ -11,6 +11,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - extra betting of 1st, 2nd and 3rd winner
 - image gallery
 - user profile image
+- user avatar support using [dicebar](https://www.dicebear.com/)
 - multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
 - integrated user administration
 - rich text editor for rules, prices and misc pages
@@ -165,6 +166,34 @@ These databases are supported for production use:
 
 Another option is to run all on a virtual machine with a Docker Compose file. You can use the example located in
 `extra/docker-compose/traefik_letsencrypt`. Copy the `.env.template` to `.env` and set the values accordingly.
+
+## Creating user avatars with DiceBear
+
+User avatars are created with [DiceBear](https://www.dicebear.com/). 
+
+By default user avatar creation is enabled. You can customize this via JVM parameter or environment variable:
+
+
+| JVM Key                             | default value                       |
+|-------------------------------------|-------------------------------------|
+| fredbet.avatar.use-dice-bear-avatar | true                   |
+| fredbet.avatar.dice-bear-base-url   | https://api.dicebear.com/6.x/avataaars |
+
+You can host your own dicebar server with docker:
+
+```yaml
+services:
+  dicebear:
+    image: dicebear/api:3
+    restart: always
+    ports:
+      - '3000:3000'
+    tmpfs:
+      - '/run'
+      - '/tmp'
+```
+
+Then you can ajust the `dice-bear-base-url` to e.g. `http://localhost:3000/6.x/avataaars`.
 
 ## Hints
 

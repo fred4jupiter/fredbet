@@ -68,6 +68,7 @@ fredbet:
   avatar:
     use-dice-bear-avatar: true
     dice-bear-base-url: "https://api.dicebear.com/6.x/avataaars"
+#    dice-bear-base-url: "http://localhost:3000/6.x/avataaars"
   admin-username: "admin"
   admin-password: "admin"
   excel-templates:

@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.avatar;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,8 @@ import org.springframework.web.client.RestClient;
 @Service
 public class AvatarCreatorService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AvatarCreatorService.class);
+
     private final FredbetProperties fredbetProperties;
 
     public AvatarCreatorService(FredbetProperties fredbetProperties) {
@@ -16,6 +20,8 @@ public class AvatarCreatorService {
     }
 
     public byte[] createAvatar(String username) {
+        LOG.debug("creating avatar for username={} calling baseUrl={}", username, fredbetProperties.avatar().diceBearBaseUrl());
+
         RestClient restClient = RestClient.builder().baseUrl(fredbetProperties.avatar().diceBearBaseUrl()).build();
 
         ResponseEntity<byte[]> entity = restClient.get()

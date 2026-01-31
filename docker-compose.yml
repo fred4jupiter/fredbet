@@ -11,6 +11,14 @@ services:
       - POSTGRES_PASSWORD=fred
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
+  dicebear:
+    image: dicebear/api:3
+    restart: always
+    ports:
+      - '3000:3000'
+    tmpfs:
+      - '/run'
+      - '/tmp'
   fredbet:
     profiles: ["app"] # run with 'docker compose --profile app build'
     container_name: fredbet
