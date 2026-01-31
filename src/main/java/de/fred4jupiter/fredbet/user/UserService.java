@@ -104,7 +104,7 @@ public class UserService {
 
         LOG.info("creating user with username={}", appUser.getUsername());
         AppUser savedAppUser = appUserRepository.save(appUser);
-        if (fredbetProperties.useDiceBearAvatar()) {
+        if (fredbetProperties.avatar().useDiceBearAvatar()) {
             byte[] avatar = avatarCreatorService.createAvatar(appUser.getUsername());
             imageAdministrationService.saveUserProfileImage(avatar, savedAppUser);
         } else {

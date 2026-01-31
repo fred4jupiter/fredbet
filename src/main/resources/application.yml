@@ -65,7 +65,9 @@ fredbet:
   dice-min-range: 0
   dice-max-range: 3
   thumbnail-size: 100
-  use-dice-bear-avatar: true
+  avatar:
+    use-dice-bear-avatar: true
+    dice-bear-base-url: "https://api.dicebear.com/6.x/avataaars"
   admin-username: "admin"
   admin-password: "admin"
   excel-templates:
