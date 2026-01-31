@@ -31,14 +31,14 @@ public class ExcelImportServiceIT {
         assertEquals(Country.BELGIUM, match1.getTeamTwo().getCountry());
         assertEquals(Group.GROUP_B, match1.getGroup());
         assertEquals(LocalDateTime.of(2017, 6, 1, 18, 0), match1.getKickOffDate());
-        assertEquals("Westfalenstadion, Dortmund", match1.getStadium());
+        assertEquals("Dortmund", match1.getStadium());
 
         Match match2 = matches.get(1);
         assertEquals(Country.ANDORRA, match2.getTeamOne().getCountry());
         assertEquals(Country.ISRAEL, match2.getTeamTwo().getCountry());
         assertEquals(Group.GROUP_E, match2.getGroup());
         assertEquals(LocalDateTime.of(2018, 2, 5, 20, 0), match2.getKickOffDate());
-        assertEquals("Allianz Arena, München", match2.getStadium());
+        assertEquals("München", match2.getStadium());
 
         Match match3 = matches.get(2);
         assertEquals("Sieger Gruppe A", match3.getTeamOne().getName());
