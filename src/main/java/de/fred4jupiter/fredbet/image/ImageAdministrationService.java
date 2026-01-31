@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -95,6 +94,11 @@ public class ImageAdministrationService {
 
     public void saveDefaultProfileImageFor(AppUser appUser) {
         saveUserProfileImage(defaultProfileImageLoader.getDefaultProfileImage().imageBinary(), appUser, null);
+    }
+
+    public void saveUserProfileImage(byte[] binary, AppUser appUser) {
+        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(appUser.getUsername());
+        saveUserProfileImage(binary, appUser, imageMetaData);
     }
 
     public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
@@ -190,11 +194,6 @@ public class ImageAdministrationService {
             imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
         });
         imageMetaDataRepository.deleteAll(imageMetaDataList);
-    }
-
-    public void saveUserProfileImage(byte[] binary, AppUser appUser) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(appUser.getUsername());
-        saveUserProfileImage(binary, appUser, imageMetaData);
     }
 
     public ImageMetaData getProfileImageMetaDataFor(String username) {

@@ -65,6 +65,7 @@ fredbet:
   dice-min-range: 0
   dice-max-range: 3
   thumbnail-size: 100
+  use-dice-bear-avatar: true
   admin-username: "admin"
   admin-password: "admin"
   excel-templates:

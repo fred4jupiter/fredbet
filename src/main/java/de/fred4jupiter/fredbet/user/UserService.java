@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.user;
 
+import de.fred4jupiter.fredbet.avatar.AvatarCreatorService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
@@ -39,15 +40,19 @@ public class UserService {
 
     private final FredbetProperties fredbetProperties;
 
+    private final AvatarCreatorService avatarCreatorService;
+
     public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder,
                        ImageMetaDataRepository imageMetaDataRepository, BettingService bettingService,
-                       ImageAdministrationService imageAdministrationService, FredbetProperties fredbetProperties) {
+                       ImageAdministrationService imageAdministrationService, FredbetProperties fredbetProperties,
+                       AvatarCreatorService avatarCreatorService) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.bettingService = bettingService;
         this.imageAdministrationService = imageAdministrationService;
         this.fredbetProperties = fredbetProperties;
+        this.avatarCreatorService = avatarCreatorService;
     }
 
     public List<AppUser> findAll() {
@@ -99,7 +104,13 @@ public class UserService {
 
         LOG.info("creating user with username={}", appUser.getUsername());
         AppUser savedAppUser = appUserRepository.save(appUser);
-        imageAdministrationService.saveDefaultProfileImageFor(savedAppUser);
+        if (fredbetProperties.useDiceBearAvatar()) {
+            byte[] avatar = avatarCreatorService.createAvatar(appUser.getUsername());
+            imageAdministrationService.saveUserProfileImage(avatar, savedAppUser);
+        } else {
+            imageAdministrationService.saveDefaultProfileImageFor(savedAppUser);
+        }
+
         return savedAppUser;
     }
 

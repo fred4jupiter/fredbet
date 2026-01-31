@@ -14,6 +14,7 @@ public record FredbetProperties(String defaultLanguage,
                                 String adminUsername, String adminPassword,
                                 @NestedConfigurationProperty AuthorizationProperties authorization,
                                 @NestedConfigurationProperty DefaultImageProperties defaultImages,
-                                @NestedConfigurationProperty ExcelTemplateProperties excelTemplates) {
+                                @NestedConfigurationProperty ExcelTemplateProperties excelTemplates,
+                                boolean useDiceBearAvatar) {
 
 }
