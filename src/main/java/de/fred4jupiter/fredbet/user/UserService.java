@@ -99,7 +99,7 @@ public class UserService {
 
         LOG.info("creating user with username={}", appUser.getUsername());
         AppUser savedAppUser = appUserRepository.save(appUser);
-        imageAdministrationService.saveDefaultProfileImageFor(savedAppUser);
+        imageAdministrationService.saveUserProfileImageForNewUser(savedAppUser);
         return savedAppUser;
     }
 

@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.image;
 
+import de.fred4jupiter.fredbet.avatar.AvatarService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -33,18 +33,18 @@ public class ImageAdministrationService {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
-    private final DefaultProfileImageLoader defaultProfileImageLoader;
+    private final AvatarService avatarService;
 
     ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository,
                                ImageGroupRepository imageGroupRepository,
                                ImageResizingService imageResizingService,
-                               RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
+                               RuntimeSettingsService runtimeSettingsService, AvatarService avatarService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageBinaryRepository = imageBinaryRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.runtimeSettingsService = runtimeSettingsService;
-        this.defaultProfileImageLoader = defaultProfileImageLoader;
+        this.avatarService = avatarService;
     }
 
     public ImageGroup initUserProfileImageGroup() {
@@ -93,8 +93,9 @@ public class ImageAdministrationService {
         }
     }
 
-    public void saveDefaultProfileImageFor(AppUser appUser) {
-        saveUserProfileImage(defaultProfileImageLoader.getDefaultProfileImage().imageBinary(), appUser, null);
+    public void saveUserProfileImageForNewUser(AppUser appUser) {
+        byte[] userAvatarImage = avatarService.selectUserAvatarForNewUser();
+        saveUserProfileImage(userAvatarImage, appUser, null);
     }
 
     public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
@@ -131,21 +132,11 @@ public class ImageAdministrationService {
     }
 
     public BinaryImage loadImageByImageKey(String imageKey) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
-        if (imageMetaData == null) {
-            return defaultProfileImageLoader.getDefaultProfileImage();
-        }
-
         ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
     }
 
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
-        if (imageMetaData == null) {
-            return defaultProfileImageLoader.getDefaultThumbProfileImage();
-        }
-
         ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
