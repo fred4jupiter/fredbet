@@ -33,20 +33,17 @@ public class ImageAdministrationService {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
-    private final DefaultProfileImageLoader defaultProfileImageLoader;
-
     private final AvatarService avatarService;
 
     ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository,
                                ImageGroupRepository imageGroupRepository,
                                ImageResizingService imageResizingService,
-                               RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader, AvatarService avatarService) {
+                               RuntimeSettingsService runtimeSettingsService, AvatarService avatarService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.imageBinaryRepository = imageBinaryRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
         this.runtimeSettingsService = runtimeSettingsService;
-        this.defaultProfileImageLoader = defaultProfileImageLoader;
         this.avatarService = avatarService;
     }
 
@@ -135,21 +132,11 @@ public class ImageAdministrationService {
     }
 
     public BinaryImage loadImageByImageKey(String imageKey) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
-        if (imageMetaData == null) {
-            return defaultProfileImageLoader.getDefaultProfileImage();
-        }
-
         ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
     }
 
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
-        if (imageMetaData == null) {
-            return defaultProfileImageLoader.getDefaultThumbProfileImage();
-        }
-
         ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
         return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
