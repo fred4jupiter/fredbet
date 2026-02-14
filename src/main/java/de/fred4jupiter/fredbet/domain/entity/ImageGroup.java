@@ -21,14 +21,14 @@ public class ImageGroup {
 	@Column(name = "IMAGE_GROUP_ID")
 	private Long id;
 
-	@Column(name = "NAME", unique = true)
+	@Column(name = "NAME", unique = true, nullable = false)
 	private String name;
 
 	@Version
-	@Column(name = "VERSION")
+	@Column(name = "VERSION", nullable = false)
 	private Integer version;
 
-	@Column(name = "USER_PROFILE_IMG_GROUP")
+	@Column(name = "USER_PROFILE_IMG_GROUP", nullable = false)
 	private boolean userProfileImageGroup;
 
 	protected ImageGroup() {

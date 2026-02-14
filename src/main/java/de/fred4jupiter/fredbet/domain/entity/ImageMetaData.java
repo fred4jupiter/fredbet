@@ -23,21 +23,21 @@ public class ImageMetaData {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "IMAGE_GROUP_ID")
+	@JoinColumn(name = "IMAGE_GROUP_ID", nullable = false)
 	private ImageGroup imageGroup;
 
-	@Column(name = "IMAGE_KEY", unique = true)
+	@Column(name = "IMAGE_KEY", unique = true, nullable = false)
 	private String imageKey;
 
 	@Column(name = "DESCRIPTION")
 	private String description;
 
 	@Version
-	@Column(name = "VERSION")
+	@Column(name = "VERSION", nullable = false)
 	private Integer version;
 
 	@ManyToOne
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn(name = "USER_ID", nullable = false)
 	private AppUser owner;
 
 	protected ImageMetaData() {

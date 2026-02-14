@@ -21,7 +21,7 @@ public class ImageBinary {
     private String key;
 
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "IMAGE_BYTES")
+    @Column(name = "IMAGE_BYTES", nullable = false)
     @Lob
     private byte[] imageBinary;
 
@@ -30,7 +30,7 @@ public class ImageBinary {
     private byte[] thumbImageBinary;
 
     @Version
-    @Column(name = "VERSION")
+    @Column(name = "VERSION", nullable = false)
     private Integer version;
 
     protected ImageBinary() {

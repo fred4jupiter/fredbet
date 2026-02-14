@@ -20,10 +20,10 @@ public class SessionTracking {
 	@Column(name = "USER_NAME")
 	private String userName;
 
-	@Column(name = "SESSION_ID")
+	@Column(name = "SESSION_ID", nullable = false)
 	private String sessionId;
 
-	@Column(name = "LAST_LOGIN")
+	@Column(name = "LAST_LOGIN", nullable = false)
 	private LocalDateTime lastLogin;
 
 	public boolean equals(Object obj) {

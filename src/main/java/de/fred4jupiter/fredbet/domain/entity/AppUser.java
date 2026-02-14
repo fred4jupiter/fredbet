@@ -34,32 +34,32 @@ public class AppUser implements UserDetails {
     @Column(name = "ROLE")
     private Set<String> roles;
 
-    @Column(name = "USER_NAME", unique = true)
+    @Column(name = "USER_NAME", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "LAST_LOGIN")
     private LocalDateTime lastLogin;
 
-    @Column(name = "DELETABLE")
+    @Column(name = "DELETABLE", nullable = false)
     private boolean deletable = true;
 
-    @Column(name = "IS_CHILD")
+    @Column(name = "IS_CHILD", nullable = false)
     private boolean child;
 
-    @Column(name = "FIRST_LOGIN")
+    @Column(name = "FIRST_LOGIN", nullable = false)
     private boolean firstLogin;
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "theme", column = @Column(name = "setting_theme")),
-        @AttributeOverride(name = "bootswatchTheme", column = @Column(name = "setting_bootswatch_theme")),
-        @AttributeOverride(name = "navbarLayout", column = @Column(name = "setting_navbar_layout")),
+        @AttributeOverride(name = "theme", column = @Column(name = "setting_theme", nullable = false)),
+        @AttributeOverride(name = "bootswatchTheme", column = @Column(name = "setting_bootswatch_theme", nullable = false)),
+        @AttributeOverride(name = "navbarLayout", column = @Column(name = "setting_navbar_layout", nullable = false)),
     })
     private AppUserSetting appUserSetting;
 
