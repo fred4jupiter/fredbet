@@ -67,6 +67,11 @@ fredbet:
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
+  integration:
+    football-data:
+      enabled: true
+      api-token: "<some secret token>"
+      base-url: "https://api.football-data.org/v4"
   excel-templates:
     template-files:
       - "ImportTemplateWorldCup.xlsx"

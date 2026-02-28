@@ -48,8 +48,10 @@ public class JsonImportService {
         LOG.debug("importing all from json...");
         userService.deleteAllUsers();
         LOG.debug("deleted all users");
+
         matchService.deleteAllMatches();
         LOG.debug("deleted all allMatches");
+
         bettingService.deleteAllBets();
         LOG.debug("deleted all bets");
 
