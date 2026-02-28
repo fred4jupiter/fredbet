@@ -102,15 +102,15 @@ public class FootballDataService {
         final Country teamOneCountry = resolveToCountry(fdMatch.homeTeam(), countryProps);
         if (teamOneCountry != null) {
             matchBuilder.withTeamOne(teamOneCountry);
-        } else if (fdMatch.homeTeam() != null) {
-            matchBuilder.withTeamOne(fdMatch.homeTeam().name());
+        } else {
+            matchBuilder.withTeamOne(StringUtils.isNotBlank(fdMatch.homeTeam().name()) ? fdMatch.homeTeam().name() : "Not yet defined");
         }
 
         final Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam(), countryProps);
         if (teamTwoCountry != null) {
             matchBuilder.withTeamTwo(teamTwoCountry);
-        } else if (fdMatch.awayTeam() != null) {
-            matchBuilder.withTeamTwo(fdMatch.awayTeam().name());
+        } else {
+            matchBuilder.withTeamTwo(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
         }
 
         final String groupName = fdMatch.group();
