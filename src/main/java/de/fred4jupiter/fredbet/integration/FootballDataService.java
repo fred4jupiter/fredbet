@@ -7,16 +7,24 @@ import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdMatches;
+import de.fred4jupiter.fredbet.integration.model.FdTeam;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FootballDataProperties;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 @Service
 public class FootballDataService {
@@ -58,8 +66,10 @@ public class FootballDataService {
 
         List<FdMatch> matches = fdMatches.matches();
 
+        Properties countryProps = loadCountryNames();
+
         matches.forEach(fdMatch -> {
-            Match match = mapToMatch(fdMatch);
+            Match match = mapToMatch(fdMatch, countryProps);
             if (match != null) {
                 matchService.save(match);
             }
@@ -67,20 +77,25 @@ public class FootballDataService {
         LOG.debug("imported {} matches", matches.size());
     }
 
-    private Match mapToMatch(FdMatch fdMatch) {
+    private Match mapToMatch(FdMatch fdMatch, Properties countryProps) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.homeTeam().name() == null || fdMatch.awayTeam() == null || fdMatch.awayTeam().name() == null) {
             return null;
         }
 
         final MatchBuilder matchBuilder = MatchBuilder.create();
 
-        Country teamOneCountry = resolveToCountry(fdMatch.homeTeam().tla());
-        Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam().tla());
-
-        if (teamOneCountry != null && teamTwoCountry != null) {
-            matchBuilder.withTeams(teamOneCountry, teamTwoCountry);
+        final Country teamOneCountry = resolveToCountry(fdMatch.homeTeam(), countryProps);
+        if (teamOneCountry != null) {
+            matchBuilder.withTeamOne(teamOneCountry);
         } else {
-            matchBuilder.withTeams(fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+            matchBuilder.withTeamOne(fdMatch.homeTeam().name());
+        }
+
+        final Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam(), countryProps);
+        if (teamTwoCountry != null) {
+            matchBuilder.withTeamTwo(teamTwoCountry);
+        } else {
+            matchBuilder.withTeamTwo(fdMatch.awayTeam().name());
         }
 
         String groupName = fdMatch.group();
@@ -103,10 +118,48 @@ public class FootballDataService {
         return matchBuilder.build();
     }
 
-    private Country resolveToCountry(String tla) {
-        if (StringUtils.isBlank(tla)) {
-            return null;
+    private Country resolveToCountry(FdTeam fdTeam, Properties countryProps) {
+        if (StringUtils.isNotBlank(fdTeam.tla())) {
+            Country country = Country.fromAlpha3Code(fdTeam.tla().toLowerCase());
+            if (country != null) {
+                return country;
+            }
         }
-        return Country.fromAlpha3Code(tla.toLowerCase());
+
+        if (countryProps.containsValue(fdTeam.name())) {
+            String key = getKeyByValue(countryProps, fdTeam.name());
+            if (StringUtils.isNotBlank(key)) {
+                String alpha3IsoCode = Strings.CS.remove(key, "country.");
+                return Country.fromAlpha3Code(alpha3IsoCode);
+            }
+        }
+
+        LOG.warn("Could not resolve country for team '{}'.", fdTeam);
+
+        return null;
+    }
+
+    private String getKeyByValue(Properties countryProps, String name) {
+        Set<Map.Entry<Object, Object>> entries = countryProps.entrySet();
+
+        for (Map.Entry<Object, Object> next : entries) {
+            if (next.getValue().equals(name)) {
+                return (String) next.getKey();
+            }
+        }
+
+        return null;
+    }
+
+    private Properties loadCountryNames() {
+        final Properties properties = new Properties();
+
+        ClassPathResource classPathResource = new ClassPathResource("/msgs/TeamKey_en.properties");
+        try (final InputStream in = classPathResource.getInputStream()) {
+            properties.load(in);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return properties;
     }
 }
