@@ -181,8 +181,11 @@
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
                                 </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/footballdata}" th:text="#{navigation.footballdata}"></a>
+                                    <a class="dropdown-item" th:href="@{/footballdata}" th:text="#{footballdata.title}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">

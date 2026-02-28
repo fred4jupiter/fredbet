@@ -52,18 +52,18 @@ public class FootballDataService {
         this.runtimeSettingsService = runtimeSettingsService;
     }
 
-    public void importData() {
+    public int importData() {
         final FootballDataProperties footballDataProperties = this.fredbetProperties.integration().footballData();
         RestClient restClient = RestClient.builder().baseUrl(footballDataProperties.baseUrl()).defaultHeader("X-Auth-Token", footballDataProperties.apiToken()).build();
         FdMatches fdMatches = restClient.get().uri("/competitions/WC/matches?season=2026").attribute("season", 2026).retrieve().body(FdMatches.class);
         LOG.debug("Response from Football Data: fdMatches={}", fdMatches);
-        importMatches(fdMatches);
+        return importMatches(fdMatches);
     }
 
-    private void importMatches(FdMatches fdMatches) {
+    private int importMatches(FdMatches fdMatches) {
         if (fdMatches == null) {
             LOG.warn("Could not load football data matches!");
-            return;
+            return 0;
         }
         LOG.debug("Importing {} Football Data matches", fdMatches.matches().size());
 
@@ -86,6 +86,7 @@ public class FootballDataService {
             }
         });
         LOG.debug("imported {} matches", matches.size());
+        return matches.size();
     }
 
     private Match mapToMatch(FdMatch fdMatch, Properties countryProps, RuntimeSettings runtimeSettings) {
@@ -174,14 +175,13 @@ public class FootballDataService {
     }
 
     private Properties loadCountryNames() {
-        final Properties properties = new Properties();
-
         ClassPathResource classPathResource = new ClassPathResource("/msgs/TeamKey_en.properties");
         try (final InputStream in = classPathResource.getInputStream()) {
+            final Properties properties = new Properties();
             properties.load(in);
+            return properties;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
-        return properties;
     }
 }

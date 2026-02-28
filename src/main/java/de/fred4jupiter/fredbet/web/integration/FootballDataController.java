@@ -1,11 +1,11 @@
-package de.fred4jupiter.fredbet.web.admin.integration;
+package de.fred4jupiter.fredbet.web.integration;
 
 
 import de.fred4jupiter.fredbet.integration.FootballDataService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,18 +16,22 @@ public class FootballDataController {
 
     private final FootballDataService footballDataService;
 
-    public FootballDataController(FootballDataService footballDataService) {
+    private final WebMessageUtil messageUtil;
+
+    public FootballDataController(FootballDataService footballDataService, WebMessageUtil messageUtil) {
         this.footballDataService = footballDataService;
+        this.messageUtil = messageUtil;
     }
 
     @RequestMapping
-    public String showPage(Model model) {
+    public String showPage() {
         return "integration/footballdata";
     }
 
     @RequestMapping(value = "/import")
-    public String importMatches(RedirectAttributes redirectAttributes, Model model) {
-        footballDataService.importData();
+    public String importMatches(RedirectAttributes redirect) {
+        int importedCount = footballDataService.importData();
+        messageUtil.addInfoMsg(redirect, "msg.footballdata.import.successful", importedCount);
         return "redirect:/footballdata";
     }
 }
