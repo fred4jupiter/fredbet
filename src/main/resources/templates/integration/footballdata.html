@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <title>Football Data Integration</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <a th:href="@{/footballdata/import}" class="btn btn-info" role="button">Import Matches</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

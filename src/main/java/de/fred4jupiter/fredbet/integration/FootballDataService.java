@@ -59,20 +59,38 @@ public class FootballDataService {
 
         matches.forEach(fdMatch -> {
             Match match = mapToMatch(fdMatch);
-            matchService.save(match);
+            if (match != null) {
+                matchService.save(match);
+            }
         });
         LOG.debug("imported {} matches", matches.size());
     }
 
     private Match mapToMatch(FdMatch fdMatch) {
-        return MatchBuilder.create().withTeams(fdMatch.homeTeam().name(), fdMatch.awayTeam().name())
-            .withGroup(toGroupEnum(fdMatch.group()))
-            .withKickOffDate(fdMatch.utcDate().toLocalDateTime())
-            .withStadium(fdMatch.venue())
-            .build();
-    }
+        if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.homeTeam().name() == null || fdMatch.awayTeam() == null || fdMatch.awayTeam().name() == null) {
+            return null;
+        }
 
-    private Group toGroupEnum(String group) {
-        return StringUtils.isNotBlank(group) ? Group.valueOf(group) : null;
+        final MatchBuilder matchBuilder = MatchBuilder.create().withTeams(fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+
+        String groupName = fdMatch.group();
+        try {
+            if (StringUtils.isNotBlank(groupName)) {
+                Group group = Group.valueOf(groupName);
+                matchBuilder.withGroup(group);
+            }
+            else {
+                LOG.warn("No group name for match {} vs {}. Defaulting to GROUP_A", fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+                matchBuilder.withGroup(Group.GROUP_A);
+            }
+        } catch (IllegalArgumentException e) {
+            LOG.error("Invalid group name '{}' for match {} vs {}. Defaulting to GROUP_A", groupName, fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+            matchBuilder.withGroup(Group.GROUP_A);
+        }
+
+        matchBuilder
+            .withKickOffDate(fdMatch.utcDate().toLocalDateTime())
+            .withStadium(fdMatch.venue());
+        return matchBuilder.build();
     }
 }
