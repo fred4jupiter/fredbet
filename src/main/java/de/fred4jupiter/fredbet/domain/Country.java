@@ -188,4 +188,14 @@ public enum Country implements TeamKey {
         return null;
     }
 
+    public static Country fromAlpha3Code(String alpha3Code) {
+        for (Country country : values()) {
+            if (country.alpha3Code.equals(alpha3Code)) {
+                return country;
+            }
+        }
+
+        return null;
+    }
+
 }

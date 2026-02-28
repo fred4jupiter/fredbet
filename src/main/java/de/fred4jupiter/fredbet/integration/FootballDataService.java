@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -71,15 +72,23 @@ public class FootballDataService {
             return null;
         }
 
-        final MatchBuilder matchBuilder = MatchBuilder.create().withTeams(fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+        final MatchBuilder matchBuilder = MatchBuilder.create();
+
+        Country teamOneCountry = resolveToCountry(fdMatch.homeTeam().tla());
+        Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam().tla());
+
+        if (teamOneCountry != null && teamTwoCountry != null) {
+            matchBuilder.withTeams(teamOneCountry, teamTwoCountry);
+        } else {
+            matchBuilder.withTeams(fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+        }
 
         String groupName = fdMatch.group();
         try {
             if (StringUtils.isNotBlank(groupName)) {
                 Group group = Group.valueOf(groupName);
                 matchBuilder.withGroup(group);
-            }
-            else {
+            } else {
                 LOG.warn("No group name for match {} vs {}. Defaulting to GROUP_A", fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
                 matchBuilder.withGroup(Group.GROUP_A);
             }
@@ -92,5 +101,12 @@ public class FootballDataService {
             .withKickOffDate(fdMatch.utcDate().toLocalDateTime())
             .withStadium(fdMatch.venue());
         return matchBuilder.build();
+    }
+
+    private Country resolveToCountry(String tla) {
+        if (StringUtils.isBlank(tla)) {
+            return null;
+        }
+        return Country.fromAlpha3Code(tla.toLowerCase());
     }
 }
