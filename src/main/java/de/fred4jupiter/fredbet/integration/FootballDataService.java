@@ -89,7 +89,11 @@ public class FootballDataService {
     }
 
     private Match mapToMatch(FdMatch fdMatch, Properties countryProps, RuntimeSettings runtimeSettings) {
-        if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.homeTeam().name() == null || fdMatch.awayTeam() == null || fdMatch.awayTeam().name() == null) {
+        if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
+            return null;
+        }
+
+        if (fdMatch.homeTeam().id() == null && fdMatch.awayTeam().id() == null) {
             return null;
         }
 
@@ -98,28 +102,28 @@ public class FootballDataService {
         final Country teamOneCountry = resolveToCountry(fdMatch.homeTeam(), countryProps);
         if (teamOneCountry != null) {
             matchBuilder.withTeamOne(teamOneCountry);
-        } else {
+        } else if (fdMatch.homeTeam() != null) {
             matchBuilder.withTeamOne(fdMatch.homeTeam().name());
         }
 
         final Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam(), countryProps);
         if (teamTwoCountry != null) {
             matchBuilder.withTeamTwo(teamTwoCountry);
-        } else {
+        } else if (fdMatch.awayTeam() != null) {
             matchBuilder.withTeamTwo(fdMatch.awayTeam().name());
         }
 
-        String groupName = fdMatch.group();
+        final String groupName = fdMatch.group();
         try {
             if (StringUtils.isNotBlank(groupName)) {
                 Group group = Group.valueOf(groupName);
                 matchBuilder.withGroup(group);
             } else {
-                LOG.warn("No group name for match {} vs {}. Defaulting to GROUP_A", fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+                LOG.warn("No group name for match {}. Defaulting to GROUP_A", fdMatch);
                 matchBuilder.withGroup(Group.GROUP_A);
             }
         } catch (IllegalArgumentException e) {
-            LOG.error("Invalid group name '{}' for match {} vs {}. Defaulting to GROUP_A", groupName, fdMatch.homeTeam().name(), fdMatch.awayTeam().name());
+            LOG.warn("No group name for match {}. Defaulting to GROUP_A", fdMatch);
             matchBuilder.withGroup(Group.GROUP_A);
         }
 
@@ -135,24 +139,25 @@ public class FootballDataService {
         return convertedAsZoneDateTime.toLocalDateTime();
     }
 
-    private Country resolveToCountry(FdTeam fdTeam, Properties countryProps) {
-        if (StringUtils.isNotBlank(fdTeam.tla())) {
-            Country country = Country.fromAlpha3Code(fdTeam.tla().toLowerCase());
-            if (country != null) {
-                return country;
-            }
+    private Country resolveToCountry(FdTeam team, Properties countryProps) {
+        if (team == null || team.tla() == null || team.name() == null) {
+            return null;
         }
 
-        if (countryProps.containsValue(fdTeam.name())) {
-            String key = getKeyByValue(countryProps, fdTeam.name());
+        Country country = Country.fromAlpha3Code(team.tla().toLowerCase());
+        if (country != null) {
+            return country;
+        }
+
+        if (countryProps.containsValue(team.name())) {
+            String key = getKeyByValue(countryProps, team.name());
             if (StringUtils.isNotBlank(key)) {
                 String alpha3IsoCode = Strings.CS.remove(key, "country.");
                 return Country.fromAlpha3Code(alpha3IsoCode);
             }
         }
 
-        LOG.warn("Could not resolve country for team '{}'.", fdTeam);
-
+        LOG.warn("Could not resolve country for team '{}'.", team);
         return null;
     }
 
