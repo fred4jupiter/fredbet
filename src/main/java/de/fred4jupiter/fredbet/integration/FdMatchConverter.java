@@ -62,19 +62,7 @@ class FdMatchConverter {
             matchBuilder.withTeamTwo(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
         }
 
-        final String groupName = fdMatch.group();
-        try {
-            if (StringUtils.isNotBlank(groupName)) {
-                Group group = Group.valueOf(groupName);
-                matchBuilder.withGroup(group);
-            } else {
-                LOG.warn("No group name for match {}. Defaulting to GROUP_A", fdMatch);
-                matchBuilder.withGroup(Group.GROUP_A);
-            }
-        } catch (IllegalArgumentException e) {
-            LOG.warn("No group name for match {}. Defaulting to GROUP_A", fdMatch);
-            matchBuilder.withGroup(Group.GROUP_A);
-        }
+        matchBuilder.withGroup(resolveToGroup(fdMatch.group()));
 
         matchBuilder
             .withKickOffDate(convertToLocalDateTime(fdMatch.utcDate(), runtimeSettings))
@@ -85,6 +73,19 @@ class FdMatchConverter {
             matchBuilder.withGoals(fdMatch.score().fullTime().home(), fdMatch.score().fullTime().away());
         }
         return matchBuilder.build();
+    }
+
+    private Group resolveToGroup(String groupName) {
+        if (StringUtils.isBlank(groupName)) {
+            return null;
+        }
+
+        try {
+            return Group.valueOf(groupName);
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Could not resolve group for group name '{}'.", groupName);
+            return null;
+        }
     }
 
     private LocalDateTime convertToLocalDateTime(ZonedDateTime utcZoned, RuntimeSettings runtimeSettings) {
