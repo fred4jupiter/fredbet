@@ -27,10 +27,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class FootballDataService {
@@ -72,29 +69,29 @@ public class FootballDataService {
 
     private int importMatches(FdMatches fdMatches) {
         if (fdMatches == null) {
-            LOG.warn("Could not load football data matches!");
+            LOG.warn("Could not load football data fdMatchesList!");
             return 0;
         }
-        LOG.debug("Importing {} Football-Data matches", fdMatches.matches().size());
+        LOG.debug("Importing {} Football-Data fdMatchesList", fdMatches.matches().size());
 
         bettingService.deleteAllBets();
         LOG.info("deleted all bets");
 
         matchService.deleteAllMatches();
-        LOG.info("deleted all matches");
+        LOG.info("deleted all fdMatchesList");
 
-        List<FdMatch> matches = fdMatches.matches();
+        final List<FdMatch> fdMatchesList = fdMatches.matches();
 
-        Properties countryProps = loadCountryNames();
+        final Properties countryProps = loadCountryNames();
 
-        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
 
-        matches.forEach(fdMatch -> {
-            Match match = mapToMatch(fdMatch, countryProps, runtimeSettings);
-            if (match != null) {
-                matchService.save(match);
-            }
-        });
+        final List<Match> matches = fdMatchesList.stream()
+            .map(fdMatch -> mapToMatch(fdMatch, countryProps, runtimeSettings))
+            .filter(Objects::nonNull)
+            .toList();
+        matchService.saveAll(matches);
+
         LOG.debug("imported {} matches", matches.size());
         return matches.size();
     }
