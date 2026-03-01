@@ -15,6 +15,7 @@ import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -53,11 +54,20 @@ public class FootballDataService {
     }
 
     public int importData() {
-        final FootballDataProperties footballDataProperties = this.fredbetProperties.integration().footballData();
-        RestClient restClient = RestClient.builder().baseUrl(footballDataProperties.baseUrl()).defaultHeader("X-Auth-Token", footballDataProperties.apiToken()).build();
-        FdMatches fdMatches = restClient.get().uri("/competitions/WC/matches?season=2026").attribute("season", 2026).retrieve().body(FdMatches.class);
+        return importData("WC", 2026);
+    }
+
+    public int importData(String competitionCode, int season) {
+        RestClient restClient = createRestClient();
+        FdMatches fdMatches = restClient.get().uri("/competitions/{competitionCode}/matches", competitionCode)
+            .attribute("season", season).retrieve().body(FdMatches.class);
         LOG.debug("Response from Football Data: fdMatches={}", fdMatches);
         return importMatches(fdMatches);
+    }
+
+    private @NonNull RestClient createRestClient() {
+        final FootballDataProperties footballDataProperties = this.fredbetProperties.integration().footballData();
+        return RestClient.builder().baseUrl(footballDataProperties.baseUrl()).defaultHeader("X-Auth-Token", footballDataProperties.apiToken()).build();
     }
 
     private int importMatches(FdMatches fdMatches) {
@@ -65,7 +75,7 @@ public class FootballDataService {
             LOG.warn("Could not load football data matches!");
             return 0;
         }
-        LOG.debug("Importing {} Football Data matches", fdMatches.matches().size());
+        LOG.debug("Importing {} Football-Data matches", fdMatches.matches().size());
 
         bettingService.deleteAllBets();
         LOG.info("deleted all bets");
