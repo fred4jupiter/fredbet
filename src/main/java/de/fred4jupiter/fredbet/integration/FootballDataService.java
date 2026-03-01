@@ -38,7 +38,7 @@ public class FootballDataService {
     }
 
     public int importData() {
-        return importData("WC", 2026);
+        return importData("EC", 2024);
     }
 
     public int importData(String competitionCode, int season) {

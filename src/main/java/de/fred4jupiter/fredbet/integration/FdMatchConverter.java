@@ -66,7 +66,13 @@ class FdMatchConverter {
             matchBuilder.withTeamTwo(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
         }
 
-        matchBuilder.withGroup(resolveToGroup(fdMatch.group()));
+        Group group = resolveToGroup(fdMatch.group());
+        if (group == null) {
+            LOG.warn("No group found for match {}", fdMatch);
+            return null;
+        }
+
+        matchBuilder.withGroup(group);
 
         matchBuilder
             .withKickOffDate(convertToLocalDateTime(fdMatch.utcDate()))
@@ -81,6 +87,7 @@ class FdMatchConverter {
 
     private Group resolveToGroup(String groupName) {
         if (StringUtils.isBlank(groupName)) {
+            LOG.warn("groupName is blank");
             return null;
         }
 
