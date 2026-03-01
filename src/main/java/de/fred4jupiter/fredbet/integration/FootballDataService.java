@@ -131,6 +131,11 @@ public class FootballDataService {
         matchBuilder
             .withKickOffDate(convertToLocalDateTime(fdMatch.utcDate(), runtimeSettings))
             .withStadium(fdMatch.venue());
+
+        // update results
+        if (fdMatch.score() != null && fdMatch.score().fullTime() != null) {
+            matchBuilder.withGoals(fdMatch.score().fullTime().home(), fdMatch.score().fullTime().away());
+        }
         return matchBuilder.build();
     }
 
