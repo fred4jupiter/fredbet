@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
@@ -31,11 +32,14 @@ class FdMatchConverter {
 
     private final Resource countryNameResource;
 
-    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource) {
+    private final RuntimeSettingsService runtimeSettingsService;
+
+    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource, RuntimeSettingsService runtimeSettingsService) {
         this.countryNameResource = countryNameResource;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
-    public Match mapToMatch(FdMatch fdMatch, RuntimeSettings runtimeSettings) {
+    public Match mapToMatch(FdMatch fdMatch) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
             return null;
         }
@@ -65,7 +69,7 @@ class FdMatchConverter {
         matchBuilder.withGroup(resolveToGroup(fdMatch.group()));
 
         matchBuilder
-            .withKickOffDate(convertToLocalDateTime(fdMatch.utcDate(), runtimeSettings))
+            .withKickOffDate(convertToLocalDateTime(fdMatch.utcDate()))
             .withStadium(fdMatch.venue());
 
         // update results
@@ -88,7 +92,8 @@ class FdMatchConverter {
         }
     }
 
-    private LocalDateTime convertToLocalDateTime(ZonedDateTime utcZoned, RuntimeSettings runtimeSettings) {
+    private LocalDateTime convertToLocalDateTime(ZonedDateTime utcZoned) {
+        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
         ZoneId zoneId = ZoneId.of(runtimeSettings.getTimeZone());
         ZonedDateTime convertedAsZoneDateTime = utcZoned.withZoneSameInstant(zoneId);
         return convertedAsZoneDateTime.toLocalDateTime();

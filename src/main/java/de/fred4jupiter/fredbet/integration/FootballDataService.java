@@ -7,8 +7,6 @@ import de.fred4jupiter.fredbet.integration.model.FdMatches;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FootballDataProperties;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.settings.RuntimeSettings;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +27,13 @@ public class FootballDataService {
 
     private final BettingService bettingService;
 
-    private final RuntimeSettingsService runtimeSettingsService;
-
     private final FdMatchConverter fdMatchConverter;
 
-    public FootballDataService(FredbetProperties fredbetProperties, MatchService matchService, BettingService bettingService,
-                               RuntimeSettingsService runtimeSettingsService, FdMatchConverter fdMatchConverter) {
+    FootballDataService(FredbetProperties fredbetProperties, MatchService matchService, BettingService bettingService,
+                        FdMatchConverter fdMatchConverter) {
         this.fredbetProperties = fredbetProperties;
         this.matchService = matchService;
         this.bettingService = bettingService;
-        this.runtimeSettingsService = runtimeSettingsService;
         this.fdMatchConverter = fdMatchConverter;
     }
 
@@ -74,10 +69,8 @@ public class FootballDataService {
 
         final List<FdMatch> fdMatchesList = fdMatches.matches();
 
-        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-
         final List<Match> matches = fdMatchesList.stream()
-            .map(fdMatch -> fdMatchConverter.mapToMatch(fdMatch, runtimeSettings))
+            .map(fdMatchConverter::mapToMatch)
             .filter(Objects::nonNull)
             .toList();
         matchService.saveAll(matches);
