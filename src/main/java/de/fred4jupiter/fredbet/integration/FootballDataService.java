@@ -29,16 +29,23 @@ public class FootballDataService {
 
     private final FdMatchConverter fdMatchConverter;
 
+    private final FootballDataSettingsRepository footballDataSettingsRepository;
+
     FootballDataService(FredbetProperties fredbetProperties, MatchService matchService, BettingService bettingService,
-                        FdMatchConverter fdMatchConverter) {
+                        FdMatchConverter fdMatchConverter, FootballDataSettingsRepository footballDataSettingsRepository) {
         this.fredbetProperties = fredbetProperties;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.fdMatchConverter = fdMatchConverter;
+        this.footballDataSettingsRepository = footballDataSettingsRepository;
     }
 
     public int syncData() {
-        return syncData("EC", 2024);
+        return syncData("WC", 2026);
+    }
+
+    public void saveSettings(FootballDataSettings footballDataSettings) {
+        this.footballDataSettingsRepository.save(footballDataSettings);
     }
 
     public int syncData(String competitionCode, int season) {

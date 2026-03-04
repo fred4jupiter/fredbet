@@ -6,9 +6,36 @@
 <body>
 <div layout:fragment="content">
     <h1 th:text="#{footballdata.title}"></h1>
+    <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
+                <div class="form-check">
+                    <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
+                    <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
+                </div>
+                <div class="mb-3">
+                    <label for="competitionCode" th:text="#{footballdata.competitionCode} + ':'" class="form-label"></label>
+                    <input id="competitionCode" type="text" th:field="*{competitionCode}" class="form-control" />
+                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('competitionCode')}" th:errors="*{competitionCode}"></p>
+                </div>
+                <div class="mb-3">
+                    <label for="seasonYear" th:text="#{footballdata.seasonYear} + ':'" class="form-label"></label>
+                    <input id="seasonYear" type="text" th:field="*{seasonYear}" class="form-control" />
+                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('seasonYear')}" th:errors="*{seasonYear}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+            </div>
+        </div>
+    </form>
+
+
     <div class="row">
         <div class="col-md-12">
-            <a th:href="@{/footballdata/import}" class="btn btn-info" role="button">Import Matches</a>
+            <a th:href="@{/footballdata/import}" class="btn btn-info" role="button">Trigger Sync now</a>
         </div>
     </div>
 </div>
