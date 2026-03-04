@@ -12,6 +12,6 @@ public class FootballDataServiceMT {
 
     @Test
     void fetchData() {
-        footballDataService.importData();
+        footballDataService.syncData();
     }
 }

@@ -37,11 +37,11 @@ public class FootballDataService {
         this.fdMatchConverter = fdMatchConverter;
     }
 
-    public int importData() {
-        return importData("EC", 2024);
+    public int syncData() {
+        return syncData("EC", 2024);
     }
 
-    public int importData(String competitionCode, int season) {
+    public int syncData(String competitionCode, int season) {
         RestClient restClient = createRestClient();
         FdMatches fdMatches = restClient.get().uri("/competitions/{competitionCode}/matches", competitionCode)
             .attribute("season", season).retrieve().body(FdMatches.class);

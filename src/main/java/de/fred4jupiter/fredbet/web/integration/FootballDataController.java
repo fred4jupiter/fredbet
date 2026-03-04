@@ -30,7 +30,7 @@ public class FootballDataController {
 
     @RequestMapping(value = "/import")
     public String importMatches(RedirectAttributes redirect) {
-        int importedCount = footballDataService.importData();
+        int importedCount = footballDataService.syncData();
         messageUtil.addInfoMsg(redirect, "msg.footballdata.import.successful", importedCount);
         return "redirect:/footballdata";
     }
