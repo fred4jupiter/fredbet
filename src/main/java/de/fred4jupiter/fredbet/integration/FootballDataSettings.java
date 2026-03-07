@@ -4,6 +4,8 @@ public class FootballDataSettings {
 
     public static final Long ID = 2L;
 
+    private static final String KEY_SEPARATOR = "_";
+
     private boolean enabled;
 
     private String competitionCode; // e.g. EC, WC
@@ -11,8 +13,8 @@ public class FootballDataSettings {
     private Integer seasonYear; // e.g. the year like
 
     public static FootballDataSettings fromKey(boolean enabled, String key) {
-        String code = key.split("_")[0];
-        int seasonYear = Integer.parseInt(key.split("_")[1]);
+        String code = key.split(KEY_SEPARATOR)[0];
+        int seasonYear = Integer.parseInt(key.split(KEY_SEPARATOR)[1]);
 
         FootballDataSettings settings = new FootballDataSettings();
         settings.setEnabled(enabled);
@@ -22,7 +24,7 @@ public class FootballDataSettings {
     }
 
     public String getKey() {
-        return competitionCode + "_" + seasonYear;
+        return competitionCode + KEY_SEPARATOR + seasonYear;
     }
 
     public boolean isEnabled() {
