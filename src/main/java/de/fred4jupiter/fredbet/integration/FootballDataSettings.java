@@ -10,6 +10,17 @@ public class FootballDataSettings {
 
     private Integer seasonYear; // e.g. the year like
 
+    public static FootballDataSettings fromKey(boolean enabled, String key) {
+        String code = key.split("_")[0];
+        int seasonYear = Integer.parseInt(key.split("_")[1]);
+
+        FootballDataSettings settings = new FootballDataSettings();
+        settings.setEnabled(enabled);
+        settings.setCompetitionCode(code);
+        settings.setSeasonYear(seasonYear);
+        return settings;
+    }
+
     public String getKey() {
         return competitionCode + "_" + seasonYear;
     }

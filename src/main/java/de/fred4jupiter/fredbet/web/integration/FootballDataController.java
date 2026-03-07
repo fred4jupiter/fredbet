@@ -9,7 +9,6 @@ import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
-import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -83,7 +82,7 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
-        FootballDataSettings footballDataSettings = toFootballDataSettings(footballDataCommand);
+        FootballDataSettings footballDataSettings = FootballDataSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
 
         footballDataService.saveSettings(footballDataSettings);
         webMessageUtil.addInfoMsg(redirect, "msg.footballdata.saved");
@@ -98,15 +97,4 @@ public class FootballDataController {
         return "redirect:/footballdata";
     }
 
-    private @NonNull FootballDataSettings toFootballDataSettings(FootballDataCommand footballDataCommand) {
-        String competitionKey = footballDataCommand.getCompetitionKey();
-        String code = competitionKey.split("_")[0];
-        int seasonYear = Integer.parseInt(competitionKey.split("_")[1]);
-
-        FootballDataSettings footballDataSettings = new FootballDataSettings();
-        footballDataSettings.setEnabled(footballDataCommand.isEnabled());
-        footballDataSettings.setCompetitionCode(code);
-        footballDataSettings.setSeasonYear(seasonYear);
-        return footballDataSettings;
-    }
 }
