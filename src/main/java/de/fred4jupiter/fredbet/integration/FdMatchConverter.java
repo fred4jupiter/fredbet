@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.integration.model.FdFullTime;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
@@ -74,13 +75,12 @@ class FdMatchConverter {
 
         matchBuilder.withGroup(group);
 
-        matchBuilder
-            .withKickOffDate(convertToLocalDateTime(fdMatch.utcDate()))
-            .withStadium(fdMatch.venue());
+        matchBuilder.withKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
 
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null) {
-            matchBuilder.withGoals(fdMatch.score().fullTime().home(), fdMatch.score().fullTime().away());
+            FdFullTime fdFullTime = fdMatch.score().fullTime();
+            matchBuilder.withGoals(fdFullTime.home(), fdFullTime.away());
         }
         return matchBuilder.build();
     }
