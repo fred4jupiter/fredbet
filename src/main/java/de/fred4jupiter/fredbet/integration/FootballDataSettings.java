@@ -1,28 +1,14 @@
 package de.fred4jupiter.fredbet.integration;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "football_data_settings")
 public class FootballDataSettings {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long id;
+    public static final Long ID = 2L;
 
-    @Column(nullable = false)
     private boolean enabled;
 
-    @Column(nullable = false)
     private String competitionCode; // e.g. EC, WC
 
-    @Column(nullable = false)
     private Integer seasonYear; // e.g. the year like
-
-    public Long getId() {
-        return id;
-    }
 
     public boolean isEnabled() {
         return enabled;

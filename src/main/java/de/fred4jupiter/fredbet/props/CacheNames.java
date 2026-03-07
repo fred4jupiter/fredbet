@@ -29,4 +29,6 @@ public final class CacheNames {
      * Runtime config parameters for points.
      */
     public static final String POINTS_CONFIG = "pointsConfig";
+
+    public static final String FOOTBALL_DATA_SETTINGS = "footballDataSettings";
 }

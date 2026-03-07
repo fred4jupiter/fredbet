@@ -22,6 +22,7 @@ public class CacheConfig {
         caches.add(new ConcurrentMapCache(CacheNames.CHILD_RELATION));
         caches.add(new ConcurrentMapCache(CacheNames.RUNTIME_SETTINGS));
         caches.add(new ConcurrentMapCache(CacheNames.POINTS_CONFIG));
+        caches.add(new ConcurrentMapCache(CacheNames.FOOTBALL_DATA_SETTINGS));
         cacheManager.setCaches(caches);
         return cacheManager;
     }

@@ -294,21 +294,4 @@
         <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes"/>
     </changeSet>
 
-    <changeSet id="17" author="michael">
-        <createTable tableName="football_data_settings">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="enabled" type="boolean" defaultValueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="competition_code" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="season_year" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
 </databaseChangeLog>

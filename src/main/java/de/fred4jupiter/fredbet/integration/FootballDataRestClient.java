@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class FootballDataRestClient {
+class FootballDataRestClient {
 
     private final RestClient restClient;
 
