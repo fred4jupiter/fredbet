@@ -30,14 +30,15 @@ public class FootballDataSyncService {
 
     public int syncData(String competitionCode, int seasonYear) {
         List<FdMatch> matches = footballDataRestClient.fetchMatches(competitionCode, seasonYear);
+        if (matches == null || matches.isEmpty()) {
+            LOG.warn("Could not load football data fdMatchesList!");
+            return 0;
+        }
+
         return syncData(matches);
     }
 
     private int syncData(List<FdMatch> fdMatches) {
-        if (fdMatches == null || fdMatches.isEmpty()) {
-            LOG.warn("Could not load football data fdMatchesList!");
-            return 0;
-        }
         LOG.debug("Syncing {} Football-Data fdMatchesList", fdMatches.size());
 
         final List<Match> matches = fdMatches.stream()

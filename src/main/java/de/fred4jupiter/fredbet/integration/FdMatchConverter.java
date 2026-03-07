@@ -35,21 +35,24 @@ class FdMatchConverter {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
+    private final Properties countryProps;
+
     FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource, RuntimeSettingsService runtimeSettingsService) {
         this.countryNameResource = countryNameResource;
         this.runtimeSettingsService = runtimeSettingsService;
+        this.countryProps = loadCountryNames();
     }
 
     public Match mapToMatch(FdMatch fdMatch) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
+            LOG.warn("match is null or home/away team is null for match {}", fdMatch);
             return null;
         }
 
         if (fdMatch.homeTeam().id() == null && fdMatch.awayTeam().id() == null) {
+            LOG.warn("match has no team ids for match {}", fdMatch);
             return null;
         }
-
-        final Properties countryProps = loadCountryNames();
 
         final MatchBuilder matchBuilder = MatchBuilder.create();
 
