@@ -4,6 +4,8 @@ import de.fred4jupiter.fredbet.common.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 @IntegrationTest
 public class FootballDataServiceMT {
 
@@ -12,6 +14,16 @@ public class FootballDataServiceMT {
 
     @Test
     void fetchData() {
-        footballDataService.syncData();
+        FootballDataSettings settings = new FootballDataSettings();
+        settings.setSeasonYear(1);
+        settings.setCompetitionCode("EC");
+        settings.setEnabled(true);
+
+        footballDataService.saveSettings(settings);
+
+        FootballDataSettings loadedSettings = footballDataService.loadSettings();
+        assertThat(loadedSettings.getSeasonYear()).isEqualTo(settings.getSeasonYear());
+        assertThat(loadedSettings.getCompetitionCode()).isEqualTo(settings.getCompetitionCode());
+        assertThat(loadedSettings.isEnabled()).isEqualTo(settings.isEnabled());
     }
 }

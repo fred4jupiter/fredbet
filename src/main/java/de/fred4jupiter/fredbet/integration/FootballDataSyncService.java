@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.integration;
 
-import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.match.MatchService;
@@ -20,37 +19,26 @@ public class FootballDataSyncService {
 
     private final MatchService matchService;
 
-    private final BettingService bettingService;
-
     private final FdMatchConverter fdMatchConverter;
 
     FootballDataSyncService(FootballDataRestClient footballDataRestClient,
-                            MatchService matchService, BettingService bettingService, FdMatchConverter fdMatchConverter) {
+                            MatchService matchService, FdMatchConverter fdMatchConverter) {
         this.footballDataRestClient = footballDataRestClient;
         this.matchService = matchService;
-        this.bettingService = bettingService;
         this.fdMatchConverter = fdMatchConverter;
     }
 
-    public int syncData(String competitionCode, int season, boolean deleteExistingData) {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches(competitionCode, season);
-        return syncData(matches, deleteExistingData);
+    public int syncData(String competitionCode, int seasonYear) {
+        List<FdMatch> matches = footballDataRestClient.fetchMatches(competitionCode, seasonYear);
+        return syncData(matches);
     }
 
-    private int syncData(List<FdMatch> fdMatches, boolean deleteExistingData) {
+    private int syncData(List<FdMatch> fdMatches) {
         if (fdMatches == null || fdMatches.isEmpty()) {
             LOG.warn("Could not load football data fdMatchesList!");
             return 0;
         }
         LOG.debug("Syncing {} Football-Data fdMatchesList", fdMatches.size());
-
-        if (deleteExistingData) {
-            bettingService.deleteAllBets();
-            LOG.info("deleted all bets");
-
-            matchService.deleteAllMatches();
-            LOG.info("deleted all fdMatchesList");
-        }
 
         final List<Match> matches = fdMatches.stream()
             .map(fdMatchConverter::mapToMatch)

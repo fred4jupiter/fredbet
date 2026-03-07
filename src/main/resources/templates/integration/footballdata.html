@@ -14,14 +14,10 @@
                     <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
                 </div>
                 <div class="mb-3">
-                    <label for="competitionCode" th:text="#{footballdata.competitionCode} + ':'" class="form-label"></label>
-                    <input id="competitionCode" type="text" th:field="*{competitionCode}" class="form-control" />
-                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('competitionCode')}" th:errors="*{competitionCode}"></p>
-                </div>
-                <div class="mb-3">
-                    <label for="seasonYear" th:text="#{footballdata.seasonYear} + ':'" class="form-label"></label>
-                    <input id="seasonYear" type="text" th:field="*{seasonYear}" class="form-control" />
-                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('seasonYear')}" th:errors="*{seasonYear}"></p>
+                    <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
+                    <select id="competitions" th:field="*{competitionKey}" class="form-select">
+                        <option th:each="competition : ${competitions}" th:value="${competition.key}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -32,10 +28,13 @@
         </div>
     </form>
 
-
+    <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/footballdata/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-auto mb-3">
             <a th:href="@{/footballdata/import}" class="btn btn-info" role="button" th:text="#{footballdata.import}">Trigger Sync now</a>
+        </div>
+        <div class="col-auto mb-3">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
         </div>
     </div>
 </div>

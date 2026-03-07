@@ -10,6 +10,10 @@ public class FootballDataSettings {
 
     private Integer seasonYear; // e.g. the year like
 
+    public String getKey() {
+        return competitionCode + "_" + seasonYear;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
