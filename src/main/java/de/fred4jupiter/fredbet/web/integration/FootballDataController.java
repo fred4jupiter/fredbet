@@ -38,7 +38,8 @@ public class FootballDataController {
 
     private final DataPopulator dataPopulator;
 
-    public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService, WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
+    public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
+                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
         this.webMessageUtil = webMessageUtil;
