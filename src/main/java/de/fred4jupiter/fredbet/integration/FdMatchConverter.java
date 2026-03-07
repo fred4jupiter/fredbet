@@ -82,7 +82,9 @@ class FdMatchConverter {
             FdFullTime fdFullTime = fdMatch.score().fullTime();
             matchBuilder.withGoals(fdFullTime.home(), fdFullTime.away());
         }
-        return matchBuilder.build();
+        Match match = matchBuilder.build();
+        match.setExternalId(fdMatch.id());
+        return match;
     }
 
     private Group resolveToGroup(FdMatch fdMatch) {
@@ -96,6 +98,7 @@ class FdMatchConverter {
             case "QUARTER_FINALS" -> Group.QUARTER_FINAL;
             case "SEMI_FINALS" -> Group.SEMI_FINAL;
             case "FINAL" -> Group.FINAL;
+            case "THIRD_PLACE" -> Group.GAME_FOR_THIRD;
             default -> null;
         };
     }
