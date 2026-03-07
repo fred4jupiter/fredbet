@@ -1,3 +1,12 @@
 spring:
   datasource:
     url: jdbc:h2:mem:fredbetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+
+logging:
+  pattern:
+    console: "%black(%d{ISO8601}) %highlight(%-5level) %highlight([%c]): %highlight(%msg%n%throwable)"
+  level:
+    root: "WARN"
+    "org.springframework.web": "WARN"
+    "org.springframework.security": "WARN"
+    "de.fred4jupiter.fredbet": "DEBUG"
