@@ -36,7 +36,15 @@ public class FootballDataService {
     @Cacheable(CacheNames.FOOTBALL_DATA_SETTINGS)
     public FootballDataSettings loadSettings() {
         LOG.debug("Loading FootballDataSettings ...");
-        return runtimeSettingsRepository.loadRuntimeSettings(FootballDataSettings.ID, FootballDataSettings.class);
+        FootballDataSettings footballDataSettings = runtimeSettingsRepository.loadRuntimeSettings(FootballDataSettings.ID, FootballDataSettings.class);
+        if (footballDataSettings == null) {
+            LOG.debug("No FootballDataSettings found. Creating default settings.");
+            FootballDataSettings settings = new FootballDataSettings();
+            settings.setEnabled(false);
+            saveSettings(settings);
+            return settings;
+        }
+        return footballDataSettings;
     }
 
     @CacheEvict(cacheNames = CacheNames.FOOTBALL_DATA_SETTINGS, allEntries = true)

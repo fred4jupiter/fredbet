@@ -57,6 +57,12 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Column(name = "STADIUM")
     private String stadium;
 
+    @Column(name = "LAST_MODIFIED", nullable = false)
+    private LocalDateTime lastModified;
+
+    @Column(name = "EXTERNAL_ID")
+    private String externalId;
+
     @Transient
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
@@ -317,5 +323,31 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     public String getKickOffDateFormated() {
         return this.kickOffDate == null ? null : dateTimeFormatter.format(this.kickOffDate);
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        this.lastModified = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.lastModified = LocalDateTime.now();
+    }
+
+    public LocalDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 }

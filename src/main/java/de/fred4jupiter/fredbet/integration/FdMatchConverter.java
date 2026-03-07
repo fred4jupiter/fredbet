@@ -67,7 +67,7 @@ class FdMatchConverter {
             matchBuilder.withTeamTwo(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
         }
 
-        Group group = resolveToGroup(fdMatch.group());
+        Group group = resolveToGroup(fdMatch);
         if (group == null) {
             LOG.warn("No group found for match {}", fdMatch);
             return null;
@@ -85,18 +85,19 @@ class FdMatchConverter {
         return matchBuilder.build();
     }
 
-    private Group resolveToGroup(String groupName) {
-        if (StringUtils.isBlank(groupName)) {
-            LOG.warn("groupName is blank");
-            return null;
+    private Group resolveToGroup(FdMatch fdMatch) {
+        if ("GROUP_STAGE".equals(fdMatch.stage())) {
+            return Group.valueOf(fdMatch.group());
         }
 
-        try {
-            return Group.valueOf(groupName);
-        } catch (IllegalArgumentException e) {
-            LOG.warn("Could not resolve group for group name '{}'.", groupName);
-            return null;
-        }
+        return switch (fdMatch.stage()) {
+            case "LAST_32" -> Group.ROUND_OF_THIRTY_TWO;
+            case "LAST_16" -> Group.ROUND_OF_SIXTEEN;
+            case "QUARTER_FINALS" -> Group.QUARTER_FINAL;
+            case "SEMI_FINALS" -> Group.SEMI_FINAL;
+            case "FINAL" -> Group.FINAL;
+            default -> null;
+        };
     }
 
     private LocalDateTime convertToLocalDateTime(ZonedDateTime utcZoned) {

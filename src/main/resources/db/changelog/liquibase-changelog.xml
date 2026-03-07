@@ -294,4 +294,13 @@
         <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes"/>
     </changeSet>
 
+    <changeSet id="17" author="michael">
+        <addColumn tableName="matches">
+            <column name="last_modified" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="external_id" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

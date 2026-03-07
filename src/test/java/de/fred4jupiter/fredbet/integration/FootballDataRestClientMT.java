@@ -40,7 +40,7 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatchesForOtherCompetitionAndSeason() {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches("BL1", 2021);
+        List<FdMatch> matches = footballDataRestClient.fetchMatches("EC", 2024);
         assertThat(matches).isNotNull();
         assertThat(matches).isNotEmpty();
 
