@@ -155,4 +155,8 @@ public class MatchService {
     public boolean hasMatchWithResult() {
         return matchRepository.hasMatchWithResult();
     }
+
+    public Long countMatches() {
+        return matchRepository.count();
+    }
 }

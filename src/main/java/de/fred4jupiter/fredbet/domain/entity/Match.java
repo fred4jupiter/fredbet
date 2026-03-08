@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -57,8 +58,8 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Column(name = "STADIUM")
     private String stadium;
 
-    @Column(name = "LAST_MODIFIED", nullable = false)
-    private LocalDateTime lastModified;
+    @Column(name = "EXTERNAL_LAST_UPDATED")
+    private ZonedDateTime externalLastUpdated;
 
     @Column(name = "EXTERNAL_ID")
     private String externalId;
@@ -325,29 +326,19 @@ public class Match implements MatchResult, MatchBusinessKey {
         return this.kickOffDate == null ? null : dateTimeFormatter.format(this.kickOffDate);
     }
 
-    @PrePersist
-    public void onPrePersist() {
-        this.lastModified = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void onPreUpdate() {
-        this.lastModified = LocalDateTime.now();
-    }
-
-    public LocalDateTime getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(LocalDateTime lastModified) {
-        this.lastModified = lastModified;
-    }
-
     public String getExternalId() {
         return externalId;
     }
 
     public void setExternalId(String externalId) {
         this.externalId = externalId;
+    }
+
+    public ZonedDateTime getExternalLastUpdated() {
+        return externalLastUpdated;
+    }
+
+    public void setExternalLastUpdated(ZonedDateTime externalLastUpdated) {
+        this.externalLastUpdated = externalLastUpdated;
     }
 }

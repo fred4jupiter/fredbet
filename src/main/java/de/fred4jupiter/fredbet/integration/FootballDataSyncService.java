@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.MatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class FootballDataSyncService {
@@ -21,11 +23,14 @@ public class FootballDataSyncService {
 
     private final FdMatchConverter fdMatchConverter;
 
+    private final MatchRepository matchRepository;
+
     FootballDataSyncService(FootballDataRestClient footballDataRestClient,
-                            MatchService matchService, FdMatchConverter fdMatchConverter) {
+                            MatchService matchService, FdMatchConverter fdMatchConverter, MatchRepository matchRepository) {
         this.footballDataRestClient = footballDataRestClient;
         this.matchService = matchService;
         this.fdMatchConverter = fdMatchConverter;
+        this.matchRepository = matchRepository;
     }
 
     public int syncData(String competitionCode, int seasonYear) {
@@ -35,7 +40,25 @@ public class FootballDataSyncService {
             return 0;
         }
 
-        return syncData(matches);
+        LOG.info("fetched {} matches.", matches.size());
+
+        matches.forEach(this::syncMatch);
+
+        return matchService.countMatches().intValue();
+    }
+
+    private void syncMatch(FdMatch fdMatch) {
+        Optional<Match> matchOptional = matchRepository.findByExternalId(fdMatch.id());
+        if (matchOptional.isPresent()) {
+            Match match = matchOptional.get();
+            fdMatchConverter.updateMatchFromFdMatch(fdMatch, match);
+            matchRepository.save(match);
+        } else {
+            Match match = fdMatchConverter.mapToMatch(fdMatch);
+            if (match != null) {
+                matchRepository.save(match);
+            }
+        }
     }
 
     private int syncData(List<FdMatch> fdMatches) {

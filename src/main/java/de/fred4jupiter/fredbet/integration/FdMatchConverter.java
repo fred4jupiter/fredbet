@@ -156,4 +156,8 @@ class FdMatchConverter {
             throw new IllegalStateException(e.getMessage(), e);
         }
     }
+
+    public void updateMatchFromFdMatch(FdMatch fdMatch, Match match) {
+
+    }
 }

@@ -296,11 +296,12 @@
 
     <changeSet id="17" author="michael">
         <addColumn tableName="matches">
-            <column name="last_modified" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
+            <column name="external_last_updated" type="DATETIME"/>
             <column name="external_id" type="varchar(100)"/>
         </addColumn>
+        <createIndex tableName="matches" indexName="idx_external_id">
+            <column name="external_id" type="varchar(100)"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>
