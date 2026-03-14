@@ -86,7 +86,7 @@ public class FootballDataController {
         FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
 
         footballDataService.saveSettings(footballDataRuntimeSettings);
-        webMessageUtil.addInfoMsg(redirect, "msg.footballdata.saved");
+        webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");
         return "redirect:/footballdata";
     }
 
