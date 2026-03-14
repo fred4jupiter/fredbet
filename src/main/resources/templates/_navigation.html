@@ -184,6 +184,12 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/footballdata}" th:text="#{footballdata.title}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li sec:authorize="hasAuthority('PERM_SYSTEM_INFO')">
                                     <a class="dropdown-item" th:href="@{/systeminfo}" th:text="#{navigation.systemInfo}"></a>
                                 </li>

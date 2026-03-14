@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Main application start.
@@ -19,9 +20,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableConfigurationProperties(FredbetProperties.class)
 @EnableCaching
 @EnableAsync
+@EnableScheduling
 public class Application {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication app = new SpringApplication(Application.class);
         app.run(args);
     }

@@ -55,9 +55,19 @@ public class MatchService {
         return matchRepository.getReferenceById(matchId);
     }
 
+    public Optional<Match> findByExternalId(String externalId) {
+        return matchRepository.findByExternalId(externalId);
+    }
+
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
         return matchRepository.save(match);
+    }
+
+    @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
+    public int saveAll(List<Match> matches) {
+        List<Match> savedList = matchRepository.saveAll(matches);
+        return savedList.size();
     }
 
     public void enterMatchResult(Long matchId, Consumer<Match> consumer) {
@@ -149,5 +159,9 @@ public class MatchService {
 
     public boolean hasMatchWithResult() {
         return matchRepository.hasMatchWithResult();
+    }
+
+    public Long countMatches() {
+        return matchRepository.count();
     }
 }

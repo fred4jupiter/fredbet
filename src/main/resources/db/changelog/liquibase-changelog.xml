@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <changeSet id="1" author="michael">
@@ -268,7 +268,7 @@
     <changeSet id="13" author="michael">
         <addColumn tableName="app_user">
             <column name="setting_theme" type="varchar(20)" defaultValue="white">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </addColumn>
     </changeSet>
@@ -282,16 +282,26 @@
     <changeSet id="15" author="michael">
         <addColumn tableName="app_user">
             <column name="setting_bootswatch_theme" type="varchar(20)" defaultValue="DEFAULT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="setting_navbar_layout" type="varchar(20)" defaultValue="DARK">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </addColumn>
     </changeSet>
 
     <changeSet id="16" author="michael">
         <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes"/>
+    </changeSet>
+
+    <changeSet id="17" author="michael">
+        <addColumn tableName="matches">
+            <column name="external_last_updated" type="DATETIME"/>
+            <column name="external_id" type="varchar(100)"/>
+        </addColumn>
+        <createIndex tableName="matches" indexName="idx_external_id">
+            <column name="external_id" type="varchar(100)"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

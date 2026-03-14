@@ -18,3 +18,5 @@ logs/
 
 /.apt_generated/
 .env
+
+application.yml

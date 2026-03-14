@@ -20,6 +20,26 @@ public class MatchBuilder {
         return new MatchBuilder();
     }
 
+    public MatchBuilder withTeamOne(Country teamOne) {
+        match.getTeamOne().setCountry(teamOne);
+        return this;
+    }
+
+    public MatchBuilder withTeamTwo(Country teamTwo) {
+        match.getTeamTwo().setCountry(teamTwo);
+        return this;
+    }
+
+    public MatchBuilder withTeamOne(String teamOne) {
+        match.getTeamOne().setName(teamOne);
+        return this;
+    }
+
+    public MatchBuilder withTeamTwo(String teamTwo) {
+        match.getTeamTwo().setName(teamTwo);
+        return this;
+    }
+
     public MatchBuilder withTeams(String teamOne, String teamTwo) {
         match.getTeamOne().setName(teamOne);
         match.getTeamTwo().setName(teamTwo);

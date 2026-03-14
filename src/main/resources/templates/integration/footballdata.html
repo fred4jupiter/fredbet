@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <title th:text="#{footballdata.title}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 th:text="#{footballdata.title}"></h1>
+    <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
+                <div class="form-check">
+                    <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
+                    <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
+                </div>
+                <div class="mb-3">
+                    <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
+                    <select id="competitions" th:field="*{competitionKey}" class="form-select">
+                        <option th:each="competition : ${competitions}" th:value="${competition.key}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+            </div>
+        </div>
+    </form>
+
+    <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/footballdata/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
+    <div class="row">
+        <div class="col-auto mb-3">
+            <a th:href="@{/footballdata/import}" class="btn btn-info" role="button" th:text="#{footballdata.sync}">Trigger Sync now</a>
+        </div>
+        <div class="col-auto mb-3">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
