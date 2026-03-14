@@ -70,8 +70,8 @@ public class FootballDataController {
         }
 
         try {
-            int importedCount = footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
-            webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful", importedCount);
+            footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
+            webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());
         }
