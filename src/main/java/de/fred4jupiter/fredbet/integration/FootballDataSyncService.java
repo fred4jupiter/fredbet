@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.integration;
 
+import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.match.MatchRepository;
@@ -23,12 +24,15 @@ public class FootballDataSyncService {
 
     private final MatchRepository matchRepository;
 
+    private final CacheAdministrationService cacheAdministrationService;
+
     FootballDataSyncService(FootballDataRestClient footballDataRestClient,
-                            MatchService matchService, FdMatchConverter fdMatchConverter, MatchRepository matchRepository) {
+                            MatchService matchService, FdMatchConverter fdMatchConverter, MatchRepository matchRepository, CacheAdministrationService cacheAdministrationService) {
         this.footballDataRestClient = footballDataRestClient;
         this.matchService = matchService;
         this.fdMatchConverter = fdMatchConverter;
         this.matchRepository = matchRepository;
+        this.cacheAdministrationService = cacheAdministrationService;
     }
 
     public int syncData(String competitionCode, int seasonYear) {
@@ -40,6 +44,9 @@ public class FootballDataSyncService {
 
         LOG.info("fetched {} matches.", matches.size());
         matches.forEach(this::syncMatch);
+
+        cacheAdministrationService.clearCaches();
+
         return matchService.countMatches().intValue();
     }
 
