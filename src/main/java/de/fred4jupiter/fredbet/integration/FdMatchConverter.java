@@ -2,8 +2,8 @@ package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.model.FdFullTime;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
@@ -54,19 +54,8 @@ class FdMatchConverter {
             return;
         }
 
-        final Country teamOneCountry = resolveToCountry(fdMatch.homeTeam(), countryProps);
-        if (teamOneCountry != null) {
-            match.getTeamOne().setCountry(teamOneCountry);
-        } else {
-            match.getTeamOne().setName(StringUtils.isNotBlank(fdMatch.homeTeam().name()) ? fdMatch.homeTeam().name() : "Not yet defined");
-        }
-
-        final Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam(), countryProps);
-        if (teamTwoCountry != null) {
-            match.getTeamTwo().setCountry(teamTwoCountry);
-        } else {
-            match.getTeamTwo().setName(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
-        }
+        mapTeam(fdMatch.homeTeam(), match.getTeamOne());
+        mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
         Group group = resolveToGroup(fdMatch);
         if (group == null) {
@@ -84,6 +73,15 @@ class FdMatchConverter {
             FdFullTime fdFullTime = fdMatch.score().fullTime();
             match.setGoalsTeamOne(fdFullTime.home());
             match.setGoalsTeamTwo(fdFullTime.away());
+        }
+    }
+
+    private void mapTeam(FdTeam fdTeam, Team team) {
+        final Country country = resolveToCountry(fdTeam, countryProps);
+        if (country != null) {
+            team.setCountry(country);
+        } else {
+            team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
         }
     }
 
