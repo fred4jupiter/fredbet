@@ -4,7 +4,7 @@ package de.fred4jupiter.fredbet.web.integration;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.integration.Competition;
 import de.fred4jupiter.fredbet.integration.FootballDataService;
-import de.fred4jupiter.fredbet.integration.FootballDataSettings;
+import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
 import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -56,7 +56,7 @@ public class FootballDataController {
         List<Competition> competitions = footballDataService.loadCompetitions();
         model.addAttribute("competitions", competitions);
 
-        FootballDataSettings settings = footballDataService.loadSettings();
+        FootballDataRuntimeSettings settings = footballDataService.loadSettings();
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setCompetitionKey(settings.getKey());
 
@@ -65,14 +65,14 @@ public class FootballDataController {
 
     @RequestMapping(value = "/import")
     public String importMatches(RedirectAttributes redirect) {
-        final FootballDataSettings footballDataSettings = footballDataService.loadSettings();
-        if (!footballDataSettings.isEnabled()) {
+        final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
+        if (!footballDataRuntimeSettings.isEnabled()) {
             LOG.info("Football data integration is disabled. Will not import or sync any data.");
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.disabled");
             return "redirect:/footballdata";
         }
 
-        int importedCount = footballDataSyncService.syncData(footballDataSettings.getCompetitionCode(), footballDataSettings.getSeasonYear());
+        int importedCount = footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
         webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful", importedCount);
         return "redirect:/footballdata";
     }
@@ -83,9 +83,9 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
-        FootballDataSettings footballDataSettings = FootballDataSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
+        FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
 
-        footballDataService.saveSettings(footballDataSettings);
+        footballDataService.saveSettings(footballDataRuntimeSettings);
         webMessageUtil.addInfoMsg(redirect, "msg.footballdata.saved");
         return "redirect:/footballdata";
     }

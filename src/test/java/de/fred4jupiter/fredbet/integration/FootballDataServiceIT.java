@@ -14,14 +14,14 @@ public class FootballDataServiceIT {
 
     @Test
     void saveSettings() {
-        FootballDataSettings settings = new FootballDataSettings();
+        FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
         settings.setSeasonYear(1);
         settings.setCompetitionCode("EC");
         settings.setEnabled(true);
 
         footballDataService.saveSettings(settings);
 
-        FootballDataSettings loadedSettings = footballDataService.loadSettings();
+        FootballDataRuntimeSettings loadedSettings = footballDataService.loadSettings();
         assertThat(loadedSettings.getSeasonYear()).isEqualTo(settings.getSeasonYear());
         assertThat(loadedSettings.getCompetitionCode()).isEqualTo(settings.getCompetitionCode());
         assertThat(loadedSettings.isEnabled()).isEqualTo(settings.isEnabled());

@@ -3,7 +3,7 @@ package de.fred4jupiter.fredbet.integration;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class FootballDataSettings {
+public class FootballDataRuntimeSettings {
 
     public static final Long ID = 2L;
 
@@ -15,11 +15,11 @@ public class FootballDataSettings {
 
     private Integer seasonYear; // e.g. the year like
 
-    public static FootballDataSettings fromKey(boolean enabled, String key) {
+    public static FootballDataRuntimeSettings fromKey(boolean enabled, String key) {
         String code = key.split(KEY_SEPARATOR)[0];
         int seasonYear = Integer.parseInt(key.split(KEY_SEPARATOR)[1]);
 
-        FootballDataSettings settings = new FootballDataSettings();
+        FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
         settings.setEnabled(enabled);
         settings.setCompetitionCode(code);
         settings.setSeasonYear(seasonYear);

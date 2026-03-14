@@ -54,8 +54,6 @@ class FdMatchConverter {
             return;
         }
 
-        final MatchBuilder matchBuilder = MatchBuilder.create();
-
         final Country teamOneCountry = resolveToCountry(fdMatch.homeTeam(), countryProps);
         if (teamOneCountry != null) {
             match.getTeamOne().setCountry(teamOneCountry);
