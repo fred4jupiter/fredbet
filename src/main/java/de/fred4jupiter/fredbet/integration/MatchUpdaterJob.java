@@ -19,7 +19,7 @@ public class MatchUpdaterJob {
         this.footballDataService = footballDataService;
     }
 
-    @Scheduled(fixedRateString = "#{${fredbet.integration.football-data.scheduler-interval-minutes} * 60 * 1000}")
+    @Scheduled(initialDelay = 1 * 60 * 1000, fixedRateString = "#{${fredbet.integration.football-data.scheduler-interval-minutes} * 60 * 1000}")
     public void updateMatches() {
         final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
         if (!footballDataRuntimeSettings.isEnabled()) {
@@ -27,8 +27,8 @@ public class MatchUpdaterJob {
             return;
         }
 
-        LOG.info("start syncing data from football-data for footballDataRuntimeSettings={}", footballDataRuntimeSettings);
+        LOG.info("start syncing data from football-data.org for footballDataRuntimeSettings={}", footballDataRuntimeSettings);
         footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
-        LOG.info("finished syncing data from football-data");
+        LOG.info("finished syncing data from football-data.org");
     }
 }
