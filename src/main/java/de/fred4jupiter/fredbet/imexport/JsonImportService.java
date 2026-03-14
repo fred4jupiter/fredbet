@@ -107,10 +107,14 @@ public class JsonImportService {
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {
-        return MatchBuilder.create().withTeams(matchToExport.teamOne(), matchToExport.teamTwo())
+        Match match = MatchBuilder.create().withTeams(matchToExport.teamOne(), matchToExport.teamTwo())
             .withGroup(matchToExport.group())
             .withKickOffDate(matchToExport.kickOffDate())
             .withStadium(matchToExport.stadium())
             .build();
+        match.setPenaltyWinnerOne(matchToExport.penaltyWinnerOne());
+        match.setExternalId(matchToExport.externalId());
+        match.setExternalLastUpdated(matchToExport.externalLastUpdated());
+        return match;
     }
 }

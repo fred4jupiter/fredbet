@@ -88,6 +88,6 @@ public class JsonExportService {
 
     private MatchToExport toMatchToExport(Match match) {
         return new MatchToExport(match.getTeamOne(), match.getTeamTwo(), match.getGroup(), match.isPenaltyWinnerOne(),
-            match.getKickOffDate(), match.getStadium(), match.getBusinessKey());
+            match.getKickOffDate(), match.getStadium(), match.getBusinessKey(), match.getExternalId(), match.getExternalLastUpdated());
     }
 }
