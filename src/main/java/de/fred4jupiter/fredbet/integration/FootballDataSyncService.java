@@ -51,12 +51,8 @@ public class FootballDataSyncService {
     }
 
     private void syncMatch(FdMatch fdMatch) {
-        final Match match = fetchOrCreate(fdMatch.id());
+        final Match match = matchRepository.findByExternalId(fdMatch.id()).orElse(new Match());
         fdMatchConverter.mapMatchFromTo(fdMatch, match);
         matchRepository.save(match);
-    }
-
-    private Match fetchOrCreate(String externalMatchId) {
-        return matchRepository.findByExternalId(externalMatchId).orElse(new Match());
     }
 }
