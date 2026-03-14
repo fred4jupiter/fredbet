@@ -2,10 +2,7 @@ package de.fred4jupiter.fredbet.web.integration;
 
 
 import de.fred4jupiter.fredbet.data.DataPopulator;
-import de.fred4jupiter.fredbet.integration.Competition;
-import de.fred4jupiter.fredbet.integration.FootballDataService;
-import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
-import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
+import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
@@ -72,8 +69,12 @@ public class FootballDataController {
             return "redirect:/footballdata";
         }
 
-        int importedCount = footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
-        webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful", importedCount);
+        try {
+            int importedCount = footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
+            webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful", importedCount);
+        } catch (FootballDataException e) {
+            webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());
+        }
         return "redirect:/footballdata";
     }
 
