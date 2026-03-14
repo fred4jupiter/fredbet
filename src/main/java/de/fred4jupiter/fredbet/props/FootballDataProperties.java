@@ -1,4 +1,4 @@
 package de.fred4jupiter.fredbet.props;
 
-public record FootballDataProperties(boolean enabled, String apiToken, String baseUrl) {
+public record FootballDataProperties(String apiToken, String baseUrl, Integer schedulerIntervalMinutes) {
 }

@@ -28,6 +28,7 @@ public class FootballDataService {
     public List<Competition> loadCompetitions() {
         List<FdCompetition> fdCompetitions = footballDataRestClient.fetchCompetitions();
         return fdCompetitions.stream()
+            .filter(comp -> "EC".equalsIgnoreCase(comp.code()) || "WC".equalsIgnoreCase(comp.code()) )
             .map(fdCompetition -> new Competition(fdCompetition.id(), fdCompetition.name(),
                 fdCompetition.code(), fdCompetition.currentSeason().getSeasonYear()))
             .toList();

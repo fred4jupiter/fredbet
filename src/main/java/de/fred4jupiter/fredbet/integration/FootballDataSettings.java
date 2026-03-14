@@ -1,5 +1,8 @@
 package de.fred4jupiter.fredbet.integration;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class FootballDataSettings {
 
     public static final Long ID = 2L;
@@ -49,5 +52,14 @@ public class FootballDataSettings {
 
     public void setSeasonYear(Integer seasonYear) {
         this.seasonYear = seasonYear;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+            .append("enabled", enabled)
+            .append("competitionCode", competitionCode)
+            .append("seasonYear", seasonYear)
+            .toString();
     }
 }

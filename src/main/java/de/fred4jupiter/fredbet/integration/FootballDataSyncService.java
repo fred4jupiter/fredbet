@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class FootballDataSyncService {
@@ -41,36 +39,17 @@ public class FootballDataSyncService {
         }
 
         LOG.info("fetched {} matches.", matches.size());
-
         matches.forEach(this::syncMatch);
-
         return matchService.countMatches().intValue();
     }
 
     private void syncMatch(FdMatch fdMatch) {
-        Optional<Match> matchOptional = matchRepository.findByExternalId(fdMatch.id());
-        if (matchOptional.isPresent()) {
-            Match match = matchOptional.get();
-            fdMatchConverter.updateMatchFromFdMatch(fdMatch, match);
-            matchRepository.save(match);
-        } else {
-            Match match = fdMatchConverter.mapToMatch(fdMatch);
-            if (match != null) {
-                matchRepository.save(match);
-            }
-        }
+        final Match match = fetchOrCreate(fdMatch.id());
+        fdMatchConverter.mapMatchFromTo(fdMatch, match);
+        matchRepository.save(match);
     }
 
-    private int syncData(List<FdMatch> fdMatches) {
-        LOG.debug("Syncing {} Football-Data fdMatchesList", fdMatches.size());
-
-        final List<Match> matches = fdMatches.stream()
-            .map(fdMatchConverter::mapToMatch)
-            .filter(Objects::nonNull)
-            .toList();
-        matchService.saveAll(matches);
-
-        LOG.debug("synced {} matches", matches.size());
-        return matches.size();
+    private Match fetchOrCreate(String externalMatchId) {
+        return matchRepository.findByExternalId(externalMatchId).orElse(new Match());
     }
 }

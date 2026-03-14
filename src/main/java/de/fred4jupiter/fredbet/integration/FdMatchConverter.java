@@ -43,51 +43,50 @@ class FdMatchConverter {
         this.countryProps = loadCountryNames();
     }
 
-    public Match mapToMatch(FdMatch fdMatch) {
+    public void mapMatchFromTo(FdMatch fdMatch, Match match) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
             LOG.warn("match is null or home/away team is null for match {}", fdMatch);
-            return null;
+            return;
         }
 
         if (fdMatch.homeTeam().id() == null && fdMatch.awayTeam().id() == null) {
             LOG.warn("match has no team ids for match {}", fdMatch);
-            return null;
+            return;
         }
 
         final MatchBuilder matchBuilder = MatchBuilder.create();
 
         final Country teamOneCountry = resolveToCountry(fdMatch.homeTeam(), countryProps);
         if (teamOneCountry != null) {
-            matchBuilder.withTeamOne(teamOneCountry);
+            match.getTeamOne().setCountry(teamOneCountry);
         } else {
-            matchBuilder.withTeamOne(StringUtils.isNotBlank(fdMatch.homeTeam().name()) ? fdMatch.homeTeam().name() : "Not yet defined");
+            match.getTeamOne().setName(StringUtils.isNotBlank(fdMatch.homeTeam().name()) ? fdMatch.homeTeam().name() : "Not yet defined");
         }
 
         final Country teamTwoCountry = resolveToCountry(fdMatch.awayTeam(), countryProps);
         if (teamTwoCountry != null) {
-            matchBuilder.withTeamTwo(teamTwoCountry);
+            match.getTeamTwo().setCountry(teamTwoCountry);
         } else {
-            matchBuilder.withTeamTwo(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
+            match.getTeamTwo().setName(StringUtils.isNotBlank(fdMatch.awayTeam().name()) ? fdMatch.awayTeam().name() : "Not yet defined");
         }
 
         Group group = resolveToGroup(fdMatch);
         if (group == null) {
             LOG.warn("No group found for match {}", fdMatch);
-            return null;
+            return;
         }
 
-        matchBuilder.withGroup(group);
-
-        matchBuilder.withKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
+        match.setGroup(group);
+        match.setKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
+        match.setExternalId(fdMatch.id());
+        match.setExternalLastUpdated(fdMatch.lastUpdated());
 
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null) {
             FdFullTime fdFullTime = fdMatch.score().fullTime();
-            matchBuilder.withGoals(fdFullTime.home(), fdFullTime.away());
+            match.setGoalsTeamOne(fdFullTime.home());
+            match.setGoalsTeamTwo(fdFullTime.away());
         }
-        Match match = matchBuilder.build();
-        match.setExternalId(fdMatch.id());
-        return match;
     }
 
     private Group resolveToGroup(FdMatch fdMatch) {
@@ -157,7 +156,4 @@ class FdMatchConverter {
         }
     }
 
-    public void updateMatchFromFdMatch(FdMatch fdMatch, Match match) {
-
-    }
 }
