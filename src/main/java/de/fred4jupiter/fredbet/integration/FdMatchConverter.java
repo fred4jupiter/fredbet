@@ -31,16 +31,13 @@ class FdMatchConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FdMatchConverter.class);
 
-    private final Resource countryNameResource;
-
     private final RuntimeSettingsService runtimeSettingsService;
 
     private final Properties countryProps;
 
     FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource, RuntimeSettingsService runtimeSettingsService) {
-        this.countryNameResource = countryNameResource;
         this.runtimeSettingsService = runtimeSettingsService;
-        this.countryProps = loadCountryNames();
+        this.countryProps = loadCountryNames(countryNameResource);
     }
 
     public void mapMatchFromTo(FdMatch fdMatch, Match match) {
@@ -137,7 +134,7 @@ class FdMatchConverter {
         return null;
     }
 
-    private Properties loadCountryNames() {
+    private Properties loadCountryNames(Resource countryNameResource) {
         try (final InputStream in = countryNameResource.getInputStream()) {
             final Properties properties = new Properties();
             properties.load(in);
