@@ -7,15 +7,6 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
  *
  * @author michael
  */
-public class MatchGoalsChangedEvent {
+public record MatchGoalsChangedEvent(Match match) {
 
-    private final Match match;
-
-    public MatchGoalsChangedEvent(Match match) {
-        this.match = match;
-    }
-
-    public Match getMatch() {
-        return match;
-    }
 }

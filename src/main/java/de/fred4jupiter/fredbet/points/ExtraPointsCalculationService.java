@@ -40,7 +40,7 @@ public class ExtraPointsCalculationService {
 
     @EventListener
     public void onApplicationEvent(MatchGoalsChangedEvent event) {
-        final Match match = event.getMatch();
+        final Match match = event.match();
 
         calculateExtraPointsOnMatch(match);
     }

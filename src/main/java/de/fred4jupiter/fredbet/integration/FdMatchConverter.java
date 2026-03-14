@@ -7,6 +7,8 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.model.FdFullTime;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
+import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,7 @@ import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -35,20 +38,27 @@ class FdMatchConverter {
 
     private final Properties countryProps;
 
-    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource, RuntimeSettingsService runtimeSettingsService) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    private final MatchRepository matchRepository;
+
+    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
+                     RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchRepository matchRepository) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.countryProps = loadCountryNames(countryNameResource);
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.matchRepository = matchRepository;
     }
 
-    public Match mapMatchFromTo(FdMatch fdMatch, Match match) {
+    public void mapAndSave(FdMatch fdMatch, Match match) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
             LOG.warn("match is null or home/away team is null for match {}", fdMatch);
-            return null;
+            return;
         }
 
         if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
             LOG.info("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
-            return null;
+            return;
         }
 
         LOG.debug("start syncing fdMatch={}", fdMatch);
@@ -59,7 +69,7 @@ class FdMatchConverter {
         Group group = resolveToGroup(fdMatch);
         if (group == null) {
             LOG.warn("No group found for match {}", fdMatch);
-            return null;
+            return;
         }
 
         match.setGroup(group);
@@ -70,12 +80,17 @@ class FdMatchConverter {
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
             FdFullTime fdFullTime = fdMatch.score().fullTime();
-            match.setGoalsTeamOne(fdFullTime.home());
-            match.setGoalsTeamTwo(fdFullTime.away());
+            if (!match.hasResultSet() && fdMatch.isFinished()) {
+                match.setGoalsTeamOne(fdFullTime.home());
+                match.setGoalsTeamTwo(fdFullTime.away());
+                LOG.debug("saved result for match={}", match);
+            }
         }
 
+        Match saved = matchRepository.save(match);
+        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
+
         LOG.debug("finished syncing fdMatch={}", fdMatch);
-        return match;
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {

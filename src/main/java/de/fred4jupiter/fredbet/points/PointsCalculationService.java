@@ -38,7 +38,7 @@ public class PointsCalculationService {
 
     @EventListener
     public void onApplicationEvent(MatchGoalsChangedEvent event) {
-        final Match match = event.getMatch();
+        final Match match = event.match();
 
         LOG.debug("match={} has finished. Calculating points for bets...", match);
         calculatePointsFor(match);
