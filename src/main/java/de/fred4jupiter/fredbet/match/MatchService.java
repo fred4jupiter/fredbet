@@ -65,8 +65,9 @@ public class MatchService {
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-    public void saveAll(List<Match> matches) {
-        matchRepository.saveAll(matches);
+    public int saveAll(List<Match> matches) {
+        List<Match> savedList = matchRepository.saveAll(matches);
+        return savedList.size();
     }
 
     public void enterMatchResult(Long matchId, Consumer<Match> consumer) {

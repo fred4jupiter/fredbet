@@ -40,15 +40,15 @@ class FdMatchConverter {
         this.countryProps = loadCountryNames(countryNameResource);
     }
 
-    public void mapMatchFromTo(FdMatch fdMatch, Match match) {
+    public Match mapMatchFromTo(FdMatch fdMatch, Match match) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
             LOG.warn("match is null or home/away team is null for match {}", fdMatch);
-            return;
+            return null;
         }
 
         if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
             LOG.info("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
-            return;
+            return null;
         }
 
         LOG.debug("start syncing fdMatch={}", fdMatch);
@@ -59,7 +59,7 @@ class FdMatchConverter {
         Group group = resolveToGroup(fdMatch);
         if (group == null) {
             LOG.warn("No group found for match {}", fdMatch);
-            return;
+            return null;
         }
 
         match.setGroup(group);
@@ -75,6 +75,7 @@ class FdMatchConverter {
         }
 
         LOG.debug("finished syncing fdMatch={}", fdMatch);
+        return match;
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {

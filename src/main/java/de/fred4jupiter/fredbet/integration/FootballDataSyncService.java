@@ -3,12 +3,12 @@ package de.fred4jupiter.fredbet.integration;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.match.MatchService;
-import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FootballDataSyncService {
@@ -37,17 +37,17 @@ public class FootballDataSyncService {
 
         final List<Match> updatedMatches = matches.stream()
             .map(this::syncMatch)
+            .filter(Objects::nonNull)
             .filter(match -> match.getExternalId() != null)
             .toList();
 
-        matchService.saveAll(updatedMatches);
-        LOG.info("saved {} matches.", updatedMatches.size());
-        return updatedMatches.size();
+        int savedOrUpdatedCount = matchService.saveAll(updatedMatches);
+        LOG.info("saved {} matches.", savedOrUpdatedCount);
+        return savedOrUpdatedCount;
     }
 
-    private @NonNull Match syncMatch(FdMatch fdMatch) {
+    private Match syncMatch(FdMatch fdMatch) {
         final Match match = matchService.findByExternalId(fdMatch.id()).orElse(new Match());
-        fdMatchConverter.mapMatchFromTo(fdMatch, match);
-        return match;
+        return fdMatchConverter.mapMatchFromTo(fdMatch, match);
     }
 }
