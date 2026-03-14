@@ -49,11 +49,6 @@ class FdMatchConverter {
             return;
         }
 
-//        if (fdMatch.homeTeam().id() == null && fdMatch.awayTeam().id() == null) {
-//            LOG.warn("match has no team ids for match {}", fdMatch);
-//            return;
-//        }
-
         mapTeam(fdMatch.homeTeam(), match.getTeamOne());
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
