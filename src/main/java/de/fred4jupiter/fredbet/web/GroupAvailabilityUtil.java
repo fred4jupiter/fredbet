@@ -4,7 +4,9 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -30,6 +32,13 @@ public class GroupAvailabilityUtil {
 
     public List<Group> getMainGroups() {
         Set<Group> groups = matchService.availableGroups();
-        return groups.stream().filter(Group::isMainGroup).sorted().toList();
+        if (groups.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Group> groupStageMatches = groups.stream().filter(Objects::nonNull).filter(Group::isMainGroup).sorted().toList();
+        if (groupStageMatches.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return groupStageMatches;
     }
 }

@@ -36,23 +36,24 @@ public class FootballDataSyncService {
     }
 
     public int syncData(String competitionCode, int seasonYear) {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches(competitionCode, seasonYear);
+        final List<FdMatch> matches = footballDataRestClient.fetchMatches(competitionCode, seasonYear);
         if (matches == null || matches.isEmpty()) {
             LOG.warn("Could not load football data fdMatchesList!");
             return 0;
         }
 
         LOG.info("fetched {} matches.", matches.size());
-        matches.forEach(this::syncMatch);
+        final List<Match> updatedMatches = matches.stream().map(fdMatch -> {
+                final Match match = matchRepository.findByExternalId(fdMatch.id()).orElse(new Match());
+                fdMatchConverter.mapMatchFromTo(fdMatch, match);
+                return match;
+            })
+            .filter(match -> match.getExternalId() != null)
+            .toList();
 
+        matchRepository.saveAll(updatedMatches);
+        LOG.info("saved {} matches.", updatedMatches.size());
         cacheAdministrationService.clearCaches();
-
-        return matchService.countMatches().intValue();
-    }
-
-    private void syncMatch(FdMatch fdMatch) {
-        final Match match = matchRepository.findByExternalId(fdMatch.id()).orElse(new Match());
-        fdMatchConverter.mapMatchFromTo(fdMatch, match);
-        matchRepository.save(match);
+        return updatedMatches.size();
     }
 }
