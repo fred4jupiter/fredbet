@@ -8,4 +8,11 @@ public record FdMatch(String id, FdTeam homeTeam, FdTeam awayTeam, String group,
     public boolean isFinished() {
         return "FINISHED".equalsIgnoreCase(status);
     }
+
+    public boolean isUpdatedAfter(ZonedDateTime givenDate) {
+        if (givenDate == null) {
+            return false;
+        }
+        return this.lastUpdated.isAfter(givenDate);
+    }
 }

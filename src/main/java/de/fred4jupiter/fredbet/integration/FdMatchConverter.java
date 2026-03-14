@@ -46,6 +46,13 @@ class FdMatchConverter {
             return;
         }
 
+        if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
+            LOG.info("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
+            return;
+        }
+
+        LOG.debug("start syncing fdMatch={}", fdMatch);
+
         mapTeam(fdMatch.homeTeam(), match.getTeamOne());
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
@@ -61,11 +68,13 @@ class FdMatchConverter {
         match.setExternalLastUpdated(fdMatch.lastUpdated());
 
         // update results
-        if (fdMatch.score() != null && fdMatch.score().fullTime() != null) {
+        if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
             FdFullTime fdFullTime = fdMatch.score().fullTime();
             match.setGoalsTeamOne(fdFullTime.home());
             match.setGoalsTeamTwo(fdFullTime.away());
         }
+
+        LOG.debug("finished syncing fdMatch={}", fdMatch);
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {
