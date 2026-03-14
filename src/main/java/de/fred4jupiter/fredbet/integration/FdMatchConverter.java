@@ -7,6 +7,7 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.model.FdFullTime;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
+import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -35,9 +37,13 @@ class FdMatchConverter {
 
     private final Properties countryProps;
 
-    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource, RuntimeSettingsService runtimeSettingsService) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
+                     RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.countryProps = loadCountryNames(countryNameResource);
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public Match mapMatchFromTo(FdMatch fdMatch, Match match) {
@@ -70,8 +76,11 @@ class FdMatchConverter {
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
             FdFullTime fdFullTime = fdMatch.score().fullTime();
-            match.setGoalsTeamOne(fdFullTime.home());
-            match.setGoalsTeamTwo(fdFullTime.away());
+            if (!match.hasResultSet()) {
+                match.setGoalsTeamOne(fdFullTime.home());
+                match.setGoalsTeamTwo(fdFullTime.away());
+                applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(match));
+            }
         }
 
         LOG.debug("finished syncing fdMatch={}", fdMatch);
