@@ -30,9 +30,9 @@ import java.util.Properties;
 import java.util.Set;
 
 @Component
-class FdMatchConverter {
+class FdMatchSyncImporter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FdMatchConverter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FdMatchSyncImporter.class);
 
     private final RuntimeSettingsService runtimeSettingsService;
 
@@ -42,8 +42,8 @@ class FdMatchConverter {
 
     private final MatchRepository matchRepository;
 
-    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
-                     RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchRepository matchRepository) {
+    FdMatchSyncImporter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
+                        RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchRepository matchRepository) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.countryProps = loadCountryNames(countryNameResource);
         this.applicationEventPublisher = applicationEventPublisher;
@@ -83,14 +83,14 @@ class FdMatchConverter {
             if (!match.hasResultSet() && fdMatch.isFinished()) {
                 match.setGoalsTeamOne(fdFullTime.home());
                 match.setGoalsTeamTwo(fdFullTime.away());
-                LOG.debug("saved result for match={}", match);
+                Match saved = matchRepository.save(match);
+                applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
+                LOG.debug("saved result for match={}", saved);
+                return;
             }
         }
 
-        Match saved = matchRepository.save(match);
-        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
-
-        LOG.debug("finished syncing fdMatch={}", fdMatch);
+        matchRepository.save(match);
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {

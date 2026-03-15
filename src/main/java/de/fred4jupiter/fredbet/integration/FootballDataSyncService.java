@@ -20,15 +20,15 @@ public class FootballDataSyncService {
 
     private final MatchService matchService;
 
-    private final FdMatchConverter fdMatchConverter;
+    private final FdMatchSyncImporter fdMatchSyncImporter;
 
     private final CacheAdministrationService administrationService;
 
     FootballDataSyncService(FootballDataRestClient footballDataRestClient,
-                            MatchService matchService, FdMatchConverter fdMatchConverter, CacheAdministrationService administrationService) {
+                            MatchService matchService, FdMatchSyncImporter fdMatchSyncImporter, CacheAdministrationService administrationService) {
         this.footballDataRestClient = footballDataRestClient;
         this.matchService = matchService;
-        this.fdMatchConverter = fdMatchConverter;
+        this.fdMatchSyncImporter = fdMatchSyncImporter;
         this.administrationService = administrationService;
     }
 
@@ -47,6 +47,6 @@ public class FootballDataSyncService {
 
     private void syncMatch(FdMatch fdMatch) {
         final Match match = matchService.findByExternalId(fdMatch.id()).orElse(new Match());
-        fdMatchConverter.mapAndSave(fdMatch, match);
+        fdMatchSyncImporter.mapAndSave(fdMatch, match);
     }
 }
