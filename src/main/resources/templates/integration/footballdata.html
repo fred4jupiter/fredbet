@@ -9,7 +9,7 @@
     <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
         <div class="row">
             <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                <div class="form-check">
+                <div class="form-check mt-3 mb-3">
                     <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
                     <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
                 </div>
