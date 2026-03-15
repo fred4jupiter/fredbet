@@ -85,7 +85,6 @@ class FdMatchSyncImporter {
                 match.setGoalsTeamTwo(fdFullTime.away());
                 Match saved = matchRepository.save(match);
                 applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
-                LOG.debug("saved result for match={}", saved);
                 return;
             }
         }
