@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.integration;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,16 +12,23 @@ public class FootballDataRuntimeSettings {
 
     private boolean enabled;
 
+    private String apiToken;
+
     private String competitionCode; // e.g. EC, WC
 
     private Integer seasonYear; // e.g. the year like
 
     public static FootballDataRuntimeSettings fromKey(boolean enabled, String key) {
+        final FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
+        settings.setEnabled(enabled);
+
+        if (StringUtils.isBlank(key)) {
+            return settings;
+        }
+
         String code = key.split(KEY_SEPARATOR)[0];
         int seasonYear = Integer.parseInt(key.split(KEY_SEPARATOR)[1]);
 
-        FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
-        settings.setEnabled(enabled);
         settings.setCompetitionCode(code);
         settings.setSeasonYear(seasonYear);
         return settings;
@@ -61,5 +69,13 @@ public class FootballDataRuntimeSettings {
             .append("competitionCode", competitionCode)
             .append("seasonYear", seasonYear)
             .toString();
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
     }
 }

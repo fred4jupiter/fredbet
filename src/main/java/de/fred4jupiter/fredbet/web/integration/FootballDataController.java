@@ -31,14 +31,18 @@ public class FootballDataController {
 
     private final FootballDataSyncService footballDataSyncService;
 
+    private final FootballDataLoader footballDataLoader;
+
     private final WebMessageUtil webMessageUtil;
 
     private final DataPopulator dataPopulator;
 
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
+                                  FootballDataLoader footballDataLoader,
                                   WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
+        this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
         this.dataPopulator = dataPopulator;
     }
@@ -53,11 +57,12 @@ public class FootballDataController {
         final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
 
         if (settings.isEnabled()) {
-            List<Competition> competitions = footballDataService.loadCompetitions();
+            List<Competition> competitions = footballDataLoader.loadCompetitions();
             model.addAttribute("competitions", competitions);
         }
 
         footballDataCommand.setEnabled(settings.isEnabled());
+        footballDataCommand.setApiToken(settings.getApiToken());
         footballDataCommand.setCompetitionKey(settings.getKey());
 
         return "integration/footballdata";
@@ -88,6 +93,7 @@ public class FootballDataController {
         }
 
         FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
+        footballDataRuntimeSettings.setApiToken(footballDataCommand.getApiToken());
 
         footballDataService.saveSettings(footballDataRuntimeSettings);
         webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");

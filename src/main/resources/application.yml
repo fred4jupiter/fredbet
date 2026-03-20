@@ -69,7 +69,6 @@ fredbet:
   admin-password: "admin"
   integration:
     football-data:
-      api-token: "<some secret token>"
       base-url: "https://api.football-data.org/v4"
       scheduler-interval-minutes: 10
   excel-templates:

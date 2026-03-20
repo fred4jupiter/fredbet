@@ -13,6 +13,11 @@
                     <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
                     <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
                 </div>
+                <div class="form-group mb-3">
+                    <label class="form-label" for="apiToken" th:text="#{footballdata.apiToken} + ':'"></label>
+                    <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
+                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
+                </div>
                 <div class="mb-3">
                     <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
                     <select id="competitions" th:field="*{competitionKey}" class="form-select">
