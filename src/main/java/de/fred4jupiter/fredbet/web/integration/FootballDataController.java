@@ -50,10 +50,13 @@ public class FootballDataController {
 
     @RequestMapping
     public String showPage(FootballDataCommand footballDataCommand, Model model) {
-        List<Competition> competitions = footballDataService.loadCompetitions();
-        model.addAttribute("competitions", competitions);
+        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
 
-        FootballDataRuntimeSettings settings = footballDataService.loadSettings();
+        if (settings.isEnabled()) {
+            List<Competition> competitions = footballDataService.loadCompetitions();
+            model.addAttribute("competitions", competitions);
+        }
+
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setCompetitionKey(settings.getKey());
 
