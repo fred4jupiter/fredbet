@@ -353,53 +353,6 @@
                     </container>
                 </configuration>
             </plugin>
-            <!-- run with mvn rewrite:run -->
-            <plugin>
-                <groupId>org.openrewrite.maven</groupId>
-                <artifactId>rewrite-maven-plugin</artifactId>
-                <version>6.33.0</version>
-                <configuration>
-                    <activeRecipes>
-                        <recipe>org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0</recipe>
-                    </activeRecipes>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.openrewrite.recipe</groupId>
-                        <artifactId>rewrite-spring</artifactId>
-                        <version>6.27.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <!-- https://github.com/CycloneDX/cyclonedx-maven-plugin  -->
-            <!-- result see target/classes/META-INF/sbom/application.cdx.json, can then be analyzed in Dependency Track -->
-            <!--            <plugin>-->
-            <!--                <groupId>org.cyclonedx</groupId>-->
-            <!--                <artifactId>cyclonedx-maven-plugin</artifactId>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <phase>package</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>makeAggregateBom</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
-
-            <!-- steps to perform: mvn verify, mvn jqassistant:server, open URL at https://localhost:7474 -->
-            <!--            <plugin>-->
-            <!--                <groupId>com.buschmais.jqassistant</groupId>-->
-            <!--                <artifactId>jqassistant-maven-plugin</artifactId>-->
-            <!--                <version>2.5.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <goals>-->
-            <!--                            <goal>scan</goal>-->
-            <!--                            <goal>analyze</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
