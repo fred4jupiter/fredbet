@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -96,4 +97,21 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
         or (m.teamTwo is not null and m.teamTwo.goals is not null)
         """)
     boolean hasMatchWithResult();
+
+    @Query("""
+        select m
+        from Match m
+        where (m.teamOne is not null and m.teamOne.goals is not null)
+        or (m.teamTwo is not null and m.teamTwo.goals is not null)
+        """)
+    List<Match> findAllWithMatchResult();
+
+    @Query("""
+        select m
+        from Match m
+        where m.group in (:groups)
+        """)
+    List<Match> findByGroupIn(@Param("groups") List<Group> groups);
+
+    Optional<Match> findByExternalId(String externalId);
 }

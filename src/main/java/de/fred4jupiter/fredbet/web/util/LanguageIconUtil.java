@@ -21,6 +21,9 @@ public class LanguageIconUtil {
         if ("ca".equals(language)) {
             return cssClassFor("es-ct");
         }
+        if ("sv".equals(language)) {
+            return cssClassFor("se");
+        }
         return cssClassFor(language);
     }
 }

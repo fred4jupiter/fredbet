@@ -1,13 +1,15 @@
 package de.fred4jupiter.fredbet.points;
 
+import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +19,8 @@ import java.util.List;
  * @author michael
  */
 @Service
-public class PointsCalculationService implements ApplicationListener<MatchGoalsChangedEvent> {
+@Transactional
+public class PointsCalculationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PointsCalculationService.class);
 
@@ -25,17 +28,27 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
 
     private final PointsCalculationUtil pointsCalculationUtil;
 
-    PointsCalculationService(BetRepository betRepository, PointsCalculationUtil pointsCalculationUtil) {
+    private final MatchRepository matchRepository;
+
+    PointsCalculationService(BetRepository betRepository, PointsCalculationUtil pointsCalculationUtil, MatchRepository matchRepository) {
         this.betRepository = betRepository;
         this.pointsCalculationUtil = pointsCalculationUtil;
+        this.matchRepository = matchRepository;
     }
 
-    @Override
+    @EventListener
     public void onApplicationEvent(MatchGoalsChangedEvent event) {
-        final Match match = event.getMatch();
+        final Match match = event.match();
 
         LOG.debug("match={} has finished. Calculating points for bets...", match);
         calculatePointsFor(match);
+    }
+
+    @EventListener
+    public void onPointsConfigurationChangedEvent(PointsConfigurationChangedEvent event) {
+        LOG.info("recalculating points...");
+        List<Match> matchesWithResult = matchRepository.findAllWithMatchResult();
+        matchesWithResult.forEach(this::calculatePointsFor);
     }
 
     void calculatePointsFor(final Match match) {

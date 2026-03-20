@@ -8,32 +8,23 @@
     <h2 th:text="#{excel.import.title}"></h2>
     <div class="row">
         <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-            <form th:action="@{/excelimport/upload}" th:object="${excelUploadCommand}" method="post"
-                  enctype="multipart/form-data" role="form">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-12">
-                                <span th:text="#{excel.upload.file}"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <input id="myFile" type="file" th:field="*{myFile}"
-                               class="form-control btn btn-light btn-file"/>
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <input type="submit" class="btn btn-primary" th:value="#{excel.upload.button}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="text-danger" th:text="#{excel.download.hint.allMatchesDeleted}"></span>
-                    </div>
+            <form th:action="@{/excelimport/upload}" th:object="${excelUploadCommand}" method="post" enctype="multipart/form-data" role="form">
+                <h3 th:text="#{excel.upload.file}"></h3>
+                <div class="mt-3 mb-3">
+                    <input id="myFile" type="file" th:field="*{myFile}" class="form-control btn btn-light btn-file"/>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-primary" th:value="#{excel.upload.button}"/>
                 </div>
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <span class="text-danger" th:text="#{excel.download.hint.allMatchesDeleted}"></span>
+        </div>
+    </div>
+
     <h3 class="mt-3" th:text="#{excel.download.template}">Templates</h3>
     <div class="row">
         <div class="col-auto">

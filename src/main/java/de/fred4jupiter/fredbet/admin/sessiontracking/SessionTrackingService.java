@@ -1,6 +1,9 @@
 package de.fred4jupiter.fredbet.admin.sessiontracking;
 
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,8 @@ import java.util.Optional;
 @Service
 @Transactional
 public class SessionTrackingService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SessionTrackingService.class);
 
     private final SessionTrackingRepository sessionTrackingRepository;
 
@@ -30,12 +35,13 @@ public class SessionTrackingService {
     }
 
     public void registerLogout(String sessionId) {
-        SessionTracking sessionTracking = sessionTrackingRepository.findBySessionId(sessionId);
-        if (sessionTracking == null) {
+        if (StringUtils.isBlank(sessionId)) {
+            LOG.debug("sessionId is blank. Do not delete any saved session.");
             return;
         }
 
-        sessionTrackingRepository.delete(sessionTracking);
+        int deleted = sessionTrackingRepository.deleteBySessionId(sessionId);
+        LOG.debug("Deleted {} sessions with id {}", deleted, sessionId);
     }
 
     public List<SessionTracking> findLoggedInUsers() {

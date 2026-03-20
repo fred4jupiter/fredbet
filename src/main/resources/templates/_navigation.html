@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:fragment="menu" th:remove="tag">
-        <nav th:if="${@webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${@runtimeSettingsUtil.getSettings().getNavbarLayout().getNavbarTag()}">
+        <nav th:if="${@webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${@webSecurityUtil.getNavbarTag()}">
             <div class="container">
                 <a class="navbar-brand" th:href="@{/matches/upcoming}"><i class="fas fa-home"></i></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -70,12 +70,10 @@
                                 <li>
                                     <a class="dropdown-item" th:href="@{/matches}" th:text="#{all.matches}"></a>
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+                                <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}" class="divider"
-                                    role="separator"></li>
-                                <li th:if="${@groupAvailabilityUtil.hasUserBetsWithJoker()}">
+                                <li>
                                     <a class="dropdown-item" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
                                 </li>
                                 <li>
@@ -86,6 +84,10 @@
                                 </li>
                                 <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}">
                                     <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/ROUND_OF_THIRTY_TWO}"
+                                       th:text="#{group.title.roundOfThirtyTwo}"></a>
                                 </li>
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}">
                                     <a class="dropdown-item" th:href="@{/matches/group/ROUND_OF_SIXTEEN}"
@@ -99,18 +101,19 @@
                                     <a class="dropdown-item" th:href="@{/matches/group/SEMI_FINAL}"
                                        th:text="#{group.title.semiFinal}"></a>
                                 </li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider"
-                                    role="separator"></li>
-                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
-                                    <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
-                                       th:text="#{group.title.gameForThird}"></a>
-                                </li>
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}">
                                     <a class="dropdown-item" th:href="@{/matches/group/FINAL}"
                                        th:text="#{group.title.final}"></a>
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">
+                                    <a class="dropdown-item" th:href="@{/matches/group/GAME_FOR_THIRD}"
+                                       th:text="#{group.title.gameForThird}"></a>
                                 </li>
                             </ul>
                         </li>
@@ -157,6 +160,9 @@
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/config/points}" th:text="#{points.config.title}"></a>
                                 </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/loginlogo}" th:text="#{login.logo.title}"></a>
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -167,9 +173,6 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/user/importexport}" th:text="#{user.importexport.title}"></a>
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/importexport}" th:text="#{importexport.title}"></a>
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
@@ -177,6 +180,12 @@
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/excelexport/show}" th:text="#{navigation.excelexport}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/footballdata}" th:text="#{footballdata.title}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -234,6 +243,9 @@
                                 </li>
                                 <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
                                     <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/setting}" th:text="#{user.setting.title}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">

@@ -2,8 +2,9 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.admin.AdministrationService;
 import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
-import de.fred4jupiter.fredbet.data.DatabasePopulator;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
+import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -34,7 +35,7 @@ public class AdminController {
 
     private static final String PAGE_LAST_LOGINS = "admin/lastlogins";
 
-    private final DatabasePopulator databasePopulator;
+    private final DataPopulator dataPopulator;
 
     private final WebMessageUtil webMessageUtil;
 
@@ -44,10 +45,10 @@ public class AdminController {
 
     private final UserService userService;
 
-    public AdminController(DatabasePopulator databasePopulator, WebMessageUtil webMessageUtil,
+    public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
                            SessionTrackingService sessionTrackingService,
                            AdministrationService administrationService, UserService userService) {
-        this.databasePopulator = databasePopulator;
+        this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
         this.sessionTrackingService = sessionTrackingService;
         this.administrationService = administrationService;
@@ -62,20 +63,20 @@ public class AdminController {
     @ModelAttribute("testDataCommand")
     public TestDataCommand testDataCommand() {
         TestDataCommand testDataCommand = new TestDataCommand();
-        testDataCommand.setNumberOfGroups(12);
+        testDataCommand.setGroupSelection(GroupSelection.ROUND_OF_SIXTEEN);
         return testDataCommand;
     }
 
     @GetMapping("/createDemoBets")
     public String createDemoBets(RedirectAttributes redirect) {
-        databasePopulator.executeAsync(DatabasePopulator::createDemoBetsForAllUsers);
+        dataPopulator.executeAsync(DataPopulator::createDemoBetsForAllUsers);
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoBetsCreated");
         return "redirect:/administration";
     }
 
     @GetMapping("/createDemoResults")
     public String createDemoResults(RedirectAttributes redirect) {
-        databasePopulator.executeAsync(DatabasePopulator::createDemoResultsForAllMatches);
+        dataPopulator.executeAsync(DataPopulator::createDemoResultsForAllMatches);
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoResultsCreated");
         return "redirect:/administration";
     }
@@ -87,25 +88,21 @@ public class AdminController {
     }
 
     @PostMapping("/testdata")
-    public String createTestData(@Valid TestDataCommand command, Model model, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String createTestData(@Valid TestDataCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_ADMINISTRATION;
         }
 
-        if (command.getNumberOfGroups() > 12) {
-            webMessageUtil.addErrorMsg(model, "administration.testdata.tooManyGroups", 12);
-            return PAGE_ADMINISTRATION;
-        }
-
-        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getNumberOfGroups(), command.getIncludeBets(), command.getIncludeResults());
-        databasePopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
+        DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(),
+            command.getIncludeResults(), command.getCreateGameOfThird());
+        dataPopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
         return "redirect:/administration";
     }
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
-        databasePopulator.executeAsync(DatabasePopulator::deleteAllBetsAndMatches);
+        dataPopulator.executeAsync(DataPopulator::deleteAllBetsAndMatches);
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/administration";
@@ -133,7 +130,7 @@ public class AdminController {
             return PAGE_ADMINISTRATION;
         }
 
-        databasePopulator.executeAsync(populator -> populator.createDemoUsers(command.getNumberOfTestUsers()));
+        dataPopulator.executeAsync(populator -> populator.createDemoUsers(command.getNumberOfTestUsers()));
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }

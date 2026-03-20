@@ -1,14 +1,16 @@
 package de.fred4jupiter.fredbet.points;
 
-import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
-import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,7 +20,8 @@ import java.util.List;
  * @author michael
  */
 @Service
-public class ExtraPointsCalculationService implements ApplicationListener<MatchGoalsChangedEvent> {
+@Transactional
+public class ExtraPointsCalculationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExtraPointsCalculationService.class);
 
@@ -26,21 +29,36 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
 
     private final PointsConfigService pointsConfigService;
 
-    public ExtraPointsCalculationService(ExtraBetRepository extraBetRepository, PointsConfigService pointsConfigService) {
+    private final MatchRepository matchRepository;
+
+    public ExtraPointsCalculationService(ExtraBetRepository extraBetRepository, PointsConfigService pointsConfigService,
+                                         MatchRepository matchRepository) {
         this.extraBetRepository = extraBetRepository;
         this.pointsConfigService = pointsConfigService;
+        this.matchRepository = matchRepository;
     }
 
-    @Override
+    @EventListener
     public void onApplicationEvent(MatchGoalsChangedEvent event) {
-        final Match match = event.getMatch();
+        final Match match = event.match();
 
+        calculateExtraPointsOnMatch(match);
+    }
+
+    @EventListener
+    public void onApplicationEvent(PointsConfigurationChangedEvent event) {
+        LOG.info("recalculating extra points...");
+        List<Match> lastMatchesRelevantForExtraPoints = matchRepository.findByGroupIn(List.of(Group.FINAL, Group.GAME_FOR_THIRD));
+        lastMatchesRelevantForExtraPoints.forEach(this::calculateExtraPointsOnMatch);
+    }
+
+    private void calculateExtraPointsOnMatch(Match match) {
         if (!match.isFinal() && !match.isGroup(Group.GAME_FOR_THIRD)) {
             LOG.debug("Match is not final or game of third. So no extra points to calculate for...");
             return;
         }
 
-        LOG.debug("Calculate extra betting points...");
+        LOG.debug("calculating extra points for match: {}", match);
         List<ExtraBet> extraBets = extraBetRepository.findAll();
 
         extraBets.forEach(extraBet -> {

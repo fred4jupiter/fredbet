@@ -1,12 +1,12 @@
 package de.fred4jupiter.fredbet.image;
 
+import de.fred4jupiter.fredbet.avatar.AvatarService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
+import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageGroup;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.group.ImageGroupRepository;
-import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,29 +25,26 @@ public class ImageAdministrationService {
 
     private final ImageMetaDataRepository imageMetaDataRepository;
 
+    private final ImageBinaryRepository imageBinaryRepository;
+
     private final ImageGroupRepository imageGroupRepository;
 
     private final ImageResizingService imageResizingService;
 
-    private final ImageLocationStrategy imageLocationStrategy;
-
-    private final SecurityService securityService;
-
     private final RuntimeSettingsService runtimeSettingsService;
 
-    private final DefaultProfileImageLoader defaultProfileImageLoader;
+    private final AvatarService avatarService;
 
-    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageGroupRepository imageGroupRepository,
-                               ImageResizingService imageResizingService, ImageLocationStrategy imageLocationStrategy,
-                               SecurityService securityService,
-                               RuntimeSettingsService runtimeSettingsService, DefaultProfileImageLoader defaultProfileImageLoader) {
+    ImageAdministrationService(ImageMetaDataRepository imageMetaDataRepository, ImageBinaryRepository imageBinaryRepository,
+                               ImageGroupRepository imageGroupRepository,
+                               ImageResizingService imageResizingService,
+                               RuntimeSettingsService runtimeSettingsService, AvatarService avatarService) {
         this.imageMetaDataRepository = imageMetaDataRepository;
+        this.imageBinaryRepository = imageBinaryRepository;
         this.imageGroupRepository = imageGroupRepository;
         this.imageResizingService = imageResizingService;
-        this.imageLocationStrategy = imageLocationStrategy;
-        this.securityService = securityService;
         this.runtimeSettingsService = runtimeSettingsService;
-        this.defaultProfileImageLoader = defaultProfileImageLoader;
+        this.avatarService = avatarService;
     }
 
     public ImageGroup initUserProfileImageGroup() {
@@ -71,24 +68,16 @@ public class ImageAdministrationService {
         return imageGroup;
     }
 
-    public void saveImage(byte[] binary, String galleryGroup, String description) {
+    public void saveImage(byte[] binary, String galleryGroup, String description, AppUser currentUser) {
+        final byte[] thumbnail = imageResizingService.createThumbnail(binary);
+        final String imageKey = imageBinaryRepository.saveImage(binary, thumbnail);
+
         final ImageGroup imageGroup = findOrCreateImageGroup(galleryGroup);
-        final AppUser currentUser = securityService.getCurrentUser();
         checkIfImageUploadPerUserIsReached(currentUser);
 
-        final String key = generateKey();
-
-        ImageMetaData image = new ImageMetaData(key, imageGroup, currentUser);
-        image.setDescription(description);
-        imageMetaDataRepository.save(image);
-
-        byte[] thumbnail = imageResizingService.createThumbnail(binary);
-
-        imageLocationStrategy.saveImage(key, imageGroup.getId(), binary, thumbnail);
-    }
-
-    private String generateKey() {
-        return UUID.randomUUID().toString();
+        ImageMetaData imageMetaData = new ImageMetaData(imageKey, imageGroup, currentUser);
+        imageMetaData.setDescription(description);
+        imageMetaDataRepository.save(imageMetaData);
     }
 
     private void checkIfImageUploadPerUserIsReached(AppUser currentUser) {
@@ -104,12 +93,15 @@ public class ImageAdministrationService {
         }
     }
 
-    public void saveUserWithDefaultProfileImage(AppUser appUser) {
-        saveUserProfileImage(defaultProfileImageLoader.getDefaultProfileImage().imageBinary(), appUser, null);
+    public void saveUserProfileImageForNewUser(AppUser appUser) {
+        byte[] userAvatarImage = avatarService.selectUserAvatarForNewUser();
+        saveUserProfileImage(userAvatarImage, appUser, null);
     }
 
     public void saveUserProfileImage(byte[] binary, AppUser appUser, ImageMetaData imageMetaData) {
-        final String key = generateKey();
+        final byte[] thumbnail = imageResizingService.createThumbnail(binary);
+        final String imageKey = imageBinaryRepository.saveImage(binary, thumbnail);
+
         if (imageMetaData == null) {
             // create new user profile image
             ImageGroup imageGroup = imageGroupRepository.findByUserProfileImageGroup();
@@ -117,16 +109,13 @@ public class ImageAdministrationService {
                 imageGroup = initUserProfileImageGroup();
             }
 
-            imageMetaData = new ImageMetaData(key, imageGroup, appUser);
+            imageMetaData = new ImageMetaData(imageKey, imageGroup, appUser);
             imageMetaData.setDescription(appUser.getUsername());
         } else {
-            imageMetaData.setImageKey(key);
+            imageMetaData.setImageKey(imageKey);
         }
 
         imageMetaDataRepository.save(imageMetaData);
-
-        byte[] thumbnail = imageResizingService.createThumbnail(binary);
-        imageLocationStrategy.saveImage(key, imageMetaData.getImageGroup().getId(), binary, thumbnail);
     }
 
     public List<ImageMetaData> fetchAllImages() {
@@ -143,21 +132,13 @@ public class ImageAdministrationService {
     }
 
     public BinaryImage loadImageByImageKey(String imageKey) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
-        if (imageMetaData == null) {
-            return defaultProfileImageLoader.getDefaultProfileImage();
-        }
-
-        return imageLocationStrategy.getImageByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
+        return new BinaryImage(imageBinary.getKey(), imageBinary.getImageBinary());
     }
 
     public BinaryImage loadThumbnailByImageKey(String imageKey) {
-        ImageMetaData imageMetaData = imageMetaDataRepository.findByImageKey(imageKey);
-        if (imageMetaData == null) {
-            return defaultProfileImageLoader.getDefaultThumbProfileImage();
-        }
-
-        return imageLocationStrategy.getThumbnailByKey(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        ImageBinary imageBinary = imageBinaryRepository.getReferenceById(imageKey);
+        return new BinaryImage(imageBinary.getKey(), imageBinary.getThumbImageBinary());
     }
 
     public void deleteImageByImageKey(String imageKey) {
@@ -168,7 +149,7 @@ public class ImageAdministrationService {
         }
 
         imageMetaDataRepository.delete(imageMetaData);
-        imageLocationStrategy.deleteImage(imageMetaData.getImageKey(), imageMetaData.getImageGroup().getId());
+        imageBinaryRepository.deleteImage(imageMetaData.getImageKey());
     }
 
     public boolean isImageOfUser(String imageKey, AppUser appUser) {
@@ -191,5 +172,23 @@ public class ImageAdministrationService {
             // if there is only one image group then it is the users group
             findOrCreateImageGroup(FredbetConstants.DEFAULT_IMAGE_GROUP_NAME);
         }
+    }
+
+    public void deleteUserImages(AppUser appUser) {
+        List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
+        imageMetaDataList.forEach(imageMetaData -> {
+            Optional<ImageBinary> imageOpt = imageBinaryRepository.findById(imageMetaData.getImageKey());
+            imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
+        });
+        imageMetaDataRepository.deleteAll(imageMetaDataList);
+    }
+
+    public void saveUserProfileImage(byte[] binary, AppUser appUser) {
+        ImageMetaData imageMetaData = imageMetaDataRepository.findImageMetaDataOfUserProfileImage(appUser.getUsername());
+        saveUserProfileImage(binary, appUser, imageMetaData);
+    }
+
+    public ImageMetaData getProfileImageMetaDataFor(String username) {
+        return imageMetaDataRepository.findImageMetaDataOfUserProfileImage(username);
     }
 }

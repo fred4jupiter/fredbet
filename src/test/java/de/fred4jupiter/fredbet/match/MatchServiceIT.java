@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.data.DatabasePopulator;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -26,14 +26,14 @@ public class MatchServiceIT {
     private MatchRepository matchRepository;
 
     @Autowired
-    private DatabasePopulator databasePopulator;
+    private DataPopulator dataPopulator;
 
     @Autowired
     private UserService userService;
 
     @BeforeEach
     public void setup() {
-        databasePopulator.deleteAllBetsAndMatches();
+        dataPopulator.deleteAllBetsAndMatches();
         userService.deleteAllUsers();
     }
 

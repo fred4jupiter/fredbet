@@ -48,10 +48,10 @@ class UserImportExportHelper {
         users.forEach(userToExport -> {
             AppUser userToImport = AppUserBuilder.create().withUsernameAndPassword(userToExport.username(), userToExport.password())
                 .withRoles(userToExport.roles()).withIsChild(userToExport.child()).build();
-            userService.createUserIfNotExists(userToImport);
+            userService.createUserIfNotExists(userToImport, false);
 
             byte[] decoded = Base64.getDecoder().decode(userToExport.userAvatarBase64());
-            userService.saveUserProfileImage(decoded, userToImport.getUsername());
+            imageAdministrationService.saveUserProfileImage(decoded, userToImport);
         });
 
         return users.stream().map(UserToExport::username).distinct().count();

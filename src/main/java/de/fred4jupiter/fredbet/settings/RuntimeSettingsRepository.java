@@ -17,7 +17,7 @@ public class RuntimeSettingsRepository {
 
     private final JsonObjectConverter jsonObjectConverter;
 
-    public RuntimeSettingsRepository(RuntimeSettingsDbRepository runtimeSettingsDbRepository, JsonObjectConverter jsonObjectConverter) {
+    RuntimeSettingsRepository(RuntimeSettingsDbRepository runtimeSettingsDbRepository, JsonObjectConverter jsonObjectConverter) {
         this.runtimeSettingsDbRepository = runtimeSettingsDbRepository;
         this.jsonObjectConverter = jsonObjectConverter;
     }

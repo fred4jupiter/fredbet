@@ -2,14 +2,11 @@ package de.fred4jupiter.fredbet.user;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
-import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.domain.entity.ImageMetaData;
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.image.ImageMetaDataRepository;
-import de.fred4jupiter.fredbet.image.storage.ImageBinaryRepository;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.user.UserDto;
 import org.slf4j.Logger;
@@ -34,30 +31,23 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final SecurityService securityService;
-
     private final ImageMetaDataRepository imageMetaDataRepository;
 
     private final BettingService bettingService;
 
-    private final ImageBinaryRepository imageBinaryRepository;
+    private final ImageAdministrationService imageAdministrationService;
 
     private final FredbetProperties fredbetProperties;
 
-    private final ImageAdministrationService imageAdministrationService;
-
-    public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, SecurityService securityService,
-                       ImageMetaDataRepository imageMetaDataRepository,
-                       BettingService bettingService, ImageBinaryRepository imageBinaryRepository,
-                       FredbetProperties fredbetProperties, ImageAdministrationService imageAdministrationService) {
+    public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder,
+                       ImageMetaDataRepository imageMetaDataRepository, BettingService bettingService,
+                       ImageAdministrationService imageAdministrationService, FredbetProperties fredbetProperties) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
-        this.securityService = securityService;
         this.imageMetaDataRepository = imageMetaDataRepository;
         this.bettingService = bettingService;
-        this.imageBinaryRepository = imageBinaryRepository;
-        this.fredbetProperties = fredbetProperties;
         this.imageAdministrationService = imageAdministrationService;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public List<AppUser> findAll() {
@@ -73,27 +63,44 @@ public class UserService {
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public AppUser createUser(AppUser appUser) throws UserAlreadyExistsException {
-        AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
-        if (foundUser != null) {
-            throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
-        }
-
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        LOG.info("creating user with username={}", appUser.getUsername());
-        AppUser savedAppUser = appUserRepository.save(appUser);
-        imageAdministrationService.saveUserWithDefaultProfileImage(savedAppUser);
-        return savedAppUser;
+    public AppUser createUserIfNotExists(AppUser appUser) {
+        return createUserIfNotExists(appUser, true);
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public AppUser createUserIfNotExists(AppUser appUser) {
+    public AppUser createUserIfNotExists(AppUser appUser, boolean encryptPassword) {
         AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
         if (foundUser != null) {
             return foundUser;
         }
 
-        return createUser(appUser);
+        return createUser(appUser, encryptPassword);
+    }
+
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public AppUser createUser(AppUser appUser) throws UserAlreadyExistsException {
+        return createUser(appUser, true);
+    }
+
+    @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
+    public AppUser createUser(AppUser appUser, boolean encryptPassword) throws UserAlreadyExistsException {
+        AppUser foundUser = appUserRepository.findByUsername(appUser.getUsername());
+        if (foundUser != null) {
+            throw new UserAlreadyExistsException("User with username=" + appUser.getUsername() + " already exists.");
+        }
+
+        if (encryptPassword) {
+            // new user has unencrypted password that needs to be encrypted
+            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        } else {
+            // password of exported user is still encrypted
+            appUser.setPassword(appUser.getPassword());
+        }
+
+        LOG.info("creating user with username={}", appUser.getUsername());
+        AppUser savedAppUser = appUserRepository.save(appUser);
+        imageAdministrationService.saveUserProfileImageForNewUser(savedAppUser);
+        return savedAppUser;
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
@@ -121,12 +128,11 @@ public class UserService {
             throw new UserNotDeletableException("Could not delete user with name={}, because its marked as not deletable");
         }
 
-        List<ImageMetaData> imageMetaDataList = imageMetaDataRepository.findByOwner(appUser);
-        imageMetaDataList.forEach(imageMetaData -> {
-            Optional<ImageBinary> imageOpt = imageBinaryRepository.findById(imageMetaData.getImageKey());
-            imageOpt.ifPresent(imageBinary -> imageBinaryRepository.deleteById(imageBinary.getKey()));
-        });
-        imageMetaDataRepository.deleteAll(imageMetaDataList);
+        // delete all images of the user
+        imageAdministrationService.deleteUserImages(appUser);
+
+        // delete all bets
+        bettingService.deleteAllBetsOfUser(appUser);
 
         appUserRepository.deleteById(userId);
     }
@@ -170,16 +176,6 @@ public class UserService {
         } else {
             return new UserDto(appUser.getId(), appUser.getUsername());
         }
-    }
-
-    public void saveUserProfileImage(byte[] binary) {
-        saveUserProfileImage(binary, securityService.getCurrentUserName());
-    }
-
-    public void saveUserProfileImage(byte[] binary, String username) {
-        final AppUser appUser = appUserRepository.findByUsername(username);
-        ImageMetaData imageMetaData = securityService.getProfileImageMetaDataFor(username);
-        imageAdministrationService.saveUserProfileImage(binary, appUser, imageMetaData);
     }
 
     public AppUser findByUserId(Long userId) {

@@ -1,4 +1,7 @@
-FROM maven:3.9-eclipse-temurin-21 as builder
+FROM maven:3.9-eclipse-temurin-25 AS builder
+
+WORKDIR /
+
 COPY pom.xml .
 
 COPY src/ /src/
@@ -8,9 +11,12 @@ RUN mvn -B -DskipTests package
 COPY /target/fredbet.jar application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:25-jre-jammy
+
+WORKDIR /
+
 COPY --from=builder dependencies/ ./
 COPY --from=builder spring-boot-loader/ ./
 COPY --from=builder snapshot-dependencies/ ./
 COPY --from=builder application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

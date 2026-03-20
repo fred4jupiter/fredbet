@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.ranking;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.data.DatabasePopulator;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TransactionalIntegrationTest
 public class RankingServiceIT {
@@ -25,7 +23,7 @@ public class RankingServiceIT {
     private static final Logger LOG = LoggerFactory.getLogger(RankingServiceIT.class);
 
     @Autowired
-    private DatabasePopulator dataBasePopulator;
+    private DataPopulator dataBasePopulator;
 
     @Autowired
     private RankingService rankingService;
@@ -49,8 +47,8 @@ public class RankingServiceIT {
         dataBasePopulator.createDemoData();
 
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.MIXED);
-        assertNotNull(rankings);
-        assertFalse(rankings.isEmpty());
+        assertThat(rankings).isNotNull();
+        assertThat(rankings).isNotEmpty();
 
         assertThat(rankings).extracting(UsernamePoints::getUserName).doesNotContain(username);
     }
@@ -63,8 +61,8 @@ public class RankingServiceIT {
         dataBasePopulator.createDemoData();
 
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.ONLY_ADULTS);
-        assertNotNull(rankings);
-        assertFalse(rankings.isEmpty());
+        assertThat(rankings).isNotNull();
+        assertThat(rankings).isNotEmpty();
 
         assertThat(rankings).extracting(UsernamePoints::getUserName).doesNotContain("fred");
         assertThat(rankings).extracting(UsernamePoints::getUserName).contains("holger");
@@ -78,8 +76,8 @@ public class RankingServiceIT {
         dataBasePopulator.createDemoData();
 
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(RankingSelection.ONLY_CHILDREN);
-        assertNotNull(rankings);
-        assertFalse(rankings.isEmpty());
+        assertThat(rankings).isNotNull();
+        assertThat(rankings).isNotEmpty();
         assertThat(rankings).extracting(UsernamePoints::getUserName).doesNotContain("holger");
         assertThat(rankings).extracting(UsernamePoints::getUserName).contains("fred");
     }

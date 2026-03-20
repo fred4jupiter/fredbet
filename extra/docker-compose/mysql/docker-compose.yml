@@ -1,8 +1,6 @@
-version: '3'
-
 services:
-    mysqldb:  
-      image: mysql:8.0.2
+    mysqldb:
+      image: mysql:8.0-debian
       ports:
         - "3306:3306"
       environment:
@@ -10,8 +8,8 @@ services:
        - MYSQL_ROOT_PASSWORD=secred
        - MYSQL_USER=fred
        - MYSQL_PASSWORD=fred
-      networks:
-       - default
+      volumes:
+        - database_data:/var/lib/mysql
     fredbet:
       image: fred4jupiter/fredbet:latest
       links:
@@ -19,19 +17,12 @@ services:
       depends_on:
         - mysqldb
       ports:
-        - "8081:8080"
+        - "8080:8080"
       environment:
        - SPRING_PROFILES_ACTIVE=prod
        - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/fredbetdb
        - SPRING_DATASOURCE_USERNAME=fred
        - SPRING_DATASOURCE_PASSWORD=fred
-       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.jdbc.Driver
-       - FREDBET_IMAGE_LOCATION_FILE=FILE_SYSTEM
-       - FREDBET_IMAGE_FILE_SYSTEM_BASE_FOLDER=/home/fred/fredbet_images
-      volumes:
-       - "~/fredbet_images:/home/fred/fredbet_images"
-      networks:
-       - default
-
-networks:
- default:
+       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+volumes:
+  database_data:

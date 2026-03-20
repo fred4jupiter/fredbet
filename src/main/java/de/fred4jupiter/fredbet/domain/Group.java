@@ -31,6 +31,8 @@ public enum Group {
 
     GROUP_L("group.title.L"),
 
+    ROUND_OF_THIRTY_TWO("group.title.roundOfThirtyTwo"), // Sechzehntelfinale
+
     ROUND_OF_SIXTEEN("group.title.roundOfSixteen"), // Achtelfinale
 
     QUARTER_FINAL("group.title.quarterFinal"), // Viertelfinale
@@ -75,7 +77,7 @@ public enum Group {
     }
 
     public boolean isKnockoutGroup() {
-        return isOneOf(this, ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
+        return isOneOf(this, ROUND_OF_THIRTY_TWO, ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL, GAME_FOR_THIRD);
     }
 
     private boolean isOneOf(Group group, Group... comparingGroups) {

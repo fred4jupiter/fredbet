@@ -124,7 +124,7 @@ public class RankingService {
         final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
 
         final AtomicInteger rank = new AtomicInteger();
-        return pdfExportService.createPdfFileFrom(builder, rankings, (rowContentAdder, row) -> {
+        return pdfExportService.createPdfFileFrom(builder.build(), rankings, (rowContentAdder, row) -> {
             rowContentAdder.addCellContent("" + rank.incrementAndGet());
             rowContentAdder.addCellContent(row.getUserName());
             if (runtimeSettings.isEnabledParentChildRanking()) {

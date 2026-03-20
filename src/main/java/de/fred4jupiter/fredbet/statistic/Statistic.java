@@ -6,6 +6,8 @@ public class Statistic {
 
 	private Integer pointsGroup = 0;
 
+    private Integer pointsRoundOfThirtyTwo = 0;
+
 	private Integer pointsRoundOfSixteen = 0;
 
 	private Integer pointsQuarterFinal = 0;
@@ -167,4 +169,11 @@ public class Statistic {
 		this.maxPointsCandidate = maxPointsCandidate;
 	}
 
+    public Integer getPointsRoundOfThirtyTwo() {
+        return pointsRoundOfThirtyTwo;
+    }
+
+    public void setPointsRoundOfThirtyTwo(Integer pointsRoundOfThirtyTwo) {
+        this.pointsRoundOfThirtyTwo = pointsRoundOfThirtyTwo;
+    }
 }

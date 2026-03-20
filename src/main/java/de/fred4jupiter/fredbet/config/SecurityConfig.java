@@ -1,8 +1,9 @@
 package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,15 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Configuration
@@ -31,8 +26,7 @@ import java.util.Optional;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    // 24 Stunden
-    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60;
+    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60; // 24 hours
 
     private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
@@ -41,47 +35,35 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository, HandlerMappingIntrospector introspector) throws Exception {
-        final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
-
+    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
         http.authorizeHttpRequests(authz -> authz
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
-            .requestMatchers(antMatchers("/static/**", "/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
-                "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/console/*", "/registration")).permitAll()
-            .requestMatchers(mvcMatcherBuilder.pattern("/user/**")).hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
-            .requestMatchers(mvcMatcherBuilder.pattern("/admin/**"), mvcMatcherBuilder.pattern("/administration/**")).hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
-            .anyRequest().authenticated()
-        );
-        http.rememberMe(remember -> remember.tokenRepository(persistentTokenRepository)
-            .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS));
-        http.formLogin(form -> form
-            .loginPage("/login")
-            .defaultSuccessUrl("/matches/upcoming")
-            .failureUrl("/login/error")
-        );
-        http.logout(logout -> logout.logoutUrl("/logout")
-            .logoutSuccessUrl("/login")
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID", "remember-me"));
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
+                .requestMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
+                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
+                    "/webjars/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
+                .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
+                .anyRequest().authenticated()
+            )
+            .rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS))
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/matches/upcoming")
+                .failureUrl("/login/error"))
+            .logout(logout -> logout.logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me"))
+            // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
+            .headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
 
-        // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
-        http.headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
-        final MvcRequestMatcher editInfoRequestMatcher = mvcMatcherBuilder.pattern("/info/editinfo");
-        if (h2ConsoleProperties.isPresent() && h2ConsoleProperties.get().getEnabled()) {
-            http.csrf(csrf -> csrf.ignoringRequestMatchers(editInfoRequestMatcher, PathRequest.toH2Console()));
-
+        if (h2ConsoleProperties.isPresent() && h2ConsoleProperties.get().isEnabled()) {
             // this is for the embedded h2 console
             http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-        } else {
-            http.csrf(csrf -> csrf.ignoringRequestMatchers(editInfoRequestMatcher));
+            http.csrf(csrf -> csrf.ignoringRequestMatchers("/console/**"));
         }
 
         return http.build();
-    }
-
-    private RequestMatcher[] antMatchers(String... patterns) {
-        List<? extends RequestMatcher> matchers = Arrays.stream(patterns).map(AntPathRequestMatcher::antMatcher).toList();
-        return matchers.toArray(new RequestMatcher[0]);
     }
 
     @Bean

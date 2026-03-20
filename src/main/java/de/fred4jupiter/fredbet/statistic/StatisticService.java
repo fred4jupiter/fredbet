@@ -1,17 +1,13 @@
 package de.fred4jupiter.fredbet.statistic;
 
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
-import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,13 +32,13 @@ public class StatisticService {
     }
 
     public List<Statistic> createStatistic() {
-        final List<Statistic> statisticList = statisticRepository.createStatistic();
+        final List<Statistic> statisticList = new ArrayList<>(statisticRepository.createStatistic());
 
         final Country favouriteCountry = getFavouriteCountry();
         final Map<String, Integer> favoriteCountryPointsPerUserMap = statisticRepository
-                .sumPointsPerUserForFavoriteCountry(favouriteCountry);
+            .sumPointsPerUserForFavoriteCountry(favouriteCountry);
         final Optional<Integer> maxFavoriteCountryPoints = favoriteCountryPointsPerUserMap.values().stream()
-                .max(Comparator.comparing(i -> i));
+            .max(Comparator.comparing(i -> i));
 
         final Map<String, Integer> extraBetsPerUser = findExtraBetsPerUser();
 

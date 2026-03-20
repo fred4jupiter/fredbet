@@ -9,7 +9,7 @@ spring:
     generate-ddl: false
     show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     open-in-view: true
   liquibase:
     enabled: true
@@ -19,6 +19,10 @@ spring:
       enabled: false
       path: /console
   servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
     multipart:
       max-file-size: 30MB
       max-request-size: 30MB
@@ -28,13 +32,11 @@ spring:
   threads:
     virtual:
       enabled: true
+  devtools:
+    livereload:
+      enabled: false
 
 server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
   tomcat:
     max-swallow-size: 30MB
     max-http-form-post-size: 30MB
@@ -54,27 +56,26 @@ logging:
     root: "WARN"
     "org.springframework.web": "WARN"
     "org.springframework.security": "WARN"
-    "de.fred4jupiter.fredbet": "INFO"
+    "de.fred4jupiter.fredbet": "DEBUG"
 
 # -------- fredbet properties ------------------------------------------------------------------------------
 
 fredbet:
-  image-location: database
-  # set folder where you want to store images to (defaults to user home dir)
-  image-file-system-base-folder: ${user.home}/fredbet
   default-language: de
   dice-min-range: 0
   dice-max-range: 3
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
+  integration:
+    football-data:
+      api-token: "<some secret token>"
+      base-url: "https://api.football-data.org/v4"
+      scheduler-interval-minutes: 10
   excel-templates:
     template-files:
       - "ImportTemplateWorldCup.xlsx"
       - "ImportTemplateClubWorldCup.xlsx"
-  default-images:
-    profile-image-resource: "classpath:/content/default_profile_image.jpg"
-    thumb-profile-image-resource: "classpath:/content/default_profile_image_thumb.jpg"
   authorization:
     user-groups:
       - groupName: ROLE_USER

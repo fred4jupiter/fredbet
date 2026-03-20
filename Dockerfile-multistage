@@ -1,0 +1,31 @@
+# Step : Test and package
+FROM maven:3.9-eclipse-temurin-25 AS builder
+WORKDIR /build
+COPY pom.xml .
+
+COPY src/ /build/src/
+COPY .git /build/.git/
+RUN mvn -B -DskipTests package
+
+# Step : Package image
+FROM eclipse-temurin:25-jre-jammy
+
+LABEL maintainer="Michael Staehler"
+
+RUN apt-get update && apt-get upgrade -y \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /
+
+ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
+
+EXPOSE 8080
+
+COPY --from=builder /build/target/fredbet.jar fredbet.jar
+
+RUN useradd -m appuser
+USER appuser
+
+ENTRYPOINT ["java", "-jar", "fredbet.jar"]
+CMD ["exec"]

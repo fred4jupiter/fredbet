@@ -15,7 +15,7 @@ services:
     profiles: ["app"] # run with 'docker compose --profile app build'
     container_name: fredbet
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-multistage
     ports:
     - "8080:8080"
     depends_on:

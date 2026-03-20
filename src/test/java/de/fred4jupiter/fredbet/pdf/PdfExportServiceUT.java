@@ -34,12 +34,10 @@ public class PdfExportServiceUT {
 
     @Test
     public void createPdf() throws IOException {
-        when(messageSourceUtil.getMessageFor(eq("page"), eq(Locale.getDefault()))).thenReturn("Seite");
-
         PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("username").withHeaderColumn("correct results").withHeaderColumn("goal difference").withHeaderColumn("total points");
         builder.withColumnWidths(new float[]{3, 3, 3, 3}).withTitle("Fredbet Results").withLocale(Locale.getDefault());
 
-        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, createTestData(), (rowContentAdder, row) -> {
+        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder.build(), createTestData(), (rowContentAdder, row) -> {
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());
@@ -54,7 +52,7 @@ public class PdfExportServiceUT {
         PdfTableDataBuilder builder = PdfTableDataBuilder.create().withHeaderColumn("października").withHeaderColumn("Prawidłowe zakłady").withHeaderColumn("Różnica goli");
         builder.withColumnWidths(new float[]{3, 3, 3}).withTitle("Fredbet Resultsäöü").withLocale(Locale.of("pl", "PL"));
 
-        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder, createTestData(), (rowContentAdder, row) -> {
+        byte[] fileAsByteArray = pdfExportService.createPdfFileFrom(builder.build(), createTestData(), (rowContentAdder, row) -> {
             rowContentAdder.addCellContent(row.getUserName());
             rowContentAdder.addCellContent("" + row.getCorrectResultCount());
             rowContentAdder.addCellContent("" + row.getGoalDifference());

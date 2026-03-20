@@ -1,8 +1,9 @@
 package de.fred4jupiter.fredbet.pdf;
 
+import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.*;
+import com.lowagie.text.html.simpleparser.HTMLWorker;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -30,24 +32,31 @@ public class PdfExportService {
 
     private final FontCreator fontCreator;
 
-    public PdfExportService(MessageSourceUtil messageSourceUtil, FontCreator fontCreator) {
+    PdfExportService(MessageSourceUtil messageSourceUtil, FontCreator fontCreator) {
         this.messageSourceUtil = messageSourceUtil;
         this.fontCreator = fontCreator;
     }
 
-    public <T> byte[] createPdfFileFrom(PdfTableDataBuilder pdfTableDataBuilder, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
-        final PdfTableData pdfTableData = pdfTableDataBuilder.build();
-
-        try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            PdfWriter.getInstance(document, out);
-            document.setFooter(createFooter(pdfTableData));
-
-            document.open();
-
+    public <T> byte[] createPdfFileFrom(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
+        return createPdf(document -> {
             document.add(createHeadline(pdfTableData));
             document.add(createCurrenteDateTimeParagraph(pdfTableData));
             document.add(createTable(data, rowCallback, pdfTableData));
+        });
+    }
 
+    public byte[] createPdfFromHtml(String html) {
+        return createPdf(document -> {
+            HTMLWorker htmlWorker = new HTMLWorker(document);
+            htmlWorker.parse(new StringReader(html));
+        });
+    }
+
+    private byte[] createPdf(DocumentCallback documentCallback) {
+        try (Document document = new Document(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            PdfWriter.getInstance(document, out);
+            document.open();
+            documentCallback.onDocument(document);
             document.close();
             out.flush();
             return out.toByteArray();
@@ -58,10 +67,10 @@ public class PdfExportService {
     }
 
     private <T> PdfPTable createTable(List<T> data, BiConsumer<RowContentAdder, T> rowCallback, PdfTableData pdfTableData) {
-        PdfPTable table = new PdfPTable(pdfTableData.getColumnWidths());
+        PdfPTable table = new PdfPTable(pdfTableData.columnWidths());
         table.setWidthPercentage(100);
 
-        addRowToTable(table, pdfTableData.getHeaderColumns(), true);
+        addRowToTable(table, pdfTableData.headerColumns(), true);
 
         data.forEach(dataEntry -> {
             RowContentAdder rowContentAdder = new RowContentAdder();
@@ -73,7 +82,7 @@ public class PdfExportService {
     }
 
     private HeaderFooter createFooter(PdfTableData pdfTableData) {
-        String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.getLocale());
+        String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.locale());
         HeaderFooter footer = new HeaderFooter(new Phrase(pageLabel + ": ", fontCreator.createFont()), true);
         footer.setBorder(Rectangle.NO_BORDER);
         footer.setAlignment(Element.ALIGN_RIGHT);
@@ -82,7 +91,7 @@ public class PdfExportService {
 
     private Paragraph createCurrenteDateTimeParagraph(PdfTableData pdfTableData) {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-                .withLocale(pdfTableData.getLocale());
+            .withLocale(pdfTableData.locale());
         Paragraph dateParagraph = new Paragraph(ZonedDateTime.now().format(formatter), fontCreator.createFont());
         dateParagraph.setSpacingAfter(10);
         return dateParagraph;
@@ -92,7 +101,7 @@ public class PdfExportService {
         Font font = fontCreator.createFont();
         font.setSize(18);
         font.setStyle(Font.BOLD);
-        Paragraph headline = new Paragraph(pdfTableData.getTitle(), font);
+        Paragraph headline = new Paragraph(pdfTableData.title(), font);
         headline.setSpacingAfter(20);
         return headline;
     }
@@ -121,5 +130,11 @@ public class PdfExportService {
         public List<String> getRowContent() {
             return rowContent;
         }
+    }
+
+    @FunctionalInterface
+    private interface DocumentCallback {
+
+        void onDocument(Document document) throws IOException;
     }
 }

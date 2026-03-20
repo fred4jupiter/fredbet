@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.props;
 
 /**
- * Please NOTE: Add the cache name in config. Application -> CacheManager
+ * Please NOTE: Add the cache name in config. See class CacheConfig.
  *
  * @author michael
  */
@@ -29,4 +29,6 @@ public final class CacheNames {
      * Runtime config parameters for points.
      */
     public static final String POINTS_CONFIG = "pointsConfig";
+
+    public static final String FOOTBALL_DATA_SETTINGS = "footballDataSettings";
 }

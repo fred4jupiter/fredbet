@@ -6,7 +6,7 @@ import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.user.UserImportExportCommand;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +46,14 @@ public class ImportExportController {
         this.jsonImportService = jsonImportService;
     }
 
-    @ModelAttribute("importExportCommand")
-    public ImportExportCommand initCommand() {
-        return new ImportExportCommand();
+    @ModelAttribute("importCommand")
+    public ImportCommand importCommand() {
+        return new ImportCommand();
+    }
+
+    @ModelAttribute("exportCommand")
+    public ExportCommand exportCommand() {
+        return new ExportCommand();
     }
 
     @GetMapping
@@ -56,10 +61,10 @@ public class ImportExportController {
         return "imexport/import_export";
     }
 
-    @GetMapping(value = "/export", produces = CONTENT_TYPE_JSON)
-    public ResponseEntity<byte[]> exportUsers() {
+    @PostMapping(value = "/export", produces = CONTENT_TYPE_JSON)
+    public ResponseEntity<byte[]> exportUsers(@Valid ExportCommand exportCommand) {
         final String fileName = "fredbet_all_data.json";
-        String json = this.jsonExportService.exportAllToJson();
+        String json = this.jsonExportService.exportAllToJson(exportCommand.getUsersOnly());
         if (StringUtils.isBlank(json)) {
             return ResponseEntity.notFound().build();
         }
@@ -68,7 +73,7 @@ public class ImportExportController {
     }
 
     @PostMapping("/import")
-    public String uploadJsonFile(UserImportExportCommand command, RedirectAttributes redirect) {
+    public String uploadJsonFile(ImportCommand command, RedirectAttributes redirect) {
         try {
             MultipartFile myFile = command.getJsonFile();
             if (myFile == null || myFile.getBytes().length == 0) {

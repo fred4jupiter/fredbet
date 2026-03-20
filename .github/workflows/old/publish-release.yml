@@ -68,7 +68,7 @@ jobs:
             --platform ${DOCKER_TARGET_PLATFORM} \
             --tag docker.io/${DOCKER_IMAGE}:${{steps.version_update.outputs.release-version}} \
             --tag ghcr.io/${DOCKER_IMAGE}:${{steps.version_update.outputs.release-version}} \
-            --file ./Dockerfile-single \
+            --file ./Dockerfile \
             --output type=image,push=true .
       - name: Generate changelog
         id: changelog

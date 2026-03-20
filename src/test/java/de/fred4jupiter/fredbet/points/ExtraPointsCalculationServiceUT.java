@@ -56,7 +56,7 @@ public class ExtraPointsCalculationServiceUT {
 
     @Test
     public void noPointsOnOtherMatchThanFinalOrGameOfThird() {
-        when(matchGoalsChangedEvent.getMatch()).thenReturn(match);
+        when(matchGoalsChangedEvent.match()).thenReturn(match);
 
         match.setGroup(Group.GROUP_B);
 
@@ -70,7 +70,7 @@ public class ExtraPointsCalculationServiceUT {
 
     @Test
     public void finalMatchButWrongBet() {
-        when(matchGoalsChangedEvent.getMatch()).thenReturn(match);
+        when(matchGoalsChangedEvent.match()).thenReturn(match);
 
         match.setGroup(Group.FINAL);
         match.getTeamOne().setCountry(Country.AFGHANISTAN);
@@ -88,7 +88,7 @@ public class ExtraPointsCalculationServiceUT {
 
     @Test
     public void finalAndSemiFinalCorrect() {
-        when(matchGoalsChangedEvent.getMatch()).thenReturn(match);
+        when(matchGoalsChangedEvent.match()).thenReturn(match);
 
         match.setGroup(Group.FINAL);
         match.getTeamOne().setCountry(Country.GERMANY);
@@ -114,7 +114,7 @@ public class ExtraPointsCalculationServiceUT {
 
     @Test
     public void gameOfThirdCorrect() {
-        when(matchGoalsChangedEvent.getMatch()).thenReturn(match);
+        when(matchGoalsChangedEvent.match()).thenReturn(match);
 
         extraBet.setThirdFinalWinner(Country.GERMANY);
 

@@ -23,7 +23,7 @@ public class RuntimeSettingsDb {
 	private String jsonConfig;
 
 	@Version
-	@Column(name = "VERSION")
+	@Column(name = "VERSION", nullable = false)
 	private Integer version;
 
 	protected RuntimeSettingsDb() {

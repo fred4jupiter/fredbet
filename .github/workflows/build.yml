@@ -2,10 +2,12 @@ name: Build and Test
 
 on:
   push:
+    paths-ignore:
+      - '.github/**'
+      - 'extra/**'
     branches:
       - 'bugfix/*'
       - 'feature/*'
-  pull_request:
 
 jobs:
   build:

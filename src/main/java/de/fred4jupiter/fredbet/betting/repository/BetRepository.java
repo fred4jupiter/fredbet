@@ -74,14 +74,6 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
     List<PointsPerUser> queryPointsPerUser();
 
     @Query("""
-        select case when (count(b) > 0) then true else false end
-        from Bet b
-        where b.joker is true
-        and b.userName = :currentUserName
-        """)
-    boolean hasBetsWithJoker(@Param("currentUserName") String currentUserName);
-
-    @Query("""
         select new de.fred4jupiter.fredbet.pointcourse.PointsPerUser(b.userName, sum(b.points))
         from Bet b join Match m on b.match.id = m.id
         where m.kickOffDate between :from and :to
@@ -90,6 +82,10 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         group by b.userName
         """)
     List<PointsPerUser> queryPointsPerUserForToday(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("adminUsername") String adminUsername);
+
+    @Modifying
+    @Query("delete Bet b where b.userName = :username")
+    int deleteAllBetsOfUser(@Param("username") String username);
 
     default List<String> queryPointsPerUserForToday(String adminUsername) {
         LocalDate today = LocalDate.now();

@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.web.profile;
 
+import de.fred4jupiter.fredbet.image.ImageAdministrationService;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.io.FileUtils;
@@ -25,11 +27,14 @@ public class ImageCroppingController {
 
     private final WebMessageUtil messageUtil;
 
-    private final UserService userService;
+    private final ImageAdministrationService imageAdministrationService;
 
-    public ImageCroppingController(WebMessageUtil messageUtil, UserService userService) {
+    private final SecurityService securityServic;
+
+    public ImageCroppingController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService, SecurityService securityServic) {
         this.messageUtil = messageUtil;
-        this.userService = userService;
+        this.imageAdministrationService = imageAdministrationService;
+        this.securityServic = securityServic;
     }
 
     @GetMapping("/show")
@@ -53,7 +58,7 @@ public class ImageCroppingController {
             return REDIRECT_SHOW_PAGE;
         }
 
-        userService.saveUserProfileImage(imageByte);
+        imageAdministrationService.saveUserProfileImage(imageByte, securityServic.getCurrentUser());
 
         messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
 

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.image;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,7 +26,7 @@ public class DownloadServiceUT {
     private DownloadService downloadService;
 
     @Mock
-    private BinaryImage binaryImage;
+    private ImageBinary imageBinary;
 
     @Test
     public void compressFile() throws IOException {
@@ -35,10 +36,10 @@ public class DownloadServiceUT {
 
         byte[] imageAsByteArray = FileUtils.readFileToByteArray(file);
 
-        when(binaryImage.imageBinary()).thenReturn(imageAsByteArray);
-        when(binaryImage.key()).thenReturn("Gallery1.jpg");
+        when(imageBinary.getImageBinary()).thenReturn(imageAsByteArray);
+        when(imageBinary.getKey()).thenReturn("Gallery1.jpg");
 
-        byte[] zipFileAsByteArray = downloadService.compressToZipFile(List.of(binaryImage));
+        byte[] zipFileAsByteArray = downloadService.compressToZipFile(List.of(imageBinary));
         assertNotNull(zipFileAsByteArray);
 
         File outputFile = createOutputFile(new File("result.zip"));

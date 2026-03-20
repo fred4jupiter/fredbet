@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.image;
 
+import de.fred4jupiter.fredbet.domain.entity.ImageBinary;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.image.storage.ImageLocationStrategy;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FilenameUtils;
@@ -20,33 +20,33 @@ public class DownloadService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DownloadService.class);
 
-    private final ImageLocationStrategy imageLocationService;
+    private final ImageBinaryRepository imageBinaryRepository;
 
-    public DownloadService(ImageLocationStrategy imageLocationService) {
-        this.imageLocationService = imageLocationService;
+    DownloadService(ImageBinaryRepository imageBinaryRepository) {
+        this.imageBinaryRepository = imageBinaryRepository;
     }
 
     public byte[] downloadAllImagesAsZipFile() {
-        List<BinaryImage> allImages = imageLocationService.findAllImages();
-        if (allImages.isEmpty()) {
+        List<ImageBinary> images = imageBinaryRepository.findAll();
+        if (images.isEmpty()) {
             return null;
         }
 
-        return compressToZipFile(allImages);
+        return compressToZipFile(images);
     }
 
-    byte[] compressToZipFile(List<BinaryImage> allImages) {
+    byte[] compressToZipFile(List<ImageBinary> allImages) {
         try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
              ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream(byteOut)) {
 
             zipOutput.setEncoding("UTF-8");
 
-            for (BinaryImage image : allImages) {
+            for (ImageBinary image : allImages) {
                 String fileName = createEntryFileName(image);
                 ZipArchiveEntry entry = new ZipArchiveEntry(fileName);
-                entry.setSize(image.imageBinary().length);
+                entry.setSize(image.getImageBinary().length);
                 zipOutput.putArchiveEntry(entry);
-                copyToOutputStream(zipOutput, image.imageBinary());
+                copyToOutputStream(zipOutput, image.getImageBinary());
                 zipOutput.closeArchiveEntry();
             }
             zipOutput.close();
@@ -63,8 +63,8 @@ public class DownloadService {
         }
     }
 
-    private String createEntryFileName(BinaryImage image) {
-        String fileName = FilenameUtils.getName(image.key());
+    private String createEntryFileName(ImageBinary image) {
+        String fileName = FilenameUtils.getName(image.getKey());
         if (!FilenameUtils.isExtension(fileName, FredbetConstants.IMAGE_JPG_EXTENSION)) {
             return fileName + FredbetConstants.IMAGE_JPG_EXTENSION_WITH_DOT;
         }

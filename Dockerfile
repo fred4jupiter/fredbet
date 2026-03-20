@@ -1,21 +1,21 @@
-# Step : Test and package
-FROM maven:3.9-eclipse-temurin-21 as builder
-WORKDIR /build
-COPY pom.xml .
+ARG JRE_BASE_IMAGE=eclipse-temurin:25-jre-jammy
 
-COPY src/ /build/src/
-COPY .git /build/.git/
-RUN mvn -B -DskipTests package
+FROM ${JRE_BASE_IMAGE}
 
-# Step : Package image
-FROM eclipse-temurin:21-jre-jammy
 LABEL maintainer="Michael Staehler"
 
-VOLUME /tmp
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_OPTS="-Duser.timezone=Europe/Berlin"
+RUN useradd -m appuser
+
+WORKDIR /home/appuser
+
+ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
-COPY --from=builder /build/target/fredbet.jar fredbet.jar
-CMD exec java $JAVA_OPTS -jar fredbet.jar
+COPY --chown=appuser:appuser target/fredbet.jar fredbet.jar
+
+USER appuser
+
+ENTRYPOINT ["java", "-jar", "fredbet.jar"]

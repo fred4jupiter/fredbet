@@ -16,7 +16,7 @@ public class ExtraBet {
     @Column(name = "EXTRA_BET_ID")
     private Long id;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
     @Enumerated(EnumType.STRING)

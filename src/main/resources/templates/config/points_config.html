@@ -6,61 +6,72 @@
 	<body>
 		<div layout:fragment="content">
             <h1 th:text="#{points.config.title}"></h1>
-            <div class="alert alert-warning d-flex align-items-center fs-6" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
-                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </svg>
-                <div th:text="#{points.config.hintForChange}" class="fw-light"></div>
-            </div>
 			<form id="pointsConfigForm" th:action="@{/config/points}" th:object="${pointsConfig}" action="#" method="post" role="form">
-                <div class="row">
+                <div class="col-12 mb-3">
                     <h2 th:text="#{points.config.subtitle}"></h2>
-                    <div class="col-12 col-sm-4 col-md-3 mb-3">
-                        <label for="pointsCorrectResult" class="form-label" th:text="#{points.config.pointsCorrectResult} + ':'"></label>
-                        <div class="col-5">
-                            <input id="pointsCorrectResult" type="text" th:field="*{pointsCorrectResult}" class="form-control" />
+                    <div class="row">
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsCorrectResult" class="form-label" th:text="#{points.config.pointsCorrectResult} + ':'"></label>
+                                <div class="col-5">
+                                    <input id="pointsCorrectResult" type="text" th:field="*{pointsCorrectResult}" class="form-control" />
+                                </div>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectResult')}" th:errors="*{pointsCorrectResult}"></p>
+                            </div>
                         </div>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectResult')}" th:errors="*{pointsCorrectResult}"></p>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-3 mb-3">
-                        <label for="pointsSameGoalDifference" class="form-label" th:text="#{points.config.pointsSameGoalDifference} + ':'"></label>
-                        <div class="col-5">
-                            <input id="pointsSameGoalDifference" type="text" th:field="*{pointsSameGoalDifference}" class="form-control" />
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsSameGoalDifference" class="form-label" th:text="#{points.config.pointsSameGoalDifference} + ':'"></label>
+                                <div class="col-5">
+                                    <input id="pointsSameGoalDifference" type="text" th:field="*{pointsSameGoalDifference}" class="form-control" />
+                                </div>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsSameGoalDifference')}" th:errors="*{pointsSameGoalDifference}"></p>
+                            </div>
                         </div>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsSameGoalDifference')}" th:errors="*{pointsSameGoalDifference}"></p>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-3 mb-3">
-                        <label for="pointsCorrectWinner" class="form-label" th:text="#{points.config.pointsCorrectWinner} + ':'"></label>
-                        <div class="col-5">
-                            <input id="pointsCorrectWinner" type="text" th:field="*{pointsCorrectWinner}" class="form-control" />
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsCorrectWinner" class="form-label" th:text="#{points.config.pointsCorrectWinner} + ':'"></label>
+                                <div class="col-5">
+                                    <input id="pointsCorrectWinner" type="text" th:field="*{pointsCorrectWinner}" class="form-control" />
+                                </div>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectWinner')}" th:errors="*{pointsCorrectWinner}"></p>
+                            </div>
                         </div>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectWinner')}" th:errors="*{pointsCorrectWinner}"></p>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-3 mb-3">
-                        <label for="pointsCorrectNumberOfGoalsOneTeam" class="form-label" th:text="#{points.config.pointsCorrectNumberOfGoalsOneTeam} + ':'"></label>
-                        <div class="col-5">
-                            <input id="pointsCorrectNumberOfGoalsOneTeam" type="text" th:field="*{pointsCorrectNumberOfGoalsOneTeam}" class="form-control" />
+                        <div class="col-6 col-sm-2">
+                            <div class="mb-3">
+                                <label for="pointsCorrectNumberOfGoalsOneTeam" class="form-label" th:text="#{points.config.pointsCorrectNumberOfGoalsOneTeam} + ':'"></label>
+                                <div class="col-5">
+                                    <input id="pointsCorrectNumberOfGoalsOneTeam" type="text" th:field="*{pointsCorrectNumberOfGoalsOneTeam}" class="form-control" />
+                                </div>
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectNumberOfGoalsOneTeam')}" th:errors="*{pointsCorrectNumberOfGoalsOneTeam}"></p>
+                            </div>
                         </div>
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('pointsCorrectNumberOfGoalsOneTeam')}" th:errors="*{pointsCorrectNumberOfGoalsOneTeam}"></p>
                     </div>
                 </div>
-
-                <div class="row">
+                <div class="col-12 col-sm-6 mb-3">
                     <h2 th:text="#{points.config.extraBetPoints}"></h2>
-                    <div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-3">
-                        <label for="pointsFinalWinner" class="form-label" th:text="#{points.config.pointsFinalWinner.title} + ':'"></label>
-                        <input id="pointsFinalWinner" type="text" th:field="*{extraPointsConfig.pointsFinalWinner}" class="form-control" />
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsFinalWinner')}" th:errors="*{extraPointsConfig.pointsFinalWinner}"></p>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-3">
-                        <label for="pointsSemiFinalWinner" class="form-label" th:text="#{points.config.pointsSemiFinalWinner.title} + ':'"></label>
-                        <input id="pointsSemiFinalWinner" type="text" th:field="*{extraPointsConfig.pointsSemiFinalWinner}" class="form-control" />
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsSemiFinalWinner')}" th:errors="*{extraPointsConfig.pointsSemiFinalWinner}"></p>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-3">
-                        <label for="pointsThirdFinalWinner" class="form-label" th:text="#{points.config.pointsThirdFinalWinner.title} + ':'"></label>
-                        <input id="pointsThirdFinalWinner" type="text" th:field="*{extraPointsConfig.pointsThirdFinalWinner}" class="form-control" />
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsThirdFinalWinner')}" th:errors="*{extraPointsConfig.pointsThirdFinalWinner}"></p>
+                    <div class="row">
+                        <div class="col-4 col-sm-3">
+                            <div class="mb-3">
+                                <label for="pointsFinalWinner" class="form-label" th:text="#{points.config.pointsFinalWinner.title} + ':'"></label>
+                                    <input id="pointsFinalWinner" type="text" th:field="*{extraPointsConfig.pointsFinalWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsFinalWinner')}" th:errors="*{extraPointsConfig.pointsFinalWinner}"></p>
+                            </div>
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <div class="mb-3">
+                                <label for="pointsSemiFinalWinner" class="form-label" th:text="#{points.config.pointsSemiFinalWinner.title} + ':'"></label>
+                                    <input id="pointsSemiFinalWinner" type="text" th:field="*{extraPointsConfig.pointsSemiFinalWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsSemiFinalWinner')}" th:errors="*{extraPointsConfig.pointsSemiFinalWinner}"></p>
+                            </div>
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <div class="mb-3">
+                                <label for="pointsThirdFinalWinner" class="form-label" th:text="#{points.config.pointsThirdFinalWinner.title} + ':'"></label>
+                                    <input id="pointsThirdFinalWinner" type="text" th:field="*{extraPointsConfig.pointsThirdFinalWinner}" class="form-control" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('extraPointsConfig.pointsThirdFinalWinner')}" th:errors="*{extraPointsConfig.pointsThirdFinalWinner}"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

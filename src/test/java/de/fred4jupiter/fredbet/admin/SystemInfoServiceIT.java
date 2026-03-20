@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 public class SystemInfoServiceIT {
@@ -23,7 +23,7 @@ public class SystemInfoServiceIT {
     @Test
     public void fetchSystemInfo() {
         SortedMap<String, Object> map = systemInfoService.fetchSystemInfo();
-        assertNotNull(map);
+        assertThat(map).isNotNull();
         for (Entry<String, Object> entry : map.entrySet()) {
             LOG.debug("{}: {}", entry.getKey(), entry.getValue());
         }

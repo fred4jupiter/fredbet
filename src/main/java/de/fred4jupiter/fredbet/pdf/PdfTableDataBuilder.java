@@ -40,11 +40,6 @@ public final class PdfTableDataBuilder {
     }
 
     public PdfTableData build() {
-        PdfTableData pdfTableData = new PdfTableData();
-        pdfTableData.setLocale(locale);
-        pdfTableData.setTitle(title);
-        pdfTableData.setHeaderColumns(headerColumns);
-        pdfTableData.setColumnWidths(columnWidths);
-        return pdfTableData;
+        return new PdfTableData(locale, title, headerColumns, columnWidths);
     }
 }

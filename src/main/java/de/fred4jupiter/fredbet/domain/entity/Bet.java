@@ -18,7 +18,7 @@ public class Bet implements Visitable {
     @Column(name = "BET_ID")
     private Long id;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
     @ManyToOne(targetEntity = Match.class)
@@ -34,7 +34,7 @@ public class Bet implements Visitable {
     @Column(name = "PENALTY_WINNER_ONE")
     private boolean penaltyWinnerOne;
 
-    @Column(name = "JOKER")
+    @Column(name = "JOKER", nullable = false)
     private boolean joker;
 
     public Integer getGoalDifference() {

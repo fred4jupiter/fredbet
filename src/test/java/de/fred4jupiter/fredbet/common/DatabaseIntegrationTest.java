@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.common;
 
 import de.fred4jupiter.fredbet.props.FredBetProfile;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.ElementType;
