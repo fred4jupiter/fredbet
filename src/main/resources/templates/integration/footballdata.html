@@ -6,6 +6,11 @@
 <body>
 <div layout:fragment="content">
     <h1 th:text="#{footballdata.title}"></h1>
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
+            <a href="https://www.football-data.org/documentation/quickstart" target="_blank">Football Data Documentation</a>
+        </div>
+    </div>
     <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
         <div class="row">
             <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
@@ -13,10 +18,19 @@
                     <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
                     <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
                 </div>
-                <div class="form-group mb-3">
-                    <label class="form-label" for="apiToken" th:text="#{footballdata.apiToken} + ':'"></label>
-                    <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
-                    <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
+                <div class="accordion mb-3" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" th:text="#{footballdata.apiToken}">
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
+                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
@@ -33,13 +47,16 @@
         </div>
     </form>
 
+    <hr/>
+
     <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/footballdata/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
     <div class="row">
         <div class="col-auto mb-3">
             <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/import}" class="btn btn-info" role="button" th:text="#{footballdata.sync}">Trigger Sync now</a>
         </div>
         <div class="col-auto mb-3">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
+            <button th:disabled="${!footballDataCommand.isEnabled()}" type="button" class="btn btn-danger" data-bs-toggle="modal"
+                    data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
         </div>
     </div>
 </div>

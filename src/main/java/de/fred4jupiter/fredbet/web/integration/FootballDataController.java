@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,17 +56,36 @@ public class FootballDataController {
     @RequestMapping
     public String showPage(FootballDataCommand footballDataCommand, Model model) {
         final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
-
-        if (settings.isEnabled()) {
-            List<Competition> competitions = footballDataLoader.loadCompetitions();
-            model.addAttribute("competitions", competitions);
-        }
-
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setApiToken(settings.getApiToken());
         footballDataCommand.setCompetitionKey(settings.getKey());
 
+        if (footballDataCommand.isReadyToFetchCompetitions()) {
+            LOG.debug("fetching competitions...");
+            List<Competition> competitions = footballDataLoader.loadCompetitions();
+            model.addAttribute("competitions", competitions);
+        }
+
         return "integration/footballdata";
+    }
+
+    @PostMapping("/save")
+    public String save(@Valid FootballDataCommand footballDataCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "integration/footballdata";
+        }
+
+        if (footballDataCommand.isEnabled() && StringUtils.isBlank(footballDataCommand.getApiToken())) {
+            webMessageUtil.addErrorMsg(model, "footballdata.msg.apiTokenMissing");
+            return "integration/footballdata";
+        }
+
+        FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
+        footballDataRuntimeSettings.setApiToken(footballDataCommand.getApiToken());
+
+        footballDataService.saveSettings(footballDataRuntimeSettings);
+        webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");
+        return "redirect:/footballdata";
     }
 
     @RequestMapping(value = "/import")
@@ -83,20 +103,6 @@ public class FootballDataController {
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());
         }
-        return "redirect:/footballdata";
-    }
-
-    @PostMapping("/save")
-    public String save(@Valid FootballDataCommand footballDataCommand, BindingResult bindingResult, RedirectAttributes redirect) {
-        if (bindingResult.hasErrors()) {
-            return "integration/footballdata";
-        }
-
-        FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
-        footballDataRuntimeSettings.setApiToken(footballDataCommand.getApiToken());
-
-        footballDataService.saveSettings(footballDataRuntimeSettings);
-        webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");
         return "redirect:/footballdata";
     }
 

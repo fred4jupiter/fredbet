@@ -74,7 +74,7 @@ public class CreateEditMatchController {
     }
 
     private String createExternalIntegrationInfo(Match match) {
-        return "last updated: %s".formatted(match.getExternalLastUpdated());
+        return "FD: last updated: %s".formatted(match.getExternalLastUpdated());
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")

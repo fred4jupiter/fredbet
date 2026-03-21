@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.web.integration;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class FootballDataCommand {
 
     private boolean enabled;
@@ -7,6 +9,10 @@ public class FootballDataCommand {
     private String apiToken;
 
     private String competitionKey;
+
+    public boolean isReadyToFetchCompetitions() {
+        return enabled && StringUtils.isNotBlank(apiToken);
+    }
 
     public boolean isEnabled() {
         return enabled;
