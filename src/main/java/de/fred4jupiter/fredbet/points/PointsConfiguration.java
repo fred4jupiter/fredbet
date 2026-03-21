@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.points;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class PointsConfiguration {
 
@@ -23,7 +24,27 @@ public class PointsConfiguration {
     @Min(value = 0)
     private Integer pointsCorrectNumberOfGoalsOneTeam = 0;
 
+    public static PointsConfiguration withDefaults() {
+        PointsConfiguration pointsConfig = new PointsConfiguration();
+        pointsConfig.setPointsCorrectResult(3);
+        pointsConfig.setPointsSameGoalDifference(2);
+        pointsConfig.setPointsCorrectWinner(1);
+        pointsConfig.setPointsCorrectNumberOfGoalsOneTeam(0);
+        return pointsConfig;
+    }
+
     public ExtraPointsConfiguration getExtraPointsConfig() {
+        if (this.extraPointsConfig == null) {
+            this.extraPointsConfig = createWithDefaults();
+        }
+        return extraPointsConfig;
+    }
+
+    private @NonNull ExtraPointsConfiguration createWithDefaults() {
+        ExtraPointsConfiguration extraPointsConfig = new ExtraPointsConfiguration();
+        extraPointsConfig.setPointsFinalWinner(10);
+        extraPointsConfig.setPointsSemiFinalWinner(5);
+        extraPointsConfig.setPointsThirdFinalWinner(2);
         return extraPointsConfig;
     }
 

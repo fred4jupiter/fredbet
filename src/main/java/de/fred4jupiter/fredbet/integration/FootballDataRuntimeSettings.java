@@ -26,7 +26,7 @@ public class FootballDataRuntimeSettings {
         final FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
         settings.setEnabled(enabled);
 
-        if (StringUtils.isBlank(key)) {
+        if (StringUtils.isBlank(key) || key.contains("null")) {
             return settings;
         }
 

@@ -34,7 +34,7 @@ public class PointsConfigService {
     public PointsConfiguration loadPointsConfig() {
         LOG.debug("loading points config...");
         PointsConfiguration pointsConfig = runtimeSettingsRepository.loadRuntimeSettings(POINTS_CONFIG_ID, PointsConfiguration.class);
-        return pointsConfig == null ? createDefaultPointsConfig() : pointsConfig;
+        return pointsConfig == null ? PointsConfiguration.withDefaults() : pointsConfig;
     }
 
     @CacheEvict(cacheNames = CacheNames.POINTS_CONFIG, allEntries = true)
@@ -45,21 +45,5 @@ public class PointsConfigService {
         cacheAdministrationService.clearCacheByCacheName(CacheNames.POINTS_CONFIG);
 
         applicationEventPublisher.publishEvent(new PointsConfigurationChangedEvent());
-    }
-
-    public PointsConfiguration createDefaultPointsConfig() {
-        PointsConfiguration pointsConfig = new PointsConfiguration();
-
-        pointsConfig.setPointsCorrectResult(3);
-        pointsConfig.setPointsSameGoalDifference(2);
-        pointsConfig.setPointsCorrectWinner(1);
-        pointsConfig.setPointsCorrectNumberOfGoalsOneTeam(0);
-
-        ExtraPointsConfiguration extraPointsConfig = new ExtraPointsConfiguration();
-        extraPointsConfig.setPointsFinalWinner(10);
-        extraPointsConfig.setPointsSemiFinalWinner(5);
-        extraPointsConfig.setPointsThirdFinalWinner(2);
-        pointsConfig.setExtraPointsConfig(extraPointsConfig);
-        return pointsConfig;
     }
 }

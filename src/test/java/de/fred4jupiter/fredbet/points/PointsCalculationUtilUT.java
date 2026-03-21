@@ -32,7 +32,7 @@ public class PointsCalculationUtilUT {
     public void setup() {
         RuntimeSettingsRepository runtimeSettingsRepository = mock(RuntimeSettingsRepository.class);
         PointsConfigService pointsConfigService = new PointsConfigService(runtimeSettingsRepository, applicationEventPublisher, cacheAdministrationService);
-        PointsConfiguration pointsConfig = pointsConfigService.createDefaultPointsConfig();
+        PointsConfiguration pointsConfig = PointsConfiguration.withDefaults();
         lenient().when(runtimeSettingsRepository.loadRuntimeSettings(eq(2L), eq(PointsConfiguration.class))).thenReturn(pointsConfig);
 
         this.pointsCalculationUtil = new PointsCalculationUtil(pointsConfigService);
