@@ -66,7 +66,7 @@ class FdMatchSyncImporter {
         mapTeam(fdMatch.homeTeam(), match.getTeamOne());
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
-        Group group = resolveToGroup(fdMatch);
+        final Group group = resolveToGroup(fdMatch);
         if (group == null) {
             LOG.warn("No group found for match {}", fdMatch);
             return;
@@ -96,6 +96,7 @@ class FdMatchSyncImporter {
         final Country country = resolveToCountry(fdTeam, countryProps);
         if (country != null) {
             team.setCountry(country);
+            team.setName(null);
         } else {
             team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
         }
