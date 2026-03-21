@@ -18,6 +18,10 @@ public class FootballDataRuntimeSettings {
 
     private Integer seasonYear; // e.g. the year like
 
+    public boolean isReadyToFetchCompetitions() {
+        return enabled && StringUtils.isNotBlank(apiToken);
+    }
+
     public static FootballDataRuntimeSettings fromKey(boolean enabled, String key) {
         final FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
         settings.setEnabled(enabled);

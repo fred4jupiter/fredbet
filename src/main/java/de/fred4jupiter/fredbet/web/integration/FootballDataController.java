@@ -13,10 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -24,6 +21,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/footballdata")
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
+@SessionAttributes("footballDataCommand")
 public class FootballDataController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataController.class);
@@ -54,19 +52,29 @@ public class FootballDataController {
     }
 
     @RequestMapping
-    public String showPage(FootballDataCommand footballDataCommand, Model model) {
+    public String showPage(FootballDataCommand footballDataCommand) {
         final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setApiToken(settings.getApiToken());
         footballDataCommand.setCompetitionKey(settings.getKey());
 
+        return "integration/footballdata";
+    }
+
+    @RequestMapping("/fetch-comp")
+    public String fetchCompetitions(FootballDataCommand footballDataCommand, RedirectAttributes redirect, Model model) {
+        if (footballDataCommand.isEnabled() && StringUtils.isBlank(footballDataCommand.getApiToken())) {
+            webMessageUtil.addErrorMsg(model, "footballdata.msg.apiTokenMissing");
+            return "integration/footballdata";
+        }
+
         if (footballDataCommand.isReadyToFetchCompetitions()) {
             LOG.debug("fetching competitions...");
             List<Competition> competitions = footballDataLoader.loadCompetitions();
-            model.addAttribute("competitions", competitions);
+            footballDataCommand.setCompetitions(competitions);
         }
 
-        return "integration/footballdata";
+        return "redirect:/footballdata";
     }
 
     @PostMapping("/save")
