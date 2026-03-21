@@ -76,6 +76,7 @@ class FdMatchSyncImporter {
         match.setKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
         match.setExternalId(fdMatch.id());
         match.setExternalLastUpdated(fdMatch.lastUpdated());
+        match.setStadium(fdMatch.venue());
 
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
