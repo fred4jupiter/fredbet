@@ -34,8 +34,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
-                    <select id="competitions" th:field="*{competitionKey}" class="form-select">
-                        <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.key}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
+                    <select id="competitions" th:field="*{competitionId}" class="form-select">
+                        <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.id()}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
                     </select>
                 </div>
             </div>

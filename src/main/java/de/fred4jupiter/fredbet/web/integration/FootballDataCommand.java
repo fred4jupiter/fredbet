@@ -11,9 +11,16 @@ public class FootballDataCommand {
 
     private String apiToken;
 
-    private String competitionKey;
+    private Integer competitionId;
 
     private List<Competition> competitions;
+
+    public Competition getCompetitionById(Integer competitionId) {
+        if (this.competitions == null) {
+            return null;
+        }
+        return this.competitions.stream().filter(c -> c.id().equals(competitionId)).findFirst().orElse(null);
+    }
 
     public boolean isReadyToFetchCompetitions() {
         return enabled && StringUtils.isNotBlank(apiToken);
@@ -25,14 +32,6 @@ public class FootballDataCommand {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getCompetitionKey() {
-        return competitionKey;
-    }
-
-    public void setCompetitionKey(String competitionKey) {
-        this.competitionKey = competitionKey;
     }
 
     public String getApiToken() {
@@ -49,5 +48,13 @@ public class FootballDataCommand {
 
     public void setCompetitions(List<Competition> competitions) {
         this.competitions = competitions;
+    }
+
+    public Integer getCompetitionId() {
+        return competitionId;
+    }
+
+    public void setCompetitionId(Integer competitionId) {
+        this.competitionId = competitionId;
     }
 }

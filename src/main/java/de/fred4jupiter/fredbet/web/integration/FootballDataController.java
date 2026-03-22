@@ -56,7 +56,12 @@ public class FootballDataController {
         final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setApiToken(settings.getApiToken());
-        footballDataCommand.setCompetitionKey(settings.getKey());
+        if (settings.getCompetition() != null) {
+            footballDataCommand.setCompetitionId(settings.getCompetition().id());
+            if (footballDataCommand.getCompetitions() == null) {
+                footballDataCommand.setCompetitions(List.of(settings.getCompetition()));
+            }
+        }
 
         return "integration/footballdata";
     }
@@ -88,8 +93,12 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
-        FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
+        Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
+
+        final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
+        footballDataRuntimeSettings.setEnabled(footballDataCommand.isEnabled());
         footballDataRuntimeSettings.setApiToken(footballDataCommand.getApiToken());
+        footballDataRuntimeSettings.setCompetition(competition);
 
         footballDataService.saveSettings(footballDataRuntimeSettings);
         webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");
@@ -106,7 +115,8 @@ public class FootballDataController {
         }
 
         try {
-            footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
+            Competition competition = footballDataRuntimeSettings.getCompetition();
+            footballDataSyncService.syncData(competition.code(), competition.seasonYear());
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());
