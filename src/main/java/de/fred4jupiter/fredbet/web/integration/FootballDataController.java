@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.integration;
 
 
 import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -26,6 +28,8 @@ import java.util.List;
 public class FootballDataController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataController.class);
+
+    private static final String CONTENT_TYPE_JSON = "application/json";
 
     private final FootballDataService footballDataService;
 
@@ -139,9 +143,27 @@ public class FootballDataController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(FootballDataUploadCommand footballDataUploadCommand, Model model) {
-        MultipartFile jsonFile = footballDataUploadCommand.getJsonFile();
-        LOG.debug("jsonFile: " + jsonFile);
+    public String uploadFile(FootballDataUploadCommand footballDataUploadCommand, RedirectAttributes redirect, Model model) {
+        final MultipartFile jsonFile = footballDataUploadCommand.getJsonFile();
+
+        try {
+            if (jsonFile == null || jsonFile.getBytes().length == 0) {
+                webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noFileGiven");
+                return "redirect:/footballdata";
+            }
+
+            if (!CONTENT_TYPE_JSON.equals(jsonFile.getContentType())) {
+                webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noJsonFile");
+                return "redirect:/footballdata";
+            }
+
+            footballDataSyncService.syncDataFromJson(jsonFile.getBytes());
+            webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
+        } catch (IOException | ExcelReadingException e) {
+            LOG.error(e.getMessage(), e);
+            webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.failed", e.getMessage());
+        }
+
         return "redirect:/footballdata";
     }
 }
