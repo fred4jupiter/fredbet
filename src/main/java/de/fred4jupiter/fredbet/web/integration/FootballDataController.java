@@ -5,11 +5,16 @@ import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,14 +46,17 @@ public class FootballDataController {
 
     private final DataPopulator dataPopulator;
 
+    private final ApplicationContext applicationContext;
+
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
                                   FootballDataLoader footballDataLoader,
-                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
+                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator, ApplicationContext applicationContext) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
         this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
         this.dataPopulator = dataPopulator;
+        this.applicationContext = applicationContext;
     }
 
     @ModelAttribute("footballDataCommand")
@@ -165,5 +173,20 @@ public class FootballDataController {
         }
 
         return "redirect:/footballdata";
+    }
+
+    @GetMapping(value = "/download/template/{filename}", produces = CONTENT_TYPE_JSON)
+    public ResponseEntity<byte[]> downloadTemplate(@PathVariable String filename) {
+        Resource resource = applicationContext.getResource("classpath:football-data-json/" + filename);
+        byte[] templateFile = downloadResource(resource);
+        return ResponseEntityUtil.createResponseEntity(filename, templateFile, CONTENT_TYPE_JSON);
+    }
+
+    private byte[] downloadResource(Resource resource) {
+        try {
+            return IOUtils.toByteArray(resource.getInputStream());
+        } catch (IOException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 }
