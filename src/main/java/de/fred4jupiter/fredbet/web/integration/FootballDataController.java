@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -49,6 +50,11 @@ public class FootballDataController {
     @ModelAttribute("footballDataCommand")
     public FootballDataCommand initFootballDataCommand() {
         return new FootballDataCommand();
+    }
+
+    @ModelAttribute("footballDataUploadCommand")
+    public FootballDataUploadCommand footballDataUploadCommand() {
+        return new FootballDataUploadCommand();
     }
 
     @RequestMapping
@@ -132,4 +138,10 @@ public class FootballDataController {
         return "redirect:/footballdata";
     }
 
+    @PostMapping("/upload")
+    public String uploadFile(FootballDataUploadCommand footballDataUploadCommand, Model model) {
+        MultipartFile jsonFile = footballDataUploadCommand.getJsonFile();
+        LOG.debug("jsonFile: " + jsonFile);
+        return "redirect:/footballdata";
+    }
 }
