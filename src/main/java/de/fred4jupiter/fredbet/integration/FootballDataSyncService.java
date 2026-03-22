@@ -54,8 +54,8 @@ public class FootballDataSyncService {
         List<FdMatch> matches = fdMatches.matches();
         List<FdMatch> updatedMatches = matches.stream()
             .map(fdMatch -> {
-                Integer goalsHome =  removeResults ? null : fdMatch.score().fullTime().home();
-                Integer goalsAway =  removeResults ? null : fdMatch.score().fullTime().away();
+                Integer goalsHome = removeResults ? null : fdMatch.score().fullTime().home();
+                Integer goalsAway = removeResults ? null : fdMatch.score().fullTime().away();
                 FdScore score = new FdScore(new FdFullTime(goalsHome, goalsAway));
                 return new FdMatch(fdMatch.id(), fdMatch.homeTeam(), fdMatch.awayTeam(), fdMatch.group(), fdMatch.utcDate().plusYears(1), score,
                     ZonedDateTime.now(), fdMatch.stage(), fdMatch.status(), fdMatch.venue());
