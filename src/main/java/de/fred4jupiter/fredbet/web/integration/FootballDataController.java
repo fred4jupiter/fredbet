@@ -165,7 +165,7 @@ public class FootballDataController {
                 return "redirect:/footballdata";
             }
 
-            footballDataSyncService.syncDataFromJson(jsonFile.getBytes());
+            footballDataSyncService.syncDataFromJson(jsonFile.getBytes(), false);
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (IOException | ExcelReadingException e) {
             LOG.error(e.getMessage(), e);
