@@ -57,50 +57,11 @@
         <div class="col-auto mb-3">
             <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/import}" class="btn btn-info" role="button" th:text="#{footballdata.sync}">Trigger Sync now</a>
         </div>
-    </div>
-
-    <hr/>
-
-    <form th:action="@{/footballdata/upload}" th:object="${footballDataUploadCommand}" method="post" enctype="multipart/form-data" role="form">
-        <h2 th:text="#{footballdata.upload}"></h2>
-        <div class="row mb-3">
-            <div class="col-auto">
-                <label class="form-label" th:text="#{footballdata.upload.file}"></label><br/>
-                <input class="form-control" id="upload" type="file" name="jsonFile" accept="application/json" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                <div class="form-check">
-                    <input id="removeResults" type="checkbox" th:field="*{removeResults}" class="form-check-input"/>
-                    <label for="removeResults" class="form-check-label" th:text="#{footballdata.removeResults}"></label>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-auto mb-3">
-                <input type="submit" class="btn btn-primary" th:value="#{footballdata.upload.button}" />
-            </div>
-        </div>
-    </form>
-    <div class="row">
-        <div class="col-auto">
-            <a th:href="@{'/footballdata/download/template/ec_2027_no_results.json'}">ec_2027_no_results.json</a>
-        </div>
-        <div class="col-auto">
-            <a th:href="@{'/footballdata/download/template/ec_2027_with_results.json'}">ec_2027_with_results.json</a>
-        </div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
         <div class="col-auto mb-3">
             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
         </div>
     </div>
-
 </div>
 </body>
 </html>

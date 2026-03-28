@@ -7,27 +7,40 @@ import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
+import de.fred4jupiter.fredbet.excel.ExcelReadingException;
+import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
+import de.fred4jupiter.fredbet.web.integration.FootballDataUploadCommand;
 import jakarta.validation.Valid;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/administration")
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
 public class AdminController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AdminController.class);
+
+    private static final String CONTENT_TYPE_JSON = "application/json";
 
     private static final String PAGE_ADMINISTRATION = "admin/administration";
 
@@ -45,14 +58,21 @@ public class AdminController {
 
     private final UserService userService;
 
+    private final FootballDataSyncService footballDataSyncService;
+
+    private final ApplicationContext applicationContext;
+
     public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
                            SessionTrackingService sessionTrackingService,
-                           AdministrationService administrationService, UserService userService) {
+                           AdministrationService administrationService, UserService userService,
+                           FootballDataSyncService footballDataSyncService, ApplicationContext applicationContext) {
         this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
         this.sessionTrackingService = sessionTrackingService;
         this.administrationService = administrationService;
         this.userService = userService;
+        this.footballDataSyncService = footballDataSyncService;
+        this.applicationContext = applicationContext;
     }
 
     @ModelAttribute("adminFormCommand")
@@ -65,6 +85,11 @@ public class AdminController {
         TestDataCommand testDataCommand = new TestDataCommand();
         testDataCommand.setGroupSelection(GroupSelection.ROUND_OF_SIXTEEN);
         return testDataCommand;
+    }
+
+    @ModelAttribute("footballDataUploadCommand")
+    public FootballDataUploadCommand footballDataUploadCommand() {
+        return new FootballDataUploadCommand();
     }
 
     @GetMapping("/createDemoBets")
@@ -140,5 +165,45 @@ public class AdminController {
         userService.deleteAllUsers();
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.deleteAllUsers");
         return "redirect:/administration";
+    }
+
+    @PostMapping("/upload")
+    public String uploadFile(FootballDataUploadCommand footballDataUploadCommand, RedirectAttributes redirect, Model model) {
+        final MultipartFile jsonFile = footballDataUploadCommand.getJsonFile();
+
+        try {
+            if (jsonFile == null || jsonFile.getBytes().length == 0) {
+                webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noFileGiven");
+                return "redirect:/footballdata";
+            }
+
+            if (!CONTENT_TYPE_JSON.equals(jsonFile.getContentType())) {
+                webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noJsonFile");
+                return "redirect:/footballdata";
+            }
+
+            footballDataSyncService.syncDataFromJson(jsonFile.getBytes(), footballDataUploadCommand.isRemoveResults());
+            webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
+        } catch (IOException | ExcelReadingException e) {
+            LOG.error(e.getMessage(), e);
+            webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.failed", e.getMessage());
+        }
+
+        return "redirect:/administration";
+    }
+
+    @GetMapping(value = "/download/template/{filename}", produces = CONTENT_TYPE_JSON)
+    public ResponseEntity<byte[]> downloadTemplate(@PathVariable String filename) {
+        Resource resource = applicationContext.getResource("classpath:football-data-json/" + filename);
+        byte[] templateFile = downloadResource(resource);
+        return ResponseEntityUtil.createResponseEntity(filename, templateFile, CONTENT_TYPE_JSON);
+    }
+
+    private byte[] downloadResource(Resource resource) {
+        try {
+            return IOUtils.toByteArray(resource.getInputStream());
+        } catch (IOException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 }

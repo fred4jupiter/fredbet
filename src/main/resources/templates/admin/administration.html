@@ -5,62 +5,97 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-12 col-sm-6">
-                    <h5 th:text="#{administration.testdata.title}">Test Data Creation</h5>
-                    <form id="testDataForm" th:action="@{/administration/testdata}" th:object="${testDataCommand}" action="#" method="post" role="form">
-                        <div class="row mb-3">
-                            <div class="col-12 col-sm-6">
-                                <div class="mb-3">
-                                    <label for="groupSelection" class="form-label" th:text="#{testdata.numberOfGroups}"></label><br/>
-                                    <select id="groupSelection" th:field="*{groupSelection}" class="form-select">
-                                        <option th:each="groupSelection : ${testDataCommand.groupSelections}" th:value="${groupSelection}" th:text="#{${groupSelection.msgKey}}"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-8">
-                                    <div class="form-check mb-3">
-                                        <input id="createGameOfThird" type="checkbox" th:field="*{createGameOfThird}" class="form-check-input"/>
-                                        <label for="createGameOfThird" class="form-check-label" th:text="#{testdata.createGameOfThird}"></label>
+                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
+                                    role="tab" aria-controls="home-tab-pane" aria-selected="true" th:text="#{administration.testdata.title}">Home</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
+                                    role="tab" aria-controls="profile-tab-pane" aria-selected="false">Football-Data Test</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                            <form id="testDataForm" th:action="@{/administration/testdata}" th:object="${testDataCommand}" action="#" method="post" role="form">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="groupSelection" class="form-label" th:text="#{testdata.numberOfGroups}"></label><br/>
+                                            <select id="groupSelection" th:field="*{groupSelection}" class="form-select">
+                                                <option th:each="groupSelection : ${testDataCommand.groupSelections}" th:value="${groupSelection}" th:text="#{${groupSelection.msgKey}}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-8">
+                                            <div class="form-check mb-3">
+                                                <input id="createGameOfThird" type="checkbox" th:field="*{createGameOfThird}" class="form-check-input"/>
+                                                <label for="createGameOfThird" class="form-check-label" th:text="#{testdata.createGameOfThird}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-8">
+                                            <div class="form-check mb-3">
+                                                <input id="includeBets" type="checkbox" th:field="*{includeBets}" class="form-check-input"/>
+                                                <label for="includeBets" class="form-check-label" th:text="#{testdata.includeBets}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-8">
+                                            <div class="form-check mb-3">
+                                                <input id="includeResults" type="checkbox" th:field="*{includeResults}" class="form-check-input"/>
+                                                <label for="includeResults" class="form-check-label" th:text="#{testdata.includeResults}"></label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-8">
-                                    <div class="form-check mb-3">
-                                        <input id="includeBets" type="checkbox" th:field="*{includeBets}" class="form-check-input"/>
-                                        <label for="includeBets" class="form-check-label" th:text="#{testdata.includeBets}"></label>
+                                <div class="row mb-3">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-sm-6">
+                                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-8">
-                                    <div class="form-check mb-3">
-                                        <input id="includeResults" type="checkbox" th:field="*{includeResults}" class="form-check-input"/>
-                                        <label for="includeResults" class="form-check-label" th:text="#{testdata.includeResults}"></label>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                            <form th:action="@{/administration/upload}" th:object="${footballDataUploadCommand}" method="post" enctype="multipart/form-data" role="form">
+                                <h2 th:text="#{footballdata.upload}" class="mt-3"></h2>
+                                <div class="row mb-3">
+                                    <div class="col-auto">
+                                        <label class="form-label" th:text="#{footballdata.upload.file}"></label><br/>
+                                        <input class="form-control" id="upload" type="file" name="jsonFile" accept="application/json" />
                                     </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                                        <div class="form-check">
+                                            <input id="removeResults" type="checkbox" th:field="*{removeResults}" class="form-check-input"/>
+                                            <label for="removeResults" class="form-check-label" th:text="#{footballdata.removeResults}"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto mb-3">
+                                        <input type="submit" class="btn btn-primary" th:value="#{footballdata.upload.button}" />
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <a th:href="@{'/administration/download/template/ec_2027_no_results.json'}">ec_2027_no_results.json</a>
+                                </div>
+                                <div class="col-auto">
+                                    <a th:href="@{'/administration/download/template/ec_2027_with_results.json'}">ec_2027_with_results.json</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-12 col-sm-6">
-                                <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}" th:text="#{administration.demoBetsAllUsers}"></a>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}" th:text="#{administration.testResultsAllUsers}"></a>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="col-12 col-sm-6">
                     <h5 th:text="#{administration.testdemousers.title}">Test Demo Users</h5>
@@ -74,6 +109,20 @@
                         </div>
                         <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
                     </form>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 col-sm-6">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}" th:text="#{administration.demoBetsAllUsers}"></a>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}" th:text="#{administration.testResultsAllUsers}"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
 

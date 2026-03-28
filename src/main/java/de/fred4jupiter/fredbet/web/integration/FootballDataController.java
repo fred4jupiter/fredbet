@@ -2,28 +2,20 @@ package de.fred4jupiter.fredbet.web.integration;
 
 
 import de.fred4jupiter.fredbet.data.DataPopulator;
-import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -33,8 +25,6 @@ import java.util.List;
 public class FootballDataController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataController.class);
-
-    private static final String CONTENT_TYPE_JSON = "application/json";
 
     private final FootballDataService footballDataService;
 
@@ -46,17 +36,14 @@ public class FootballDataController {
 
     private final DataPopulator dataPopulator;
 
-    private final ApplicationContext applicationContext;
-
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
                                   FootballDataLoader footballDataLoader,
-                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator, ApplicationContext applicationContext) {
+                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
         this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
         this.dataPopulator = dataPopulator;
-        this.applicationContext = applicationContext;
     }
 
     @ModelAttribute("footballDataCommand")
@@ -148,45 +135,5 @@ public class FootballDataController {
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/footballdata";
-    }
-
-    @PostMapping("/upload")
-    public String uploadFile(FootballDataUploadCommand footballDataUploadCommand, RedirectAttributes redirect, Model model) {
-        final MultipartFile jsonFile = footballDataUploadCommand.getJsonFile();
-
-        try {
-            if (jsonFile == null || jsonFile.getBytes().length == 0) {
-                webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noFileGiven");
-                return "redirect:/footballdata";
-            }
-
-            if (!CONTENT_TYPE_JSON.equals(jsonFile.getContentType())) {
-                webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noJsonFile");
-                return "redirect:/footballdata";
-            }
-
-            footballDataSyncService.syncDataFromJson(jsonFile.getBytes(), footballDataUploadCommand.isRemoveResults());
-            webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
-        } catch (IOException | ExcelReadingException e) {
-            LOG.error(e.getMessage(), e);
-            webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.failed", e.getMessage());
-        }
-
-        return "redirect:/footballdata";
-    }
-
-    @GetMapping(value = "/download/template/{filename}", produces = CONTENT_TYPE_JSON)
-    public ResponseEntity<byte[]> downloadTemplate(@PathVariable String filename) {
-        Resource resource = applicationContext.getResource("classpath:football-data-json/" + filename);
-        byte[] templateFile = downloadResource(resource);
-        return ResponseEntityUtil.createResponseEntity(filename, templateFile, CONTENT_TYPE_JSON);
-    }
-
-    private byte[] downloadResource(Resource resource) {
-        try {
-            return IOUtils.toByteArray(resource.getInputStream());
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
     }
 }
