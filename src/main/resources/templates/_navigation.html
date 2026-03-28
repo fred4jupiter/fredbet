@@ -160,6 +160,10 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/runtimesettings/show}" th:text="#{navigation.runtime.configuration}"></a>
                                 </li>
@@ -170,12 +174,6 @@
                                     <a class="dropdown-item" th:href="@{/loginlogo}" th:text="#{login.logo.title}"></a>
                                 </li>
                                 <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
-                                </li>
-                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}">
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
@@ -205,10 +203,8 @@
                                 <li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
                                     <a class="dropdown-item" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
                                 </li>
-                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}">
-                                    <hr class="dropdown-divider">
-                                </li>
                                 <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <hr class="dropdown-divider">
                                     <a class="dropdown-item" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
                                 </li>
                                 <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
