@@ -42,11 +42,13 @@
         </div>
         <div class="row mb-3">
             <div class="col-auto">
-                <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/fetch-comp}" class="btn btn-outline-info" role="button" th:text="#{footballdata.fetch}">Fetch</a>
-            </div>
-            <div class="col-auto">
                 <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
             </div>
+            <div class="col-auto">
+                <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/fetch-comp}" class="btn btn-outline-info" role="button" th:text="#{footballdata.fetch}">Fetch</a>
+            </div>
+        </div>
+        <div class="row mb-3">
             <div class="col-auto">
                 <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/import}" class="btn btn-info" role="button" th:text="#{footballdata.sync}">Trigger Sync now</a>
             </div>
