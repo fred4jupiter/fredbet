@@ -29,7 +29,7 @@ public class MatchUpdaterJob {
 
         final Competition competition = footballDataRuntimeSettings.getCompetition();
 
-        LOG.info("start syncing data from football-data.org for footballDataRuntimeSettings={}", footballDataRuntimeSettings);
+        LOG.info("start syncing data from 'football-data.org' for footballDataRuntimeSettings={}", footballDataRuntimeSettings);
         footballDataSyncService.syncData(competition);
         LOG.info("finished syncing data from football-data.org");
     }
