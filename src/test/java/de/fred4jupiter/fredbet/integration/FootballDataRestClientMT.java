@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.integration;
 import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.integration.model.FdCompetition;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
+import de.fred4jupiter.fredbet.integration.model.FdMatches;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,10 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatches() {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches("WC", 2026).matches();
+        FdMatches fdMatches = footballDataRestClient.fetchMatches("WC", 2026);
+        assertThat(fdMatches).isNotNull();
+        LOG.debug("fdMatches: {}", fdMatches);
+        List<FdMatch> matches = fdMatches.matches();
         assertThat(matches).isNotNull();
         assertThat(matches).isNotEmpty();
 
