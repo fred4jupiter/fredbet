@@ -30,9 +30,9 @@ import java.util.Properties;
 import java.util.Set;
 
 @Component
-class FdMatchConverter {
+class FdMatchSyncImporter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FdMatchConverter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FdMatchSyncImporter.class);
 
     private final RuntimeSettingsService runtimeSettingsService;
 
@@ -42,8 +42,8 @@ class FdMatchConverter {
 
     private final MatchRepository matchRepository;
 
-    FdMatchConverter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
-                     RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchRepository matchRepository) {
+    FdMatchSyncImporter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
+                        RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchRepository matchRepository) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.countryProps = loadCountryNames(countryNameResource);
         this.applicationEventPublisher = applicationEventPublisher;
@@ -66,7 +66,7 @@ class FdMatchConverter {
         mapTeam(fdMatch.homeTeam(), match.getTeamOne());
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
-        Group group = resolveToGroup(fdMatch);
+        final Group group = resolveToGroup(fdMatch);
         if (group == null) {
             LOG.warn("No group found for match {}", fdMatch);
             return;
@@ -76,6 +76,7 @@ class FdMatchConverter {
         match.setKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
         match.setExternalId(fdMatch.id());
         match.setExternalLastUpdated(fdMatch.lastUpdated());
+        match.setStadium(fdMatch.venue());
 
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
@@ -83,20 +84,20 @@ class FdMatchConverter {
             if (!match.hasResultSet() && fdMatch.isFinished()) {
                 match.setGoalsTeamOne(fdFullTime.home());
                 match.setGoalsTeamTwo(fdFullTime.away());
-                LOG.debug("saved result for match={}", match);
+                Match saved = matchRepository.save(match);
+                applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
+                return;
             }
         }
 
-        Match saved = matchRepository.save(match);
-        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
-
-        LOG.debug("finished syncing fdMatch={}", fdMatch);
+        matchRepository.save(match);
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {
         final Country country = resolveToCountry(fdTeam, countryProps);
         if (country != null) {
             team.setCountry(country);
+            team.setName(null);
         } else {
             team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
         }

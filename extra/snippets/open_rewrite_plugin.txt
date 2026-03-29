@@ -1,0 +1,18 @@
+<!-- run with mvn rewrite:run -->
+<plugin>
+	<groupId>org.openrewrite.maven</groupId>
+	<artifactId>rewrite-maven-plugin</artifactId>
+	<version>6.33.0</version>
+	<configuration>
+		<activeRecipes>
+			<recipe>org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0</recipe>
+		</activeRecipes>
+	</configuration>
+	<dependencies>
+		<dependency>
+			<groupId>org.openrewrite.recipe</groupId>
+			<artifactId>rewrite-spring</artifactId>
+			<version>6.27.1</version>
+		</dependency>
+	</dependencies>
+</plugin>

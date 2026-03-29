@@ -15,15 +15,18 @@ public class FootballDataServiceIT {
     @Test
     void saveSettings() {
         FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
-        settings.setSeasonYear(1);
-        settings.setCompetitionCode("EC");
+        Competition competition = new Competition(1, "European Championship", "EC", 2024);
+        settings.setCompetition(competition);
         settings.setEnabled(true);
 
         footballDataService.saveSettings(settings);
 
         FootballDataRuntimeSettings loadedSettings = footballDataService.loadSettings();
-        assertThat(loadedSettings.getSeasonYear()).isEqualTo(settings.getSeasonYear());
-        assertThat(loadedSettings.getCompetitionCode()).isEqualTo(settings.getCompetitionCode());
+        assertThat(loadedSettings).isNotNull();
         assertThat(loadedSettings.isEnabled()).isEqualTo(settings.isEnabled());
+
+        Competition loadedCompetition = loadedSettings.getCompetition();
+        assertThat(loadedCompetition).isNotNull();
+        assertThat(loadedCompetition).isEqualTo(competition);
     }
 }

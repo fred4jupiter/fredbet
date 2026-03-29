@@ -1,8 +1,7 @@
 package de.fred4jupiter.fredbet.integration;
 
-public record Competition(Integer id, String name, String code, int seasonYear) {
+import java.io.Serializable;
 
-    public String getKey() {
-        return code + "_" + seasonYear;
-    }
+public record Competition(Integer id, String name, String code, int seasonYear) implements Serializable {
+
 }

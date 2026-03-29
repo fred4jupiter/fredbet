@@ -27,8 +27,10 @@ public class MatchUpdaterJob {
             return;
         }
 
-        LOG.info("start syncing data from football-data.org for footballDataRuntimeSettings={}", footballDataRuntimeSettings);
-        footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
+        final Competition competition = footballDataRuntimeSettings.getCompetition();
+
+        LOG.info("start syncing data from 'football-data.org' for footballDataRuntimeSettings={}", footballDataRuntimeSettings);
+        footballDataSyncService.syncData(competition);
         LOG.info("finished syncing data from football-data.org");
     }
 }

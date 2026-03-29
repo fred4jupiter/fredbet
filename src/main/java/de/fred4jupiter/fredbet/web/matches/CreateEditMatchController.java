@@ -68,13 +68,9 @@ public class CreateEditMatchController {
         }
 
         model.addAttribute("createEditMatchCommand", createEditMatchCommand);
-        model.addAttribute("externalIntegrationInfo", createExternalIntegrationInfo(match));
+        model.addAttribute("externalLastUpdated", match.getExternalLastUpdated());
         addCountriesAndGroups(model);
         return VIEW_EDIT_MATCH;
-    }
-
-    private String createExternalIntegrationInfo(Match match) {
-        return "last updated: %s".formatted(match.getExternalLastUpdated());
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")

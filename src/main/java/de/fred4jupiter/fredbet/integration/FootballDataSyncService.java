@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.integration;
 import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
+import de.fred4jupiter.fredbet.integration.model.FdMatches;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import org.slf4j.Logger;
@@ -20,20 +21,30 @@ public class FootballDataSyncService {
 
     private final MatchService matchService;
 
-    private final FdMatchConverter fdMatchConverter;
+    private final FdMatchSyncImporter fdMatchSyncImporter;
 
     private final CacheAdministrationService administrationService;
 
     FootballDataSyncService(FootballDataRestClient footballDataRestClient,
-                            MatchService matchService, FdMatchConverter fdMatchConverter, CacheAdministrationService administrationService) {
+                            MatchService matchService, FdMatchSyncImporter fdMatchSyncImporter,
+                            CacheAdministrationService administrationService) {
         this.footballDataRestClient = footballDataRestClient;
         this.matchService = matchService;
-        this.fdMatchConverter = fdMatchConverter;
+        this.fdMatchSyncImporter = fdMatchSyncImporter;
         this.administrationService = administrationService;
     }
 
-    public void syncData(String competitionCode, int seasonYear) {
-        final List<FdMatch> matches = footballDataRestClient.fetchMatches(competitionCode, seasonYear);
+    public void syncData(Competition competition) {
+        syncData(footballDataRestClient.fetchMatches(competition));
+    }
+
+    public void syncData(FdMatches fdMatches) {
+        if (fdMatches == null) {
+            LOG.warn("Could not load football data fdMatchesList!");
+            return;
+        }
+
+        final List<FdMatch> matches = fdMatches.matches();
         if (matches == null || matches.isEmpty()) {
             LOG.warn("Could not load football data fdMatchesList!");
             return;
@@ -47,6 +58,6 @@ public class FootballDataSyncService {
 
     private void syncMatch(FdMatch fdMatch) {
         final Match match = matchService.findByExternalId(fdMatch.id()).orElse(new Match());
-        fdMatchConverter.mapAndSave(fdMatch, match);
+        fdMatchSyncImporter.mapAndSave(fdMatch, match);
     }
 }

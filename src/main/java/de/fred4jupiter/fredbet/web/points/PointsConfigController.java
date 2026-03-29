@@ -34,7 +34,7 @@ public class PointsConfigController {
 
     @GetMapping("/reset")
     public String resetToDefaults(Model model) {
-        PointsConfiguration pointsConfig = pointsConfigService.createDefaultPointsConfig();
+        PointsConfiguration pointsConfig = PointsConfiguration.withDefaults();
         model.addAttribute("pointsConfig", pointsConfig);
         return "config/points_config";
     }

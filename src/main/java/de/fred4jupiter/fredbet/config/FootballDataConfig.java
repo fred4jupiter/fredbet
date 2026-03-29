@@ -10,9 +10,8 @@ import org.springframework.web.client.RestClient;
 public class FootballDataConfig {
 
     @Bean
-    public RestClient restClient(FredbetProperties fredbetProperties) {
+    public RestClient restClient(FredbetProperties fredbetProperties, FootballDataApiTokenInterceptor interceptor) {
         final FootballDataProperties footballDataProperties = fredbetProperties.integration().footballData();
-        return RestClient.builder().baseUrl(footballDataProperties.baseUrl())
-            .defaultHeader("X-Auth-Token", footballDataProperties.apiToken()).build();
+        return RestClient.builder().baseUrl(footballDataProperties.baseUrl()).requestInterceptor(interceptor).build();
     }
 }

@@ -71,15 +71,7 @@ public class ExcelImportController {
 
         Resource resource = applicationContext.getResource(resourceLocation.get());
         byte[] templateFile = downloadResource(resource);
-        return createResponseEntityFor(templateFile, filename);
-    }
-
-    private ResponseEntity<byte[]> createResponseEntityFor(byte[] fileContent, String fileName) {
-        if (fileContent == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_EXCEL);
+        return ResponseEntityUtil.createResponseEntity(filename, templateFile, CONTENT_TYPE_EXCEL);
     }
 
     @PostMapping("/upload")

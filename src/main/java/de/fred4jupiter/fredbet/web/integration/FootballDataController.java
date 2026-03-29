@@ -6,16 +6,14 @@ import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/footballdata")
 @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_ADMINISTRATION + "')")
+@SessionAttributes("footballDataCommand")
 public class FootballDataController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataController.class);
@@ -31,14 +30,18 @@ public class FootballDataController {
 
     private final FootballDataSyncService footballDataSyncService;
 
+    private final FootballDataLoader footballDataLoader;
+
     private final WebMessageUtil webMessageUtil;
 
     private final DataPopulator dataPopulator;
 
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
+                                  FootballDataLoader footballDataLoader,
                                   WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
+        this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
         this.dataPopulator = dataPopulator;
     }
@@ -48,16 +51,63 @@ public class FootballDataController {
         return new FootballDataCommand();
     }
 
-    @RequestMapping
-    public String showPage(FootballDataCommand footballDataCommand, Model model) {
-        List<Competition> competitions = footballDataService.loadCompetitions();
-        model.addAttribute("competitions", competitions);
+    @ModelAttribute("footballDataUploadCommand")
+    public FootballDataUploadCommand footballDataUploadCommand() {
+        return new FootballDataUploadCommand();
+    }
 
-        FootballDataRuntimeSettings settings = footballDataService.loadSettings();
+    @RequestMapping
+    public String showPage(FootballDataCommand footballDataCommand) {
+        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
         footballDataCommand.setEnabled(settings.isEnabled());
-        footballDataCommand.setCompetitionKey(settings.getKey());
+        footballDataCommand.setApiToken(settings.getApiToken());
+        if (settings.getCompetition() != null) {
+            footballDataCommand.setCompetitionId(settings.getCompetition().id());
+            if (footballDataCommand.getCompetitions() == null) {
+                footballDataCommand.setCompetitions(List.of(settings.getCompetition()));
+            }
+        }
 
         return "integration/footballdata";
+    }
+
+    @RequestMapping("/fetch-comp")
+    public String fetchCompetitions(FootballDataCommand footballDataCommand, RedirectAttributes redirect, Model model) {
+        if (footballDataCommand.isEnabled() && StringUtils.isBlank(footballDataCommand.getApiToken())) {
+            webMessageUtil.addErrorMsg(model, "footballdata.msg.apiTokenMissing");
+            return "integration/footballdata";
+        }
+
+        if (footballDataCommand.isReadyToFetchCompetitions()) {
+            LOG.debug("fetching competitions...");
+            List<Competition> competitions = footballDataLoader.loadCompetitions();
+            footballDataCommand.setCompetitions(competitions);
+        }
+
+        return "redirect:/footballdata";
+    }
+
+    @PostMapping("/save")
+    public String save(@Valid FootballDataCommand footballDataCommand, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "integration/footballdata";
+        }
+
+        if (footballDataCommand.isEnabled() && StringUtils.isBlank(footballDataCommand.getApiToken())) {
+            webMessageUtil.addErrorMsg(model, "footballdata.msg.apiTokenMissing");
+            return "integration/footballdata";
+        }
+
+        Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
+
+        final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
+        footballDataRuntimeSettings.setEnabled(footballDataCommand.isEnabled());
+        footballDataRuntimeSettings.setApiToken(footballDataCommand.getApiToken());
+        footballDataRuntimeSettings.setCompetition(competition);
+
+        footballDataService.saveSettings(footballDataRuntimeSettings);
+        webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");
+        return "redirect:/footballdata";
     }
 
     @RequestMapping(value = "/import")
@@ -70,24 +120,12 @@ public class FootballDataController {
         }
 
         try {
-            footballDataSyncService.syncData(footballDataRuntimeSettings.getCompetitionCode(), footballDataRuntimeSettings.getSeasonYear());
+            Competition competition = footballDataRuntimeSettings.getCompetition();
+            footballDataSyncService.syncData(competition);
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());
         }
-        return "redirect:/footballdata";
-    }
-
-    @PostMapping("/save")
-    public String save(@Valid FootballDataCommand footballDataCommand, BindingResult bindingResult, RedirectAttributes redirect) {
-        if (bindingResult.hasErrors()) {
-            return "integration/footballdata";
-        }
-
-        FootballDataRuntimeSettings footballDataRuntimeSettings = FootballDataRuntimeSettings.fromKey(footballDataCommand.isEnabled(), footballDataCommand.getCompetitionKey());
-
-        footballDataService.saveSettings(footballDataRuntimeSettings);
-        webMessageUtil.addInfoMsg(redirect, "footballdata.msg.saved");
         return "redirect:/footballdata";
     }
 
@@ -98,5 +136,4 @@ public class FootballDataController {
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/footballdata";
     }
-
 }
