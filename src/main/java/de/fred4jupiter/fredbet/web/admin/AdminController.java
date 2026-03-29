@@ -175,12 +175,12 @@ public class AdminController {
         try {
             if (jsonFile == null || jsonFile.getBytes().length == 0) {
                 webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noFileGiven");
-                return "redirect:/footballdata";
+                return "redirect:/administration";
             }
 
             if (!CONTENT_TYPE_JSON.equals(jsonFile.getContentType())) {
                 webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.noJsonFile");
-                return "redirect:/footballdata";
+                return "redirect:/administration";
             }
 
             footballDataTestingService.syncDataFromJson(jsonFile.getBytes());

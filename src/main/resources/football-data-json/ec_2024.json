@@ -4,8 +4,8 @@
     },
     "resultSet": {
         "count": 51,
-        "first": "2027-06-14",
-        "last": "2027-07-14",
+        "first": "2024-06-14",
+        "last": "2024-07-14",
         "played": 51
     },
     "competition": {
@@ -32,8 +32,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -50,12 +50,12 @@
                 }
             },
             "id": 428747,
-            "utcDate": "2027-06-14T19:00:00Z",
+            "utcDate": "2024-06-14T19:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_A",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 759,
                 "name": "Germany",
@@ -74,12 +74,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 5,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 0
                 }
             },
             "odds": {
@@ -110,8 +110,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -128,12 +128,12 @@
                 }
             },
             "id": 428746,
-            "utcDate": "2027-06-15T13:00:00Z",
+            "utcDate": "2024-06-15T13:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_A",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 827,
                 "name": "Hungary",
@@ -152,12 +152,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 3
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 2
                 }
             },
             "odds": {
@@ -188,8 +188,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -206,12 +206,12 @@
                 }
             },
             "id": 428753,
-            "utcDate": "2027-06-15T16:00:00Z",
+            "utcDate": "2024-06-15T16:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_B",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 760,
                 "name": "Spain",
@@ -230,12 +230,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 0
                 }
             },
             "odds": {
@@ -266,8 +266,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -284,12 +284,12 @@
                 }
             },
             "id": 428752,
-            "utcDate": "2027-06-15T19:00:00Z",
+            "utcDate": "2024-06-15T19:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_B",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 784,
                 "name": "Italy",
@@ -308,12 +308,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 }
             },
             "odds": {
@@ -344,8 +344,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -362,12 +362,12 @@
                 }
             },
             "id": 428765,
-            "utcDate": "2027-06-16T13:00:00Z",
+            "utcDate": "2024-06-16T13:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_D",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 794,
                 "name": "Poland",
@@ -386,12 +386,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 2
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -422,8 +422,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -440,12 +440,12 @@
                 }
             },
             "id": 428758,
-            "utcDate": "2027-06-16T16:00:00Z",
+            "utcDate": "2024-06-16T16:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_C",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 777,
                 "name": "Slovenia",
@@ -464,12 +464,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -500,8 +500,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -518,12 +518,12 @@
                 }
             },
             "id": 428759,
-            "utcDate": "2027-06-16T19:00:00Z",
+            "utcDate": "2024-06-16T19:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_C",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 780,
                 "name": "Serbia",
@@ -542,12 +542,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -578,8 +578,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -596,12 +596,12 @@
                 }
             },
             "id": 428770,
-            "utcDate": "2027-06-17T13:00:00Z",
+            "utcDate": "2024-06-17T13:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_E",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 811,
                 "name": "Romania",
@@ -620,12 +620,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -656,8 +656,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -674,12 +674,12 @@
                 }
             },
             "id": 428771,
-            "utcDate": "2027-06-17T16:00:00Z",
+            "utcDate": "2024-06-17T16:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_E",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 805,
                 "name": "Belgium",
@@ -698,12 +698,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -734,8 +734,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -752,12 +752,12 @@
                 }
             },
             "id": 428764,
-            "utcDate": "2027-06-17T19:00:00Z",
+            "utcDate": "2024-06-17T19:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_D",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 816,
                 "name": "Austria",
@@ -776,12 +776,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -812,8 +812,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -830,12 +830,12 @@
                 }
             },
             "id": 428776,
-            "utcDate": "2027-06-18T16:00:00Z",
+            "utcDate": "2024-06-18T16:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_F",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 803,
                 "name": "Turkey",
@@ -854,12 +854,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -890,8 +890,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -908,12 +908,12 @@
                 }
             },
             "id": 428777,
-            "utcDate": "2027-06-18T19:00:00Z",
+            "utcDate": "2024-06-18T19:00:00Z",
             "status": "FINISHED",
             "matchday": 1,
             "stage": "GROUP_STAGE",
             "group": "GROUP_F",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 765,
                 "name": "Portugal",
@@ -932,12 +932,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -968,8 +968,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -986,12 +986,12 @@
                 }
             },
             "id": 428751,
-            "utcDate": "2027-06-19T13:00:00Z",
+            "utcDate": "2024-06-19T13:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_B",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 799,
                 "name": "Croatia",
@@ -1010,12 +1010,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 2
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -1046,8 +1046,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1064,12 +1064,12 @@
                 }
             },
             "id": 428744,
-            "utcDate": "2027-06-19T16:00:00Z",
+            "utcDate": "2024-06-19T16:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_A",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 759,
                 "name": "Germany",
@@ -1088,12 +1088,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1124,8 +1124,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1142,12 +1142,12 @@
                 }
             },
             "id": 428745,
-            "utcDate": "2027-06-19T19:00:00Z",
+            "utcDate": "2024-06-19T19:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_A",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 8873,
                 "name": "Scotland",
@@ -1166,12 +1166,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -1202,8 +1202,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1220,12 +1220,12 @@
                 }
             },
             "id": 428756,
-            "utcDate": "2027-06-20T13:00:00Z",
+            "utcDate": "2024-06-20T13:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_C",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 777,
                 "name": "Slovenia",
@@ -1244,12 +1244,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1280,8 +1280,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1298,12 +1298,12 @@
                 }
             },
             "id": 428757,
-            "utcDate": "2027-06-20T16:00:00Z",
+            "utcDate": "2024-06-20T16:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_C",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 782,
                 "name": "Denmark",
@@ -1322,12 +1322,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -1358,8 +1358,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1376,12 +1376,12 @@
                 }
             },
             "id": 428750,
-            "utcDate": "2027-06-20T19:00:00Z",
+            "utcDate": "2024-06-20T19:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_B",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 760,
                 "name": "Spain",
@@ -1400,12 +1400,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1436,8 +1436,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1454,12 +1454,12 @@
                 }
             },
             "id": 428769,
-            "utcDate": "2027-06-21T13:00:00Z",
+            "utcDate": "2024-06-21T13:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_E",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 768,
                 "name": "Slovakia",
@@ -1478,12 +1478,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 2
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1514,8 +1514,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1532,12 +1532,12 @@
                 }
             },
             "id": 428763,
-            "utcDate": "2027-06-21T16:00:00Z",
+            "utcDate": "2024-06-21T16:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_D",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 794,
                 "name": "Poland",
@@ -1556,12 +1556,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 3
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -1592,8 +1592,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1610,12 +1610,12 @@
                 }
             },
             "id": 428762,
-            "utcDate": "2027-06-21T19:00:00Z",
+            "utcDate": "2024-06-21T19:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_D",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 8601,
                 "name": "Netherlands",
@@ -1634,12 +1634,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1670,8 +1670,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1688,12 +1688,12 @@
                 }
             },
             "id": 428775,
-            "utcDate": "2027-06-22T13:00:00Z",
+            "utcDate": "2024-06-22T13:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_F",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 1978,
                 "name": "Georgia",
@@ -1712,12 +1712,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1748,8 +1748,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1766,12 +1766,12 @@
                 }
             },
             "id": 428774,
-            "utcDate": "2027-06-22T16:00:00Z",
+            "utcDate": "2024-06-22T16:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_F",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 803,
                 "name": "Turkey",
@@ -1790,12 +1790,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 3
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 2
                 }
             },
             "odds": {
@@ -1826,8 +1826,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1844,12 +1844,12 @@
                 }
             },
             "id": 428768,
-            "utcDate": "2027-06-22T19:00:00Z",
+            "utcDate": "2024-06-22T19:00:00Z",
             "status": "FINISHED",
             "matchday": 2,
             "stage": "GROUP_STAGE",
             "group": "GROUP_E",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 805,
                 "name": "Belgium",
@@ -1868,12 +1868,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1904,8 +1904,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -1922,12 +1922,12 @@
                 }
             },
             "id": 428742,
-            "utcDate": "2027-06-23T19:00:00Z",
+            "utcDate": "2024-06-23T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_A",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 8873,
                 "name": "Scotland",
@@ -1946,12 +1946,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -1982,8 +1982,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2000,12 +2000,12 @@
                 }
             },
             "id": 428743,
-            "utcDate": "2027-06-23T19:00:00Z",
+            "utcDate": "2024-06-23T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_A",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 788,
                 "name": "Switzerland",
@@ -2024,12 +2024,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2060,8 +2060,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2078,12 +2078,12 @@
                 }
             },
             "id": 428748,
-            "utcDate": "2027-06-24T19:00:00Z",
+            "utcDate": "2024-06-24T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_B",
-            "lastUpdated": "2027-07-06T00:29:33Z",
+            "lastUpdated": "2024-07-06T00:29:33Z",
             "homeTeam": {
                 "id": 1065,
                 "name": "Albania",
@@ -2102,12 +2102,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -2138,8 +2138,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2156,12 +2156,12 @@
                 }
             },
             "id": 428749,
-            "utcDate": "2027-06-24T19:00:00Z",
+            "utcDate": "2024-06-24T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_B",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 799,
                 "name": "Croatia",
@@ -2180,12 +2180,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2216,8 +2216,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2234,12 +2234,12 @@
                 }
             },
             "id": 428760,
-            "utcDate": "2027-06-25T16:00:00Z",
+            "utcDate": "2024-06-25T16:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_D",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 773,
                 "name": "France",
@@ -2258,12 +2258,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2294,8 +2294,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2312,12 +2312,12 @@
                 }
             },
             "id": 428761,
-            "utcDate": "2027-06-25T16:00:00Z",
+            "utcDate": "2024-06-25T16:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_D",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 8601,
                 "name": "Netherlands",
@@ -2336,12 +2336,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 3
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -2372,8 +2372,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2390,12 +2390,12 @@
                 }
             },
             "id": 428754,
-            "utcDate": "2027-06-25T19:00:00Z",
+            "utcDate": "2024-06-25T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_C",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 782,
                 "name": "Denmark",
@@ -2414,12 +2414,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2450,8 +2450,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2468,12 +2468,12 @@
                 }
             },
             "id": 428755,
-            "utcDate": "2027-06-25T19:00:00Z",
+            "utcDate": "2024-06-25T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_C",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 770,
                 "name": "England",
@@ -2492,12 +2492,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2528,8 +2528,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2546,12 +2546,12 @@
                 }
             },
             "id": 428766,
-            "utcDate": "2027-06-26T16:00:00Z",
+            "utcDate": "2024-06-26T16:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_E",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 790,
                 "name": "Ukraine",
@@ -2570,12 +2570,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2606,8 +2606,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2624,12 +2624,12 @@
                 }
             },
             "id": 428767,
-            "utcDate": "2027-06-26T16:00:00Z",
+            "utcDate": "2024-06-26T16:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_E",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 768,
                 "name": "Slovakia",
@@ -2648,12 +2648,12 @@
                 "winner": "DRAW",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -2684,8 +2684,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2702,12 +2702,12 @@
                 }
             },
             "id": 428772,
-            "utcDate": "2027-06-26T19:00:00Z",
+            "utcDate": "2024-06-26T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_F",
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 798,
                 "name": "Czechia",
@@ -2726,12 +2726,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 2
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2762,8 +2762,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2780,12 +2780,12 @@
                 }
             },
             "id": 428773,
-            "utcDate": "2027-06-26T19:00:00Z",
+            "utcDate": "2024-06-26T19:00:00Z",
             "status": "FINISHED",
             "matchday": 3,
             "stage": "GROUP_STAGE",
             "group": "GROUP_F",
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 1978,
                 "name": "Georgia",
@@ -2804,12 +2804,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2840,8 +2840,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2858,12 +2858,12 @@
                 }
             },
             "id": 428791,
-            "utcDate": "2027-06-29T16:00:00Z",
+            "utcDate": "2024-06-29T16:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 788,
                 "name": "Switzerland",
@@ -2882,12 +2882,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2918,8 +2918,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -2936,12 +2936,12 @@
                 }
             },
             "id": 428792,
-            "utcDate": "2027-06-29T19:00:00Z",
+            "utcDate": "2024-06-29T19:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 759,
                 "name": "Germany",
@@ -2960,12 +2960,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -2996,8 +2996,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3014,12 +3014,12 @@
                 }
             },
             "id": 428789,
-            "utcDate": "2027-06-30T16:00:00Z",
+            "utcDate": "2024-06-30T16:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 770,
                 "name": "England",
@@ -3038,20 +3038,20 @@
                 "winner": "HOME_TEAM",
                 "duration": "EXTRA_TIME",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 },
                 "regularTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "extraTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -3082,8 +3082,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3100,12 +3100,12 @@
                 }
             },
             "id": 428790,
-            "utcDate": "2027-06-30T19:00:00Z",
+            "utcDate": "2024-06-30T19:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 760,
                 "name": "Spain",
@@ -3124,12 +3124,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 4,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -3160,8 +3160,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3178,12 +3178,12 @@
                 }
             },
             "id": 428787,
-            "utcDate": "2027-07-01T16:00:00Z",
+            "utcDate": "2024-07-01T16:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 773,
                 "name": "France",
@@ -3202,12 +3202,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
@@ -3238,8 +3238,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3256,12 +3256,12 @@
                 }
             },
             "id": 428788,
-            "utcDate": "2027-07-01T19:00:00Z",
+            "utcDate": "2024-07-01T19:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 765,
                 "name": "Portugal",
@@ -3280,24 +3280,24 @@
                 "winner": "HOME_TEAM",
                 "duration": "PENALTY_SHOOTOUT",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 0
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "regularTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "extraTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "penalties": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 0
                 }
             },
             "odds": {
@@ -3328,8 +3328,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3346,12 +3346,12 @@
                 }
             },
             "id": 428786,
-            "utcDate": "2027-07-02T16:00:00Z",
+            "utcDate": "2024-07-02T16:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 811,
                 "name": "Romania",
@@ -3370,12 +3370,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 3
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -3406,8 +3406,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3424,12 +3424,12 @@
                 }
             },
             "id": 428785,
-            "utcDate": "2027-07-02T19:00:00Z",
+            "utcDate": "2024-07-02T19:00:00Z",
             "status": "FINISHED",
             "matchday": 4,
             "stage": "LAST_16",
             "group": null,
-            "lastUpdated": "2027-07-06T15:20:53Z",
+            "lastUpdated": "2024-07-06T15:20:53Z",
             "homeTeam": {
                 "id": 816,
                 "name": "Austria",
@@ -3448,12 +3448,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 2
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -3484,8 +3484,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3502,12 +3502,12 @@
                 }
             },
             "id": 495401,
-            "utcDate": "2027-07-05T16:00:00Z",
+            "utcDate": "2024-07-05T16:00:00Z",
             "status": "FINISHED",
             "matchday": 5,
             "stage": "QUARTER_FINALS",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 760,
                 "name": "Spain",
@@ -3526,20 +3526,20 @@
                 "winner": "HOME_TEAM",
                 "duration": "EXTRA_TIME",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "regularTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "extraTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 0
                 }
             },
             "odds": {
@@ -3570,8 +3570,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3588,12 +3588,12 @@
                 }
             },
             "id": 495402,
-            "utcDate": "2027-07-05T19:00:00Z",
+            "utcDate": "2024-07-05T19:00:00Z",
             "status": "FINISHED",
             "matchday": 5,
             "stage": "QUARTER_FINALS",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 765,
                 "name": "Portugal",
@@ -3612,24 +3612,24 @@
                 "winner": "AWAY_TEAM",
                 "duration": "PENALTY_SHOOTOUT",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 5
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "regularTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "extraTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "penalties": {
-                    "home": null,
-                    "away": null
+                    "home": 3,
+                    "away": 5
                 }
             },
             "odds": {
@@ -3660,8 +3660,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3678,12 +3678,12 @@
                 }
             },
             "id": 495403,
-            "utcDate": "2027-07-06T16:00:00Z",
+            "utcDate": "2024-07-06T16:00:00Z",
             "status": "FINISHED",
             "matchday": 5,
             "stage": "QUARTER_FINALS",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 770,
                 "name": "England",
@@ -3702,24 +3702,24 @@
                 "winner": "HOME_TEAM",
                 "duration": "PENALTY_SHOOTOUT",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 6,
+                    "away": 4
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "regularTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 },
                 "extraTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 },
                 "penalties": {
-                    "home": null,
-                    "away": null
+                    "home": 5,
+                    "away": 3
                 }
             },
             "odds": {
@@ -3750,8 +3750,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3768,12 +3768,12 @@
                 }
             },
             "id": 495404,
-            "utcDate": "2027-07-06T19:00:00Z",
+            "utcDate": "2024-07-06T19:00:00Z",
             "status": "FINISHED",
             "matchday": 5,
             "stage": "QUARTER_FINALS",
             "group": null,
-            "lastUpdated": "2027-07-07T00:20:50Z",
+            "lastUpdated": "2024-07-07T00:20:50Z",
             "homeTeam": {
                 "id": 8601,
                 "name": "Netherlands",
@@ -3792,12 +3792,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 1
                 }
             },
             "odds": {
@@ -3828,8 +3828,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3846,12 +3846,12 @@
                 }
             },
             "id": 428780,
-            "utcDate": "2027-07-09T19:00:00Z",
+            "utcDate": "2024-07-09T19:00:00Z",
             "status": "FINISHED",
             "matchday": 6,
             "stage": "SEMI_FINALS",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 760,
                 "name": "Spain",
@@ -3870,12 +3870,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 }
             },
             "odds": {
@@ -3906,8 +3906,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -3924,12 +3924,12 @@
                 }
             },
             "id": 428779,
-            "utcDate": "2027-07-10T19:00:00Z",
+            "utcDate": "2024-07-10T19:00:00Z",
             "status": "FINISHED",
             "matchday": 6,
             "stage": "SEMI_FINALS",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 8601,
                 "name": "Netherlands",
@@ -3948,12 +3948,12 @@
                 "winner": "AWAY_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 2
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 1,
+                    "away": 1
                 }
             },
             "odds": {
@@ -3984,8 +3984,8 @@
             },
             "season": {
                 "id": 1537,
-                "startDate": "2027-06-14",
-                "endDate": "2027-07-14",
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
                 "currentMatchday": 7,
                 "winner": {
                     "id": 760,
@@ -4002,12 +4002,12 @@
                 }
             },
             "id": 428778,
-            "utcDate": "2027-07-14T19:00:00Z",
+            "utcDate": "2024-07-14T19:00:00Z",
             "status": "FINISHED",
             "matchday": 7,
             "stage": "FINAL",
             "group": null,
-            "lastUpdated": "2027-07-23T10:21:24Z",
+            "lastUpdated": "2024-07-23T10:21:24Z",
             "homeTeam": {
                 "id": 760,
                 "name": "Spain",
@@ -4026,12 +4026,12 @@
                 "winner": "HOME_TEAM",
                 "duration": "REGULAR",
                 "fullTime": {
-                    "home": null,
-                    "away": null
+                    "home": 2,
+                    "away": 1
                 },
                 "halfTime": {
-                    "home": null,
-                    "away": null
+                    "home": 0,
+                    "away": 0
                 }
             },
             "odds": {
