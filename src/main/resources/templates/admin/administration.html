@@ -65,10 +65,9 @@
                         </div>
                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                             <form th:action="@{/administration/upload}" th:object="${footballDataUploadCommand}" method="post" enctype="multipart/form-data" role="form">
-                                <h2 th:text="#{footballdata.upload}" class="mt-3"></h2>
                                 <div class="row mb-3">
                                     <div class="col-auto">
-                                        <label class="form-label" th:text="#{footballdata.upload.file}"></label><br/>
+                                        <label class="form-label" th:text="#{footballdata.upload}"></label><br/>
                                         <input class="form-control" id="upload" type="file" name="jsonFile" accept="application/json" />
                                     </div>
                                 </div>

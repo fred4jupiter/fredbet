@@ -21,3 +21,10 @@ logging:
     "org.springframework.security.web.csrf": "WARN"
     "org.springframework.security.web.access": "WARN"
     "de.fred4jupiter.fredbet": "DEBUG"
+
+# ------------------------
+
+fredbet:
+  integration:
+    football-data:
+      scheduler-interval-minutes: 1
