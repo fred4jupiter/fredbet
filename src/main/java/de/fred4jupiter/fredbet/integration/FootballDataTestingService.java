@@ -14,17 +14,28 @@ public class FootballDataTestingService {
 
     private final FootballDataSyncService footballDataSyncService;
 
+    private final FootballDataService footballDataService;
+
     private final JsonObjectConverter jsonObjectConverter;
 
     private final DataPopulator dataPopulator;
 
-    public FootballDataTestingService(FootballDataSyncService footballDataSyncService, JsonObjectConverter jsonObjectConverter, DataPopulator dataPopulator) {
+    public FootballDataTestingService(FootballDataSyncService footballDataSyncService,
+                                      FootballDataService footballDataService,
+                                      JsonObjectConverter jsonObjectConverter, DataPopulator dataPopulator) {
         this.footballDataSyncService = footballDataSyncService;
+        this.footballDataService = footballDataService;
         this.jsonObjectConverter = jsonObjectConverter;
         this.dataPopulator = dataPopulator;
     }
 
     public void syncDataFromJson(byte[] fsMatchesAsJson) {
+        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
+        if (settings.isEnabled()) {
+            settings.setEnabled(false);
+            footballDataService.saveSettings(settings);
+        }
+
         final FdMatches fdMatches = jsonObjectConverter.fromJson(new String(fsMatchesAsJson), FdMatches.class);
         if (fdMatches == null || fdMatches.matches() == null || fdMatches.matches().isEmpty()) {
             LOG.warn("Could not load football data fdMatches from json!");
@@ -37,10 +48,7 @@ public class FootballDataTestingService {
             footballDataSyncService.syncData(fdMatchesWithoutResults);
 
             dataPopulator.createDemoBetsForAllUsers();
-
-            footballDataSyncService.syncData(fdMatches);
         }
-
-        footballDataSyncService.syncData(fdMatches);
+        footballDataSyncService.syncData(fdMatches.createNewWithUpdatedTimestamp());
     }
 }

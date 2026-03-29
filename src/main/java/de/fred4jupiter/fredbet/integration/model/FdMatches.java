@@ -12,10 +12,14 @@ public record FdMatches(List<FdMatch> matches) {
     }
 
     public FdMatches createNewWithoutResults() {
-        return createNewWithUpdatedTimestamp(fdMatch -> fdMatch.createNewWithGoals(null, null));
+        return createNew(fdMatch -> fdMatch.createNewWithGoals(null, null));
     }
 
-    private FdMatches createNewWithUpdatedTimestamp(Function<FdMatch, FdMatch> mapper) {
+    public FdMatches createNewWithUpdatedTimestamp() {
+        return createNew(fdMatch -> fdMatch.createNewWithGoals(fdMatch.score().fullTime().home(), fdMatch.score().fullTime().away()));
+    }
+
+    private FdMatches createNew(Function<FdMatch, FdMatch> mapper) {
         return new FdMatches(matches.stream().map(mapper).toList());
     }
 }
