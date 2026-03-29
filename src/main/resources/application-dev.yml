@@ -27,4 +27,4 @@ logging:
 fredbet:
   integration:
     football-data:
-      scheduler-interval-minutes: 1
+      scheduler-interval-minutes: 10
