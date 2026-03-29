@@ -9,6 +9,7 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
+import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
@@ -58,20 +59,20 @@ public class AdminController {
 
     private final UserService userService;
 
-    private final FootballDataSyncService footballDataSyncService;
+    private final FootballDataTestingService footballDataTestingService;
 
     private final ApplicationContext applicationContext;
 
     public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
                            SessionTrackingService sessionTrackingService,
-                           AdministrationService administrationService, UserService userService,
-                           FootballDataSyncService footballDataSyncService, ApplicationContext applicationContext) {
+                           AdministrationService administrationService, UserService userService, FootballDataTestingService footballDataTestingService,
+                           ApplicationContext applicationContext) {
         this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
         this.sessionTrackingService = sessionTrackingService;
         this.administrationService = administrationService;
         this.userService = userService;
-        this.footballDataSyncService = footballDataSyncService;
+        this.footballDataTestingService = footballDataTestingService;
         this.applicationContext = applicationContext;
     }
 
@@ -182,7 +183,7 @@ public class AdminController {
                 return "redirect:/footballdata";
             }
 
-            footballDataSyncService.syncDataFromJson(jsonFile.getBytes(), footballDataUploadCommand.isRemoveResults());
+            footballDataTestingService.syncDataFromJson(jsonFile.getBytes());
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (IOException | ExcelReadingException e) {
             LOG.error(e.getMessage(), e);

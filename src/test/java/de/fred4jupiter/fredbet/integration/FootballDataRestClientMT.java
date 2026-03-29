@@ -22,7 +22,7 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchCompetitions() {
-        List<FdCompetition> fdCompetitions = footballDataRestClient.fetchCompetitions();
+        List<FdCompetition> fdCompetitions = footballDataRestClient.fetchCompetitions().competitions();
         assertThat(fdCompetitions).isNotNull();
         assertThat(fdCompetitions).isNotEmpty();
 
@@ -31,7 +31,7 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatches() {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches("WC", 2026);
+        List<FdMatch> matches = footballDataRestClient.fetchMatches("WC", 2026).matches();
         assertThat(matches).isNotNull();
         assertThat(matches).isNotEmpty();
 
@@ -40,7 +40,7 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatchesForOtherCompetitionAndSeason() {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches("EC", 2024);
+        List<FdMatch> matches = footballDataRestClient.fetchMatches("EC", 2024).matches();
         assertThat(matches).isNotNull();
         assertThat(matches).isNotEmpty();
 
