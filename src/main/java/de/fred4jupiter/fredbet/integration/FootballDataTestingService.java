@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.integration;
 
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.integration.model.FdMatches;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.slf4j.Logger;
@@ -15,9 +16,12 @@ public class FootballDataTestingService {
 
     private final JsonObjectConverter jsonObjectConverter;
 
-    public FootballDataTestingService(FootballDataSyncService footballDataSyncService, JsonObjectConverter jsonObjectConverter) {
+    private final DataPopulator dataPopulator;
+
+    public FootballDataTestingService(FootballDataSyncService footballDataSyncService, JsonObjectConverter jsonObjectConverter, DataPopulator dataPopulator) {
         this.footballDataSyncService = footballDataSyncService;
         this.jsonObjectConverter = jsonObjectConverter;
+        this.dataPopulator = dataPopulator;
     }
 
     public void syncDataFromJson(byte[] fsMatchesAsJson) {
@@ -25,6 +29,16 @@ public class FootballDataTestingService {
         if (fdMatches == null || fdMatches.matches() == null || fdMatches.matches().isEmpty()) {
             LOG.warn("Could not load football data fdMatches from json!");
             return;
+        }
+
+        // if competition completed then import matches first, add bets and then import with results again
+        if (fdMatches.isCompetitionCompleted()) {
+            FdMatches fdMatchesWithoutResults = fdMatches.createNewWithoutResults();
+            footballDataSyncService.syncData(fdMatchesWithoutResults);
+
+            dataPopulator.createDemoBetsForAllUsers();
+
+            footballDataSyncService.syncData(fdMatches);
         }
 
         footballDataSyncService.syncData(fdMatches);
