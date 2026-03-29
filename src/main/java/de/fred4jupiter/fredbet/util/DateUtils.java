@@ -14,7 +14,7 @@ import java.util.Locale;
 
 /**
  * Helper class for date time convertion.
- * 
+ *
  * @author michael
  *
  */
@@ -55,7 +55,7 @@ public final class DateUtils {
 	}
 
 	public static String formatZonedDateTime(ZonedDateTime zonedDateTime, Locale locale) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm zZ").withLocale(locale).withZone(getZoneId());
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm Z").withLocale(locale).withZone(getZoneId());
 		return zonedDateTime.format(dateTimeFormatter);
 	}
 
@@ -83,9 +83,9 @@ public final class DateUtils {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
 		return zonedDateTime.format(dateTimeFormatter);
 	}
-	
+
 	public static Date currentDate() {
-		return toDate(LocalDateTime.now(getZoneId()));		
+		return toDate(LocalDateTime.now(getZoneId()));
 	}
 
 	public static String formatByLocale(LocalDateTime localDateTime, Locale locale) {

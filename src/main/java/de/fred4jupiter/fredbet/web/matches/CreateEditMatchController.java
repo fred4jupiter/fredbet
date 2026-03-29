@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.util.TeamUtil;
 import jakarta.validation.Valid;
@@ -68,7 +69,7 @@ public class CreateEditMatchController {
         }
 
         model.addAttribute("createEditMatchCommand", createEditMatchCommand);
-        model.addAttribute("externalLastUpdated", match.getExternalLastUpdated());
+        model.addAttribute("externalLastUpdated", DateUtils.formatZonedDateTime(match.getExternalLastUpdated()));
         addCountriesAndGroups(model);
         return VIEW_EDIT_MATCH;
     }
