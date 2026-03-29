@@ -23,10 +23,10 @@ class FootballDataRestClient {
         }
     }
 
-    public FdMatches fetchMatches(String competitionCode, int season) {
+    public FdMatches fetchMatches(Competition competition) {
         try {
-            return restClient.get().uri("/competitions/{competitionCode}/matches", competitionCode)
-                .attribute("season", season).retrieve().body(FdMatches.class);
+            return restClient.get().uri("/competitions/{competitionCode}/matches", competition.code())
+                .attribute("season", competition.seasonYear()).retrieve().body(FdMatches.class);
         } catch (HttpClientErrorException e) {
             throw new FootballDataException(e.getMessage(), e);
         }

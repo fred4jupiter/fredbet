@@ -121,7 +121,7 @@ public class FootballDataController {
 
         try {
             Competition competition = footballDataRuntimeSettings.getCompetition();
-            footballDataSyncService.syncData(competition.code(), competition.seasonYear());
+            footballDataSyncService.syncData(competition);
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());

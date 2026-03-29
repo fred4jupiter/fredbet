@@ -32,7 +32,8 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatches() {
-        FdMatches fdMatches = footballDataRestClient.fetchMatches("WC", 2026);
+        Competition competition = new Competition(1, "World Cup", "WC", 2026);
+        FdMatches fdMatches = footballDataRestClient.fetchMatches(competition);
         assertThat(fdMatches).isNotNull();
         LOG.debug("fdMatches: {}", fdMatches);
         List<FdMatch> matches = fdMatches.matches();
@@ -44,7 +45,8 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatchesForOtherCompetitionAndSeason() {
-        List<FdMatch> matches = footballDataRestClient.fetchMatches("EC", 2024).matches();
+        Competition competition = new Competition(1, "Euro Cup", "EC", 2024);
+        List<FdMatch> matches = footballDataRestClient.fetchMatches(competition).matches();
         assertThat(matches).isNotNull();
         assertThat(matches).isNotEmpty();
 

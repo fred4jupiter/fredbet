@@ -34,8 +34,8 @@ public class FootballDataSyncService {
         this.administrationService = administrationService;
     }
 
-    public void syncData(String competitionCode, int seasonYear) {
-        syncData(footballDataRestClient.fetchMatches(competitionCode, seasonYear));
+    public void syncData(Competition competition) {
+        syncData(footballDataRestClient.fetchMatches(competition));
     }
 
     public void syncData(FdMatches fdMatches) {
