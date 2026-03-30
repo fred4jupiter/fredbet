@@ -1,0 +1,20 @@
+name: Runner Guard Security Scan
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'CLAUDE.md'
+      - '.claude/**'
+      - '.mcp.json'
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  runner-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Vigilant-LLC/runner-guard@v1
+        with:
+          fail-on: high
+          sarif-upload: 'true'
