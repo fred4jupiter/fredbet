@@ -1,5 +1,6 @@
 name: Runner Guard Security Scan
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - '.github/workflows/**'
