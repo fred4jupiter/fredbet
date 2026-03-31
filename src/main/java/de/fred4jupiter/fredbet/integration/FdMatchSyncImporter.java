@@ -12,22 +12,14 @@ import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 @Component
 class FdMatchSyncImporter {
@@ -36,18 +28,18 @@ class FdMatchSyncImporter {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
-    private final Properties countryProps;
-
     private final ApplicationEventPublisher applicationEventPublisher;
 
     private final MatchRepository matchRepository;
 
-    FdMatchSyncImporter(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource,
-                        RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchRepository matchRepository) {
+    private final TeamNameToCountryResolver teamNameToCountryResolver;
+
+    FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher,
+                        MatchRepository matchRepository, TeamNameToCountryResolver teamNameToCountryResolver) {
         this.runtimeSettingsService = runtimeSettingsService;
-        this.countryProps = loadCountryNames(countryNameResource);
         this.applicationEventPublisher = applicationEventPublisher;
         this.matchRepository = matchRepository;
+        this.teamNameToCountryResolver = teamNameToCountryResolver;
     }
 
     public void mapAndSave(FdMatch fdMatch, Match match) {
@@ -94,7 +86,7 @@ class FdMatchSyncImporter {
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {
-        final Country country = resolveToCountry(fdTeam, countryProps);
+        final Country country = teamNameToCountryResolver.resolveToCountry(fdTeam);
         if (country != null) {
             team.setCountry(country);
             team.setName(null);
@@ -125,49 +117,4 @@ class FdMatchSyncImporter {
         ZonedDateTime convertedAsZoneDateTime = utcZoned.withZoneSameInstant(zoneId);
         return convertedAsZoneDateTime.toLocalDateTime();
     }
-
-    private Country resolveToCountry(FdTeam team, Properties countryProps) {
-        if (team == null || team.tla() == null || team.name() == null) {
-            return null;
-        }
-
-        Country country = Country.fromAlpha3Code(team.tla().toLowerCase());
-        if (country != null) {
-            return country;
-        }
-
-        if (countryProps.containsValue(team.name())) {
-            String key = getKeyByValue(countryProps, team.name());
-            if (StringUtils.isNotBlank(key)) {
-                String alpha3IsoCode = Strings.CS.remove(key, "country.");
-                return Country.fromAlpha3Code(alpha3IsoCode);
-            }
-        }
-
-        LOG.warn("Could not resolve country for team '{}'.", team);
-        return null;
-    }
-
-    private String getKeyByValue(Properties countryProps, String name) {
-        Set<Map.Entry<Object, Object>> entries = countryProps.entrySet();
-
-        for (Map.Entry<Object, Object> next : entries) {
-            if (next.getValue().equals(name)) {
-                return (String) next.getKey();
-            }
-        }
-
-        return null;
-    }
-
-    private Properties loadCountryNames(Resource countryNameResource) {
-        try (final InputStream in = countryNameResource.getInputStream()) {
-            final Properties properties = new Properties();
-            properties.load(in);
-            return properties;
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-    }
-
 }
