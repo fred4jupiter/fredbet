@@ -16,6 +16,8 @@ public class FootballDataLoader {
 
     private final FootballDataClient footballDataClient;
 
+    private static final List<String> COMPETITION_FILTER_LIST = List.of("WC", "EC");
+
     FootballDataLoader(FootballDataClient footballDataClient) {
         this.footballDataClient = footballDataClient;
     }
@@ -29,7 +31,7 @@ public class FootballDataLoader {
         }
 
         return fdCompetitionList.competitions().stream()
-            .filter(comp -> "EC".equalsIgnoreCase(comp.code()) || "WC".equalsIgnoreCase(comp.code()))
+            .filter(comp -> COMPETITION_FILTER_LIST.contains(comp.code()))
             .map(fdCompetition -> new Competition(fdCompetition.id(), fdCompetition.name(),
                 fdCompetition.code(), fdCompetition.currentSeason().getSeasonYear()))
             .toList();
