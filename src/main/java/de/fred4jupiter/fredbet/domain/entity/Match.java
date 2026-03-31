@@ -28,20 +28,10 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Column(name = "MATCH_ID")
     private Long id;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_ONE")),
-        @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_ONE")),
-        @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_ONE"))
-    })
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Team.class, cascade = CascadeType.ALL)
     private Team teamOne;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_TWO")),
-        @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_TWO")),
-        @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_TWO"))
-    })
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Team.class, cascade = CascadeType.ALL)
     private Team teamTwo;
 
     @Enumerated(EnumType.STRING)

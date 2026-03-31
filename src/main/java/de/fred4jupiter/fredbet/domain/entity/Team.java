@@ -2,18 +2,21 @@ package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Locale;
 import java.util.Objects;
 
-@Embeddable
+@Entity
+@Table
 public class Team {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "COUNTRY")
@@ -24,6 +27,10 @@ public class Team {
 
     @Column(name = "GOALS")
     private Integer goals;
+
+    public Long getId() {
+        return id;
+    }
 
     public boolean hasCountrySet() {
         return this.country != null;
