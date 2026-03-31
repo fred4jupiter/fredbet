@@ -334,26 +334,6 @@
                     <release>${java.version}</release>
                 </configuration>
             </plugin>
-            <!-- use mvn jib:dockerBuild to build the image -->
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>3.2.1</version>
-                <configuration>
-                    <from>
-                        <image>eclipse-temurin:17-jre-focal</image>
-                    </from>
-                    <to>
-                        <image>${project.artifactId}</image>
-                    </to>
-                    <container>
-                        <mainClass>de.fred4jupiter.fredbet.Application</mainClass>
-                        <jvmFlags>
-                            <jvmFlag>-Duser.timezone=Europe/Berlin</jvmFlag>
-                        </jvmFlags>
-                    </container>
-                </configuration>
-            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
