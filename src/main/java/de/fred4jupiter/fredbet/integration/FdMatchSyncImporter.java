@@ -56,12 +56,7 @@ class FdMatchSyncImporter {
             return;
         }
 
-        if (StringUtils.isBlank(fdMatch.id())) {
-            LOG.warn("External match could not be imported, because it has no external ID set. fdMatch={}", fdMatch);
-            return;
-        }
-
-        if (!fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
+        if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
             LOG.debug("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
             return;
         }

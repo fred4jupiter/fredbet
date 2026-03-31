@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.props.CacheNames;
+import de.fred4jupiter.fredbet.props.FootballDataProperties;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,27 +18,38 @@ public class FootballDataService {
 
     private final RuntimeSettingsRepository runtimeSettingsRepository;
 
-    FootballDataService(RuntimeSettingsRepository runtimeSettingsRepository) {
+    private final FredbetProperties fredbetProperties;
+
+    FootballDataService(RuntimeSettingsRepository runtimeSettingsRepository, FredbetProperties fredbetProperties) {
         this.runtimeSettingsRepository = runtimeSettingsRepository;
+        this.fredbetProperties = fredbetProperties;
     }
 
     @Cacheable(CacheNames.FOOTBALL_DATA_SETTINGS)
     public FootballDataRuntimeSettings loadSettings() {
         LOG.debug("Loading FootballDataSettings ...");
-        FootballDataRuntimeSettings footballDataRuntimeSettings = runtimeSettingsRepository.loadRuntimeSettings(FootballDataRuntimeSettings.ID, FootballDataRuntimeSettings.class);
+        final FootballDataRuntimeSettings footballDataRuntimeSettings = runtimeSettingsRepository.loadRuntimeSettings(FootballDataRuntimeSettings.ID, FootballDataRuntimeSettings.class);
         if (footballDataRuntimeSettings == null) {
             LOG.debug("No FootballDataSettings found. Creating default settings.");
             FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
             settings.setEnabled(false);
+            addApiTokenFromPropertiesIfAvailable(settings);
             saveSettings(settings);
             return settings;
         }
+        addApiTokenFromPropertiesIfAvailable(footballDataRuntimeSettings);
         return footballDataRuntimeSettings;
+    }
+
+    private void addApiTokenFromPropertiesIfAvailable(FootballDataRuntimeSettings settings) {
+        final FootballDataProperties footballDataProperties = fredbetProperties.integration().footballData();
+        if (footballDataProperties != null && StringUtils.isNotBlank(footballDataProperties.apiToken())) {
+            settings.setApiToken(footballDataProperties.apiToken());
+        }
     }
 
     @CacheEvict(cacheNames = CacheNames.FOOTBALL_DATA_SETTINGS, allEntries = true)
     public void saveSettings(FootballDataRuntimeSettings footballDataRuntimeSettings) {
         this.runtimeSettingsRepository.saveRuntimeSettings(FootballDataRuntimeSettings.ID, footballDataRuntimeSettings);
     }
-
 }
