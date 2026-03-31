@@ -52,16 +52,16 @@ class FdMatchSyncImporter {
 
     public void mapAndSave(FdMatch fdMatch, Match match) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
-            LOG.warn("match is null or home/away team is null for match {}", fdMatch);
+            LOG.debug("match is null or home/away team is null for match {}", fdMatch);
             return;
         }
 
         if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
-            LOG.info("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
+            LOG.debug("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
             return;
         }
 
-        LOG.debug("start syncing fdMatch={}", fdMatch);
+        LOG.info("updates will be applied for fdMatch={}", fdMatch);
 
         mapTeam(fdMatch.homeTeam(), match.getTeamOne());
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());

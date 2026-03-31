@@ -35,7 +35,9 @@ public class FootballDataSyncService {
     }
 
     public void syncData(Competition competition) {
+        LOG.info("*** start syncing football data for competition {}", competition);
         syncData(footballDataRestClient.fetchMatches(competition));
+        LOG.info("*** end syncing football data");
     }
 
     public void syncData(FdMatches fdMatches) {
