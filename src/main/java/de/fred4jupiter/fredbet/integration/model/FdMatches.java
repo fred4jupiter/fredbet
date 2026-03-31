@@ -11,6 +11,10 @@ public record FdMatches(List<FdMatch> matches) {
         return LocalDate.now().isAfter(seasonEndDate);
     }
 
+    public boolean hasMatches() {
+        return matches != null && !matches.isEmpty();
+    }
+
     public FdMatches createNewWithoutResults() {
         return createNew(fdMatch -> fdMatch.createNewWithGoals(null, null));
     }

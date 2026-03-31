@@ -34,12 +34,19 @@ public class FootballDataTestingService {
         if (settings.isEnabled()) {
             settings.setEnabled(false);
             footballDataService.saveSettings(settings);
+            LOG.info("disabled Football Data integration job when using test data.");
         }
 
         final FdMatches fdMatches = jsonObjectConverter.fromJson(new String(fsMatchesAsJson), FdMatches.class);
         if (fdMatches == null || fdMatches.matches() == null || fdMatches.matches().isEmpty()) {
             LOG.warn("Could not load football data fdMatches from json!");
             return;
+        }
+
+        if (fdMatches.hasMatches()) {
+            // delete all bets and matches before importing the new ones...
+            dataPopulator.deleteAllBetsAndMatches();
+            LOG.info("deleted all bets and matches");
         }
 
         // if competition completed then import matches first, add bets and then import with results again
