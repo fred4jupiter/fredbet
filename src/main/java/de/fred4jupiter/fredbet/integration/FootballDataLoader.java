@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.integration.model.FdCompetitionList;
+import de.fred4jupiter.fredbet.integration.model.FdMatches;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,12 +16,15 @@ public class FootballDataLoader {
 
     private final FootballDataRestClient footballDataRestClient;
 
-    FootballDataLoader(FootballDataRestClient footballDataRestClient) {
+    private final FootballDataClient footballDataClient;
+
+    FootballDataLoader(FootballDataRestClient footballDataRestClient, FootballDataClient footballDataClient) {
         this.footballDataRestClient = footballDataRestClient;
+        this.footballDataClient = footballDataClient;
     }
 
     public List<Competition> loadCompetitions() {
-        FdCompetitionList fdCompetitionList = footballDataRestClient.fetchCompetitions();
+        FdCompetitionList fdCompetitionList = footballDataClient.fetchCompetitions();
 
         if (fdCompetitionList == null || fdCompetitionList.competitions() == null || fdCompetitionList.competitions().isEmpty()) {
             LOG.warn("No competitions found from football data api!");
@@ -32,5 +36,9 @@ public class FootballDataLoader {
             .map(fdCompetition -> new Competition(fdCompetition.id(), fdCompetition.name(),
                 fdCompetition.code(), fdCompetition.currentSeason().getSeasonYear()))
             .toList();
+    }
+
+    public FdMatches fetchMatches(Competition competition) {
+        return footballDataClient.fetchMatches(competition.code(), competition.seasonYear());
     }
 }

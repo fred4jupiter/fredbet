@@ -17,7 +17,7 @@ public class FootballDataSyncService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataSyncService.class);
 
-    private final FootballDataRestClient footballDataRestClient;
+    private final FootballDataLoader footballDataLoader;
 
     private final MatchService matchService;
 
@@ -25,10 +25,9 @@ public class FootballDataSyncService {
 
     private final CacheAdministrationService administrationService;
 
-    FootballDataSyncService(FootballDataRestClient footballDataRestClient,
-                            MatchService matchService, FdMatchSyncImporter fdMatchSyncImporter,
+    FootballDataSyncService(FootballDataLoader footballDataLoader, MatchService matchService, FdMatchSyncImporter fdMatchSyncImporter,
                             CacheAdministrationService administrationService) {
-        this.footballDataRestClient = footballDataRestClient;
+        this.footballDataLoader = footballDataLoader;
         this.matchService = matchService;
         this.fdMatchSyncImporter = fdMatchSyncImporter;
         this.administrationService = administrationService;
@@ -36,7 +35,7 @@ public class FootballDataSyncService {
 
     public void syncData(Competition competition) {
         LOG.info("*** start syncing football data for competition {}", competition);
-        syncData(footballDataRestClient.fetchMatches(competition));
+        syncData(footballDataLoader.fetchMatches(competition));
         LOG.info("*** end syncing football data");
     }
 
