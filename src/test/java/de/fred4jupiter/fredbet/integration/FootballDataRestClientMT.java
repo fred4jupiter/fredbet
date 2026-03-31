@@ -19,7 +19,7 @@ public class FootballDataRestClientMT {
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataRestClientMT.class);
 
     @Autowired
-    private FootballDataRestClient footballDataRestClient;
+    private FootballDataClient footballDataRestClient;
 
     @Test
     void fetchCompetitions() {
@@ -32,8 +32,7 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatches() {
-        Competition competition = new Competition(1, "World Cup", "WC", 2026);
-        FdMatches fdMatches = footballDataRestClient.fetchMatches(competition);
+        FdMatches fdMatches = footballDataRestClient.fetchMatches("WC", 2026);
         assertThat(fdMatches).isNotNull();
         LOG.debug("fdMatches: {}", fdMatches);
         List<FdMatch> matches = fdMatches.matches();
@@ -45,8 +44,7 @@ public class FootballDataRestClientMT {
 
     @Test
     void fetchMatchesForOtherCompetitionAndSeason() {
-        Competition competition = new Competition(1, "Euro Cup", "EC", 2024);
-        List<FdMatch> matches = footballDataRestClient.fetchMatches(competition).matches();
+        List<FdMatch> matches = footballDataRestClient.fetchMatches("EC", 2024).matches();
         assertThat(matches).isNotNull();
         assertThat(matches).isNotEmpty();
 

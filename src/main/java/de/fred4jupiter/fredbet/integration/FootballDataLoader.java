@@ -14,12 +14,9 @@ public class FootballDataLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(FootballDataLoader.class);
 
-    private final FootballDataRestClient footballDataRestClient;
-
     private final FootballDataClient footballDataClient;
 
-    FootballDataLoader(FootballDataRestClient footballDataRestClient, FootballDataClient footballDataClient) {
-        this.footballDataRestClient = footballDataRestClient;
+    FootballDataLoader(FootballDataClient footballDataClient) {
         this.footballDataClient = footballDataClient;
     }
 
