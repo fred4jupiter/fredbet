@@ -7,8 +7,8 @@
 <div layout:fragment="content">
     <h1 th:text="#{footballdata.title}"></h1>
     <div class="row">
-        <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-            <span>See Quickstart at </span><a href="https://www.football-data.org/documentation/quickstart" target="_blank">football-data.org</a>
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+            <span>Quickstart: </span><a href="https://www.football-data.org/documentation/quickstart" target="_blank">football-data.org</a>
         </div>
     </div>
     <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
