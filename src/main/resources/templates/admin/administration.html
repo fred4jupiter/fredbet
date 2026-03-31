@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
-		<title th:text="#{administration.title}"></title>
+		<title th:text="#{navigation.dataCreation}"></title>
 	</head>
 	<body>
 		<div layout:fragment="content">
             <div class="row mb-3">
                 <div class="col-12 col-sm-6">
+                    <h5 th:text="#{navigation.dataCreation}"></h5>
                     <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
-                                    role="tab" aria-controls="home-tab-pane" aria-selected="true" th:text="#{administration.testdata.title}">Home</button>
+                                    role="tab" aria-controls="home-tab-pane" aria-selected="true" th:text="#{administration.testdata.title}"></button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-                                    role="tab" aria-controls="profile-tab-pane" aria-selected="false">Football-Data Test</button>
+                                    role="tab" aria-controls="profile-tab-pane" aria-selected="false" th:text="#{administration.testdata.footballdata}"></button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -89,7 +90,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <h5 th:text="#{administration.testdemousers.title}">Test Demo Users</h5>
+                    <h5 th:text="#{administration.testdemousers.title}"></h5>
                     <form id="adminForm" th:action="@{/administration/save}" th:object="${adminFormCommand}" action="#" method="post" role="form">
                         <div class="row">
                             <div class="col-auto mb-3">
