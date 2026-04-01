@@ -3,7 +3,10 @@ package de.fred4jupiter.fredbet.integration;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import de.fred4jupiter.fredbet.props.FootballDataProperties;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsRepository;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +21,13 @@ public class FootballDataService {
 
     private final RuntimeSettingsRepository runtimeSettingsRepository;
 
+    private final RuntimeSettingsService runtimeSettingsService;
+
     private final FredbetProperties fredbetProperties;
 
-    FootballDataService(RuntimeSettingsRepository runtimeSettingsRepository, FredbetProperties fredbetProperties) {
+    FootballDataService(RuntimeSettingsRepository runtimeSettingsRepository, RuntimeSettingsService runtimeSettingsService, FredbetProperties fredbetProperties) {
         this.runtimeSettingsRepository = runtimeSettingsRepository;
+        this.runtimeSettingsService = runtimeSettingsService;
         this.fredbetProperties = fredbetProperties;
     }
 
@@ -49,7 +55,12 @@ public class FootballDataService {
     }
 
     @CacheEvict(cacheNames = CacheNames.FOOTBALL_DATA_SETTINGS, allEntries = true)
-    public void saveSettings(FootballDataRuntimeSettings footballDataRuntimeSettings) {
-        this.runtimeSettingsRepository.saveRuntimeSettings(FootballDataRuntimeSettings.ID, footballDataRuntimeSettings);
+    public void saveSettings(FootballDataRuntimeSettings settings) {
+        if (settings.isEnabled()) {
+            final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+            runtimeSettings.setTeamBundle(TeamBundle.FOOTBALL_DATA_USAGE);
+            runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
+        }
+        this.runtimeSettingsRepository.saveRuntimeSettings(FootballDataRuntimeSettings.ID, settings);
     }
 }

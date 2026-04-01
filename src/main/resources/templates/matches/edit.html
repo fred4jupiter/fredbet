@@ -72,7 +72,7 @@
 				</div>
 			</div>
 		</form>
-        <p sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="fw-lighter fs-6 mt-3" th:text="${'FD last update date: ' + externalLastUpdated}"></p>
+        <p th:if="${externalLastUpdated != null}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="fw-lighter fs-6 mt-3" th:text="${'FD last update date: ' + externalLastUpdated}"></p>
 	</div>
 </body>
 <th:block layout:fragment="scripts">
