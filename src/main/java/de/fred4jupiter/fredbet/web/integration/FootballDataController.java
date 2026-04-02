@@ -104,10 +104,10 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
-        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        if (!TeamBundle.FOOTBALL_DATA_USAGE.equals(runtimeSettings.getTeamBundle()) && footballDataCommand.isEnabled()) {
-            webMessageUtil.addErrorMsg(redirect, "footballdata.msg.mainConfigMismatch");
-            return "redirect:/footballdata";
+        if (footballDataCommand.isEnabled()) {
+            final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+            runtimeSettings.setTeamBundle(TeamBundle.FOOTBALL_DATA_USAGE);
+            runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
         }
 
         Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());

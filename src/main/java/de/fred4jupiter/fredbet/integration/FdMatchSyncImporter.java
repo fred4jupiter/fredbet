@@ -72,8 +72,8 @@ class FdMatchSyncImporter {
 
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
-            FdFullTime fdFullTime = fdMatch.score().fullTime();
-            if (!match.hasResultSet() && fdMatch.isFinished()) {
+            final FdFullTime fdFullTime = fdMatch.score().fullTime();
+            if (!match.hasResultSet()) {
                 match.setGoalsTeamOne(fdFullTime.home());
                 match.setGoalsTeamTwo(fdFullTime.away());
                 Match saved = matchRepository.save(match);
