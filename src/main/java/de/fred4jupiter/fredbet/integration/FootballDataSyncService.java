@@ -39,11 +39,11 @@ public class FootballDataSyncService {
 
     public void syncData(Competition competition, boolean forceUpdate) {
         LOG.info("*** start syncing football data for competition {}", competition);
-        syncData(footballDataLoader.fetchMatches(competition));
+        syncData(footballDataLoader.fetchMatches(competition), forceUpdate);
         LOG.info("*** end syncing football data");
     }
 
-    public void syncData(FdMatches fdMatches) {
+    public void syncData(FdMatches fdMatches, boolean forceUpdate) {
         if (fdMatches == null) {
             LOG.warn("Could not load football data fdMatchesList!");
             return;
@@ -55,14 +55,14 @@ public class FootballDataSyncService {
             return;
         }
 
-        matches.forEach(this::syncMatch);
+        matches.forEach(fdMatch -> syncMatch(fdMatch, forceUpdate));
         administrationService.clearCacheByCacheName(CacheNames.AVAIL_GROUPS);
 
         LOG.info("synced {} matches.", matches.size());
     }
 
-    private void syncMatch(FdMatch fdMatch) {
+    private void syncMatch(FdMatch fdMatch, boolean forceUpdate) {
         final Match match = matchService.findByExternalId(fdMatch.id()).orElse(new Match());
-        fdMatchSyncImporter.mapAndSave(fdMatch, match);
+        fdMatchSyncImporter.mapAndSave(fdMatch, match, forceUpdate);
     }
 }

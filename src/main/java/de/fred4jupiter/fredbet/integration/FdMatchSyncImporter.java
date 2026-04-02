@@ -42,13 +42,13 @@ class FdMatchSyncImporter {
         this.teamNameToCountryResolver = teamNameToCountryResolver;
     }
 
-    public void mapAndSave(FdMatch fdMatch, Match match) {
+    public void mapAndSave(FdMatch fdMatch, Match match, boolean forceUpdate) {
         if (fdMatch == null || fdMatch.homeTeam() == null || fdMatch.awayTeam() == null) {
             LOG.debug("match is null or home/away team is null for match {}", fdMatch);
             return;
         }
 
-        if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated())) {
+        if (match.getExternalId() != null && !fdMatch.isUpdatedAfter(match.getExternalLastUpdated()) && !forceUpdate) {
             LOG.debug("match with id={} is already up to date. No update needed. lastUpdate fdMatch={}, lastUpdate match={}", fdMatch.id(), fdMatch.lastUpdated(), match.getExternalLastUpdated());
             return;
         }
