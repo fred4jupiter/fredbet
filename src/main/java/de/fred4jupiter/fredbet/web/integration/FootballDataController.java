@@ -57,9 +57,9 @@ public class FootballDataController {
         return new FootballDataCommand();
     }
 
-    @ModelAttribute("footballDataUploadCommand")
-    public FootballDataUploadCommand footballDataUploadCommand() {
-        return new FootballDataUploadCommand();
+    @ModelAttribute("footballDataSyncCommand")
+    public FootballDataSyncCommand footballDataSyncCommand() {
+        return new FootballDataSyncCommand();
     }
 
     @RequestMapping
@@ -122,8 +122,12 @@ public class FootballDataController {
         return "redirect:/footballdata";
     }
 
-    @RequestMapping(value = "/import")
-    public String importMatches(RedirectAttributes redirect) {
+    @PostMapping("/sync")
+    public String syncMatches(@Valid FootballDataSyncCommand command, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "integration/footballdata";
+        }
+
         final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
         if (!footballDataRuntimeSettings.isEnabled()) {
             LOG.info("Football data integration is disabled. Will not import or sync any data.");
@@ -133,7 +137,7 @@ public class FootballDataController {
 
         try {
             Competition competition = footballDataRuntimeSettings.getCompetition();
-            footballDataSyncService.syncData(competition);
+            footballDataSyncService.syncData(competition, command.isForceUpdate());
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());

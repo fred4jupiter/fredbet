@@ -7,54 +7,65 @@
 <div layout:fragment="content">
     <h1 th:text="#{footballdata.title}"></h1>
     <div class="row">
-        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-            <span>Quickstart: </span><a href="https://www.football-data.org/documentation/quickstart" target="_blank">football-data.org</a>
-        </div>
-    </div>
-    <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
-        <div class="row">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                <div class="form-check mt-3 mb-3">
-                    <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
-                    <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
+        <div class="col-12 col-sm-6 mb-3">
+            <h2 th:text="#{footballdata.title.settings}"></h2>
+            <div class="row">
+                <div class="col-auto">
+                    <span>Quickstart: </span><a href="https://www.football-data.org/documentation/quickstart" target="_blank">football-data.org</a>
                 </div>
-                <div class="accordion mb-3" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" th:text="#{footballdata.apiToken}">
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
-                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
+            </div>
+            <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
+                <div class="row">
+                    <div class="col-12 col-sm-6 mb-3">
+                        <div class="form-check mt-3 mb-3">
+                            <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
+                            <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
+                        </div>
+                        <div class="accordion mb-3" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" th:text="#{footballdata.apiToken}">
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
+                                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
+                            <select id="competitions" th:field="*{competitionId}" class="form-select">
+                                <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.id()}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
-                    <select id="competitions" th:field="*{competitionId}" class="form-select">
-                        <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.id()}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    </div>
+                    <div class="col-auto">
+                        <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/fetch-comp}" class="btn btn-outline-info" role="button" th:text="#{footballdata.fetch}">Fetch</a>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-        <div class="row mb-3">
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-            </div>
-            <div class="col-auto">
-                <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/fetch-comp}" class="btn btn-outline-info" role="button" th:text="#{footballdata.fetch}">Fetch</a>
-            </div>
+        <div class="col-12 col-sm-6 mb-3">
+            <h2 th:text="#{footballdata.title.sync}"></h2>
+            <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
+                <div class="form-check mt-3 mb-3">
+                    <input id="forceUpdate" type="checkbox" th:field="*{forceUpdate}" class="form-check-input"/>
+                    <label for="forceUpdate" class="form-check-label" th:text="#{footballdata.forceUpdate}"></label>
+                </div>
+                <div class="col-auto">
+                    <button th:disabled="${!footballDataCommand.isEnabled()}" type="submit" class="btn btn-info" th:text="#{footballdata.sync}"></button>
+                </div>
+            </form>
         </div>
-        <div class="row mb-3">
-            <div class="col-auto">
-                <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/import}" class="btn btn-info" role="button" th:text="#{footballdata.sync}">Trigger Sync now</a>
-            </div>
-        </div>
-    </form>
-
+    </div>
 </div>
 </body>
 </html>
