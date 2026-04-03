@@ -28,10 +28,10 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Column(name = "MATCH_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Team.class, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Team.class, cascade = CascadeType.PERSIST)
     private Team teamOne;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Team.class, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Team.class, cascade = CascadeType.PERSIST)
     private Team teamTwo;
 
     @Enumerated(EnumType.STRING)
