@@ -7,7 +7,7 @@
 <div layout:fragment="content">
     <h1 th:text="#{footballdata.title}"></h1>
     <div class="row">
-        <div class="col-12 col-sm-6 mb-3">
+        <div class="col-12 col-sm-5 mb-3">
             <h2 th:text="#{footballdata.title.settings}"></h2>
             <div class="row">
                 <div class="col-auto">
@@ -16,7 +16,7 @@
             </div>
             <form id="footballDataCommandForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
                 <div class="row">
-                    <div class="col-12 col-sm-6 mb-3">
+                    <div class="col-12 col-sm-10 mb-3">
                         <div class="form-check mt-3 mb-3">
                             <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
                             <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
@@ -53,7 +53,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-12 col-sm-6 mb-3">
+        <div class="col-12 col-sm-7 mb-3">
             <h2 th:text="#{footballdata.title.sync}"></h2>
             <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
                 <div class="form-check mt-3 mb-3">
