@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.data;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,8 +16,11 @@ public class RandomValueGenerator {
 
     private final MatchRepository matchRepository;
 
-    public RandomValueGenerator(MatchRepository matchRepository) {
+    private final TeamBundleProvider teamBundleProvider;
+
+    public RandomValueGenerator(MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
         this.matchRepository = matchRepository;
+        this.teamBundleProvider = teamBundleProvider;
     }
 
     public GoalResult generateGoalResult() {
@@ -38,29 +42,9 @@ public class RandomValueGenerator {
     }
 
     public TeamPair generateTeamPair(TeamBundle teamBundle) {
-        List<Country> countries = distinctRandomElements(teamBundle.getTeams(), 2);
+        List<Country> teams = teamBundleProvider.getTeams(teamBundle);
+        List<Country> countries = distinctRandomElements(teams, 2);
         return new TeamPair(countries.get(0), countries.get(1));
-    }
-
-//    public TeamPair generateTeamPair(List<Country> availCountries) {
-//        if (CollectionUtils.isEmpty(availCountries)) {
-//            return null;
-//        }
-//
-//        Country countryOne = generateRandomCountry(availCountries);
-//        List<Country> resultList = availCountries.stream().filter(country -> !country.equals(countryOne)).toList();
-//
-//        if (CollectionUtils.isEmpty(resultList)) {
-//            return new TeamPair(countryOne, countryOne);
-//        }
-//
-//        Country countryTwo = generateRandomCountry(resultList);
-//        return new TeamPair(countryOne, countryTwo);
-//    }
-
-    private Country generateRandomCountry(List<Country> availableCountries) {
-        Integer randomVal = generateRandomValueInRange(0, availableCountries.size() - 1);
-        return availableCountries.get(randomVal);
     }
 
     public TeamTriple generateTeamTriple() {

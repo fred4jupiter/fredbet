@@ -49,7 +49,7 @@ public class FootballDataService {
     }
 
     @CacheEvict(cacheNames = CacheNames.FOOTBALL_DATA_SETTINGS, allEntries = true)
-    public void saveSettings(FootballDataRuntimeSettings footballDataRuntimeSettings) {
-        this.runtimeSettingsRepository.saveRuntimeSettings(FootballDataRuntimeSettings.ID, footballDataRuntimeSettings);
+    public void saveSettings(FootballDataRuntimeSettings settings) {
+        this.runtimeSettingsRepository.saveRuntimeSettings(FootballDataRuntimeSettings.ID, settings);
     }
 }

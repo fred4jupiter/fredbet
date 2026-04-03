@@ -52,10 +52,10 @@ public class FootballDataTestingService {
         // if competition completed then import matches first, add bets and then import with results again
         if (fdMatches.isCompetitionCompleted()) {
             FdMatches fdMatchesWithoutResults = fdMatches.createNewWithoutResults();
-            footballDataSyncService.syncData(fdMatchesWithoutResults);
+            footballDataSyncService.syncData(fdMatchesWithoutResults, false);
 
             dataPopulator.createDemoBetsForAllUsers();
         }
-        footballDataSyncService.syncData(fdMatches.createNewWithUpdatedTimestamp());
+        footballDataSyncService.syncData(fdMatches.createNewWithUpdatedTimestamp(), false);
     }
 }

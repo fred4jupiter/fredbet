@@ -4,6 +4,9 @@ package de.fred4jupiter.fredbet.web.integration;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.settings.RuntimeSettings;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
@@ -36,14 +39,17 @@ public class FootballDataController {
 
     private final DataPopulator dataPopulator;
 
+    private final RuntimeSettingsService runtimeSettingsService;
+
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
                                   FootballDataLoader footballDataLoader,
-                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
+                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator, RuntimeSettingsService runtimeSettingsService) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
         this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
         this.dataPopulator = dataPopulator;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     @ModelAttribute("footballDataCommand")
@@ -51,9 +57,9 @@ public class FootballDataController {
         return new FootballDataCommand();
     }
 
-    @ModelAttribute("footballDataUploadCommand")
-    public FootballDataUploadCommand footballDataUploadCommand() {
-        return new FootballDataUploadCommand();
+    @ModelAttribute("footballDataSyncCommand")
+    public FootballDataSyncCommand footballDataSyncCommand() {
+        return new FootballDataSyncCommand();
     }
 
     @RequestMapping
@@ -98,6 +104,12 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
+        if (footballDataCommand.isEnabled()) {
+            final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+            runtimeSettings.setTeamBundle(TeamBundle.FOOTBALL_DATA_USAGE);
+            runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
+        }
+
         Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
 
         final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
@@ -110,8 +122,12 @@ public class FootballDataController {
         return "redirect:/footballdata";
     }
 
-    @RequestMapping(value = "/import")
-    public String importMatches(RedirectAttributes redirect) {
+    @PostMapping("/sync")
+    public String syncMatches(@Valid FootballDataSyncCommand command, BindingResult bindingResult, RedirectAttributes redirect, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "integration/footballdata";
+        }
+
         final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
         if (!footballDataRuntimeSettings.isEnabled()) {
             LOG.info("Football data integration is disabled. Will not import or sync any data.");
@@ -121,7 +137,7 @@ public class FootballDataController {
 
         try {
             Competition competition = footballDataRuntimeSettings.getCompetition();
-            footballDataSyncService.syncData(competition);
+            footballDataSyncService.syncData(competition, command.isForceUpdate());
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
         } catch (FootballDataException e) {
             webMessageUtil.addErrorMsg(redirect, "error.msg", e.getMessage());

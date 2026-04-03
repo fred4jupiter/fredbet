@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,10 +32,14 @@ public class TeamUtil {
 
     private final MatchRepository matchRepository;
 
-    public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, MatchRepository matchRepository) {
+    private final TeamBundleProvider teamBundleProvider;
+
+    public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService,
+                    MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
         this.messageSourceUtil = messageSourceUtil;
         this.runtimeSettingsService = runtimeSettingsService;
         this.matchRepository = matchRepository;
+        this.teamBundleProvider = teamBundleProvider;
 
         List<Country> countryList = Stream.of(Country.values()).toList();
         countryList.forEach(country -> {
@@ -98,7 +103,7 @@ public class TeamUtil {
     }
 
     public List<TeamView> getAvailableTeams(TeamBundle teamBundle) {
-        List<Country> allPossibleCountries = teamBundle.getTeams();
+        List<Country> allPossibleCountries = teamBundleProvider.getTeams(teamBundle);
         return toListOfTeamViews(allPossibleCountries);
     }
 

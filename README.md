@@ -28,6 +28,8 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - PDF export of user ranking 
 - group standings
 - change UI design themes
+- **NEW: Integration of [football-data.org](https://www.football-data.org) API for automatic match import and live score updates**
+  - European football championships and world cups are supported currently (more will follow...)
 
 ## Testing it locally
 ### Building and running with Java 25 and Maven installed
