@@ -18,7 +18,7 @@
                                     role="tab" aria-controls="profile-tab-pane" aria-selected="false" th:text="#{administration.testdata.footballdata}"></button>
                         </li>
                     </ul>
-                    <div class="tab-content" id="myTabContent">
+                    <div class="tab-content mb-3" id="myTabContent">
                         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                             <form id="testDataForm" th:action="@{/administration/testdata}" th:object="${testDataCommand}" action="#" method="post" role="form">
                                 <div class="row">
@@ -88,8 +88,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-auto mb-3">
+                        <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}" th:text="#{administration.demoBetsAllUsers}"></a>
+                    </div>
+                    <div class="col-auto mb-3">
+                        <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}" th:text="#{administration.testResultsAllUsers}"></a>
+                    </div>
                 </div>
-                <div class="col-12 col-sm-6">
+                <div class="col-12 col-sm-6 mb-3">
                     <h5 th:text="#{administration.testdemousers.title}"></h5>
                     <form id="adminForm" th:action="@{/administration/save}" th:object="${adminFormCommand}" action="#" method="post" role="form">
                         <div class="row">
@@ -101,20 +107,6 @@
                         </div>
                         <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
                     </form>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-12 col-sm-6">
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoBets}" th:text="#{administration.demoBetsAllUsers}"></a>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <a class="btn btn-primary" role="button" th:href="@{/administration/createDemoResults}" th:text="#{administration.testResultsAllUsers}"></a>
-                        </div>
-                    </div>
                 </div>
             </div>
 
