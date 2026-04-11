@@ -23,6 +23,9 @@ public class FootballDataTestingServiceIT {
     @Value("classpath:/football-data-json-test/one_match.json")
     private Resource oneMatchResource;
 
+    @Value("classpath:/football-data-json-test/penaltyShootout.json")
+    private Resource penaltyShootoutResource;
+
     @Autowired
     private MatchService matchService;
 
@@ -39,9 +42,32 @@ public class FootballDataTestingServiceIT {
         assertThat(match.getExternalId()).isEqualTo("428747");
         assertThat(match.isGroupMatch()).isTrue();
         assertThat(match.isGroup(Group.GROUP_A)).isTrue();
+        assertThat(match.hasResultSet()).isTrue();
         assertThat(match.getTeamOne().getGoals()).isEqualTo(5);
         assertThat(match.getTeamTwo().getGoals()).isEqualTo(1);
         assertThat(match.isTeamOneWinner()).isTrue();
         assertThat(match.isTeamTwoWinner()).isFalse();
     }
+
+    @Test
+    void importPenaltyShootoutMatch() throws IOException {
+        assertThat(penaltyShootoutResource).isNotNull();
+
+        footballDataTestingService.syncDataFromJson(penaltyShootoutResource.getContentAsByteArray());
+
+        List<Match> matches = matchService.findAll();
+        assertThat(matches).hasSize(1);
+        Match match = matches.getFirst();
+        assertThat(match).isNotNull();
+        assertThat(match.getExternalId()).isEqualTo("428788");
+        assertThat(match.isGroupMatch()).isFalse();
+        assertThat(match.isGroup(Group.ROUND_OF_SIXTEEN)).isTrue();
+        assertThat(match.isUndecidedResult()).isTrue();
+        assertThat(match.hasResultSet()).isTrue();
+
+        assertThat(match.getTeamOne().getGoals()).isEqualTo(0);
+        assertThat(match.getTeamTwo().getGoals()).isEqualTo(0);
+        assertThat(match.isPenaltyWinnerOne()).isTrue();
+    }
+
 }
