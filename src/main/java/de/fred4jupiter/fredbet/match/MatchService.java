@@ -65,11 +65,11 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
-        Team teamOne = teamRepository.save(match.getTeamOne());
-        Team teamTwo = teamRepository.save(match.getTeamTwo());
-
-        match.setTeamOne(teamOne);
-        match.setTeamTwo(teamTwo);
+//        Team teamOne = teamRepository.findOrCreate(match.getTeamOne());
+//        Team teamTwo = teamRepository.findOrCreate(match.getTeamTwo());
+//
+//        match.setTeamOne(teamOne);
+//        match.setTeamTwo(teamTwo);
 
         return matchRepository.save(match);
     }

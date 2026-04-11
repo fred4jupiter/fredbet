@@ -29,7 +29,7 @@ public class JsonExportServiceIT {
 
     @Test
     public void exportAllAsJsonAndImportAgain() {
-        Match match = new Match();
+        final Match match = new Match();
         match.setGroup(Group.GROUP_A);
         match.setStadium("Munich");
         match.setKickOffDate(LocalDateTime.now());
@@ -37,15 +37,16 @@ public class JsonExportServiceIT {
         final Country teamOneCountry = Country.GERMANY;
         Team teamOne = new Team();
         teamOne.setCountry(teamOneCountry);
-        teamOne.setGoals(1);
+        match.setGoalsTeamOne(1);
         match.setTeamOne(teamOne);
 
         Team teamTwo = new Team();
         teamTwo.setCountry(Country.ALBANIA);
-        teamTwo.setGoals(2);
+        match.setGoalsTeamTwo(2);
         match.setTeamTwo(teamTwo);
 
-        matchRepository.save(match);
+        Match savedMatch = matchRepository.save(match);
+        assertThat(savedMatch).isNotNull();
 
         String json = jsonExportService.exportAllToJson(false);
         boolean result = TempFileWriterUtil.writeToTempFolder(json.getBytes(), "fredbet_export.json");

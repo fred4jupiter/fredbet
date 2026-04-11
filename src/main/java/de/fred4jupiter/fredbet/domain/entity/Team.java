@@ -3,14 +3,15 @@ package de.fred4jupiter.fredbet.domain.entity;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Locale;
-import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "TEAM", uniqueConstraints = @UniqueConstraint(columnNames = {"COUNTRY", "NAME"}))
 public class Team {
 
     @Id
@@ -19,25 +20,19 @@ public class Team {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "COUNTRY")
+    @Column(name = "COUNTRY", unique = true)
     private Country country;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
-    @Column(name = "GOALS")
-    private Integer goals;
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "CRESTS_BINARY")
+    @Lob
+    private byte[] crestsBinary;
 
     public Long getId() {
         return id;
-    }
-
-    public boolean hasCountrySet() {
-        return this.country != null;
-    }
-
-    public boolean hasResultSet() {
-        return this.goals != null;
     }
 
     public Country getCountry() {
@@ -64,27 +59,20 @@ public class Team {
         this.name = name;
     }
 
-    public Integer getGoals() {
-        return goals;
-    }
-
-    public void setGoals(Integer goals) {
-        this.goals = goals;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
+
         Team team = (Team) o;
-        return country == team.country &&
-            Objects.equals(name, team.name) &&
-            Objects.equals(goals, team.goals);
+
+        return new EqualsBuilder().append(id, team.id).append(country, team.country).append(name, team.name).append(crestsBinary, team.crestsBinary).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(country, name, goals);
+        return new HashCodeBuilder(17, 37).append(id).append(country).append(name).append(crestsBinary).toHashCode();
     }
 
     @Override
@@ -92,11 +80,18 @@ public class Team {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
         builder.append("country", country);
         builder.append("name", name);
-        builder.append("goals", goals);
         return builder.build();
     }
 
     public String getBusinessKey() {
         return "team_%s_%s".formatted(this.country, this.name);
+    }
+
+    public byte[] getCrestsBinary() {
+        return crestsBinary;
+    }
+
+    public void setCrestsBinary(byte[] crestsBinary) {
+        this.crestsBinary = crestsBinary;
     }
 }

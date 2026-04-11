@@ -11,8 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -35,6 +37,7 @@ public class MatchServiceIT {
     public void setup() {
         dataPopulator.deleteAllBetsAndMatches();
         userService.deleteAllUsers();
+        matchService.deleteAllMatches();
     }
 
     @Test
@@ -62,9 +65,18 @@ public class MatchServiceIT {
     @Test
     public void createMatchTwiceAndCheckIfOnlyOneIsPresent() {
         final Country countryOne = Country.ALBANIA;
-        Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams(countryOne, Country.SWITZERLAND).withGoals(1, 1).build();
+        Match match = MatchBuilder.create()
+            .withGroup(Group.GROUP_A)
+            .withTeams(countryOne, Country.SWITZERLAND)
+            .withKickOffDate(LocalDateTime.now().plusHours(1))
+            .withGoals(1, 1)
+            .build();
         assertNotNull(match);
-        matchService.save(match);
+        Match firstSaved = matchService.save(match);
+        assertThat(firstSaved).isNotNull();
+        Match firstSavedFound = matchService.findMatchById(firstSaved.getId());
+        assertThat(firstSavedFound).isNotNull();
+
         matchService.save(match);
 
         List<Match> foundList = matchRepository.findByTeamOneCountry(countryOne);

@@ -319,4 +319,19 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="19" author="michael">
+        <dropColumn tableName="team" columnName="goals"/>
+        <addUniqueConstraint tableName="team" columnNames="country" constraintName="UC_COUNTRY"/>
+        <addUniqueConstraint tableName="team" columnNames="name" constraintName="UC_NAME"/>
+        <addColumn tableName="team">
+            <column name="crests_binary" type="BLOB">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <dropColumn tableName="matches" columnName="country_one"/>
+        <dropColumn tableName="matches" columnName="country_two"/>
+        <dropColumn tableName="matches" columnName="team_name_one"/>
+        <dropColumn tableName="matches" columnName="team_name_two"/>
+    </changeSet>
+
 </databaseChangeLog>

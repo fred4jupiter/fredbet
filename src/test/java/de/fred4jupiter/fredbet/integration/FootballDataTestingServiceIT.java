@@ -43,8 +43,8 @@ public class FootballDataTestingServiceIT {
         assertThat(match.isGroupMatch()).isTrue();
         assertThat(match.isGroup(Group.GROUP_A)).isTrue();
         assertThat(match.hasResultSet()).isTrue();
-        assertThat(match.getTeamOne().getGoals()).isEqualTo(5);
-        assertThat(match.getTeamTwo().getGoals()).isEqualTo(1);
+        assertThat(match.getGoalsTeamOne()).isEqualTo(5);
+        assertThat(match.getGoalsTeamTwo()).isEqualTo(1);
         assertThat(match.isTeamOneWinner()).isTrue();
         assertThat(match.isTeamTwoWinner()).isFalse();
     }
@@ -65,8 +65,8 @@ public class FootballDataTestingServiceIT {
         assertThat(match.isUndecidedResult()).isTrue();
         assertThat(match.hasResultSet()).isTrue();
 
-        assertThat(match.getTeamOne().getGoals()).isEqualTo(0);
-        assertThat(match.getTeamTwo().getGoals()).isEqualTo(0);
+        assertThat(match.getGoalsTeamOne()).isEqualTo(0);
+        assertThat(match.getGoalsTeamTwo()).isEqualTo(0);
         assertThat(match.isPenaltyWinnerOne()).isTrue();
     }
 
