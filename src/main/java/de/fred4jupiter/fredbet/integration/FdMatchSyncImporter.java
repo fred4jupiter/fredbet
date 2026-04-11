@@ -4,10 +4,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.integration.model.FdGoals;
-import de.fred4jupiter.fredbet.integration.model.FdMatch;
-import de.fred4jupiter.fredbet.integration.model.FdMatchStage;
-import de.fred4jupiter.fredbet.integration.model.FdTeam;
+import de.fred4jupiter.fredbet.integration.model.*;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
@@ -71,19 +68,38 @@ class FdMatchSyncImporter {
         match.setExternalLastUpdated(fdMatch.lastUpdated());
         match.setStadium(fdMatch.venue());
 
-        // update results
-        if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
-            final FdGoals fdGoals = fdMatch.score().fullTime();
-            if (!match.hasResultSet()) {
-                match.setGoalsTeamOne(fdGoals.home());
-                match.setGoalsTeamTwo(fdGoals.away());
-                Match saved = matchRepository.save(match);
-                applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
-                return;
-            }
+        if (!fdMatch.isFinished()) {
+            matchRepository.save(match);
+            return;
         }
 
-        matchRepository.save(match);
+        // update results
+        mapGoals(fdMatch, match);
+    }
+
+    private void mapGoals(FdMatch fdMatch, Match match) {
+        final FdScore score = fdMatch.score();
+        if (score == null) {
+            LOG.warn("No score set in fdMatch={}", fdMatch);
+            return;
+        }
+
+        if (match.hasResultSet()) {
+            LOG.warn("Saved match has result already set. Will not update the goals setting. match={}", match);
+            return;
+        }
+
+        if (FdScoreDuration.PENALTY_SHOOTOUT.equals(score.duration())) {
+            match.setGoalsTeamOne(score.regularTime().home());
+            match.setGoalsTeamTwo(score.regularTime().away());
+            match.setPenaltyWinnerOne(FdScoreWinner.HOME_TEAM.equals(score.winner()));
+        } else {
+            match.setGoalsTeamOne(score.fullTime().home());
+            match.setGoalsTeamTwo(score.fullTime().away());
+        }
+
+        Match saved = matchRepository.save(match);
+        applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {
