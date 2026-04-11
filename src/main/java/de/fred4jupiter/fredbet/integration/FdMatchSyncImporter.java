@@ -4,7 +4,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.integration.model.FdFullTime;
+import de.fred4jupiter.fredbet.integration.model.FdGoals;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
 import de.fred4jupiter.fredbet.integration.model.FdMatchStage;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
@@ -73,10 +73,10 @@ class FdMatchSyncImporter {
 
         // update results
         if (fdMatch.score() != null && fdMatch.score().fullTime() != null && fdMatch.isFinished()) {
-            final FdFullTime fdFullTime = fdMatch.score().fullTime();
+            final FdGoals fdGoals = fdMatch.score().fullTime();
             if (!match.hasResultSet()) {
-                match.setGoalsTeamOne(fdFullTime.home());
-                match.setGoalsTeamTwo(fdFullTime.away());
+                match.setGoalsTeamOne(fdGoals.home());
+                match.setGoalsTeamTwo(fdGoals.away());
                 Match saved = matchRepository.save(match);
                 applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
                 return;
