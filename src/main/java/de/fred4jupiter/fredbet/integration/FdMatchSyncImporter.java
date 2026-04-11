@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.model.FdFullTime;
 import de.fred4jupiter.fredbet.integration.model.FdMatch;
+import de.fred4jupiter.fredbet.integration.model.FdMatchStage;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import de.fred4jupiter.fredbet.match.MatchRepository;
@@ -96,17 +97,17 @@ class FdMatchSyncImporter {
     }
 
     private Group resolveToGroup(FdMatch fdMatch) {
-        if ("GROUP_STAGE".equals(fdMatch.stage())) {
-            return Group.valueOf(fdMatch.group());
+        if (FdMatchStage.GROUP_STAGE.equals(fdMatch.stage())) {
+            return Group.valueOf(fdMatch.group().name());
         }
 
         return switch (fdMatch.stage()) {
-            case "LAST_32" -> Group.ROUND_OF_THIRTY_TWO;
-            case "LAST_16" -> Group.ROUND_OF_SIXTEEN;
-            case "QUARTER_FINALS" -> Group.QUARTER_FINAL;
-            case "SEMI_FINALS" -> Group.SEMI_FINAL;
-            case "FINAL" -> Group.FINAL;
-            case "THIRD_PLACE" -> Group.GAME_FOR_THIRD;
+            case LAST_32 -> Group.ROUND_OF_THIRTY_TWO;
+            case LAST_16 -> Group.ROUND_OF_SIXTEEN;
+            case QUARTER_FINALS -> Group.QUARTER_FINAL;
+            case SEMI_FINALS -> Group.SEMI_FINAL;
+            case FINAL -> Group.FINAL;
+            case THIRD_PLACE -> Group.GAME_FOR_THIRD;
             default -> null;
         };
     }
