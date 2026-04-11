@@ -1,0 +1,99 @@
+{
+    "filters": {
+        "season": 2024
+    },
+    "resultSet": {
+        "count": 51,
+        "first": "2024-06-14",
+        "last": "2024-07-14",
+        "played": 51
+    },
+    "competition": {
+        "id": 2018,
+        "name": "European Championship",
+        "code": "EC",
+        "type": "CUP",
+        "emblem": "https://crests.football-data.org/ec.png"
+    },
+    "matches": [
+        {
+            "area": {
+                "id": 2077,
+                "name": "Europe",
+                "code": "EUR",
+                "flag": "https://crests.football-data.org/EUR.svg"
+            },
+            "competition": {
+                "id": 2018,
+                "name": "European Championship",
+                "code": "EC",
+                "type": "CUP",
+                "emblem": "https://crests.football-data.org/ec.png"
+            },
+            "season": {
+                "id": 1537,
+                "startDate": "2024-06-14",
+                "endDate": "2024-07-14",
+                "currentMatchday": 7,
+                "winner": {
+                    "id": 760,
+                    "name": "Spain",
+                    "shortName": "Spain",
+                    "tla": "ESP",
+                    "crest": "https://crests.football-data.org/760.svg",
+                    "address": "Ramón y Cajal, s/n Las Rozas 28230",
+                    "website": "http://www.rfef.es",
+                    "founded": 1909,
+                    "clubColors": "Red / Blue / Yellow",
+                    "venue": "Estadio Alfredo Di Stéfano",
+                    "lastUpdated": "2021-05-26T09:46:48Z"
+                }
+            },
+            "id": 428747,
+            "utcDate": "2024-06-14T19:00:00Z",
+            "status": "FINISHED",
+            "matchday": 1,
+            "stage": "GROUP_STAGE",
+            "group": "GROUP_A",
+            "lastUpdated": "2024-07-23T10:21:24Z",
+            "venue": "Signal Iduna Park",
+            "homeTeam": {
+                "id": 759,
+                "name": "Germany",
+                "shortName": "Germany",
+                "tla": "GER",
+                "crest": "https://crests.football-data.org/759.svg"
+            },
+            "awayTeam": {
+                "id": 8873,
+                "name": "Scotland",
+                "shortName": "Scotland",
+                "tla": "SCO",
+                "crest": "https://crests.football-data.org/814.svg"
+            },
+            "score": {
+                "winner": "HOME_TEAM",
+                "duration": "REGULAR",
+                "fullTime": {
+                    "home": 5,
+                    "away": 1
+                },
+                "halfTime": {
+                    "home": 3,
+                    "away": 0
+                }
+            },
+            "odds": {
+                "msg": "Activate Odds-Package in User-Panel to retrieve odds."
+            },
+            "referees": [
+                {
+                    "id": 9374,
+                    "name": "Clément Turpin",
+                    "type": "REFEREE",
+                    "nationality": "France"
+                }
+            ]
+        }
+    ]
+}
