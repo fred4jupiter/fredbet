@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +42,12 @@ public class MatchService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher) {
+    private final TeamRepository teamRepository;
+
+    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher, TeamRepository teamRepository) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.teamRepository = teamRepository;
     }
 
     public List<Match> findAll() {
@@ -61,6 +65,12 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
+        Team teamOne = teamRepository.save(match.getTeamOne());
+        Team teamTwo = teamRepository.save(match.getTeamTwo());
+
+        match.setTeamOne(teamOne);
+        match.setTeamTwo(teamTwo);
+
         return matchRepository.save(match);
     }
 
