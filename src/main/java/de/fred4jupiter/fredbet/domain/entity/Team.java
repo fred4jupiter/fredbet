@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Locale;
 
 @Entity
-@Table(name = "TEAM", uniqueConstraints = @UniqueConstraint(columnNames = {"COUNTRY", "NAME"}))
+@Table(name = "TEAM")
 public class Team {
 
     @Id
