@@ -310,10 +310,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="country" type="varchar(100)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="UC_COUNTRY"/>
+                <constraints nullable="true" />
             </column>
             <column name="name" type="varchar(100)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="UC_NAME"/>
+                <constraints nullable="true"/>
             </column>
             <column name="crests_binary" type="BLOB">
                 <constraints nullable="true"/>
