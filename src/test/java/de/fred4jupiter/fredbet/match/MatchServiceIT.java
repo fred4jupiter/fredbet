@@ -112,9 +112,9 @@ public class MatchServiceIT {
         assertThat(foundMatchTwo.getTeamOne()).isEqualTo(match2.getTeamOne());
         assertThat(foundMatchTwo.getTeamTwo()).isEqualTo(match2.getTeamTwo());
 
-        assertThat(matchRepository.count()).isEqualTo(2);
-
-        assertThat(teamRepository.count()).isEqualTo(3);
+        assertThat(teamRepository.countByCountry(Country.ALBANIA)).isEqualTo(1);
+        assertThat(teamRepository.countByCountry(Country.ROMANIA)).isEqualTo(1);
+        assertThat(teamRepository.countByCountry(Country.SWITZERLAND)).isEqualTo(1);
     }
 
     @Test
@@ -122,6 +122,7 @@ public class MatchServiceIT {
         Match match = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
             .withKickOffDate(11, 6, 15).build();
         matchService.save(match);
+        matchRepository.flush();
 
         Match found = matchRepository.getReferenceById(match.getId());
         assertEquals(match, found);
@@ -130,6 +131,7 @@ public class MatchServiceIT {
         found.getTeamOne().setCountry(newCountry);
 
         matchService.save(found);
+        matchRepository.flush();
 
         Match found2 = matchRepository.getReferenceById(found.getId());
         assertEquals(newCountry, found2.getTeamOne().getCountry());

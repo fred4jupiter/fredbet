@@ -6,7 +6,7 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.model.*;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
-import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
@@ -28,15 +28,15 @@ class FdMatchSyncImporter {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final MatchRepository matchRepository;
+    private final MatchService matchService;
 
     private final TeamNameToCountryResolver teamNameToCountryResolver;
 
-    FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher,
-                        MatchRepository matchRepository, TeamNameToCountryResolver teamNameToCountryResolver) {
+    FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchService matchService,
+                        TeamNameToCountryResolver teamNameToCountryResolver) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.applicationEventPublisher = applicationEventPublisher;
-        this.matchRepository = matchRepository;
+        this.matchService = matchService;
         this.teamNameToCountryResolver = teamNameToCountryResolver;
     }
 
@@ -69,7 +69,7 @@ class FdMatchSyncImporter {
         match.setStadium(fdMatch.venue());
 
         if (!fdMatch.isFinished()) {
-            matchRepository.save(match);
+            matchService.save(match);
             return;
         }
 
@@ -98,7 +98,7 @@ class FdMatchSyncImporter {
             match.setGoalsTeamTwo(score.fullTime().away());
         }
 
-        Match saved = matchRepository.save(match);
+        Match saved = matchService.save(match);
         applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
     }
 

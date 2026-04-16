@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.util.TempFileWriterUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class JsonExportServiceIT {
     @Autowired
     private MatchRepository matchRepository;
 
+    @Autowired
+    private MatchService matchService;
+
     @Test
     public void exportAllAsJsonAndImportAgain() {
         final Match match = new Match();
@@ -45,7 +49,7 @@ public class JsonExportServiceIT {
         match.setGoalsTeamTwo(2);
         match.setTeamTwo(teamTwo);
 
-        Match savedMatch = matchRepository.save(match);
+        Match savedMatch = matchService.save(match);
         assertThat(savedMatch).isNotNull();
 
         String json = jsonExportService.exportAllToJson(false);
