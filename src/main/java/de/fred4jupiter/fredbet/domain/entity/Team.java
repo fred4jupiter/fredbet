@@ -20,10 +20,10 @@ public class Team {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "COUNTRY")
+    @Column(name = "COUNTRY", unique = true)
     private Country country;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
     @Basic(fetch = FetchType.LAZY)
