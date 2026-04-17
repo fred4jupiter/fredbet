@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.domain.entity;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -56,7 +57,11 @@ public class Team {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (StringUtils.isNotBlank(name)) {
+            this.name = name;
+        } else {
+            this.name = null;
+        }
     }
 
     @Override
