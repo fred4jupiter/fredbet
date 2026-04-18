@@ -20,24 +20,30 @@
     <script type="text/javascript" th:src="@{/js/Chart.bundle.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/chartjs-plugin-colorschemes.min.js}"></script>
     <script th:inline="javascript">
-        var ctx = $('#myChart');
-        var chartData = /*[[${chartData}]]*/ 'default';
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: chartData,
-            options: {
-                responsive: true,
-                legend: {
-                    position: 'bottom'
-                },
-                plugins: {
-                    colorschemes: {
-                        scheme: 'brewer.Paired7'
-                    }
-                },
-                maintainAspectRatio: false
-            }
-        });
+        // Ensure canvas exists before creating the chart (page may render without chartData)
+        var canvas = document.getElementById('myChart');
+        if (canvas) {
+            var ctx = canvas.getContext('2d');
+            // Render Thymeleaf model attribute as JS literal (Map/List -> JS object/array).
+            // If chartData is missing or not a JS-literal, the fallback is an empty object.
+            var chartData = /*[[${chartData}]]*/ {};
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    plugins: {
+                        colorschemes: {
+                            scheme: 'brewer.Paired7'
+                        }
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        }
     </script>
 </th:block>
 </body>
