@@ -122,8 +122,19 @@ public class MatchService {
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-    public void deleteMatch(Long matchId) {
-        matchRepository.deleteById(matchId);
+    public void deleteMatch(Match match) {
+        Long teamOneId = match.getTeamOne().getId();
+        Long teamTwoId = match.getTeamTwo().getId();
+        matchRepository.deleteById(match.getId());
+
+        deleteTeamIfNotReferencedAnymore(teamOneId);
+        deleteTeamIfNotReferencedAnymore(teamTwoId);
+    }
+
+    private void deleteTeamIfNotReferencedAnymore(Long teamId) {
+        if (!matchRepository.hasMatchesWithTeamId(teamId)) {
+            teamRepository.deleteById(teamId);
+        }
     }
 
     public Match findMatchById(Long matchId) {

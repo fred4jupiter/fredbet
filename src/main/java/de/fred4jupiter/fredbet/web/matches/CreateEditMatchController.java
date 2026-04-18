@@ -100,13 +100,13 @@ public class CreateEditMatchController {
     public String delete(@PathVariable Long matchId, RedirectAttributes redirect) {
         LOG.debug("deleted match with id={}", matchId);
 
-        Match match = matchService.findByMatchId(matchId);
+        final Match match = matchService.findByMatchId(matchId);
         if (match == null) {
             webMessageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
             return "redirect:/matches";
         }
 
-        matchService.deleteMatch(matchId);
+        matchService.deleteMatch(match);
 
         webMessageUtil.addInfoMsg(redirect, "msg.match.deleted", webMessageUtil.getTeamNameOne(match), webMessageUtil.getTeamNameTwo(match));
 

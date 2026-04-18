@@ -115,6 +115,13 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     Optional<Match> findByExternalId(String externalId);
 
+    @Query("""
+        select case when (count(m) > 0) then true else false end
+        from Match m
+        where m.teamOne.id = :teamId or m.teamTwo.id = :teamId
+        """)
+    boolean hasMatchesWithTeamId(@Param("teamId") Long teamId);
+
     default Optional<Match> findByBusinessKey(String businessKey) {
         return findAll().stream().filter(match -> match.getBusinessKey().equals(businessKey)).findFirst();
     }
