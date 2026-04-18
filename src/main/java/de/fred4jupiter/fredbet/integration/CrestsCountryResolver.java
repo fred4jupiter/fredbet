@@ -24,25 +24,42 @@ class CrestsCountryResolver {
     }
 
     public Optional<byte[]> loadCrestsImageFor(Country country) {
-        Optional<String> alpha2CodeOpt = resolveToAlpha2Code(country);
-        if (alpha2CodeOpt.isEmpty()) {
-            LOG.warn("missing alpha 2 code for country={}", country);
-            return Optional.empty();
-        }
-
-        String fileName = "%s.svg".formatted(alpha2CodeOpt.get());
-        Resource resource = resourceLoader.getResource("classpath:static/flag-icons-7.2.3/flags/4x3/%s".formatted(fileName));
-        if (resource.exists()) {
-            try {
-                return Optional.of(resource.getContentAsByteArray());
-            } catch (IOException e) {
-                LOG.error("Could not load crests image for country={}", country);
-                return Optional.empty();
+        if (StringUtils.isNotBlank(country.getFlagIconCode())) {
+            Optional<byte[]> imageOpt = loadByCode(country.getFlagIconCode());
+            if (imageOpt.isPresent()) {
+                return imageOpt;
             }
         }
 
-        // TODO implement me
+        Optional<String> alpha2CodeOpt = resolveToAlpha2Code(country);
+        if (alpha2CodeOpt.isPresent()) {
+            Optional<byte[]> imageOpt = loadByCode(alpha2CodeOpt.get());
+            if (imageOpt.isPresent()) {
+                return imageOpt;
+            }
+        }
+
+        LOG.warn("Could not load crests image for country={}", country);
         return Optional.empty();
+    }
+
+    private Optional<byte[]> loadByCode(String code) {
+        String fileName = "%s.svg".formatted(code);
+        byte[] bytes = loadResourceByFilename(fileName);
+        return bytes != null ? Optional.of(bytes) : Optional.empty();
+    }
+
+    private byte[] loadResourceByFilename(String filename) {
+        Resource resource = resourceLoader.getResource("classpath:static/flag-icons-7.2.3/flags/4x3/%s".formatted(filename));
+        if (resource.exists()) {
+            try {
+                return resource.getContentAsByteArray();
+            } catch (IOException e) {
+                LOG.error("Could not found flag image file filename={}", filename);
+                return null;
+            }
+        }
+        return null;
     }
 
     private Optional<String> resolveToAlpha2Code(Country country) {
