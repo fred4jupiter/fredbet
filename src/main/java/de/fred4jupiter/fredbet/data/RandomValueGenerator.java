@@ -42,6 +42,10 @@ public class RandomValueGenerator {
     }
 
     public TeamPair generateTeamPair(TeamBundle teamBundle) {
+        if (TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
+            throw new IllegalArgumentException("Please select another team bundle to generate test data. FOOTBALL_DATA_USAGE is not allowed to generated test data!");
+        }
+
         List<Country> teams = teamBundleProvider.getTeams(teamBundle);
         List<Country> countries = distinctRandomElements(teams, 2);
         return new TeamPair(countries.get(0), countries.get(1));
