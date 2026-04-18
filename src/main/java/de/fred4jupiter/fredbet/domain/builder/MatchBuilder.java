@@ -53,8 +53,18 @@ public class MatchBuilder {
     }
 
     public MatchBuilder withTeams(Team one, Team two) {
-        match.setTeamOne(one);
-        match.setTeamTwo(two);
+        Team newTeamOne = new Team();
+        newTeamOne.setName(one.getName());
+        newTeamOne.setCountry(one.getCountry());
+        newTeamOne.setCrestsBinary(one.getCrestsBinary());
+
+        Team newTeamTwo = new Team();
+        newTeamTwo.setName(two.getName());
+        newTeamTwo.setCountry(two.getCountry());
+        newTeamTwo.setCrestsBinary(two.getCrestsBinary());
+
+        match.setTeamOne(newTeamOne);
+        match.setTeamTwo(newTeamTwo);
         return this;
     }
 
