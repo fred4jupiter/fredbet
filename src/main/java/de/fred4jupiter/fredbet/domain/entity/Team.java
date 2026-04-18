@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Base64;
 import java.util.Locale;
 
 @Entity
@@ -27,10 +28,17 @@ public class Team {
     @Column(name = "NAME", unique = true)
     private String name;
 
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.EAGER)
     @Column(name = "CRESTS_BINARY")
     @Lob
     private byte[] crestsBinary;
+
+    public String getCrestsAsBase64() {
+        if (this.crestsBinary == null) {
+            return null;
+        }
+        return "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(this.crestsBinary);
+    }
 
     public Long getId() {
         return id;

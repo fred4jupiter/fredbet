@@ -70,6 +70,7 @@ fredbet:
   integration:
     football-data:
       base-url: "https://api.football-data.org/v4"
+      crests-base-url: "https://crests.football-data.org"
       scheduler-interval-minutes: 10
   excel-templates:
     template-files:

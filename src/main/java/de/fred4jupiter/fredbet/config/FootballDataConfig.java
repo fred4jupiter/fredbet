@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.props.FootballDataProperties;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -24,5 +25,12 @@ public class FootballDataConfig {
     @Bean
     public FootballDataClient footballDataClient(HttpServiceProxyFactory factory) {
         return factory.createClient(FootballDataClient.class);
+    }
+
+    @Bean
+    public RestClient crestsRestClient(FredbetProperties fredbetProperties) {
+        return RestClient.builder().baseUrl(fredbetProperties.integration().footballData().crestsBaseUrl())
+            .configureMessageConverters(converters -> converters.addCustomConverter(new ByteArrayHttpMessageConverter()))
+            .build();
     }
 }

@@ -32,12 +32,18 @@ class FdMatchSyncImporter {
 
     private final TeamNameToCountryResolver teamNameToCountryResolver;
 
+    private final CrestsDownloader crestsDownloader;
+
+    private final CrestsCountryResolver crestsCountryResolver;
+
     FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchService matchService,
-                        TeamNameToCountryResolver teamNameToCountryResolver) {
+                        TeamNameToCountryResolver teamNameToCountryResolver, CrestsDownloader crestsDownloader, CrestsCountryResolver crestsCountryResolver) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.matchService = matchService;
         this.teamNameToCountryResolver = teamNameToCountryResolver;
+        this.crestsDownloader = crestsDownloader;
+        this.crestsCountryResolver = crestsCountryResolver;
     }
 
     public void mapAndSave(FdMatch fdMatch, Match match, boolean forceUpdate) {
@@ -107,8 +113,13 @@ class FdMatchSyncImporter {
         if (country != null) {
             team.setCountry(country);
             team.setName(null);
+            crestsCountryResolver.loadCrestsImageFor(country).ifPresent(team::setCrestsBinary);
         } else {
             team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
+        }
+
+        if (team.getCrestsBinary() == null) {
+            crestsDownloader.downloadCrestsByUrl(fdTeam.id()).ifPresent(team::setCrestsBinary);
         }
     }
 
