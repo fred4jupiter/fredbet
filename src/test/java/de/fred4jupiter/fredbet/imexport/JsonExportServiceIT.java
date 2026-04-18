@@ -1,13 +1,16 @@
 package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
+import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.TempFileWriterUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,6 +33,19 @@ public class JsonExportServiceIT {
 
     @Autowired
     private MatchService matchService;
+
+    @Autowired
+    private DataPopulator dataPopulator;
+
+    @Autowired
+    private UserService userService;
+
+    @BeforeEach
+    public void setup() {
+        dataPopulator.deleteAllBetsAndMatches();
+        userService.deleteAllUsers();
+        matchService.deleteAllMatches();
+    }
 
     @Test
     public void exportAllAsJsonAndImportAgain() {
