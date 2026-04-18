@@ -1,21 +1,18 @@
 package de.fred4jupiter.fredbet.imexport;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.MatchService;
-import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.TempFileWriterUtil;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,19 +30,6 @@ public class JsonExportServiceIT {
 
     @Autowired
     private MatchService matchService;
-
-    @Autowired
-    private DataPopulator dataPopulator;
-
-    @Autowired
-    private UserService userService;
-
-    @BeforeEach
-    public void setup() {
-        dataPopulator.deleteAllBetsAndMatches();
-        userService.deleteAllUsers();
-        matchService.deleteAllMatches();
-    }
 
     @Test
     public void exportAllAsJsonAndImportAgain() {
@@ -74,12 +58,16 @@ public class JsonExportServiceIT {
 
         jsonImportService.importAllFromJson(json);
 
-        List<Match> matches = matchRepository.findByTeamOneCountry(teamOneCountry);
-        assertThat(matches).hasSizeGreaterThanOrEqualTo(1);
-        assertThat(matches).extracting(Match::getTeamOne).contains(teamOne);
-        assertThat(matches).extracting(Match::getTeamTwo).contains(teamTwo);
-        assertThat(matches).extracting(Match::getGroup).contains(match.getGroup());
-        assertThat(matches).extracting(Match::getKickOffDate).isNotNull();
-        assertThat(matches).extracting(Match::getStadium).contains(match.getStadium());
+        Optional<Match> foundOpt = matchRepository.findByBusinessKey(savedMatch.getBusinessKey());
+        assertThat(foundOpt.isPresent()).isTrue();
+
+        Match foundMatch = foundOpt.get();
+        assertThat(foundMatch.getTeamOne().getCountry()).isEqualTo(teamOneCountry);
+        assertThat(foundMatch.getTeamTwo().getCountry()).isEqualTo(teamTwo.getCountry());
+        assertThat(foundMatch.getGoalsTeamOne()).isEqualTo(savedMatch.getGoalsTeamOne());
+        assertThat(foundMatch.getGoalsTeamTwo()).isEqualTo(savedMatch.getGoalsTeamTwo());
+        assertThat(foundMatch.getGroup()).isEqualTo(savedMatch.getGroup());
+        assertThat(foundMatch.getKickOffDate()).isNotNull();
+        assertThat(foundMatch.getStadium()).isEqualTo(savedMatch.getStadium());
     }
 }

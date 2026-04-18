@@ -118,6 +118,7 @@ public class MatchService {
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public void deleteAllMatches() {
         matchRepository.deleteAll();
+        teamRepository.deleteAll();
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)

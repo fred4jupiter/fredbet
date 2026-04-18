@@ -114,4 +114,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     List<Match> findByGroupIn(@Param("groups") List<Group> groups);
 
     Optional<Match> findByExternalId(String externalId);
+
+    default Optional<Match> findByBusinessKey(String businessKey) {
+        return findAll().stream().filter(match -> match.getBusinessKey().equals(businessKey)).findFirst();
+    }
 }
