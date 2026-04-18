@@ -125,7 +125,7 @@ public class MatchServiceIT {
         matchRepository.flush();
 
         Match found = matchRepository.getReferenceById(match.getId());
-        assertEquals(match, found);
+        assertThat(found).isEqualTo(match);
 
         final Country newCountry = Country.ENGLAND;
         found.getTeamOne().setCountry(newCountry);
@@ -133,7 +133,9 @@ public class MatchServiceIT {
         matchService.save(found);
         matchRepository.flush();
 
+        assertThat(match.getId()).isEqualTo(found.getId());
+
         Match found2 = matchRepository.getReferenceById(found.getId());
-        assertEquals(newCountry, found2.getTeamOne().getCountry());
+        assertThat(newCountry).isEqualTo(found2.getTeamOne().getCountry());
     }
 }
