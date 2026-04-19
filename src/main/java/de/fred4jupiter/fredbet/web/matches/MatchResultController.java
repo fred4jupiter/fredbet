@@ -72,6 +72,9 @@ public class MatchResultController {
         matchResultCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
         matchResultCommand.setCountryTeamTwo(teamTwo.getCountry());
 
+        matchResultCommand.setTeamOne(teamOne);
+        matchResultCommand.setTeamTwo(teamTwo);
+
         matchResultCommand.setTeamResultOne(match.getGoalsTeamOne());
         matchResultCommand.setTeamResultTwo(match.getGoalsTeamTwo());
         matchResultCommand.setPenaltyWinnerOne(match.isPenaltyWinnerOne());

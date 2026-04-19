@@ -112,6 +112,9 @@ public class BetController {
         betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
         betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 
+        betCommand.setTeamOne(bet.getMatch().getTeamOne());
+        betCommand.setTeamTwo(bet.getMatch().getTeamTwo());
+
         final Locale locale = LocaleContextHolder.getLocale();
         final Team teamOne = bet.getMatch().getTeamOne();
         final Team teamTwo = bet.getMatch().getTeamTwo();

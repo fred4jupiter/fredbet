@@ -15,10 +15,10 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-12">
-                                    <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" />
+                                    <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
 							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
 							  		<span> - </span>
-                                    <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" />
+                                    <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
 							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>

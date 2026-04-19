@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Base64;
 import java.util.Locale;
@@ -54,6 +55,10 @@ public class Team {
 
     public String getName() {
         return name;
+    }
+
+    public String getNameTranslated(MessageSourceUtil messageSourceUtil) {
+        return getNameTranslated(messageSourceUtil, LocaleContextHolder.getLocale());
     }
 
     public String getNameTranslated(MessageSourceUtil messageSourceUtil, Locale locale) {

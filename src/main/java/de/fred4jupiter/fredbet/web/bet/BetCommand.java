@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,17 +23,23 @@ public class BetCommand {
 
     private String redirectViewName;
 
-    private String teamNameOne;
+    private Team teamOne;
+    private Team teamTwo;
 
+    @Deprecated
+    private Country countryTeamOne;
+
+    @Deprecated
+    private Country countryTeamTwo;
+
+    @Deprecated
+    private String teamNameOne;
+    @Deprecated
     private String teamNameTwo;
 
     private boolean groupMatch;
 
     private boolean penaltyWinnerOne;
-
-    private Country countryTeamOne;
-
-    private Country countryTeamTwo;
 
     private boolean useJoker;
 
@@ -42,6 +49,7 @@ public class BetCommand {
      * maximum jokers allowed to use (general setting)
      */
     private Integer maxJokers;
+
     private boolean jokerEditable;
 
     public String getBackUrl() {
@@ -183,5 +191,21 @@ public class BetCommand {
 
     public void setCountryTeamTwo(Country countryTeamTwo) {
         this.countryTeamTwo = countryTeamTwo;
+    }
+
+    public Team getTeamOne() {
+        return teamOne;
+    }
+
+    public void setTeamOne(Team teamOne) {
+        this.teamOne = teamOne;
+    }
+
+    public Team getTeamTwo() {
+        return teamTwo;
+    }
+
+    public void setTeamTwo(Team teamTwo) {
+        this.teamTwo = teamTwo;
     }
 }

@@ -23,12 +23,14 @@
                     <div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamOne())}"></span>
+<!--                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamOne())}"></span>-->
+                                <img class="fi big-flag" th:src="${matchResultCommand.teamOne.crestsAsBase64}" alt="crests"/>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
 							</div>
 							<div class="col-6">
-                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamTwo())}"></span>
+<!--                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamTwo())}"></span>-->
+                                <img class="fi big-flag" th:src="${matchResultCommand.teamTwo.crestsAsBase64}" alt="crests"/>
 								<br/>
 								<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
 							</div>
