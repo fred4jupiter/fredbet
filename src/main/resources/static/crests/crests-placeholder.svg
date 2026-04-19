@@ -1,0 +1,18 @@
+<svg width="128" height="160" viewBox="0 0 128 160" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield outline -->
+  <path d="M64 6 
+           L112 24 
+           V66 
+           C112 104 88 130 64 146 
+           C40 130 16 104 16 66 
+           V24 Z"
+        fill="none"
+        stroke="#444"
+        stroke-width="4"/>
+
+  <!-- Minimal divider -->
+  <line x1="32" y1="60" x2="96" y2="60"
+        stroke="#444"
+        stroke-width="3"
+        stroke-linecap="round"/>
+</svg>
