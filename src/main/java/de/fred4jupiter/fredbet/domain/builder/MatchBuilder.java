@@ -1,43 +1,32 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
+import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class MatchBuilder {
 
     private final Match match;
 
-    private MatchBuilder() {
+    private final Optional<CrestsCountryResolver> crestsCountryResolverOpt;
+
+    private MatchBuilder(CrestsCountryResolver crestsCountryResolver) {
+        this.crestsCountryResolverOpt = Optional.ofNullable(crestsCountryResolver);
         match = new Match();
         match.setKickOffDate(LocalDateTime.now());
     }
 
     public static MatchBuilder create() {
-        return new MatchBuilder();
+        return new MatchBuilder(null);
     }
 
-    public MatchBuilder withTeamOne(Country teamOne) {
-        match.getTeamOne().setCountry(teamOne);
-        return this;
-    }
-
-    public MatchBuilder withTeamTwo(Country teamTwo) {
-        match.getTeamTwo().setCountry(teamTwo);
-        return this;
-    }
-
-    public MatchBuilder withTeamOne(String teamOne) {
-        match.getTeamOne().setName(teamOne);
-        return this;
-    }
-
-    public MatchBuilder withTeamTwo(String teamTwo) {
-        match.getTeamTwo().setName(teamTwo);
-        return this;
+    public static MatchBuilder create(CrestsCountryResolver crestsCountryResolver) {
+        return new MatchBuilder(crestsCountryResolver);
     }
 
     public MatchBuilder withTeams(String teamOne, String teamTwo) {
@@ -49,6 +38,12 @@ public class MatchBuilder {
     public MatchBuilder withTeams(Country one, Country two) {
         match.getTeamOne().setCountry(one);
         match.getTeamTwo().setCountry(two);
+
+        crestsCountryResolverOpt.ifPresent(resolver -> {
+            match.getTeamOne().setCrestsBinary(resolver.loadCrestsImageFor(one).orElse(null));
+            match.getTeamTwo().setCrestsBinary(resolver.loadCrestsImageFor(two).orElse(null));
+        });
+
         return this;
     }
 
