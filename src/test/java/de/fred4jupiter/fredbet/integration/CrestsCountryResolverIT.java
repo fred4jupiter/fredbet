@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.common.IntegrationTest;
+import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

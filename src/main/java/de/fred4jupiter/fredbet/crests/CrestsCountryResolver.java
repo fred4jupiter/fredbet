@@ -1,4 +1,4 @@
-package de.fred4jupiter.fredbet.integration;
+package de.fred4jupiter.fredbet.crests;
 
 import com.neovisionaries.i18n.CountryCode;
 import de.fred4jupiter.fredbet.domain.Country;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
-class CrestsCountryResolver {
+public class CrestsCountryResolver {
 
     private static final Logger LOG = LoggerFactory.getLogger(CrestsCountryResolver.class);
 
@@ -23,11 +23,8 @@ class CrestsCountryResolver {
 
     private final ResourceLoader resourceLoader;
 
-    private final CrestsCountryToFilenameResolver crestsCountryToFilenameResolver;
-
-    CrestsCountryResolver(ResourceLoader resourceLoader, CrestsCountryToFilenameResolver crestsCountryToFilenameResolver) {
+    CrestsCountryResolver(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
-        this.crestsCountryToFilenameResolver = crestsCountryToFilenameResolver;
     }
 
     public Optional<byte[]> loadCrestsImageFor(Country country) {
@@ -66,8 +63,20 @@ class CrestsCountryResolver {
             return imageOpt;
         }
 
-        String filename = crestsCountryToFilenameResolver.mapCountryToFilename(country);
+        String filename = mapClubWmCountryToFilename(country);
         return Optional.ofNullable(loadResourceByFilename(filename, CLUB_WM_FLAGS_CLASSPATH_LOCATION));
+    }
+
+    private String mapClubWmCountryToFilename(Country country) {
+        if (country == null) {
+            return null;
+        }
+
+        return switch (country) {
+            case INTER_MIAMI -> "inter-miami-cf.svg";
+            case MANCHESTER_CITY -> "manchester-city.svg";
+            default -> null;
+        };
     }
 
     private Optional<byte[]> loadClubWmIconByCssIconClass(String cssIconClass) {
