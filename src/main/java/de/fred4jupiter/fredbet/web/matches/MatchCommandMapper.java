@@ -63,6 +63,7 @@ public class MatchCommandMapper {
         matchCommand.setStadium(match.getStadium());
         matchCommand.setGroup(match.getGroup());
         matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
+        matchCommand.setMatch(match);
         return matchCommand;
     }
 
