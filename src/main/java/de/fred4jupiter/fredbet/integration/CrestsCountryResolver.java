@@ -17,13 +17,30 @@ class CrestsCountryResolver {
 
     private static final Logger LOG = LoggerFactory.getLogger(CrestsCountryResolver.class);
 
+    private static final String COUNTRY_FLAGS_CLASSPATH_LOCATION = "classpath:static/flag-icons-7.2.3/flags/4x3";
+
+    private static final String CLUB_WM_FLAGS_CLASSPATH_LOCATION = "classpath:static/club-wm-icons/flags";
+
     private final ResourceLoader resourceLoader;
 
-    CrestsCountryResolver(ResourceLoader resourceLoader) {
+    private final CrestsCountryToFilenameResolver crestsCountryToFilenameResolver;
+
+    CrestsCountryResolver(ResourceLoader resourceLoader, CrestsCountryToFilenameResolver crestsCountryToFilenameResolver) {
         this.resourceLoader = resourceLoader;
+        this.crestsCountryToFilenameResolver = crestsCountryToFilenameResolver;
     }
 
     public Optional<byte[]> loadCrestsImageFor(Country country) {
+        if (StringUtils.isNotBlank(country.getCssIconClass())) {
+            Optional<byte[]> flagOpt = loadClubWmIcon(country);
+            if (flagOpt.isPresent()) {
+                return flagOpt;
+            } else {
+                LOG.warn("Could not load crests image for CLUB WM country={}", country);
+                return Optional.empty();
+            }
+        }
+
         if (StringUtils.isNotBlank(country.getFlagIconCode())) {
             Optional<byte[]> imageOpt = loadByCode(country.getFlagIconCode());
             if (imageOpt.isPresent()) {
@@ -43,18 +60,35 @@ class CrestsCountryResolver {
         return Optional.empty();
     }
 
+    private Optional<byte[]> loadClubWmIcon(Country country) {
+        Optional<byte[]> imageOpt = loadClubWmIconByCssIconClass(country.getCssIconClass());
+        if (imageOpt.isPresent()) {
+            return imageOpt;
+        }
+
+        String filename = crestsCountryToFilenameResolver.mapCountryToFilename(country);
+        return Optional.ofNullable(loadResourceByFilename(filename, CLUB_WM_FLAGS_CLASSPATH_LOCATION));
+    }
+
+    private Optional<byte[]> loadClubWmIconByCssIconClass(String cssIconClass) {
+        String filenameWithoutExtension = StringUtils.substringAfter(cssIconClass, "kwm kwm-");
+        String fileName = "%s.svg".formatted(filenameWithoutExtension).toLowerCase();
+        return Optional.ofNullable(loadResourceByFilename(fileName, CLUB_WM_FLAGS_CLASSPATH_LOCATION));
+    }
+
     private Optional<byte[]> loadByCode(String code) {
         if (StringUtils.isBlank(code)) {
             return Optional.empty();
         }
 
         String fileName = "%s.svg".formatted(code).toLowerCase();
-        byte[] bytes = loadResourceByFilename(fileName);
+        byte[] bytes = loadResourceByFilename(fileName, COUNTRY_FLAGS_CLASSPATH_LOCATION);
         return bytes != null ? Optional.of(bytes) : Optional.empty();
     }
 
-    private byte[] loadResourceByFilename(String filename) {
-        Resource resource = resourceLoader.getResource("classpath:static/flag-icons-7.2.3/flags/4x3/%s".formatted(filename));
+    private byte[] loadResourceByFilename(String filename, String classpathLocation) {
+        String pathFilename = "%s/%s".formatted(classpathLocation, filename);
+        Resource resource = resourceLoader.getResource(pathFilename);
         if (resource.exists()) {
             try {
                 return resource.getContentAsByteArray();
