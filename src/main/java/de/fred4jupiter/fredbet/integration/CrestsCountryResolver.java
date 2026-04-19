@@ -44,7 +44,11 @@ class CrestsCountryResolver {
     }
 
     private Optional<byte[]> loadByCode(String code) {
-        String fileName = "%s.svg".formatted(code);
+        if (StringUtils.isBlank(code)) {
+            return Optional.empty();
+        }
+
+        String fileName = "%s.svg".formatted(code).toLowerCase();
         byte[] bytes = loadResourceByFilename(fileName);
         return bytes != null ? Optional.of(bytes) : Optional.empty();
     }
