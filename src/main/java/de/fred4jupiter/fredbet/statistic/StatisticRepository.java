@@ -54,7 +54,9 @@ public class StatisticRepository {
         final String query = """
             Select a.user_name, sum(a.points)
             from bet a join matches b on a.match_id = b.match_id
-            where b.country_one = :country or b.country_two = :country
+            join team t1 on b.team_one_id = t1.id
+            join team t2 on b.team_two_id = t2.id
+            where t1.country = :country or t2.country = :country
             group by a.user_name
             """;
 
