@@ -64,6 +64,10 @@ public class Match implements MatchBusinessKey {
     @Transient
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
+    public boolean hasMatchFinished() {
+        return goalsTeamOne != null && goalsTeamTwo != null;
+    }
+
     public Integer getGoalsTeamOne() {
         return goalsTeamOne;
     }

@@ -100,6 +100,8 @@ public class MatchCommandMapper {
                 matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
                 matchCommand.setPoints(bet.getPoints());
                 matchCommand.setJoker(bet.isJoker());
+
+                matchCommand.setBet(bet);
             }
             return matchCommand;
         }).toList();

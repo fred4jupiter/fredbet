@@ -16,16 +16,16 @@
 							<div class="row">
 								<div class="col-12">
                                     <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
-							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
+							  		<span class="bold" th:text="${matchCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
 							  		<span> - </span>
                                     <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
-							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
+                                    <span class="bold" th:text="${matchCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
 									<br/>
-									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
+									<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points}"></span>
 									<br/>
-                                    <span th:if="${#strings.isEmpty(matchCommand.stadium)}" th:text="#{${matchCommand.group.titleMsgKey}}"></span>
-									<span th:if="${!#strings.isEmpty(matchCommand.stadium)}" th:text="#{${matchCommand.group.titleMsgKey}} + ', ' + ${matchCommand.stadium}"></span>
+                                    <span th:if="${#strings.isEmpty(matchCommand.stadium)}" th:text="#{${matchCommand.match.group.titleMsgKey}}"></span>
+									<span th:if="${!#strings.isEmpty(matchCommand.stadium)}" th:text="#{${matchCommand.match.group.titleMsgKey}} + ', ' + ${matchCommand.match.stadium}"></span>
 					  			</div>
 				  			</div>
 						</div>
@@ -33,10 +33,10 @@
 							<div class="row">
 								<div class="col-2">
 									<div class="mb-1">
-										<a th:if="${!matchCommand.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}">
+										<a th:if="${!matchCommand.match.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}">
 											<span class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
 										</a>
-										<span th:if="${matchCommand.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
+										<span th:if="${matchCommand.match.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
 									</div>
 									<div class="mt-1">
 										<span class="fas fa-trophy fa-2x" th:title="#{matches.list.result}" data-toggle="tooltip" data-placement="bottom"></span>

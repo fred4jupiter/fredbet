@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
@@ -35,6 +36,8 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
     private boolean penaltyWinnerOneMatch;
 
     private Match match;
+
+    private Bet bet;
 
     public boolean isBettable() {
         return !hasMatchStarted() && !hasMatchFinished();
@@ -213,5 +216,13 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    public Bet getBet() {
+        return bet;
+    }
+
+    public void setBet(Bet bet) {
+        this.bet = bet;
     }
 }
