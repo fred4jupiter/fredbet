@@ -97,7 +97,6 @@ public class MatchCommandMapper {
                 matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
                 matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
                 matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
-                matchCommand.setPoints(bet.getPoints());
                 matchCommand.setJoker(bet.isJoker());
 
                 matchCommand.setBet(bet);

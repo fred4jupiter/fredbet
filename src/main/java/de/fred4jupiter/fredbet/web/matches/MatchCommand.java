@@ -25,8 +25,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
     private Integer userBetGoalsTeamTwo;
 
-    private Integer points;
-
     private boolean joker;
 
     private boolean penaltyWinnerOneBet;
@@ -36,10 +34,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
     private Match match;
 
     private Bet bet;
-
-    public boolean isBettable() {
-        return !hasMatchStarted() && !hasMatchFinished();
-    }
 
     public boolean hasMatchFinished() {
         return teamResultOne != null && teamResultTwo != null;
@@ -89,14 +83,10 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
     }
 
     public Integer getPoints() {
-        if (hasMatchFinished() && points == null) {
+        if (this.match.hasMatchFinished() && this.bet == null) {
             return 0;
         }
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
+        return this.bet.getPoints();
     }
 
     public boolean isGroupMatch() {

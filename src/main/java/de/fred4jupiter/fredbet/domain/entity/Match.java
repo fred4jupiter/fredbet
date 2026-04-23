@@ -69,7 +69,11 @@ public class Match implements MatchBusinessKey {
     }
 
     public boolean hasMatchFinished() {
-        return goalsTeamOne != null && goalsTeamTwo != null;
+        return hasResultSet();
+    }
+
+    public boolean hasResultSet() {
+        return this.goalsTeamOne != null && this.goalsTeamTwo != null;
     }
 
     public Integer getGoalsTeamOne() {
@@ -86,10 +90,6 @@ public class Match implements MatchBusinessKey {
 
     public void setGoalsTeamTwo(Integer goalsTeamTwo) {
         this.goalsTeamTwo = goalsTeamTwo;
-    }
-
-    public boolean hasResultSet() {
-        return this.goalsTeamOne != null && this.goalsTeamTwo != null;
     }
 
     public Integer getGoalDifference() {
