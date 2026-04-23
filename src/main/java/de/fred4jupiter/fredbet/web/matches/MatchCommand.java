@@ -17,8 +17,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
     private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS;
 
-    private Long matchId;
-
     private Integer teamResultOne;
 
     private Integer teamResultTwo;
@@ -63,19 +61,10 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
         this.teamResultTwo = teamResultTwo;
     }
 
-    public Long getMatchId() {
-        return matchId;
-    }
-
-    public void setMatchId(Long matchId) {
-        this.matchId = matchId;
-    }
-
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
         builder.appendSuper(super.toString());
-        builder.append("matchId", matchId);
         builder.append("teamResultOne", teamResultOne);
         builder.append("teamResultTwo", teamResultTwo);
         builder.append("group", group);
