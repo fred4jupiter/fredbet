@@ -21,10 +21,6 @@ public abstract class AbstractMatchHeaderCommand {
 
     protected String stadium;
 
-    public boolean hasMatchStarted() {
-        return LocalDateTime.now().isAfter(getKickOffDate());
-    }
-
     protected boolean isBlank(Country country) {
         return !isNotBlank(country);
     }

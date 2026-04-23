@@ -45,17 +45,17 @@
 					  			<div class="col-4">
 					  				<div class="mb-2 mt-2">
 					  					<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamOneCssClasses()}"
-					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}"></span>
+					  					      th:text="${matchCommand.bet?.goalsTeamOne != null ? matchCommand.bet?.goalsTeamOne : '?'}"></span>
 								  		<span> : </span>
 							  			<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamTwoCssClasses()}"
-							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
+							  			      th:text="${matchCommand.bet?.goalsTeamTwo != null ? matchCommand.bet?.goalsTeamTwo : '?'}"></span>
 					  				</div>
 					  				<div>
 					  					<span class="badge rounded-pill bg-info big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}"
-					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
+					  					      th:text="${matchCommand.match.goalsTeamOne != null ? matchCommand.match.goalsTeamOne : '?'}"></span>
 								  		<span> : </span>
 							  			<span class="badge rounded-pill bg-info big-badge" th:classappend="${matchCommand.getTeamResultTwoCssClasses()}"
-							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
+							  			      th:text="${matchCommand.match.goalsTeamTwo != null ? matchCommand.match.goalsTeamTwo : '?'}"></span>
 					  				</div>
 					  			</div>
 					  			<div class="col-6 mt-3">
