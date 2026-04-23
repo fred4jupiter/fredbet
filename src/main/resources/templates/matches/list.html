@@ -10,7 +10,7 @@
 		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="matchCommand : ${allMatches}">
-					<a class="anchor" th:id="${matchCommand.matchId}"></a>
+					<a class="anchor" th:id="${matchCommand.match.id}"></a>
 					<div class="card  mb-3">
 						<div class="card-header">
 							<div class="row">
@@ -60,15 +60,15 @@
 					  			</div>
 					  			<div class="col-6 mt-3">
                                     <div class="d-flex justify-content-center">
-                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.matchId}}"
+                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.match.id}}"
                                            class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
                                             <span class="fas fa-edit"></span>
                                         </a>
-                                        <a th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
+                                        <a th:href="@{'/bet/createOrUpdate/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
                                            class="btn btn-success ms-2 me-2" role="button" th:title="#{matches.list.betMatch}">
                                             <span class="fas fa-thumbs-up"></span>
                                         </a>
-                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
+                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" th:href="@{'/matchresult/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}"
                                            class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
                                             <span class="fas fa-trophy"></span>
                                         </a>
