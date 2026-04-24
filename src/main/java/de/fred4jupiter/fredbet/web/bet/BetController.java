@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bet")
@@ -78,7 +79,7 @@ public class BetController {
             messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
         }
 
-        List<MatchCommand> matchCommands = matchesToBet.stream().map(matchCommandMapper::toMatchCommand).toList();
+        List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> new MatchCommand(match, Optional.empty())).toList();
         model.addAttribute("matchesToBet", matchCommands);
         return VIEW_LIST_OPEN;
     }

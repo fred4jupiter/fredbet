@@ -4,6 +4,8 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 
+import java.util.Optional;
+
 public class MatchCommand {
 
     private static final String LABEL_INFO = "label-info";
@@ -14,15 +16,20 @@ public class MatchCommand {
 
     private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS;
 
-    private Match match;
+    private final Match match;
 
-    private Bet bet; // bet of current user
+    private final Optional<Bet> betOpt; // bet of current user
+
+    public MatchCommand(Match match, Optional<Bet> betOpt) {
+        this.match = match;
+        this.betOpt = betOpt;
+    }
 
     public Integer getPoints() {
-        if (this.match.hasMatchFinished() && this.bet == null) {
+        if (this.match.hasMatchFinished() && this.betOpt.isEmpty()) {
             return 0;
         }
-        return this.bet.getPoints();
+        return this.betOpt.map(Bet::getPoints).orElse(0);
     }
 
     public boolean isGroupMatch() {
@@ -30,16 +37,18 @@ public class MatchCommand {
     }
 
     public String getUserBetGoalsTeamOneCssClasses() {
-        if (this.bet == null || this.bet.getGoalsTeamOne() == null) {
+        if (this.betOpt.isEmpty() || this.betOpt.get().getGoalsTeamOne() == null) {
             return LABEL_DEFAULT;
         }
 
+        final Bet bet = this.betOpt.get();
+
         String cssClasses = LABEL_SUCCESS;
-        if (!this.match.isGroupMatch() && this.bet.isUndecidedBetting() && this.bet.isPenaltyWinnerOne()) {
+        if (!this.match.isGroupMatch() && bet.isUndecidedBetting() && bet.isPenaltyWinnerOne()) {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
-        if (this.bet.isJoker()) {
+        if (bet.isJoker()) {
             cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
         }
 
@@ -47,16 +56,18 @@ public class MatchCommand {
     }
 
     public String getUserBetGoalsTeamTwoCssClasses() {
-        if (this.bet == null || this.bet.getGoalsTeamTwo() == null) {
+        if (this.betOpt.isEmpty() || this.betOpt.get().getGoalsTeamTwo() == null) {
             return LABEL_DEFAULT;
         }
 
+        final Bet bet = this.betOpt.get();
+
         String cssClasses = LABEL_SUCCESS;
-        if (!this.match.isGroupMatch() && this.bet.isUndecidedBetting() && !this.bet.isPenaltyWinnerOne()) {
+        if (!this.match.isGroupMatch() && bet.isUndecidedBetting() && !bet.isPenaltyWinnerOne()) {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
-        if (this.bet.isJoker()) {
+        if (bet.isJoker()) {
             cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
         }
 
@@ -77,21 +88,5 @@ public class MatchCommand {
         }
 
         return !this.match.isGroupMatch() && this.match.isUndecidedResult() && !this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
-    }
-
-    public Match getMatch() {
-        return match;
-    }
-
-    public void setMatch(Match match) {
-        this.match = match;
-    }
-
-    public Bet getBet() {
-        return bet;
-    }
-
-    public void setBet(Bet bet) {
-        this.bet = bet;
     }
 }
