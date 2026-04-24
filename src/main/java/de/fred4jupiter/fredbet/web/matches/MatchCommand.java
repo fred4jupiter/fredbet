@@ -3,9 +3,8 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
 
-public class MatchCommand extends AbstractMatchHeaderCommand {
+public class MatchCommand {
 
     private static final String LABEL_INFO = "label-info";
 
@@ -17,7 +16,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
     private Match match;
 
-    private Bet bet;
+    private Bet bet; // bet of current user
 
     public Integer getPoints() {
         if (this.match.hasMatchFinished() && this.bet == null) {
