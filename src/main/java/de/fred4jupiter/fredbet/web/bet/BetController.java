@@ -1,22 +1,20 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.domain.entity.Bet;
-import de.fred4jupiter.fredbet.domain.Joker;
-import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;
-import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.betting.NoBettingAfterMatchStartedAllowedException;
+import de.fred4jupiter.fredbet.domain.Joker;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 import jakarta.validation.Valid;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
