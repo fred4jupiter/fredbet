@@ -33,7 +33,7 @@ public class FootballDataLoader {
         return fdCompetitionList.competitions().stream()
             .filter(comp -> COMPETITION_FILTER_LIST.contains(comp.code()))
             .map(fdCompetition -> new Competition(fdCompetition.id(), fdCompetition.name(),
-                fdCompetition.code(), fdCompetition.currentSeason().getSeasonYear()))
+                fdCompetition.code(), fdCompetition.currentSeason().getSeasonYear(), fdCompetition.type()))
             .toList();
     }
 
