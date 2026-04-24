@@ -56,8 +56,6 @@ public class MatchCommandMapper {
         matchCommand.setCountryTeamTwo(match.getTeamTwo().getCountry());
         matchCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
         matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
-        matchCommand.setTeamResultOne(match.getGoalsTeamOne());
-        matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
         matchCommand.setKickOffDate(match.getKickOffDate());
         matchCommand.setStadium(match.getStadium());
         matchCommand.setGroup(match.getGroup());
@@ -94,8 +92,6 @@ public class MatchCommandMapper {
             MatchCommand matchCommand = toMatchCommand(match);
             Bet bet = matchToBetMap.get(match.getId());
             if (bet != null) {
-                matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
-                matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
                 matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
                 matchCommand.setJoker(bet.isJoker());
 

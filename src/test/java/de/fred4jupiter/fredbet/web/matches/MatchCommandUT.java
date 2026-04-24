@@ -2,6 +2,10 @@ package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,15 +20,17 @@ public class MatchCommandUT {
 
     @Test
     public void teamResultNoResultReturnsDefaultCssClass() {
+        Match match = MatchBuilder.create().build();
+        matchCommand.setMatch(match);
+
         assertEquals("label-default", matchCommand.getTeamResultOneCssClasses());
         assertEquals("label-default", matchCommand.getTeamResultTwoCssClasses());
     }
 
     @Test
     public void teamResultWithResultReturnsDefaultCssClass() {
-        matchCommand.setGroup(Group.GROUP_A);
-        matchCommand.setTeamResultOne(1);
-        matchCommand.setTeamResultTwo(2);
+        Match match = MatchBuilder.create().withGoals(1, 2).withGroup(Group.GROUP_A).build();
+        matchCommand.setMatch(match);
 
         assertEquals("label-info", matchCommand.getTeamResultOneCssClasses());
         assertEquals("label-info", matchCommand.getTeamResultTwoCssClasses());
@@ -32,10 +38,12 @@ public class MatchCommandUT {
 
     @Test
     public void teamResultWithResultReturnsInfoCssClassPenaltyWinnerOne() {
-        matchCommand.setGroup(Group.ROUND_OF_SIXTEEN);
-        matchCommand.setTeamResultOne(1);
-        matchCommand.setTeamResultTwo(1);
-        matchCommand.setPenaltyWinnerOneMatch(true);
+        Match match = MatchBuilder.create()
+            .withGoals(1, 1)
+            .withGroup(Group.ROUND_OF_SIXTEEN)
+            .withPenaltyWinnerOne(true)
+            .build();
+        matchCommand.setMatch(match);
 
         assertEquals("label-info" + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS, matchCommand.getTeamResultOneCssClasses());
         assertEquals("label-info", matchCommand.getTeamResultTwoCssClasses());
@@ -43,10 +51,12 @@ public class MatchCommandUT {
 
     @Test
     public void teamResultWithResultReturnsInfoCssClassPenaltyWinnerTwo() {
-        matchCommand.setGroup(Group.ROUND_OF_SIXTEEN);
-        matchCommand.setTeamResultOne(1);
-        matchCommand.setTeamResultTwo(1);
-        matchCommand.setPenaltyWinnerOneMatch(false);
+        Match match = MatchBuilder.create()
+            .withGoals(1, 1)
+            .withGroup(Group.ROUND_OF_SIXTEEN)
+            .withPenaltyWinnerOne(false)
+            .build();
+        matchCommand.setMatch(match);
 
         assertEquals("label-info", matchCommand.getTeamResultOneCssClasses());
         assertEquals("label-info" + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS, matchCommand.getTeamResultTwoCssClasses());
@@ -54,10 +64,12 @@ public class MatchCommandUT {
 
     @Test
     public void noPenaltyTeamInGroupMatches() {
-        matchCommand.setGroup(Group.GROUP_B);
-        matchCommand.setTeamResultOne(1);
-        matchCommand.setTeamResultTwo(1);
-        matchCommand.setPenaltyWinnerOneMatch(false);
+        Match match = MatchBuilder.create()
+            .withGoals(1, 1)
+            .withGroup(Group.GROUP_B)
+            .withPenaltyWinnerOne(false)
+            .build();
+        matchCommand.setMatch(match);
 
         assertEquals("label-info", matchCommand.getTeamResultOneCssClasses());
         assertEquals("label-info", matchCommand.getTeamResultTwoCssClasses());
@@ -71,9 +83,17 @@ public class MatchCommandUT {
 
     @Test
     public void userBetsWithResultReturnsDefaultCssClass() {
-        matchCommand.setGroup(Group.GROUP_A);
-        matchCommand.setUserBetGoalsTeamOne(1);
-        matchCommand.setUserBetGoalsTeamTwo(2);
+        Match match = MatchBuilder.create()
+            .withGoals(1, 2)
+            .withGroup(Group.GROUP_A)
+            .build();
+        matchCommand.setMatch(match);
+
+        Bet bet = BetBuilder.create()
+            .withGoals(1, 2)
+            .build();
+
+        matchCommand.setBet(bet);
 
         assertEquals("label-success", matchCommand.getUserBetGoalsTeamOneCssClasses());
         assertEquals("label-success", matchCommand.getUserBetGoalsTeamTwoCssClasses());
@@ -81,10 +101,19 @@ public class MatchCommandUT {
 
     @Test
     public void userBetsWithResultReturnsSuccessCssClassPenaltyWinnerOne() {
-        matchCommand.setGroup(Group.ROUND_OF_SIXTEEN);
-        matchCommand.setUserBetGoalsTeamOne(1);
-        matchCommand.setUserBetGoalsTeamTwo(1);
-        matchCommand.setPenaltyWinnerOneBet(true);
+        Match match = MatchBuilder.create()
+            .withGoals(1, 1)
+            .withGroup(Group.ROUND_OF_SIXTEEN)
+            .withPenaltyWinnerOne(true)
+            .build();
+
+        Bet bet = BetBuilder.create()
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(true)
+            .build();
+
+        matchCommand.setMatch(match);
+        matchCommand.setBet(bet);
 
         assertEquals("label-success" + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS, matchCommand.getUserBetGoalsTeamOneCssClasses());
         assertEquals("label-success", matchCommand.getUserBetGoalsTeamTwoCssClasses());
@@ -92,10 +121,19 @@ public class MatchCommandUT {
 
     @Test
     public void userBetsWithResultReturnsSuccessCssClassPenaltyWinnerTwo() {
-        matchCommand.setGroup(Group.ROUND_OF_SIXTEEN);
-        matchCommand.setUserBetGoalsTeamOne(1);
-        matchCommand.setUserBetGoalsTeamTwo(1);
-        matchCommand.setPenaltyWinnerOneBet(false);
+        Match match = MatchBuilder.create()
+            .withGoals(1, 1)
+            .withGroup(Group.ROUND_OF_SIXTEEN)
+            .withPenaltyWinnerOne(false)
+            .build();
+        matchCommand.setMatch(match);
+
+        Bet bet = BetBuilder.create()
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(false)
+            .build();
+
+        matchCommand.setBet(bet);
 
         assertEquals("label-success", matchCommand.getUserBetGoalsTeamOneCssClasses());
         assertEquals("label-success" + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS, matchCommand.getUserBetGoalsTeamTwoCssClasses());
