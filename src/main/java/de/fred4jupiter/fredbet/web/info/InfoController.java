@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,8 +48,6 @@ public class InfoController {
     private final SecurityService securityService;
 
     private final PdfExportService pdfExportService;
-
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     private final MessageSourceUtil messageSourceUtil;
 
@@ -169,7 +166,7 @@ public class InfoController {
         if (InfoType.RULES.equals(infoType) && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_RULES)) {
             throw new AccessDeniedException("No enough privileges!");
         } else if (InfoType.PRICES.equals(infoType)
-                   && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
+            && !securityService.isCurrentUserHavingPermission(FredBetPermission.PERM_EDIT_INFOS_PRICES)) {
             throw new AccessDeniedException("No enough privileges!");
         }
 
