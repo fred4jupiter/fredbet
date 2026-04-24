@@ -12,6 +12,7 @@ public class BetCommand {
 
     private Long betId;
 
+    @NotNull
     private Long matchId;
 
     @NotNull
