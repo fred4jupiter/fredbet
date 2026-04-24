@@ -1,13 +1,14 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.domain.entity.Team;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class BetCommand {
+
+    private final Match match;
 
     private Long betId;
 
@@ -22,20 +23,6 @@ public class BetCommand {
     private Integer goalsTeamTwo;
 
     private String redirectViewName;
-
-    private Team teamOne;
-    private Team teamTwo;
-
-    @Deprecated
-    private Country countryTeamOne;
-
-    @Deprecated
-    private Country countryTeamTwo;
-
-    @Deprecated
-    private String teamNameOne;
-    @Deprecated
-    private String teamNameTwo;
 
     private boolean groupMatch;
 
@@ -52,6 +39,10 @@ public class BetCommand {
 
     private boolean jokerEditable;
 
+    public BetCommand(Match match) {
+        this.match = match;
+    }
+
     public String getBackUrl() {
         String view = RedirectViewName.resolveBackUrl(redirectViewName);
         return view + "#" + getMatchId();
@@ -65,20 +56,10 @@ public class BetCommand {
         builder.append("goalsTeamOne", goalsTeamOne);
         builder.append("goalsTeamTwo", goalsTeamTwo);
         builder.append("redirectViewName", redirectViewName);
-        builder.append("teamNameOne", teamNameOne);
-        builder.append("teamNameTwo", teamNameTwo);
         builder.append("groupMatch", groupMatch);
         builder.append("penaltyWinnerOne", penaltyWinnerOne);
         builder.append("useJoker", useJoker);
         return builder.toString();
-    }
-
-    public String getTeamNameOne() {
-        return teamNameOne;
-    }
-
-    public String getTeamNameTwo() {
-        return teamNameTwo;
     }
 
     public Integer getGoalsTeamOne() {
@@ -133,14 +114,6 @@ public class BetCommand {
         return groupMatch;
     }
 
-    public void setTeamNameOne(String teamNameOne) {
-        this.teamNameOne = teamNameOne;
-    }
-
-    public void setTeamNameTwo(String teamNameTwo) {
-        this.teamNameTwo = teamNameTwo;
-    }
-
     public void setGroupMatch(boolean groupMatch) {
         this.groupMatch = groupMatch;
     }
@@ -177,35 +150,7 @@ public class BetCommand {
         this.jokerEditable = jokerEditable;
     }
 
-    public Country getCountryTeamOne() {
-        return countryTeamOne;
-    }
-
-    public void setCountryTeamOne(Country countryTeamOne) {
-        this.countryTeamOne = countryTeamOne;
-    }
-
-    public Country getCountryTeamTwo() {
-        return countryTeamTwo;
-    }
-
-    public void setCountryTeamTwo(Country countryTeamTwo) {
-        this.countryTeamTwo = countryTeamTwo;
-    }
-
-    public Team getTeamOne() {
-        return teamOne;
-    }
-
-    public void setTeamOne(Team teamOne) {
-        this.teamOne = teamOne;
-    }
-
-    public Team getTeamTwo() {
-        return teamTwo;
-    }
-
-    public void setTeamTwo(Team teamTwo) {
-        this.teamTwo = teamTwo;
+    public Match getMatch() {
+        return match;
     }
 }

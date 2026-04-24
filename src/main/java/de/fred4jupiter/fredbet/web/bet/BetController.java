@@ -106,24 +106,13 @@ public class BetController {
     }
 
     private BetCommand toBetCommand(Bet bet) {
-        BetCommand betCommand = new BetCommand();
+        final BetCommand betCommand = new BetCommand(bet.getMatch());
+
         betCommand.setBetId(bet.getId());
         betCommand.setMatchId(bet.getMatch().getId());
         betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
         betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
         betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
-
-        betCommand.setTeamOne(bet.getMatch().getTeamOne());
-        betCommand.setTeamTwo(bet.getMatch().getTeamTwo());
-
-        final Locale locale = LocaleContextHolder.getLocale();
-        final Team teamOne = bet.getMatch().getTeamOne();
-        final Team teamTwo = bet.getMatch().getTeamTwo();
-        betCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
-        betCommand.setCountryTeamOne(teamOne.getCountry());
-
-        betCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
-        betCommand.setCountryTeamTwo(teamTwo.getCountry());
 
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 

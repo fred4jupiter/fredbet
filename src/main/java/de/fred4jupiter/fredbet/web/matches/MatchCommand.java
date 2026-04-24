@@ -89,4 +89,12 @@ public class MatchCommand {
 
         return !this.match.isGroupMatch() && this.match.isUndecidedResult() && !this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
     }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public Bet getBet() {
+        return this.betOpt.orElse(null);
+    }
 }
