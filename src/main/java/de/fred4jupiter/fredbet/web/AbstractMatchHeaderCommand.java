@@ -9,88 +9,85 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractMatchHeaderCommand {
 
-    protected Country countryTeamOne;
-    protected Country countryTeamTwo;
+//    protected LocalDateTime kickOffDate;
+//
+//    private String teamNameOne;
+//    private String teamNameTwo;
+//
+//    protected Group group;
+//
+//    protected String stadium;
 
-    protected LocalDateTime kickOffDate;
-
-    private String teamNameOne;
-    private String teamNameTwo;
-
-    protected Group group;
-
-    protected String stadium;
-
-    protected boolean isBlank(Country country) {
-        return !isNotBlank(country);
-    }
-
-    protected boolean isNotBlank(Country country) {
-        return country != null;
-    }
-
-    @Override
-    public String toString() {
-        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-        builder.append("countryTeamOne", countryTeamOne);
-        builder.append("countryTeamTwo", countryTeamTwo);
-        return builder.toString();
-    }
-
-    public LocalDateTime getKickOffDate() {
-        return kickOffDate;
-    }
-
-    public void setKickOffDate(LocalDateTime kickOffDate) {
-        this.kickOffDate = kickOffDate;
-    }
-
-    public String getStadium() {
-        return stadium;
-    }
-
-    public void setStadium(String stadium) {
-        this.stadium = stadium;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public Country getCountryTeamOne() {
-        return countryTeamOne;
-    }
-
-    public void setCountryTeamOne(Country countryTeamOne) {
-        this.countryTeamOne = countryTeamOne;
-    }
-
-    public Country getCountryTeamTwo() {
-        return countryTeamTwo;
-    }
-
-    public void setCountryTeamTwo(Country countryTeamTwo) {
-        this.countryTeamTwo = countryTeamTwo;
-    }
-
-    public String getTeamNameOne() {
-        return teamNameOne;
-    }
-
-    public void setTeamNameOne(String teamNameOne) {
-        this.teamNameOne = teamNameOne;
-    }
-
-    public String getTeamNameTwo() {
-        return teamNameTwo;
-    }
-
-    public void setTeamNameTwo(String teamNameTwo) {
-        this.teamNameTwo = teamNameTwo;
-    }
+//    protected boolean isBlank(Country country) {
+//        return !isNotBlank(country);
+//    }
+//
+//    protected boolean isNotBlank(Country country) {
+//        return country != null;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+//        builder.append("countryTeamOne", countryTeamOne);
+//        builder.append("countryTeamTwo", countryTeamTwo);
+//        return builder.toString();
+//    }
+//
+//    public LocalDateTime getKickOffDate() {
+//        return kickOffDate;
+//    }
+//
+//    public void setKickOffDate(LocalDateTime kickOffDate) {
+//        this.kickOffDate = kickOffDate;
+//    }
+//
+//    public String getStadium() {
+//        return stadium;
+//    }
+//
+//    public void setStadium(String stadium) {
+//        this.stadium = stadium;
+//    }
+//
+//    public Group getGroup() {
+//        return group;
+//    }
+//
+//    public void setGroup(Group group) {
+//        this.group = group;
+//    }
+//
+//    public Country getCountryTeamOne() {
+//        return countryTeamOne;
+//    }
+//
+//    public void setCountryTeamOne(Country countryTeamOne) {
+//        this.countryTeamOne = countryTeamOne;
+//    }
+//
+//    public Country getCountryTeamTwo() {
+//        return countryTeamTwo;
+//    }
+//
+//    public void setCountryTeamTwo(Country countryTeamTwo) {
+//        this.countryTeamTwo = countryTeamTwo;
+//    }
+//
+//    public String getTeamNameOne() {
+//        return teamNameOne;
+//    }
+//
+//    public void setTeamNameOne(String teamNameOne) {
+//        this.teamNameOne = teamNameOne;
+//    }
+//
+//    public String getTeamNameTwo() {
+//        return teamNameTwo;
+//    }
+//
+//    public void setTeamNameTwo(String teamNameTwo) {
+//        this.teamNameTwo = teamNameTwo;
+//    }
 
 }

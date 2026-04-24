@@ -15,12 +15,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
     private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS;
 
-    private boolean joker;
-
-    private boolean penaltyWinnerOneBet;
-
-    private boolean penaltyWinnerOneMatch;
-
     private Match match;
 
     private Bet bet;
@@ -33,34 +27,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
     }
 
     public boolean isGroupMatch() {
-        return this.group.name().startsWith("GROUP");
-    }
-
-    public boolean isPenaltyWinnerOneBet() {
-        return penaltyWinnerOneBet;
-    }
-
-    public void setPenaltyWinnerOneBet(boolean penaltyWinnerOneBet) {
-        this.penaltyWinnerOneBet = penaltyWinnerOneBet;
-    }
-
-    public boolean isPenaltyWinnerOneMatch() {
-        return penaltyWinnerOneMatch;
-    }
-
-    public void setPenaltyWinnerOneMatch(boolean penaltyWinnerOneMatch) {
-        this.penaltyWinnerOneMatch = penaltyWinnerOneMatch;
-    }
-
-    public boolean isUndecidedBetting() {
-        return getGoalDifferenceBetting() == 0;
-    }
-
-    private Integer getGoalDifferenceBetting() {
-        if (this.bet == null) {
-            throw new IllegalStateException("No goal bets set!");
-        }
-        return this.bet.getGoalDifference();
+        return this.match.getGroup().name().startsWith("GROUP");
     }
 
     public String getUserBetGoalsTeamOneCssClasses() {
@@ -73,7 +40,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
-        if (isJoker()) {
+        if (this.bet.isJoker()) {
             cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
         }
 
@@ -90,7 +57,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
-        if (isJoker()) {
+        if (this.bet.isJoker()) {
             cssClasses = cssClasses + " " + FredbetConstants.JOKER_CSS_CLASS;
         }
 
@@ -111,14 +78,6 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
         }
 
         return !this.match.isGroupMatch() && this.match.isUndecidedResult() && !this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
-    }
-
-    public boolean isJoker() {
-        return joker;
-    }
-
-    public void setJoker(boolean joker) {
-        this.joker = joker;
     }
 
     public Match getMatch() {
