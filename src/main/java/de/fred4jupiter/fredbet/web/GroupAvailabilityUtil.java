@@ -4,10 +4,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class GroupAvailabilityUtil {
@@ -30,15 +27,26 @@ public class GroupAvailabilityUtil {
         return matchService.isKnockOutMatchesAvailable();
     }
 
-    public List<Group> getMainGroups() {
+    public List<Group> getGroups() {
         Set<Group> groups = matchService.availableGroups();
         if (groups.isEmpty()) {
             return Collections.emptyList();
         }
-        List<Group> groupStageMatches = groups.stream().filter(Objects::nonNull).filter(Group::isMainGroup).sorted().toList();
-        if (groupStageMatches.isEmpty()) {
-            return Collections.emptyList();
+        return groups.stream().filter(Objects::nonNull).sorted(Comparator.comparing(Group::ordinal)).toList();
+    }
+
+    public boolean isDividerNecessary(Group group) {
+        if (group == null) {
+            return false;
         }
-        return groupStageMatches;
+
+        final Set<Group> groups = matchService.availableGroups();
+        if (groups.contains(Group.ROUND_OF_THIRTY_TWO) && Group.ROUND_OF_THIRTY_TWO.equals(group)) {
+            return true;
+        } else if (Group.ROUND_OF_SIXTEEN.equals(group)) {
+            return true;
+        }
+
+        return List.of(Group.FINAL, Group.GAME_FOR_THIRD, Group.GROUP_A).contains(group);
     }
 }

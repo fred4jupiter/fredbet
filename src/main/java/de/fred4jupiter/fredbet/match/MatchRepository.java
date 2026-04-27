@@ -49,7 +49,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("select min(a.kickOffDate) from Match a")
     LocalDateTime findStartDateOfFirstMatch();
 
-    @Query("select a.group from Match a ")
+    @Query("select a.group from Match a where a.group is not null")
     Set<Group> fetchGroupsOfAllMatches();
 
     @Query("Select b.match from Bet b where b.joker = TRUE and b.userName = :userName order by b.match.kickOffDate asc")
