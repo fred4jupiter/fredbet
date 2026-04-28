@@ -14,18 +14,16 @@ public class CreateEditMatchCommand {
 
     private Long matchId;
 
+    private Country countryTeamOne;
+    private Country countryTeamTwo;
+
     private String teamNameOne;
     private String teamNameTwo;
-
-    private Country countryTeamOne;
-
-    private Country countryTeamTwo;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
     private LocalDateTime kickOffDate;
 
-    @NotNull
     private Group group;
 
     private String stadium;

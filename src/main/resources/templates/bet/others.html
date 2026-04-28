@@ -23,8 +23,7 @@
                                 <div class="col-8 pe-0">
                                     <span th:text="${#temporals.format(allBetsCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
                                     <br/>
-                                    <span th:text="#{${allBetsCommand.match.group.titleMsgKey}}"></span><span>,</span>
-                                    <span th:text="${allBetsCommand.match.stadium}"></span>
+                                    <span th:text="${allBetsCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
                                 </div>
                                 <div class="col-4 ps-0">
                                     <div class="text-end mt-2">

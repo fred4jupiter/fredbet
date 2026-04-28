@@ -24,8 +24,7 @@
 									<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points}"></span>
 									<br/>
-                                    <span th:if="${#strings.isEmpty(matchCommand.match.stadium)}" th:text="#{${matchCommand.match.group.titleMsgKey}}"></span>
-									<span th:if="${!#strings.isEmpty(matchCommand.match.stadium)}" th:text="#{${matchCommand.match.group.titleMsgKey}} + ', ' + ${matchCommand.match.stadium}"></span>
+                                    <span th:text="${matchCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
 					  			</div>
 				  			</div>
 						</div>

@@ -64,6 +64,20 @@ public class Match implements MatchBusinessKey {
     @Transient
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
+    public String getGroupLabel(MessageSourceUtil messageSourceUtil) {
+        if (this.getGroup() != null) {
+            if (StringUtils.isNotBlank(this.getStadium())) {
+                return "%s, %s".formatted(messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey()), this.getStadium());
+            }
+            return messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey());
+        }
+        if (StringUtils.isNotBlank(this.getStadium())) {
+            return this.getStadium();
+        }
+
+        return null;
+    }
+
     public boolean hasMatchStarted() {
         return LocalDateTime.now().isAfter(getKickOffDate());
     }
@@ -273,6 +287,9 @@ public class Match implements MatchBusinessKey {
     }
 
     public boolean isGroupMatch() {
+        if (this.group == null) {
+            return false;
+        }
         return this.group.name().startsWith("GROUP");
     }
 
