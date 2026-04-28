@@ -308,6 +308,9 @@ public class Match implements MatchBusinessKey {
     }
 
     public boolean isGroup(Group group) {
+        if (this.group == null) {
+            return false;
+        }
         return this.group.equals(group);
     }
 

@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.domain.Country;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -24,16 +23,20 @@ public class CrestsCountryResolver {
 
     private final ResourceLoader resourceLoader;
 
-    private final byte[] crestPlaceholderIcon;
+    private final CrestPlaceholderLoader crestPlaceholderLoader;
 
-    CrestsCountryResolver(ResourceLoader resourceLoader, @Value("classpath:static/crests/crests-placeholder.svg") Resource crestPlaceholderResource) {
+    CrestsCountryResolver(ResourceLoader resourceLoader, CrestPlaceholderLoader crestPlaceholderLoader) {
         this.resourceLoader = resourceLoader;
-        this.crestPlaceholderIcon = toByteArray(crestPlaceholderResource);
+        this.crestPlaceholderLoader = crestPlaceholderLoader;
     }
 
     public Optional<byte[]> loadCrestsImageFor(Country country) {
+        return loadCrestsImageFor(country, true);
+    }
+
+    public Optional<byte[]> loadCrestsImageFor(Country country, boolean fallbackToPlaceholderIcon) {
         if (country == null) {
-            return useFallbackPlaceholderIcon(country);
+            return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(country) : Optional.empty();
         }
 
         if (StringUtils.isNotBlank(country.getCssIconClass())) {
@@ -42,7 +45,7 @@ public class CrestsCountryResolver {
                 return flagOpt;
             } else {
                 LOG.warn("Could not load crests image for CLUB WM country={}", country);
-                return useFallbackPlaceholderIcon(country);
+                return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(country) : Optional.empty();
             }
         }
 
@@ -61,7 +64,7 @@ public class CrestsCountryResolver {
             }
         }
 
-        return useFallbackPlaceholderIcon(country);
+        return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(country) : Optional.empty();
     }
 
     private Optional<byte[]> useFallbackPlaceholderIcon(Country country) {
@@ -69,16 +72,7 @@ public class CrestsCountryResolver {
             LOG.warn("Could not load crests image for country={}. Using fallback crests icon...", country);
         }
 
-        return Optional.of(crestPlaceholderIcon);
-    }
-
-    private byte[] toByteArray(Resource resource) {
-        try {
-            return resource.getContentAsByteArray();
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-            return null;
-        }
+        return Optional.of(crestPlaceholderLoader.getCrestPlaceholderIcon());
     }
 
     private Optional<byte[]> loadClubWmIcon(Country country) {

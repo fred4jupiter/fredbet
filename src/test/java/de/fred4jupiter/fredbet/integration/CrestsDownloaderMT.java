@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Base64;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,10 +21,9 @@ public class CrestsDownloaderMT {
 
     @Test
     void download() {
-        Optional<byte[]> imageOpt = crestsDownloader.downloadCrestsByUrl("759");
-        assertThat(imageOpt.isPresent());
+        byte[] byteArray = crestsDownloader.downloadCrestsByUrl("759");
+        assertThat(byteArray).isNotNull();
 
-        byte[] byteArray = imageOpt.get();
         TempFileWriterUtil.writeToTempFolder(byteArray, "test.svg");
 
         String base64Image = "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(byteArray);

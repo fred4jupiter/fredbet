@@ -64,10 +64,10 @@ class FdMatchSyncImporter {
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
         final Group group = resolveToGroup(fdMatch);
-        if (group == null) {
-            LOG.warn("No group found for match {}", fdMatch);
-            return;
-        }
+//        if (group == null) {
+//            LOG.warn("No group found for match {}", fdMatch);
+//            return;
+//        }
 
         match.setGroup(group);
         match.setKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
@@ -114,13 +114,13 @@ class FdMatchSyncImporter {
         if (country != null) {
             team.setCountry(country);
             team.setName(null);
-            crestsCountryResolver.loadCrestsImageFor(country).ifPresent(team::setCrestsBinary);
+            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(team::setCrestsBinary);
         } else {
             team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
         }
 
         if (team.getCrestsBinary() == null) {
-            crestsDownloader.downloadCrestsByUrl(fdTeam.id()).ifPresent(team::setCrestsBinary);
+            team.setCrestsBinary(crestsDownloader.downloadCrestsByUrl(fdTeam.id()));
         }
     }
 

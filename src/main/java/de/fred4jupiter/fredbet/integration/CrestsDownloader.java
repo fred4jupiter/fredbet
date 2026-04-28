@@ -1,13 +1,12 @@
 package de.fred4jupiter.fredbet.integration;
 
+import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
-
-import java.util.Optional;
 
 @Component
 class CrestsDownloader {
@@ -16,24 +15,26 @@ class CrestsDownloader {
 
     private final RestClient crestsRestClient;
 
-    CrestsDownloader(RestClient crestsRestClient) {
+    private final CrestPlaceholderLoader crestPlaceholderLoader;
+
+    CrestsDownloader(RestClient crestsRestClient, CrestPlaceholderLoader crestPlaceholderLoader) {
         this.crestsRestClient = crestsRestClient;
+        this.crestPlaceholderLoader = crestPlaceholderLoader;
     }
 
-    public Optional<byte[]> downloadCrestsByUrl(String teamId) {
+    public byte[] downloadCrestsByUrl(String teamId) {
         if (StringUtils.isBlank(teamId)) {
-            LOG.warn("teamId is blank. No crest will be downloaded.");
-            return Optional.empty();
+            LOG.info("teamId is blank. No crest will be downloaded. Will use placeholder icon.");
+            return crestPlaceholderLoader.getCrestPlaceholderIcon();
         }
 
         LOG.debug("will try to download crests with teamId: {}", teamId);
 
         try {
-            byte[] imageAsByteArray = crestsRestClient.get().uri("/%s.svg".formatted(teamId)).retrieve().body(byte[].class);
-            return Optional.ofNullable(imageAsByteArray);
+            return crestsRestClient.get().uri("/%s.svg".formatted(teamId)).retrieve().body(byte[].class);
         } catch (HttpClientErrorException e) {
-            LOG.error("Could not download crests image flag for teamId: {}. Cause: {}", teamId, e.getMessage());
-            return Optional.empty();
+            LOG.info("Could not download crests image flag for teamId: {}. Cause: {}", teamId, e.getMessage());
+            return crestPlaceholderLoader.getCrestPlaceholderIcon();
         }
     }
 
