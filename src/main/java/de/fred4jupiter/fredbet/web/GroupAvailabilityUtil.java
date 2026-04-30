@@ -23,10 +23,6 @@ public class GroupAvailabilityUtil {
         return matchService.availableGroups().contains(group);
     }
 
-    public boolean isKnockOutMatchesAvailable() {
-        return matchService.isKnockOutMatchesAvailable();
-    }
-
     public List<Group> getGroups() {
         Set<Group> groups = matchService.availableGroups();
         if (groups.isEmpty()) {
