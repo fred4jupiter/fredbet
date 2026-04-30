@@ -9,11 +9,9 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
-import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,10 +37,6 @@ public class BetController {
 
     private final WebMessageUtil messageUtil;
 
-    private final MessageSourceUtil messageSourceUtil;
-
-    private final MatchCommandMapper matchCommandMapper;
-
     private final MatchService matchService;
 
     private final AllBetsCommandMapper allBetsCommandMapper;
@@ -52,13 +46,11 @@ public class BetController {
     private final ExtraBettingService extraBettingService;
 
     public BetController(BettingService bettingService, SecurityService securityService, WebMessageUtil messageUtil,
-                         MessageSourceUtil messageSourceUtil, MatchCommandMapper matchCommandMapper, MatchService matchService,
+                         MatchService matchService,
                          AllBetsCommandMapper allBetsCommandMapper, JokerService jokerService, ExtraBettingService extraBettingService) {
         this.bettingService = bettingService;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
-        this.messageSourceUtil = messageSourceUtil;
-        this.matchCommandMapper = matchCommandMapper;
         this.matchService = matchService;
         this.allBetsCommandMapper = allBetsCommandMapper;
         this.jokerService = jokerService;
