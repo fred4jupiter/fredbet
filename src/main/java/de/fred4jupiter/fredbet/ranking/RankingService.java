@@ -11,12 +11,14 @@ import de.fred4jupiter.fredbet.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.pdf.PdfTableDataBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 @Service
+@Transactional
 public class RankingService {
 
     private final BetRepository betRepository;

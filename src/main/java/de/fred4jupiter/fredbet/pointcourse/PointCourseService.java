@@ -1,17 +1,19 @@
 package de.fred4jupiter.fredbet.pointcourse;
 
-import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 // Punkteverlauf
 @Service
+@Transactional
 public class PointCourseService {
 
     private final BetRepository betRepository;
@@ -76,13 +78,13 @@ public class PointCourseService {
 
     private ImmutablePair<String, String> calculateMinMaxPointsUsernames(String currentUser, List<PointsPerUser> pointsPerUsers) {
         PointsPerUser min = pointsPerUsers.stream()
-                .filter(pointsPerUser -> !pointsPerUser.username().equals(adminUsername))
-                .filter(pointsPerUser -> !pointsPerUser.username().equals(currentUser))
-                .min(Comparator.comparing(PointsPerUser::points)).orElse(null);
+            .filter(pointsPerUser -> !pointsPerUser.username().equals(adminUsername))
+            .filter(pointsPerUser -> !pointsPerUser.username().equals(currentUser))
+            .min(Comparator.comparing(PointsPerUser::points)).orElse(null);
         PointsPerUser max = pointsPerUsers.stream()
-                .filter(pointsPerUser -> !pointsPerUser.username().equals(adminUsername))
-                .filter(pointsPerUser -> !pointsPerUser.username().equals(currentUser))
-                .max(Comparator.comparing(PointsPerUser::points)).orElse(null);
+            .filter(pointsPerUser -> !pointsPerUser.username().equals(adminUsername))
+            .filter(pointsPerUser -> !pointsPerUser.username().equals(currentUser))
+            .max(Comparator.comparing(PointsPerUser::points)).orElse(null);
         return min != null && max != null ? ImmutablePair.of(min.username(), max.username()) : ImmutablePair.nullPair();
     }
 }
