@@ -64,10 +64,6 @@ class FdMatchSyncImporter {
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
         final Group group = resolveToGroup(fdMatch);
-//        if (group == null) {
-//            LOG.warn("No group found for match {}", fdMatch);
-//            return;
-//        }
 
         match.setGroup(group);
         match.setKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
