@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
@@ -9,17 +8,6 @@ import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 public class MatchResultCommand {
 
     private Long matchId;
-
-    @Deprecated
-    private String teamNameOne;
-    @Deprecated
-    private String teamNameTwo;
-
-    @Deprecated
-    private Country countryTeamOne;
-
-    @Deprecated
-    private Country countryTeamTwo;
 
     private Team teamOne;
 
@@ -31,7 +19,7 @@ public class MatchResultCommand {
 
     private boolean penaltyWinnerOne;
 
-    private boolean groupMatch;
+    private boolean knockoutMatch;
 
     private String redirectViewName;
 
@@ -80,46 +68,6 @@ public class MatchResultCommand {
         this.penaltyWinnerOne = penaltyWinnerOne;
     }
 
-    public boolean isGroupMatch() {
-        return this.groupMatch;
-    }
-
-    public void setGroupMatch(boolean groupMatch) {
-        this.groupMatch = groupMatch;
-    }
-
-    public String getTeamNameOne() {
-        return teamNameOne;
-    }
-
-    public void setTeamNameOne(String teamNameOne) {
-        this.teamNameOne = teamNameOne;
-    }
-
-    public String getTeamNameTwo() {
-        return teamNameTwo;
-    }
-
-    public void setTeamNameTwo(String teamNameTwo) {
-        this.teamNameTwo = teamNameTwo;
-    }
-
-    public Country getCountryTeamOne() {
-        return countryTeamOne;
-    }
-
-    public void setCountryTeamOne(Country countryTeamOne) {
-        this.countryTeamOne = countryTeamOne;
-    }
-
-    public Country getCountryTeamTwo() {
-        return countryTeamTwo;
-    }
-
-    public void setCountryTeamTwo(Country countryTeamTwo) {
-        this.countryTeamTwo = countryTeamTwo;
-    }
-
     public Team getTeamOne() {
         return teamOne;
     }
@@ -134,5 +82,13 @@ public class MatchResultCommand {
 
     public void setTeamTwo(Team teamTwo) {
         this.teamTwo = teamTwo;
+    }
+
+    public boolean isKnockoutMatch() {
+        return knockoutMatch;
+    }
+
+    public void setKnockoutMatch(boolean knockoutMatch) {
+        this.knockoutMatch = knockoutMatch;
     }
 }

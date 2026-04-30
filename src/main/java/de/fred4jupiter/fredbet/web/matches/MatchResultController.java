@@ -60,17 +60,12 @@ public class MatchResultController {
 
     private MatchResultCommand toMatchResultCommand(Match match) {
         MatchResultCommand matchResultCommand = new MatchResultCommand();
-        matchResultCommand.setMatchId(match.getId());
-        matchResultCommand.setGroupMatch(match.isGroupMatch());
 
-        final Locale locale = LocaleContextHolder.getLocale();
+        matchResultCommand.setMatchId(match.getId());
+        matchResultCommand.setKnockoutMatch(match.isKnockoutMatch());
+
         final Team teamOne = match.getTeamOne();
         final Team teamTwo = match.getTeamTwo();
-        matchResultCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
-        matchResultCommand.setCountryTeamOne(teamOne.getCountry());
-
-        matchResultCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
-        matchResultCommand.setCountryTeamTwo(teamTwo.getCountry());
 
         matchResultCommand.setTeamOne(teamOne);
         matchResultCommand.setTeamTwo(teamTwo);

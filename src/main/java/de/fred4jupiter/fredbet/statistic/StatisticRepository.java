@@ -83,7 +83,7 @@ public class StatisticRepository {
             if (statistic == null) {
                 statistic = new Statistic(username);
             }
-            if (group.startsWith("GROUP")) {
+            if (group == null || group.startsWith("GROUP")) {
                 statistic.setPointsGroup(statistic.getPointsGroup() + points);
             } else if (Group.ROUND_OF_THIRTY_TWO.getName().equals(group)) {
                 statistic.setPointsRoundOfThirtyTwo(points);

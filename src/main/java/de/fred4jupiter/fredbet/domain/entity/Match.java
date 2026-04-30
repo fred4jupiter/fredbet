@@ -293,6 +293,14 @@ public class Match implements MatchBusinessKey {
         return this.group.name().startsWith("GROUP");
     }
 
+    public boolean isKnockoutMatch() {
+        if (this.group == null) {
+            return false;
+        }
+
+        return Group.getKnockoutGroups().contains(this.group);
+    }
+
     public String getCssClassPenaltyWinnerOne() {
         if (this.isGroupMatch() || !this.isUndecidedResult()) {
             return "";
