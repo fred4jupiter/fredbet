@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.standings;
 
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.MatchResult;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -18,12 +18,12 @@ public class StandingsContainer {
         this.messageSourceUtil = messageSourceUtil;
     }
 
-    public void registerResult(MatchResult matchResult, Locale locale) {
-        TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(matchResult.getGroup(), getTranslatedTeamName(matchResult.getTeamOne(), locale));
-        teamPointsTeamOne.registerResultForTeam(matchResult.getTeamOne(), matchResult.getTeamTwo(), matchResult.isTeamOneWinner(), matchResult.isUndecidedResult());
+    public void registerResult(Match match, Locale locale) {
+        TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(match.getGroup(), getTranslatedTeamName(match.getTeamOne(), locale));
+        teamPointsTeamOne.registerResultForTeam(match);
 
-        TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(matchResult.getGroup(), getTranslatedTeamName(matchResult.getTeamTwo(), locale));
-        teamPointsTeamTwo.registerResultForTeam(matchResult.getTeamTwo(), matchResult.getTeamOne(), matchResult.isTeamTwoWinner(), matchResult.isUndecidedResult());
+        TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(match.getGroup(), getTranslatedTeamName(match.getTeamTwo(), locale));
+        teamPointsTeamTwo.registerResultForTeam(match);
     }
 
     private String getTranslatedTeamName(Team team, Locale locale) {
@@ -66,7 +66,7 @@ public class StandingsContainer {
         Comparator<TeamStandings> goalsAgainst = Comparator.comparingInt(TeamStandings::getNumberOfGoalsAgainst);
 
         Comparator<TeamStandings> completeComparator = points.thenComparing(goalDifference)
-                .thenComparing(goals).thenComparing(goalsAgainst);
+            .thenComparing(goals).thenComparing(goalsAgainst);
         return teamPoints.stream().sorted(completeComparator).toList();
     }
 }

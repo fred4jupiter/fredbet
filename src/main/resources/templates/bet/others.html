@@ -12,19 +12,18 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12">
-                                    <span class="" th:classappend="${@teamUtil.cssClassFor(allBetsCommand.getCountryTeamOne())}"></span>
-                                    <span class="fw-bold" th:text="${allBetsCommand.teamNameOne}"></span>
+                                    <img class="fi" th:src="${allBetsCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
+                                    <span class="fw-bold" th:text="${allBetsCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
                                     <span> - </span>
-                                    <span class="" th:classappend="${@teamUtil.cssClassFor(allBetsCommand.getCountryTeamTwo())}"></span>
-                                    <span class="fw-bold" th:text="${allBetsCommand.teamNameTwo}"></span>
+                                    <img class="fi" th:src="${allBetsCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
+                                    <span class="fw-bold" th:text="${allBetsCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-8 pe-0">
-                                    <span th:text="${#temporals.format(allBetsCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+                                    <span th:text="${#temporals.format(allBetsCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
                                     <br/>
-                                    <span th:text="#{${allBetsCommand.group.titleMsgKey}}"></span><span>,</span>
-                                    <span th:text="${allBetsCommand.stadium}"></span>
+                                    <span th:text="${allBetsCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
                                 </div>
                                 <div class="col-4 ps-0">
                                     <div class="text-end mt-2">

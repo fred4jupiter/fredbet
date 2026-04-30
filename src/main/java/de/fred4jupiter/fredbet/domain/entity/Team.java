@@ -2,35 +2,47 @@ package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.util.Base64;
 import java.util.Locale;
-import java.util.Objects;
 
-@Embeddable
+@Entity
+@Table(name = "TEAM")
 public class Team {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "COUNTRY")
+    @Column(name = "COUNTRY", unique = true)
     private Country country;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
-    @Column(name = "GOALS")
-    private Integer goals;
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "CRESTS_BINARY")
+    @Lob
+    private byte[] crestsBinary;
 
-    public boolean hasCountrySet() {
-        return this.country != null;
+    public String getCrestsAsBase64() {
+        if (this.crestsBinary == null) {
+            return null;
+        }
+        return "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(this.crestsBinary);
     }
 
-    public boolean hasResultSet() {
-        return this.goals != null;
+    public Long getId() {
+        return id;
     }
 
     public Country getCountry() {
@@ -45,6 +57,10 @@ public class Team {
         return name;
     }
 
+    public String getNameTranslated(MessageSourceUtil messageSourceUtil) {
+        return getNameTranslated(messageSourceUtil, LocaleContextHolder.getLocale());
+    }
+
     public String getNameTranslated(MessageSourceUtil messageSourceUtil, Locale locale) {
         if (this.country == null) {
             return name;
@@ -54,30 +70,27 @@ public class Team {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getGoals() {
-        return goals;
-    }
-
-    public void setGoals(Integer goals) {
-        this.goals = goals;
+        if (StringUtils.isNotBlank(name)) {
+            this.name = name;
+        } else {
+            this.name = null;
+        }
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
+
         Team team = (Team) o;
-        return country == team.country &&
-            Objects.equals(name, team.name) &&
-            Objects.equals(goals, team.goals);
+
+        return new EqualsBuilder().append(id, team.id).append(country, team.country).append(name, team.name).append(crestsBinary, team.crestsBinary).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(country, name, goals);
+        return new HashCodeBuilder(17, 37).append(id).append(country).append(name).append(crestsBinary).toHashCode();
     }
 
     @Override
@@ -85,11 +98,18 @@ public class Team {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
         builder.append("country", country);
         builder.append("name", name);
-        builder.append("goals", goals);
         return builder.build();
     }
 
     public String getBusinessKey() {
         return "team_%s_%s".formatted(this.country, this.name);
+    }
+
+    public byte[] getCrestsBinary() {
+        return crestsBinary;
+    }
+
+    public void setCrestsBinary(byte[] crestsBinary) {
+        this.crestsBinary = crestsBinary;
     }
 }

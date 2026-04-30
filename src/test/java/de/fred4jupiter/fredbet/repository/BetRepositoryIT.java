@@ -9,6 +9,7 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.excel.PointCountResult;
 import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import de.fred4jupiter.fredbet.user.UserService;
@@ -34,9 +35,6 @@ public class BetRepositoryIT {
     private BetRepository betRepository;
 
     @Autowired
-    private MatchRepository matchRepository;
-
-    @Autowired
     private DataPopulator dataPopulator;
 
     @Autowired
@@ -44,6 +42,9 @@ public class BetRepositoryIT {
 
     @Autowired
     private FredbetProperties fredbetProperties;
+
+    @Autowired
+    private MatchService matchService;
 
     @BeforeEach
     public void setup() {
@@ -87,7 +88,7 @@ public class BetRepositoryIT {
 
         Match match = MatchBuilder.create().build();
         bet.setMatch(match);
-        matchRepository.save(match);
+        matchService.save(match);
 
         Bet savedBet = betRepository.save(bet);
         assertNotNull(savedBet);
@@ -110,7 +111,7 @@ public class BetRepositoryIT {
     public void findByMatchIdOrderByUserName() {
         Match match1 = MatchBuilder.create().withTeams(Country.ALBANIA, Country.AUSTRIA).withGroup(Group.GROUP_A)
             .withKickOffDate(LocalDateTime.now().minusHours(1)).withStadium("somewhere").build();
-        match1 = matchRepository.save(match1);
+        match1 = matchService.save(match1);
 
         Bet bet1 = new Bet();
         bet1.setGoalsTeamOne(2);

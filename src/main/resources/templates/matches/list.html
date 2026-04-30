@@ -10,22 +10,21 @@
 		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="matchCommand : ${allMatches}">
-					<a class="anchor" th:id="${matchCommand.matchId}"></a>
+					<a class="anchor" th:id="${matchCommand.match.id}"></a>
 					<div class="card  mb-3">
 						<div class="card-header">
 							<div class="row">
 								<div class="col-12">
-                                    <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>
-							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
+                                    <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
+							  		<span class="bold" th:text="${matchCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
 							  		<span> - </span>
-                                    <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>
-							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
+                                    <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
+                                    <span class="bold" th:text="${matchCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
 									<br/>
-									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.hasMatchFinished()}" th:text="${matchCommand.points}"></span>
+									<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points}"></span>
 									<br/>
-                                    <span th:if="${#strings.isEmpty(matchCommand.stadium)}" th:text="#{${matchCommand.group.titleMsgKey}}"></span>
-									<span th:if="${!#strings.isEmpty(matchCommand.stadium)}" th:text="#{${matchCommand.group.titleMsgKey}} + ', ' + ${matchCommand.stadium}"></span>
+                                    <span th:text="${matchCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
 					  			</div>
 				  			</div>
 						</div>
@@ -33,10 +32,10 @@
 							<div class="row">
 								<div class="col-2">
 									<div class="mb-1">
-										<a th:if="${!matchCommand.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}">
+										<a th:if="${!matchCommand.match.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}">
 											<span class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
 										</a>
-										<span th:if="${matchCommand.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
+										<span th:if="${matchCommand.match.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
 									</div>
 									<div class="mt-1">
 										<span class="fas fa-trophy fa-2x" th:title="#{matches.list.result}" data-toggle="tooltip" data-placement="bottom"></span>
@@ -45,30 +44,30 @@
 					  			<div class="col-4">
 					  				<div class="mb-2 mt-2">
 					  					<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamOneCssClasses()}"
-					  					      th:text="${matchCommand.userBetGoalsTeamOne != null ? matchCommand.userBetGoalsTeamOne : '?'}"></span>
+					  					      th:text="${matchCommand.bet?.goalsTeamOne != null ? matchCommand.bet?.goalsTeamOne : '?'}"></span>
 								  		<span> : </span>
 							  			<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamTwoCssClasses()}"
-							  			      th:text="${matchCommand.userBetGoalsTeamTwo != null ? matchCommand.userBetGoalsTeamTwo : '?'}"></span>
+							  			      th:text="${matchCommand.bet?.goalsTeamTwo != null ? matchCommand.bet?.goalsTeamTwo : '?'}"></span>
 					  				</div>
 					  				<div>
 					  					<span class="badge rounded-pill bg-info big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}"
-					  					      th:text="${matchCommand.teamResultOne != null ? matchCommand.teamResultOne : '?'}"></span>
+					  					      th:text="${matchCommand.match.goalsTeamOne != null ? matchCommand.match.goalsTeamOne : '?'}"></span>
 								  		<span> : </span>
 							  			<span class="badge rounded-pill bg-info big-badge" th:classappend="${matchCommand.getTeamResultTwoCssClasses()}"
-							  			      th:text="${matchCommand.teamResultTwo != null ? matchCommand.teamResultTwo : '?'}"></span>
+							  			      th:text="${matchCommand.match.goalsTeamTwo != null ? matchCommand.match.goalsTeamTwo : '?'}"></span>
 					  				</div>
 					  			</div>
 					  			<div class="col-6 mt-3">
                                     <div class="d-flex justify-content-center">
-                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.matchId}}"
+                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.match.id}}"
                                            class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
                                             <span class="fas fa-edit"></span>
                                         </a>
-                                        <a th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.isBettable()}? 'disabled'"
+                                        <a th:href="@{'/bet/createOrUpdate/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}" th:classappend="${!matchCommand.match.isBettable()}? 'disabled'"
                                            class="btn btn-success ms-2 me-2" role="button" th:title="#{matches.list.betMatch}">
                                             <span class="fas fa-thumbs-up"></span>
                                         </a>
-                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
+                                        <a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" th:href="@{'/matchresult/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}"
                                            class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
                                             <span class="fas fa-trophy"></span>
                                         </a>

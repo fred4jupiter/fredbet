@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Hintergrund Kreis -->
+    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+
+    <!-- Pentagon in der Mitte -->
+    <path d="M50 35 L62 45 L58 60 L42 60 L38 45 Z" fill="#333333"/>
+
+    <!-- Linien zu den äußeren Pentagon-Fragmenten -->
+    <line x1="50" y1="35" x2="50" y2="20" stroke="#333333" stroke-width="1.5"/>
+    <line x1="62" y1="45" x2="75" y2="40" stroke="#333333" stroke-width="1.5"/>
+    <line x1="58" y1="60" x2="70" y2="75" stroke="#333333" stroke-width="1.5"/>
+    <line x1="42" y1="60" x2="30" y2="75" stroke="#333333" stroke-width="1.5"/>
+    <line x1="38" y1="45" x2="25" y2="40" stroke="#333333" stroke-width="1.5"/>
+
+    <!-- Äußere Fragmente (Andeutung) -->
+    <path d="M40 10 L60 10 L50 20 Z" fill="#cccccc"/>
+    <path d="M85 30 L95 50 L80 45 Z" fill="#cccccc"/>
+    <path d="M75 85 L60 95 L65 80 Z" fill="#cccccc"/>
+    <path d="M25 85 L40 95 L35 80 Z" fill="#cccccc"/>
+    <path d="M5 50 L15 30 L20 45 Z" fill="#cccccc"/>
+</svg>

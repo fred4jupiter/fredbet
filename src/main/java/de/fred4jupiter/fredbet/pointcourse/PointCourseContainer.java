@@ -22,14 +22,16 @@ class PointCourseContainer {
     }
 
     public void add(String username, Integer points) {
+        final Integer tmpPoints = points != null ? points : 0;
+
         map.computeIfAbsent(username, k -> new LinkedList<>());
 
         LinkedList<Integer> values = map.get(username);
         Integer last = values.peekLast();
         if (last == null) {
-            values.addLast(points);
+            values.addLast(tmpPoints);
         } else {
-            values.addLast(last + points);
+            values.addLast(last + tmpPoints);
         }
     }
 

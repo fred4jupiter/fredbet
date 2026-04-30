@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +42,12 @@ public class MatchService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher) {
+    private final TeamRepository teamRepository;
+
+    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher, TeamRepository teamRepository) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.teamRepository = teamRepository;
     }
 
     public List<Match> findAll() {
@@ -61,6 +65,12 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
+        Team teamOne = teamRepository.findOrCreate(match.getTeamOne());
+        Team teamTwo = teamRepository.findOrCreate(match.getTeamTwo());
+
+        match.setTeamOne(teamOne);
+        match.setTeamTwo(teamTwo);
+
         return matchRepository.save(match);
     }
 
@@ -108,11 +118,23 @@ public class MatchService {
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public void deleteAllMatches() {
         matchRepository.deleteAll();
+        teamRepository.deleteAll();
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-    public void deleteMatch(Long matchId) {
-        matchRepository.deleteById(matchId);
+    public void deleteMatch(Match match) {
+        Long teamOneId = match.getTeamOne().getId();
+        Long teamTwoId = match.getTeamTwo().getId();
+        matchRepository.deleteById(match.getId());
+
+        deleteTeamIfNotReferencedAnymore(teamOneId);
+        deleteTeamIfNotReferencedAnymore(teamTwoId);
+    }
+
+    private void deleteTeamIfNotReferencedAnymore(Long teamId) {
+        if (!matchRepository.hasMatchesWithTeamId(teamId)) {
+            teamRepository.deleteById(teamId);
+        }
     }
 
     public Match findMatchById(Long matchId) {
@@ -152,15 +174,7 @@ public class MatchService {
         return !matches.isEmpty();
     }
 
-    public boolean isKnockOutMatchesAvailable() {
-        return matchRepository.hasMatchesOfGroups(Group.getKnockoutGroups());
-    }
-
     public boolean hasMatchWithResult() {
         return matchRepository.hasMatchWithResult();
-    }
-
-    public Long countMatches() {
-        return matchRepository.count();
     }
 }

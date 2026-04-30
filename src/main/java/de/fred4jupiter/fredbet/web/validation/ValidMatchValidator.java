@@ -22,7 +22,7 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
         if (oneTeamNotSelected(value)) {
             context.buildConstraintViolationWithTemplate("{msg.input.countries.and.teamNames}").addPropertyNode("teamNameOne")
                     .addConstraintViolation().disableDefaultConstraintViolation();
-            LOG.error("Country or team name has been selected");
+            LOG.warn("Country or team name has been selected");
             return false;
         }
 

@@ -1,12 +1,13 @@
 package de.fred4jupiter.fredbet.integration;
 
+import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.model.*;
 import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
-import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import org.apache.commons.lang3.StringUtils;
@@ -28,16 +29,22 @@ class FdMatchSyncImporter {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final MatchRepository matchRepository;
+    private final MatchService matchService;
 
     private final TeamNameToCountryResolver teamNameToCountryResolver;
 
-    FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher,
-                        MatchRepository matchRepository, TeamNameToCountryResolver teamNameToCountryResolver) {
+    private final CrestsDownloader crestsDownloader;
+
+    private final CrestsCountryResolver crestsCountryResolver;
+
+    FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchService matchService,
+                        TeamNameToCountryResolver teamNameToCountryResolver, CrestsDownloader crestsDownloader, CrestsCountryResolver crestsCountryResolver) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.applicationEventPublisher = applicationEventPublisher;
-        this.matchRepository = matchRepository;
+        this.matchService = matchService;
         this.teamNameToCountryResolver = teamNameToCountryResolver;
+        this.crestsDownloader = crestsDownloader;
+        this.crestsCountryResolver = crestsCountryResolver;
     }
 
     public void mapAndSave(FdMatch fdMatch, Match match, boolean forceUpdate) {
@@ -57,10 +64,10 @@ class FdMatchSyncImporter {
         mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
         final Group group = resolveToGroup(fdMatch);
-        if (group == null) {
-            LOG.warn("No group found for match {}", fdMatch);
-            return;
-        }
+//        if (group == null) {
+//            LOG.warn("No group found for match {}", fdMatch);
+//            return;
+//        }
 
         match.setGroup(group);
         match.setKickOffDate(convertToLocalDateTime(fdMatch.utcDate()));
@@ -69,7 +76,7 @@ class FdMatchSyncImporter {
         match.setStadium(fdMatch.venue());
 
         if (!fdMatch.isFinished()) {
-            matchRepository.save(match);
+            matchService.save(match);
             return;
         }
 
@@ -98,7 +105,7 @@ class FdMatchSyncImporter {
             match.setGoalsTeamTwo(score.fullTime().away());
         }
 
-        Match saved = matchRepository.save(match);
+        Match saved = matchService.save(match);
         applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
     }
 
@@ -107,8 +114,13 @@ class FdMatchSyncImporter {
         if (country != null) {
             team.setCountry(country);
             team.setName(null);
+            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(team::setCrestsBinary);
         } else {
             team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
+        }
+
+        if (team.getCrestsBinary() == null) {
+            team.setCrestsBinary(crestsDownloader.downloadCrestsByUrl(fdTeam.id()));
         }
     }
 

@@ -11,8 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -31,10 +34,14 @@ public class MatchServiceIT {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TeamRepository teamRepository;
+
     @BeforeEach
     public void setup() {
         dataPopulator.deleteAllBetsAndMatches();
         userService.deleteAllUsers();
+        matchService.deleteAllMatches();
     }
 
     @Test
@@ -62,9 +69,18 @@ public class MatchServiceIT {
     @Test
     public void createMatchTwiceAndCheckIfOnlyOneIsPresent() {
         final Country countryOne = Country.ALBANIA;
-        Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams(countryOne, Country.SWITZERLAND).withGoals(1, 1).build();
+        Match match = MatchBuilder.create()
+            .withGroup(Group.GROUP_A)
+            .withTeams(countryOne, Country.SWITZERLAND)
+            .withKickOffDate(LocalDateTime.now().plusHours(1))
+            .withGoals(1, 1)
+            .build();
         assertNotNull(match);
-        matchService.save(match);
+        Match firstSaved = matchService.save(match);
+        assertThat(firstSaved).isNotNull();
+        Match firstSavedFound = matchService.findMatchById(firstSaved.getId());
+        assertThat(firstSavedFound).isNotNull();
+
         matchService.save(match);
 
         List<Match> foundList = matchRepository.findByTeamOneCountry(countryOne);
@@ -73,13 +89,32 @@ public class MatchServiceIT {
 
     @Test
     public void createTwoMatches() {
-        matchService.save(MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
-            .withKickOffDate(11, 6, 15).build());
+        Match match1 = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
+            .withKickOffDate(11, 6, 15).build();
+        assertThat(match1.getTeamOne().getCountry()).isEqualTo(Country.ALBANIA);
+        assertThat(match1.getTeamTwo().getCountry()).isEqualTo(Country.SWITZERLAND);
 
-        matchService.save(MatchBuilder.create().withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
-            .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build());
+        matchService.save(match1);
 
-        assertEquals(2, matchRepository.count());
+        Match match2 = MatchBuilder.create().withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
+            .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build();
+        assertThat(match2.getTeamOne().getCountry()).isEqualTo(Country.ROMANIA);
+        assertThat(match2.getTeamTwo().getCountry()).isEqualTo(Country.SWITZERLAND);
+        matchService.save(match2);
+
+        Match foundMatchOne = matchRepository.getReferenceById(match1.getId());
+        assertThat(foundMatchOne).isNotNull();
+        assertThat(foundMatchOne.getTeamOne()).isEqualTo(match1.getTeamOne());
+        assertThat(foundMatchOne.getTeamTwo()).isEqualTo(match1.getTeamTwo());
+
+        Match foundMatchTwo = matchRepository.getReferenceById(match2.getId());
+        assertThat(foundMatchTwo).isNotNull();
+        assertThat(foundMatchTwo.getTeamOne()).isEqualTo(match2.getTeamOne());
+        assertThat(foundMatchTwo.getTeamTwo()).isEqualTo(match2.getTeamTwo());
+
+        assertThat(teamRepository.countByCountry(Country.ALBANIA)).isEqualTo(1);
+        assertThat(teamRepository.countByCountry(Country.ROMANIA)).isEqualTo(1);
+        assertThat(teamRepository.countByCountry(Country.SWITZERLAND)).isEqualTo(1);
     }
 
     @Test
@@ -87,16 +122,20 @@ public class MatchServiceIT {
         Match match = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
             .withKickOffDate(11, 6, 15).build();
         matchService.save(match);
+        matchRepository.flush();
 
         Match found = matchRepository.getReferenceById(match.getId());
-        assertEquals(match, found);
+        assertThat(found).isEqualTo(match);
 
         final Country newCountry = Country.ENGLAND;
         found.getTeamOne().setCountry(newCountry);
 
         matchService.save(found);
+        matchRepository.flush();
+
+        assertThat(match.getId()).isEqualTo(found.getId());
 
         Match found2 = matchRepository.getReferenceById(found.getId());
-        assertEquals(newCountry, found2.getTeamOne().getCountry());
+        assertThat(newCountry).isEqualTo(found2.getTeamOne().getCountry());
     }
 }

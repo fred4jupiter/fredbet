@@ -46,15 +46,6 @@ public class AllBetsCommandMapper {
         AllBetsCommand allBetsCommand = new AllBetsCommand();
         allBetsCommand.setAllBetsForMatch(filtered);
         allBetsCommand.setMatch(match);
-
-        allBetsCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
-        allBetsCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
-
-        allBetsCommand.setCountryTeamOne(match.getTeamOne().getCountry());
-        allBetsCommand.setCountryTeamTwo(match.getTeamTwo().getCountry());
-        allBetsCommand.setKickOffDate(match.getKickOffDate());
-        allBetsCommand.setStadium(match.getStadium());
-        allBetsCommand.setGroup(match.getGroup());
         return allBetsCommand;
     }
 }

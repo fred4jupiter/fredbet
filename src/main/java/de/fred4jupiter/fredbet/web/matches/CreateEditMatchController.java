@@ -1,8 +1,11 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -39,12 +42,18 @@ public class CreateEditMatchController {
 
     private final TeamUtil teamUtil;
 
+    private final CrestsCountryResolver crestsCountryResolver;
+
+    private final TeamService teamService;
+
     public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService,
-                                     BettingService bettingService, TeamUtil teamUtil) {
+                                     BettingService bettingService, TeamUtil teamUtil, CrestsCountryResolver crestsCountryResolver, TeamService teamService) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.teamUtil = teamUtil;
+        this.crestsCountryResolver = crestsCountryResolver;
+        this.teamService = teamService;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
@@ -99,13 +108,13 @@ public class CreateEditMatchController {
     public String delete(@PathVariable Long matchId, RedirectAttributes redirect) {
         LOG.debug("deleted match with id={}", matchId);
 
-        Match match = matchService.findByMatchId(matchId);
+        final Match match = matchService.findByMatchId(matchId);
         if (match == null) {
             webMessageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
             return "redirect:/matches";
         }
 
-        matchService.deleteMatch(matchId);
+        matchService.deleteMatch(match);
 
         webMessageUtil.addInfoMsg(redirect, "msg.match.deleted", webMessageUtil.getTeamNameOne(match), webMessageUtil.getTeamNameTwo(match));
 
@@ -131,27 +140,31 @@ public class CreateEditMatchController {
     }
 
     private Long save(CreateEditMatchCommand createEditMatchCommand) {
-        Match match = null;
-        if (createEditMatchCommand.getMatchId() != null) {
-            match = matchService.findByMatchId(createEditMatchCommand.getMatchId());
-        }
-
-        if (match == null) {
-            match = new Match();
-        }
+        Match match = loadOrCreateMatch(createEditMatchCommand.getMatchId());
 
         toMatch(createEditMatchCommand, match);
 
-        match = matchService.save(match);
-        createEditMatchCommand.setMatchId(match.getId());
-        return match.getId();
+        Match savedMatch = matchService.save(match);
+        createEditMatchCommand.setMatchId(savedMatch.getId());
+        return savedMatch.getId();
+    }
+
+    private Match loadOrCreateMatch(Long matchId) {
+        if (matchId == null) {
+            return new Match();
+        }
+
+        Match match = matchService.findByMatchId(matchId);
+        return match != null ? match : new Match();
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-        match.getTeamOne().setCountry(matchCommand.getCountryTeamOne());
-        match.getTeamTwo().setCountry(matchCommand.getCountryTeamTwo());
-        match.getTeamOne().setName(matchCommand.getTeamNameOne());
-        match.getTeamTwo().setName(matchCommand.getTeamNameTwo());
+        final Team teamOne = teamService.findOrCreateTeam(matchCommand.getCountryTeamOne(), matchCommand.getTeamNameOne());
+        final Team teamTwo = teamService.findOrCreateTeam(matchCommand.getCountryTeamTwo(), matchCommand.getTeamNameTwo());
+
+        match.setTeamOne(teamOne);
+        match.setTeamTwo(teamTwo);
+
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());
         match.setStadium(matchCommand.getStadium());

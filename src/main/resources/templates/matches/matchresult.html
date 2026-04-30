@@ -13,24 +13,19 @@
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4">
 					<input type="hidden" th:field="*{matchId}" />
 					<input type="hidden" th:field="*{redirectViewName}" />
-					<input type="hidden" th:field="*{groupMatch}" />
-					<input type="hidden" th:field="*{teamNameOne}" />
-					<input type="hidden" th:field="*{teamNameTwo}" />
-					<input type="hidden" th:field="*{groupMatch}" />
-                    <input type="hidden" th:field="*{countryTeamOne}" />
-                    <input type="hidden" th:field="*{countryTeamTwo}" />
+					<input type="hidden" th:field="*{knockoutMatch}" />
 
                     <div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamOne())}"></span>
+                                <img class="fi big-flag" th:src="${matchResultCommand.teamOne.crestsAsBase64}" alt="crests"/>
 								<br/>
-								<span th:text="${matchResultCommand.teamNameOne}" class="teamName"></span>
+                                <span class="teamName" th:text="${matchResultCommand.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
 							</div>
 							<div class="col-6">
-                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(matchResultCommand.getCountryTeamTwo())}"></span>
+                                <img class="fi big-flag" th:src="${matchResultCommand.teamTwo.crestsAsBase64}" alt="crests"/>
 								<br/>
-								<span th:text="${matchResultCommand.teamNameTwo}" class="teamName"></span>
+                                <span class="teamName" th:text="${matchResultCommand.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
 							</div>
 						</div>
 						<div class="row center mb-3">
@@ -57,7 +52,7 @@
 								<button type="button" class="btn btn-secondary vote" onclick="twoCountDown()"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
 							</div>
 						</div>
-						<div class="mt-3" id="penaltyBox" th:if="${!matchResultCommand.isGroupMatch()}">
+						<div class="mt-3" id="penaltyBox" th:if="${matchResultCommand.isKnockoutMatch()}">
 							<div class="row">
                                 <div class="col-12">
 								    <span class="fw-bold" th:text="#{penalty.box.heading}"></span>

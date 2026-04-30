@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.web.validation.ValidMatchConstraint;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,18 +13,16 @@ public class CreateEditMatchCommand {
 
     private Long matchId;
 
+    private Country countryTeamOne;
+    private Country countryTeamTwo;
+
     private String teamNameOne;
     private String teamNameTwo;
-
-    private Country countryTeamOne;
-
-    private Country countryTeamTwo;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
     private LocalDateTime kickOffDate;
 
-    @NotNull
     private Group group;
 
     private String stadium;

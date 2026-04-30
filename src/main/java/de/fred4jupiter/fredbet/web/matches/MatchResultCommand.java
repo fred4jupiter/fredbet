@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 
@@ -9,12 +9,9 @@ public class MatchResultCommand {
 
     private Long matchId;
 
-    private String teamNameOne;
-    private String teamNameTwo;
+    private Team teamOne;
 
-    private Country countryTeamOne;
-
-    private Country countryTeamTwo;
+    private Team teamTwo;
 
     private Integer teamResultOne;
 
@@ -22,7 +19,7 @@ public class MatchResultCommand {
 
     private boolean penaltyWinnerOne;
 
-    private boolean groupMatch;
+    private boolean knockoutMatch;
 
     private String redirectViewName;
 
@@ -71,43 +68,27 @@ public class MatchResultCommand {
         this.penaltyWinnerOne = penaltyWinnerOne;
     }
 
-    public boolean isGroupMatch() {
-        return this.groupMatch;
+    public Team getTeamOne() {
+        return teamOne;
     }
 
-    public void setGroupMatch(boolean groupMatch) {
-        this.groupMatch = groupMatch;
+    public void setTeamOne(Team teamOne) {
+        this.teamOne = teamOne;
     }
 
-    public String getTeamNameOne() {
-        return teamNameOne;
+    public Team getTeamTwo() {
+        return teamTwo;
     }
 
-    public void setTeamNameOne(String teamNameOne) {
-        this.teamNameOne = teamNameOne;
+    public void setTeamTwo(Team teamTwo) {
+        this.teamTwo = teamTwo;
     }
 
-    public String getTeamNameTwo() {
-        return teamNameTwo;
+    public boolean isKnockoutMatch() {
+        return knockoutMatch;
     }
 
-    public void setTeamNameTwo(String teamNameTwo) {
-        this.teamNameTwo = teamNameTwo;
-    }
-
-    public Country getCountryTeamOne() {
-        return countryTeamOne;
-    }
-
-    public void setCountryTeamOne(Country countryTeamOne) {
-        this.countryTeamOne = countryTeamOne;
-    }
-
-    public Country getCountryTeamTwo() {
-        return countryTeamTwo;
-    }
-
-    public void setCountryTeamTwo(Country countryTeamTwo) {
-        this.countryTeamTwo = countryTeamTwo;
+    public void setKnockoutMatch(boolean knockoutMatch) {
+        this.knockoutMatch = knockoutMatch;
     }
 }

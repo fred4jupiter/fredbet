@@ -46,14 +46,14 @@ public class JsonImportService {
 
     public void importAllFromJson(String json) {
         LOG.debug("importing all from json...");
-        userService.deleteAllUsers();
-        LOG.debug("deleted all users");
+        bettingService.deleteAllBets();
+        LOG.debug("deleted all bets");
 
         matchService.deleteAllMatches();
         LOG.debug("deleted all allMatches");
 
-        bettingService.deleteAllBets();
-        LOG.debug("deleted all bets");
+        userService.deleteAllUsers();
+        LOG.debug("deleted all users");
 
         final ImportExportContainer importExportContainer = jsonObjectConverter.fromJson(json, ImportExportContainer.class);
 
@@ -113,6 +113,8 @@ public class JsonImportService {
             .withStadium(matchToExport.stadium())
             .build();
         match.setPenaltyWinnerOne(matchToExport.penaltyWinnerOne());
+        match.setGoalsTeamOne(matchToExport.goalsTeamOne());
+        match.setGoalsTeamTwo(matchToExport.goalsTeamTwo());
         match.setExternalId(matchToExport.externalId());
         match.setExternalLastUpdated(matchToExport.externalLastUpdated());
         return match;

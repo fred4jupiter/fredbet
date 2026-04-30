@@ -53,8 +53,8 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
         LEFT JOIN FETCH b.match
         where b.goalsTeamOne is not null
         and b.goalsTeamTwo is not null
-        and b.match.teamOne.goals is not null
-        and b.match.teamTwo.goals is not null
+        and b.match.goalsTeamOne is not null
+        and b.match.goalsTeamTwo is not null
         """)
     List<Bet> findAllBetsWithMatches();
 

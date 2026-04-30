@@ -23,7 +23,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
             from Match m
             where (m.group in :listOfGroup and m.kickOffDate > :groupKickOffDate)
             or (m.group not in :listOfGroup and m.kickOffDate > :koKickOffDate)
-            or (m.teamOne.goals is null and m.teamTwo.goals is null)
+            or (m.goalsTeamOne is null and m.goalsTeamTwo is null)
             order by m.kickOffDate asc
         """)
     List<Match> findUpcomingMatches(@Param("groupKickOffDate") LocalDateTime groupKickOffDate,
@@ -49,7 +49,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("select min(a.kickOffDate) from Match a")
     LocalDateTime findStartDateOfFirstMatch();
 
-    @Query("select a.group from Match a ")
+    @Query("select a.group from Match a where a.group is not null")
     Set<Group> fetchGroupsOfAllMatches();
 
     @Query("Select b.match from Bet b where b.joker = TRUE and b.userName = :userName order by b.match.kickOffDate asc")
@@ -57,10 +57,10 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("select m from Match m where m.kickOffDate < :date and m.teamOne.goals is null and m.teamTwo.goals is null order by m.kickOffDate asc")
+    @Query("select m from Match m where m.kickOffDate < :date and m.goalsTeamOne is null and m.goalsTeamTwo is null order by m.kickOffDate asc")
     List<Match> findFinishedMatchesWithMissingResult(@Param("date") LocalDateTime date);
 
-    @Query("select m from Match m where m.teamOne.goals is not null and m.teamTwo.goals is not null order by m.kickOffDate asc")
+    @Query("select m from Match m where m.goalsTeamOne is not null and m.goalsTeamTwo is not null order by m.kickOffDate asc")
     List<Match> findFinishedMatches();
 
     @Query("""
@@ -84,8 +84,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("""
         select m
         from Match m
-        where m.teamOne.goals is not null
-        and m.teamTwo.goals is not null
+        where m.goalsTeamOne is not null
+        and m.goalsTeamTwo is not null
         order by m.kickOffDate desc
         """)
     List<Match> findAllPastMatches();
@@ -93,16 +93,16 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("""
         select case when (count(m) > 0) then true else false end
         from Match m
-        where (m.teamOne is not null and m.teamOne.goals is not null)
-        or (m.teamTwo is not null and m.teamTwo.goals is not null)
+        where (m.teamOne is not null and m.goalsTeamOne is not null)
+        or (m.teamTwo is not null and m.goalsTeamTwo is not null)
         """)
     boolean hasMatchWithResult();
 
     @Query("""
         select m
         from Match m
-        where (m.teamOne is not null and m.teamOne.goals is not null)
-        or (m.teamTwo is not null and m.teamTwo.goals is not null)
+        where (m.teamOne is not null and m.goalsTeamOne is not null)
+        or (m.teamTwo is not null and m.goalsTeamTwo is not null)
         """)
     List<Match> findAllWithMatchResult();
 
@@ -114,4 +114,15 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     List<Match> findByGroupIn(@Param("groups") List<Group> groups);
 
     Optional<Match> findByExternalId(String externalId);
+
+    @Query("""
+        select case when (count(m) > 0) then true else false end
+        from Match m
+        where m.teamOne.id = :teamId or m.teamTwo.id = :teamId
+        """)
+    boolean hasMatchesWithTeamId(@Param("teamId") Long teamId);
+
+    default Optional<Match> findByBusinessKey(String businessKey) {
+        return findAll().stream().filter(match -> match.getBusinessKey().equals(businessKey)).findFirst();
+    }
 }

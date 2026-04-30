@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.MatchResult;
 import de.fred4jupiter.fredbet.imexport.MatchBusinessKey;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
@@ -21,27 +20,19 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "MATCHES")
-public class Match implements MatchResult, MatchBusinessKey {
+public class Match implements MatchBusinessKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MATCH_ID")
     private Long id;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_ONE")),
-        @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_ONE")),
-        @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_ONE"))
-    })
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "team_one_id")
     private Team teamOne;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "country", column = @Column(name = "COUNTRY_TWO")),
-        @AttributeOverride(name = "name", column = @Column(name = "TEAM_NAME_TWO")),
-        @AttributeOverride(name = "goals", column = @Column(name = "GOALS_TEAM_TWO"))
-    })
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "team_two_id")
     private Team teamTwo;
 
     @Enumerated(EnumType.STRING)
@@ -58,6 +49,12 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Column(name = "STADIUM")
     private String stadium;
 
+    @Column(name = "GOALS_TEAM_ONE")
+    private Integer goalsTeamOne;
+
+    @Column(name = "GOALS_TEAM_TWO")
+    private Integer goalsTeamTwo;
+
     @Column(name = "EXTERNAL_LAST_UPDATED")
     private ZonedDateTime externalLastUpdated;
 
@@ -67,50 +64,73 @@ public class Match implements MatchResult, MatchBusinessKey {
     @Transient
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
-    public boolean hasCountriesSet() {
-        return teamOne.hasCountrySet() && teamTwo.hasCountrySet();
+    public String getGroupLabel(MessageSourceUtil messageSourceUtil) {
+        if (this.getGroup() != null) {
+            if (StringUtils.isNotBlank(this.getStadium())) {
+                return "%s, %s".formatted(messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey()), this.getStadium());
+            }
+            return messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey());
+        }
+        if (StringUtils.isNotBlank(this.getStadium())) {
+            return this.getStadium();
+        }
+
+        return null;
+    }
+
+    public boolean hasMatchStarted() {
+        return LocalDateTime.now().isAfter(getKickOffDate());
+    }
+
+    public boolean hasMatchFinished() {
+        return hasResultSet();
     }
 
     public boolean hasResultSet() {
-        return teamOne.hasResultSet() && teamTwo.hasResultSet();
+        return this.goalsTeamOne != null && this.goalsTeamTwo != null;
+    }
+
+    public Integer getGoalsTeamOne() {
+        return goalsTeamOne;
+    }
+
+    public void setGoalsTeamOne(Integer goalsTeamOne) {
+        this.goalsTeamOne = goalsTeamOne;
+    }
+
+    public Integer getGoalsTeamTwo() {
+        return goalsTeamTwo;
+    }
+
+    public void setGoalsTeamTwo(Integer goalsTeamTwo) {
+        this.goalsTeamTwo = goalsTeamTwo;
+    }
+
+    public Integer getGoalDifference() {
+        if (this.goalsTeamOne == null || this.goalsTeamTwo == null) {
+            throw new IllegalStateException("Match has not finished! No goal results set!");
+        }
+        return Math.abs(this.goalsTeamOne - this.goalsTeamTwo);
+    }
+
+    /**
+     * Goal difference is 0, e.g. 1:1 or 3:3
+     *
+     * @return true if undecided
+     */
+    public boolean isUndecidedResult() {
+        if (this.goalsTeamOne == null || this.goalsTeamTwo == null) {
+            return false;
+        }
+        return getGoalDifference() == 0;
     }
 
     public boolean hasStarted() {
         return LocalDateTime.now().isAfter(kickOffDate);
     }
 
-    public Integer getGoalDifference() {
-        if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
-            throw new IllegalStateException("Match has not finished! No goal results set!");
-        }
-        return Math.abs(teamOne.getGoals() - teamTwo.getGoals());
-    }
-
-    /**
-     * Goal difference is 0, e.g. 1:1 or 3:3
-     *
-     * @return
-     */
-    @Override
-    public boolean isUndecidedResult() {
-        if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
-            return false;
-        }
-        return getGoalDifference() == 0;
-    }
-
-    @Override
     public boolean isTeamOneWinner() {
-        return isFirstWinner(teamOne, teamTwo);
-    }
-
-    @Override
-    public boolean isTeamTwoWinner() {
-        return isFirstWinner(teamTwo, teamOne);
-    }
-
-    private boolean isFirstWinner(Team teamOne, Team teamTwo) {
-        if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
+        if (this.getGoalsTeamOne() == null || this.getGoalsTeamTwo() == null) {
             throw new IllegalStateException("Match has not finished! No goal results set!");
         }
 
@@ -119,11 +139,28 @@ public class Match implements MatchResult, MatchBusinessKey {
                 return false;
             } else {
                 // check penalty winner
-                return (this.teamOne.equals(teamOne) && penaltyWinnerOne) || (this.teamTwo.equals(teamOne) && !penaltyWinnerOne);
+                return penaltyWinnerOne;
             }
         }
 
-        return teamOne.getGoals() > teamTwo.getGoals();
+        return this.getGoalsTeamOne() > this.getGoalsTeamTwo();
+    }
+
+    public boolean isTeamTwoWinner() {
+        if (this.getGoalsTeamOne() == null || this.getGoalsTeamTwo() == null) {
+            throw new IllegalStateException("Match has not finished! No goal results set!");
+        }
+
+        if (getGoalDifference() == 0) {
+            if (isGroupMatch()) {
+                return false;
+            } else {
+                // check penalty winner
+                return !penaltyWinnerOne;
+            }
+        }
+
+        return this.getGoalsTeamOne() < this.getGoalsTeamTwo();
     }
 
     public Country getWinner() {
@@ -158,21 +195,6 @@ public class Match implements MatchResult, MatchBusinessKey {
         return null;
     }
 
-    public Integer getGoalsTeamOne() {
-        return teamOne.getGoals();
-    }
-
-    public void setGoalsTeamOne(Integer goalsTeamOne) {
-        this.teamOne.setGoals(goalsTeamOne);
-    }
-
-    public Integer getGoalsTeamTwo() {
-        return teamTwo.getGoals();
-    }
-
-    public void setGoalsTeamTwo(Integer goalsTeamTwo) {
-        this.teamTwo.setGoals(goalsTeamTwo);
-    }
 
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -224,7 +246,6 @@ public class Match implements MatchResult, MatchBusinessKey {
         return id;
     }
 
-    @Override
     public Group getGroup() {
         return group;
     }
@@ -266,7 +287,18 @@ public class Match implements MatchResult, MatchBusinessKey {
     }
 
     public boolean isGroupMatch() {
+        if (this.group == null) {
+            return false;
+        }
         return this.group.name().startsWith("GROUP");
+    }
+
+    public boolean isKnockoutMatch() {
+        if (this.group == null) {
+            return false;
+        }
+
+        return Group.getKnockoutGroups().contains(this.group);
     }
 
     public String getCssClassPenaltyWinnerOne() {
@@ -284,10 +316,12 @@ public class Match implements MatchResult, MatchBusinessKey {
     }
 
     public boolean isGroup(Group group) {
+        if (this.group == null) {
+            return false;
+        }
         return this.group.equals(group);
     }
 
-    @Override
     public Team getTeamOne() {
         if (this.teamOne == null) {
             this.teamOne = new Team();
@@ -299,7 +333,6 @@ public class Match implements MatchResult, MatchBusinessKey {
         this.teamOne = teamOne;
     }
 
-    @Override
     public Team getTeamTwo() {
         if (this.teamTwo == null) {
             this.teamTwo = new Team();
@@ -313,7 +346,7 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     public String getLabel(MessageSourceUtil messageSourceUtil, Locale locale) {
         return getTeamOne().getNameTranslated(messageSourceUtil, locale) + " - "
-               + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
+            + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
     }
 
     @Override

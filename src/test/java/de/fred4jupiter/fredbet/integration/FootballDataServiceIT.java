@@ -15,7 +15,7 @@ public class FootballDataServiceIT {
     @Test
     void saveSettings() {
         FootballDataRuntimeSettings settings = new FootballDataRuntimeSettings();
-        Competition competition = new Competition(1, "European Championship", "EC", 2024);
+        Competition competition = new Competition(1, "European Championship", "EC", 2024, "CUP");
         settings.setCompetition(competition);
         settings.setEnabled(true);
 

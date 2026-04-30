@@ -1,22 +1,18 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.domain.entity.Bet;
-import de.fred4jupiter.fredbet.domain.Joker;
-import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;
-import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.betting.NoBettingAfterMatchStartedAllowedException;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.domain.Joker;
+import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
-import de.fred4jupiter.fredbet.web.matches.MatchCommandMapper;
 import jakarta.validation.Valid;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bet")
@@ -41,10 +37,6 @@ public class BetController {
 
     private final WebMessageUtil messageUtil;
 
-    private final MessageSourceUtil messageSourceUtil;
-
-    private final MatchCommandMapper matchCommandMapper;
-
     private final MatchService matchService;
 
     private final AllBetsCommandMapper allBetsCommandMapper;
@@ -54,13 +46,11 @@ public class BetController {
     private final ExtraBettingService extraBettingService;
 
     public BetController(BettingService bettingService, SecurityService securityService, WebMessageUtil messageUtil,
-                         MessageSourceUtil messageSourceUtil, MatchCommandMapper matchCommandMapper, MatchService matchService,
+                         MatchService matchService,
                          AllBetsCommandMapper allBetsCommandMapper, JokerService jokerService, ExtraBettingService extraBettingService) {
         this.bettingService = bettingService;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
-        this.messageSourceUtil = messageSourceUtil;
-        this.matchCommandMapper = matchCommandMapper;
         this.matchService = matchService;
         this.allBetsCommandMapper = allBetsCommandMapper;
         this.jokerService = jokerService;
@@ -78,7 +68,7 @@ public class BetController {
             messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
         }
 
-        List<MatchCommand> matchCommands = matchesToBet.stream().map(matchCommandMapper::toMatchCommand).toList();
+        List<MatchCommand> matchCommands = matchesToBet.stream().map(match -> new MatchCommand(match, Optional.empty())).toList();
         model.addAttribute("matchesToBet", matchCommands);
         return VIEW_LIST_OPEN;
     }
@@ -105,21 +95,13 @@ public class BetController {
     }
 
     private BetCommand toBetCommand(Bet bet) {
-        BetCommand betCommand = new BetCommand();
+        final BetCommand betCommand = new BetCommand(bet.getMatch());
+
         betCommand.setBetId(bet.getId());
         betCommand.setMatchId(bet.getMatch().getId());
         betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
         betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
         betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
-
-        final Locale locale = LocaleContextHolder.getLocale();
-        final Team teamOne = bet.getMatch().getTeamOne();
-        final Team teamTwo = bet.getMatch().getTeamTwo();
-        betCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
-        betCommand.setCountryTeamOne(teamOne.getCountry());
-
-        betCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
-        betCommand.setCountryTeamTwo(teamTwo.getCountry());
 
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 

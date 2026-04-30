@@ -304,4 +304,34 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="18" author="michael">
+        <createTable tableName="team">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country" type="varchar(100)">
+                <constraints nullable="true" unique="true" uniqueConstraintName="UC_COUNTRY"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="true" unique="true" uniqueConstraintName="UC_NAME"/>
+            </column>
+            <column name="crests_binary" type="BLOB">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addColumn tableName="matches">
+            <column name="team_one_id" type="BIGINT"/>
+            <column name="team_two_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="matches" baseColumnNames="team_one_id"
+                                 constraintName="FK_team_one_id" referencedTableName="team"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="matches" baseColumnNames="team_two_id"
+                                 constraintName="FK_team_two_id" referencedTableName="team"
+                                 referencedColumnNames="id"/>
+        <dropColumn tableName="matches" columnName="country_one"/>
+        <dropColumn tableName="matches" columnName="country_two"/>
+        <dropColumn tableName="matches" columnName="team_name_one"/>
+        <dropColumn tableName="matches" columnName="team_name_two"/>
+    </changeSet>
 </databaseChangeLog>

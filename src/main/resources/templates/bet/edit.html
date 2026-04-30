@@ -12,38 +12,35 @@
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4">
 					<input type="hidden" th:field="*{betId}"  />
 					<input type="hidden" th:field="*{matchId}"  />
+                    <input type="hidden" th:field="*{match}"  />
 					<input type="hidden" th:field="*{redirectViewName}"  />
-					<input type="hidden" th:field="*{teamNameOne}"  />
-					<input type="hidden" th:field="*{teamNameTwo}"  />
 					<input type="hidden" th:field="*{groupMatch}"  />
 					<input type="hidden" th:field="*{numberOfJokersUsed}"  />
 					<input type="hidden" th:field="*{maxJokers}"  />
 					<input type="hidden" th:field="*{jokerEditable}"  />
-                    <input type="hidden" th:field="*{countryTeamOne}" />
-                    <input type="hidden" th:field="*{countryTeamTwo}" />
 
 					<div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(betCommand.getCountryTeamOne())}"></span>
+                                <img class="fi big-flag" th:src="${betCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
 								<br/>
-								<span th:text="${betCommand.teamNameOne}" class="teamName"></span>
+                                <span th:text="${betCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}" class="teamName"></span>
 							</div>
 							<div class="col-6">
-                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(betCommand.getCountryTeamTwo())}"></span>
+                                <img class="fi big-flag" th:src="${betCommand.match.teamTwo.crestsAsBase64}" alt="crests" />
 								<br/>
-								<span th:text="${betCommand.teamNameTwo}" class="teamName"></span>
+                                <span th:text="${betCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}" class="teamName"></span>
 							</div>
 						</div>
 						<div class="row center">
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()"/>
+								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()"  />
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</p>
 							</div>
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()"/>
+								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()" />
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamTwo')}" th:errors="*{goalsTeamTwo}">goalsTeamTwo error</p>
