@@ -40,8 +40,8 @@ public class MatchBuilder {
         match.getTeamTwo().setCountry(two);
 
         crestsCountryResolverOpt.ifPresent(resolver -> {
-            match.getTeamOne().setCrestsBinary(resolver.loadCrestsImageFor(one).orElse(null));
-            match.getTeamTwo().setCrestsBinary(resolver.loadCrestsImageFor(two).orElse(null));
+            match.getTeamOne().setCrestsBinary(resolver.loadCrestsImageFor(one));
+            match.getTeamTwo().setCrestsBinary(resolver.loadCrestsImageFor(two));
         });
 
         return this;

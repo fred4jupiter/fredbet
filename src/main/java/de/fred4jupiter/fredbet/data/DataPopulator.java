@@ -176,7 +176,7 @@ public class DataPopulator {
             match.setGoalsTeamOne(goalResult.goalsTeamOne());
             match.setGoalsTeamTwo(goalResult.goalsTeamTwo());
         });
-        LOG.info("created demo results for all users...");
+        LOG.info("created demo results for all users");
     }
 
     public void createDemoUsers(int numberOfDemoUsers) {

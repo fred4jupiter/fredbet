@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,10 +21,7 @@ public class CrestsCountryResolverIT {
         List<Country> countries = List.of(Country.values());
 
         countries.forEach(country -> {
-            Optional<byte[]> crestsImageOpt = crestsCountryResolver.loadCrestsImageFor(country);
-            assertThat(crestsImageOpt.isPresent()).isTrue();
-
-            byte[] crestsImage = crestsImageOpt.get();
+            byte[] crestsImage = crestsCountryResolver.loadCrestsImageFor(country);
             assertThat(crestsImage).isNotNull();
             assertThat(crestsImage.length).isGreaterThan(0);
         });

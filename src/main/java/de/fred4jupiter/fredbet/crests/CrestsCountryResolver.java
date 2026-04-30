@@ -30,8 +30,8 @@ public class CrestsCountryResolver {
         this.crestPlaceholderLoader = crestPlaceholderLoader;
     }
 
-    public Optional<byte[]> loadCrestsImageFor(Country country) {
-        return loadCrestsImageFor(country, true);
+    public byte[] loadCrestsImageFor(Country country) {
+        return loadCrestsImageFor(country, true).orElseThrow(() -> new IllegalStateException("Could not load crests image for country=" + country));
     }
 
     public Optional<byte[]> loadCrestsImageFor(Country country, boolean fallbackToPlaceholderIcon) {

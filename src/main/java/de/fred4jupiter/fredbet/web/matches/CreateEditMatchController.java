@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Group;
@@ -43,13 +44,16 @@ public class CreateEditMatchController {
 
     private final CrestsCountryResolver crestsCountryResolver;
 
+    private final TeamService teamService;
+
     public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService,
-                                     BettingService bettingService, TeamUtil teamUtil, CrestsCountryResolver crestsCountryResolver) {
+                                     BettingService bettingService, TeamUtil teamUtil, CrestsCountryResolver crestsCountryResolver, TeamService teamService) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.teamUtil = teamUtil;
         this.crestsCountryResolver = crestsCountryResolver;
+        this.teamService = teamService;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
@@ -155,16 +159,8 @@ public class CreateEditMatchController {
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-        Team teamOne = match.getTeamOne();
-        Team teamTwo = match.getTeamTwo();
-
-        teamOne.setCountry(matchCommand.getCountryTeamOne());
-        teamOne.setCrestsBinary(crestsCountryResolver.loadCrestsImageFor(matchCommand.getCountryTeamOne()).orElse(null));
-        teamOne.setName(matchCommand.getTeamNameOne());
-
-        teamTwo.setCountry(matchCommand.getCountryTeamTwo());
-        teamTwo.setCrestsBinary(crestsCountryResolver.loadCrestsImageFor(matchCommand.getCountryTeamTwo()).orElse(null));
-        teamTwo.setName(matchCommand.getTeamNameTwo());
+        final Team teamOne = teamService.findOrCreateTeam(matchCommand.getCountryTeamOne(), matchCommand.getTeamNameOne());
+        final Team teamTwo = teamService.findOrCreateTeam(matchCommand.getCountryTeamTwo(), matchCommand.getTeamNameTwo());
 
         match.setTeamOne(teamOne);
         match.setTeamTwo(teamTwo);
