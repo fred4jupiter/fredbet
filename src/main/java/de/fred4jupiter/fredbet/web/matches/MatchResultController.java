@@ -1,20 +1,15 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.match.MatchService;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
-import org.springframework.context.i18n.LocaleContextHolder;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/matchresult")
@@ -24,11 +19,8 @@ public class MatchResultController {
 
     private final MatchService matchService;
 
-    private final MessageSourceUtil messageSourceUtil;
-
-    public MatchResultController(MatchService matchService, MessageSourceUtil messageSourceUtil) {
+    public MatchResultController(MatchService matchService) {
         this.matchService = matchService;
-        this.messageSourceUtil = messageSourceUtil;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
@@ -64,11 +56,8 @@ public class MatchResultController {
         matchResultCommand.setMatchId(match.getId());
         matchResultCommand.setKnockoutMatch(match.isKnockoutMatch());
 
-        final Team teamOne = match.getTeamOne();
-        final Team teamTwo = match.getTeamTwo();
-
-        matchResultCommand.setTeamOne(teamOne);
-        matchResultCommand.setTeamTwo(teamTwo);
+        matchResultCommand.setTeamOne(match.getTeamOne());
+        matchResultCommand.setTeamTwo(match.getTeamTwo());
 
         matchResultCommand.setTeamResultOne(match.getGoalsTeamOne());
         matchResultCommand.setTeamResultTwo(match.getGoalsTeamTwo());
