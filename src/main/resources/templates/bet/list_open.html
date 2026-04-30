@@ -20,13 +20,9 @@
 						<div class="row">
 							<div class="col-12">
                                 <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
-<!--                                <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamOne())}"></span>-->
-<!--								<span class="bold" th:text="${matchCommand.teamNameOne}"></span>-->
                                 <span class="bold" th:text="${matchCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
 								<span> - </span>
-<!--                                <span class="" th:classappend="${@teamUtil.cssClassFor(matchCommand.getCountryTeamTwo())}"></span>-->
                                 <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
-<!--								<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>-->
                                 <span class="bold" th:text="${matchCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
 							</div>
 						</div>

@@ -20,12 +20,12 @@
 							<div class="col-6">
                                 <img class="fi big-flag" th:src="${matchResultCommand.teamOne.crestsAsBase64}" alt="crests"/>
 								<br/>
-								<span th:text="${matchResultCommand.teamOne.name}" class="teamName"></span>
+                                <span class="teamName" th:text="${matchResultCommand.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
 							</div>
 							<div class="col-6">
                                 <img class="fi big-flag" th:src="${matchResultCommand.teamTwo.crestsAsBase64}" alt="crests"/>
 								<br/>
-								<span th:text="${matchResultCommand.teamTwo.name}" class="teamName"></span>
+                                <span class="teamName" th:text="${matchResultCommand.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
 							</div>
 						</div>
 						<div class="row center mb-3">

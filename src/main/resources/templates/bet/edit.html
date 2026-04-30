@@ -21,13 +21,11 @@
 					<div class="form-group mt-3">
 						<div class="row center mb-3">
 							<div class="col-6">
-<!--                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(betCommand.getCountryTeamOne())}"></span>-->
                                 <img class="fi big-flag" th:src="${betCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
 								<br/>
                                 <span th:text="${betCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}" class="teamName"></span>
 							</div>
 							<div class="col-6">
-<!--                                <span class="big-flag" th:classappend="${@teamUtil.cssClassFor(betCommand.getCountryTeamTwo())}"></span>-->
                                 <img class="fi big-flag" th:src="${betCommand.match.teamTwo.crestsAsBase64}" alt="crests" />
 								<br/>
                                 <span th:text="${betCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}" class="teamName"></span>
