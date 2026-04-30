@@ -39,7 +39,7 @@ public class GroupAvailabilityUtil {
         final Set<Group> groups = matchService.availableGroups();
         if (groups.contains(Group.ROUND_OF_THIRTY_TWO) && Group.ROUND_OF_THIRTY_TWO.equals(group)) {
             return true;
-        } else if (Group.ROUND_OF_SIXTEEN.equals(group)) {
+        } else if (!groups.contains(Group.ROUND_OF_THIRTY_TWO) && Group.ROUND_OF_SIXTEEN.equals(group)) {
             return true;
         }
 
