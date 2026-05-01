@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Base64;
@@ -30,7 +32,8 @@ public class Team {
     private String name;
 
     @Basic(fetch = FetchType.EAGER)
-    @Column(name = "CRESTS_BINARY")
+    @Column(name = "CRESTS_BINARY", columnDefinition = "BINARY")
+    @JdbcType(VarbinaryJdbcType.class)
     @Lob
     private byte[] crestsBinary;
 

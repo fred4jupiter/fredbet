@@ -315,7 +315,7 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="UC_NAME"/>
             </column>
-            <column name="crests_binary" type="BLOB">
+            <column name="crests_binary" type="binary">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -334,4 +334,5 @@
         <dropColumn tableName="matches" columnName="team_name_one"/>
         <dropColumn tableName="matches" columnName="team_name_two"/>
     </changeSet>
+
 </databaseChangeLog>
