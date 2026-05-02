@@ -56,7 +56,11 @@ public class MatchService {
 
     public Match findByMatchId(Long matchId) {
         Assert.notNull(matchId, "matchId must be given");
-        return matchRepository.getReferenceById(matchId);
+        Match match = matchRepository.getReferenceById(matchId);
+        // TODO: workaround fetching teams for the match
+        match.getTeamOne();
+        match.getTeamTwo();
+        return match;
     }
 
     public Optional<Match> findByExternalId(String externalId) {
