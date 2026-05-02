@@ -110,13 +110,13 @@ class FdMatchSyncImporter {
         if (country != null) {
             team.setCountry(country);
             team.setName(null);
-            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(team::setCrestsBinary);
+            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(team::setSvgContent);
         } else {
             team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
         }
 
-        if (team.getCrestsBinary() == null) {
-            team.setCrestsBinary(crestsDownloader.downloadCrestsByUrl(fdTeam.id()));
+        if (team.getSvgContent() == null) {
+            team.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdTeam.id()));
         }
     }
 

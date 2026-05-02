@@ -40,8 +40,8 @@ public class MatchBuilder {
         match.getTeamTwo().setCountry(two);
 
         crestsCountryResolverOpt.ifPresent(resolver -> {
-            match.getTeamOne().setCrestsBinary(resolver.loadCrestsImageFor(one));
-            match.getTeamTwo().setCrestsBinary(resolver.loadCrestsImageFor(two));
+            match.getTeamOne().setSvgContent(resolver.loadCrestsImageFor(one));
+            match.getTeamTwo().setSvgContent(resolver.loadCrestsImageFor(two));
         });
 
         return this;
@@ -51,12 +51,12 @@ public class MatchBuilder {
         Team newTeamOne = new Team();
         newTeamOne.setName(one.getName());
         newTeamOne.setCountry(one.getCountry());
-        newTeamOne.setCrestsBinary(one.getCrestsBinary());
+        newTeamOne.setSvgContent(one.getSvgContent());
 
         Team newTeamTwo = new Team();
         newTeamTwo.setName(two.getName());
         newTeamTwo.setCountry(two.getCountry());
-        newTeamTwo.setCrestsBinary(two.getCrestsBinary());
+        newTeamTwo.setSvgContent(two.getSvgContent());
 
         match.setTeamOne(newTeamOne);
         match.setTeamTwo(newTeamTwo);

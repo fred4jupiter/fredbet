@@ -5,6 +5,9 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
+    <property name="svg_type" value="text" dbms="postgresql"/>
+    <property name="svg_type" value="clob" dbms="h2"/>
+
     <changeSet id="1" author="michael">
         <createTable tableName="app_user">
             <column name="user_id" type="BIGINT" autoIncrement="true">
@@ -315,7 +318,7 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="UC_NAME"/>
             </column>
-            <column name="crests_binary" type="binary">
+            <column name="svg_content" type="${svg_type}">
                 <constraints nullable="true"/>
             </column>
         </createTable>

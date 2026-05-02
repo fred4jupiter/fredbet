@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
@@ -8,10 +9,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
 
@@ -32,16 +32,16 @@ public class Team {
     private String name;
 
     @Basic(fetch = FetchType.EAGER)
-    @Column(name = "CRESTS_BINARY", columnDefinition = "BINARY")
-    @JdbcType(VarbinaryJdbcType.class)
+    @Column(name = "SVG_CONTENT", columnDefinition = "TEXT")
     @Lob
-    private byte[] crestsBinary;
+    private String svgContent;
 
     public String getCrestsAsBase64() {
-        if (this.crestsBinary == null) {
+        if (this.svgContent == null) {
             return null;
         }
-        return "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(this.crestsBinary);
+        String base64EncodedImage = Base64.getEncoder().encodeToString(this.svgContent.getBytes(StandardCharsets.UTF_8));
+        return "data:image/svg+xml;base64," + base64EncodedImage;
     }
 
     public Long getId() {
@@ -88,12 +88,12 @@ public class Team {
 
         Team team = (Team) o;
 
-        return new EqualsBuilder().append(id, team.id).append(country, team.country).append(name, team.name).append(crestsBinary, team.crestsBinary).isEquals();
+        return new EqualsBuilder().append(id, team.id).append(country, team.country).append(name, team.name).append(svgContent, team.svgContent).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(country).append(name).append(crestsBinary).toHashCode();
+        return new HashCodeBuilder(17, 37).append(id).append(country).append(name).append(svgContent).toHashCode();
     }
 
     @Override
@@ -108,11 +108,15 @@ public class Team {
         return "team_%s_%s".formatted(this.country, this.name);
     }
 
-    public byte[] getCrestsBinary() {
-        return crestsBinary;
+    public String getSvgContent() {
+        return svgContent;
     }
 
-    public void setCrestsBinary(byte[] crestsBinary) {
-        this.crestsBinary = crestsBinary;
+    public void setSvgContent(SvgImage svgImage) {
+        this.svgContent = svgImage.svgContent();
+    }
+
+    public void setSvgContent(String crestsBinary) {
+        this.svgContent = crestsBinary;
     }
 }

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
+import de.fred4jupiter.fredbet.domain.SvgImage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ class CrestsDownloader {
         this.crestPlaceholderLoader = crestPlaceholderLoader;
     }
 
-    public byte[] downloadCrestsByUrl(String teamId) {
+    public SvgImage downloadCrestsByUrl(String teamId) {
         if (StringUtils.isBlank(teamId)) {
             LOG.info("teamId is blank. No crest will be downloaded. Will use placeholder icon.");
             return crestPlaceholderLoader.getCrestPlaceholderIcon();
@@ -31,7 +32,8 @@ class CrestsDownloader {
         LOG.debug("will try to download crests with teamId: {}", teamId);
 
         try {
-            return crestsRestClient.get().uri("/%s.svg".formatted(teamId)).retrieve().body(byte[].class);
+            String svgContent = crestsRestClient.get().uri("/%s.svg".formatted(teamId)).retrieve().body(String.class);
+            return new SvgImage(svgContent);
         } catch (HttpClientErrorException e) {
             LOG.info("Could not download crests image flag for teamId: {}. Cause: {}", teamId, e.getMessage());
             return crestPlaceholderLoader.getCrestPlaceholderIcon();

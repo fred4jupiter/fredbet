@@ -31,7 +31,7 @@ public class TeamService {
 
         Team team = new Team();
         team.setCountry(country);
-        team.setCrestsBinary(crestsCountryResolver.loadCrestsImageFor(country));
+        team.setSvgContent(crestsCountryResolver.loadCrestsImageFor(country));
         team.setName(teamName);
 
         return teamRepository.save(team);
