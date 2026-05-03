@@ -19,11 +19,7 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-12">
-                                <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
-                                <span class="bold" th:text="${matchCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-								<span> - </span>
-                                <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
-                                <span class="bold" th:text="${matchCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+                                <div th:replace="~{fragments/match_head :: match_head_list(${matchCommand.match.teamOne}, ${matchCommand.match.teamTwo})}"></div>
 							</div>
 						</div>
 						<div class="row">
