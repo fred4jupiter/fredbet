@@ -59,6 +59,10 @@ public class MatchService {
         return matchRepository.findAll();
     }
 
+    public List<Match> findAllByOrderByKickOffDateAsc() {
+        return matchRepository.findAllByOrderByKickOffDateAsc();
+    }
+
     public Match findByMatchId(Long matchId) {
         Assert.notNull(matchId, "matchId must be given");
         return matchRepository.findById(matchId).orElseThrow(() -> new IllegalArgumentException("No match found for id: " + matchId));

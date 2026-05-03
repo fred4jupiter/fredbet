@@ -10,7 +10,6 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.SecurityService;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,8 +28,6 @@ import java.util.function.Consumer;
 public class BettingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BettingService.class);
-
-    private final MatchRepository matchRepository;
 
     private final BetRepository betRepository;
 
@@ -49,10 +45,9 @@ public class BettingService {
 
     private final ExtraBettingService extraBettingService;
 
-    public BettingService(MatchRepository matchRepository, BetRepository betRepository, ExtraBetRepository extraBetRepository,
+    public BettingService(BetRepository betRepository, ExtraBetRepository extraBetRepository,
                           SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator,
                           MatchService matchService, FredbetProperties fredbetProperties, ExtraBettingService extraBettingService) {
-        this.matchRepository = matchRepository;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.securityService = securityService;
@@ -77,7 +72,7 @@ public class BettingService {
         List<Bet> userBets = betRepository.findByUserName(username);
         List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).toList();
 
-        List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
+        List<Match> allMatches = matchService.findAllByOrderByKickOffDateAsc();
         return allMatches.stream().filter(match -> !matchIds.contains(match.getId()) && match.isBettable()).toList();
     }
 
