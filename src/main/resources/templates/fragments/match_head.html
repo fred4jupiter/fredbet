@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<div th:fragment="match_head_list(teamOne, teamTwo)" th:remove="tag">
-        <img class="fi" th:src="${teamOne.crestsAsBase64}" alt="crests"/>
-        <span class="fw-bold" th:text="${teamOne.getNameTranslated(@messageSourceUtil)}"></span>
+	<div th:fragment="match_head_list(match)" th:remove="tag">
+        <img class="fi" th:src="${match.teamOne.crestsAsBase64}" alt="crests"/>
+        <span class="fw-bold" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
         <span> - </span>
-        <img class="fi" th:src="${teamTwo.crestsAsBase64}" alt="crests"/>
-        <span class="fw-bold" th:text="${teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+        <img class="fi" th:src="${match.teamTwo.crestsAsBase64}" alt="crests"/>
+        <span class="fw-bold" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
 	</div>
 
-    <div th:fragment="match_head_detail(teamOne, teamTwo)" th:remove="tag">
+    <div th:fragment="match_head_detail(match)" th:remove="tag">
         <div class="col-6">
-            <img class="fi big-flag" th:src="${teamOne.crestsAsBase64}" alt="crests"/>
+            <img class="fi big-flag" th:src="${match.teamOne.crestsAsBase64}" alt="crests"/>
             <br/>
-            <span class="teamName" th:text="${teamOne.getNameTranslated(@messageSourceUtil)}"></span>
+            <span class="teamName" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
         </div>
         <div class="col-6">
-            <img class="fi big-flag" th:src="${teamTwo.crestsAsBase64}" alt="crests"/>
+            <img class="fi big-flag" th:src="${match.teamTwo.crestsAsBase64}" alt="crests"/>
             <br/>
-            <span class="teamName" th:text="${teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+            <span class="teamName" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
         </div>
     </div>
 </body>
