@@ -128,15 +128,6 @@ public class BettingService {
             .toList();
     }
 
-    public boolean hasFirstMatchStarted() {
-        LocalDateTime dateTimeNow = LocalDateTime.now();
-        LocalDateTime firstMatchKickOffDate = matchRepository.findStartDateOfFirstMatch();
-        if (firstMatchKickOffDate == null) {
-            return false;
-        }
-        return dateTimeNow.isAfter(firstMatchKickOffDate);
-    }
-
     public Bet findBetById(Long betId) {
         return betRepository.getReferenceById(betId);
     }
@@ -157,7 +148,7 @@ public class BettingService {
         });
 
 
-        if (hasFirstMatchStarted()) {
+        if (matchService.hasFirstMatchStarted()) {
             // Its too late for betting the extra bets. The first match has already started.
             return;
         }

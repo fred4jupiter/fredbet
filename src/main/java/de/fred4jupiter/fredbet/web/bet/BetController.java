@@ -64,7 +64,7 @@ public class BetController {
             messageUtil.addInfoMsg(model, "msg.bet.betting.info.allBetted");
         }
 
-        if (extraBettingService.hasOpenExtraBet(securityService.getCurrentUserName()) && !bettingService.hasFirstMatchStarted()) {
+        if (extraBettingService.hasOpenExtraBet(securityService.getCurrentUserName()) && !matchService.hasFirstMatchStarted()) {
             messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
         }
 

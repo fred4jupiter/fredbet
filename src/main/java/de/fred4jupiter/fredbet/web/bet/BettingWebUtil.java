@@ -1,18 +1,18 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.betting.BettableService;
+import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BettingWebUtil {
 
-    private final BettableService bettableService;
+    private final MatchService matchService;
 
-    public BettingWebUtil(BettableService bettableService) {
-        this.bettableService = bettableService;
+    public BettingWebUtil(MatchService matchService) {
+        this.matchService = matchService;
     }
 
     public boolean isBettable() {
-        return bettableService.isBettable();
+        return matchService.isBettable();
     }
 }

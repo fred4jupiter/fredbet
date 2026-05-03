@@ -64,6 +64,24 @@ public class MatchService {
         return matchRepository.findById(matchId).orElseThrow(() -> new IllegalArgumentException("No match found for id: " + matchId));
     }
 
+    public boolean hasFirstMatchStarted() {
+        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDateTime firstMatchKickOffDate = matchRepository.findStartDateOfFirstMatch();
+        if (firstMatchKickOffDate == null) {
+            return false;
+        }
+        return dateTimeNow.isAfter(firstMatchKickOffDate);
+    }
+
+    public boolean isBettable() {
+        return !isNotBettable();
+    }
+
+    public boolean isNotBettable() {
+        // if first match has started (based on kick off date) or there is no match with a result
+        return hasFirstMatchStarted() || hasMatchWithResult();
+    }
+
     public Optional<Match> findByExternalId(String externalId) {
         return matchRepository.findByExternalId(externalId);
     }
