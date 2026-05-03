@@ -1,21 +1,21 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
-import de.fred4jupiter.fredbet.betting.BettingService;
+import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ExtraBetCommandMapper {
 
-    private final BettingService bettingService;
+    private final MatchService matchService;
 
-    public ExtraBetCommandMapper(BettingService bettingService) {
-        this.bettingService = bettingService;
+    public ExtraBetCommandMapper(MatchService matchService) {
+        this.matchService = matchService;
     }
 
     public ExtraBetCommand toExtraBetCommand(ExtraBet extraBet) {
         ExtraBetCommand extraBetCommand = new ExtraBetCommand();
-        bettingService.findFinalMatch().ifPresent(extraBetCommand::setFinalMatch);
+        matchService.findFinalMatch().ifPresent(extraBetCommand::setFinalMatch);
 
         extraBetCommand.setExtraBetId(extraBet.getId());
         extraBetCommand.setFinalWinner(extraBet.getFinalWinner());

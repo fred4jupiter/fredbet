@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.data.GoalResult;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamTriple;
-import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 @Service
@@ -84,7 +82,7 @@ public class BettingService {
     }
 
     public Long save(Bet bet) {
-        Match match = matchRepository.getReferenceById(bet.getMatch().getId());
+        Match match = matchService.findByMatchId(bet.getMatch().getId());
         if (match.hasStarted()) {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
         }
@@ -102,12 +100,8 @@ public class BettingService {
     }
 
     public Bet findOrCreateBetForMatch(Long matchId) {
-        final Optional<Match> matchOpt = matchRepository.findById(matchId);
-        if (matchOpt.isEmpty()) {
-            return null;
-        }
+        Match match = matchService.findByMatchId(matchId);
         final String currentUserName = securityService.getCurrentUserName();
-        Match match = matchOpt.get();
         Bet bet = betRepository.findByUserNameAndMatch(currentUserName, match);
         if (bet == null) {
             bet = new Bet();
@@ -141,11 +135,6 @@ public class BettingService {
             return false;
         }
         return dateTimeNow.isAfter(firstMatchKickOffDate);
-    }
-
-    public Optional<Match> findFinalMatch() {
-        List<Match> matches = matchRepository.findByGroup(Group.FINAL);
-        return matches.stream().findFirst();
     }
 
     public Bet findBetById(Long betId) {

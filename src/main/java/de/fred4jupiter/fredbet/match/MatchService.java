@@ -50,6 +50,11 @@ public class MatchService {
         this.teamRepository = teamRepository;
     }
 
+    public Optional<Match> findFinalMatch() {
+        List<Match> matches = matchRepository.findByGroup(Group.FINAL);
+        return matches.stream().findFirst();
+    }
+
     public List<Match> findAll() {
         return matchRepository.findAll();
     }
