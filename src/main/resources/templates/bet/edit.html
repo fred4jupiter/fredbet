@@ -21,16 +21,7 @@
 
 					<div class="form-group mt-3">
 						<div class="row center mb-3">
-							<div class="col-6">
-                                <img class="fi big-flag" th:src="${betCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
-								<br/>
-                                <span th:text="${betCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}" class="teamName"></span>
-							</div>
-							<div class="col-6">
-                                <img class="fi big-flag" th:src="${betCommand.match.teamTwo.crestsAsBase64}" alt="crests" />
-								<br/>
-                                <span th:text="${betCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}" class="teamName"></span>
-							</div>
+                            <div th:replace="~{fragments/match_head :: match_head_detail(${betCommand.match})}"></div>
 						</div>
 						<div class="row center">
 							<div class="col-6 ps-5 pe-5">

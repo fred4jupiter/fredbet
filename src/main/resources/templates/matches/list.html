@@ -15,11 +15,7 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-12">
-                                    <img class="fi" th:src="${matchCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
-							  		<span class="bold" th:text="${matchCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-							  		<span> - </span>
-                                    <img class="fi" th:src="${matchCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
-                                    <span class="bold" th:text="${matchCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+                                    <div th:replace="~{fragments/match_head :: match_head_list(${matchCommand.match})}"></div>
 									<br/>
 									<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points}"></span>

@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.entity.Team;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
 import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 
@@ -9,9 +9,7 @@ public class MatchResultCommand {
 
     private Long matchId;
 
-    private Team teamOne;
-
-    private Team teamTwo;
+    private Match match;
 
     private Integer teamResultOne;
 
@@ -68,20 +66,12 @@ public class MatchResultCommand {
         this.penaltyWinnerOne = penaltyWinnerOne;
     }
 
-    public Team getTeamOne() {
-        return teamOne;
+    public Match getMatch() {
+        return match;
     }
 
-    public void setTeamOne(Team teamOne) {
-        this.teamOne = teamOne;
-    }
-
-    public Team getTeamTwo() {
-        return teamTwo;
-    }
-
-    public void setTeamTwo(Team teamTwo) {
-        this.teamTwo = teamTwo;
+    public void setMatch(Match match) {
+        this.match = match;
     }
 
     public boolean isKnockoutMatch() {

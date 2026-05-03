@@ -12,11 +12,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12">
-                                    <img class="fi" th:src="${allBetsCommand.match.teamOne.crestsAsBase64}" alt="crests"/>
-                                    <span class="fw-bold" th:text="${allBetsCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-                                    <span> - </span>
-                                    <img class="fi" th:src="${allBetsCommand.match.teamTwo.crestsAsBase64}" alt="crests"/>
-                                    <span class="fw-bold" th:text="${allBetsCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+                                    <div th:replace="~{fragments/match_head :: match_head_list(${allBetsCommand.match})}"></div>
                                 </div>
                             </div>
                             <div class="row">
