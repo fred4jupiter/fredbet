@@ -1,4 +1,6 @@
 spring:
+  liquibase:
+    drop-first: false
   thymeleaf:
     cache: false
   h2:
