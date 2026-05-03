@@ -52,12 +52,10 @@ public class MatchResultController {
 
     private MatchResultCommand toMatchResultCommand(Match match) {
         MatchResultCommand matchResultCommand = new MatchResultCommand();
-
         matchResultCommand.setMatchId(match.getId());
-        matchResultCommand.setKnockoutMatch(match.isKnockoutMatch());
+        matchResultCommand.setMatch(match);
 
-        matchResultCommand.setTeamOne(match.getTeamOne());
-        matchResultCommand.setTeamTwo(match.getTeamTwo());
+        matchResultCommand.setKnockoutMatch(match.isKnockoutMatch());
 
         matchResultCommand.setTeamResultOne(match.getGoalsTeamOne());
         matchResultCommand.setTeamResultTwo(match.getGoalsTeamTwo());
