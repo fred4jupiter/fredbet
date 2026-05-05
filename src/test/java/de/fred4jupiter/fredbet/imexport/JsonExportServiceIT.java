@@ -1,10 +1,11 @@
 package de.fred4jupiter.fredbet.imexport;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.util.TempFileWriterUtil;
@@ -31,25 +32,15 @@ public class JsonExportServiceIT {
     @Autowired
     private MatchService matchService;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     public void exportAllAsJsonAndImportAgain() {
-        final Match match = new Match();
-        match.setGroup(Group.GROUP_A);
-        match.setStadium("Munich");
-        match.setKickOffDate(LocalDateTime.now());
+        final Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withStadium("Munich").withKickOffDate(LocalDateTime.now())
+            .withTeams(Country.GERMANY, Country.ALBANIA).withGoals(1, 2).build();
 
-        final Country teamOneCountry = Country.GERMANY;
-        Team teamOne = new Team();
-        teamOne.setCountry(teamOneCountry);
-        match.setGoalsTeamOne(1);
-        match.setTeamOne(teamOne);
-
-        Team teamTwo = new Team();
-        teamTwo.setCountry(Country.ALBANIA);
-        match.setGoalsTeamTwo(2);
-        match.setTeamTwo(teamTwo);
-
-        Match savedMatch = matchService.save(match);
+        final Match savedMatch = matchService.save(match);
         assertThat(savedMatch).isNotNull();
 
         String json = jsonExportService.exportAllToJson(false);
@@ -62,8 +53,8 @@ public class JsonExportServiceIT {
         assertThat(foundOpt.isPresent()).isTrue();
 
         Match foundMatch = foundOpt.get();
-        assertThat(foundMatch.getTeamOne().getCountry()).isEqualTo(teamOneCountry);
-        assertThat(foundMatch.getTeamTwo().getCountry()).isEqualTo(teamTwo.getCountry());
+        assertThat(foundMatch.getTeamOne().getCountry()).isEqualTo(match.getTeamOne().getCountry());
+        assertThat(foundMatch.getTeamTwo().getCountry()).isEqualTo(match.getTeamTwo().getCountry());
         assertThat(foundMatch.getGoalsTeamOne()).isEqualTo(savedMatch.getGoalsTeamOne());
         assertThat(foundMatch.getGoalsTeamTwo()).isEqualTo(savedMatch.getGoalsTeamTwo());
         assertThat(foundMatch.getGroup()).isEqualTo(savedMatch.getGroup());

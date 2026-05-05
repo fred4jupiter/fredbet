@@ -67,7 +67,7 @@ class FdMatchSyncImporter {
         match.setStadium(fdMatch.venue());
 
         if (!fdMatch.isFinished()) {
-            matchService.saveOnly(match);
+            matchService.save(match);
             return;
         }
 

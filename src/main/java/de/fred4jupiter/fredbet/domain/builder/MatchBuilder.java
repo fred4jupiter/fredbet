@@ -85,16 +85,20 @@ public class MatchBuilder {
 
     public Match build() {
         // resolve to existing teams or create new ones
-        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
+        Team teamOne = findOrCreateTeamFor(match.getTeamOne());
         if (teamOne != null) {
             match.setTeamOne(teamOne);
         }
 
-        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
+        Team teamTwo = findOrCreateTeamFor(match.getTeamTwo());
         if (teamTwo != null) {
             match.setTeamTwo(teamTwo);
         }
 
         return match;
+    }
+
+    private Team findOrCreateTeamFor(Team team) {
+        return teamService.findOrCreateTeam(team.getCountry(), team.getName());
     }
 }

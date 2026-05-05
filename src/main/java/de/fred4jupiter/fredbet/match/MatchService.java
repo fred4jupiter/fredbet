@@ -97,19 +97,19 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
-        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
-        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
-
-        match.setTeamOne(teamOne);
-        match.setTeamTwo(teamTwo);
+//        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
+//        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
+//
+//        match.setTeamOne(teamOne);
+//        match.setTeamTwo(teamTwo);
 
         return matchRepository.save(match);
     }
 
-    @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-    public Match saveOnly(Match match) {
-        return matchRepository.save(match);
-    }
+//    @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
+//    public Match saveOnly(Match match) {
+//        return matchRepository.save(match);
+//    }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public List<Match> saveAll(List<Match> matches) {
