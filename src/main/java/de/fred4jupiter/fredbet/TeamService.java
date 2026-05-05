@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.TeamRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +35,13 @@ public class TeamService {
         }
 
         Team newTeam = new Team();
-        newTeam.setCountry(country);
-        newTeam.setSvgContent(crestsCountryResolver.loadCrestsImageFor(country));
-        newTeam.setName(teamName);
+        if (country != null) {
+            newTeam.setCountry(country);
+            newTeam.setSvgContent(crestsCountryResolver.loadCrestsImageFor(country));
+            newTeam.setName(null);
+        } else {
+            newTeam.setName(StringUtils.isNotBlank(teamName) ? teamName : "Not yet defined");
+        }
 
         newTeamCallback.accept(newTeam);
 
