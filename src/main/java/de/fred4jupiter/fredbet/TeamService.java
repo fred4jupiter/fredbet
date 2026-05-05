@@ -7,6 +7,8 @@ import de.fred4jupiter.fredbet.match.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Consumer;
+
 @Service
 @Transactional
 public class TeamService {
@@ -21,21 +23,23 @@ public class TeamService {
     }
 
     public Team findOrCreateTeam(Country country, String teamName) {
-        Team teamByCountry = teamRepository.findByCountry(country);
-        if (teamByCountry != null) {
-            return teamByCountry;
+        return findOrCreateTeam(country, teamName, _ -> {
+        });
+    }
+
+    public Team findOrCreateTeam(Country country, String teamName, Consumer<Team> newTeamCallback) {
+        Team team = teamRepository.findByCountryOrName(country, teamName);
+        if (team != null) {
+            return team;
         }
 
-        Team teamByName = teamRepository.findByName(teamName);
-        if (teamByName != null) {
-            return teamByName;
-        }
+        Team newTeam = new Team();
+        newTeam.setCountry(country);
+        newTeam.setSvgContent(crestsCountryResolver.loadCrestsImageFor(country));
+        newTeam.setName(teamName);
 
-        Team team = new Team();
-        team.setCountry(country);
-        team.setSvgContent(crestsCountryResolver.loadCrestsImageFor(country));
-        team.setName(teamName);
+        newTeamCallback.accept(newTeam);
 
-        return teamRepository.save(team);
+        return teamRepository.save(newTeam);
     }
 }

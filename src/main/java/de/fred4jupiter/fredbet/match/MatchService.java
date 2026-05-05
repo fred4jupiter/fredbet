@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.match;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
@@ -44,10 +45,14 @@ public class MatchService {
 
     private final TeamRepository teamRepository;
 
-    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher, TeamRepository teamRepository) {
+    private final TeamService teamService;
+
+    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher,
+                        TeamRepository teamRepository, TeamService teamService) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.teamRepository = teamRepository;
+        this.teamService = teamService;
     }
 
     public Optional<Match> findFinalMatch() {
@@ -92,12 +97,17 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
-        Team teamOne = teamRepository.findOrCreate(match.getTeamOne());
-        Team teamTwo = teamRepository.findOrCreate(match.getTeamTwo());
+        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
+        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
 
         match.setTeamOne(teamOne);
         match.setTeamTwo(teamTwo);
 
+        return matchRepository.save(match);
+    }
+
+    @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
+    public Match saveOnly(Match match) {
         return matchRepository.save(match);
     }
 

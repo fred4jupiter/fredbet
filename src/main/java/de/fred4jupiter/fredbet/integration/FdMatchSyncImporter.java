@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.integration;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
@@ -37,14 +38,17 @@ class FdMatchSyncImporter {
 
     private final CrestsCountryResolver crestsCountryResolver;
 
+    private final TeamService teamService;
+
     FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchService matchService,
-                        TeamNameToCountryResolver teamNameToCountryResolver, CrestsDownloader crestsDownloader, CrestsCountryResolver crestsCountryResolver) {
+                        TeamNameToCountryResolver teamNameToCountryResolver, CrestsDownloader crestsDownloader, CrestsCountryResolver crestsCountryResolver, TeamService teamService) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.matchService = matchService;
         this.teamNameToCountryResolver = teamNameToCountryResolver;
         this.crestsDownloader = crestsDownloader;
         this.crestsCountryResolver = crestsCountryResolver;
+        this.teamService = teamService;
     }
 
     public void mapAndSave(FdMatch fdMatch, Match match, boolean forceUpdate) {
@@ -60,8 +64,10 @@ class FdMatchSyncImporter {
 
         LOG.info("updates will be applied for fdMatch={}", fdMatch);
 
-        mapTeam(fdMatch.homeTeam(), match.getTeamOne());
-        mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
+        mapTeams(fdMatch, match);
+
+//        mapTeam(fdMatch.homeTeam(), match.getTeamOne());
+//        mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
 
         final Group group = resolveToGroup(fdMatch);
 
@@ -72,13 +78,14 @@ class FdMatchSyncImporter {
         match.setStadium(fdMatch.venue());
 
         if (!fdMatch.isFinished()) {
-            matchService.save(match);
+            matchService.saveOnly(match);
             return;
         }
 
         // update results
         mapGoals(fdMatch, match);
     }
+
 
     private void mapGoals(FdMatch fdMatch, Match match) {
         final FdScore score = fdMatch.score();
@@ -103,6 +110,23 @@ class FdMatchSyncImporter {
 
         Match saved = matchService.save(match);
         applicationEventPublisher.publishEvent(new MatchGoalsChangedEvent(saved));
+    }
+
+    private void mapTeams(FdMatch fdMatch, Match match) {
+        Team teamOne = teamService.findOrCreateTeam(teamNameToCountryResolver.resolveToCountry(fdMatch.homeTeam()), fdMatch.homeTeam().name(), newTeam -> {
+            if (newTeam.getSvgContent() == null) {
+                newTeam.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdMatch.homeTeam().id()));
+            }
+        });
+
+        match.setTeamOne(teamOne);
+
+        Team teamTwo = teamService.findOrCreateTeam(teamNameToCountryResolver.resolveToCountry(fdMatch.awayTeam()), fdMatch.awayTeam().name(), newTeam -> {
+            if (newTeam.getSvgContent() == null) {
+                newTeam.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdMatch.awayTeam().id()));
+            }
+        });
+        match.setTeamTwo(teamTwo);
     }
 
     private void mapTeam(FdTeam fdTeam, Team team) {

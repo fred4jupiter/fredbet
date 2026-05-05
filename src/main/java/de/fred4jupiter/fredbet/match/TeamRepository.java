@@ -15,6 +15,24 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     int countByName(String name);
 
+    default Team findByCountryOrName(Country country, String name) {
+        if (country != null) {
+            Team foundByCountry = findByCountry(country);
+            if (foundByCountry != null) {
+                return foundByCountry;
+            }
+        }
+
+        if (StringUtils.isNotBlank(name)) {
+            Team foundByName = findByName(name);
+            if (foundByName != null) {
+                return foundByName;
+            }
+        }
+
+        return null;
+    }
+
     default Team findOrCreate(Team team) {
         if (team.getCountry() != null) {
             Team foundByCountry = findByCountry(team.getCountry());
