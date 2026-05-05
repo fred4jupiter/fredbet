@@ -1,11 +1,12 @@
 package de.fred4jupiter.fredbet.match;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
+import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +37,9 @@ public class MatchServiceIT {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Autowired
+    private TeamService teamService;
+
     @BeforeEach
     public void setup() {
         dataPopulator.deleteAllBetsAndMatches();
@@ -46,7 +49,7 @@ public class MatchServiceIT {
 
     @Test
     public void createMatchAndFindAgain() {
-        Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withGoals(1, 1).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams("A", "B").withGoals(1, 1).build();
         assertNotNull(match);
         matchService.save(match);
 
@@ -57,7 +60,7 @@ public class MatchServiceIT {
 
     @Test
     public void createMatchAndFindAgainByCountry() {
-        Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGoals(1, 1).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGoals(1, 1).build();
         assertNotNull(match);
         matchService.save(match);
 
@@ -69,7 +72,7 @@ public class MatchServiceIT {
     @Test
     public void createMatchTwiceAndCheckIfOnlyOneIsPresent() {
         final Country countryOne = Country.ALBANIA;
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGroup(Group.GROUP_A)
             .withTeams(countryOne, Country.SWITZERLAND)
             .withKickOffDate(LocalDateTime.now().plusHours(1))
@@ -89,14 +92,14 @@ public class MatchServiceIT {
 
     @Test
     public void createTwoMatches() {
-        Match match1 = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
+        Match match1 = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
             .withKickOffDate(11, 6, 15).build();
         assertThat(match1.getTeamOne().getCountry()).isEqualTo(Country.ALBANIA);
         assertThat(match1.getTeamTwo().getCountry()).isEqualTo(Country.SWITZERLAND);
 
         matchService.save(match1);
 
-        Match match2 = MatchBuilder.create().withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
+        Match match2 = MatchBuilder.create(teamService).withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
             .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build();
         assertThat(match2.getTeamOne().getCountry()).isEqualTo(Country.ROMANIA);
         assertThat(match2.getTeamTwo().getCountry()).isEqualTo(Country.SWITZERLAND);
@@ -119,7 +122,7 @@ public class MatchServiceIT {
 
     @Test
     public void changeTeamInMatch() {
-        Match match = MatchBuilder.create().withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
+        Match match = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
             .withKickOffDate(11, 6, 15).build();
         matchService.save(match);
         matchRepository.flush();

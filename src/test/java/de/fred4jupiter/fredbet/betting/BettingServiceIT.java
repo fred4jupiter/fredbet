@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.betting;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -32,6 +33,9 @@ public class BettingServiceIT {
     @Autowired
     private MatchService matchService;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     public void shouldNotAllowToUseMoreJokersThanWhileBetting() {
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
@@ -39,10 +43,10 @@ public class BettingServiceIT {
 
         userService.createUser(appUser);
 
-        Match match1 = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
-        Match match2 = MatchBuilder.create().withGroup(Group.GROUP_B).withTeams("C", "D").withKickOffDate(LocalDateTime.MAX).build();
-        Match match3 = MatchBuilder.create().withGroup(Group.GROUP_C).withTeams("E", "F").withKickOffDate(LocalDateTime.MAX).build();
-        Match match4 = MatchBuilder.create().withGroup(Group.GROUP_D).withTeams("G", "H").withKickOffDate(LocalDateTime.MAX).build();
+        Match match1 = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
+        Match match2 = MatchBuilder.create(teamService).withGroup(Group.GROUP_B).withTeams("C", "D").withKickOffDate(LocalDateTime.MAX).build();
+        Match match3 = MatchBuilder.create(teamService).withGroup(Group.GROUP_C).withTeams("E", "F").withKickOffDate(LocalDateTime.MAX).build();
+        Match match4 = MatchBuilder.create(teamService).withGroup(Group.GROUP_D).withTeams("G", "H").withKickOffDate(LocalDateTime.MAX).build();
         matchService.save(match1);
         matchService.save(match2);
         matchService.save(match3);
@@ -95,10 +99,10 @@ public class BettingServiceIT {
 
         userService.createUser(appUser);
 
-        Match match1 = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
-        Match match2 = MatchBuilder.create().withGroup(Group.GROUP_B).withTeams("C", "D").withKickOffDate(LocalDateTime.MAX).build();
-        Match match3 = MatchBuilder.create().withGroup(Group.GROUP_C).withTeams("E", "F").withKickOffDate(LocalDateTime.MAX).build();
-        Match match4 = MatchBuilder.create().withGroup(Group.GROUP_D).withTeams("G", "H").withKickOffDate(LocalDateTime.MAX).build();
+        Match match1 = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
+        Match match2 = MatchBuilder.create(teamService).withGroup(Group.GROUP_B).withTeams("C", "D").withKickOffDate(LocalDateTime.MAX).build();
+        Match match3 = MatchBuilder.create(teamService).withGroup(Group.GROUP_C).withTeams("E", "F").withKickOffDate(LocalDateTime.MAX).build();
+        Match match4 = MatchBuilder.create(teamService).withGroup(Group.GROUP_D).withTeams("G", "H").withKickOffDate(LocalDateTime.MAX).build();
         matchService.save(match1);
         matchService.save(match2);
         matchService.save(match3);
@@ -152,10 +156,10 @@ public class BettingServiceIT {
 
         userService.createUser(appUser);
 
-        Match match1 = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
-        Match match2 = MatchBuilder.create().withGroup(Group.GROUP_B).withTeams("C", "D").withKickOffDate(LocalDateTime.MAX).build();
-        Match match3 = MatchBuilder.create().withGroup(Group.GROUP_C).withTeams("E", "F").withKickOffDate(LocalDateTime.MAX).build();
-        Match match4 = MatchBuilder.create().withGroup(Group.GROUP_D).withTeams("G", "H").withKickOffDate(LocalDateTime.MAX).build();
+        Match match1 = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams("A", "B").withKickOffDate(LocalDateTime.MAX).build();
+        Match match2 = MatchBuilder.create(teamService).withGroup(Group.GROUP_B).withTeams("C", "D").withKickOffDate(LocalDateTime.MAX).build();
+        Match match3 = MatchBuilder.create(teamService).withGroup(Group.GROUP_C).withTeams("E", "F").withKickOffDate(LocalDateTime.MAX).build();
+        Match match4 = MatchBuilder.create(teamService).withGroup(Group.GROUP_D).withTeams("G", "H").withKickOffDate(LocalDateTime.MAX).build();
         matchService.save(match1);
         matchService.save(match2);
         matchService.save(match3);

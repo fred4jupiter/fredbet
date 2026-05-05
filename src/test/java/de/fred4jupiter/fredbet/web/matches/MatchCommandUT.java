@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
@@ -8,6 +9,7 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.Optional;
 
@@ -16,9 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @UnitTest
 public class MatchCommandUT {
 
+    @Mock
+    private TeamService teamService;
+
     @Test
     public void teamResultNoResultReturnsDefaultCssClass() {
-        Match match = MatchBuilder.create().build();
+        Match match = MatchBuilder.create(teamService).build();
 
         MatchCommand matchCommand = new MatchCommand(match, null);
 
@@ -28,7 +33,7 @@ public class MatchCommandUT {
 
     @Test
     public void teamResultWithResultReturnsDefaultCssClass() {
-        Match match = MatchBuilder.create().withGoals(1, 2).withGroup(Group.GROUP_A).build();
+        Match match = MatchBuilder.create(teamService).withGoals(1, 2).withGroup(Group.GROUP_A).build();
         MatchCommand matchCommand = new MatchCommand(match, null);
 
         assertEquals("label-info", matchCommand.getTeamResultOneCssClasses());
@@ -37,7 +42,7 @@ public class MatchCommandUT {
 
     @Test
     public void teamResultWithResultReturnsInfoCssClassPenaltyWinnerOne() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGoals(1, 1)
             .withGroup(Group.ROUND_OF_SIXTEEN)
             .withPenaltyWinnerOne(true)
@@ -50,7 +55,7 @@ public class MatchCommandUT {
 
     @Test
     public void teamResultWithResultReturnsInfoCssClassPenaltyWinnerTwo() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGoals(1, 1)
             .withGroup(Group.ROUND_OF_SIXTEEN)
             .withPenaltyWinnerOne(false)
@@ -63,7 +68,7 @@ public class MatchCommandUT {
 
     @Test
     public void noPenaltyTeamInGroupMatches() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGoals(1, 1)
             .withGroup(Group.GROUP_B)
             .withPenaltyWinnerOne(false)
@@ -84,7 +89,7 @@ public class MatchCommandUT {
 
     @Test
     public void userBetsWithResultReturnsDefaultCssClass() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGoals(1, 2)
             .withGroup(Group.GROUP_A)
             .build();
@@ -101,7 +106,7 @@ public class MatchCommandUT {
 
     @Test
     public void userBetsWithResultReturnsSuccessCssClassPenaltyWinnerOne() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGoals(1, 1)
             .withGroup(Group.ROUND_OF_SIXTEEN)
             .withPenaltyWinnerOne(true)
@@ -120,7 +125,7 @@ public class MatchCommandUT {
 
     @Test
     public void userBetsWithResultReturnsSuccessCssClassPenaltyWinnerTwo() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGoals(1, 1)
             .withGroup(Group.ROUND_OF_SIXTEEN)
             .withPenaltyWinnerOne(false)

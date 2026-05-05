@@ -1,32 +1,27 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
-import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class MatchBuilder {
 
     private final Match match;
 
-    private final Optional<CrestsCountryResolver> crestsCountryResolverOpt;
+    private final TeamService teamService;
 
-    private MatchBuilder(CrestsCountryResolver crestsCountryResolver) {
-        this.crestsCountryResolverOpt = Optional.ofNullable(crestsCountryResolver);
+    private MatchBuilder(TeamService teamService) {
+        this.teamService = teamService;
         match = new Match();
         match.setKickOffDate(LocalDateTime.now());
     }
 
-    public static MatchBuilder create() {
-        return new MatchBuilder(null);
-    }
-
-    public static MatchBuilder create(CrestsCountryResolver crestsCountryResolver) {
-        return new MatchBuilder(crestsCountryResolver);
+    public static MatchBuilder create(TeamService teamService) {
+        return new MatchBuilder(teamService);
     }
 
     public MatchBuilder withTeams(String teamOne, String teamTwo) {
@@ -38,12 +33,6 @@ public class MatchBuilder {
     public MatchBuilder withTeams(Country one, Country two) {
         match.getTeamOne().setCountry(one);
         match.getTeamTwo().setCountry(two);
-
-        crestsCountryResolverOpt.ifPresent(resolver -> {
-            match.getTeamOne().setSvgContent(resolver.loadCrestsImageFor(one));
-            match.getTeamTwo().setSvgContent(resolver.loadCrestsImageFor(two));
-        });
-
         return this;
     }
 
@@ -95,6 +84,17 @@ public class MatchBuilder {
     }
 
     public Match build() {
+        // resolve to existing teams or create new ones
+        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
+        if (teamOne != null) {
+            match.setTeamOne(teamOne);
+        }
+
+        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
+        if (teamTwo != null) {
+            match.setTeamTwo(teamTwo);
+        }
+
         return match;
     }
 }

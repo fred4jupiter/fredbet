@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.util;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
@@ -28,6 +29,9 @@ public class TeamUtilIT {
 
     @Autowired
     private MatchService matchService;
+
+    @Autowired
+    private TeamService teamService;
 
     @BeforeEach
     public void setup() {
@@ -61,10 +65,10 @@ public class TeamUtilIT {
 
     @Test
     public void getAvailableCountriesForExtraBets() {
-        matchService.save(MatchBuilder.create().withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_B)
+        matchService.save(MatchBuilder.create(teamService).withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_B)
             .withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build());
 
-        matchService.save(MatchBuilder.create().withTeams(Country.BULGARIA, Country.IRELAND).withGroup(Group.GROUP_A)
+        matchService.save(MatchBuilder.create(teamService).withTeams(Country.BULGARIA, Country.IRELAND).withGroup(Group.GROUP_A)
             .withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build());
 
         List<TeamView> availableTeamsBasedOnMatches = teamUtil.getAvailableTeamsBasedOnMatches();

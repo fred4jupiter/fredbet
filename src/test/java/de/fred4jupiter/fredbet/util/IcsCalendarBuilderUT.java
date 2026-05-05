@@ -1,10 +1,12 @@
 package de.fred4jupiter.fredbet.util;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.time.LocalDateTime;
 import java.util.TimeZone;
@@ -14,9 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @UnitTest
 public class IcsCalendarBuilderUT {
 
+    @Mock
+    private TeamService teamService;
+
     @Test
     void createIcsFile() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGroup(Group.GROUP_A)
             .withTeams("A", "B")
             .withKickOffDate(LocalDateTime.now())

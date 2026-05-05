@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.pointcourse;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -37,6 +38,9 @@ public class PointCourseServiceUT {
     @InjectMocks
     private PointCourseService pointCourseService;
 
+    @Mock
+    private TeamService teamService;
+
     @Test
     public void reportPointsCourse_whenNoBets_returnsEmptyChartData() {
         when(betRepository.queryPointsPerUser()).thenReturn(List.of());
@@ -54,8 +58,8 @@ public class PointCourseServiceUT {
     @Test
     public void reportPointsCourse_withResults_buildsChartData() {
         // prepare matches
-        Match m1 = MatchBuilder.create().withTeams("A","B").withKickOffDate(LocalDateTime.now().minusDays(2)).build();
-        Match m2 = MatchBuilder.create().withTeams("C","D").withKickOffDate(LocalDateTime.now().minusDays(1)).build();
+        Match m1 = MatchBuilder.create(teamService).withTeams("A","B").withKickOffDate(LocalDateTime.now().minusDays(2)).build();
+        Match m2 = MatchBuilder.create(teamService).withTeams("C","D").withKickOffDate(LocalDateTime.now().minusDays(1)).build();
 
         when(betRepository.queryPointsPerUser()).thenReturn(List.of(new PointsPerUser("user1", 3L), new PointsPerUser("other", 5L)));
         Mockito.lenient().when(fredbetProperties.adminUsername()).thenReturn("admin");

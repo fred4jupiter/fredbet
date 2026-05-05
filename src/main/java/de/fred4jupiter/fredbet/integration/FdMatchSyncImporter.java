@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.TeamService;
-import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -11,7 +10,6 @@ import de.fred4jupiter.fredbet.match.MatchGoalsChangedEvent;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -34,20 +32,14 @@ class FdMatchSyncImporter {
 
     private final TeamNameToCountryResolver teamNameToCountryResolver;
 
-    private final CrestsDownloader crestsDownloader;
-
-    private final CrestsCountryResolver crestsCountryResolver;
-
     private final TeamService teamService;
 
     FdMatchSyncImporter(RuntimeSettingsService runtimeSettingsService, ApplicationEventPublisher applicationEventPublisher, MatchService matchService,
-                        TeamNameToCountryResolver teamNameToCountryResolver, CrestsDownloader crestsDownloader, CrestsCountryResolver crestsCountryResolver, TeamService teamService) {
+                        TeamNameToCountryResolver teamNameToCountryResolver, TeamService teamService) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.matchService = matchService;
         this.teamNameToCountryResolver = teamNameToCountryResolver;
-        this.crestsDownloader = crestsDownloader;
-        this.crestsCountryResolver = crestsCountryResolver;
         this.teamService = teamService;
     }
 
@@ -66,9 +58,6 @@ class FdMatchSyncImporter {
 
         mapTeams(fdMatch, match);
 
-//        mapTeam(fdMatch.homeTeam(), match.getTeamOne());
-//        mapTeam(fdMatch.awayTeam(), match.getTeamTwo());
-
         final Group group = resolveToGroup(fdMatch);
 
         match.setGroup(group);
@@ -85,7 +74,6 @@ class FdMatchSyncImporter {
         // update results
         mapGoals(fdMatch, match);
     }
-
 
     private void mapGoals(FdMatch fdMatch, Match match) {
         final FdScore score = fdMatch.score();
@@ -113,35 +101,13 @@ class FdMatchSyncImporter {
     }
 
     private void mapTeams(FdMatch fdMatch, Match match) {
-        Team teamOne = teamService.findOrCreateTeam(teamNameToCountryResolver.resolveToCountry(fdMatch.homeTeam()), fdMatch.homeTeam().name(), newTeam -> {
-            if (newTeam.getSvgContent() == null) {
-                newTeam.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdMatch.homeTeam().id()));
-            }
-        });
-
-        match.setTeamOne(teamOne);
-
-        Team teamTwo = teamService.findOrCreateTeam(teamNameToCountryResolver.resolveToCountry(fdMatch.awayTeam()), fdMatch.awayTeam().name(), newTeam -> {
-            if (newTeam.getSvgContent() == null) {
-                newTeam.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdMatch.awayTeam().id()));
-            }
-        });
-        match.setTeamTwo(teamTwo);
+        match.setTeamOne(mapToTeam(fdMatch.homeTeam()));
+        match.setTeamTwo(mapToTeam(fdMatch.awayTeam()));
     }
 
-    private void mapTeam(FdTeam fdTeam, Team team) {
-        final Country country = teamNameToCountryResolver.resolveToCountry(fdTeam);
-        if (country != null) {
-            team.setCountry(country);
-            team.setName(null);
-            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(team::setSvgContent);
-        } else {
-            team.setName(StringUtils.isNotBlank(fdTeam.name()) ? fdTeam.name() : "Not yet defined");
-        }
-
-        if (team.getSvgContent() == null) {
-            team.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdTeam.id()));
-        }
+    private Team mapToTeam(FdTeam fdTeam) {
+        Country country = teamNameToCountryResolver.resolveToCountry(fdTeam);
+        return teamService.findOrCreateTeam(country, fdTeam.name(), fdTeam.id());
     }
 
     private Group resolveToGroup(FdMatch fdMatch) {

@@ -1,11 +1,13 @@
 package de.fred4jupiter.fredbet.calendar;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
@@ -22,9 +24,12 @@ public class IcsCalendarServiceIT {
     @Autowired
     private MatchRepository matchRepository;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     void createCalendarEventFromMatch() {
-        Match match = MatchBuilder.create()
+        Match match = MatchBuilder.create(teamService)
             .withGroup(Group.GROUP_A)
             .withTeams("A", "B")
             .withKickOffDate(LocalDateTime.now())

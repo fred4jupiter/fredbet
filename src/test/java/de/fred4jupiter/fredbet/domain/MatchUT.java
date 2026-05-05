@@ -1,22 +1,27 @@
 package de.fred4jupiter.fredbet.domain;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @UnitTest
 public class MatchUT {
 
+    @Mock
+    private TeamService teamService;
+
     @Test
     public void isTeamOneWinner() {
-        Match match = MatchBuilder.create()
-                .withTeams("a", "b")
-                .withGoals(2, 1)
-                .withGroup(Group.GROUP_A)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams("a", "b")
+            .withGoals(2, 1)
+            .withGroup(Group.GROUP_A)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isGroupMatch()).isTrue();
         assertThat(match.isTeamOneWinner()).isTrue();
@@ -25,11 +30,11 @@ public class MatchUT {
 
     @Test
     public void isTeamTwoWinner() {
-        Match match = MatchBuilder.create()
-                .withTeams("a", "b")
-                .withGoals(1, 2)
-                .withGroup(Group.GROUP_A)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams("a", "b")
+            .withGoals(1, 2)
+            .withGroup(Group.GROUP_A)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isGroupMatch()).isTrue();
         assertThat(match.isTeamOneWinner()).isFalse();
@@ -38,11 +43,11 @@ public class MatchUT {
 
     @Test
     public void undecidedResult() {
-        Match match = MatchBuilder.create()
-                .withTeams("a", "b")
-                .withGoals(1, 1)
-                .withGroup(Group.GROUP_A)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams("a", "b")
+            .withGoals(1, 1)
+            .withGroup(Group.GROUP_A)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isGroupMatch()).isTrue();
         assertThat(match.isUndecidedResult()).isTrue();
@@ -52,12 +57,12 @@ public class MatchUT {
 
     @Test
     public void undecidedResultInKnockoutMatchAndPenaltyWinnerIsOne() {
-        Match match = MatchBuilder.create()
-                .withTeams("a", "b")
-                .withGoals(1, 1)
-                .withPenaltyWinnerOne(true)
-                .withGroup(Group.FINAL)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams("a", "b")
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(true)
+            .withGroup(Group.FINAL)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isFinal()).isTrue();
         assertThat(match.isGroupMatch()).isFalse();
@@ -68,12 +73,12 @@ public class MatchUT {
 
     @Test
     public void undecidedResultInKnockoutMatchAndPenaltyWinnerIsTwo() {
-        Match match = MatchBuilder.create()
-                .withTeams("a", "b")
-                .withGoals(1, 1)
-                .withPenaltyWinnerOne(false)
-                .withGroup(Group.FINAL)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams("a", "b")
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(false)
+            .withGroup(Group.FINAL)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isFinal()).isTrue();
         assertThat(match.isGroupMatch()).isFalse();
@@ -84,12 +89,12 @@ public class MatchUT {
 
     @Test
     public void winnerLooserWinnerOne() {
-        Match match = MatchBuilder.create()
-                .withTeams(Country.GERMANY, Country.ITALY)
-                .withGoals(1, 1)
-                .withPenaltyWinnerOne(true)
-                .withGroup(Group.FINAL)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams(Country.GERMANY, Country.ITALY)
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(true)
+            .withGroup(Group.FINAL)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isFinal()).isTrue();
         assertThat(match.getWinner()).isEqualTo(Country.GERMANY);
@@ -102,12 +107,12 @@ public class MatchUT {
 
     @Test
     public void winnerLooserWinnerTwo() {
-        Match match = MatchBuilder.create()
-                .withTeams(Country.GERMANY, Country.ITALY)
-                .withGoals(1, 1)
-                .withPenaltyWinnerOne(false)
-                .withGroup(Group.FINAL)
-                .build();
+        Match match = MatchBuilder.create(teamService)
+            .withTeams(Country.GERMANY, Country.ITALY)
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(false)
+            .withGroup(Group.FINAL)
+            .build();
         assertThat(match).isNotNull();
         assertThat(match.isFinal()).isTrue();
         assertThat(match.getWinner()).isEqualTo(Country.ITALY);

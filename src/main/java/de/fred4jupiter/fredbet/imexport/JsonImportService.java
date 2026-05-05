@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.imexport;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -34,14 +35,17 @@ public class JsonImportService {
 
     private final ExtraBettingService extraBettingService;
 
+    private final TeamService teamService;
+
     JsonImportService(JsonObjectConverter jsonObjectConverter, MatchService matchService, BettingService bettingService,
-                      UserService userService, UserImportExportHelper userImportExportHelper, ExtraBettingService extraBettingService) {
+                      UserService userService, UserImportExportHelper userImportExportHelper, ExtraBettingService extraBettingService, TeamService teamService) {
         this.jsonObjectConverter = jsonObjectConverter;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.userService = userService;
         this.userImportExportHelper = userImportExportHelper;
         this.extraBettingService = extraBettingService;
+        this.teamService = teamService;
     }
 
     public void importAllFromJson(String json) {
@@ -107,7 +111,7 @@ public class JsonImportService {
     }
 
     private Match mapToMatch(MatchToExport matchToExport) {
-        Match match = MatchBuilder.create().withTeams(matchToExport.teamOne(), matchToExport.teamTwo())
+        Match match = MatchBuilder.create(teamService).withTeams(matchToExport.teamOne(), matchToExport.teamTwo())
             .withGroup(matchToExport.group())
             .withKickOffDate(matchToExport.kickOffDate())
             .withStadium(matchToExport.stadium())

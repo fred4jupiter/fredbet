@@ -10,7 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Component
-class CrestsDownloader {
+public class CrestsDownloader {
 
     private static final Logger LOG = LoggerFactory.getLogger(CrestsDownloader.class);
 

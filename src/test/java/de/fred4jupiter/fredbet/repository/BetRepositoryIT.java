@@ -1,14 +1,15 @@
 package de.fred4jupiter.fredbet.repository;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
-import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.excel.PointCountResult;
-import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.ranking.UsernamePoints;
@@ -45,6 +46,9 @@ public class BetRepositoryIT {
 
     @Autowired
     private MatchService matchService;
+
+    @Autowired
+    private TeamService teamService;
 
     @BeforeEach
     public void setup() {
@@ -86,7 +90,7 @@ public class BetRepositoryIT {
         bet.setUserName("michael");
         bet.setPoints(1);
 
-        Match match = MatchBuilder.create().build();
+        Match match = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.AUSTRIA).build();
         bet.setMatch(match);
         matchService.save(match);
 
@@ -109,7 +113,7 @@ public class BetRepositoryIT {
 
     @Test
     public void findByMatchIdOrderByUserName() {
-        Match match1 = MatchBuilder.create().withTeams(Country.ALBANIA, Country.AUSTRIA).withGroup(Group.GROUP_A)
+        Match match1 = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.AUSTRIA).withGroup(Group.GROUP_A)
             .withKickOffDate(LocalDateTime.now().minusHours(1)).withStadium("somewhere").build();
         match1 = matchService.save(match1);
 

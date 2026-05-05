@@ -16,21 +16,15 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     int countByName(String name);
 
     default Team findByCountryOrName(Country country, String name) {
+        if (country == null && StringUtils.isEmpty(name)) {
+            throw new IllegalArgumentException("Country and Name cannot be empty!");
+        }
+
         if (country != null) {
-            Team foundByCountry = findByCountry(country);
-            if (foundByCountry != null) {
-                return foundByCountry;
-            }
+            return findByCountry(country);
         }
 
-        if (StringUtils.isNotBlank(name)) {
-            Team foundByName = findByName(name);
-            if (foundByName != null) {
-                return foundByName;
-            }
-        }
-
-        return null;
+        return findByName(name);
     }
 
     default Team findOrCreate(Team team) {

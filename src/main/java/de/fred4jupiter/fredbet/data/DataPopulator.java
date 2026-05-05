@@ -1,11 +1,11 @@
 package de.fred4jupiter.fredbet.data;
 
 import com.github.javafaker.Faker;
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.betting.JokerService;
-import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -51,13 +51,13 @@ public class DataPopulator {
 
     private final CacheAdministrationService cacheAdministrationService;
 
-    private final CrestsCountryResolver crestsCountryResolver;
+    private final TeamService teamService;
 
     public DataPopulator(MatchService matchService, UserService userService,
                          BettingService bettingService, RandomValueGenerator randomValueGenerator,
                          JokerService jokerService, ExtraBettingService extraBettingService,
                          RuntimeSettingsService runtimeSettingsService, CacheAdministrationService cacheAdministrationService,
-                         CrestsCountryResolver crestsCountryResolver) {
+                         TeamService teamService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
@@ -66,7 +66,7 @@ public class DataPopulator {
         this.extraBettingService = extraBettingService;
         this.runtimeSettingsService = runtimeSettingsService;
         this.cacheAdministrationService = cacheAdministrationService;
-        this.crestsCountryResolver = crestsCountryResolver;
+        this.teamService = teamService;
     }
 
     @Async
@@ -132,7 +132,7 @@ public class DataPopulator {
 
         IntStream.rangeClosed(1, numberOfMatches).forEach(counter -> {
             TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
-            Match match = MatchBuilder.create(crestsCountryResolver)
+            Match match = MatchBuilder.create(teamService)
                 .withTeams(teamPair.teamOne(), teamPair.teamTwo())
                 .withGroup(group)
                 .withStadium(nextStadium())

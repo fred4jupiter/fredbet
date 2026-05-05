@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.points;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Country;
@@ -27,6 +28,9 @@ public class PointsCalculationUtilUT {
 
     @Mock
     private CacheAdministrationService cacheAdministrationService;
+
+    @Mock
+    private TeamService teamService;
 
     @BeforeEach
     public void setup() {
@@ -96,7 +100,7 @@ public class PointsCalculationUtilUT {
 
     @Test
     public void extraPointOnCorrectPenaltyWinner() {
-        Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(4, 4).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(4, 4).build();
         match.setPenaltyWinnerOne(true);
 
         Bet bet = createBet(4, 4);
@@ -107,7 +111,7 @@ public class PointsCalculationUtilUT {
 
     @Test
     public void noPointsInFinalIfSetOfWin() {
-        Match match = MatchBuilder.create().withGroup(Group.FINAL).withTeams("Deutschland", "Italien").withGoals(5, 5).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.FINAL).withTeams("Deutschland", "Italien").withGoals(5, 5).build();
         match.setPenaltyWinnerOne(false);
 
         Bet bet = createBet(4, 3);
@@ -118,7 +122,7 @@ public class PointsCalculationUtilUT {
 
     @Test
     public void extraPointOnCorrectPenaltyOtherWinner() {
-        Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(0, 0).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(0, 0).build();
         match.setPenaltyWinnerOne(false);
         Bet bet = createBet(0, 0);
         bet.setPenaltyWinnerOne(false);
@@ -128,7 +132,7 @@ public class PointsCalculationUtilUT {
 
     @Test
     public void pointsWithJokerDoublesPoints() {
-        Match match = MatchBuilder.create().withGroup(Group.GROUP_B).withTeams("Deutschland", "Italien").withGoals(0, 0).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_B).withTeams("Deutschland", "Italien").withGoals(0, 0).build();
         Bet bet = createBet(0, 0);
         bet.setPenaltyWinnerOne(false);
         bet.setJoker(true);
@@ -138,7 +142,7 @@ public class PointsCalculationUtilUT {
 
     @Test
     public void pointsWithJokerInPenaltyDoublesPoints() {
-        Match match = MatchBuilder.create().withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(1, 1).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.ROUND_OF_SIXTEEN).withTeams("Deutschland", "Italien").withGoals(1, 1).build();
         match.setPenaltyWinnerOne(false);
         Bet bet = createBet(1, 1);
         bet.setPenaltyWinnerOne(false);
@@ -197,12 +201,12 @@ public class PointsCalculationUtilUT {
     }
 
     private Match createMatch(Integer goalsTeamOne, Integer goalsTeamTwo) {
-        return MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("Deutschland", "Italien").withGoals(goalsTeamOne, goalsTeamTwo)
+        return MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams("Deutschland", "Italien").withGoals(goalsTeamOne, goalsTeamTwo)
             .build();
     }
 
     private Match createKnockoutMatch(Integer goalsTeamOne, Integer goalsTeamTwo, boolean penaltyWinnerOne) {
-        return MatchBuilder.create()
+        return MatchBuilder.create(teamService)
             .withGroup(Group.FINAL)
             .withTeams(Country.GERMANY, Country.ITALY)
             .withGoals(goalsTeamOne, goalsTeamTwo)

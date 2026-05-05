@@ -1,13 +1,14 @@
 package de.fred4jupiter.fredbet.user;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.data.GoalResult;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamPair;
-import de.fred4jupiter.fredbet.domain.*;
+import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
-import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
@@ -35,6 +36,8 @@ public class FredBetUsageBuilder {
 
     private final BettingService bettingService;
 
+    private final TeamService teamService;
+
     private AppUser appUser;
 
     private Match match;
@@ -42,11 +45,12 @@ public class FredBetUsageBuilder {
     private Bet bet;
 
     private FredBetUsageBuilder(RandomValueGenerator randomValueGenerator, UserService userService, MatchService matchService,
-                                BettingService bettingService) {
+                                BettingService bettingService, TeamService teamService) {
         this.randomValueGenerator = randomValueGenerator;
         this.userService = userService;
         this.matchService = matchService;
         this.bettingService = bettingService;
+        this.teamService = teamService;
     }
 
     public FredBetUsageBuilder withAppUser() {
@@ -60,8 +64,8 @@ public class FredBetUsageBuilder {
 
     public FredBetUsageBuilder withMatch(TeamBundle teamBundle) {
         TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
-        this.match = MatchBuilder.create().withTeams(teamPair.teamOne(), teamPair.teamTwo()).withGroup(Group.GROUP_A)
-                .withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
+        this.match = MatchBuilder.create(teamService).withTeams(teamPair.teamOne(), teamPair.teamTwo()).withGroup(Group.GROUP_A)
+            .withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
         return this;
     }
 

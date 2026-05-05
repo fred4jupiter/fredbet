@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.betting;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -32,6 +33,9 @@ public class JokerServiceIT {
     @Autowired
     private BetRepository betRepository;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     public void newUserHasNoJokerUsed() {
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("mustermann", "mustermann").withUserGroup(FredBetUserGroup.ROLE_USER)
@@ -52,7 +56,7 @@ public class JokerServiceIT {
 
         userService.createUser(appUser);
 
-        Match match = MatchBuilder.create().withGroup(Group.GROUP_A).withTeams("A", "B").withGoals(1, 1).build();
+        Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams("A", "B").withGoals(1, 1).build();
         assertNotNull(match);
         matchService.save(match);
 
