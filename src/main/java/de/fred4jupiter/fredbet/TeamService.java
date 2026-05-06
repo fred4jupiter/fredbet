@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet;
 
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
 import de.fred4jupiter.fredbet.match.TeamRepository;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Service
@@ -27,6 +29,21 @@ public class TeamService {
         this.teamRepository = teamRepository;
         this.crestsCountryResolver = crestsCountryResolver;
         this.crestsDownloader = crestsDownloader;
+    }
+
+    public SvgImage loadCrestImage(Long teamId) {
+        Optional<Team> teamOpt = teamRepository.findById(teamId);
+        if (teamOpt.isEmpty()) {
+            return null;
+        }
+
+        Team team = teamOpt.get();
+
+        if (team.getCountry() != null) {
+            return crestsCountryResolver.loadCrestsImageFor(team.getCountry());
+        }
+
+        return new SvgImage(team.getSvgContent());
     }
 
     public Team findOrCreateTeam(Country country, String teamName) {
