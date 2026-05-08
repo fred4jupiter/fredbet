@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
 import de.fred4jupiter.fredbet.TeamService;
+import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -24,9 +25,31 @@ public class MatchBuilder {
         return new MatchBuilder(teamService);
     }
 
+    public MatchBuilder withTeamOne(String teamOne) {
+        Country country = Country.fromName(teamOne);
+        if (country != null) {
+            match.getTeamOne().setCountry(country);
+        } else {
+            match.getTeamOne().setName(teamOne);
+        }
+
+        return this;
+    }
+
+    public MatchBuilder withTeamTwo(String teamTwo) {
+        Country country = Country.fromName(teamTwo);
+        if (country != null) {
+            match.getTeamTwo().setCountry(country);
+        } else {
+            match.getTeamTwo().setName(teamTwo);
+        }
+
+        return this;
+    }
+
     public MatchBuilder withTeams(String teamOne, String teamTwo) {
-        match.getTeamOne().setName(teamOne);
-        match.getTeamTwo().setName(teamTwo);
+        withTeamOne(teamOne);
+        withTeamTwo(teamTwo);
         return this;
     }
 
@@ -95,6 +118,20 @@ public class MatchBuilder {
             match.setTeamTwo(teamTwo);
         }
 
+        return match;
+    }
+
+    public Match build(CrestsCountryResolver crestsCountryResolver) {
+        Match match = build();
+        if (match.getTeamOne().getSvgContent() == null) {
+            crestsCountryResolver.loadCrestsImageFor(match.getTeamOne().getCountry(), true)
+                .ifPresent(crestImage -> match.getTeamOne().setSvgContent(crestImage.svgContent()));
+
+        }
+        if (match.getTeamTwo().getSvgContent() == null) {
+            crestsCountryResolver.loadCrestsImageFor(match.getTeamTwo().getCountry(), true)
+                .ifPresent(crestImage -> match.getTeamTwo().setSvgContent(crestImage.svgContent()));
+        }
         return match;
     }
 
