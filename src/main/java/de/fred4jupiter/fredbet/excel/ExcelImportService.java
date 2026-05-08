@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.excel;
 
 import de.fred4jupiter.fredbet.TeamService;
-import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -33,13 +32,10 @@ public class ExcelImportService {
 
     private final TeamService teamService;
 
-    private final CrestsCountryResolver crestsCountryResolver;
-
-    public ExcelImportService(MatchRepository matchRepository, DataPopulator dataBasePopulator, TeamService teamService, CrestsCountryResolver crestsCountryResolver) {
+    public ExcelImportService(MatchRepository matchRepository, DataPopulator dataBasePopulator, TeamService teamService) {
         this.matchRepository = matchRepository;
         this.dataBasePopulator = dataBasePopulator;
         this.teamService = teamService;
-        this.crestsCountryResolver = crestsCountryResolver;
     }
 
     public List<Match> importFromExcel(File file) {
@@ -109,7 +105,7 @@ public class ExcelImportService {
 
         matchBuilder.withTeamOne(country1).withTeamTwo(country2);
 
-        return matchBuilder.build(crestsCountryResolver);
+        return matchBuilder.build();
     }
 
     private String safeGetString(Row row, int cellNumber) {

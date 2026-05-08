@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
 import de.fred4jupiter.fredbet.TeamService;
-import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
@@ -118,20 +117,6 @@ public class MatchBuilder {
             match.setTeamTwo(teamTwo);
         }
 
-        return match;
-    }
-
-    public Match build(CrestsCountryResolver crestsCountryResolver) {
-        Match match = build();
-        if (match.getTeamOne().getSvgContent() == null) {
-            crestsCountryResolver.loadCrestsImageFor(match.getTeamOne().getCountry(), true)
-                .ifPresent(crestImage -> match.getTeamOne().setSvgContent(crestImage.svgContent()));
-
-        }
-        if (match.getTeamTwo().getSvgContent() == null) {
-            crestsCountryResolver.loadCrestsImageFor(match.getTeamTwo().getCountry(), true)
-                .ifPresent(crestImage -> match.getTeamTwo().setSvgContent(crestImage.svgContent()));
-        }
         return match;
     }
 
