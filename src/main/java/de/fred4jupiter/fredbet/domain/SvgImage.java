@@ -5,7 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public record SvgImage(String svgContent) {
+public record SvgImage(String svgContent, Integer version) {
+
+    public SvgImage(String svgContent) {
+        this(svgContent, 1);
+    }
 
     public byte[] getAsByteArray() {
         if (svgContent == null) {

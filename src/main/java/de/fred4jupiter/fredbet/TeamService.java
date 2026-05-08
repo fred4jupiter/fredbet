@@ -37,13 +37,13 @@ public class TeamService {
             return null;
         }
 
-        Team team = teamOpt.get();
+        final Team team = teamOpt.get();
 
         if (team.getCountry() != null) {
             return crestsCountryResolver.loadCrestsImageFor(team.getCountry());
         }
 
-        return new SvgImage(team.getSvgContent());
+        return new SvgImage(team.getSvgContent(), team.getVersion());
     }
 
     public Team findOrCreateTeam(Country country, String teamName) {
