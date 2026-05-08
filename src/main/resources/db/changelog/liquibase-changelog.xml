@@ -338,4 +338,12 @@
         <dropColumn tableName="matches" columnName="team_name_two"/>
     </changeSet>
 
+    <changeSet id="19" author="michael">
+        <addColumn tableName="team">
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

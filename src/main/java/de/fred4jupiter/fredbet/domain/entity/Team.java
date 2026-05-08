@@ -31,10 +31,14 @@ public class Team {
     @Column(name = "NAME", unique = true)
     private String name;
 
-    @Basic(fetch = FetchType.EAGER)
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "SVG_CONTENT", columnDefinition = "TEXT")
     @Lob
     private String svgContent;
+
+    @Version
+    @Column(name = "VERSION", nullable = false)
+    private Integer version;
 
     public String getCrestsAsBase64() {
         if (this.svgContent == null) {
@@ -118,5 +122,9 @@ public class Team {
 
     public void setSvgContent(String crestsBinary) {
         this.svgContent = crestsBinary;
+    }
+
+    public Integer getVersion() {
+        return version;
     }
 }

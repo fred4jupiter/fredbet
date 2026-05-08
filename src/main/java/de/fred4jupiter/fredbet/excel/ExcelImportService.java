@@ -1,8 +1,9 @@
 package de.fred4jupiter.fredbet.excel;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.data.DataPopulator;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.util.DateUtils;
@@ -29,9 +30,12 @@ public class ExcelImportService {
 
     private final DataPopulator dataBasePopulator;
 
-    public ExcelImportService(MatchRepository matchRepository, DataPopulator dataBasePopulator) {
+    private final TeamService teamService;
+
+    public ExcelImportService(MatchRepository matchRepository, DataPopulator dataBasePopulator, TeamService teamService) {
         this.matchRepository = matchRepository;
         this.dataBasePopulator = dataBasePopulator;
+        this.teamService = teamService;
     }
 
     public List<Match> importFromExcel(File file) {
@@ -94,24 +98,14 @@ public class ExcelImportService {
         final Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
         final String stadium = safeGetString(row, 4);
 
-        final Match match = new Match();
+        final MatchBuilder matchBuilder = MatchBuilder.create(teamService)
+            .withGroup(Group.valueOf(group))
+            .withKickOffDate(DateUtils.toLocalDateTime(kickOffDate))
+            .withStadium(StringUtils.substring(stadium, 0, 20));
 
-        if (Country.fromName(country1) != null) {
-            match.getTeamOne().setCountry(Country.fromName(country1));
-        } else {
-            match.getTeamOne().setName(country1);
-        }
+        matchBuilder.withTeamOne(country1).withTeamTwo(country2);
 
-        if (Country.fromName(country2) != null) {
-            match.getTeamTwo().setCountry(Country.fromName(country2));
-        } else {
-            match.getTeamTwo().setName(country2);
-        }
-
-        match.setGroup(Group.valueOf(group));
-        match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
-        match.setStadium(StringUtils.substring(stadium, 0, 20));
-        return match;
+        return matchBuilder.build();
     }
 
     private String safeGetString(Row row, int cellNumber) {

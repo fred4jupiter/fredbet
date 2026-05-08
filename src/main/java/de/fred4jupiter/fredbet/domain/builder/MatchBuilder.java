@@ -24,9 +24,31 @@ public class MatchBuilder {
         return new MatchBuilder(teamService);
     }
 
+    public MatchBuilder withTeamOne(String teamOne) {
+        Country country = Country.fromName(teamOne);
+        if (country != null) {
+            match.getTeamOne().setCountry(country);
+        } else {
+            match.getTeamOne().setName(teamOne);
+        }
+
+        return this;
+    }
+
+    public MatchBuilder withTeamTwo(String teamTwo) {
+        Country country = Country.fromName(teamTwo);
+        if (country != null) {
+            match.getTeamTwo().setCountry(country);
+        } else {
+            match.getTeamTwo().setName(teamTwo);
+        }
+
+        return this;
+    }
+
     public MatchBuilder withTeams(String teamOne, String teamTwo) {
-        match.getTeamOne().setName(teamOne);
-        match.getTeamTwo().setName(teamTwo);
+        withTeamOne(teamOne);
+        withTeamTwo(teamTwo);
         return this;
     }
 
