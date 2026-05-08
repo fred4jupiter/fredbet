@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet;
 
+import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
@@ -25,10 +26,13 @@ public class TeamService {
 
     private final CrestsDownloader crestsDownloader;
 
-    public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver, CrestsDownloader crestsDownloader) {
+    private final CrestPlaceholderLoader crestPlaceholderLoader;
+
+    public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver, CrestsDownloader crestsDownloader, CrestPlaceholderLoader crestPlaceholderLoader) {
         this.teamRepository = teamRepository;
         this.crestsCountryResolver = crestsCountryResolver;
         this.crestsDownloader = crestsDownloader;
+        this.crestPlaceholderLoader = crestPlaceholderLoader;
     }
 
     public SvgImage loadCrestImage(Long teamId) {
@@ -75,6 +79,10 @@ public class TeamService {
         }
 
         newTeamCallback.accept(newTeam);
+
+        if (newTeam.getSvgContent() == null) {
+            newTeam.setSvgContent(crestPlaceholderLoader.getCrestPlaceholderIcon());
+        }
 
         return teamRepository.save(newTeam);
     }
