@@ -81,7 +81,7 @@ public class MatchCommand {
             return LABEL_DEFAULT;
         }
 
-        return !this.match.isGroupMatch() && this.match.isUndecidedResult() && this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
+        return this.match.isKnockoutMatch() && this.match.isUndecidedResult() && this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
     }
 
     public String getTeamResultTwoCssClasses() {
@@ -89,7 +89,7 @@ public class MatchCommand {
             return LABEL_DEFAULT;
         }
 
-        return !this.match.isGroupMatch() && this.match.isUndecidedResult() && !this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
+        return this.match.isKnockoutMatch() && this.match.isUndecidedResult() && !this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
     }
 
     public Match getMatch() {
