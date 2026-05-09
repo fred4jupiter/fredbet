@@ -340,10 +340,9 @@
 
     <changeSet id="19" author="michael">
         <addColumn tableName="team">
-            <column name="version" type="int">
-                <constraints nullable="false"/>
-            </column>
+            <column name="version" type="int"/>
         </addColumn>
+        <addNotNullConstraint tableName="team" columnName="version" columnDataType="int" defaultNullValue="0"/>
     </changeSet>
 
 </databaseChangeLog>
