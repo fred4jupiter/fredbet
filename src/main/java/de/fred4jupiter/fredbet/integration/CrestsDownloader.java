@@ -6,8 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class CrestsDownloader {
@@ -32,10 +34,17 @@ public class CrestsDownloader {
         LOG.debug("will try to download crests with teamId: {}", teamId);
 
         try {
-            String svgContent = crestsRestClient.get().uri("/%s.svg".formatted(teamId)).retrieve().body(String.class);
-            return new SvgImage(svgContent);
-        } catch (HttpClientErrorException e) {
-            LOG.info("Could not download crests image flag for teamId: {}. Cause: {}", teamId, e.getMessage());
+            // Request raw bytes for the SVG. Some servers return content-type `image/svg+xml` which
+            // may not be handled by the String message converter. We added a ByteArrayHttpMessageConverter
+            // for the crests RestClient in the config - request byte[] and convert to String with UTF-8.
+            byte[] svgBytes = crestsRestClient.get().uri("/%s.svg".formatted(teamId)).retrieve().body(byte[].class);
+            if (svgBytes == null || svgBytes.length == 0) {
+                LOG.info("Downloaded crest is empty for teamId: {}. Will use placeholder.", teamId);
+                return crestPlaceholderLoader.getCrestPlaceholderIcon();
+            }
+            return new SvgImage(new String(svgBytes, StandardCharsets.UTF_8));
+        } catch (RestClientException e) {
+            LOG.info("Could not download crests image for teamId: {}. Cause: {}", teamId, e.getMessage());
             return crestPlaceholderLoader.getCrestPlaceholderIcon();
         }
     }

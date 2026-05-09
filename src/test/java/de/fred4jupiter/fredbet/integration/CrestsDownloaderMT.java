@@ -23,9 +23,9 @@ public class CrestsDownloaderMT {
         SvgImage svgImage = crestsDownloader.downloadCrestsByUrl("759");
         assertThat(svgImage).isNotNull();
         assertThat(svgImage.svgContent()).isNotBlank();
-        assertThat(svgImage.getAsByteArray()).isNotNull();
+        assertThat(svgImage.svgBinary()).isNotNull();
 
-        TempFileWriterUtil.writeToTempFolder(svgImage.getAsByteArray(), "test.svg");
+        TempFileWriterUtil.writeToTempFolder(svgImage.svgBinary(), "test.svg");
 
         String base64Image = svgImage.getAsBase64();
         assertThat(base64Image).isNotBlank();
