@@ -34,10 +34,6 @@ public class MatchCommand {
         return this.betOpt.map(Bet::getPoints).orElse(0);
     }
 
-    public boolean isGroupMatch() {
-        return this.match.getGroup().name().startsWith("GROUP");
-    }
-
     public String getUserBetGoalsTeamOneCssClasses() {
         if (this.betOpt.isEmpty() || this.betOpt.get().getGoalsTeamOne() == null) {
             return LABEL_DEFAULT;
@@ -46,7 +42,7 @@ public class MatchCommand {
         final Bet bet = this.betOpt.get();
 
         String cssClasses = LABEL_SUCCESS;
-        if (!this.match.isGroupMatch() && bet.isUndecidedBetting() && bet.isPenaltyWinnerOne()) {
+        if (this.match.isKnockoutMatch() && bet.isUndecidedBetting() && bet.isPenaltyWinnerOne()) {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
@@ -65,7 +61,7 @@ public class MatchCommand {
         final Bet bet = this.betOpt.get();
 
         String cssClasses = LABEL_SUCCESS;
-        if (!this.match.isGroupMatch() && bet.isUndecidedBetting() && !bet.isPenaltyWinnerOne()) {
+        if (this.match.isKnockoutMatch() && bet.isUndecidedBetting() && !bet.isPenaltyWinnerOne()) {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
