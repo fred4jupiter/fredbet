@@ -163,17 +163,13 @@ public class Bet implements Visitable {
         return penaltyWinnerOne;
     }
 
-    private boolean isGroupMatch() {
-        return this.match.isGroupMatch();
-    }
-
     public void setPenaltyWinnerOne(boolean penaltyWinnerOne) {
         this.penaltyWinnerOne = penaltyWinnerOne;
     }
 
     public String getCssClassPenaltyWinnerOne() {
         String cssClasses = "";
-        if (!this.isGroupMatch() && this.isUndecidedBetting() && this.isPenaltyWinnerOne()) {
+        if (this.match.isKnockoutMatch() && this.isUndecidedBetting() && this.isPenaltyWinnerOne()) {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 
@@ -186,7 +182,7 @@ public class Bet implements Visitable {
 
     public String getCssClassPenaltyWinnerTwo() {
         String cssClasses = "";
-        if (!this.isGroupMatch() && this.isUndecidedBetting() && !this.isPenaltyWinnerOne()) {
+        if (this.match.isKnockoutMatch() && this.isUndecidedBetting() && !this.isPenaltyWinnerOne()) {
             cssClasses = cssClasses + " " + FredbetConstants.BADGE_PENALTY_WINNER_BET_CSS_CLASS;
         }
 

@@ -67,7 +67,7 @@ import org.springframework.util.Assert;
 
 
     private boolean isCorrectWinner(Match match, Bet bet) {
-        if (!match.isGroupMatch() && match.isUndecidedResult()) {
+        if (match.isKnockoutMatch() && match.isUndecidedResult()) {
             // you can only get points if the penalty winner is correct and this is calculated in the other method
             return false;
         }
