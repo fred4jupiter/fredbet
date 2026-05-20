@@ -28,7 +28,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: fredbet.jar
-          run-id: ${{needs.build.outputs.jar_file_id}}
           path: target
       - name: Docker metadata action
         id: meta
