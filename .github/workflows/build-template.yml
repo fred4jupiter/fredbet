@@ -28,7 +28,7 @@ jobs:
       jar-file-id: ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: Dockerfile
@@ -38,7 +38,7 @@ jobs:
           java-version: ${{ inputs.java_version }}
           distribution: 'temurin'
       - name: Cache local Maven repository
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -47,7 +47,7 @@ jobs:
       - name: Build with Maven
         run: ${{ inputs.maven_command }}
       - name: Publish Test Report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v3
         if: always()
         with:
           name: Maven Tests
@@ -57,7 +57,7 @@ jobs:
       - name: Upload jar file
         if: ${{ inputs.upload_artifact }}
         id: fredbet-jar-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fredbet.jar
           path: target/fredbet.jar
