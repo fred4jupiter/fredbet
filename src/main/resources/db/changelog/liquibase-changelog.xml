@@ -5,8 +5,14 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <property name="svg_type" value="text" dbms="postgresql"/>
-    <property name="svg_type" value="clob" dbms="h2"/>
+    <property name="data_type_clob" value="text" dbms="postgresql,mariadb,mysql"/>
+    <property name="data_type_clob" value="clob" dbms="h2"/>
+
+    <property name="data_type_boolean" value="boolean" dbms="h2,postgresql"/>
+    <property name="data_type_boolean" value="tinyint(1)" dbms="mariadb,mysql"/>
+
+    <property name="data_type_byteArray" value="BLOB" dbms="h2,postgresql"/>
+    <property name="data_type_byteArray" value="BLOB" dbms="mariadb,mysql"/>
 
     <changeSet id="1" author="michael">
         <createTable tableName="app_user">
@@ -16,7 +22,7 @@
             <column name="created_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="deletable" type="boolean" defaultValueBoolean="true">
+            <column name="deletable" type="${data_type_boolean}" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="varchar(100)">
@@ -38,7 +44,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="match_id" type="BIGINT"/>
-            <column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false"/>
+            <column name="PENALTY_WINNER_ONE" type="${data_type_boolean}" defaultValueBoolean="false"/>
         </createTable>
         <addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet"/>
         <createIndex tableName="bet" indexName="idx_user_name">
@@ -60,7 +66,7 @@
             <column name="stadium" type="varchar(100)"/>
             <column name="team_name_one" type="varchar(100)"/>
             <column name="team_name_two" type="varchar(100)"/>
-            <column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false"/>
+            <column name="PENALTY_WINNER_ONE" type="${data_type_boolean}" defaultValueBoolean="false"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="bet" baseColumnNames="match_id"
@@ -110,7 +116,7 @@
             <column name="locale_string" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="content" type="CLOB">
+            <column name="content" type="${data_type_clob}">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -163,22 +169,19 @@
             <column name="image_key" type="varchar(100)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="image_bytes" type="BLOB">
+            <column name="image_bytes" type="${data_type_byteArray}">
                 <constraints nullable="false"/>
             </column>
             <column name="image_group_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="thumb_image_bytes" type="BLOB">
+            <column name="thumb_image_bytes" type="${data_type_byteArray}">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <modifySql dbms="mysql">
-            <regExpReplace replace="BLOB" with="LONGBLOB"/>
-        </modifySql>
     </changeSet>
 
     <changeSet id="2" author="michael">
@@ -194,7 +197,7 @@
 
     <changeSet id="3" author="michael">
         <addColumn tableName="image_group">
-            <column name="user_profile_img_group" type="boolean" defaultValueBoolean="false">
+            <column name="user_profile_img_group" type="${data_type_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -225,7 +228,7 @@
 
     <changeSet id="7" author="michael">
         <addColumn tableName="app_user">
-            <column name="is_child" type="boolean" defaultValueBoolean="false">
+            <column name="is_child" type="${data_type_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -245,7 +248,7 @@
 
     <changeSet id="9" author="michael">
         <addColumn tableName="app_user">
-            <column name="first_login" type="boolean" defaultValueBoolean="false">
+            <column name="first_login" type="${data_type_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -253,7 +256,7 @@
 
     <changeSet id="10" author="michael">
         <addColumn tableName="bet">
-            <column name="joker" type="boolean" defaultValueBoolean="false">
+            <column name="joker" type="${data_type_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -262,10 +265,6 @@
     <changeSet id="11" author="michael">
         <validCheckSum>ANY</validCheckSum>
         <renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
-    </changeSet>
-
-    <changeSet id="12" author="michael" dbms="mariadb,mysql">
-        <modifyDataType columnName="image_bytes" newDataType="LONGBLOB" tableName="image_binary"/>
     </changeSet>
 
     <changeSet id="13" author="michael">
@@ -293,8 +292,12 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="16" author="michael">
+    <changeSet id="16a" author="michael" dbms="h2,postgres">
         <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes"/>
+    </changeSet>
+
+    <changeSet id="16b" author="michael" dbms="mariadb,mysql">
+        <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes" columnDataType="${data_type_byteArray}"/>
     </changeSet>
 
     <changeSet id="17" author="michael">
@@ -318,7 +321,7 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="UC_NAME"/>
             </column>
-            <column name="svg_content" type="${svg_type}">
+            <column name="svg_content" type="${data_type_clob}">
                 <constraints nullable="true"/>
             </column>
         </createTable>

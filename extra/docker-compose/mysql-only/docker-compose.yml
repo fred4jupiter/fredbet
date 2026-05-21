@@ -1,0 +1,14 @@
+services:
+  mysqldb:
+    image: mysql:8.0-debian
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=fredbetdb
+      - MYSQL_ROOT_PASSWORD=secred
+      - MYSQL_USER=fred
+      - MYSQL_PASSWORD=fred
+    volumes:
+      - database_data:/var/lib/mysql
+volumes:
+  database_data:

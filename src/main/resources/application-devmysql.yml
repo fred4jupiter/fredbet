@@ -1,0 +1,20 @@
+spring:
+  thymeleaf:
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:mysql://localhost:3306/fredbetdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: fred
+    password: fred
+
+logging:
+  pattern:
+    console: "%black(%d{ISO8601}) %highlight(%-5level) %yellow(%C): %msg%n%throwable"
+  level:
+    root: "WARN"
+    "org.springframework.security.web.csrf": "WARN"
+    "org.springframework.security.web.access": "WARN"
+    "de.fred4jupiter.fredbet": "DEBUG"

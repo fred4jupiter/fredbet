@@ -11,7 +11,10 @@ services:
       volumes:
         - database_data:/var/lib/mysql
     fredbet:
-      image: fred4jupiter/fredbet:latest
+#      image: fred4jupiter/fredbet:latest
+      build:
+        context: ../../../
+        dockerfile: Dockerfile-layered
       links:
         - mysqldb
       depends_on:
