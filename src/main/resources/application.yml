@@ -9,7 +9,7 @@ spring:
     generate-ddl: false
     show-sql: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     open-in-view: true
   liquibase:
     enabled: true

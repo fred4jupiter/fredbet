@@ -1,9 +1,6 @@
 spring:
   thymeleaf:
     cache: false
-  jpa:
-    hibernate:
-      ddl-auto: validate
   datasource:
     url: jdbc:mysql://localhost:3306/fredbetdb?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     driver-class-name: com.mysql.cj.jdbc.Driver

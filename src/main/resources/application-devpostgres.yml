@@ -1,9 +1,6 @@
 spring:
   thymeleaf:
     cache: false
-  jpa:
-    hibernate:
-      ddl-auto: validate
   datasource:
     url: jdbc:postgresql://localhost:5432/fredbetdb
     driver-class-name: org.postgresql.Driver

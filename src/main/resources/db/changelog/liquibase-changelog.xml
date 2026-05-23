@@ -5,11 +5,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <property name="dt_clob" value="text" dbms="postgresql"/>
-    <property name="dt_clob" value="text" dbms="mariadb,mysql"/>
+    <property name="dt_clob" value="text" dbms="postgresql,mariadb,mysql"/>
     <property name="dt_clob" value="clob" dbms="h2"/>
 
-    <property name="dt_blob" value="blob" dbms="h2,postgresql"/>
+    <property name="dt_blob" value="blob" dbms="h2"/>
+    <property name="dt_blob" value="bytea" dbms="postgresql"/>
     <property name="dt_blob" value="blob" dbms="mariadb,mysql"/>
 
     <property name="dt_boolean" value="boolean" dbms="h2,postgresql"/>

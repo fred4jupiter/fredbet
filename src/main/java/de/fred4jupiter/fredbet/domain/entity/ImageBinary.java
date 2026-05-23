@@ -21,11 +21,11 @@ public class ImageBinary {
     private String key;
 
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "IMAGE_BYTES", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "IMAGE_BYTES", nullable = false)
     @Lob
     private byte[] imageBinary;
 
-    @Column(name = "THUMB_IMAGE_BYTES", columnDefinition = "BLOB")
+    @Column(name = "THUMB_IMAGE_BYTES")
     @Lob
     private byte[] thumbImageBinary;
 
