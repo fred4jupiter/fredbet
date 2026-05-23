@@ -11,7 +11,7 @@ services:
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
   fredbet:
-    image: fred4jupiter/fredbet:4.1.1
+    image: fred4jupiter/fredbet:4.7.0
     depends_on:
       - postgres
     ports:
