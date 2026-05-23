@@ -5,24 +5,25 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <property name="data_type_clob" value="text" dbms="postgresql,mariadb,mysql"/>
-    <property name="data_type_clob" value="clob" dbms="h2"/>
+    <property name="dt_clob" value="text" dbms="postgresql"/>
+    <property name="dt_clob" value="text" dbms="mariadb,mysql"/>
+    <property name="dt_clob" value="clob" dbms="h2"/>
 
-    <property name="data_type_boolean" value="boolean" dbms="h2,postgresql"/>
-    <property name="data_type_boolean" value="tinyint(1)" dbms="mariadb,mysql"/>
+    <property name="dt_blob" value="blob" dbms="h2,postgresql"/>
+    <property name="dt_blob" value="blob" dbms="mariadb,mysql"/>
 
-    <property name="data_type_byteArray" value="BLOB" dbms="h2,postgresql"/>
-    <property name="data_type_byteArray" value="BLOB" dbms="mariadb,mysql"/>
+    <property name="dt_boolean" value="boolean" dbms="h2,postgresql"/>
+    <property name="dt_boolean" value="tinyint(1)" dbms="mariadb,mysql"/>
 
     <changeSet id="1" author="michael">
         <createTable tableName="app_user">
-            <column name="user_id" type="BIGINT" autoIncrement="true">
+            <column name="user_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="created_at" type="DATETIME">
+            <column name="created_at" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="deletable" type="${data_type_boolean}" defaultValueBoolean="true">
+            <column name="deletable" type="${dt_boolean}" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="varchar(100)">
@@ -34,7 +35,7 @@
         </createTable>
 
         <createTable tableName="bet">
-            <column name="bet_id" type="BIGINT" autoIncrement="true">
+            <column name="bet_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="goals_team_one" type="int"/>
@@ -43,8 +44,8 @@
             <column name="user_name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="match_id" type="BIGINT"/>
-            <column name="PENALTY_WINNER_ONE" type="${data_type_boolean}" defaultValueBoolean="false"/>
+            <column name="match_id" type="bigint"/>
+            <column name="PENALTY_WINNER_ONE" type="${dt_boolean}" defaultValueBoolean="false"/>
         </createTable>
         <addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet"/>
         <createIndex tableName="bet" indexName="idx_user_name">
@@ -54,7 +55,7 @@
         </createIndex>
 
         <createTable tableName="matches">
-            <column name="match_id" type="BIGINT" autoIncrement="true">
+            <column name="match_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="country_one" type="varchar(100)"/>
@@ -62,11 +63,11 @@
             <column name="goals_team_one" type="int"/>
             <column name="goals_team_two" type="int"/>
             <column name="match_group" type="varchar(100)"/>
-            <column name="kick_off_date" type="DATETIME"/>
+            <column name="kick_off_date" type="datetime"/>
             <column name="stadium" type="varchar(100)"/>
             <column name="team_name_one" type="varchar(100)"/>
             <column name="team_name_two" type="varchar(100)"/>
-            <column name="PENALTY_WINNER_ONE" type="${data_type_boolean}" defaultValueBoolean="false"/>
+            <column name="PENALTY_WINNER_ONE" type="${dt_boolean}" defaultValueBoolean="false"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="bet" baseColumnNames="match_id"
@@ -74,7 +75,7 @@
                                  referencedColumnNames="match_id"/>
 
         <createTable tableName="user_roles">
-            <column name="user_id" type="BIGINT"/>
+            <column name="user_id" type="bigint"/>
             <column name="role" type="varchar(100)"/>
         </createTable>
 
@@ -92,13 +93,13 @@
             <column name="token" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_used" type="DATETIME">
+            <column name="last_used" type="datetime">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="extra_bet">
-            <column name="extra_bet_id" type="BIGINT" autoIncrement="true">
+            <column name="extra_bet_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_name" type="varchar(100)">
@@ -116,7 +117,7 @@
             <column name="locale_string" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="content" type="${data_type_clob}">
+            <column name="content" type="${dt_clob}">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -126,7 +127,7 @@
             <column name="user_name" type="varchar(100)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="last_login" type="DATETIME">
+            <column name="last_login" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="session_id" type="varchar(255)">
@@ -135,7 +136,7 @@
         </createTable>
 
         <createTable tableName="image_group">
-            <column name="image_group_id" type="BIGINT" autoIncrement="true">
+            <column name="image_group_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)">
@@ -147,10 +148,10 @@
         </createTable>
 
         <createTable tableName="image_metadata">
-            <column name="image_id" type="BIGINT" autoIncrement="true">
+            <column name="image_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="image_group_id" type="BIGINT">
+            <column name="image_group_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="image_key" type="varchar(100)">
@@ -169,14 +170,14 @@
             <column name="image_key" type="varchar(100)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="image_bytes" type="${data_type_byteArray}">
+            <column name="image_bytes" type="${dt_blob}">
                 <constraints nullable="false"/>
             </column>
-            <column name="image_group_id" type="BIGINT">
+            <column name="image_group_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="thumb_image_bytes" type="${data_type_byteArray}">
-                <constraints nullable="false"/>
+            <column name="thumb_image_bytes" type="${dt_blob}">
+                <constraints nullable="true"/>
             </column>
             <column name="version" type="int">
                 <constraints nullable="false"/>
@@ -186,7 +187,7 @@
 
     <changeSet id="2" author="michael">
         <addColumn tableName="image_metadata">
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -197,7 +198,7 @@
 
     <changeSet id="3" author="michael">
         <addColumn tableName="image_group">
-            <column name="user_profile_img_group" type="${data_type_boolean}" defaultValueBoolean="false">
+            <column name="user_profile_img_group" type="${dt_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -205,7 +206,7 @@
 
     <changeSet id="4" author="michael">
         <addColumn tableName="app_user">
-            <column name="last_login" type="DATETIME"/>
+            <column name="last_login" type="datetime"/>
         </addColumn>
     </changeSet>
 
@@ -222,13 +223,13 @@
             <column name="points_three" type="int"/>
         </addColumn>
         <dropColumn tableName="extra_bet">
-            <column name="points"></column>
+            <column name="points"/>
         </dropColumn>
     </changeSet>
 
     <changeSet id="7" author="michael">
         <addColumn tableName="app_user">
-            <column name="is_child" type="${data_type_boolean}" defaultValueBoolean="false">
+            <column name="is_child" type="${dt_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -236,7 +237,7 @@
 
     <changeSet id="8" author="michael">
         <createTable tableName="runtime_config">
-            <column name="config_id" type="BIGINT" autoIncrement="true">
+            <column name="config_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="json_config" type="varchar(2000)"/>
@@ -248,7 +249,7 @@
 
     <changeSet id="9" author="michael">
         <addColumn tableName="app_user">
-            <column name="first_login" type="${data_type_boolean}" defaultValueBoolean="false">
+            <column name="first_login" type="${dt_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -256,7 +257,7 @@
 
     <changeSet id="10" author="michael">
         <addColumn tableName="bet">
-            <column name="joker" type="${data_type_boolean}" defaultValueBoolean="false">
+            <column name="joker" type="${dt_boolean}" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -292,17 +293,9 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="16a" author="michael" dbms="h2,postgres">
-        <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes"/>
-    </changeSet>
-
-    <changeSet id="16b" author="michael" dbms="mariadb,mysql">
-        <dropNotNullConstraint tableName="image_binary" columnName="thumb_image_bytes" columnDataType="${data_type_byteArray}"/>
-    </changeSet>
-
     <changeSet id="17" author="michael">
         <addColumn tableName="matches">
-            <column name="external_last_updated" type="DATETIME"/>
+            <column name="external_last_updated" type="datetime"/>
             <column name="external_id" type="varchar(100)"/>
         </addColumn>
         <createIndex tableName="matches" indexName="idx_external_id">
@@ -312,7 +305,7 @@
 
     <changeSet id="18" author="michael">
         <createTable tableName="team">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="country" type="varchar(100)">
@@ -321,13 +314,13 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="UC_NAME"/>
             </column>
-            <column name="svg_content" type="${data_type_clob}">
+            <column name="svg_content" type="${dt_clob}">
                 <constraints nullable="true"/>
             </column>
         </createTable>
         <addColumn tableName="matches">
-            <column name="team_one_id" type="BIGINT"/>
-            <column name="team_two_id" type="BIGINT"/>
+            <column name="team_one_id" type="bigint"/>
+            <column name="team_two_id" type="bigint"/>
         </addColumn>
         <addForeignKeyConstraint baseTableName="matches" baseColumnNames="team_one_id"
                                  constraintName="FK_team_one_id" referencedTableName="team"
