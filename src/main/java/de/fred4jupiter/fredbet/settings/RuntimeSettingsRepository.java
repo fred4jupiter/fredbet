@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import tools.jackson.core.JacksonException;
 
 import java.util.Optional;
 
@@ -40,10 +41,14 @@ public class RuntimeSettingsRepository {
     }
 
     private <T> T toRuntimeSettings(RuntimeSettingsDb runtimeSettingsDb, Class<T> targetType) {
-        String jsonConfig = runtimeSettingsDb.getJsonConfig();
+        final String jsonConfig = runtimeSettingsDb.getJsonConfig();
 
         if (StringUtils.isNotBlank(jsonConfig)) {
-            return jsonObjectConverter.fromJson(jsonConfig, targetType);
+            try {
+                return jsonObjectConverter.fromJson(jsonConfig, targetType);
+            } catch (JacksonException e) {
+                LOG.error("Could not deserialize json config. Using defaults. Cause: {}", e.getMessage());
+            }
         }
 
         return null;
