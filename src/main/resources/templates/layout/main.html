@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de" th:data-bs-theme="${@webSecurityUtil.getCurrentUserTheme()}"
+      th:fragment="layout(title, content)" th:with="scripts=${scripts?:null}">
+<head>
+    <title>Main Layout</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <th:block th:replace="${title}"/>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/fontawesome.min.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/brands.min.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/solid.min.css}" />
+    <link rel="stylesheet" th:href="${@webSecurityUtil.getBootswatchThemeUrl()}" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}" />
+    <link rel="stylesheet" th:href="@{/lightbox/css/lightbox.min.css}" />
+    <link rel="stylesheet" th:href="@{/flag-icons-7.2.3/css/flag-icons.min.css}" />
+    <link rel="stylesheet" th:href="@{/club-wm-icons/css/club-wm-icons.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+</head>
+<body>
+    <nav th:replace="~{_navigation :: menu}"></nav>
+    <div class="container mt-3" role="main">
+        <div th:replace="~{fragments/alert :: alert_headline}"></div>
+        <th:block th:replace="${content}"/>
+    </div>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lightbox/js/lightbox.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/pages/tooltip.js}"></script>
+    <th:block th:if="${scripts != null}">
+        <th:block th:replace="${scripts}"/>
+    </th:block>
+</body>
+</html>
