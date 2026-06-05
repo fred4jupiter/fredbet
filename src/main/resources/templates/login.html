@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(title=~{::title}, content=~{::main}, link=~{::link})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/main :: layout(title=~{::title}, sytles=~{::link}, content=~{::main}, scripts=~{::script})}">
 <head>
     <title th:text="#{login.title}"></title>
     <link rel="stylesheet" th:href="@{/css/pages/login.css}" />
