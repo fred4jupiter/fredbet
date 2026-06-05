@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="~{layout/main :: layout(title=~{::title}, sytles=~{::link}, content=~{::main}, scripts=~{::script})}">
 <head>
 	<title th:text="#{matches.form.title}"></title>
 </head>
 <body>
-	<div layout:fragment="content">
+	<main>
         <h1 th:text="#{matches.form.title}"></h1>
 		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
 			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/match/delete/' + ${createEditMatchCommand.matchId}, id = 'confirm-delete')}"></div>
@@ -74,9 +73,7 @@
 			</div>
 		</form>
         <p th:if="${externalLastUpdated != null}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="fw-lighter fs-6 mt-3" th:text="${'FD last update date: ' + externalLastUpdated}"></p>
-	</div>
+	</main>
 </body>
-<th:block layout:fragment="scripts">
-	<script type="text/javascript" th:src="@{/js/pages/edit_match.js}" charset="UTF-8"></script>
-</th:block>
+<script type="text/javascript" th:src="@{/js/pages/edit_match.js}" charset="UTF-8"></script>
 </html>
