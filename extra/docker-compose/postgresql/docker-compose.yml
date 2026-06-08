@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres
     volumes:
-      - postgres-vol:/var/lib/postgresql/data
+      - postgres-vol:/var/lib/postgresql
     ports:
       - "5432:5432"
     environment:
