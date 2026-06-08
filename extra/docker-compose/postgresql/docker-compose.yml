@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres
+    image: postgres:18.4-alpine
     volumes:
       - postgres-vol:/var/lib/postgresql
     ports:
@@ -11,7 +11,7 @@ services:
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
   fredbet:
-    image: fred4jupiter/fredbet:4.7.0
+    image: fred4jupiter/fredbet:4.7.1
     depends_on:
       - postgres
     ports:
