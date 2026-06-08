@@ -11,7 +11,7 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - extra betting of 1st, 2nd and 3rd winner
 - image gallery
 - user profile image
-- multiple database types supported (H2, MariaDB, MySQL, PostgeSQL)
+- database support for H2 (for development) and PostgreSQL (production setup)
 - integrated user administration
 - rich text editor for rules, prices and misc pages
 - points statistic
