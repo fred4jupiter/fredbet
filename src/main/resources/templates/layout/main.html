@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="de" th:data-bs-theme="${@webSecurityUtil.getCurrentUserTheme()}"
-      th:fragment="layout(title, content)" th:with="scripts=${scripts?:null}">
+      th:fragment="layout" th:with="sytles=${sytles?:null}, scripts=${scripts?:null}">
 <head>
-    <title>Main Layout</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <th:block th:replace="${title}"/>
@@ -15,6 +14,9 @@
     <link rel="stylesheet" th:href="@{/flag-icons-7.2.3/css/flag-icons.min.css}" />
     <link rel="stylesheet" th:href="@{/club-wm-icons/css/club-wm-icons.css}" />
     <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <th:block th:if="${sytles != null}">
+        <th:block th:replace="${sytles}"/>
+    </th:block>
 </head>
 <body>
     <nav th:replace="~{_navigation :: menu}"></nav>

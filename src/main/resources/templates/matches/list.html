@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="~{layout/main :: layout(title=~{::title}, sytles=~{::link}, content=~{::main}, scripts=~{::script})}">
 <head>
 	<title th:text="${heading}"></title>
     <link rel="stylesheet" th:href="@{/css/pages/matches_list.css}" />
 </head>
 <body>
-	<div layout:fragment="content">
+	<main>
 		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="matchCommand : ${allMatches}">
@@ -75,6 +74,6 @@
 				</div>
 			</div>
 			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
-	</div>
+	</main>
 </body>
 </html>
