@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="de" th:data-bs-theme="${@webSecurityUtil.getCurrentUserTheme()}"
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" th:data-bs-theme="${@webSecurityUtil.getCurrentUserTheme()}"
       th:fragment="layout" th:with="sytles=${sytles?:null}, scripts=${scripts?:null}">
 <head>
     <meta charset="UTF-8">
