@@ -1,8 +1,8 @@
 services:
   postgres:
-    image: postgres
+    image: postgres:18.4-alpine
     volumes:
-      - postgres-vol:/var/lib/postgresql/data
+      - postgres-vol:/var/lib/postgresql
     ports:
       - "5432:5432"
     environment:
@@ -10,16 +10,25 @@ services:
       - POSTGRES_PASSWORD=fred
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
+  databasus:
+    image: databasus/databasus:v3.42.0
+    depends_on:
+      - postgres
+    ports:
+      - "4005:4005"
+    volumes:
+      - databasus-data:/databasus-data
   fredbet:
-    image: fred4jupiter/fredbet:4.7.0
+    image: fred4jupiter/fredbet:latest
     depends_on:
       - postgres
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=postgres
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/fredbetdb
       - SPRING_DATASOURCE_USERNAME=fred
       - SPRING_DATASOURCE_PASSWORD=fred
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
 volumes:
   postgres-vol:
+  databasus-data:
