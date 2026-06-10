@@ -10,6 +10,10 @@ services:
       - POSTGRES_PASSWORD=fred
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
+    command:
+      - "postgres"
+      - "-c"
+      - "lo_compat_privileges=on"
   databasus:
     image: databasus/databasus:v3.42.0
     depends_on:
