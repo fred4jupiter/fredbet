@@ -14,8 +14,8 @@
 				</div>
 			</div>
             <div class="row">
-                <div class="col-auto mb-3">
-                    <a sec:authorize="hasAuthority('PERM_EDIT_INFOS_PRICES')" href="#" th:href="@{/info/editinfo/prices}" class="btn btn-primary" role="button" th:text="#{info.prices.edit.button}"></a>
+                <div sec:authorize="hasAuthority('PERM_EDIT_INFOS_PRICES')" class="col-auto mb-3">
+                    <a href="#" th:href="@{/info/editinfo/prices}" class="btn btn-primary" role="button" th:text="#{info.prices.edit.button}"></a>
                 </div>
                 <div class="col-auto mb-3" th:if="${showPdfExportButton}">
                     <a class="btn btn-info" role="button" th:href="@{/info/pdf(type='prices')}">
