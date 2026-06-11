@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v3.5
+    image: traefik:v3.7
     container_name: "traefik"
     restart: always
     command:
@@ -24,7 +24,33 @@ services:
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  postgres:
+    image: postgres:18.4-alpine
+    container_name: "postgres"
+    restart: always
+    volumes:
+      - postgres-vol:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE_NAME}
+      - TZ=Europe/Berlin
+    command:
+      - "postgres"
+      - "-c"
+      - "lo_compat_privileges=on"
+  databasus:
+    image: databasus/databasus:v3.42.0
+    depends_on:
+      - postgres
+    ports:
+      - "4005:4005"
+    volumes:
+      - databasus-vol:/databasus-data
   fredbet:
+    # image: ghcr.io/fred4jupiter/fredbet:latest
     image: fred4jupiter/fredbet:latest
     container_name: "fredbet"
     restart: always
@@ -47,32 +73,12 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - FREDBET_INTEGRATION_FOOTBALL_DATA_API_TOKEN=${FOOTBALL_API_TOKEN}
     logging:
-      driver: "json-file"
-  postgres:
-    image: postgres:14.5-alpine
-    container_name: "postgres"
-    restart: always
-    volumes:
-      - "./pgdata:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_DATABASE_NAME}
-  backup:
-    image: eeshugerman/postgres-backup-s3:16 # run docker exec <backup container name> sh backup.sh for manual backup
-    container_name: "backup"
-    restart: always
-    environment:
-      - SCHEDULE=@hourly
-      - BACKUP_KEEP_DAYS=7     # optional
-      - PASSPHRASE=${BACKUP_PASSPHRASE}
-      - S3_REGION=eu-central-1
-      - S3_BUCKET=${S3_BUCKET_NAME}
-      - S3_PREFIX=backup
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DATABASE=${DB_DATABASE_NAME}
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres-vol:
+  databasus-vol:

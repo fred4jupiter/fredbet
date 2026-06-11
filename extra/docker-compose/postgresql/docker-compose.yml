@@ -21,7 +21,7 @@ services:
     ports:
       - "4005:4005"
     volumes:
-      - databasus-data:/databasus-data
+      - databasus-vol:/databasus-data
   fredbet:
     image: fred4jupiter/fredbet:latest
     depends_on:
@@ -35,4 +35,4 @@ services:
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
 volumes:
   postgres-vol:
-  databasus-data:
+  databasus-vol:
