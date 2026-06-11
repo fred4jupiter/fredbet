@@ -22,8 +22,8 @@ services:
       - "443:443"
       - "8180:8080"
     volumes:
-      - "./letsencrypt:/letsencrypt"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - letsencrypt-vol:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
   postgres:
     image: postgres:18.4-alpine
     container_name: "postgres"
@@ -50,8 +50,8 @@ services:
     volumes:
       - databasus-vol:/databasus-data
   fredbet:
-    # image: ghcr.io/fred4jupiter/fredbet:latest
-    image: fred4jupiter/fredbet:latest
+    image: ghcr.io/fred4jupiter/fredbet:latest
+    # image: fred4jupiter/fredbet:latest
     container_name: "fredbet"
     restart: always
     depends_on:
@@ -69,7 +69,7 @@ services:
       - "traefik.http.routers.fredbet.middlewares=fredbet-headers"
       - "traefik.http.middlewares.fredbet-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
     environment:
-      - SPRING_PROFILES_ACTIVE=postgres
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
@@ -80,5 +80,6 @@ services:
         max-file: "3"
 
 volumes:
+  letsencrypt-vol:
   postgres-vol:
   databasus-vol:
