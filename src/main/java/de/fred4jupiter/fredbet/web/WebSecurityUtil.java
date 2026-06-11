@@ -125,4 +125,8 @@ public class WebSecurityUtil {
 
         return securityService.getCurrentUser().getAppUserSetting().getNavbarLayout().getNavbarTag();
     }
+
+    public boolean isJokersEnabled() {
+        return runtimeSettingsService.loadRuntimeSettings().getJokerMaxCount() != null && runtimeSettingsService.loadRuntimeSettings().getJokerMaxCount() > 0;
+    }
 }
