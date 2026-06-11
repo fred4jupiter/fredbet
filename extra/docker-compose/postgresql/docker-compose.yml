@@ -22,6 +22,17 @@ services:
       - "4005:4005"
     volumes:
       - databasus-vol:/databasus-data
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:26.1.0
+    depends_on:
+      - postgres
+    ports:
+      - 8978:8978
+    environment:
+      CB_ADMIN_NAME: "admin"
+      CB_ADMIN_PASSWORD: "Admin4Admin!"
+    volumes:
+      - cloudbeaver-vol:/opt/cloudbeaver/workspace
   fredbet:
     image: fred4jupiter/fredbet:latest
     depends_on:
@@ -36,3 +47,4 @@ services:
 volumes:
   postgres-vol:
   databasus-vol:
+  cloudbeaver-vol:
