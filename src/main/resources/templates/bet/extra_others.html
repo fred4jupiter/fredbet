@@ -12,7 +12,7 @@
 						<div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-9">
-                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
+                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${webSecurityUtil.getUserProfileImageKeyFor(extraBet.userName)})}"></span>
                                     <div class="mt-1">
                                         <span class="ms-3" th:text="${extraBet.userName}"/>
                                     </div>
@@ -28,19 +28,19 @@
 						   			<tr>
 										<td class="bg-success-subtle">
 											1. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="${@teamUtil.i18n(extraBet.finalWinner)}"></span>
+											<span th:text="${teamUtil.i18n(extraBet.finalWinner)}"></span>
 										</td>
 						   			</tr>
 						   			<tr>
 										<td class="bg-warning-subtle">
 											2. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="${@teamUtil.i18n(extraBet.semiFinalWinner)}"></span>
+											<span th:text="${teamUtil.i18n(extraBet.semiFinalWinner)}"></span>
 										</td>
 						   			</tr>
 						   			<tr th:if="${extraBet.thirdFinalWinner}">
 										<td class="bg-info-subtle">
 											3. <i class="fas fa-trophy"></i>&nbsp;&nbsp;
-											<span th:text="${@teamUtil.i18n(extraBet.thirdFinalWinner)}"></span>
+											<span th:text="${teamUtil.i18n(extraBet.thirdFinalWinner)}"></span>
 										</td>
 						   			</tr>
 						   		</table>

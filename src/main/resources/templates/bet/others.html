@@ -19,7 +19,7 @@
                                 <div class="col-8 pe-0">
                                     <span th:text="${#temporals.format(allBetsCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
                                     <br/>
-                                    <span th:text="${allBetsCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
+                                    <span th:text="${allBetsCommand.match.getGroupLabel(messageSourceUtil)}"></span>
                                 </div>
                                 <div class="col-4 ps-0">
                                     <div class="text-end mt-2">
@@ -52,7 +52,7 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-6 pe-0">
-                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${@webSecurityUtil.getUserProfileImageKeyFor(bet.userName)})}"></span>
+                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${webSecurityUtil.getUserProfileImageKeyFor(bet.userName)})}"></span>
                                     <div class="mt-1">
                                         <span class="ms-3" th:text="${bet.userName}"/>
                                     </div>

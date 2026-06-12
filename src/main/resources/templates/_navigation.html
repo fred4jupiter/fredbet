@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:fragment="menu" th:remove="tag">
-        <nav th:if="${@webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${@webSecurityUtil.getNavbarTag()}">
+        <nav th:if="${webSecurityUtil.isUserLoggedIn()}" class="navbar navbar-expand-lg bg-primary" th:classappend="${webSecurityUtil.getNavbarTag()}">
             <div class="container">
                 <a class="navbar-brand" th:href="@{/matches/upcoming}"><i class="fas fa-home"></i></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -70,12 +70,12 @@
                                 <li>
                                     <a class="dropdown-item" th:href="@{/matches}" th:text="#{all.matches}"></a>
                                 </li>
-                                <li th:if="${@webSecurityUtil.isJokersEnabled()}">
+                                <li th:if="${webSecurityUtil.isJokersEnabled()}">
                                     <hr class="dropdown-divider">
                                     <a class="dropdown-item" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
                                 </li>
-                                <li th:each="group : ${@groupAvailabilityUtil.getGroups()}">
-                                    <hr th:if="${@groupAvailabilityUtil.isDividerNecessary(group)}" class="dropdown-divider">
+                                <li th:each="group : ${groupAvailabilityUtil.getGroups()}">
+                                    <hr th:if="${groupAvailabilityUtil.isDividerNecessary(group)}" class="dropdown-divider">
                                     <a class="dropdown-item" th:href="${'/matches/group/' + group.getName() }" th:text="#{${group.getTitleMsgKey()}}"></a>
                                 </li>
                             </ul>
@@ -123,7 +123,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li th:if="${@webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                <li th:if="${webSecurityUtil.isDemoDataMenuEntryEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/administration}" th:text="#{navigation.dataCreation}"></a>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -166,12 +166,12 @@
                                 <li sec:authorize="hasAuthority('PERM_SHOW_LAST_LOGINS')">
                                     <a class="dropdown-item" th:href="@{/administration/lastlogins}" th:text="#{navigation.lastlogin}"></a>
                                 </li>
-                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                <li th:if="${runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <hr class="dropdown-divider">
                                     <a class="dropdown-item" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
                                 </li>
-                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="${@webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
+                                <li th:if="${runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                    <a class="dropdown-item" th:href="${webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
                                 </li>
                             </ul>
                     </ul>
@@ -179,7 +179,7 @@
                         <li class="nav-item dropdown me-2">
                             <a class="nav-link dropdown-toggle" th:classappend="${classes}" id="language" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <span class="fi" th:classappend="${@languageIconUtil.cssClassCurrentUserLanguage()}"></span>
+                                <span class="fi" th:classappend="${languageIconUtil.cssClassCurrentUserLanguage()}"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="language">
                                 <li th:replace="~{fragments/language_selector :: language_selector}"></li>
@@ -187,12 +187,12 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
-                                     th:alt="${@webSecurityUtil.getCurrentUsername()}" height="24" class="rounded">
+                                <img th:src="@{'/gallery/showthumb/' + ${webSecurityUtil.getCurrentUserProfileImageKey()}}"
+                                     th:alt="${webSecurityUtil.getCurrentUsername()}" height="24" class="rounded">
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="bg-light">
-                                    <h6 class="dropdown-header text-center fst-italic" th:text="${'-- ' + @webSecurityUtil.getCurrentUsername() + ' --'}">Dropdown header</h6>
+                                    <h6 class="dropdown-header text-center fst-italic" th:text="${'-- ' + webSecurityUtil.getCurrentUsername() + ' --'}">Dropdown header</h6>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
@@ -200,7 +200,7 @@
                                 <li>
                                     <a class="dropdown-item" th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
                                 </li>
-                                <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
+                                <li th:if="${runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
                                     <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
                                 </li>
                                 <li>

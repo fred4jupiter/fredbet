@@ -38,7 +38,7 @@
                         <div class="mt-1">
                             <div class="dropdown">
                                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="fi" th:classappend="${@languageIconUtil.cssClassCurrentUserLanguage()}"></span>
+                                    <span class="fi" th:classappend="${languageIconUtil.cssClassCurrentUserLanguage()}"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li th:replace="~{fragments/language_selector :: language_selector}"></li>
@@ -55,7 +55,7 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <div class="form-group">
-                            <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" class="btn btn-light" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+                            <a th:if="${runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" class="btn btn-light" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
                         </div>
                     </div>
                 </div>

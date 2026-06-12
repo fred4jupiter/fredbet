@@ -20,7 +20,7 @@
 									<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
 									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points}"></span>
 									<br/>
-                                    <span th:text="${matchCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
+                                    <span th:text="${matchCommand.match.getGroupLabel(messageSourceUtil)}"></span>
 					  			</div>
 				  			</div>
 						</div>
