@@ -27,7 +27,7 @@
 							<tbody>
 								<tr th:classappend="${teamStandings.getCssClass(iter.count)}" th:each="teamStandings,iter : ${standingsContainer.getForGroup(group)}">
 									<td th:text="${iter.count}"></td>
-									<td th:text="${teamStandings.teamName}"></td>
+									<td th:text="${teamStandings.getTeam().getNameTranslated(@messageSourceUtil)}"></td>
 									<td th:text="${teamStandings.numberOfMatches}"></td>
 									<td th:text="${teamStandings.numberOfWins}"></td>
 									<td th:text="${teamStandings.numberOfUndecided}"></td>

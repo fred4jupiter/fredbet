@@ -19,10 +19,10 @@ public class StandingsContainer {
     }
 
     public void registerResult(Match match, Locale locale) {
-        TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(match.getGroup(), getTranslatedTeamName(match.getTeamOne(), locale));
+        TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamOne());
         teamPointsTeamOne.registerResultForTeam(match);
 
-        TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(match.getGroup(), getTranslatedTeamName(match.getTeamTwo(), locale));
+        TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamTwo());
         teamPointsTeamTwo.registerResultForTeam(match);
     }
 
@@ -33,19 +33,19 @@ public class StandingsContainer {
         return messageSourceUtil.getCountryName(team.getCountry(), locale);
     }
 
-    private TeamStandings getGroupTeamPointsByGroupAndName(Group group, String teamName) {
+    private TeamStandings getGroupTeamPointsByGroupAndName(Group group, Team team) {
         List<TeamStandings> list = standingsMap.computeIfAbsent(group, k -> new ArrayList<>());
-        return getOrCreate(list, teamName);
+        return getOrCreate(list, team);
     }
 
-    private TeamStandings getOrCreate(List<TeamStandings> list, String teamName) {
+    private TeamStandings getOrCreate(List<TeamStandings> list, Team team) {
         for (TeamStandings goupTeamPoints : list) {
-            if (goupTeamPoints.getTeamName().equals(teamName)) {
+            if (goupTeamPoints.getTeam().getId().equals(team.getId())) {
                 return goupTeamPoints;
             }
         }
 
-        TeamStandings teamStandings = new TeamStandings(teamName);
+        TeamStandings teamStandings = new TeamStandings(team);
         list.add(teamStandings);
         return teamStandings;
     }
