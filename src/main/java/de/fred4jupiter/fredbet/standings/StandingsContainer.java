@@ -3,8 +3,6 @@ package de.fred4jupiter.fredbet.standings;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -12,25 +10,12 @@ public class StandingsContainer {
 
     private final Map<Group, List<TeamStandings>> standingsMap = new HashMap<>();
 
-    private final MessageSourceUtil messageSourceUtil;
-
-    public StandingsContainer(MessageSourceUtil messageSourceUtil) {
-        this.messageSourceUtil = messageSourceUtil;
-    }
-
-    public void registerResult(Match match, Locale locale) {
+    public void registerResult(Match match) {
         TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamOne());
         teamPointsTeamOne.registerResultForTeam(match);
 
         TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamTwo());
         teamPointsTeamTwo.registerResultForTeam(match);
-    }
-
-    private String getTranslatedTeamName(Team team, Locale locale) {
-        if (StringUtils.isNotBlank(team.getName())) {
-            return team.getName();
-        }
-        return messageSourceUtil.getCountryName(team.getCountry(), locale);
     }
 
     private TeamStandings getGroupTeamPointsByGroupAndName(Group group, Team team) {
