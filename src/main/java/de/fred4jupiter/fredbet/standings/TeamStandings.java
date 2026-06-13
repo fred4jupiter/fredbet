@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TeamStandings {
 
-    private final String teamName;
+    private final Team team;
 
     private final AtomicInteger numberOfMatches = new AtomicInteger();
 
@@ -23,8 +23,8 @@ public class TeamStandings {
 
     private final AtomicInteger numberOfPoints = new AtomicInteger();
 
-    public TeamStandings(String teamName) {
-        this.teamName = teamName;
+    public TeamStandings(Team team) {
+        this.team = team;
     }
 
     public void registerResultForTeam(Match match) {
@@ -33,7 +33,7 @@ public class TeamStandings {
             numberOfUndecided.incrementAndGet();
             numberOfPoints.addAndGet(1);
         } else {
-            if (match.isTeamOneWinner()) {
+            if (this.team.getId().equals(match.getTeamOne().getId()) && match.isTeamOneWinner()) {
                 numberOfWins.incrementAndGet();
                 numberOfPoints.addAndGet(3);
             } else {
@@ -45,8 +45,8 @@ public class TeamStandings {
         numberOfGoalsAgainst.addAndGet(match.getGoalsTeamTwo());
     }
 
-    public String getTeamName() {
-        return teamName;
+    public Team getTeam() {
+        return team;
     }
 
     public Integer getNumberOfMatches() {
@@ -81,26 +81,26 @@ public class TeamStandings {
         return numberOfPoints.get();
     }
 
-    @Override
-    public String toString() {
-        return teamName +
-                " | " +
-                numberOfMatches +
-                " | " +
-                numberOfWins +
-                " | " +
-                numberOfUndecided +
-                " | " +
-                numberOfLooses +
-                " | " +
-                numberOfGoals +
-                " | " +
-                numberOfGoalsAgainst +
-                " | " +
-                getNumberOfGoalDifference() +
-                " | " +
-                numberOfPoints;
-    }
+//    @Override
+//    public String toString() {
+//        return teamName +
+//                " | " +
+//                numberOfMatches +
+//                " | " +
+//                numberOfWins +
+//                " | " +
+//                numberOfUndecided +
+//                " | " +
+//                numberOfLooses +
+//                " | " +
+//                numberOfGoals +
+//                " | " +
+//                numberOfGoalsAgainst +
+//                " | " +
+//                getNumberOfGoalDifference() +
+//                " | " +
+//                numberOfPoints;
+//    }
 
     public String getCssClass(Integer rowCount) {
         if (rowCount == 1 || rowCount == 2) {

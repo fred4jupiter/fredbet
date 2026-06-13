@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.standings;
 
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,18 +12,15 @@ public class StandingsService {
 
     private final MatchService matchService;
 
-    private final MessageSourceUtil messageSourceUtil;
-
-    public StandingsService(MatchService matchService, MessageSourceUtil messageSourceUtil) {
+    public StandingsService(MatchService matchService) {
         this.matchService = matchService;
-        this.messageSourceUtil = messageSourceUtil;
     }
 
     public StandingsContainer calculateStandings(Locale locale) {
-        final StandingsContainer standingsContainer = new StandingsContainer(messageSourceUtil);
+        final StandingsContainer standingsContainer = new StandingsContainer();
 
         List<Match> matches = matchService.findAll().stream().filter(Match::hasResultSet).toList();
-        matches.forEach(match -> standingsContainer.registerResult(match, locale));
+        matches.forEach(standingsContainer::registerResult);
 
         return standingsContainer;
     }
