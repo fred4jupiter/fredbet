@@ -1,9 +1,7 @@
 package de.fred4jupiter.fredbet.match;
 
-import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,14 +43,11 @@ public class MatchService {
 
     private final TeamRepository teamRepository;
 
-    private final TeamService teamService;
-
     public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher,
-                        TeamRepository teamRepository, TeamService teamService) {
+                        TeamRepository teamRepository) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.teamRepository = teamRepository;
-        this.teamService = teamService;
     }
 
     public Optional<Match> findFinalMatch() {

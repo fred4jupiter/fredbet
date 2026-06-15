@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.excel;
 
-import de.fred4jupiter.fredbet.TeamService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;

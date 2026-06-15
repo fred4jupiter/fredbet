@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.excel;
 
-import de.fred4jupiter.fredbet.TeamService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
