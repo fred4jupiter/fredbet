@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.team;
 
-import de.fred4jupiter.fredbet.TeamService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
