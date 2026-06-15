@@ -81,22 +81,22 @@ public class TeamStandings {
     @Override
     public String toString() {
         return this.team +
-                " | " +
-                numberOfMatches +
-                " | " +
-                numberOfWins +
-                " | " +
-                numberOfUndecided +
-                " | " +
-                numberOfLooses +
-                " | " +
-                numberOfGoals +
-                " | " +
-                numberOfGoalsAgainst +
-                " | " +
-                getNumberOfGoalDifference() +
-                " | " +
-                numberOfPoints;
+            " | " +
+            numberOfMatches +
+            " | " +
+            numberOfWins +
+            " | " +
+            numberOfUndecided +
+            " | " +
+            numberOfLooses +
+            " | " +
+            numberOfGoals +
+            " | " +
+            numberOfGoalsAgainst +
+            " | " +
+            getNumberOfGoalDifference() +
+            " | " +
+            numberOfPoints;
     }
 
     public String getCssClass(Integer rowCount) {
