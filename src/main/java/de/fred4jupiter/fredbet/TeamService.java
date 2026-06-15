@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 @Transactional
 public class TeamService {
 
-    private static final String FALLBACK_TEAM_NAME = "Not yet defined";
+    public static final String FALLBACK_TEAM_NAME = "Not yet defined";
 
     private final TeamRepository teamRepository;
 

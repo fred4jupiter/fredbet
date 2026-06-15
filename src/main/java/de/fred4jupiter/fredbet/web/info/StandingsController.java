@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web.info;
 
 import de.fred4jupiter.fredbet.standings.StandingsContainer;
 import de.fred4jupiter.fredbet.standings.StandingsService;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,7 @@ public class StandingsController {
 
     @GetMapping
     public String show(Model model) {
-        StandingsContainer standingsContainer = standingsService.calculateStandings(LocaleContextHolder.getLocale());
+        StandingsContainer standingsContainer = standingsService.calculateStandings();
         model.addAttribute("standingsContainer", standingsContainer);
         return PAGE_GROUP_TABLE;
     }

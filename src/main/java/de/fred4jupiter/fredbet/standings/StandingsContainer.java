@@ -3,8 +3,6 @@ package de.fred4jupiter.fredbet.standings;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -12,40 +10,27 @@ public class StandingsContainer {
 
     private final Map<Group, List<TeamStandings>> standingsMap = new HashMap<>();
 
-    private final MessageSourceUtil messageSourceUtil;
+    public void registerResult(Match match) {
+        TeamStandings home = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamOne());
+        TeamStandings away = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamTwo());
 
-    public StandingsContainer(MessageSourceUtil messageSourceUtil) {
-        this.messageSourceUtil = messageSourceUtil;
+        home.addMatch(match.getGoalsTeamOne(), match.getGoalsTeamTwo());
+        away.addMatch(match.getGoalsTeamTwo(), match.getGoalsTeamOne());
     }
 
-    public void registerResult(Match match, Locale locale) {
-        TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(match.getGroup(), getTranslatedTeamName(match.getTeamOne(), locale));
-        teamPointsTeamOne.registerResultForTeam(match);
-
-        TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(match.getGroup(), getTranslatedTeamName(match.getTeamTwo(), locale));
-        teamPointsTeamTwo.registerResultForTeam(match);
-    }
-
-    private String getTranslatedTeamName(Team team, Locale locale) {
-        if (StringUtils.isNotBlank(team.getName())) {
-            return team.getName();
-        }
-        return messageSourceUtil.getCountryName(team.getCountry(), locale);
-    }
-
-    private TeamStandings getGroupTeamPointsByGroupAndName(Group group, String teamName) {
+    private TeamStandings getGroupTeamPointsByGroupAndName(Group group, Team team) {
         List<TeamStandings> list = standingsMap.computeIfAbsent(group, k -> new ArrayList<>());
-        return getOrCreate(list, teamName);
+        return getOrCreate(list, team);
     }
 
-    private TeamStandings getOrCreate(List<TeamStandings> list, String teamName) {
+    private TeamStandings getOrCreate(List<TeamStandings> list, Team team) {
         for (TeamStandings goupTeamPoints : list) {
-            if (goupTeamPoints.getTeamName().equals(teamName)) {
+            if (goupTeamPoints.getTeam().getId().equals(team.getId())) {
                 return goupTeamPoints;
             }
         }
 
-        TeamStandings teamStandings = new TeamStandings(teamName);
+        TeamStandings teamStandings = new TeamStandings(team);
         list.add(teamStandings);
         return teamStandings;
     }

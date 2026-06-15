@@ -1,11 +1,13 @@
 package de.fred4jupiter.fredbet.excel;
 
+import de.fred4jupiter.fredbet.TeamService;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.ranking.RankingService;
@@ -14,6 +16,7 @@ import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -76,8 +79,8 @@ public class ReportService {
                 final Match match = bet.getMatch();
 
                 row.add(bet.getUserName());
-                row.add(messageSourceUtil.getCountryName(match.getTeamOne().getCountry(), locale));
-                row.add(messageSourceUtil.getCountryName(match.getTeamTwo().getCountry(), locale));
+                row.add(getTeamNameTranslated(match.getTeamOne(), locale));
+                row.add(getTeamNameTranslated(match.getTeamTwo(), locale));
                 row.add(DateUtils.formatByLocale(match.getKickOffDate(), locale));
                 if (match.hasResultSet()) {
                     row.add("" + match.getGoalsTeamOne());
@@ -95,6 +98,11 @@ public class ReportService {
                 row.add("" + bet.getPoints());
             }
         });
+    }
+
+    private String getTeamNameTranslated(Team team, Locale locale) {
+        String name = team.getNameTranslated(messageSourceUtil, locale);
+        return StringUtils.isNotBlank(name) ? name : TeamService.FALLBACK_TEAM_NAME;
     }
 
     public byte[] exportExtraBetsToExcel(Locale locale) {

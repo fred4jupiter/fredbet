@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +29,7 @@ public class StandingsServiceIT {
     public void calculateGroupTablePoints() {
         dataPopulator.createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, false));
 
-        StandingsContainer standingsContainer = standingsService.calculateStandings(Locale.of("de", "DE"));
+        StandingsContainer standingsContainer = standingsService.calculateStandings();
         assertThat(standingsContainer).isNotNull();
         LOG.debug("groupPointsContainer: {}", standingsContainer);
 
