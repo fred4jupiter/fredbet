@@ -78,26 +78,26 @@ public class TeamStandings {
         return numberOfPoints.get();
     }
 
-//    @Override
-//    public String toString() {
-//        return teamName +
-//                " | " +
-//                numberOfMatches +
-//                " | " +
-//                numberOfWins +
-//                " | " +
-//                numberOfUndecided +
-//                " | " +
-//                numberOfLooses +
-//                " | " +
-//                numberOfGoals +
-//                " | " +
-//                numberOfGoalsAgainst +
-//                " | " +
-//                getNumberOfGoalDifference() +
-//                " | " +
-//                numberOfPoints;
-//    }
+    @Override
+    public String toString() {
+        return this.team +
+                " | " +
+                numberOfMatches +
+                " | " +
+                numberOfWins +
+                " | " +
+                numberOfUndecided +
+                " | " +
+                numberOfLooses +
+                " | " +
+                numberOfGoals +
+                " | " +
+                numberOfGoalsAgainst +
+                " | " +
+                getNumberOfGoalDifference() +
+                " | " +
+                numberOfPoints;
+    }
 
     public String getCssClass(Integer rowCount) {
         if (rowCount == 1 || rowCount == 2) {
