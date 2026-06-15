@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.standings;
 
-import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,22 +26,20 @@ public class TeamStandings {
         this.team = team;
     }
 
-    public void registerResultForTeam(Match match) {
+    public void addMatch(Integer scored, Integer conceded) {
         numberOfMatches.incrementAndGet();
-        if (match.isUndecidedResult()) {
+        numberOfGoals.addAndGet(scored);
+        numberOfGoalsAgainst.addAndGet(conceded);
+
+        if (scored > conceded) {
+            numberOfWins.incrementAndGet();
+            numberOfPoints.addAndGet(3);
+        } else if (scored.equals(conceded)) {
             numberOfUndecided.incrementAndGet();
             numberOfPoints.addAndGet(1);
         } else {
-            if (this.team.getId().equals(match.getTeamOne().getId()) && match.isTeamOneWinner()) {
-                numberOfWins.incrementAndGet();
-                numberOfPoints.addAndGet(3);
-            } else {
-                numberOfLooses.incrementAndGet();
-            }
+            numberOfLooses.incrementAndGet();
         }
-
-        numberOfGoals.addAndGet(match.getGoalsTeamOne());
-        numberOfGoalsAgainst.addAndGet(match.getGoalsTeamTwo());
     }
 
     public Team getTeam() {
