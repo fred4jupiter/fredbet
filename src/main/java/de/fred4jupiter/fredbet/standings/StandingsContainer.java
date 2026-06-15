@@ -11,11 +11,11 @@ public class StandingsContainer {
     private final Map<Group, List<TeamStandings>> standingsMap = new HashMap<>();
 
     public void registerResult(Match match) {
-        TeamStandings teamPointsTeamOne = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamOne());
-        teamPointsTeamOne.registerResultForTeam(match);
+        TeamStandings home = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamOne());
+        TeamStandings away = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamTwo());
 
-        TeamStandings teamPointsTeamTwo = getGroupTeamPointsByGroupAndName(match.getGroup(), match.getTeamTwo());
-        teamPointsTeamTwo.registerResultForTeam(match);
+        home.addMatch(match.getGoalsTeamOne(), match.getGoalsTeamTwo());
+        away.addMatch(match.getGoalsTeamTwo(), match.getGoalsTeamOne());
     }
 
     private TeamStandings getGroupTeamPointsByGroupAndName(Group group, Team team) {

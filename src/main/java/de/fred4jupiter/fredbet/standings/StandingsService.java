@@ -5,7 +5,6 @@ import de.fred4jupiter.fredbet.match.MatchService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class StandingsService {
@@ -16,7 +15,7 @@ public class StandingsService {
         this.matchService = matchService;
     }
 
-    public StandingsContainer calculateStandings(Locale locale) {
+    public StandingsContainer calculateStandings() {
         final StandingsContainer standingsContainer = new StandingsContainer();
 
         List<Match> matches = matchService.findAll().stream().filter(Match::hasResultSet).toList();
