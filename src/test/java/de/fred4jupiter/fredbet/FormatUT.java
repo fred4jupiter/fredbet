@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet;
 
+import de.fred4jupiter.fredbet.common.UnitTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -7,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@UnitTest
 public class FormatUT {
 
     @Test
