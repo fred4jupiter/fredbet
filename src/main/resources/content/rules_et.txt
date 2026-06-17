@@ -1,0 +1,63 @@
+<h2>Kes saab osaleda?</h2>
+
+<p>See ei ole avalik kommertseesmärgiga ennustusmäng. Osaleda saavad ainult sõbrad ja tuttavad.</p>
+
+<h2>Kui suur on panus ja mida saan võita?</h2>
+
+<p>Iga osaleja tasub osalustasu.</p>
+<p>Lapsed (kuni 10-aastased) <u>võivad</u>&nbsp;ennustusmängus osaleda tasuta, kuid siis ei saa nad rahalisi auhindu võita.
+Vabatahtlik osalustasu tasumine lapse kohta on võimalik. Sel juhul saavad nad loomulikult ka rahalisi auhindu võita.&nbsp;</p>
+
+<p>Iga osaleja, olgu laps või täiskasvanu, saab esemeliste auhindade loosimisel võita.</p>
+
+<h2>Mis ajani saan ennustada?</h2>
+
+<p>Mängu ennustuse saad esitada kuni vahetult enne kohtumise algust. Samuti on võimalik kõiki alagrupimänge juba ette ennustada. Boonusennustus meistri ja vicemeistri kohta tuleb igal juhul esitada enne avamängu algust.</p>
+
+<h2>Millal ennustused avaldatakse?</h2>
+
+<p>Ennustused on kõigile nähtavad alates mängu algusest.</p>
+
+<h2>Kuidas ennustusi hinnatakse?</h2>
+
+<ul><li><b>Õige ennustus</b>: õige ennustuse eest antakse 3 punkti.</li><li><b>Õige tendents</b>: kui tulemus ei ole õige, kuid tendents
+ennustati õigesti (nt ennustad 3:1, kuid mäng lõpeb
+1:0), antakse 1 punkt.</li><li><b>Õige väravate vahe</b>: kui lisaks õigele tendentsile
+ennustati ka õige väravate vahe, antakse 2 punkti.
+ See reegel kehtib ka viigi puhul. Näited: ennustus 3:1 ja
+tulemus 2:0 =&gt; 2 punkti. Ennustus 1:1 ja tulemus 2:2 =&gt; 2 punkti</li><li><b>Penaltiseeria õige võitja</b>: kui play-off'is ennustatakse õigesti penaltiseeria võitja, saad lisapunkti.</li><li><b>Jokkeri kasutamine</b>: jokker kahekordistab punktide arvu. Äärmuslikul juhul on ühes mängus võimalik kuni 8 punkti (3+1)*2=8</li><li>Valesti ennustatud mängude või esitamata ennustuste eest miinuspunkte ei anta.</li></ul>
+
+<p>Boonusennustuste kohta kehtib järgmine:</p>
+
+<ul><li>Enne turniiri algust õigesti ennustatud meistri eest antakse 10 boonuspunkti.</li><li>Enne turniiri algust õigesti ennustatud&nbsp;vicemeistri&nbsp;eest antakse 5 boonuspunkti.</li></ul>
+
+<h2>Kuidas jokker toimib?</h2>
+
+<p>Iga osaleja saab turniiri alguses 3 jokkerit.&nbsp;Mängu puhul, milles jokker mängu pannakse, kahekordistab jokker osaleja punktisaagi. Õigest ennustusest, mis tavaliselt annab 3 punkti, saab seega 6 punkti, või 2-punktise ennustuse korral saab osaleja 4 punkti.</p>
+
+<h2>Kuidas käivad ennustused play-off'is?</h2>
+
+<p>Ka play-off'is (ehk alates kaheksandikfinaalist) kehtivad
+tavapärased punktiarvestuse reeglid. Seejuures ei ole oluline, kas
+mäng lõpeb 90 või 120 minutiga. Viigi ennustamine on seega
+võimalik. Viigi ennustamise korral tuleb lisaks esitada ennustus
+penaltiseeria võitja kohta. Kuna penaltiseeria konkreetset tulemust on
+raske ennustada, puudutab penaltiennustus ainult võitjat. Kui võitja on
+õigesti ennustatud, antakse lisapunkt. Ennustus näeb seega välja
+näiteks nii:</p>
+
+<p>Saksamaa-Hispaania 1:1 / penaltiseeria võitja Saksamaa&nbsp;</p>
+
+<h2>Kes võidab?</h2>
+
+<p>Osaleja, kellel on pärast turniiri kõige rohkem punkte.</p>
+
+<h2>Ja mis juhtub punktide võrdsuse korral?</h2>
+
+<ol><li>Kui 2 või enamal osalejal on sama kogupunktisumma, otsustab õigesti esitatud üksikennustuste suurem arv.</li><li>Kui ka siis ei ole otsust võimalik teha, arvutatakse
+ väiksem koguhälve. See toimub järgmiselt:
+ iga mängu kohta arvutatakse, mitme värava võrra ennustus tegelikust
+tulemusest erineb. (nt kui ennustus on 3:1 ja
+ mäng lõpeb 0:0, on hälve 3+1=4). See hälve
+liidetakse seejärel kõigi mängude kohta kokku. Võrdluse võidab see,
+kellel on väikseim hälve.</li></ol>
