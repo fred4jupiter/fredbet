@@ -33,21 +33,11 @@ public class LanguageUtil {
 
     public String cssClassCurrentUserLanguage() {
         String language = LocaleContextHolder.getLocale().getLanguage();
-        if ("en".equals(language)) {
-            return cssClassFor("gb");
-        }
-        if ("cs".equals(language)) {
-            return cssClassFor("cz");
-        }
-        if ("ca".equals(language)) {
-            return cssClassFor("es-ct");
-        }
-        if ("sv".equals(language)) {
-            return cssClassFor("se");
-        }
-        if ("et".equals(language)) {
-            return cssClassFor("ee");
-        }
-        return cssClassFor(language);
+
+        return SUPPORTED_LANGUAGES.stream()
+            .filter(sl -> sl.languageCode().equals(language))
+            .map(ls -> cssClassFor(ls.flagCode()))
+            .findFirst().
+            orElse(cssClassFor("de"));
     }
 }
