@@ -22,6 +22,6 @@ public record SvgImage(byte[] svgBinary, Integer version) {
             return null;
         }
 
-        return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(svgBinary);
+        return "data:image/svg+xml;base64," + Base64.getEncoder().encodeToString(svgBinary);
     }
 }

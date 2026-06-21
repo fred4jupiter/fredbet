@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 class DatabaseInitializer {
 
@@ -47,9 +49,15 @@ class DatabaseInitializer {
         addRulesIfEmpty();
     }
 
+    private static final List<String> RULE_LANGUAGES = List.of("de", "et");
+
     private void addRulesIfEmpty() {
-        String rulesInGerman = staticResourceLoader.loadDefaultRules();
-        infoService.saveInfoContentIfNotPresent(InfoType.RULES, rulesInGerman, "de");
+        for (String language : RULE_LANGUAGES) {
+            String rules = staticResourceLoader.loadRules(language);
+            if (rules != null) {
+                infoService.saveInfoContentIfNotPresent(InfoType.RULES, rules, language);
+            }
+        }
     }
 
     private void createAdminUser() {

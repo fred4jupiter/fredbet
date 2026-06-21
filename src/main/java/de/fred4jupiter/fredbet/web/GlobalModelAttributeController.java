@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.bet.BettingWebUtil;
-import de.fred4jupiter.fredbet.web.util.LanguageIconUtil;
 import de.fred4jupiter.fredbet.web.util.TeamUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,24 +18,21 @@ public class GlobalModelAttributeController {
     private final MessageSourceUtil messageSourceUtil;
     private final TeamUtil teamUtil;
     private final GroupAvailabilityUtil groupAvailabilityUtil;
-    private final LanguageIconUtil languageIconUtil;
     private final LanguageUtil languageUtil;
     private final BettingWebUtil bettingWebUtil;
 
     public GlobalModelAttributeController(WebSecurityUtil webSecurityUtil,
-                                         RuntimeSettingsUtil runtimeSettingsUtil,
-                                         MessageSourceUtil messageSourceUtil,
-                                         TeamUtil teamUtil,
-                                         GroupAvailabilityUtil groupAvailabilityUtil,
-                                         LanguageIconUtil languageIconUtil,
-                                         LanguageUtil languageUtil,
-                                         BettingWebUtil bettingWebUtil) {
+                                          RuntimeSettingsUtil runtimeSettingsUtil,
+                                          MessageSourceUtil messageSourceUtil,
+                                          TeamUtil teamUtil,
+                                          GroupAvailabilityUtil groupAvailabilityUtil,
+                                          LanguageUtil languageUtil,
+                                          BettingWebUtil bettingWebUtil) {
         this.webSecurityUtil = webSecurityUtil;
         this.runtimeSettingsUtil = runtimeSettingsUtil;
         this.messageSourceUtil = messageSourceUtil;
         this.teamUtil = teamUtil;
         this.groupAvailabilityUtil = groupAvailabilityUtil;
-        this.languageIconUtil = languageIconUtil;
         this.languageUtil = languageUtil;
         this.bettingWebUtil = bettingWebUtil;
     }
@@ -64,11 +60,6 @@ public class GlobalModelAttributeController {
     @ModelAttribute("groupAvailabilityUtil")
     public GroupAvailabilityUtil groupAvailabilityUtil() {
         return groupAvailabilityUtil;
-    }
-
-    @ModelAttribute("languageIconUtil")
-    public LanguageIconUtil languageIconUtil() {
-        return languageIconUtil;
     }
 
     @ModelAttribute("languageUtil")

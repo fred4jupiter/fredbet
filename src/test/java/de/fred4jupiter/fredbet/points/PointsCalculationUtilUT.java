@@ -23,6 +23,8 @@ public class PointsCalculationUtilUT {
 
     private PointsCalculationUtil pointsCalculationUtil;
 
+    private PointsConfiguration pointsConfig;
+
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;
 
@@ -36,7 +38,7 @@ public class PointsCalculationUtilUT {
     public void setup() {
         RuntimeSettingsRepository runtimeSettingsRepository = mock(RuntimeSettingsRepository.class);
         PointsConfigService pointsConfigService = new PointsConfigService(runtimeSettingsRepository, applicationEventPublisher, cacheAdministrationService);
-        PointsConfiguration pointsConfig = PointsConfiguration.withDefaults();
+        pointsConfig = PointsConfiguration.withDefaults();
         lenient().when(runtimeSettingsRepository.loadRuntimeSettings(eq(2L), eq(PointsConfiguration.class))).thenReturn(pointsConfig);
 
         this.pointsCalculationUtil = new PointsCalculationUtil(pointsConfigService);
@@ -149,6 +151,43 @@ public class PointsCalculationUtilUT {
         bet.setJoker(true);
 
         assertEquals(8, pointsCalculationUtil.calculatePointsFor(match, bet));
+    }
+
+    @Test
+    public void groupMatchIgnoresPenaltyWinnerOnDraw() {
+        Match match = createMatch(1, 1);
+        match.setPenaltyWinnerOne(true);
+
+        Bet bet = createBet(1, 1);
+        bet.setPenaltyWinnerOne(true);
+
+        assertThat(pointsCalculationUtil.calculatePointsFor(match, bet)).isEqualTo(3);
+    }
+
+    @Test
+    public void knockoutMatchSameGoalDifferenceWithCorrectPenaltyWinnerAddsPenaltyPoint() {
+        Match match = createKnockoutMatch(2, 2, false);
+        Bet bet = createKnockoutBet(1, 1, false);
+
+        assertThat(pointsCalculationUtil.calculatePointsFor(match, bet)).isEqualTo(3);
+    }
+
+    @Test
+    public void knockoutMatchExactDrawWithWrongPenaltyWinnerKeepsOnlyResultPoints() {
+        Match match = createKnockoutMatch(1, 1, true);
+        Bet bet = createKnockoutBet(1, 1, false);
+
+        assertThat(pointsCalculationUtil.calculatePointsFor(match, bet)).isEqualTo(3);
+    }
+
+    @Test
+    public void configuredPointsForCorrectGoalsOfOneTeamAreAwarded() {
+        pointsConfig.setPointsCorrectNumberOfGoalsOneTeam(4);
+
+        Match match = createMatch(3, 1);
+        Bet bet = createBet(3, 4);
+
+        assertThat(pointsCalculationUtil.calculatePointsFor(match, bet)).isEqualTo(4);
     }
 
     @Test
