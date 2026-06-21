@@ -3,6 +3,12 @@
 <body>
 	<ul th:fragment="language_selector" th:remove="tag">
         <li>
+            <a th:href="${@languageUtil.buildUrl('et')}" class="dropdown-item language">
+                <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('ee')}"></span>
+                <span th:text="' '+#{language.et}"></span>
+            </a>
+        </li>
+        <li>
             <a th:href="${@languageUtil.buildUrl('de')}" class="dropdown-item language">
                 <span class="fi" th:classappend="${@languageIconUtil.cssClassFor('de')}"></span>
                 <span th:text="' '+#{language.de}"></span>
