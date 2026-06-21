@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-6 col-sm-2">
                             <div class="mb-3">
-                                <label for="pointsCorrectResult" class="form-label" th:text="#{points.config.pointsCorrectResult} + ':'"></label>
+                                <label for="pointsCorrectResult" class="form-label" th:text="'1. ' + #{points.config.pointsCorrectResult} + ':'"></label>
                                 <div class="col-5">
                                     <input id="pointsCorrectResult" type="text" th:field="*{pointsCorrectResult}" class="form-control" />
                                 </div>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-6 col-sm-2">
                             <div class="mb-3">
-                                <label for="pointsSameGoalDifference" class="form-label" th:text="#{points.config.pointsSameGoalDifference} + ':'"></label>
+                                <label for="pointsSameGoalDifference" class="form-label" th:text="'2. ' +#{points.config.pointsSameGoalDifference} + ':'"></label>
                                 <div class="col-5">
                                     <input id="pointsSameGoalDifference" type="text" th:field="*{pointsSameGoalDifference}" class="form-control" />
                                 </div>
@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-6 col-sm-2">
                             <div class="mb-3">
-                                <label for="pointsCorrectWinner" class="form-label" th:text="#{points.config.pointsCorrectWinner} + ':'"></label>
+                                <label for="pointsCorrectWinner" class="form-label" th:text="'3. ' + #{points.config.pointsCorrectWinner} + ':'"></label>
                                 <div class="col-5">
                                     <input id="pointsCorrectWinner" type="text" th:field="*{pointsCorrectWinner}" class="form-control" />
                                 </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-6 col-sm-2">
                             <div class="mb-3">
-                                <label for="pointsCorrectNumberOfGoalsOneTeam" class="form-label" th:text="#{points.config.pointsCorrectNumberOfGoalsOneTeam} + ':'"></label>
+                                <label for="pointsCorrectNumberOfGoalsOneTeam" class="form-label" th:text="'4. ' + #{points.config.pointsCorrectNumberOfGoalsOneTeam} + ':'"></label>
                                 <div class="col-5">
                                     <input id="pointsCorrectNumberOfGoalsOneTeam" type="text" th:field="*{pointsCorrectNumberOfGoalsOneTeam}" class="form-control" />
                                 </div>
