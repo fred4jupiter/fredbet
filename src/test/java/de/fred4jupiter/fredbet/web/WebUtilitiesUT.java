@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web;
 import de.fred4jupiter.fredbet.common.UnitTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchService;
-import de.fred4jupiter.fredbet.web.util.LanguageIconUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -40,7 +39,7 @@ public class WebUtilitiesUT {
 
     @Test
     public void cssClassCurrentUserLanguageHandlesSpecialMappings() {
-        LanguageIconUtil util = new LanguageIconUtil();
+        LanguageUtil util = new LanguageUtil();
         Locale previous = LocaleContextHolder.getLocale();
         try {
             LocaleContextHolder.setLocale(Locale.ENGLISH);
