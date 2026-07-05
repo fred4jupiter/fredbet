@@ -345,4 +345,13 @@
         <addNotNullConstraint tableName="team" columnName="version" columnDataType="int" defaultNullValue="0"/>
     </changeSet>
 
+    <changeSet id="20" author="michael">
+        <addColumn tableName="matches">
+            <column name="create_date" type="datetime"/>
+            <column name="update_date" type="datetime"/>
+            <column name="created_by" type="varchar(50)"/>
+            <column name="updated_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

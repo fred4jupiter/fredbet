@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,8 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "MATCHES")
-public class Match implements MatchBusinessKey {
+@EntityListeners(AuditingEntityListener.class)
+public class Match extends BaseEntity implements MatchBusinessKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
