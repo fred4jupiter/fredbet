@@ -170,8 +170,8 @@
                                     <hr class="dropdown-divider">
                                     <a class="dropdown-item" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
                                 </li>
-                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="${@webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
+                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')" th:with="h2Path=${@webSecurityUtil.resolveH2Path()}">
+                                    <a class="dropdown-item" th:href="${h2Path}" target="_blank">H2 Console</a>
                                 </li>
                             </ul>
                     </ul>

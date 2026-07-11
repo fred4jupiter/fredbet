@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<ul th:fragment="language_selector" th:remove="tag">
-        <li th:each="langSupport : ${@languageUtil.SUPPORTED_LANGUAGES}">
-            <a th:href="${@languageUtil.buildUrl(langSupport.languageCode())}" class="dropdown-item language">
+        <li th:with="buildUrl=${@languageUtil.buildUrl(langSupport.languageCode())}" th:each="langSupport : ${@languageUtil.SUPPORTED_LANGUAGES}">
+            <a th:href="${buildUrl}" class="dropdown-item language">
                 <span class="fi" th:classappend="${@languageUtil.cssClassFor(langSupport.flagCode())}"></span>
                 <span th:text="' '+#{'language.' + ${langSupport.languageCode()}}"></span>
             </a>
