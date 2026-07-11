@@ -28,6 +28,6 @@ public class AuditorAwareProvider implements AuditorAware<String> {
 
         String username = authentication.getName();
         LOG.debug("Returning auditor: {}", username);
-        return Optional.of(username);
+        return Optional.ofNullable(username);
     }
 }
