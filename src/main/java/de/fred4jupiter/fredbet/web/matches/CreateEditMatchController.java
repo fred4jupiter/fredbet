@@ -77,6 +77,7 @@ public class CreateEditMatchController {
         model.addAttribute("externalLastUpdated", DateUtils.formatZonedDateTime(match.getExternalLastUpdated()));
         model.addAttribute("createdDate", DateUtils.format(match.getCreateDate()));
         model.addAttribute("updateDate", DateUtils.format(match.getUpdateDate()));
+        model.addAttribute("createdBy", match.getCreatedBy());
         model.addAttribute("lastUpdatedBy", match.getUpdatedBy());
         addCountriesAndGroups(model);
         return VIEW_EDIT_MATCH;
