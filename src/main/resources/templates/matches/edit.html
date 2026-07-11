@@ -69,11 +69,29 @@
 						<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
 								data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
 						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+                        <p sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="d-inline-flex gap-1 mt-3">
+                            <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMatchInfo" aria-expanded="false" aria-controls="collapseMatchInfo">
+                                <i class="bi bi-info-circle"></i>
+                            </button>
+                        </p>
 					</div>
 				</div>
 			</div>
 		</form>
-        <p th:if="${externalLastUpdated != null}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="fw-lighter fs-6 mt-3" th:text="${'FD last update date: ' + externalLastUpdated}"></p>
+
+        <div class="row">
+            <div class="col-auto">
+                <div class="collapse" id="collapseMatchInfo">
+                    <div class="card card-body">
+                        <p class="fw-lighter fs-6 m-0" th:text="${'FD last update: ' + externalLastUpdated}"></p>
+                        <p class="fw-lighter fs-6 m-0" th:text="${'created: ' + createdDate}"></p>
+                        <p class="fw-lighter fs-6 m-0" th:text="${'created by: ' + createdBy}"></p>
+                        <p class="fw-lighter fs-6 m-0" th:text="${'updated: ' + updateDate}"></p>
+                        <p class="fw-lighter fs-6 m-0" th:text="${'updated by: ' + lastUpdatedBy}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
 </body>
 <th:block layout:fragment="scripts">

@@ -20,7 +20,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "MATCHES")
-public class Match implements MatchBusinessKey {
+public class Match extends BaseEntity implements MatchBusinessKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
