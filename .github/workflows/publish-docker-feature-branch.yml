@@ -6,8 +6,6 @@ on:
     paths-ignore:
       - '.github/**'
       - 'extra/**'
-    branches:
-      - 'feature/**'
 
 jobs:
   build:
