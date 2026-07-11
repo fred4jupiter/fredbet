@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.util;
 
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -89,6 +91,10 @@ public final class DateUtils {
 
     public static Date currentDate() {
         return toDate(LocalDateTime.now(getZoneId()));
+    }
+
+    public static String format(LocalDateTime localDateTime) {
+        return formatByLocale(localDateTime, LocaleContextHolder.getLocale());
     }
 
     public static String formatByLocale(LocalDateTime localDateTime, Locale locale) {

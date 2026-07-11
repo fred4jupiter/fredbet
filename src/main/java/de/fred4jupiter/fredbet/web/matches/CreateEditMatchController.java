@@ -1,13 +1,12 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
-import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.util.TeamUtil;
@@ -42,17 +41,14 @@ public class CreateEditMatchController {
 
     private final TeamUtil teamUtil;
 
-    private final CrestsCountryResolver crestsCountryResolver;
-
     private final TeamService teamService;
 
     public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService,
-                                     BettingService bettingService, TeamUtil teamUtil, CrestsCountryResolver crestsCountryResolver, TeamService teamService) {
+                                     BettingService bettingService, TeamUtil teamUtil, TeamService teamService) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.teamUtil = teamUtil;
-        this.crestsCountryResolver = crestsCountryResolver;
         this.teamService = teamService;
     }
 
@@ -79,6 +75,9 @@ public class CreateEditMatchController {
 
         model.addAttribute("createEditMatchCommand", createEditMatchCommand);
         model.addAttribute("externalLastUpdated", DateUtils.formatZonedDateTime(match.getExternalLastUpdated()));
+        model.addAttribute("createdDate", DateUtils.format(match.getCreateDate()));
+        model.addAttribute("updateDate", DateUtils.format(match.getUpdateDate()));
+        model.addAttribute("lastUpdatedBy", match.getUpdatedBy());
         addCountriesAndGroups(model);
         return VIEW_EDIT_MATCH;
     }
