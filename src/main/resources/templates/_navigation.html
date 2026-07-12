@@ -170,8 +170,8 @@
                                     <hr class="dropdown-divider">
                                     <a class="dropdown-item" th:href="@{/backup/show}" th:text="#{navigation.backup}"></a>
                                 </li>
-                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="${@webSecurityUtil.resolveH2Path()}" target="_blank">H2 Console</a>
+                                <li th:if="${@runtimeSettingsUtil.isH2ConsoleEnabled()}" sec:authorize="hasAuthority('PERM_ADMINISTRATION')" th:with="h2Path=${@webSecurityUtil.resolveH2Path()}">
+                                    <a class="dropdown-item" th:href="${h2Path}" target="_blank">H2 Console</a>
                                 </li>
                             </ul>
                     </ul>
@@ -185,14 +185,14 @@
                                 <li th:replace="~{fragments/language_selector :: language_selector}"></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" th:with="profileImageKey=${@webSecurityUtil.getCurrentUserProfileImageKey()}, username=${@webSecurityUtil.getCurrentUsername()}">
                             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img th:src="@{'/gallery/showthumb/' + ${@webSecurityUtil.getCurrentUserProfileImageKey()}}"
-                                     th:alt="${@webSecurityUtil.getCurrentUsername()}" height="24" class="rounded">
+                                <img th:src="@{'/gallery/showthumb/' + ${profileImageKey}}"
+                                     th:alt="${username}" height="24" class="rounded">
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="bg-light">
-                                    <h6 class="dropdown-header text-center fst-italic" th:text="${'-- ' + @webSecurityUtil.getCurrentUsername() + ' --'}">Dropdown header</h6>
+                                    <h6 class="dropdown-header text-center fst-italic" th:text="${'-- ' + username + ' --'}">Dropdown header</h6>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
