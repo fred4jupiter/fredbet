@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.excel;
 
-import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
@@ -8,15 +7,16 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
-import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.ranking.RankingService;
 import de.fred4jupiter.fredbet.ranking.UsernamePoints;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 
 @Service
 public class ReportService {
@@ -36,20 +37,17 @@ public class ReportService {
 
     private final MessageSourceUtil messageSourceUtil;
 
-    private final MatchRepository matchRepository;
-
     private final RankingService rankingService;
 
     private final FredbetProperties fredbetProperties;
 
     ReportService(ExcelExportService excelExportService, BetRepository betRepository, ExtraBetRepository extraBetRepository,
-                  MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, RankingService rankingService,
+                  MessageSourceUtil messageSourceUtil, RankingService rankingService,
                   FredbetProperties fredbetProperties) {
         this.excelExportService = excelExportService;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.messageSourceUtil = messageSourceUtil;
-        this.matchRepository = matchRepository;
         this.rankingService = rankingService;
         this.fredbetProperties = fredbetProperties;
     }
@@ -57,8 +55,9 @@ public class ReportService {
     public byte[] exportBetsToExcel(final Locale locale) {
         Sort sort = Sort.by(new Order(Direction.DESC, "points"), new Order(Direction.ASC, "userName"));
         final List<Bet> bets = this.betRepository.findAll(sort);
+        List<Bet> filteredBets = filterOutAdminUser(bets, Bet::getUserName);
 
-        return excelExportService.exportEntriesToExcel("Bets export", bets, new ListEntryCallback<>() {
+        return excelExportService.exportEntriesToExcel("Bets export", filteredBets, new ListEntryCallback<>() {
 
             @Override
             public void addHeaderRow(List<String> header) {
@@ -100,6 +99,10 @@ public class ReportService {
         });
     }
 
+    private <T> @NonNull List<T> filterOutAdminUser(List<T> bets, Function<T, String> usernameExtractor) {
+        return bets.stream().filter(bet -> !fredbetProperties.adminUsername().equals(usernameExtractor.apply(bet))).toList();
+    }
+
     private String getTeamNameTranslated(Team team, Locale locale) {
         String name = team.getNameTranslated(messageSourceUtil, locale);
         return StringUtils.isNotBlank(name) ? name : TeamService.FALLBACK_TEAM_NAME;
@@ -107,8 +110,9 @@ public class ReportService {
 
     public byte[] exportExtraBetsToExcel(Locale locale) {
         final List<ExtraBet> extraBets = this.extraBetRepository.findAll(Sort.by(new Order(Direction.ASC, "userName")));
+        List<ExtraBet> filteredBets = filterOutAdminUser(extraBets, ExtraBet::getUserName);
 
-        return excelExportService.exportEntriesToExcel("Extra-Bets export", extraBets, new ListEntryCallback<>() {
+        return excelExportService.exportEntriesToExcel("Extra-Bets export", filteredBets, new ListEntryCallback<>() {
 
             @Override
             public void addHeaderRow(List<String> header) {
