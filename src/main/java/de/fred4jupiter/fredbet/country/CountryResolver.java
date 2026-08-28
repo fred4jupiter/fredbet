@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.country;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.util.ResourceToPropertiesUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -21,10 +20,6 @@ public class CountryResolver {
     public String countryToAlpha2Code(Country country) {
         if (country == null) {
             return "";
-        }
-
-        if (StringUtils.isNotBlank(country.getCssIconClass())) {
-            return country.getCssIconClass();
         }
 
         return countryAlpha2Codes.getProperty(country.name());
