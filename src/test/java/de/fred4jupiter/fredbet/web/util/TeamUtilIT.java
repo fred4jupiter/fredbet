@@ -77,4 +77,9 @@ public class TeamUtilIT {
         List<Country> countries = availableTeamsBasedOnMatches.stream().map(TeamView::country).sorted().toList();
         assertThat(countries).contains(Country.BULGARIA, Country.GERMANY, Country.FRANCE, Country.IRELAND);
     }
+
+    @Test
+    void resolveCssClassForGivenCountry() {
+        assertThat(teamUtil.cssClassFor(Country.PHILIPPINES)).isEqualTo("fi fi-ph");
+    }
 }

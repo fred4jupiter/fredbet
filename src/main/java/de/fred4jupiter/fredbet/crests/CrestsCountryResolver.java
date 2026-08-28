@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.crests;
 
-import com.neovisionaries.i18n.CountryCode;
+import de.fred4jupiter.fredbet.country.CountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import org.apache.commons.lang3.StringUtils;
@@ -27,9 +27,12 @@ public class CrestsCountryResolver {
 
     private final CrestPlaceholderLoader crestPlaceholderLoader;
 
-    CrestsCountryResolver(ResourceLoader resourceLoader, CrestPlaceholderLoader crestPlaceholderLoader) {
+    private final CountryResolver countryAlpha2Codes;
+
+    CrestsCountryResolver(ResourceLoader resourceLoader, CrestPlaceholderLoader crestPlaceholderLoader, CountryResolver countryAlpha2Codes) {
         this.resourceLoader = resourceLoader;
         this.crestPlaceholderLoader = crestPlaceholderLoader;
+        this.countryAlpha2Codes = countryAlpha2Codes;
     }
 
     public SvgImage loadCrestsImageFor(Country country) {
@@ -133,13 +136,6 @@ public class CrestsCountryResolver {
             return Optional.empty();
         }
 
-        String alpha3 = country.getAlpha3Code().toUpperCase();
-        CountryCode countryCode = CountryCode.getByAlpha3Code(alpha3);
-        if (countryCode != null && countryCode.getAlpha2() != null) {
-            return Optional.of(countryCode.getAlpha2());
-        }
-        return Optional.empty();
+        return Optional.ofNullable(countryAlpha2Codes.countryToAlpha2Code(country));
     }
-
-
 }
