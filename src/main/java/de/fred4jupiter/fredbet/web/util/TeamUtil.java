@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.util;
 
-import com.neovisionaries.i18n.CountryCode;
+import de.fred4jupiter.fredbet.country.CountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
@@ -8,25 +8,16 @@ import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @Component
 public class TeamUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TeamUtil.class);
-
     private final MessageSourceUtil messageSourceUtil;
-
-    private final Map<Country, String> alpha2Codes = new HashMap<>();
 
     private final RuntimeSettingsService runtimeSettingsService;
 
@@ -34,34 +25,16 @@ public class TeamUtil {
 
     private final TeamBundleProvider teamBundleProvider;
 
+    private final CountryResolver countryAlpha2Codes;
+
     public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService,
-                    MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
+                    MatchRepository matchRepository, TeamBundleProvider teamBundleProvider,
+                    CountryResolver countryAlpha2Codes) {
         this.messageSourceUtil = messageSourceUtil;
         this.runtimeSettingsService = runtimeSettingsService;
         this.matchRepository = matchRepository;
         this.teamBundleProvider = teamBundleProvider;
-
-        List<Country> countryList = Stream.of(Country.values()).toList();
-        countryList.forEach(country -> {
-            this.alpha2Codes.put(country, resolveFor(country));
-        });
-    }
-
-    private String resolveFor(Country country) {
-        if (StringUtils.isNotBlank(country.getFlagIconCode())) {
-            return country.getFlagIconCode();
-        }
-
-        if (StringUtils.isNotBlank(country.getAlpha3Code())) {
-            String alpha3 = country.getAlpha3Code().toUpperCase();
-            CountryCode countryCode = CountryCode.getByAlpha3Code(alpha3);
-            if (countryCode != null && countryCode.getAlpha2() != null) {
-                return countryCode.getAlpha2();
-            }
-            LOG.warn("missing alpha 2 code for country={}, alpha3={}", country, alpha3);
-        }
-
-        return null;
+        this.countryAlpha2Codes = countryAlpha2Codes;
     }
 
     public String i18n(Country country) {
@@ -88,7 +61,8 @@ public class TeamUtil {
             return country.getCssIconClass();
         }
 
-        return cssClassFor(this.alpha2Codes.get(country));
+        String alpha2Code = countryAlpha2Codes.countryToAlpha2Code(country);
+        return cssClassFor(alpha2Code);
     }
 
     public String cssClassFor(String alpha2Code) {

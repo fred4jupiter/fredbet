@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.integration.model.FdTeam;
+import de.fred4jupiter.fredbet.util.ResourceToPropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ class TeamNameToCountryResolver {
     private final Properties countryProps;
 
     public TeamNameToCountryResolver(@Value("classpath:/msgs/TeamKey_en.properties") Resource countryNameResource) {
-        this.countryProps = loadCountryNames(countryNameResource);
+        this.countryProps = ResourceToPropertiesUtil.loadCountryNames(countryNameResource);
     }
 
     public Country resolveToCountry(FdTeam team) {
@@ -59,15 +60,5 @@ class TeamNameToCountryResolver {
         }
 
         return null;
-    }
-
-    private Properties loadCountryNames(Resource countryNameResource) {
-        try (final InputStream in = countryNameResource.getInputStream()) {
-            final Properties properties = new Properties();
-            properties.load(in);
-            return properties;
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
     }
 }
