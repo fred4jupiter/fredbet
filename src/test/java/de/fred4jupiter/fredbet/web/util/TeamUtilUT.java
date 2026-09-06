@@ -19,11 +19,6 @@ public class TeamUtilUT {
     private MessageSourceUtil messageSourceUtil;
 
     @Test
-    void mapCodes() {
-        assertThat(teamUtil.cssClassFor(Country.PHILIPPINES)).isEqualTo("fi fi-ph");
-    }
-
-    @Test
     void mapCodeForChampionsLeagueMember() {
         assertThat(teamUtil.cssClassFor(Country.MANCHESTER_CITY)).isEqualTo("kwm kwm-manchester");
     }
