@@ -1,6 +1,9 @@
+$(document).ready(function () {
+    showHideActive();
+});
+
 function showHideActive() {
-    var enabled = $('#enabled').val();
-    if (enabled === "true") {
+    if ($('#enabled').is(":checked")) {
         $('#fd-setup').show();
     } else {
         $('#fd-setup').hide();
