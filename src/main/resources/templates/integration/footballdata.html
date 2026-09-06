@@ -20,7 +20,7 @@
             </ul>
             <div class="tab-content mb-3" id="myTabContent">
                 <div class="tab-pane fade show active" id="setup-tab-pane" role="tabpanel" aria-labelledby="setup-tab" tabindex="0">
-                    <div class="col-12 col-sm-5 mb-3">
+                    <div class="col-12 col-sm-5 mb-3 mt-3">
                         <div class="row">
                             <div class="col-auto">
                                 <span>Quickstart: </span><a href="https://www.football-data.org/documentation/quickstart" target="_blank">football-data.org</a>
@@ -30,28 +30,21 @@
                         <div class="row">
                             <div class="col-12 col-sm-10 mb-3">
                                 <div class="form-check mt-3 mb-3">
-                                    <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
+                                    <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input" onclick="showHideActive()"/>
                                     <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
                                 </div>
-                                <div class="accordion mb-3" id="accordionExample">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" th:text="#{footballdata.apiToken}">
-                                            </button>
-                                        </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
-                                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
-                                            </div>
-                                        </div>
+                                <div id="fd-setup">
+                                    <div class="mb-3">
+                                        <label for="apiToken" class="form-label" th:text="#{footballdata.apiToken}"></label><br/>
+                                        <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
+                                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
-                                    <select id="competitions" th:field="*{competitionId}" class="form-select">
-                                        <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.id()}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
-                                    </select>
+                                    <div class="mb-3">
+                                        <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
+                                        <select id="competitions" th:field="*{competitionId}" class="form-select">
+                                            <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.id()}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +60,7 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="sync-tab-pane" role="tabpanel" aria-labelledby="sync-tab" tabindex="1">
-                    <div class="col-12 col-sm-7 mb-3">
+                    <div class="col-12 col-sm-7 mb-3 mt-3">
                         <h2 th:text="#{footballdata.title.sync}"></h2>
                         <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
                             <div class="form-check mt-3 mb-3">
@@ -85,4 +78,7 @@
     </div>
 </div>
 </body>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/js/pages/footballdata.js}"></script>
+</th:block>
 </html>
