@@ -80,16 +80,12 @@ public class FootballDataController {
         }
 
         if (settings.isEnabled()) {
-            tabStatus.setTab1Active(true);
-            tabStatus.setTab2Active(true);
-            if (StringUtils.isNotBlank(settings.getApiToken())) {
-                tabStatus.setTab3Active(true);
-            }
-        }
-        else {
             tabStatus.setTab1Active(false);
+            tabStatus.setTab2Active(true);
+        } else {
+            tabStatus.setTab1Active(true);
             tabStatus.setTab2Active(false);
-            tabStatus.setTab3Active(false);
+            tabStatus.setTab2Disabled(true);
         }
 
         return "integration/footballdata";

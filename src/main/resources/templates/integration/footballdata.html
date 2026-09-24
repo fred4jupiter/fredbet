@@ -13,16 +13,12 @@
                             role="tab" aria-controls="setup-tab-pane" aria-selected="false" th:text="#{footballdata.title.settings}"></button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tournament-tab-pane" type="button"
+                    <button class="nav-link" th:classappend="${tabStatus.tab2Disabled ? 'disabled' : 'active'}" data-bs-toggle="tab" data-bs-target="#tournament-tab-pane" type="button"
                             role="tab" aria-controls="tournament-tab-pane" aria-selected="false" th:text="#{footballdata.title.tournament}"></button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link disabled" data-bs-toggle="tab" data-bs-target="#sync-tab-pane" type="button"
-                            role="tab" aria-controls="sync-tab-pane" aria-selected="false" th:text="#{footballdata.title.sync}"></button>
                 </li>
             </ul>
             <div class="tab-content mb-3" id="myTabContent">
-                <div class="tab-pane hide show active" id="setup-tab-pane" role="tabpanel" aria-labelledby="setup-tab" tabindex="0">
+                <div class="tab-pane hide show" th:classappend="${tabStatus.tab1Active ? 'active' : ''}" id="setup-tab-pane" role="tabpanel" aria-labelledby="setup-tab" tabindex="0">
                     <div class="col-12 col-sm-5 mb-3 mt-3">
                         <div class="row">
                             <div class="col-auto">
@@ -53,7 +49,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="tab-pane hide show" id="tournament-tab-pane" role="tabpanel" aria-labelledby="tournament-tab" tabindex="1">
+                <div class="tab-pane hide show" th:classappend="${tabStatus.tab2Active ? 'active' : ''}" id="tournament-tab-pane" role="tabpanel" aria-labelledby="tournament-tab" tabindex="1">
                     <div class="col-12 col-sm-5 mb-3 mt-3">
                         <form id="tournamentForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
                             <div class="row">
@@ -74,23 +70,22 @@
                                     <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="tab-pane hide show" id="sync-tab-pane" role="tabpanel" aria-labelledby="sync-tab" tabindex="2">
-                    <div class="col-12 col-sm-7 mb-3 mt-3">
-                        <h2 th:text="#{footballdata.title.sync}"></h2>
-                        <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
-                            <div class="form-check mt-3 mb-3">
-                                <input id="forceUpdate" type="checkbox" th:field="*{forceUpdate}" class="form-check-input"/>
-                                <label for="forceUpdate" class="form-check-label" th:text="#{footballdata.forceUpdate}"></label>
-                            </div>
-                            <div class="col-auto">
-                                <button th:disabled="${!footballDataCommand.isEnabled()}" type="submit" class="btn btn-info" th:text="#{footballdata.sync}"></button>
+                            <div class="col-12 col-sm-7 mb-3 mt-3">
+                                <h2 th:text="#{footballdata.title.sync}"></h2>
+                                <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
+                                    <div class="form-check mt-3 mb-3">
+                                        <input id="forceUpdate" type="checkbox" th:field="*{forceUpdate}" class="form-check-input"/>
+                                        <label for="forceUpdate" class="form-check-label" th:text="#{footballdata.forceUpdate}"></label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button th:disabled="${!footballDataCommand.isEnabled()}" type="submit" class="btn btn-info" th:text="#{footballdata.sync}"></button>
+                                    </div>
+                                </form>
                             </div>
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

@@ -3,13 +3,14 @@ package de.fred4jupiter.fredbet.web.integration;
 public class TabStatus {
 
     private boolean tab1Active;
+
     private boolean tab2Active;
-    private boolean tab3Active;
+
+    private boolean tab2Disabled;
 
     public TabStatus() {
-        this.tab1Active = true;
+        this.tab1Active = false;
         this.tab2Active = false;
-        this.tab3Active = false;
     }
 
     public boolean isTab1Active() {
@@ -28,11 +29,11 @@ public class TabStatus {
         this.tab2Active = tab2Active;
     }
 
-    public boolean isTab3Active() {
-        return tab3Active;
+    public boolean isTab2Disabled() {
+        return tab2Disabled;
     }
 
-    public void setTab3Active(boolean tab3Active) {
-        this.tab3Active = tab3Active;
+    public void setTab2Disabled(boolean tab2Disabled) {
+        this.tab2Disabled = tab2Disabled;
     }
 }
