@@ -2,6 +2,8 @@ package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.domain.NavbarLayout;
 import de.fred4jupiter.fredbet.domain.BootswatchTheme;
+import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
+import de.fred4jupiter.fredbet.integration.FootballDataService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
@@ -29,13 +31,16 @@ public class RuntimeSettingsController {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
+    private final FootballDataService footballDataService;
+
     private final WebMessageUtil webMessageUtil;
 
     private final TeamUtil teamUtil;
 
-    public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, WebMessageUtil webMessageUtil,
+    public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, FootballDataService footballDataService, WebMessageUtil webMessageUtil,
                                      TeamUtil teamUtil) {
         this.runtimeSettingsService = runtimeSettingsService;
+        this.footballDataService = footballDataService;
         this.webMessageUtil = webMessageUtil;
         this.teamUtil = teamUtil;
     }
@@ -56,7 +61,14 @@ public class RuntimeSettingsController {
             return PAGE_RUNTIME_CONFIG;
         }
 
-        runtimeSettingsService.saveRuntimeSettings(command.getRuntimeSettings());
+        final RuntimeSettings runtimeSettings = command.getRuntimeSettings();
+        if (!TeamBundle.FOOTBALL_DATA_USAGE.equals(runtimeSettings.getTeamBundle())) {
+            final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
+            footballDataRuntimeSettings.setEnabled(false);
+            footballDataService.saveSettings(footballDataRuntimeSettings);
+        }
+
+        runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
 

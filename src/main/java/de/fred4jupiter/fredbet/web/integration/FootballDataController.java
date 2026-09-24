@@ -118,11 +118,13 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
         if (footballDataCommand.isEnabled()) {
-            final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
             runtimeSettings.setTeamBundle(TeamBundle.FOOTBALL_DATA_USAGE);
-            runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
+        } else {
+            runtimeSettings.setTeamBundle(TeamBundle.WORLD_CUP); // default fallback
         }
+        runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
 
         Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
 
