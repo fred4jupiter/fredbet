@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="tab-pane hide show" th:classappend="${tabStatus.tab2Active ? 'active' : ''}" id="tournament-tab-pane" role="tabpanel" aria-labelledby="tournament-tab" tabindex="1">
-                    <div class="col-12 col-sm-5 mb-3 mt-3">
+                    <div class="col-auto mb-3 mt-3">
                         <form id="tournamentForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
                             <div class="row">
                                 <div class="col-auto mb-3">
@@ -70,7 +70,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-12 col-sm-5 mb-3">
+                    <div class="col-auto mb-3">
                         <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/footballdata/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
                         <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
                             <h2 th:text="#{footballdata.title.sync}"></h2>
@@ -79,10 +79,10 @@
                                 <label for="forceUpdate" class="form-check-label" th:text="#{footballdata.forceUpdate}"></label>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-auto">
+                                <div class="col-auto mb-3">
                                     <button th:disabled="${!footballDataCommand.isEnabled()}" type="submit" class="btn btn-info" th:text="#{footballdata.sync}"></button>
                                 </div>
-                                <div class="col-auto mb-3">
+                                <div class="col-auto">
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
                                 </div>
                             </div>
