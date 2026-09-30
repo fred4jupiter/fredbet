@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.data;
 
 import com.github.javafaker.Faker;
-import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.admin.CacheAdministrationService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
@@ -11,9 +10,12 @@ import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
+import de.fred4jupiter.fredbet.integration.FootballDataService;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.slf4j.Logger;
@@ -53,11 +55,13 @@ public class DataPopulator {
 
     private final TeamService teamService;
 
+    private final FootballDataService footballDataService;
+
     public DataPopulator(MatchService matchService, UserService userService,
                          BettingService bettingService, RandomValueGenerator randomValueGenerator,
                          JokerService jokerService, ExtraBettingService extraBettingService,
                          RuntimeSettingsService runtimeSettingsService, CacheAdministrationService cacheAdministrationService,
-                         TeamService teamService) {
+                         TeamService teamService, FootballDataService footballDataService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
@@ -67,6 +71,7 @@ public class DataPopulator {
         this.runtimeSettingsService = runtimeSettingsService;
         this.cacheAdministrationService = cacheAdministrationService;
         this.teamService = teamService;
+        this.footballDataService = footballDataService;
     }
 
     @Async
@@ -145,6 +150,8 @@ public class DataPopulator {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
 
+        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
+
         final List<Match> allMatches = matchService.findAll();
         final List<AppUser> users = userService.findAll();
         users.forEach(appUser -> {
@@ -156,7 +163,9 @@ public class DataPopulator {
                 createBetForUser(appUser, match, jokerAllowed);
             });
 
-            extraBettingService.createExtraBetForUser(appUser.getUsername());
+            if (settings.isEnabled() && settings.getCompetition().isCupCompetition()) {
+                extraBettingService.createExtraBetForUser(appUser.getUsername());
+            }
         });
         LOG.debug("created demo bets for all users finished.");
     }
