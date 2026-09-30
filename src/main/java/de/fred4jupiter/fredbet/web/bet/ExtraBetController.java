@@ -1,16 +1,17 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.util.TeamUtil;
 import de.fred4jupiter.fredbet.web.util.TeamView;
-import org.springframework.context.i18n.LocaleContextHolder;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,8 +49,8 @@ public class ExtraBetController {
     }
 
     @ModelAttribute("availableTeams")
-    public List<TeamView> availableTeams() {
-        return teamUtil.getAvailableTeamsBasedOnMatches();
+    public List<Team> availableTeams() {
+        return matchService.getAllTeamsOfMatches();
     }
 
     @ModelAttribute("gameForThirdAvailable")
@@ -66,7 +67,11 @@ public class ExtraBetController {
     }
 
     @PostMapping
-    public String saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
+    public String saveExtraBets(@Valid ExtraBetCommand extraBetCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+        if (bindingResult.hasErrors()) {
+            return "bet/extra_bets";
+        }
+
         extraBettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
             extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
 

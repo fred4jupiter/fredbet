@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -208,5 +209,9 @@ public class MatchService {
 
     public boolean hasMatchWithResult() {
         return matchRepository.hasMatchWithResult();
+    }
+
+    public List<Team> getAllTeamsOfMatches() {
+        return matchRepository.getAllTeamsOfMatches();
     }
 }

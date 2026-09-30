@@ -19,17 +19,17 @@ public class ExtraBet {
     @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "FINAL_WINNER")
-    private Country finalWinner;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "FINAL_WINNER_TEAM_ID")
+    private Team finalWinner;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "SEMI_FINAL_WINNER")
-    private Country semiFinalWinner;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SEMI_FINAL_WINNER_TEAM_ID")
+    private Team semiFinalWinner;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "THIRD_FINAL_WINNER")
-    private Country thirdFinalWinner;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "THIRD_FINAL_WINNER_TEAM_ID")
+    private Team thirdFinalWinner;
 
     @Column(name = "POINTS_ONE")
     private Integer pointsOne = 0;
@@ -92,20 +92,50 @@ public class ExtraBet {
         return builder.toString();
     }
 
-    public Country getFinalWinner() {
+    public Team getFinalWinner() {
         return finalWinner;
     }
 
-    public void setFinalWinner(Country finalWinner) {
+    public Country getFinalWinnerCountry() {
+        return finalWinner != null ? finalWinner.getCountry() : null;
+    }
+
+    public void setFinalWinner(Team finalWinner) {
         this.finalWinner = finalWinner;
     }
 
-    public Country getSemiFinalWinner() {
+    public void setFinalWinner(Country finalWinner) {
+        if (finalWinner == null) {
+            this.finalWinner = null;
+            return;
+        }
+
+        Team team = new Team();
+        team.setCountry(finalWinner);
+        this.finalWinner = team;
+    }
+
+    public Team getSemiFinalWinner() {
         return semiFinalWinner;
     }
 
-    public void setSemiFinalWinner(Country semiFinalWinner) {
+    public Country getSemiFinalWinnerCountry() {
+        return semiFinalWinner != null ? semiFinalWinner.getCountry() : null;
+    }
+
+    public void setSemiFinalWinner(Team semiFinalWinner) {
         this.semiFinalWinner = semiFinalWinner;
+    }
+
+    public void setSemiFinalWinner(Country semiFinalWinner) {
+        if (semiFinalWinner == null) {
+            this.semiFinalWinner = null;
+            return;
+        }
+
+        Team team = new Team();
+        team.setCountry(semiFinalWinner);
+        this.semiFinalWinner = team;
     }
 
     public Long getId() {
@@ -120,12 +150,27 @@ public class ExtraBet {
         this.userName = userName;
     }
 
-    public Country getThirdFinalWinner() {
+    public Team getThirdFinalWinner() {
         return thirdFinalWinner;
     }
 
-    public void setThirdFinalWinner(Country thirdFinalWinner) {
+    public Country getThirdFinalWinnerCountry() {
+        return thirdFinalWinner != null ? thirdFinalWinner.getCountry() : null;
+    }
+
+    public void setThirdFinalWinner(Team thirdFinalWinner) {
         this.thirdFinalWinner = thirdFinalWinner;
+    }
+
+    public void setThirdFinalWinner(Country thirdFinalWinner) {
+        if (thirdFinalWinner == null) {
+            this.thirdFinalWinner = null;
+            return;
+        }
+
+        Team team = new Team();
+        team.setCountry(thirdFinalWinner);
+        this.thirdFinalWinner = team;
     }
 
     public Integer getPointsOne() {

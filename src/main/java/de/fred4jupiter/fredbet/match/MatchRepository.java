@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.match;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -72,6 +73,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     default List<Country> getAllCountriesOfMatches() {
         List<Country[]> allCountries = findAllCountriesOfMatches();
         return allCountries.stream().flatMap(Stream::of).distinct().filter(Objects::nonNull).toList();
+    }
+
+    default List<Team> getAllTeamsOfMatches() {
+        List<Match> matches = findAll();
+        return matches.stream().flatMap(match -> Stream.of(match.getTeamOne(), match.getTeamTwo())).distinct().filter(Objects::nonNull).toList();
     }
 
     @Query("""

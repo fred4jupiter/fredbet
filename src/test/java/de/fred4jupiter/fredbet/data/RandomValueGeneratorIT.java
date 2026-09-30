@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.junit.jupiter.api.Test;
@@ -54,9 +55,9 @@ public class RandomValueGeneratorIT {
         for (int i = 0; i < 100; i++) {
             TeamTriple triple = randomValueGenerator.generateTeamTriple();
             assertThat(triple).isNotNull();
-            Country countryOne = triple.finalWinner();
-            Country countryTwo = triple.semiFinalWinner();
-            Country countryThree = triple.thirdFinalWinner();
+            Team countryOne = triple.finalWinner();
+            Team countryTwo = triple.semiFinalWinner();
+            Team countryThree = triple.thirdFinalWinner();
             assertThat(countryOne).isNotNull();
             assertThat(countryTwo).isNotNull();
             assertThat(countryThree).isNotNull();

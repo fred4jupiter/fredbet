@@ -131,11 +131,11 @@ public class ReportService {
             @Override
             public void addValueRow(ExtraBet extraBet, List<String> row) {
                 row.add(extraBet.getUserName());
-                row.add(messageSourceUtil.getCountryName(extraBet.getFinalWinner(), locale));
+                row.add(messageSourceUtil.getCountryName(extraBet.getFinalWinnerCountry(), locale));
                 row.add("" + extraBet.getPointsOne());
-                row.add(messageSourceUtil.getCountryName(extraBet.getSemiFinalWinner(), locale));
+                row.add(messageSourceUtil.getCountryName(extraBet.getSemiFinalWinnerCountry(), locale));
                 row.add("" + extraBet.getPointsTwo());
-                row.add(messageSourceUtil.getCountryName(extraBet.getThirdFinalWinner(), locale));
+                row.add(messageSourceUtil.getCountryName(extraBet.getThirdFinalWinnerCountry(), locale));
                 row.add("" + extraBet.getPointsThree());
             }
         });

@@ -97,7 +97,7 @@ public class ExtraPointsCalculationService {
             return 0;
         }
 
-        if (extraBet.getFinalWinner() != null && extraBet.getFinalWinner().equals(match.getWinner())) {
+        if (extraBet.getFinalWinnerCountry() != null && extraBet.getFinalWinnerCountry().equals(match.getWinner())) {
             return pointsConfigService.loadPointsConfig().getExtraPointsConfig().getPointsFinalWinner();
         }
 
@@ -113,7 +113,7 @@ public class ExtraPointsCalculationService {
             return 0;
         }
 
-        if (extraBet.getSemiFinalWinner() != null && extraBet.getSemiFinalWinner().equals(match.getLooser())) {
+        if (extraBet.getSemiFinalWinnerCountry() != null && extraBet.getSemiFinalWinnerCountry().equals(match.getLooser())) {
             return pointsConfigService.loadPointsConfig().getExtraPointsConfig().getPointsSemiFinalWinner();
         }
 
@@ -129,7 +129,7 @@ public class ExtraPointsCalculationService {
             return 0;
         }
 
-        if (extraBet.getThirdFinalWinner() != null && extraBet.getThirdFinalWinner().equals(match.getWinner())) {
+        if (extraBet.getThirdFinalWinnerCountry() != null && extraBet.getThirdFinalWinnerCountry().equals(match.getWinner())) {
             return pointsConfigService.loadPointsConfig().getExtraPointsConfig().getPointsThirdFinalWinner();
         }
 

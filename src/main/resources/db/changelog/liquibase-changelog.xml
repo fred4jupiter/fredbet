@@ -354,4 +354,41 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="21" author="michael">
+        <addColumn tableName="extra_bet">
+            <column name="final_winner_team_id" type="BIGINT"/>
+            <column name="semi_final_winner_team_id" type="BIGINT"/>
+            <column name="third_final_winner_team_id" type="BIGINT"/>
+        </addColumn>
+
+        <sql>
+            UPDATE extra_bet eb
+            SET final_winner_team_id = (SELECT t.id FROM team t WHERE t.country = eb.final_winner)
+            WHERE eb.final_winner IS NOT NULL;
+
+            UPDATE extra_bet eb
+            SET semi_final_winner_team_id = (SELECT t.id FROM team t WHERE t.country = eb.semi_final_winner)
+            WHERE eb.semi_final_winner IS NOT NULL;
+
+            UPDATE extra_bet eb
+            SET third_final_winner_team_id = (SELECT t.id FROM team t WHERE t.country = eb.third_final_winner)
+            WHERE eb.third_final_winner IS NOT NULL;
+        </sql>
+
+        <addForeignKeyConstraint baseTableName="extra_bet" baseColumnNames="final_winner_team_id"
+                                 constraintName="FK_extra_bet_final_winner_team"
+                                 referencedTableName="team" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="extra_bet" baseColumnNames="semi_final_winner_team_id"
+                                 constraintName="FK_extra_bet_semi_final_winner_team"
+                                 referencedTableName="team" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="extra_bet" baseColumnNames="third_final_winner_team_id"
+                                 constraintName="FK_extra_bet_third_final_winner_team"
+                                 referencedTableName="team" referencedColumnNames="id"/>
+
+        <dropColumn tableName="extra_bet" columnName="final_winner"/>
+        <dropColumn tableName="extra_bet" columnName="semi_final_winner"/>
+        <dropColumn tableName="extra_bet" columnName="third_final_winner"/>
+    </changeSet>
+
+
 </databaseChangeLog>

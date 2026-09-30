@@ -40,6 +40,14 @@ public class Team {
     @Column(name = "VERSION", nullable = false)
     private Integer version;
 
+    public Team() {
+        // for hibernate
+    }
+
+    public Team(Country country) {
+        this.country = country;
+    }
+
     public String getCrestsAsBase64() {
         if (this.svgContent == null) {
             return null;
