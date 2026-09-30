@@ -10,6 +10,8 @@ import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
+import de.fred4jupiter.fredbet.integration.FootballDataService;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.SecurityService;
@@ -45,9 +47,11 @@ public class BettingService {
 
     private final ExtraBettingService extraBettingService;
 
+    private final FootballDataService footballDataService;
+
     public BettingService(BetRepository betRepository, ExtraBetRepository extraBetRepository,
                           SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator,
-                          MatchService matchService, FredbetProperties fredbetProperties, ExtraBettingService extraBettingService) {
+                          MatchService matchService, FredbetProperties fredbetProperties, ExtraBettingService extraBettingService, FootballDataService footballDataService) {
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
         this.securityService = securityService;
@@ -56,6 +60,7 @@ public class BettingService {
         this.matchService = matchService;
         this.fredbetProperties = fredbetProperties;
         this.extraBettingService = extraBettingService;
+        this.footballDataService = footballDataService;
     }
 
     public Bet createAndSaveBetting(Consumer<BetBuilder> consumer) {
@@ -144,23 +149,26 @@ public class BettingService {
 
 
         if (matchService.hasFirstMatchStarted()) {
-            // Its too late for betting the extra bets. The first match has already started.
+            // It's too late for betting the extra bets. The first match has already started.
             return;
         }
 
-        ExtraBet extraBet = extraBettingService.loadExtraBetForUser(username);
-        if (extraBet.noExtraBetsSet()) {
-            TeamTriple teamTriple = randomValueGenerator.generateTeamTriple();
-            if (!extraBet.isFinalWinnerSet()) {
-                extraBet.setFinalWinner(teamTriple.finalWinner());
+        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
+        if (settings.isEnabled() && settings.getCompetition().isCupCompetition()) {
+            ExtraBet extraBet = extraBettingService.loadExtraBetForUser(username);
+            if (extraBet.noExtraBetsSet()) {
+                TeamTriple teamTriple = randomValueGenerator.generateTeamTriple();
+                if (!extraBet.isFinalWinnerSet()) {
+                    extraBet.setFinalWinner(teamTriple.finalWinner());
+                }
+                if (!extraBet.isSemiFinalWinnerSet()) {
+                    extraBet.setSemiFinalWinner(teamTriple.semiFinalWinner());
+                }
+                if (matchService.isGameForThirdAvailable() && (!extraBet.isThirdFinalWinnerSet())) {
+                    extraBet.setThirdFinalWinner(teamTriple.thirdFinalWinner());
+                }
+                extraBetRepository.save(extraBet);
             }
-            if (!extraBet.isSemiFinalWinnerSet()) {
-                extraBet.setSemiFinalWinner(teamTriple.semiFinalWinner());
-            }
-            if (matchService.isGameForThirdAvailable() && (!extraBet.isThirdFinalWinnerSet())) {
-                extraBet.setThirdFinalWinner(teamTriple.thirdFinalWinner());
-            }
-            extraBetRepository.save(extraBet);
         }
     }
 

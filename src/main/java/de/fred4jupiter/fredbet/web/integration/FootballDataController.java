@@ -126,7 +126,7 @@ public class FootballDataController {
         }
         runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
 
-        Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
+        final Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
 
         final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
         footballDataRuntimeSettings.setEnabled(footballDataCommand.isEnabled());

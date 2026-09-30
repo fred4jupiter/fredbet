@@ -54,7 +54,7 @@ public class RandomValueGenerator {
     public TeamTriple generateTeamTriple() {
         List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
         if (allCountriesOfMatches.isEmpty()) {
-            throw new IllegalArgumentException("Could not create triple, because not matches found.");
+            throw new IllegalArgumentException("Could not create triple, because no matches found.");
         }
 
         if (allCountriesOfMatches.size() == 1) {
