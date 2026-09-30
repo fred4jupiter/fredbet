@@ -62,8 +62,13 @@ public class FootballDataController {
         return new FootballDataSyncCommand();
     }
 
+    @ModelAttribute("tabStatus")
+    public TabStatus tabStatus() {
+        return new TabStatus();
+    }
+
     @RequestMapping
-    public String showPage(FootballDataCommand footballDataCommand) {
+    public String showPage(FootballDataCommand footballDataCommand, TabStatus tabStatus, Model model) {
         final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setApiToken(settings.getApiToken());
@@ -72,6 +77,15 @@ public class FootballDataController {
             if (footballDataCommand.getCompetitions() == null) {
                 footballDataCommand.setCompetitions(List.of(settings.getCompetition()));
             }
+        }
+
+        if (settings.isEnabled()) {
+            tabStatus.setTab1Active(false);
+            tabStatus.setTab2Active(true);
+        } else {
+            tabStatus.setTab1Active(true);
+            tabStatus.setTab2Active(false);
+            tabStatus.setTab2Disabled(true);
         }
 
         return "integration/footballdata";
@@ -104,11 +118,13 @@ public class FootballDataController {
             return "integration/footballdata";
         }
 
+        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
         if (footballDataCommand.isEnabled()) {
-            final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
             runtimeSettings.setTeamBundle(TeamBundle.FOOTBALL_DATA_USAGE);
-            runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
+        } else {
+            runtimeSettings.setTeamBundle(TeamBundle.WORLD_CUP); // default fallback
         }
+        runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
 
         Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
 
