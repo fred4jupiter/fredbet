@@ -4,7 +4,10 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -47,12 +50,15 @@ public class MatchService {
 
     private final MessageSourceUtil messageSourceUtil;
 
+    private final RuntimeSettingsService runtimeSettingsService;
+
     public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher,
-                        TeamRepository teamRepository, MessageSourceUtil messageSourceUtil) {
+                        TeamRepository teamRepository, MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.teamRepository = teamRepository;
         this.messageSourceUtil = messageSourceUtil;
+        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     public Optional<Match> findFinalMatch() {
@@ -213,14 +219,5 @@ public class MatchService {
 
     public boolean hasMatchWithResult() {
         return matchRepository.hasMatchWithResult();
-    }
-
-    public List<Team> getAllTeamsOfMatches() {
-        List<Team> allTeamsOfMatches = matchRepository.getAllTeamsOfMatches();
-        return allTeamsOfMatches.stream().sorted((teamOne, teamTwo) -> {
-            String teamTranslatedOne = teamOne.getNameTranslated(messageSourceUtil);
-            String teamTranslatedTwo = teamTwo.getNameTranslated(messageSourceUtil);
-            return teamTranslatedOne.compareTo(teamTranslatedTwo);
-        }).toList();
     }
 }

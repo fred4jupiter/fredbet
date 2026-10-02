@@ -6,12 +6,18 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
+import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -29,11 +35,25 @@ public class TeamService {
 
     private final CrestPlaceholderLoader crestPlaceholderLoader;
 
-    public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver, CrestsDownloader crestsDownloader, CrestPlaceholderLoader crestPlaceholderLoader) {
+    private final MessageSourceUtil messageSourceUtil;
+
+    private final RuntimeSettingsService runtimeSettingsService;
+
+    private final MatchRepository matchRepository;
+
+    private final TeamBundleProvider teamBundleProvider;
+
+    public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver,
+                       CrestsDownloader crestsDownloader, CrestPlaceholderLoader crestPlaceholderLoader,
+                       MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
         this.teamRepository = teamRepository;
         this.crestsCountryResolver = crestsCountryResolver;
         this.crestsDownloader = crestsDownloader;
         this.crestPlaceholderLoader = crestPlaceholderLoader;
+        this.messageSourceUtil = messageSourceUtil;
+        this.runtimeSettingsService = runtimeSettingsService;
+        this.matchRepository = matchRepository;
+        this.teamBundleProvider = teamBundleProvider;
     }
 
     public SvgImage loadCrestImage(Long teamId) {
@@ -89,5 +109,42 @@ public class TeamService {
         }
 
         return new Team(StringUtils.isNotBlank(teamName) ? teamName : FALLBACK_TEAM_NAME);
+    }
+
+    public Team findTeamById(Long teamId) {
+        return teamRepository.findById(teamId).orElse(null);
+    }
+
+    public List<Team> getAllTeamsOfMatches() {
+        final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
+        if (!TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
+            // load predefined teams from team bundle
+            List<Country> allPossibleCountries = teamBundleProvider.getTeams(teamBundle);
+            return toListOfTeams(allPossibleCountries);
+        }
+
+        // load teams from existent matches
+        List<Team> allTeamsOfMatches = matchRepository.getAllTeamsOfMatches();
+        return allTeamsOfMatches.stream().sorted((teamOne, teamTwo) -> {
+            String teamTranslatedOne = teamOne.getNameTranslated(messageSourceUtil);
+            String teamTranslatedTwo = teamTwo.getNameTranslated(messageSourceUtil);
+            if (StringUtils.isEmpty(teamTranslatedOne)) {
+                return -1;
+            }
+            if (StringUtils.isEmpty(teamTranslatedTwo)) {
+                return 1;
+            }
+
+            return teamTranslatedOne.compareTo(teamTranslatedTwo);
+        }).toList();
+    }
+
+    private List<Team> toListOfTeams(List<Country> countries) {
+        // TODO add sorting
+
+        return countries.stream()
+            .map(Team::new)
+//            .sorted(Comparator.comparing(Team::teamName))
+            .toList();
     }
 }

@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.matches;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.web.validation.ValidMatchConstraint;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,11 +13,9 @@ public class CreateEditMatchCommand {
 
     private Long matchId;
 
-    private Country countryTeamOne;
-    private Country countryTeamTwo;
+    private Team teamOne;
 
-    private String teamNameOne;
-    private String teamNameTwo;
+    private Team teamTwo;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
@@ -35,38 +33,6 @@ public class CreateEditMatchCommand {
 
     public void setMatchId(Long matchId) {
         this.matchId = matchId;
-    }
-
-    public String getTeamNameOne() {
-        return teamNameOne;
-    }
-
-    public void setTeamNameOne(String teamNameOne) {
-        this.teamNameOne = teamNameOne;
-    }
-
-    public String getTeamNameTwo() {
-        return teamNameTwo;
-    }
-
-    public void setTeamNameTwo(String teamNameTwo) {
-        this.teamNameTwo = teamNameTwo;
-    }
-
-    public Country getCountryTeamOne() {
-        return countryTeamOne;
-    }
-
-    public void setCountryTeamOne(Country countryTeamOne) {
-        this.countryTeamOne = countryTeamOne;
-    }
-
-    public Country getCountryTeamTwo() {
-        return countryTeamTwo;
-    }
-
-    public void setCountryTeamTwo(Country countryTeamTwo) {
-        this.countryTeamTwo = countryTeamTwo;
     }
 
     public LocalDateTime getKickOffDate() {
@@ -99,5 +65,21 @@ public class CreateEditMatchCommand {
 
     public void setDeletable(boolean deletable) {
         this.deletable = deletable;
+    }
+
+    public Team getTeamOne() {
+        return teamOne;
+    }
+
+    public void setTeamOne(Team teamOne) {
+        this.teamOne = teamOne;
+    }
+
+    public Team getTeamTwo() {
+        return teamTwo;
+    }
+
+    public void setTeamTwo(Team teamTwo) {
+        this.teamTwo = teamTwo;
     }
 }

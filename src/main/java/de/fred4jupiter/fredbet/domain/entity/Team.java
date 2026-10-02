@@ -139,4 +139,14 @@ public class Team {
     public Integer getVersion() {
         return version;
     }
+
+    public boolean isSameTeamAs(Team otherTeam) {
+        if (otherTeam == null) {
+            return false;
+        }
+        if (this.country != null && this.country.equals(otherTeam.getCountry())) {
+            return true;
+        }
+        return this.name != null && this.name.equals(otherTeam.getName());
+    }
 }

@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -33,19 +34,22 @@ public class ExtraBetController {
 
     private final ExtraBettingService extraBettingService;
 
+    private final TeamService teamService;
+
     public ExtraBetController(ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
                               WebMessageUtil messageUtil, MatchService matchService,
-                              ExtraBettingService extraBettingService) {
+                              ExtraBettingService extraBettingService, TeamService teamService) {
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
         this.matchService = matchService;
         this.extraBettingService = extraBettingService;
+        this.teamService = teamService;
     }
 
     @ModelAttribute("availableTeams")
     public List<Team> availableTeams() {
-        return matchService.getAllTeamsOfMatches();
+        return teamService.getAllTeamsOfMatches();
     }
 
     @ModelAttribute("gameForThirdAvailable")
