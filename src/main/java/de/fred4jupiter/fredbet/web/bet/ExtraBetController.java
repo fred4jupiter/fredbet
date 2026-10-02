@@ -6,8 +6,6 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.util.TeamUtil;
-import de.fred4jupiter.fredbet.web.util.TeamView;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,19 +29,16 @@ public class ExtraBetController {
 
     private final WebMessageUtil messageUtil;
 
-    private final TeamUtil teamUtil;
-
     private final MatchService matchService;
 
     private final ExtraBettingService extraBettingService;
 
     public ExtraBetController(ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
-                              WebMessageUtil messageUtil, TeamUtil teamUtil, MatchService matchService,
+                              WebMessageUtil messageUtil, MatchService matchService,
                               ExtraBettingService extraBettingService) {
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
-        this.teamUtil = teamUtil;
         this.matchService = matchService;
         this.extraBettingService = extraBettingService;
     }

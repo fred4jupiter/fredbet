@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -44,11 +45,14 @@ public class MatchService {
 
     private final TeamRepository teamRepository;
 
+    private final MessageSourceUtil messageSourceUtil;
+
     public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher,
-                        TeamRepository teamRepository) {
+                        TeamRepository teamRepository, MessageSourceUtil messageSourceUtil) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.teamRepository = teamRepository;
+        this.messageSourceUtil = messageSourceUtil;
     }
 
     public Optional<Match> findFinalMatch() {
@@ -212,6 +216,11 @@ public class MatchService {
     }
 
     public List<Team> getAllTeamsOfMatches() {
-        return matchRepository.getAllTeamsOfMatches();
+        List<Team> allTeamsOfMatches = matchRepository.getAllTeamsOfMatches();
+        return allTeamsOfMatches.stream().sorted((teamOne, teamTwo) -> {
+            String teamTranslatedOne = teamOne.getNameTranslated(messageSourceUtil);
+            String teamTranslatedTwo = teamTwo.getNameTranslated(messageSourceUtil);
+            return teamTranslatedOne.compareTo(teamTranslatedTwo);
+        }).toList();
     }
 }
