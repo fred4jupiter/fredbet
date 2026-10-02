@@ -8,6 +8,7 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
 import de.fred4jupiter.fredbet.match.TeamRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,14 +70,7 @@ public class TeamService {
             return team;
         }
 
-        Team newTeam = new Team();
-        if (country != null) {
-            newTeam.setCountry(country);
-            newTeam.setName(null);
-            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(newTeam::setSvgContent);
-        } else {
-            newTeam.setName(StringUtils.isNotBlank(teamName) ? teamName : FALLBACK_TEAM_NAME);
-        }
+        Team newTeam = createNewTeam(country, teamName);
 
         newTeamCallback.accept(newTeam);
 
@@ -85,5 +79,15 @@ public class TeamService {
         }
 
         return teamRepository.save(newTeam);
+    }
+
+    private @NonNull Team createNewTeam(Country country, String teamName) {
+        if (country != null) {
+            Team newTeam = new Team(country);
+            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(newTeam::setSvgContent);
+            return newTeam;
+        }
+
+        return new Team(StringUtils.isNotBlank(teamName) ? teamName : FALLBACK_TEAM_NAME);
     }
 }

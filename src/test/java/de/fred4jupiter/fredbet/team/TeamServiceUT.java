@@ -49,8 +49,7 @@ public class TeamServiceUT {
 
     @Test
     public void loadCrestImage_whenCountryIsSet_usesCountryResolver() {
-        Team team = new Team();
-        team.setCountry(Country.GERMANY);
+        Team team = new Team(Country.GERMANY);
         SvgImage expected = new SvgImage("<svg>germany</svg>", 12);
 
         when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
@@ -63,8 +62,7 @@ public class TeamServiceUT {
 
     @Test
     public void findOrCreateTeam_whenExistingTeamFound_returnsExistingWithoutSaving() {
-        Team existing = new Team();
-        existing.setName("Existing Team");
+        Team existing = new Team("Existing Team");
 
         when(teamRepository.findByCountryOrName(null, "Existing Team")).thenReturn(existing);
 

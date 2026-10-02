@@ -40,12 +40,16 @@ public class Team {
     @Column(name = "VERSION", nullable = false)
     private Integer version;
 
-    public Team() {
+    protected Team() {
         // for hibernate
     }
 
     public Team(Country country) {
         this.country = country;
+    }
+
+    public Team(String name) {
+        this.name = name;
     }
 
     public String getCrestsAsBase64() {

@@ -12,9 +12,8 @@ public class TeamStandingsUT {
 
     @Test
     public void shouldCalculateStandingsForWinDrawAndLoss() {
-        Team team = new Team();
+        Team team = new Team(Country.GERMANY);
         team.setCountry(Country.GERMANY);
-        team.setName("Germany");
 
         TeamStandings teamStandings = new TeamStandings(team);
         teamStandings.addMatch(2, 1);
@@ -34,7 +33,7 @@ public class TeamStandingsUT {
 
     @Test
     public void shouldReturnCssClassDependingOnRowCount() {
-        TeamStandings teamStandings = new TeamStandings(new Team());
+        TeamStandings teamStandings = new TeamStandings(new Team(Country.GERMANY));
 
         assertThat(teamStandings.getCssClass(1)).isEqualTo("success");
         assertThat(teamStandings.getCssClass(2)).isEqualTo("success");

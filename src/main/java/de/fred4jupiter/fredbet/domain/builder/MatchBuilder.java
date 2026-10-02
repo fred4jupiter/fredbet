@@ -1,10 +1,10 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
-import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
+import de.fred4jupiter.fredbet.team.TeamService;
 
 import java.time.LocalDateTime;
 
@@ -59,18 +59,8 @@ public class MatchBuilder {
     }
 
     public MatchBuilder withTeams(Team one, Team two) {
-        Team newTeamOne = new Team();
-        newTeamOne.setName(one.getName());
-        newTeamOne.setCountry(one.getCountry());
-        newTeamOne.setSvgContent(one.getSvgContent());
-
-        Team newTeamTwo = new Team();
-        newTeamTwo.setName(two.getName());
-        newTeamTwo.setCountry(two.getCountry());
-        newTeamTwo.setSvgContent(two.getSvgContent());
-
-        match.setTeamOne(newTeamOne);
-        match.setTeamTwo(newTeamTwo);
+        match.setTeamOne(one);
+        match.setTeamTwo(two);
         return this;
     }
 
