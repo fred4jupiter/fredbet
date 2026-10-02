@@ -10,8 +10,6 @@ import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
-import de.fred4jupiter.fredbet.integration.FootballDataService;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
@@ -55,13 +53,11 @@ public class DataPopulator {
 
     private final TeamService teamService;
 
-    private final FootballDataService footballDataService;
-
     public DataPopulator(MatchService matchService, UserService userService,
                          BettingService bettingService, RandomValueGenerator randomValueGenerator,
                          JokerService jokerService, ExtraBettingService extraBettingService,
                          RuntimeSettingsService runtimeSettingsService, CacheAdministrationService cacheAdministrationService,
-                         TeamService teamService, FootballDataService footballDataService) {
+                         TeamService teamService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
@@ -71,7 +67,6 @@ public class DataPopulator {
         this.runtimeSettingsService = runtimeSettingsService;
         this.cacheAdministrationService = cacheAdministrationService;
         this.teamService = teamService;
-        this.footballDataService = footballDataService;
     }
 
     @Async
@@ -150,8 +145,6 @@ public class DataPopulator {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
 
-        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
-
         final List<Match> allMatches = matchService.findAll();
         final List<AppUser> users = userService.findAll();
         users.forEach(appUser -> {
@@ -163,9 +156,7 @@ public class DataPopulator {
                 createBetForUser(appUser, match, jokerAllowed);
             });
 
-            if (settings.isEnabled() && settings.getCompetition().isCupCompetition()) {
-                extraBettingService.createExtraBetForUser(appUser.getUsername());
-            }
+            extraBettingService.createExtraBetForUser(appUser.getUsername());
         });
         LOG.debug("created demo bets for all users finished.");
     }
