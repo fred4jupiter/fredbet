@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.util;
 
 import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.TranslationAware;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 
 @Component
-public class MessageSourceUtil {
+public class MessageSourceUtil implements TranslationAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(MessageSourceUtil.class);
 
@@ -37,6 +38,7 @@ public class MessageSourceUtil {
         return msgKey;
     }
 
+    @Override
     public String getCountryName(Country country, Locale locale) {
         if (country == null) {
             return null;
@@ -58,9 +60,6 @@ public class MessageSourceUtil {
     }
 
     public String getTeamName(Country country, String teamName, Locale locale) {
-        if (country == null) {
-            return teamName;
-        }
-        return Validator.isNotNull(country) ? getCountryName(country, locale) : teamName;
+        return country != null ? getCountryName(country, locale) : teamName;
     }
 }

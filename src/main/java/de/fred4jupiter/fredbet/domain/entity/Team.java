@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.domain.TranslationAware;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -76,16 +76,16 @@ public class Team {
         return name;
     }
 
-    public String getNameTranslated(MessageSourceUtil messageSourceUtil) {
-        return getNameTranslated(messageSourceUtil, LocaleContextHolder.getLocale());
+    public String getNameTranslated(TranslationAware translationAware) {
+        return getNameTranslated(translationAware, LocaleContextHolder.getLocale());
     }
 
-    public String getNameTranslated(MessageSourceUtil messageSourceUtil, Locale locale) {
+    public String getNameTranslated(TranslationAware translationAware, Locale locale) {
         if (this.country == null) {
             return name;
         }
 
-        return messageSourceUtil.getCountryName(this.country, locale);
+        return translationAware.getCountryName(this.country, locale);
     }
 
     public void setName(String name) {
