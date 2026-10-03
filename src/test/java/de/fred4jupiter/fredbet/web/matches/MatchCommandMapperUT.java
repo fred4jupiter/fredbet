@@ -37,7 +37,7 @@ public class MatchCommandMapperUT {
         when(securityService.getCurrentUserName()).thenReturn("alfredo");
         when(bettingService.findAllByUsername("alfredo")).thenReturn(List.of(bet));
 
-        MatchCommandMapper matchCommandMapper = new MatchCommandMapper(bettingService, matchService, null, securityService);
+        MatchCommandMapper matchCommandMapper = new MatchCommandMapper(bettingService, matchService, securityService);
         List<MatchCommand> commands = matchCommandMapper.findMatches((username, service) -> {
             assertThat(service).isSameAs(matchService);
             assertThat(username).isEqualTo("alfredo");
@@ -56,7 +56,7 @@ public class MatchCommandMapperUT {
         when(securityService.getCurrentUserName()).thenReturn("alfredo");
         when(bettingService.findAllByUsername("alfredo")).thenReturn(List.of());
 
-        MatchCommandMapper matchCommandMapper = new MatchCommandMapper(bettingService, matchService, null, securityService);
+        MatchCommandMapper matchCommandMapper = new MatchCommandMapper(bettingService, matchService, securityService);
         List<MatchCommand> commands = matchCommandMapper.findMatches(service -> {
             assertThat(service).isSameAs(matchService);
             return List.of(match);

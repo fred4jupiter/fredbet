@@ -132,7 +132,7 @@ public class TeamService {
     }
 
     public Team createFallbackPlaceholder() {
-        Team team = findOrCreateTeam(null, null);
+        Team team = findOrCreateTeam(null, FALLBACK_TEAM_NAME);
         team.clearCrest();
         return team;
     }
