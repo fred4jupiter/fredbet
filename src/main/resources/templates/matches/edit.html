@@ -32,21 +32,6 @@
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamTwoUniqueId')}" th:errors="*{teamTwoUniqueId}">teamTwoUniqueId error</p>
 					</div>
 					<div class="form-group mb-3">
-						<label class="form-label" th:text="#{matches.form.teamNames} + ':'"></label>
-						<a href="#" onclick="clearTeamNameFields()"><i class="fas fa-times-circle" aria-hidden="true"></i></a>
-						<br/>
-						<div class="row">
-							<div class="col-6">
-								<input type="text" id="teamOneName" th:field="*{teamOneName}" class="form-control" />
-							</div>
-							<div class="col-6">
-								<input type="text" id="teamTwoName" th:field="*{teamTwoName}" class="form-control" />
-							</div>
-						</div>
-						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamOneName')}" th:errors="*{teamOneName}">teamOne.name error</p>
-						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamTwoName')}" th:errors="*{teamTwoName}">teamTwo.name error</p>
-					</div>
-					<div class="form-group mb-3">
 		                <label class="form-label" for="kickOffDate" th:text="#{matches.form.kickOff} + ':'"></label>
 						<input type="datetime-local" id="kickOffDate" th:field="*{kickOffDate}" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('kickOffDate')}" th:errors="*{kickOffDate}">kickOffDate error</p>
@@ -94,7 +79,4 @@
         </div>
 	</div>
 </body>
-<th:block layout:fragment="scripts">
-	<script type="text/javascript" th:src="@{/js/pages/edit_match.js}" charset="UTF-8"></script>
-</th:block>
 </html>
