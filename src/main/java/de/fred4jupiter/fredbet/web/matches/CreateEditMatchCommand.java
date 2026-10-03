@@ -13,9 +13,11 @@ public class CreateEditMatchCommand {
 
     private Long matchId;
 
-    private Team teamOne;
+    private String teamOneUniqueId;
+    private String teamOneName;
 
-    private Team teamTwo;
+    private String teamTwoUniqueId;
+    private String teamTwoName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
@@ -67,19 +69,35 @@ public class CreateEditMatchCommand {
         this.deletable = deletable;
     }
 
-    public Team getTeamOne() {
-        return teamOne;
+    public String getTeamOneUniqueId() {
+        return teamOneUniqueId;
     }
 
-    public void setTeamOne(Team teamOne) {
-        this.teamOne = teamOne;
+    public void setTeamOneUniqueId(String teamOneUniqueId) {
+        this.teamOneUniqueId = teamOneUniqueId;
     }
 
-    public Team getTeamTwo() {
-        return teamTwo;
+    public String getTeamTwoUniqueId() {
+        return teamTwoUniqueId;
     }
 
-    public void setTeamTwo(Team teamTwo) {
-        this.teamTwo = teamTwo;
+    public void setTeamTwoUniqueId(String teamTwoUniqueId) {
+        this.teamTwoUniqueId = teamTwoUniqueId;
+    }
+
+    public String getTeamOneName() {
+        return teamOneName;
+    }
+
+    public void setTeamOneName(String teamOneName) {
+        this.teamOneName = teamOneName;
+    }
+
+    public String getTeamTwoName() {
+        return teamTwoName;
+    }
+
+    public void setTeamTwoName(String teamTwoName) {
+        this.teamTwoName = teamTwoName;
     }
 }

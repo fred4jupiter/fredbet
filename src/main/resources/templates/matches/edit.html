@@ -16,20 +16,20 @@
 						<label class="form-label" th:text="#{matches.form.chooseCountry} + ':'"></label><br/>
 						<div class="row">
 							<div class="col-6">
-								<select th:field="*{teamOne}" class="form-select">
+								<select th:field="*{teamOneUniqueId}" class="form-select">
                                     <option th:value="null" th:text="#{country.none}"></option>
-                                    <option th:each="team : ${availableTeams}" th:value="${team.id}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+                                    <option th:each="team : ${availableTeams}" th:value="${team.getUniqueId()}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 								</select>
 							</div>
 							<div class="col-6">
-								<select th:field="*{teamTwo}" class="form-select">
+								<select th:field="*{teamTwoUniqueId}" class="form-select">
                                     <option th:value="null" th:text="#{country.none}"></option>
-                                    <option th:each="team : ${availableTeams}" th:value="${team.id}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+                                    <option th:each="team : ${availableTeams}" th:value="${team.getUniqueId()}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 								</select>
 							</div>
 						</div>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamOne')}" th:errors="*{teamOne}">teamOne error</p>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamTwo')}" th:errors="*{teamTwo}">teamTwo error</p>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamOneUniqueId')}" th:errors="*{teamOneUniqueId}">teamOneUniqueId error</p>
+						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamTwoUniqueId')}" th:errors="*{teamTwoUniqueId}">teamTwoUniqueId error</p>
 					</div>
 					<div class="form-group mb-3">
 						<label class="form-label" th:text="#{matches.form.teamNames} + ':'"></label>
@@ -37,14 +37,14 @@
 						<br/>
 						<div class="row">
 							<div class="col-6">
-								<input type="text" id="teamOneName" th:field="*{teamOne.name}" class="form-control" />
+								<input type="text" id="teamOneName" th:field="*{teamOneName}" class="form-control" />
 							</div>
 							<div class="col-6">
-								<input type="text" id="teamTwoName" th:field="*{teamTwo.name}" class="form-control" />
+								<input type="text" id="teamTwoName" th:field="*{teamTwoName}" class="form-control" />
 							</div>
 						</div>
-						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamOne.name')}" th:errors="*{teamOne.name}">teamOne.name error</p>
-						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamTwo.name')}" th:errors="*{teamTwo.name}">teamTwo.name error</p>
+						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamOneName')}" th:errors="*{teamOneName}">teamOne.name error</p>
+						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamTwoName')}" th:errors="*{teamTwoName}">teamTwo.name error</p>
 					</div>
 					<div class="form-group mb-3">
 		                <label class="form-label" for="kickOffDate" th:text="#{matches.form.kickOff} + ':'"></label>

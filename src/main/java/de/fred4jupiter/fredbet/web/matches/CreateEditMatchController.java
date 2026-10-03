@@ -92,12 +92,12 @@ public class CreateEditMatchController {
             return VIEW_EDIT_MATCH;
         }
 
-        save(createEditMatchCommand);
+        final Match savedMatch = save(createEditMatchCommand);
 
         final String msgKey = createEditMatchCommand.getMatchId() == null ? "msg.match.created" : "msg.match.updated";
 
-        String teamNameOne = createEditMatchCommand.getTeamOne().getNameTranslated(messageSourceUtil);
-        String teamNameTwo = createEditMatchCommand.getTeamTwo().getNameTranslated(messageSourceUtil);
+        String teamNameOne = savedMatch.getTeamOne().getNameTranslated(messageSourceUtil);
+        String teamNameTwo = savedMatch.getTeamTwo().getNameTranslated(messageSourceUtil);
         webMessageUtil.addInfoMsg(redirect, msgKey, teamNameOne, teamNameTwo);
 
         return "redirect:/matches#" + createEditMatchCommand.getMatchId();
@@ -128,8 +128,8 @@ public class CreateEditMatchController {
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
         CreateEditMatchCommand command = new CreateEditMatchCommand();
-        command.setTeamOne(match.getTeamOne());
-        command.setTeamTwo(match.getTeamTwo());
+        command.setTeamOneUniqueId(match.getTeamOne().getUniqueId());
+        command.setTeamTwoUniqueId(match.getTeamTwo().getUniqueId());
         command.setGroup(match.getGroup());
         command.setKickOffDate(match.getKickOffDate());
         command.setMatchId(match.getId());
@@ -137,14 +137,14 @@ public class CreateEditMatchController {
         return command;
     }
 
-    private Long save(CreateEditMatchCommand createEditMatchCommand) {
+    private Match save(CreateEditMatchCommand createEditMatchCommand) {
         Match match = loadOrCreateMatch(createEditMatchCommand.getMatchId());
 
         toMatch(createEditMatchCommand, match);
 
         Match savedMatch = matchService.save(match);
         createEditMatchCommand.setMatchId(savedMatch.getId());
-        return savedMatch.getId();
+        return savedMatch;
     }
 
     private Match loadOrCreateMatch(Long matchId) {
@@ -157,11 +157,20 @@ public class CreateEditMatchController {
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-        final Team teamOne = teamService.findTeamById(matchCommand.getTeamOne().getId());
-        final Team teamTwo = teamService.findTeamById(matchCommand.getTeamTwo().getId());
+        Team teamOne = Team.fromUniqueId(matchCommand.getTeamOneUniqueId());
+        Team teamTwo = Team.fromUniqueId(matchCommand.getTeamTwoUniqueId());
 
-        match.setTeamOne(teamOne);
-        match.setTeamTwo(teamTwo);
+        if (teamOne != null) {
+            match.setTeamOne(teamService.findOrCreateTeam(teamOne.getCountry(), teamOne.getName()));
+        } else {
+            match.setTeamOne(teamService.createFallbackPlaceholder());
+        }
+
+        if (teamTwo != null) {
+            match.setTeamTwo(teamService.findOrCreateTeam(teamTwo.getCountry(), teamTwo.getName()));
+        } else {
+            match.setTeamTwo(teamService.createFallbackPlaceholder());
+        }
 
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());

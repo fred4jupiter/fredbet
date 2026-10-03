@@ -120,31 +120,20 @@ public class TeamService {
         if (!TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
             // load predefined teams from team bundle
             List<Country> allPossibleCountries = teamBundleProvider.getTeams(teamBundle);
-            return toListOfTeams(allPossibleCountries);
+            return allPossibleCountries.stream()
+                .map(Team::new)
+                .sorted(new TeamSortComparator(messageSourceUtil))
+                .toList();
         }
 
         // load teams from existent matches
         List<Team> allTeamsOfMatches = matchRepository.getAllTeamsOfMatches();
-        return allTeamsOfMatches.stream().sorted((teamOne, teamTwo) -> {
-            String teamTranslatedOne = teamOne.getNameTranslated(messageSourceUtil);
-            String teamTranslatedTwo = teamTwo.getNameTranslated(messageSourceUtil);
-            if (StringUtils.isEmpty(teamTranslatedOne)) {
-                return -1;
-            }
-            if (StringUtils.isEmpty(teamTranslatedTwo)) {
-                return 1;
-            }
-
-            return teamTranslatedOne.compareTo(teamTranslatedTwo);
-        }).toList();
+        return allTeamsOfMatches.stream().sorted(new TeamSortComparator(messageSourceUtil)).toList();
     }
 
-    private List<Team> toListOfTeams(List<Country> countries) {
-        // TODO add sorting
-
-        return countries.stream()
-            .map(Team::new)
-//            .sorted(Comparator.comparing(Team::teamName))
-            .toList();
+    public Team createFallbackPlaceholder() {
+        Team team = findOrCreateTeam(null, null);
+        team.clearCrest();
+        return team;
     }
 }
