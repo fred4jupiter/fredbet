@@ -68,7 +68,11 @@ public class TeamService {
             return crestsCountryResolver.loadCrestsImageFor(team.getCountry());
         }
 
-        return new SvgImage(team.getSvgContent(), team.getVersion());
+        if (StringUtils.isNotBlank(team.getSvgContent())) {
+            return new SvgImage(team.getSvgContent(), team.getVersion());
+        }
+
+        return crestPlaceholderLoader.getCrestPlaceholderIcon();
     }
 
     public Team findOrCreateTeam(Country country, String teamName) {
@@ -133,7 +137,7 @@ public class TeamService {
 
     public Team createFallbackPlaceholder() {
         Team team = findOrCreateTeam(null, FALLBACK_TEAM_NAME);
-        team.clearCrest();
+        team.setSvgContent(crestPlaceholderLoader.getCrestPlaceholderIcon());
         return team;
     }
 }
