@@ -117,10 +117,10 @@ Following settings can be changed at runtime:
 
 ## Production Setup
 
-### Database Setup for Production Use
+### Database Setup
 
 There are different **database** options to use with FredBet. The default one is a `h2` file-based database, but this is for **development 
-and testing purposes only**. For production setup you need to use a supported database (PostgreSQL, Maria DB or MySQL).
+and testing purposes only**. For production setup you need to use PostgreSQL.
 
 #### H2 (default, but NOT for production use)
 
@@ -131,9 +131,7 @@ and testing purposes only**. For production setup you need to use a supported da
 | spring.datasource.username          | SPRING_DATASOURCE_USERNAME          | sa                                                                |
 | spring.datasource.password          | SPRING_DATASOURCE_PASSWORD          |                                                                   |
 
-These databases are supported for production use:
-
-#### PostgreSQL
+#### PostgreSQL (production use)
 
 | JVM Key                             | ENV KEY                             | example value                            |
 |-------------------------------------|-------------------------------------|------------------------------------------|
@@ -141,27 +139,6 @@ These databases are supported for production use:
 | spring.datasource.url               | SPRING_DATASOURCE_URL               | jdbc:postgresql://localhost:5432/fredbet |
 | spring.datasource.username          | SPRING_DATASOURCE_USERNAME          | fred                                     |
 | spring.datasource.password          | SPRING_DATASOURCE_PASSWORD          | fred                                     |
-
-
-#### MySQL
-
-| JVM Key                             | ENV KEY                             | example value                        |
-|-------------------------------------|-------------------------------------|--------------------------------------|
-| spring.datasource.driver-class-name | SPRING_DATASOURCE_DRIVER_CLASS_NAME | com.mysql.jdbc.Driver                |
-| spring.datasource.url               | SPRING_DATASOURCE_URL               | jdbc:mysql://localhost:3306/fredbet  |
-| spring.datasource.username          | SPRING_DATASOURCE_USERNAME          | fred                                 |
-| spring.datasource.password          | SPRING_DATASOURCE_PASSWORD          | fred                                 |
-
-
-#### Maria DB
-
-| JVM Key                            | ENV KEY                             | example value                        |
-|------------------------------------|-------------------------------------|--------------------------------------|
-| spring.datasource.driver-class-name | SPRING_DATASOURCE_DRIVER_CLASS_NAME | org.mariadb.jdbc.Driver              |
-| spring.datasource.url              | SPRING_DATASOURCE_URL               | jdbc:mariadb://mariadb:3306/fredbet  |
-| spring.datasource.username         | SPRING_DATASOURCE_USERNAME          | fred                                 |
-| spring.datasource.password         | SPRING_DATASOURCE_PASSWORD          | fred                                 |
-
 
 ### Docker Compose with Traefik, Postgres, Let´s Encrypt Integration and AWS S3 Backup
 
