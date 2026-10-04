@@ -14,18 +14,32 @@ services:
       - "postgres"
       - "-c"
       - "lo_compat_privileges=on"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fred -d fredbetdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
   databasus:
     image: databasus/databasus:v3.60.0
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - "4005:4005"
     volumes:
       - databasus-vol:/databasus-data
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: fredbetdb
+      DB_USER: fred
+      DB_PASSWORD: fred
   cloudbeaver:
     image: dbeaver/cloudbeaver:26.2.1
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - 8978:8978
     environment:
@@ -36,7 +50,8 @@ services:
   fredbet:
     image: fred4jupiter/fredbet:4.9.0
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
