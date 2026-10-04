@@ -11,6 +11,12 @@ services:
       - POSTGRES_PASSWORD=fred
       - POSTGRES_DB=fredbetdb
       - TZ=Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fred -d fredbetdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
   fredbet:
     profiles: ["app"] # run with 'docker compose --profile app build'
     container_name: fredbet
@@ -21,9 +27,10 @@ services:
         max-size: "10m"
         max-file: "3"
     ports:
-    - "8080:8080"
+      - "8080:8080"
     depends_on:
-    - postgres
+      postgres:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/fredbetdb"
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
