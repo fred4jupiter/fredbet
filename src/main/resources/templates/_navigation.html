@@ -141,9 +141,6 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/importexport}" th:text="#{importexport.title}"></a>
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
