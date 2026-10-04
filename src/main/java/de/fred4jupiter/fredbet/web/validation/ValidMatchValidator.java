@@ -18,7 +18,7 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
         }
 
         if (hasSameTeamsPlayingAgainstEachOther(value)) {
-            context.buildConstraintViolationWithTemplate("{msg.input.same.teams}").addPropertyNode("countryTeamOne")
+            context.buildConstraintViolationWithTemplate("{msg.input.same.teams}").addPropertyNode("teamOne")
                 .addConstraintViolation().disableDefaultConstraintViolation();
             LOG.error("The same teams cannot play against themself");
             return false;
