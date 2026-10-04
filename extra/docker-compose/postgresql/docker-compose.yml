@@ -15,7 +15,7 @@ services:
       - "-c"
       - "lo_compat_privileges=on"
   databasus:
-    image: databasus/databasus:v3.42.0
+    image: databasus/databasus:v3.60.0
     depends_on:
       - postgres
     ports:
@@ -23,7 +23,7 @@ services:
     volumes:
       - databasus-vol:/databasus-data
   cloudbeaver:
-    image: dbeaver/cloudbeaver:26.1.0
+    image: dbeaver/cloudbeaver:26.2.1
     depends_on:
       - postgres
     ports:
@@ -34,7 +34,7 @@ services:
     volumes:
       - cloudbeaver-vol:/opt/cloudbeaver/workspace
   fredbet:
-    image: fred4jupiter/fredbet:latest
+    image: fred4jupiter/fredbet:4.9.0
     depends_on:
       - postgres
     ports:
