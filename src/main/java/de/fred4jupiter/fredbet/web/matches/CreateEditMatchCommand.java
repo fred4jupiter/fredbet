@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.web.validation.ValidMatchConstraint;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,9 +13,9 @@ public class CreateEditMatchCommand {
 
     private Long matchId;
 
-    private String teamOneUniqueId;
+    private Team teamOne;
 
-    private String teamTwoUniqueId;
+    private Team teamTwo;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
@@ -66,19 +67,19 @@ public class CreateEditMatchCommand {
         this.deletable = deletable;
     }
 
-    public String getTeamOneUniqueId() {
-        return teamOneUniqueId;
+    public Team getTeamOne() {
+        return teamOne;
     }
 
-    public void setTeamOneUniqueId(String teamOneUniqueId) {
-        this.teamOneUniqueId = teamOneUniqueId;
+    public void setTeamOne(Team teamOne) {
+        this.teamOne = teamOne;
     }
 
-    public String getTeamTwoUniqueId() {
-        return teamTwoUniqueId;
+    public Team getTeamTwo() {
+        return teamTwo;
     }
 
-    public void setTeamTwoUniqueId(String teamTwoUniqueId) {
-        this.teamTwoUniqueId = teamTwoUniqueId;
+    public void setTeamTwo(Team teamTwo) {
+        this.teamTwo = teamTwo;
     }
 }

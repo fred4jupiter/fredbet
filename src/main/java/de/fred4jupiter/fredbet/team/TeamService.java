@@ -57,9 +57,13 @@ public class TeamService {
     }
 
     public SvgImage loadCrestImage(Long teamId) {
+        if (teamId == null) {
+            return crestPlaceholderLoader.getCrestPlaceholderIcon();
+        }
+
         Optional<Team> teamOpt = teamRepository.findById(teamId);
         if (teamOpt.isEmpty()) {
-            return null;
+            return crestPlaceholderLoader.getCrestPlaceholderIcon();
         }
 
         final Team team = teamOpt.get();

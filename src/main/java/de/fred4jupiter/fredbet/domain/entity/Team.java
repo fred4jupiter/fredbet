@@ -136,40 +136,7 @@ public class Team {
         return version;
     }
 
-    public boolean isSameTeamAs(Team otherTeam) {
-        if (otherTeam == null) {
-            return false;
-        }
-        if (this.country != null && this.country.equals(otherTeam.getCountry())) {
-            return true;
-        }
-        return this.name != null && this.name.equals(otherTeam.getName());
-    }
-
     public String getUniqueId() {
-        return country + "@" + name;
-    }
-
-    public static Team fromUniqueId(String uniqueId) {
-        if (StringUtils.isBlank(uniqueId)) {
-            return null;
-        }
-
-        String countryPart = StringUtils.substringBefore(uniqueId, "@");
-        String namePart = StringUtils.substringAfter(uniqueId, "@");
-
-        if (StringUtils.isNotBlank(countryPart)) {
-            Country country = Country.valueOf(countryPart);
-            return new Team(country);
-        }
-
-        if (StringUtils.isNotBlank(namePart)) {
-            return new Team(namePart);
-        }
-        throw new IllegalArgumentException("Invalid uniqueId: " + uniqueId);
-    }
-
-    public void clearCrest() {
-        this.svgContent = null;
+        return id + "@" + country + "@" + name;
     }
 }

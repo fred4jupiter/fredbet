@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.validation;
 
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.web.matches.CreateEditMatchCommand;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -27,6 +28,12 @@ public class ValidMatchValidator implements ConstraintValidator<ValidMatchConstr
     }
 
     private boolean hasSameTeamsPlayingAgainstEachOther(CreateEditMatchCommand value) {
-        return value.getTeamOneUniqueId().equals(value.getTeamTwoUniqueId());
+        Team teamOne = value.getTeamOne();
+        Team teamTwo = value.getTeamTwo();
+        if (teamOne == null || teamTwo == null) {
+            return false;
+        }
+
+        return teamOne.equals(teamTwo);
     }
 }

@@ -24,14 +24,14 @@ public class TeamImageController {
     }
 
     @GetMapping(value = "/{teamId}.svg", produces = "image/svg+xml")
-    public ResponseEntity<String> getTeamImage(@PathVariable Long teamId, WebRequest webRequest) {
+    public ResponseEntity<String> getTeamImage(@PathVariable(required = false) Long teamId, WebRequest webRequest) {
         final SvgImage svgImage = teamService.loadCrestImage(teamId);
         if (svgImage == null) {
             return ResponseEntity.notFound().build();
         }
 
         final String etag = "\"" + svgImage.version() + "\"";
-        final CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.DAYS);
+        final CacheControl cacheControl = CacheControl.maxAge(1, TimeUnit.DAYS);
         if (webRequest.checkNotModified(etag)) {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
                 .cacheControl(cacheControl)

@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.team.TeamService;
@@ -128,8 +127,8 @@ public class CreateEditMatchController {
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
         CreateEditMatchCommand command = new CreateEditMatchCommand();
-        command.setTeamOneUniqueId(match.getTeamOne().getUniqueId());
-        command.setTeamTwoUniqueId(match.getTeamTwo().getUniqueId());
+        command.setTeamOne(match.getTeamOne());
+        command.setTeamTwo(match.getTeamTwo());
         command.setGroup(match.getGroup());
         command.setKickOffDate(match.getKickOffDate());
         command.setMatchId(match.getId());
@@ -157,21 +156,8 @@ public class CreateEditMatchController {
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-        Team teamOne = Team.fromUniqueId(matchCommand.getTeamOneUniqueId());
-        Team teamTwo = Team.fromUniqueId(matchCommand.getTeamTwoUniqueId());
-
-        if (teamOne != null) {
-            match.setTeamOne(teamService.findOrCreateTeam(teamOne.getCountry(), teamOne.getName()));
-        } else {
-            match.setTeamOne(teamService.createFallbackPlaceholder());
-        }
-
-        if (teamTwo != null) {
-            match.setTeamTwo(teamService.findOrCreateTeam(teamTwo.getCountry(), teamTwo.getName()));
-        } else {
-            match.setTeamTwo(teamService.createFallbackPlaceholder());
-        }
-
+        match.setTeamOne(matchCommand.getTeamOne());
+        match.setTeamTwo(matchCommand.getTeamTwo());
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());
         match.setStadium(matchCommand.getStadium());
