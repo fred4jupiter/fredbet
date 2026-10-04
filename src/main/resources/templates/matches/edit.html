@@ -3,43 +3,44 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{matches.form.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/pages/match_edit.css}" />
 </head>
 <body>
 	<div layout:fragment="content">
         <h1 th:text="#{matches.form.title}"></h1>
-		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form">
+		<form id="matchesForm" th:action="@{/match}" th:object="${createEditMatchCommand}" action="#" method="post" role="form" class="match-form">
 			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/match/delete/' + ${createEditMatchCommand.matchId}, id = 'confirm-delete')}"></div>
-			<div class="row">
-				<div class="col-12 col-sm-6 col-md-4">
+			<div class="row g-3">
+				<div class="col-12 col-md-6 col-lg-5">
 					<input type="hidden" th:field="*{matchId}" />
 					<div class="form-group mb-3">
 						<label class="form-label" th:text="#{matches.form.chooseCountry} + ':'"></label><br/>
-						<div class="row">
-							<div class="col-6">
+						<div class="row team-selects g-2">
+							<div class="col-12 col-sm-6">
 								<select th:field="*{{teamOne}}" class="form-select">
                                     <option th:value="null" th:text="#{country.none}"></option>
                                     <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 								</select>
 							</div>
-							<div class="col-6">
+							<div class="col-12 col-sm-6">
 								<select th:field="*{{teamTwo}}" class="form-select">
                                     <option th:value="null" th:text="#{country.none}"></option>
                                     <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 								</select>
 							</div>
 						</div>
-						<p class="alert alert-danger field-alert mt-3" th:if="${#fields.hasErrors('teamOne')}" th:errors="*{teamOne}">teamOne error</p>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamTwo')}" th:errors="*{teamTwo}">teamTwo error</p>
+						<p class="alert alert-danger field-alert mt-3 mb-0" th:if="${#fields.hasErrors('teamOne')}" th:errors="*{teamOne}">teamOne error</p>
+						<p class="alert alert-danger field-alert mt-2 mb-0" th:if="${#fields.hasErrors('teamTwo')}" th:errors="*{teamTwo}">teamTwo error</p>
 					</div>
 					<div class="form-group mb-3">
 		                <label class="form-label" for="kickOffDate" th:text="#{matches.form.kickOff} + ':'"></label>
-						<input type="datetime-local" id="kickOffDate" th:field="*{kickOffDate}" />
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('kickOffDate')}" th:errors="*{kickOffDate}">kickOffDate error</p>
+						<input type="datetime-local" id="kickOffDate" th:field="*{kickOffDate}" class="form-control" />
+						<p class="alert alert-danger field-alert mt-2 mb-0" th:if="${#fields.hasErrors('kickOffDate')}" th:errors="*{kickOffDate}">kickOffDate error</p>
 		            </div>
 					<div class="form-group mb-3">
 						<label class="form-label" for="stadium" th:text="#{matches.form.stadium} + ':'"></label>
 						<input id="stadium" type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" maxlength="20"/>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('stadium')}" th:errors="*{stadium}">stadium error</p>
+						<p class="alert alert-danger field-alert mt-2 mb-0" th:if="${#fields.hasErrors('stadium')}" th:errors="*{stadium}">stadium error</p>
 					</div>
 					<div class="form-group mb-3">
 						<label class="form-label" for="group" th:text="#{matches.form.group} + ':'"></label>
@@ -47,24 +48,26 @@
                             <option th:value="null" th:text="#{country.none}"></option>
 						    <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${gr.getTitleMsgKey()}}"></option>
 						</select>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
+						<p class="alert alert-danger field-alert mt-2 mb-0" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
 			        </div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
-								data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
-						<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
-                        <p sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="d-inline-flex gap-1 mt-3">
-                            <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMatchInfo" aria-expanded="false" aria-controls="collapseMatchInfo">
-                                <i class="bi bi-info-circle"></i>
-                            </button>
-                        </p>
+						<div class="action-buttons">
+							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+							<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
+									data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
+							<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+                            <div sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                                <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMatchInfo" aria-expanded="false" aria-controls="collapseMatchInfo">
+                                    <i class="bi bi-info-circle"></i>
+                                </button>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
 		</form>
 
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-auto">
                 <div class="collapse" id="collapseMatchInfo">
                     <div class="card card-body">

@@ -1,0 +1,17 @@
+.match-form .form-control,
+.match-form .form-select,
+.match-form input[type="datetime-local"] {
+    width: 100%;
+}
+
+.match-form .team-selects {
+    --bs-gutter-y: 0.75rem;
+}
+
+@media (min-width: 576px) {
+    .match-form .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+}
