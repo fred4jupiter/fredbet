@@ -15,9 +15,9 @@
 							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{finalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+							<select th:field="*{{finalWinner}}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="team : ${availableTeams}" th:value="${team.id}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+                                <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 							</select>
 						</div>
 					</div>
@@ -29,9 +29,9 @@
                             <span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsSemiFinalWinner()})}"></span>
                         </div>
                         <div class="card-body">
-                            <select th:field="*{semiFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+                            <select th:field="*{{semiFinalWinner}}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="team : ${availableTeams}" th:value="${team.id}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+                                <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
                             </select>
                         </div>
                     </div>
@@ -43,9 +43,9 @@
                             <span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsThirdFinalWinner()})}"></span>
                         </div>
                         <div class="card-body">
-                            <select th:field="*{thirdFinalWinner}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
+                            <select th:field="*{{thirdFinalWinner}}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
                                 <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="teamView : ${availableTeams}" th:value="${teamView.country()}" th:text="${teamView.teamName()}"></option>
+                                <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
                             </select>
                         </div>
                     </div>
