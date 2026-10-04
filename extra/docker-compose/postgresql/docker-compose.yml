@@ -29,12 +29,6 @@ services:
       - "4005:4005"
     volumes:
       - databasus-vol:/databasus-data
-    environment:
-      DB_HOST: postgres
-      DB_PORT: "5432"
-      DB_NAME: fredbetdb
-      DB_USER: fred
-      DB_PASSWORD: fred
   cloudbeaver:
     image: dbeaver/cloudbeaver:26.2.1
     depends_on:
