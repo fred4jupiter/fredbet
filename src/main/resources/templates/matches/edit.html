@@ -51,17 +51,19 @@
 						<p class="alert alert-danger field-alert mt-2 mb-0" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
 			        </div>
 					<div class="form-group">
-						<div class="action-buttons">
-							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-							<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
-									data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
-							<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
-                            <div sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMatchInfo" aria-expanded="false" aria-controls="collapseMatchInfo">
-                                    <i class="bi bi-info-circle"></i>
-                                </button>
-                            </div>
-                        </div>
+						<div class="d-flex flex-wrap align-items-center gap-2">
+							<div class="d-flex flex-wrap gap-2">
+								<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+								<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"
+										data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"></button>
+								<a href="#" th:href="@{${'/matches#' + createEditMatchCommand.matchId}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+							</div>
+							<div sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="ms-1">
+								<button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMatchInfo" aria-expanded="false" aria-controls="collapseMatchInfo">
+									<i class="bi bi-info-circle"></i>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
