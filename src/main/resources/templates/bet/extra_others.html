@@ -2,6 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{bet.extra.others.title}"></title>
+		<style>
+			.team-row img.fi {
+				display: inline-block;
+				max-width: 2rem;
+                max-height: 2rem;
+				width: auto;
+				vertical-align: middle;
+			}
+		</style>
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -24,27 +33,27 @@
 						</div>
 					   <div class="card-body">
 						   <div class="table-responsive">
-						   		<table class="table table-condensed">
-						   			<tr>
-										<td class="bg-success-subtle">
-											1. <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.finalWinner.id})}" alt="crests"/>
-											<span th:text="${extraBet.finalWinner.getNameTranslated(@messageSourceUtil)}"></span>
-										</td>
-						   			</tr>
-						   			<tr>
-										<td class="bg-warning-subtle">
-											2. <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.semiFinalWinner.id})}" alt="crests"/>
-											<span th:text="${extraBet.semiFinalWinner.getNameTranslated(@messageSourceUtil)}"></span>
-										</td>
-						   			</tr>
-						   			<tr th:if="${extraBet.thirdFinalWinner}">
-										<td class="bg-info-subtle">
-											3. <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.thirdFinalWinner.id})}" alt="crests"/>
-											<span th:text="${extraBet.thirdFinalWinner.getNameTranslated(@messageSourceUtil)}"></span>
-										</td>
-						   			</tr>
-						   		</table>
-					   	   </div>
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td class="bg-success-subtle team-row">
+                                            <span>1. <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.finalWinner.id})}" alt="crests"/></span>
+                                            <span th:text="${extraBet.finalWinner.getNameTranslated(@messageSourceUtil)}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-warning-subtle team-row">
+                                            <span>2. <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.semiFinalWinner.id})}" alt="crests"/></span>
+                                            <span th:text="${extraBet.semiFinalWinner.getNameTranslated(@messageSourceUtil)}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${extraBet.thirdFinalWinner}">
+                                        <td class="bg-info-subtle team-row">
+                                            <span>3. <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.thirdFinalWinner.id})}" alt="crests"/></span>
+                                            <span th:text="${extraBet.thirdFinalWinner.getNameTranslated(@messageSourceUtil)}"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+					       </div>
 					   </div>
 					</div>
 				</div>
