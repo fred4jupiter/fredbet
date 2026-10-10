@@ -1,9 +1,9 @@
 services:
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:18.4-alpine
     volumes:
-      - postgres-only-vol:/var/lib/postgresql/data
+      - postgres-only-vol:/var/lib/postgresql
     ports:
       - "5432:5432"
     environment:
