@@ -2,12 +2,7 @@ package de.fred4jupiter.fredbet.match;
 
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.CacheNames;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -48,17 +43,11 @@ public class MatchService {
 
     private final TeamRepository teamRepository;
 
-    private final MessageSourceUtil messageSourceUtil;
-
-    private final RuntimeSettingsService runtimeSettingsService;
-
     public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher,
-                        TeamRepository teamRepository, MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService) {
+                        TeamRepository teamRepository) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.teamRepository = teamRepository;
-        this.messageSourceUtil = messageSourceUtil;
-        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     public Optional<Match> findFinalMatch() {
@@ -103,19 +92,8 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
-//        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
-//        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
-//
-//        match.setTeamOne(teamOne);
-//        match.setTeamTwo(teamTwo);
-
         return matchRepository.save(match);
     }
-
-//    @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-//    public Match saveOnly(Match match) {
-//        return matchRepository.save(match);
-//    }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public List<Match> saveAll(List<Match> matches) {
