@@ -1,12 +1,14 @@
 package de.fred4jupiter.fredbet.team;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,6 +40,12 @@ public class TeamServiceUT {
 
     @Mock
     private CrestPlaceholderLoader crestPlaceholderLoader;
+
+    @Mock
+    private MatchRepository matchRepository;
+
+    @Mock
+    private ExtraBetRepository extraBetRepository;
 
     @InjectMocks
     private TeamService teamService;
@@ -175,5 +183,38 @@ public class TeamServiceUT {
         assertThat(result.getCountry()).isNull();
         assertThat(result.getName()).isEqualTo("FC Test");
         assertThat(result.getSvgContent()).isEqualTo("<svg>placeholder</svg>");
+    }
+
+    @Test
+    public void deleteTeam_whenNotReferenced_deletesTeam() {
+        Team team = new Team("FC Test");
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(matchRepository.existsByTeamOneOrTeamTwo(team, team)).thenReturn(false);
+        when(extraBetRepository.existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(false);
+
+        teamService.deleteTeam(5L);
+
+        verify(teamRepository).delete(team);
+    }
+
+    @Test
+    public void deleteTeam_whenUsedInMatch_throwsException() {
+        Team team = new Team("FC Test");
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(matchRepository.existsByTeamOneOrTeamTwo(team, team)).thenReturn(true);
+
+        assertThatThrownBy(() -> teamService.deleteTeam(5L)).isInstanceOf(TeamInUseException.class);
+        verify(teamRepository, never()).delete(any(Team.class));
+    }
+
+    @Test
+    public void deleteTeam_whenUsedInExtraBet_throwsException() {
+        Team team = new Team("FC Test");
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(matchRepository.existsByTeamOneOrTeamTwo(team, team)).thenReturn(false);
+        when(extraBetRepository.existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(true);
+
+        assertThatThrownBy(() -> teamService.deleteTeam(5L)).isInstanceOf(TeamInUseException.class);
+        verify(teamRepository, never()).delete(any(Team.class));
     }
 }

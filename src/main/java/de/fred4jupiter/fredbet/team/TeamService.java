@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.team;
 
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
@@ -49,9 +50,12 @@ public class TeamService {
 
     private final TeamBundleProvider teamBundleProvider;
 
+    private final ExtraBetRepository extraBetRepository;
+
     public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver,
                        CrestsDownloader crestsDownloader, CrestPlaceholderLoader crestPlaceholderLoader,
-                       MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
+                       MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, MatchRepository matchRepository, TeamBundleProvider teamBundleProvider,
+                       ExtraBetRepository extraBetRepository) {
         this.teamRepository = teamRepository;
         this.crestsCountryResolver = crestsCountryResolver;
         this.crestsDownloader = crestsDownloader;
@@ -60,6 +64,7 @@ public class TeamService {
         this.runtimeSettingsService = runtimeSettingsService;
         this.matchRepository = matchRepository;
         this.teamBundleProvider = teamBundleProvider;
+        this.extraBetRepository = extraBetRepository;
     }
 
     public SvgImage loadCrestImage(Long teamId) {
@@ -201,6 +206,23 @@ public class TeamService {
         }
 
         return teamRepository.save(team);
+    }
+
+    /**
+     * A team can only be deleted if it is neither used in a match nor in an extra bet.
+     */
+    public boolean isDeletable(Team team) {
+        return !matchRepository.existsByTeamOneOrTeamTwo(team, team)
+            && !extraBetRepository.existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team);
+    }
+
+    public void deleteTeam(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+            .orElseThrow(() -> new IllegalArgumentException("Could not find team with id=" + teamId));
+        if (!isDeletable(team)) {
+            throw new TeamInUseException("Team with id=%s is still in use!".formatted(teamId));
+        }
+        teamRepository.delete(team);
     }
 
     private void checkTeamIsUnique(Long teamId, Country country, String name) {

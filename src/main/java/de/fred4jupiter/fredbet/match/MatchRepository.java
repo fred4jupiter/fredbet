@@ -19,6 +19,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findAllByOrderByKickOffDateAsc();
 
+    boolean existsByTeamOneOrTeamTwo(Team teamOne, Team teamTwo);
+
     @Query("""
             select m
             from Match m

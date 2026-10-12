@@ -11,6 +11,7 @@
     <form id="teamForm" th:action="@{/teams}" th:object="${teamCommand}" method="post" enctype="multipart/form-data" role="form">
         <input type="hidden" th:field="*{teamId}" />
         <input type="hidden" th:field="*{version}" />
+        <input type="hidden" th:field="*{deletable}" />
 
         <div class="row g-3">
             <div class="col-12 col-md-8 col-lg-6">
@@ -58,11 +59,33 @@
 
                 <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    <button th:if="*{deletable}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteTeam"
+                            th:text="#{button.delete}"></button>
                     <a th:href="@{/teams}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+                </div>
+                <div th:if="*{!isNew() and !deletable}" class="form-text mt-2">
+                    <i class="bi bi-info-circle"></i> <span th:text="#{team.form.delete.inUse}"></span>
                 </div>
             </div>
         </div>
     </form>
+
+    <div th:if="${teamCommand.deletable}" class="modal fade" id="confirmDeleteTeam" tabindex="-1" aria-labelledby="confirmDeleteTeamLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="confirmDeleteTeamLabel" th:text="#{confirmation.msg}"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{button.cancel}"></button>
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{'/teams/delete/' + ${teamCommand.teamId}}" method="post">
+                        <button type="submit" class="btn btn-danger" th:text="#{button.delete}"></button>
+                    </form>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <th:block layout:fragment="scripts">
     <script type="text/javascript" th:src="@{/js/pages/team.js}" charset="UTF-8"></script>

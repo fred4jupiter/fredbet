@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.team.InvalidCrestException;
 import de.fred4jupiter.fredbet.team.TeamAlreadyExistsException;
+import de.fred4jupiter.fredbet.team.TeamInUseException;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -103,6 +104,26 @@ public class TeamController {
         return showEditView(model);
     }
 
+    @PostMapping("/delete/{teamId}")
+    public String delete(@PathVariable Long teamId, RedirectAttributes redirect) {
+        Team team = teamService.findTeamById(teamId);
+        if (team == null) {
+            webMessageUtil.addErrorMsg(redirect, "team.msg.notFound", teamId);
+            return REDIRECT_LIST_TEAMS;
+        }
+
+        String teamName = team.getNameTranslated(messageSourceUtil);
+        try {
+            teamService.deleteTeam(teamId);
+            LOG.debug("deleted team with id={}", teamId);
+            webMessageUtil.addInfoMsg(redirect, "team.msg.deleted", teamName);
+        } catch (TeamInUseException e) {
+            webMessageUtil.addErrorMsg(redirect, "team.msg.inUse", teamName);
+        }
+
+        return REDIRECT_LIST_TEAMS;
+    }
+
     private String showEditView(Model model) {
         model.addAttribute("availableCountries", teamService.getAllCountriesSorted());
         return VIEW_EDIT_TEAM;
@@ -149,6 +170,7 @@ public class TeamController {
         command.setUseCountry(team.getCountry() != null);
         command.setCountry(team.getCountry());
         command.setName(team.getName());
+        command.setDeletable(teamService.isDeletable(team));
         return command;
     }
 }
