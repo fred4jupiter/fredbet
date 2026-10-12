@@ -11,7 +11,6 @@ import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
 import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -109,7 +108,6 @@ public class AdminController {
 
     @RequestMapping
     public String list(Model model) {
-        model.addAttribute("availableTeamBundles", TeamBundle.values());
         return PAGE_ADMINISTRATION;
     }
 
@@ -117,6 +115,11 @@ public class AdminController {
     public String createTestData(@Valid TestDataCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
             return PAGE_ADMINISTRATION;
+        }
+
+        if (!dataPopulator.hasEnoughTeamsForDemoData()) {
+            webMessageUtil.addErrorMsg(redirect, "administration.msg.error.noTeamsForDemoData");
+            return "redirect:/administration";
         }
 
         DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(),

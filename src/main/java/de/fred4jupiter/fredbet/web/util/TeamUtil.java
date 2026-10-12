@@ -3,8 +3,6 @@ package de.fred4jupiter.fredbet.web.util;
 import de.fred4jupiter.fredbet.country.CountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.match.MatchRepository;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -19,21 +17,14 @@ public class TeamUtil {
 
     private final MessageSourceUtil messageSourceUtil;
 
-    private final RuntimeSettingsService runtimeSettingsService;
-
     private final MatchRepository matchRepository;
-
-    private final TeamBundleProvider teamBundleProvider;
 
     private final CountryResolver countryAlpha2Codes;
 
-    public TeamUtil(MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService,
-                    MatchRepository matchRepository, TeamBundleProvider teamBundleProvider,
+    public TeamUtil(MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, TeamBundleProvider teamBundleProvider,
                     CountryResolver countryAlpha2Codes) {
         this.messageSourceUtil = messageSourceUtil;
-        this.runtimeSettingsService = runtimeSettingsService;
         this.matchRepository = matchRepository;
-        this.teamBundleProvider = teamBundleProvider;
         this.countryAlpha2Codes = countryAlpha2Codes;
     }
 
@@ -70,15 +61,6 @@ public class TeamUtil {
             return "";
         }
         return "fi fi-%s".formatted(alpha2Code.toLowerCase());
-    }
-
-    public List<TeamView> getAvailableTeams() {
-        return getAvailableTeams(runtimeSettingsService.loadRuntimeSettings().getTeamBundle());
-    }
-
-    public List<TeamView> getAvailableTeams(TeamBundle teamBundle) {
-        List<Country> allPossibleCountries = teamBundleProvider.getTeams(teamBundle);
-        return toListOfTeamViews(allPossibleCountries);
     }
 
     public List<TeamView> getAvailableTeamsBasedOnMatches() {

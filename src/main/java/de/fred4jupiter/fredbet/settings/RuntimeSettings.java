@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.settings;
 
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -45,9 +44,6 @@ public class RuntimeSettings {
 
     @NotNull
     private String timeZone;
-
-    @NotNull
-    private TeamBundle teamBundle = TeamBundle.WORLD_CUP;
 
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
@@ -127,13 +123,5 @@ public class RuntimeSettings {
 
     public void setImageUploadLimit(Integer imageUploadLimit) {
         this.imageUploadLimit = imageUploadLimit;
-    }
-
-    public @NotNull TeamBundle getTeamBundle() {
-        return teamBundle;
-    }
-
-    public void setTeamBundle(@NotNull TeamBundle teamBundle) {
-        this.teamBundle = teamBundle;
     }
 }

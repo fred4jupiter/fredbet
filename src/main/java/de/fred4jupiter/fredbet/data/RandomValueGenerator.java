@@ -1,10 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,11 +14,8 @@ public class RandomValueGenerator {
 
     private final MatchRepository matchRepository;
 
-    private final TeamBundleProvider teamBundleProvider;
-
-    public RandomValueGenerator(MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
+    public RandomValueGenerator(MatchRepository matchRepository) {
         this.matchRepository = matchRepository;
-        this.teamBundleProvider = teamBundleProvider;
     }
 
     public GoalResult generateGoalResult() {
@@ -42,10 +36,15 @@ public class RandomValueGenerator {
         return Math.random() < 0.5;
     }
 
-    public TeamPair generateTeamPair(TeamBundle teamBundle) {
-        List<Country> teams = teamBundleProvider.getTeams(teamBundle);
-        List<Country> countries = distinctRandomElements(teams, 2);
-        return new TeamPair(countries.get(0), countries.get(1));
+    /**
+     * Picks two different teams of the given teams randomly.
+     */
+    public TeamPair generateTeamPair(List<Team> teams) {
+        if (teams.size() < 2) {
+            throw new IllegalArgumentException("At least two teams are needed to generate a team pair!");
+        }
+        List<Team> pair = distinctRandomElements(teams, 2);
+        return new TeamPair(pair.get(0), pair.get(1));
     }
 
     public TeamTriple generateTeamTriple() {

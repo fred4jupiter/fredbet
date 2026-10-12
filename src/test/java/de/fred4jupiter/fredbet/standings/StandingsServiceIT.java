@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.standings;
 
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
@@ -25,8 +27,12 @@ public class StandingsServiceIT {
     @Autowired
     private DataPopulator dataPopulator;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     public void calculateGroupTablePoints() {
+        teamService.createTeamsOfBundle(TeamBundle.EUROPEAN_CHAMPIONSHIP);
         dataPopulator.createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, false));
 
         StandingsContainer standingsContainer = standingsService.calculateStandings();

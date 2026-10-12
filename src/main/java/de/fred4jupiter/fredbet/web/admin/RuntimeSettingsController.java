@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.web.admin;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +35,6 @@ public class RuntimeSettingsController {
         final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
         runtimeSettingsCommand.setRuntimeSettings(runtimeSettings);
         model.addAttribute("runtimeSettingsCommand", runtimeSettingsCommand);
-        model.addAttribute("availableTeamBundles", TeamBundle.values());
         return PAGE_RUNTIME_CONFIG;
     }
 

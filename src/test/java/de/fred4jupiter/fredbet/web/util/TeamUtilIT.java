@@ -1,12 +1,12 @@
 package de.fred4jupiter.fredbet.web.util;
 
-import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,18 +49,6 @@ public class TeamUtilIT {
     @Test
     void resolveTeamNameForChampionsLeagueMember() {
         assertThat(teamUtil.i18n(Country.MANCHESTER_CITY)).isEqualTo("Manchester City");
-    }
-
-    @Test
-    void getAvailableTeams() {
-        List<TeamView> availableTeams = teamUtil.getAvailableTeams();
-        assertThat(availableTeams).isNotEmpty();
-        availableTeams.forEach(teamView -> {
-            assertThat(teamView).isNotNull();
-            assertThat(teamView.country()).isNotNull();
-            assertThat(teamView.teamName()).isNotNull();
-        });
-
     }
 
     @Test

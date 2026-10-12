@@ -1,5 +1,8 @@
 package de.fred4jupiter.fredbet.ranking;
 
+import org.junit.jupiter.api.BeforeEach;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
@@ -33,6 +36,14 @@ public class RankingServiceIT {
 
     @Autowired
     private FredbetProperties fredbetProperties;
+
+    @Autowired
+    private TeamService teamService;
+
+    @BeforeEach
+    public void setup() {
+        teamService.createTeamsOfBundle(TeamBundle.EUROPEAN_CHAMPIONSHIP);
+    }
 
     @Test
     public void getRankingForUsersButWithoutTechnicalUser() {
