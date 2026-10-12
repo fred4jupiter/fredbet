@@ -42,6 +42,20 @@ public class RuntimeSettingsRepositoryIT {
         assertThat(loaded).isNull();
     }
 
+    @Test
+    public void loadRuntimeSettings_withRemovedFavouriteCountry_ignoresUnknownProperty() {
+        Long id = 102L;
+        RuntimeSettingsDb db = new RuntimeSettingsDb(id);
+        db.setJsonConfig("{\"favouriteCountry\":\"GERMANY\",\"jokerMaxCount\":5}");
+
+        runtimeSettingsDbRepository.save(db);
+
+        RuntimeSettings loaded = runtimeSettingsRepository.loadRuntimeSettings(id, RuntimeSettings.class);
+
+        assertThat(loaded).isNotNull();
+        assertThat(loaded.getJokerMaxCount()).isEqualTo(5);
+    }
+
     // simple POJO for testing Jackson (must be public static for Jackson in some environments)
     public static class ExampleSettings {
         private String value;

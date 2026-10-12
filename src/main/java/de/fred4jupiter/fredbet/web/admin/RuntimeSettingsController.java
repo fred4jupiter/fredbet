@@ -9,8 +9,6 @@ import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.util.TeamUtil;
-import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,14 +33,10 @@ public class RuntimeSettingsController {
 
     private final WebMessageUtil webMessageUtil;
 
-    private final TeamUtil teamUtil;
-
-    public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, FootballDataService footballDataService, WebMessageUtil webMessageUtil,
-                                     TeamUtil teamUtil) {
+    public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, FootballDataService footballDataService, WebMessageUtil webMessageUtil) {
         this.runtimeSettingsService = runtimeSettingsService;
         this.footballDataService = footballDataService;
         this.webMessageUtil = webMessageUtil;
-        this.teamUtil = teamUtil;
     }
 
     @GetMapping("/show")
@@ -51,7 +45,6 @@ public class RuntimeSettingsController {
         runtimeSettingsCommand.setRuntimeSettings(runtimeSettings);
         model.addAttribute("runtimeSettingsCommand", runtimeSettingsCommand);
         model.addAttribute("availableTeamBundles", TeamBundle.values());
-        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(runtimeSettings.getTeamBundle()));
         return PAGE_RUNTIME_CONFIG;
     }
 
@@ -73,12 +66,5 @@ public class RuntimeSettingsController {
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
 
         return "redirect:/runtimesettings/show";
-    }
-
-    @HxRequest
-    @GetMapping("/team-bundle")
-    public String favouriteCountryOptions(@RequestParam(name = "runtimeSettings.teamBundle") TeamBundle teamBundle, Model model) {
-        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(teamBundle));
-        return PAGE_RUNTIME_CONFIG + " :: favouriteCountryOptions";
     }
 }
