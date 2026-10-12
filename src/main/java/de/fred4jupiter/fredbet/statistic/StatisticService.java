@@ -1,10 +1,9 @@
 package de.fred4jupiter.fredbet.statistic;
 
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
-import de.fred4jupiter.fredbet.settings.RuntimeSettings;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
+import de.fred4jupiter.fredbet.domain.entity.Team;
+import de.fred4jupiter.fredbet.team.TeamService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,27 +16,26 @@ public class StatisticService {
 
     private final ExtraBetRepository extraBetRepository;
 
-    private final RuntimeSettingsService runtimeSettingsService;
+    private final TeamService teamService;
 
-    public StatisticService(StatisticRepository statisticRepository, RuntimeSettingsService runtimeSettingsService,
+    public StatisticService(StatisticRepository statisticRepository, TeamService teamService,
                             ExtraBetRepository extraBetRepository) {
         this.statisticRepository = statisticRepository;
-        this.runtimeSettingsService = runtimeSettingsService;
+        this.teamService = teamService;
         this.extraBetRepository = extraBetRepository;
     }
 
-    public Country getFavouriteCountry() {
-        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        return runtimeSettings.getFavouriteCountry();
+    public Team getFavouriteTeam() {
+        return teamService.findFavouriteTeam();
     }
 
     public List<Statistic> createStatistic() {
         final List<Statistic> statisticList = new ArrayList<>(statisticRepository.createStatistic());
 
-        final Country favouriteCountry = getFavouriteCountry();
-        final Map<String, Integer> favoriteCountryPointsPerUserMap = statisticRepository
-            .sumPointsPerUserForFavoriteCountry(favouriteCountry);
-        final Optional<Integer> maxFavoriteCountryPoints = favoriteCountryPointsPerUserMap.values().stream()
+        final Team favouriteTeam = getFavouriteTeam();
+        final Map<String, Integer> favouriteTeamPointsPerUserMap = statisticRepository
+            .sumPointsPerUserForFavouriteTeam(favouriteTeam);
+        final Optional<Integer> maxFavouriteTeamPoints = favouriteTeamPointsPerUserMap.values().stream()
             .max(Comparator.comparing(i -> i));
 
         final Map<String, Integer> extraBetsPerUser = findExtraBetsPerUser();
@@ -45,14 +43,14 @@ public class StatisticService {
         final StatisticAgg statisticAgg = calculateMinMax(statisticList);
 
         for (Statistic statistic : statisticList) {
-            statistic.setFavoriteCountry(favouriteCountry);
+            statistic.setFavouriteTeam(favouriteTeam);
 
-            final Integer favoriteCountryPoints = favoriteCountryPointsPerUserMap.get(statistic.getUsername());
-            if (favoriteCountryPoints != null) {
-                statistic.setPointsFavoriteCountry(favoriteCountryPoints);
-                if (maxFavoriteCountryPoints.isPresent() && favoriteCountryPoints.equals(maxFavoriteCountryPoints.get())) {
-                    if (maxFavoriteCountryPoints.get() > 0) {
-                        statistic.setMaxFavoriteCountryCandidate(true);
+            final Integer favouriteTeamPoints = favouriteTeamPointsPerUserMap.get(statistic.getUsername());
+            if (favouriteTeamPoints != null) {
+                statistic.setPointsFavouriteTeam(favouriteTeamPoints);
+                if (maxFavouriteTeamPoints.isPresent() && favouriteTeamPoints.equals(maxFavouriteTeamPoints.get())) {
+                    if (maxFavouriteTeamPoints.get() > 0) {
+                        statistic.setMaxFavouriteTeamCandidate(true);
                     }
                 }
             }

@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.statistic;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -47,21 +47,19 @@ public class StatisticRepository {
         return statisticsCollector.getResult();
     }
 
-    public Map<String, Integer> sumPointsPerUserForFavoriteCountry(Country favoriteCountry) {
-        if (favoriteCountry == null) {
+    public Map<String, Integer> sumPointsPerUserForFavouriteTeam(Team favouriteTeam) {
+        if (favouriteTeam == null) {
             return Collections.emptyMap();
         }
         final String query = """
             Select a.user_name, sum(a.points)
             from bet a join matches b on a.match_id = b.match_id
-            join team t1 on b.team_one_id = t1.id
-            join team t2 on b.team_two_id = t2.id
-            where t1.country = :country or t2.country = :country
+            where b.team_one_id = :teamId or b.team_two_id = :teamId
             group by a.user_name
             """;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("country", favoriteCountry.name());
+        params.addValue("teamId", favouriteTeam.getId());
 
         Map<String, Integer> userPoints = new HashMap<>();
         namedParameterJdbcOperations.query(query, params, (ResultSet rs) -> {

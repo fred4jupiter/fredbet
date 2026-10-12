@@ -134,6 +134,13 @@ public class TeamService {
     }
 
     /**
+     * The team marked as team favourite or null, if no team is marked.
+     */
+    public Team findFavouriteTeam() {
+        return teamRepository.findByFavouriteTrue().stream().findFirst().orElse(null);
+    }
+
+    /**
      * All teams saved in the database that can be chosen in a selection, i.e. without the fallback placeholder team.
      */
     public List<Team> findAllSelectableTeams() {
