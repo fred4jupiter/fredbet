@@ -337,6 +337,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <!-- static code analysis, not bound to the lifecycle; run with: mvn pmd:pmd (report: target/pmd.xml) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.28.0</version>
+                <configuration>
+                    <targetJdk>${java.version}</targetJdk>
+                    <format>xml</format>
+                    <linkXRef>false</linkXRef>
+                    <includeTests>false</includeTests>
+                    <failOnViolation>false</failOnViolation>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

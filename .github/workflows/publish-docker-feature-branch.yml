@@ -2,6 +2,12 @@ name: Publish Docker feature branch
 
 on:
   workflow_dispatch:
+    inputs:
+      static_code_analysis:
+        description: 'Run static code analysis (PMD)'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -9,6 +15,7 @@ jobs:
     with:
       maven_command: 'mvn -B verify'
       upload_artifact: true
+      static_code_analysis: ${{ inputs.static_code_analysis }}
   docker:
     runs-on: ubuntu-latest
     needs: build
