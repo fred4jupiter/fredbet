@@ -122,7 +122,7 @@ public class CreateEditMatchController {
 
     private void addCountriesAndGroups(Model model) {
         model.addAttribute("availableGroups", Group.getAllGroups());
-        model.addAttribute("availableTeams", teamService.getAllTeamsOfMatches());
+        model.addAttribute("availableTeams", teamService.findAllSelectableTeams());
     }
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {

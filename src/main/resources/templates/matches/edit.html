@@ -17,15 +17,17 @@
 						<label class="form-label" th:text="#{matches.form.chooseCountry} + ':'"></label><br/>
 						<div class="row team-selects g-2">
 							<div class="col-12 col-sm-6">
-								<select th:field="*{{teamOne}}" class="form-select">
-                                    <option th:value="null" th:text="#{country.none}"></option>
-                                    <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+								<select id="teamOne" name="teamOne" class="form-select" th:with="selectedTeamId=*{teamOne?.id}">
+                                    <option value="" th:text="#{country.none}"></option>
+                                    <option th:each="team : ${availableTeams}" th:value="${team.id}" th:selected="${team.id == selectedTeamId}"
+                                            th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 								</select>
 							</div>
 							<div class="col-12 col-sm-6">
-								<select th:field="*{{teamTwo}}" class="form-select">
-                                    <option th:value="null" th:text="#{country.none}"></option>
-                                    <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+								<select id="teamTwo" name="teamTwo" class="form-select" th:with="selectedTeamId=*{teamTwo?.id}">
+                                    <option value="" th:text="#{country.none}"></option>
+                                    <option th:each="team : ${availableTeams}" th:value="${team.id}" th:selected="${team.id == selectedTeamId}"
+                                            th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 								</select>
 							</div>
 						</div>

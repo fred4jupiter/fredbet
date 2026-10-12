@@ -9,9 +9,6 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
@@ -44,26 +41,19 @@ public class TeamService {
 
     private final MessageSourceUtil messageSourceUtil;
 
-    private final RuntimeSettingsService runtimeSettingsService;
-
     private final MatchRepository matchRepository;
-
-    private final TeamBundleProvider teamBundleProvider;
 
     private final ExtraBetRepository extraBetRepository;
 
     public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver,
                        CrestsDownloader crestsDownloader, CrestPlaceholderLoader crestPlaceholderLoader,
-                       MessageSourceUtil messageSourceUtil, RuntimeSettingsService runtimeSettingsService, MatchRepository matchRepository, TeamBundleProvider teamBundleProvider,
-                       ExtraBetRepository extraBetRepository) {
+                       MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, ExtraBetRepository extraBetRepository) {
         this.teamRepository = teamRepository;
         this.crestsCountryResolver = crestsCountryResolver;
         this.crestsDownloader = crestsDownloader;
         this.crestPlaceholderLoader = crestPlaceholderLoader;
         this.messageSourceUtil = messageSourceUtil;
-        this.runtimeSettingsService = runtimeSettingsService;
         this.matchRepository = matchRepository;
-        this.teamBundleProvider = teamBundleProvider;
         this.extraBetRepository = extraBetRepository;
     }
 
@@ -135,20 +125,15 @@ public class TeamService {
         return teamRepository.findById(teamId).orElse(null);
     }
 
-    public List<Team> getAllTeamsOfMatches() {
-        final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
-        if (!TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
-            // load predefined teams from team bundle
-            List<Country> allPossibleCountries = teamBundleProvider.getTeams(teamBundle);
-            return allPossibleCountries.stream()
-                .map(Team::new)
-                .sorted(new TeamSortComparator(messageSourceUtil))
-                .toList();
-        }
+    /**
+     * All teams saved in the database that can be chosen in a selection, i.e. without the fallback placeholder team.
+     */
+    public List<Team> findAllSelectableTeams() {
+        return findAllTeams().stream().filter(team -> !isFallbackTeam(team)).toList();
+    }
 
-        // load teams from existent matches
-        List<Team> allTeamsOfMatches = matchRepository.getAllTeamsOfMatches();
-        return allTeamsOfMatches.stream().sorted(new TeamSortComparator(messageSourceUtil)).toList();
+    private boolean isFallbackTeam(Team team) {
+        return team.getCountry() == null && FALLBACK_TEAM_NAME.equals(team.getName());
     }
 
     public List<Team> findAllTeams() {

@@ -15,9 +15,10 @@
 							<span class="right" th:text="${extraBetCommand.pointsOne} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsFinalWinner()})}"></span>
 						</div>
 						<div class="card-body">
-							<select th:field="*{{finalWinner}}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
-                                <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+							<select id="finalWinner" name="finalWinner" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}" th:with="selectedTeamId=*{finalWinner?.id}">
+							    <option value="" th:text="#{country.none}"></option>
+							    <option th:each="team : ${availableTeams}" th:value="${team.id}" th:selected="${team.id == selectedTeamId}"
+							            th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
 							</select>
 						</div>
 					</div>
@@ -29,9 +30,10 @@
                             <span class="right" th:text="${extraBetCommand.pointsTwo} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsSemiFinalWinner()})}"></span>
                         </div>
                         <div class="card-body">
-                            <select th:field="*{{semiFinalWinner}}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
-                                <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+                            <select id="semiFinalWinner" name="semiFinalWinner" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}" th:with="selectedTeamId=*{semiFinalWinner?.id}">
+                                <option value="" th:text="#{country.none}"></option>
+                                <option th:each="team : ${availableTeams}" th:value="${team.id}" th:selected="${team.id == selectedTeamId}"
+                                        th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
                             </select>
                         </div>
                     </div>
@@ -43,9 +45,10 @@
                             <span class="right" th:text="${extraBetCommand.pointsThree} + '/' + #{extra_bets.points(${@runtimeSettingsUtil.getExtraPointsConfig().getPointsThirdFinalWinner()})}"></span>
                         </div>
                         <div class="card-body">
-                            <select th:field="*{{thirdFinalWinner}}" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}">
-                                <option th:value="null" th:text="#{country.none}"></option>
-                                <option th:each="team : ${availableTeams}" th:value="${{team.getUniqueId()}}" th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
+                            <select id="thirdFinalWinner" name="thirdFinalWinner" class="form-select" th:disabled="${!@bettingWebUtil.isBettable()}" th:with="selectedTeamId=*{thirdFinalWinner?.id}">
+                                <option value="" th:text="#{country.none}"></option>
+                                <option th:each="team : ${availableTeams}" th:value="${team.id}" th:selected="${team.id == selectedTeamId}"
+                                        th:text="${team.getNameTranslated(@messageSourceUtil)}"></option>
                             </select>
                         </div>
                     </div>
