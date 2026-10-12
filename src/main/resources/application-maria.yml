@@ -1,4 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mariadb://mariadb:3306/fredbet
-    driver-class-name: org.mariadb.jdbc.Driver
