@@ -2,103 +2,137 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{administration.config.title}"></title>
+        <link rel="stylesheet" th:href="@{/css/pages/runtime_settings.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
             <h1 th:text="#{administration.runtime.configuration}"></h1>
-			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" action="#" method="post" role="form">
-				<div class="row">
-					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-						<h2 th:text="#{administration.runtime.configuration.misc}"></h2>
-                        <div class="form-check mb-2">
-                            <input id="enabledParentChildRanking" type="checkbox" th:field="*{runtimeSettings.enabledParentChildRanking}" class="form-check-input"/>
-                            <label for="enabledParentChildRanking" class="form-check-label" th:text="#{administration.runtime.configuration.enabledParentChildRanking}"></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                  th:title="#{administration.runtime.configuration.enabledParentChildRanking.tooltip}"></span>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input id="enableChangingUsername" type="checkbox" th:field="*{runtimeSettings.enableChangingUsername}" class="form-check-input"/>
-                            <label for="enableChangingUsername" class="form-check-label" th:text="#{administration.runtime.configuration.enableChangingUsername}"></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                  th:title="#{administration.runtime.configuration.enableChangingUsername.tooltip}"></span>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input id="showDemoDataNavigationEntry" type="checkbox" th:field="*{runtimeSettings.showDemoDataNavigationEntry}" class="form-check-input"/>
-                            <label for="showDemoDataNavigationEntry" class="form-check-label" th:text="#{administration.runtime.configuration.showDemoDataNavigationEntry}"></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                  th:title="#{administration.runtime.configuration.showDemoDataNavigationEntry.tooltip}"></span>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input id="changePasswordOnFirstLogin" type="checkbox" th:field="*{runtimeSettings.changePasswordOnFirstLogin}" class="form-check-input"/>
-                            <label for="changePasswordOnFirstLogin" class="form-check-label" th:text="#{administration.runtime.configuration.changePasswordOnFirstLogin}"></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                  th:title="#{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip}"></span>
+
+			<form id="saveRuntimeSettingsForm" th:action="@{/runtimesettings/saveRuntimeSettings}" th:object="${runtimeSettingsCommand}" method="post" role="form">
+				<div class="row g-3 mb-3">
+					<div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0" th:text="#{administration.runtime.configuration.misc}"></h2>
+                            </div>
+                            <div class="card-body">
+                                <div th:replace="~{:: settingSwitch('enabledParentChildRanking', 'runtimeSettings.enabledParentChildRanking', #{administration.runtime.configuration.enabledParentChildRanking},
+                                                   #{administration.runtime.configuration.enabledParentChildRanking.tooltip})}"></div>
+                                <div th:replace="~{:: settingSwitch('enableChangingUsername', 'runtimeSettings.enableChangingUsername', #{administration.runtime.configuration.enableChangingUsername},
+                                                   #{administration.runtime.configuration.enableChangingUsername.tooltip})}"></div>
+                                <div th:replace="~{:: settingSwitch('showDemoDataNavigationEntry', 'runtimeSettings.showDemoDataNavigationEntry', #{administration.runtime.configuration.showDemoDataNavigationEntry},
+                                                   #{administration.runtime.configuration.showDemoDataNavigationEntry.tooltip})}"></div>
+                                <div th:replace="~{:: settingSwitch('changePasswordOnFirstLogin', 'runtimeSettings.changePasswordOnFirstLogin', #{administration.runtime.configuration.changePasswordOnFirstLogin},
+                                                   #{administration.runtime.configuration.changePasswordOnFirstLogin.tooltip})}"></div>
+
+                                <div>
+                                    <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset}"></label>
+                                    <input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control"
+                                           autocomplete="off" required="required"
+                                           th:classappend="${#fields.hasErrors('runtimeSettings.passwordForReset')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                        <label for="passwordForReset" class="form-label" th:text="#{administration.runtime.configuration.passwordForReset} + ':'"></label>
-                        <input id="passwordForReset" type="text" th:field="*{runtimeSettings.passwordForReset}" class="form-control" />
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.passwordForReset')}" th:errors="*{runtimeSettings.passwordForReset}">passwordForReset Error</p>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0" th:text="#{administration.runtime.configuration.registrationCode}"></h2>
+                            </div>
+                            <div class="card-body">
+                                <div th:replace="~{:: settingSwitch('selfRegistrationEnabled', 'runtimeSettings.selfRegistrationEnabled', #{administration.runtime.configuration.selfRegistrationEnabled},
+                                                   #{administration.runtime.configuration.selfRegistrationEnabled.tooltip})}"></div>
+
+                                <div id="registrationCodeBox" th:classappend="*{runtimeSettings.selfRegistrationEnabled} or ${#fields.hasErrors('runtimeSettings.registrationCode')} ? '' : 'd-none'">
+                                    <label for="registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title}"></label>
+                                    <input id="registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control"
+                                           autocomplete="off" minlength="4"
+                                           th:classappend="${#fields.hasErrors('runtimeSettings.registrationCode')} ? 'is-invalid'" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                        <h2 th:text="#{administration.runtime.configuration.timeZone}"></h2>
-                        <div class="row">
-                            <div class="col-8 mb-2">
-                                <select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-select">
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0" th:text="#{administration.runtime.configuration.timeZone}"></h2>
+                            </div>
+                            <div class="card-body">
+                                <label for="timeZone" class="form-label visually-hidden" th:text="#{administration.runtime.configuration.timeZone}"></label>
+                                <select id="timeZone" th:field="*{runtimeSettings.timeZone}" class="form-select" aria-describedby="currentTime"
+                                        th:classappend="${#fields.hasErrors('runtimeSettings.timeZone')} ? 'is-invalid'">
                                     <option th:each="timeZone : ${runtimeSettingsCommand.timeZoneIds}" th:text="${timeZone}" th:value="${timeZone}"></option>
                                 </select>
-                                <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}">timeZone Error</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 mb-2">
-                                <label for="currentTime" class="form-label" th:text="#{administration.runtime.configuration.currentTime} + ':'"></label>
-                                <span id="currentTime" th:text="${runtimeSettingsCommand.currentTime}"></span>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('runtimeSettings.timeZone')}" th:errors="*{runtimeSettings.timeZone}"></div>
+                                <div id="currentTime" class="form-text">
+                                    <i class="fas fa-clock" aria-hidden="true"></i>
+                                    <span th:text="#{administration.runtime.configuration.currentTime} + ': ' + ${runtimeSettingsCommand.currentTime}"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                        <h2 th:text="#{administration.runtime.configuration.joker}"></h2>
-                        <label for="runtimeSettings.jokerMaxCount" class="form-label" th:text="#{administration.runtime.configuration.jokerMaxCount.title} + ':'"></label>
-                        <input id="runtimeSettings.jokerMaxCount" type="text" th:field="*{runtimeSettings.jokerMaxCount}" class="form-control w-25" />
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.jokerMaxCount')}" th:errors="*{runtimeSettings.jokerMaxCount}"></p>
-					</div>
 
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-                        <h2 th:text="#{administration.runtime.configuration.registrationCode}"></h2>
-                        <div class="form-check">
-                            <input id="selfRegistrationEnabled" type="checkbox" th:field="*{runtimeSettings.selfRegistrationEnabled}" onchange="triggerCheckboxSelfRegistration()" class="form-check-input"/>
-                            <label for="selfRegistrationEnabled" class="form-check-label" th:text="#{administration.runtime.configuration.selfRegistrationEnabled}"></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                  th:title="#{administration.runtime.configuration.selfRegistrationEnabled.tooltip}"></span>
-                        </div>
-                        <div id="registrationCodeBox" class="form-group">
-                            <label for="runtimeSettings.registrationCode" class="form-label" th:text="#{administration.runtime.configuration.registrationCode.title} + ':'"></label>
-                            <input id="runtimeSettings.registrationCode" type="text" th:field="*{runtimeSettings.registrationCode}" class="form-control" />
-                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.registrationCode')}" th:errors="*{runtimeSettings.registrationCode}"></p>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0" th:text="#{administration.runtime.configuration.joker}"></h2>
+                            </div>
+                            <div class="card-body">
+                                <div th:replace="~{:: settingNumber('jokerMaxCount', 'runtimeSettings.jokerMaxCount', #{administration.runtime.configuration.jokerMaxCount.title}, null, true)}"></div>
+                            </div>
                         </div>
                     </div>
 
-					<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3">
-						<h2 th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
-                        <label for="runtimeSettings.imageUploadLimit" class="form-label" th:text="#{administration.runtime.configuration.imageUploadLimit.title} + ':'"></label>
-                        <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                              th:title="#{administration.runtime.configuration.imageUploadLimit.tooltip}"></span>
-                        <input id="runtimeSettings.imageUploadLimit" type="text" th:field="*{runtimeSettings.imageUploadLimit}" class="form-control" />
-                        <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('runtimeSettings.imageUploadLimit')}" th:errors="*{runtimeSettings.imageUploadLimit}"></p>
-					</div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0" th:text="#{administration.runtime.configuration.imageUploadLimit}"></h2>
+                            </div>
+                            <div class="card-body">
+                                <div th:replace="~{:: settingNumber('imageUploadLimit', 'runtimeSettings.imageUploadLimit', #{administration.runtime.configuration.imageUploadLimit.title},
+                                                   #{administration.runtime.configuration.imageUploadLimit.tooltip}, false)}"></div>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 
-				<div class="row">
-					<div class="col-auto">
-						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-					</div>
+				<div class="d-grid gap-2 d-sm-flex">
+					<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 				</div>
 			</form>
+
+            <th:block th:remove="all">
+                <!--/* switch with its explanation shown below, as tooltips are not usable on touch devices */-->
+                <div th:fragment="settingSwitch(id, field, label, help)" class="mb-3">
+                    <div class="form-check form-switch">
+                        <input th:id="${id}" type="checkbox" role="switch" th:field="*{__${field}__}" class="form-check-input"
+                               th:attr="aria-describedby=${id} + 'Help'" />
+                        <label th:for="${id}" class="form-check-label" th:text="${label}"></label>
+                    </div>
+                    <div th:id="${id} + 'Help'" class="form-text" th:text="${help}"></div>
+                </div>
+
+                <!--/* label on the left, small number input on the right */-->
+                <div th:fragment="settingNumber(id, field, label, help, required)">
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                        <label th:for="${id}" class="form-label mb-0" th:text="${label}"></label>
+                        <input th:id="${id}" type="number" min="0" step="1" inputmode="numeric" th:required="${required}"
+                               th:field="*{__${field}__}" class="form-control settings-number flex-shrink-0"
+                               th:attr="aria-describedby=${help != null} ? ${id} + 'Help'"
+                               th:classappend="${#fields.hasErrors(field)} ? 'is-invalid'" />
+                    </div>
+                    <div class="invalid-feedback d-block text-end" th:if="${#fields.hasErrors(field)}"
+                         th:errors="*{__${field}__}"></div>
+                    <div th:if="${help != null}" th:id="${id} + 'Help'" class="form-text" th:text="${help}"></div>
+                </div>
+            </th:block>
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
-        <script type="text/javascript" th:src="@{/js/htmx-2.0.6.min.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/runtime_settings.js}" charset="UTF-8"></script>
 	</th:block>
 </html>

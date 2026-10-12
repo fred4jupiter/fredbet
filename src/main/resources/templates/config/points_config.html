@@ -52,9 +52,9 @@
                         <label class="form-label mb-0" th:for="${id}" th:text="${label}"></label>
                         <input th:id="${id}" type="number" min="0" step="1" inputmode="numeric" required="required"
                                class="form-control points-input flex-shrink-0" th:field="*{__${field}__}"
-                               th:classappend="${#fields.hasErrors('__${field}__')} ? 'is-invalid'" />
+                               th:classappend="${#fields.hasErrors(field)} ? 'is-invalid'" />
                     </div>
-                    <div class="invalid-feedback d-block text-end" th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}"></div>
+                    <div class="invalid-feedback d-block text-end" th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}"></div>
                 </li>
             </th:block>
 		</div>
