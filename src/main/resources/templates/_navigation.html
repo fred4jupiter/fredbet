@@ -31,6 +31,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                            <a class="nav-link" th:href="@{/teams}" th:text="#{team.list.title}"></a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="matches" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false" th:text="#{matches.title}">
@@ -120,9 +123,6 @@
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/footballdata}" th:text="#{footballdata.title}"></a>
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/teams}" th:text="#{team.list.title}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
