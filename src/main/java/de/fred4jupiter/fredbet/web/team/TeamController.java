@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.team.InvalidCrestException;
 import de.fred4jupiter.fredbet.team.TeamAlreadyExistsException;
 import de.fred4jupiter.fredbet.team.TeamInUseException;
 import de.fred4jupiter.fredbet.team.TeamService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -57,7 +59,22 @@ public class TeamController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("allTeams", teamService.findAllTeams());
+        model.addAttribute("availableTeamBundles", teamService.getCreatableTeamBundles());
         return VIEW_LIST_TEAMS;
+    }
+
+    @PostMapping("/bundle")
+    public String createTeamsOfBundle(@RequestParam(required = false) TeamBundle teamBundle, RedirectAttributes redirect) {
+        if (teamBundle == null || !teamService.getCreatableTeamBundles().contains(teamBundle)) {
+            webMessageUtil.addErrorMsg(redirect, "team.bundle.msg.noBundleSelected");
+            return REDIRECT_LIST_TEAMS;
+        }
+
+        int createdTeams = teamService.createTeamsOfBundle(teamBundle);
+        LOG.debug("created {} teams of team bundle {}", createdTeams, teamBundle);
+        String teamBundleName = messageSourceUtil.getMessageFor("teamBundle." + teamBundle);
+        webMessageUtil.addInfoMsg(redirect, "team.bundle.msg.created", createdTeams, teamBundleName);
+        return REDIRECT_LIST_TEAMS;
     }
 
     @GetMapping("/create")

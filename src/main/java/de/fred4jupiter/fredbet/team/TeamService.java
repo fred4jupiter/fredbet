@@ -9,6 +9,8 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
@@ -23,7 +25,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,9 +49,12 @@ public class TeamService {
 
     private final ExtraBetRepository extraBetRepository;
 
+    private final TeamBundleProvider teamBundleProvider;
+
     public TeamService(TeamRepository teamRepository, CrestsCountryResolver crestsCountryResolver,
                        CrestsDownloader crestsDownloader, CrestPlaceholderLoader crestPlaceholderLoader,
-                       MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, ExtraBetRepository extraBetRepository) {
+                       MessageSourceUtil messageSourceUtil, MatchRepository matchRepository, ExtraBetRepository extraBetRepository,
+                       TeamBundleProvider teamBundleProvider) {
         this.teamRepository = teamRepository;
         this.crestsCountryResolver = crestsCountryResolver;
         this.crestsDownloader = crestsDownloader;
@@ -55,6 +62,7 @@ public class TeamService {
         this.messageSourceUtil = messageSourceUtil;
         this.matchRepository = matchRepository;
         this.extraBetRepository = extraBetRepository;
+        this.teamBundleProvider = teamBundleProvider;
     }
 
     public SvgImage loadCrestImage(Long teamId) {
@@ -191,6 +199,43 @@ public class TeamService {
         }
 
         return teamRepository.save(team);
+    }
+
+    /**
+     * Team bundles that can be used to create teams. FOOTBALL_DATA_USAGE is excluded, because these teams
+     * will be created by the football-data.org integration.
+     */
+    public List<TeamBundle> getCreatableTeamBundles() {
+        return Arrays.stream(TeamBundle.values()).filter(teamBundle -> !TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)).toList();
+    }
+
+    /**
+     * Creates a team for each country of the given team bundle. Countries that already have a team are skipped.
+     *
+     * @return number of newly created teams
+     */
+    public int createTeamsOfBundle(TeamBundle teamBundle) {
+        if (teamBundle == null || TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
+            throw new IllegalArgumentException("Teams cannot be created for team bundle " + teamBundle);
+        }
+
+        Set<Country> existingCountries = teamRepository.findAll().stream()
+            .map(Team::getCountry)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+
+        List<Team> newTeams = teamBundleProvider.getTeams(teamBundle).stream()
+            .distinct()
+            .filter(country -> !existingCountries.contains(country))
+            .map(country -> {
+                Team team = new Team(country);
+                team.setSvgContent(loadDefaultCrest(country));
+                return team;
+            })
+            .toList();
+
+        teamRepository.saveAll(newTeams);
+        return newTeams.size();
     }
 
     /**

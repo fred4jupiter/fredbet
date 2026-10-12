@@ -10,13 +10,17 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,6 +50,9 @@ public class TeamServiceUT {
 
     @Mock
     private ExtraBetRepository extraBetRepository;
+
+    @Mock
+    private TeamBundleProvider teamBundleProvider;
 
     @InjectMocks
     private TeamService teamService;
@@ -216,5 +223,34 @@ public class TeamServiceUT {
 
         assertThatThrownBy(() -> teamService.deleteTeam(5L)).isInstanceOf(TeamInUseException.class);
         verify(teamRepository, never()).delete(any(Team.class));
+    }
+
+    @Test
+    public void createTeamsOfBundle_createsOnlyMissingCountryTeams() {
+        when(teamRepository.findAll()).thenReturn(List.of(new Team(Country.GERMANY), new Team("FC Test")));
+        when(teamBundleProvider.getTeams(TeamBundle.EUROPEAN_CHAMPIONSHIP)).thenReturn(List.of(Country.GERMANY, Country.FRANCE, Country.SPAIN));
+        when(crestsCountryResolver.loadCrestsImageFor(Country.FRANCE, false)).thenReturn(Optional.of(new SvgImage("<svg>france</svg>")));
+        when(crestsCountryResolver.loadCrestsImageFor(Country.SPAIN, false)).thenReturn(Optional.empty());
+        when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
+
+        int created = teamService.createTeamsOfBundle(TeamBundle.EUROPEAN_CHAMPIONSHIP);
+
+        assertThat(created).isEqualTo(2);
+        ArgumentCaptor<List<Team>> captor = ArgumentCaptor.captor();
+        verify(teamRepository).saveAll(captor.capture());
+        assertThat(captor.getValue()).extracting(Team::getCountry).containsExactly(Country.FRANCE, Country.SPAIN);
+        assertThat(captor.getValue()).extracting(Team::getSvgContent).containsExactly("<svg>france</svg>", "<svg>placeholder</svg>");
+    }
+
+    @Test
+    public void createTeamsOfBundle_withFootballDataUsage_throwsException() {
+        assertThatThrownBy(() -> teamService.createTeamsOfBundle(TeamBundle.FOOTBALL_DATA_USAGE)).isInstanceOf(IllegalArgumentException.class);
+        verify(teamRepository, never()).saveAll(any());
+    }
+
+    @Test
+    public void getCreatableTeamBundles_excludesFootballDataUsage() {
+        assertThat(teamService.getCreatableTeamBundles())
+            .containsExactly(TeamBundle.WORLD_CUP, TeamBundle.CLUB_WM, TeamBundle.EUROPEAN_CHAMPIONSHIP);
     }
 }

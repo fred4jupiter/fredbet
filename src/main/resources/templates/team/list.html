@@ -13,6 +13,28 @@
         </a>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <form th:action="@{/teams/bundle}" method="post" role="form">
+                <label class="form-label" for="teamBundle" th:text="#{team.bundle.label} + ':'"></label>
+                <div class="row g-2">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                        <select id="teamBundle" name="teamBundle" class="form-select" required aria-describedby="teamBundleHelp">
+                            <option value="" th:text="#{country.none}"></option>
+                            <option th:each="teamBundle : ${availableTeamBundles}" th:value="${teamBundle}" th:text="#{${'teamBundle.' + teamBundle}}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-auto">
+                        <button type="submit" class="btn btn-secondary w-100">
+                            <i class="fas fa-layer-group"></i> <span th:text="#{team.bundle.button}"></span>
+                        </button>
+                    </div>
+                </div>
+                <div id="teamBundleHelp" class="form-text" th:text="#{team.bundle.hint}"></div>
+            </form>
+        </div>
+    </div>
+
     <div class="row mb-3" th:unless="${allTeams.isEmpty()}">
         <div class="col-12 col-md-6 col-lg-4">
             <input id="teamFilter" type="search" class="form-control" th:placeholder="#{team.list.filter}" th:aria-label="#{team.list.filter}" />
