@@ -61,7 +61,7 @@ public class RandomValueGeneratorIT {
         teamService.createTeamsOfBundle(TeamBundle.EUROPEAN_CHAMPIONSHIP);
         dataBasePopulator.createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, false, false, false));
 
-        List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
+        List<Team> allTeamsOfMatches = matchRepository.getAllTeamsOfMatches();
 
         for (int i = 0; i < 100; i++) {
             TeamTriple triple = randomValueGenerator.generateTeamTriple();
@@ -73,7 +73,7 @@ public class RandomValueGeneratorIT {
             assertThat(countryTwo).isNotNull();
             assertThat(countryThree).isNotNull();
 
-            if (allCountriesOfMatches.size() > 3) {
+            if (allTeamsOfMatches.size() > 3) {
                 assertThat(countryOne).isNotEqualTo(countryTwo);
                 assertThat(countryTwo).isNotEqualTo(countryThree);
                 assertThat(countryThree).isNotEqualTo(countryOne);

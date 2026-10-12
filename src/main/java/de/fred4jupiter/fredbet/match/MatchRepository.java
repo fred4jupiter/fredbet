@@ -66,17 +66,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("select m from Match m where m.goalsTeamOne is not null and m.goalsTeamTwo is not null order by m.kickOffDate asc")
     List<Match> findFinishedMatches();
 
-    @Query("""
-        Select m.teamOne.country, m.teamTwo.country
-        from Match m
-        """)
-    List<Country[]> findAllCountriesOfMatches();
-
-    default List<Country> getAllCountriesOfMatches() {
-        List<Country[]> allCountries = findAllCountriesOfMatches();
-        return allCountries.stream().flatMap(Stream::of).distinct().filter(Objects::nonNull).toList();
-    }
-
     default List<Team> getAllTeamsOfMatches() {
         List<Match> matches = findAll();
         return matches.stream().flatMap(match -> Stream.of(match.getTeamOne(), match.getTeamTwo())).distinct().filter(Objects::nonNull).toList();
