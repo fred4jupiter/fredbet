@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <title th:text="#{team.list.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/pages/team.css}" />
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <h1 class="mb-0" th:text="#{team.list.title} + ' (' + ${allTeams.size()} + ')'"></h1>
+        <a th:href="@{/teams/create}" class="btn btn-primary" role="button">
+            <i class="fas fa-plus"></i> <span th:text="#{team.list.createTeam}"></span>
+        </a>
+    </div>
+
+    <div class="row mb-3" th:unless="${allTeams.isEmpty()}">
+        <div class="col-12 col-md-6 col-lg-4">
+            <input id="teamFilter" type="search" class="form-control" th:placeholder="#{team.list.filter}" th:aria-label="#{team.list.filter}" />
+        </div>
+    </div>
+
+    <p class="text-body-secondary" th:if="${allTeams.isEmpty()}" th:text="#{team.list.noTeams}"></p>
+
+    <div class="row g-3" id="teamList">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 team-entry" th:each="team : ${allTeams}" th:id="${'team-' + team.id}"
+             th:with="teamName=${team.getNameTranslated(@messageSourceUtil)}" th:data-team-name="${teamName}">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <img class="team-crest flex-shrink-0" th:src="@{${'/team/' + team.id + '.svg'}(v=${team.version})}" th:alt="${teamName}" loading="lazy" />
+                    <div class="flex-grow-1 text-truncate">
+                        <div class="fw-bold text-truncate" th:text="${teamName}" th:title="${teamName}"></div>
+                        <span th:if="${team.country != null}" class="badge text-bg-secondary" th:text="#{team.type.country}"></span>
+                        <span th:if="${team.country == null}" class="badge text-bg-info" th:text="#{team.type.name}"></span>
+                    </div>
+                    <a th:href="@{'/teams/' + ${team.id}}" class="btn btn-primary flex-shrink-0" role="button" th:title="#{button.edit}" th:aria-label="#{button.edit}">
+                        <span class="fas fa-edit"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/js/pages/team.js}" charset="UTF-8"></script>
+</th:block>
+</body>
+</html>

@@ -12,9 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -97,5 +101,79 @@ public class TeamServiceUT {
         assertThat(result.getCountry()).isEqualTo(Country.GERMANY);
         assertThat(result.getSvgContent()).isEqualTo("<svg>fd</svg>");
     }
-}
 
+    @Test
+    public void createTeam_withTeamNameAndCrest_savesUploadedCrest() {
+        byte[] crest = "<svg xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"5\"/></svg>".getBytes(StandardCharsets.UTF_8);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, " FC Test ", crest);
+
+        assertThat(result.getName()).isEqualTo("FC Test");
+        assertThat(result.getCountry()).isNull();
+        assertThat(result.getSvgContent()).isEqualTo(new String(crest, StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void createTeam_withCountryWithoutCrest_usesCountryCrestAndIgnoresName() {
+        when(teamRepository.findByCountry(Country.GERMANY)).thenReturn(null);
+        when(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false)).thenReturn(Optional.of(new SvgImage("<svg>germany</svg>")));
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(Country.GERMANY, "ignored", null);
+
+        assertThat(result.getCountry()).isEqualTo(Country.GERMANY);
+        assertThat(result.getName()).isNull();
+        assertThat(result.getSvgContent()).isEqualTo("<svg>germany</svg>");
+    }
+
+    @Test
+    public void createTeam_whenTeamAlreadyExists_throwsException() {
+        Team existing = new Team("FC Test");
+        ReflectionTestUtils.setField(existing, "id", 3L);
+        when(teamRepository.findByName("FC Test")).thenReturn(existing);
+
+        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", null)).isInstanceOf(TeamAlreadyExistsException.class);
+        verify(teamRepository, never()).save(any(Team.class));
+    }
+
+    @Test
+    public void createTeam_withInvalidCrest_throwsException() {
+        byte[] crest = "<svg xmlns=\"http://www.w3.org/2000/svg\"><script>alert(1)</script></svg>".getBytes(StandardCharsets.UTF_8);
+
+        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", crest)).isInstanceOf(InvalidCrestException.class);
+        verify(teamRepository, never()).save(any(Team.class));
+    }
+
+    @Test
+    public void updateTeam_withoutNewCrestAndSameCountry_keepsStoredCrest() {
+        Team team = new Team(Country.GERMANY);
+        ReflectionTestUtils.setField(team, "id", 5L);
+        team.setSvgContent(new SvgImage("<svg>custom</svg>"));
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(teamRepository.findByCountry(Country.GERMANY)).thenReturn(team);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.updateTeam(5L, Country.GERMANY, null, null);
+
+        assertThat(result.getSvgContent()).isEqualTo("<svg>custom</svg>");
+    }
+
+    @Test
+    public void updateTeam_fromCountryToTeamName_resetsCrestToPlaceholder() {
+        Team team = new Team(Country.GERMANY);
+        ReflectionTestUtils.setField(team, "id", 5L);
+        team.setSvgContent(new SvgImage("<svg>germany</svg>"));
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.updateTeam(5L, null, "FC Test", null);
+
+        assertThat(result.getCountry()).isNull();
+        assertThat(result.getName()).isEqualTo("FC Test");
+        assertThat(result.getSvgContent()).isEqualTo("<svg>placeholder</svg>");
+    }
+}
