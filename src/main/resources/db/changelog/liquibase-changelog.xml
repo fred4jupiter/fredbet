@@ -399,4 +399,13 @@
     </changeSet>
 
 
+    <changeSet id="23" author="michael">
+        <comment>team bundle FOOTBALL_DATA_USAGE has been removed</comment>
+        <sql>
+            UPDATE runtime_setting
+            SET json_config = REPLACE(json_config, '"teamBundle":"FOOTBALL_DATA_USAGE"', '"teamBundle":"WORLD_CUP"')
+            WHERE json_config LIKE '%"teamBundle":"FOOTBALL_DATA_USAGE"%';
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

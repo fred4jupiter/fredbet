@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.teambundle;
 
 import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.match.MatchRepository;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Component;
 
@@ -13,18 +12,11 @@ import static de.fred4jupiter.fredbet.domain.Country.*;
 @Component
 public class TeamBundleProvider {
 
-    private final MatchRepository matchRepository;
-
-    public TeamBundleProvider(MatchRepository matchRepository) {
-        this.matchRepository = matchRepository;
-    }
-
     public List<Country> getTeams(TeamBundle teamBundle) {
         return switch (teamBundle) {
             case WORLD_CUP -> getTeamsForWorldCup();
             case CLUB_WM -> getTeamsForClubWm();
             case EUROPEAN_CHAMPIONSHIP -> getTeamsForEuropeanChampionship();
-            case FOOTBALL_DATA_USAGE -> matchRepository.getAllCountriesOfMatches();
         };
     }
 

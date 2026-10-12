@@ -215,11 +215,10 @@ public class TeamService {
     }
 
     /**
-     * Team bundles that can be used to create teams. FOOTBALL_DATA_USAGE is excluded, because these teams
-     * will be created by the football-data.org integration.
+     * Team bundles that can be used to create teams.
      */
     public List<TeamBundle> getCreatableTeamBundles() {
-        return Arrays.stream(TeamBundle.values()).filter(teamBundle -> !TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)).toList();
+        return List.of(TeamBundle.values());
     }
 
     /**
@@ -228,8 +227,8 @@ public class TeamService {
      * @return number of newly created teams
      */
     public int createTeamsOfBundle(TeamBundle teamBundle) {
-        if (teamBundle == null || TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
-            throw new IllegalArgumentException("Teams cannot be created for team bundle " + teamBundle);
+        if (teamBundle == null) {
+            throw new IllegalArgumentException("Teams cannot be created without a team bundle!");
         }
 
         Set<Country> existingCountries = teamRepository.findAll().stream()

@@ -4,9 +4,6 @@ package de.fred4jupiter.fredbet.web.integration;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import de.fred4jupiter.fredbet.settings.RuntimeSettings;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
@@ -39,17 +36,14 @@ public class FootballDataController {
 
     private final DataPopulator dataPopulator;
 
-    private final RuntimeSettingsService runtimeSettingsService;
-
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
                                   FootballDataLoader footballDataLoader,
-                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator, RuntimeSettingsService runtimeSettingsService) {
+                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
         this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
         this.dataPopulator = dataPopulator;
-        this.runtimeSettingsService = runtimeSettingsService;
     }
 
     @ModelAttribute("footballDataCommand")
@@ -117,14 +111,6 @@ public class FootballDataController {
             webMessageUtil.addErrorMsg(model, "footballdata.msg.apiTokenMissing");
             return "integration/footballdata";
         }
-
-        final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        if (footballDataCommand.isEnabled()) {
-            runtimeSettings.setTeamBundle(TeamBundle.FOOTBALL_DATA_USAGE);
-        } else {
-            runtimeSettings.setTeamBundle(TeamBundle.WORLD_CUP); // default fallback
-        }
-        runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
 
         final Competition competition = footballDataCommand.getCompetitionById(footballDataCommand.getCompetitionId());
 

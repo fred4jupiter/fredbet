@@ -275,13 +275,13 @@ public class TeamServiceUT {
     }
 
     @Test
-    public void createTeamsOfBundle_withFootballDataUsage_throwsException() {
-        assertThatThrownBy(() -> teamService.createTeamsOfBundle(TeamBundle.FOOTBALL_DATA_USAGE)).isInstanceOf(IllegalArgumentException.class);
+    public void createTeamsOfBundle_withoutTeamBundle_throwsException() {
+        assertThatThrownBy(() -> teamService.createTeamsOfBundle(null)).isInstanceOf(IllegalArgumentException.class);
         verify(teamRepository, never()).saveAll(any());
     }
 
     @Test
-    public void getCreatableTeamBundles_excludesFootballDataUsage() {
+    public void getCreatableTeamBundles_returnsAllTeamBundles() {
         assertThat(teamService.getCreatableTeamBundles())
             .containsExactly(TeamBundle.WORLD_CUP, TeamBundle.CLUB_WM, TeamBundle.EUROPEAN_CHAMPIONSHIP);
     }
