@@ -5,6 +5,8 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Team findByCountry(Country country);
@@ -14,6 +16,8 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     int countByCountry(Country country);
 
     int countByName(String name);
+
+    List<Team> findByFavouriteTrue();
 
     default Team findByCountryOrName(Country country, String name) {
         if (country == null && StringUtils.isEmpty(name)) {

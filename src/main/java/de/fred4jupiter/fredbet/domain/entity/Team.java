@@ -36,6 +36,9 @@ public class Team {
     @Lob
     private String svgContent;
 
+    @Column(name = "FAVOURITE", nullable = false)
+    private boolean favourite;
+
     @Version
     @Column(name = "VERSION", nullable = false)
     private Integer version;
@@ -117,6 +120,7 @@ public class Team {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
         builder.append("country", country);
         builder.append("name", name);
+        builder.append("favourite", favourite);
         return builder.build();
     }
 
@@ -130,6 +134,14 @@ public class Team {
 
     public void setSvgContent(SvgImage svgImage) {
         this.svgContent = svgImage.svgContent();
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public Integer getVersion() {

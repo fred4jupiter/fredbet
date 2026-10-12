@@ -45,6 +45,16 @@
                 </div>
 
                 <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input id="favourite" type="checkbox" role="switch" th:field="*{favourite}" class="form-check-input" aria-describedby="favouriteHelp" />
+                        <label class="form-check-label" for="favourite">
+                            <i class="fas fa-star text-warning"></i> <span th:text="#{team.form.favourite}"></span>
+                        </label>
+                    </div>
+                    <div id="favouriteHelp" class="form-text" th:text="#{team.form.favourite.hint}"></div>
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label" for="crestFile" th:text="#{team.form.crest} + ':'"></label>
                     <div class="d-flex align-items-center gap-3">
                         <img id="crestPreview" class="team-crest team-crest-lg flex-shrink-0" alt=""

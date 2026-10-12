@@ -390,5 +390,13 @@
         <dropColumn tableName="extra_bet" columnName="third_final_winner"/>
     </changeSet>
 
+    <changeSet id="22" author="michael">
+        <addColumn tableName="team">
+            <column name="favourite" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

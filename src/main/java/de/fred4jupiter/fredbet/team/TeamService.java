@@ -159,26 +159,28 @@ public class TeamService {
      * Creates a new team, either for a country or with a team name. If no crest is given, the default crest of
      * the country (or the placeholder) is used.
      *
-     * @param crestSvg optional SVG content of the crest
+     * @param favourite whether the team is marked as team favourite (removes the flag from all other teams)
+     * @param crestSvg  optional SVG content of the crest
      */
-    public Team createTeam(Country country, String teamName, byte[] crestSvg) {
+    public Team createTeam(Country country, String teamName, boolean favourite, byte[] crestSvg) {
         Team team = country != null ? new Team(country) : new Team(teamName);
-        return saveTeam(team, country, teamName, crestSvg, true);
+        return saveTeam(team, country, teamName, favourite, crestSvg, true);
     }
 
     /**
      * Updates an existing team. If no crest is given, the stored crest is kept unless the country has changed.
      *
-     * @param crestSvg optional SVG content of the crest
+     * @param favourite whether the team is marked as team favourite (removes the flag from all other teams)
+     * @param crestSvg  optional SVG content of the crest
      */
-    public Team updateTeam(Long teamId, Country country, String teamName, byte[] crestSvg) {
+    public Team updateTeam(Long teamId, Country country, String teamName, boolean favourite, byte[] crestSvg) {
         Team team = teamRepository.findById(teamId)
             .orElseThrow(() -> new IllegalArgumentException("Could not find team with id=" + teamId));
         boolean countryChanged = !Objects.equals(team.getCountry(), country);
-        return saveTeam(team, country, teamName, crestSvg, countryChanged);
+        return saveTeam(team, country, teamName, favourite, crestSvg, countryChanged);
     }
 
-    private Team saveTeam(Team team, Country country, String teamName, byte[] crestSvg, boolean resetCrest) {
+    private Team saveTeam(Team team, Country country, String teamName, boolean favourite, byte[] crestSvg, boolean resetCrest) {
         if (country == null && StringUtils.isBlank(teamName)) {
             throw new IllegalArgumentException("Either country or team name must be given!");
         }
@@ -191,6 +193,10 @@ public class TeamService {
 
         team.setCountry(country);
         team.setName(name);
+        if (favourite) {
+            clearOtherFavourites(team.getId());
+        }
+        team.setFavourite(favourite);
 
         if (crestSvg != null) {
             team.setSvgContent(new SvgImage(new String(crestSvg, StandardCharsets.UTF_8)));
@@ -260,6 +266,15 @@ public class TeamService {
             throw new TeamInUseException(teamId, teamUsage);
         }
         teamRepository.delete(team);
+    }
+
+    /**
+     * Only one team can be the team favourite, so the flag is removed from all other teams.
+     */
+    private void clearOtherFavourites(Long teamId) {
+        teamRepository.findByFavouriteTrue().stream()
+            .filter(other -> !other.getId().equals(teamId))
+            .forEach(other -> other.setFavourite(false));
     }
 
     private void checkTeamIsUnique(Long teamId, Country country, String name) {

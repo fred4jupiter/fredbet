@@ -17,6 +17,8 @@ public class TeamCommand {
     @Size(max = 100)
     private String name;
 
+    private boolean favourite;
+
     private MultipartFile crestFile;
 
     public Long getTeamId() {
@@ -57,6 +59,14 @@ public class TeamCommand {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public MultipartFile getCrestFile() {

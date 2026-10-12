@@ -106,8 +106,8 @@ public class TeamController {
 
         try {
             Team savedTeam = teamCommand.isNew()
-                ? teamService.createTeam(teamCommand.getCountry(), teamCommand.getName(), crestSvg)
-                : teamService.updateTeam(teamCommand.getTeamId(), teamCommand.getCountry(), teamCommand.getName(), crestSvg);
+                ? teamService.createTeam(teamCommand.getCountry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg)
+                : teamService.updateTeam(teamCommand.getTeamId(), teamCommand.getCountry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg);
 
             String msgKey = teamCommand.isNew() ? "team.msg.created" : "team.msg.updated";
             webMessageUtil.addInfoMsg(redirect, msgKey, savedTeam.getNameTranslated(messageSourceUtil));
@@ -190,6 +190,7 @@ public class TeamController {
         command.setUseCountry(team.getCountry() != null);
         command.setCountry(team.getCountry());
         command.setName(team.getName());
+        command.setFavourite(team.isFavourite());
         return command;
     }
 }

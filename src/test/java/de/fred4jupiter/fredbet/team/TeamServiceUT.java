@@ -123,7 +123,7 @@ public class TeamServiceUT {
         when(teamRepository.findByName("FC Test")).thenReturn(null);
         when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Team result = teamService.createTeam(null, " FC Test ", crest);
+        Team result = teamService.createTeam(null, " FC Test ", false, crest);
 
         assertThat(result.getName()).isEqualTo("FC Test");
         assertThat(result.getCountry()).isNull();
@@ -136,7 +136,7 @@ public class TeamServiceUT {
         when(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false)).thenReturn(Optional.of(new SvgImage("<svg>germany</svg>")));
         when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Team result = teamService.createTeam(Country.GERMANY, "ignored", null);
+        Team result = teamService.createTeam(Country.GERMANY, "ignored", false, null);
 
         assertThat(result.getCountry()).isEqualTo(Country.GERMANY);
         assertThat(result.getName()).isNull();
@@ -149,7 +149,7 @@ public class TeamServiceUT {
         ReflectionTestUtils.setField(existing, "id", 3L);
         when(teamRepository.findByName("FC Test")).thenReturn(existing);
 
-        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", null)).isInstanceOf(TeamAlreadyExistsException.class);
+        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", false, null)).isInstanceOf(TeamAlreadyExistsException.class);
         verify(teamRepository, never()).save(any(Team.class));
     }
 
@@ -157,7 +157,7 @@ public class TeamServiceUT {
     public void createTeam_withInvalidCrest_throwsException() {
         byte[] crest = "<svg xmlns=\"http://www.w3.org/2000/svg\"><script>alert(1)</script></svg>".getBytes(StandardCharsets.UTF_8);
 
-        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", crest)).isInstanceOf(InvalidCrestException.class);
+        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", false, crest)).isInstanceOf(InvalidCrestException.class);
         verify(teamRepository, never()).save(any(Team.class));
     }
 
@@ -170,9 +170,39 @@ public class TeamServiceUT {
         when(teamRepository.findByCountry(Country.GERMANY)).thenReturn(team);
         when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Team result = teamService.updateTeam(5L, Country.GERMANY, null, null);
+        Team result = teamService.updateTeam(5L, Country.GERMANY, null, false, null);
 
         assertThat(result.getSvgContent()).isEqualTo("<svg>custom</svg>");
+    }
+
+    @Test
+    public void updateTeam_withFavourite_marksTeamAsFavourite() {
+        Team team = new Team(Country.GERMANY);
+        ReflectionTestUtils.setField(team, "id", 5L);
+        team.setSvgContent(new SvgImage("<svg>custom</svg>"));
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(teamRepository.findByCountry(Country.GERMANY)).thenReturn(team);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.updateTeam(5L, Country.GERMANY, null, true, null);
+
+        assertThat(result.isFavourite()).isTrue();
+    }
+
+    @Test
+    public void createTeam_withFavourite_removesFavouriteFromOtherTeam() {
+        Team otherFavourite = new Team("FC Other");
+        ReflectionTestUtils.setField(otherFavourite, "id", 7L);
+        otherFavourite.setFavourite(true);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.findByFavouriteTrue()).thenReturn(List.of(otherFavourite));
+        when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, "FC Test", true, null);
+
+        assertThat(result.isFavourite()).isTrue();
+        assertThat(otherFavourite.isFavourite()).isFalse();
     }
 
     @Test
@@ -185,7 +215,7 @@ public class TeamServiceUT {
         when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
         when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Team result = teamService.updateTeam(5L, null, "FC Test", null);
+        Team result = teamService.updateTeam(5L, null, "FC Test", false, null);
 
         assertThat(result.getCountry()).isNull();
         assertThat(result.getName()).isEqualTo("FC Test");
