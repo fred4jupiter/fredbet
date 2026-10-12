@@ -12,7 +12,7 @@ public interface ExtraBetRepository extends JpaRepository<ExtraBet, Long>{
 
 	ExtraBet findByUserName(String userName);
 
-	boolean existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(Team finalWinner, Team semiFinalWinner, Team thirdFinalWinner);
+	long countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(Team finalWinner, Team semiFinalWinner, Team thirdFinalWinner);
 
 	@Modifying
 	@Query("update ExtraBet b set b.userName = :newUsername where b.userName = :oldUsername")

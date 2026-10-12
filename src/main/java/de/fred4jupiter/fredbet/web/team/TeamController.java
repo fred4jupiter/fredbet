@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.team.InvalidCrestException;
 import de.fred4jupiter.fredbet.team.TeamAlreadyExistsException;
 import de.fred4jupiter.fredbet.team.TeamInUseException;
 import de.fred4jupiter.fredbet.team.TeamService;
+import de.fred4jupiter.fredbet.team.TeamUsage;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -135,7 +136,9 @@ public class TeamController {
             LOG.debug("deleted team with id={}", teamId);
             webMessageUtil.addInfoMsg(redirect, "team.msg.deleted", teamName);
         } catch (TeamInUseException e) {
-            webMessageUtil.addErrorMsg(redirect, "team.msg.inUse", teamName);
+            TeamUsage teamUsage = e.getTeamUsage();
+            webMessageUtil.addErrorMsg(redirect, "team.msg.inUse", teamName, teamUsage.matches(), teamUsage.extraBets());
+            return REDIRECT_LIST_TEAMS + "/" + teamId;
         }
 
         return REDIRECT_LIST_TEAMS;
@@ -187,7 +190,6 @@ public class TeamController {
         command.setUseCountry(team.getCountry() != null);
         command.setCountry(team.getCountry());
         command.setName(team.getName());
-        command.setDeletable(teamService.isDeletable(team));
         return command;
     }
 }

@@ -239,18 +239,25 @@ public class TeamService {
     }
 
     /**
-     * A team can only be deleted if it is neither used in a match nor in an extra bet.
+     * Counts in how many matches and extra bets the given team is used.
      */
-    public boolean isDeletable(Team team) {
-        return !matchRepository.existsByTeamOneOrTeamTwo(team, team)
-            && !extraBetRepository.existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team);
+    public TeamUsage getTeamUsage(Team team) {
+        long matches = matchRepository.countByTeamOneOrTeamTwo(team, team);
+        long extraBets = extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team);
+        return new TeamUsage(matches, extraBets);
     }
 
+    /**
+     * Deletes the team. A team that is still used in a match or an extra bet cannot be deleted.
+     *
+     * @throws TeamInUseException if the team is still used
+     */
     public void deleteTeam(Long teamId) {
         Team team = teamRepository.findById(teamId)
             .orElseThrow(() -> new IllegalArgumentException("Could not find team with id=" + teamId));
-        if (!isDeletable(team)) {
-            throw new TeamInUseException("Team with id=%s is still in use!".formatted(teamId));
+        TeamUsage teamUsage = getTeamUsage(team);
+        if (teamUsage.isUsed()) {
+            throw new TeamInUseException(teamId, teamUsage);
         }
         teamRepository.delete(team);
     }

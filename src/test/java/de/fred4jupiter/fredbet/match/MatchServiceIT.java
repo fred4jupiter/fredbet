@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.match;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
@@ -7,6 +8,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,9 @@ public class MatchServiceIT {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private ExtraBettingService extraBettingService;
 
     @BeforeEach
     public void setup() {
@@ -140,5 +145,20 @@ public class MatchServiceIT {
 
         Match found2 = matchRepository.getReferenceById(found.getId());
         assertThat(newCountry).isEqualTo(found2.getTeamOne().getCountry());
+    }
+
+    @Test
+    public void deleteMatchKeepsTeamsEvenIfUsedInExtraBet() {
+        Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams(Country.GERMANY, Country.FRANCE).build();
+        matchService.save(match);
+        Team germany = teamRepository.findByCountry(Country.GERMANY);
+        extraBettingService.saveExtraBet(germany, null, null, "someUser");
+
+        matchService.deleteMatch(match);
+        matchRepository.flush();
+
+        assertThat(matchRepository.findById(match.getId())).isEmpty();
+        assertThat(teamRepository.findByCountry(Country.GERMANY)).isNotNull();
+        assertThat(teamRepository.findByCountry(Country.FRANCE)).isNotNull();
     }
 }

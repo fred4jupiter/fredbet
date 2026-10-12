@@ -11,7 +11,6 @@
     <form id="teamForm" th:action="@{/teams}" th:object="${teamCommand}" method="post" enctype="multipart/form-data" role="form">
         <input type="hidden" th:field="*{teamId}" />
         <input type="hidden" th:field="*{version}" />
-        <input type="hidden" th:field="*{deletable}" />
 
         <div class="row g-3">
             <div class="col-12 col-md-8 col-lg-6">
@@ -59,18 +58,15 @@
 
                 <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-                    <button th:if="*{deletable}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteTeam"
+                    <button th:unless="*{isNew()}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteTeam"
                             th:text="#{button.delete}"></button>
                     <a th:href="@{/teams}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
-                </div>
-                <div th:if="*{!isNew() and !deletable}" class="form-text mt-2">
-                    <i class="bi bi-info-circle"></i> <span th:text="#{team.form.delete.inUse}"></span>
                 </div>
             </div>
         </div>
     </form>
 
-    <div th:if="${teamCommand.deletable}" class="modal fade" id="confirmDeleteTeam" tabindex="-1" aria-labelledby="confirmDeleteTeamLabel" aria-hidden="true">
+    <div th:unless="${teamCommand.isNew()}" class="modal fade" id="confirmDeleteTeam" tabindex="-1" aria-labelledby="confirmDeleteTeamLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">

@@ -196,8 +196,8 @@ public class TeamServiceUT {
     public void deleteTeam_whenNotReferenced_deletesTeam() {
         Team team = new Team("FC Test");
         when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
-        when(matchRepository.existsByTeamOneOrTeamTwo(team, team)).thenReturn(false);
-        when(extraBetRepository.existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(false);
+        when(matchRepository.countByTeamOneOrTeamTwo(team, team)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(0L);
 
         teamService.deleteTeam(5L);
 
@@ -208,9 +208,10 @@ public class TeamServiceUT {
     public void deleteTeam_whenUsedInMatch_throwsException() {
         Team team = new Team("FC Test");
         when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
-        when(matchRepository.existsByTeamOneOrTeamTwo(team, team)).thenReturn(true);
+        when(matchRepository.countByTeamOneOrTeamTwo(team, team)).thenReturn(2L);
 
-        assertThatThrownBy(() -> teamService.deleteTeam(5L)).isInstanceOf(TeamInUseException.class);
+        assertThatThrownBy(() -> teamService.deleteTeam(5L))
+            .isInstanceOfSatisfying(TeamInUseException.class, e -> assertThat(e.getTeamUsage()).isEqualTo(new TeamUsage(2, 0)));
         verify(teamRepository, never()).delete(any(Team.class));
     }
 
@@ -218,10 +219,11 @@ public class TeamServiceUT {
     public void deleteTeam_whenUsedInExtraBet_throwsException() {
         Team team = new Team("FC Test");
         when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
-        when(matchRepository.existsByTeamOneOrTeamTwo(team, team)).thenReturn(false);
-        when(extraBetRepository.existsByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(true);
+        when(matchRepository.countByTeamOneOrTeamTwo(team, team)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(3L);
 
-        assertThatThrownBy(() -> teamService.deleteTeam(5L)).isInstanceOf(TeamInUseException.class);
+        assertThatThrownBy(() -> teamService.deleteTeam(5L))
+            .isInstanceOfSatisfying(TeamInUseException.class, e -> assertThat(e.getTeamUsage()).isEqualTo(new TeamUsage(0, 3)));
         verify(teamRepository, never()).delete(any(Team.class));
     }
 

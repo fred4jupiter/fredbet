@@ -19,8 +19,6 @@ public class TeamCommand {
 
     private MultipartFile crestFile;
 
-    private boolean deletable;
-
     public Long getTeamId() {
         return teamId;
     }
@@ -67,14 +65,6 @@ public class TeamCommand {
 
     public void setCrestFile(MultipartFile crestFile) {
         this.crestFile = crestFile;
-    }
-
-    public boolean isDeletable() {
-        return deletable;
-    }
-
-    public void setDeletable(boolean deletable) {
-        this.deletable = deletable;
     }
 
     public boolean isNew() {
