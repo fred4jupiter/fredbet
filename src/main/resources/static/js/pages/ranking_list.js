@@ -1,9 +1,5 @@
-$(document).ready(function() {
-    $(".rankingDetails").hide();
+$(function() {
+    $('#showHideDetails').on('click', function() {
+        $('.rankingDetails').slideToggle();
+    });
 });
-
-function showHideDetails() {
-    $(".rankingDetails").toggle();
-}
-
-

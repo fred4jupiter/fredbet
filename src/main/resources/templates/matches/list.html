@@ -29,12 +29,12 @@
 								<div class="col-2">
 									<div class="mb-1">
 										<a th:if="${!matchCommand.match.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}">
-											<span class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
+											<span class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-bs-placement="top"></span>
 										</a>
-										<span th:if="${matchCommand.match.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-placement="top"></span>
+										<span th:if="${matchCommand.match.isBettable()}" class="fas fa-thumbs-up fa-2x" th:title="#{matches.list.betted}" data-toggle="tooltip" data-bs-placement="top"></span>
 									</div>
 									<div class="mt-1">
-										<span class="fas fa-trophy fa-2x" th:title="#{matches.list.result}" data-toggle="tooltip" data-placement="bottom"></span>
+										<span class="fas fa-trophy fa-2x" th:title="#{matches.list.result}" data-toggle="tooltip" data-bs-placement="bottom"></span>
 									</div>
 					  			</div>
 					  			<div class="col-4">

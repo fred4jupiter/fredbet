@@ -1,11 +1,10 @@
-document.getElementById('links').onclick = function (event) {
-    event = event || window.event;
-    var target = event.target || event.srcElement, link = target.src ? target.parentNode
-            : target, options = {
-            index: link,
-            event: event,
+$(function () {
+    $('#links').on('click', 'a', function (event) {
+        event.preventDefault();
+        blueimp.Gallery($('#links a').get(), {
+            index: this,
+            event: event.originalEvent,
             fullscreen: true
-        },
-        links = this.getElementsByTagName('a');
-    blueimp.Gallery(links, options);
-};
+        });
+    });
+});

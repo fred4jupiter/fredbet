@@ -1,47 +1,26 @@
-$(document).ready(function() {
+var GOAL_FIELDS = {
+	one: '#goalsTeamOne, #teamResultOne',
+	two: '#goalsTeamTwo, #teamResultTwo'
+};
+
+$(function() {
+	$(GOAL_FIELDS.one + ', ' + GOAL_FIELDS.two).on('change', checkPenalty);
+
+	$('.goal-counter').on('click', function() {
+		var $field = $(GOAL_FIELDS[$(this).data('team')]);
+		var step = $(this).data('step');
+		var val = $field.val() === "" ? -1 : $field.val() * 1;
+		if (step > 0 || val > 0) {
+			$field.val(val + step);
+			checkPenalty();
+		}
+	});
+
 	checkPenalty();
 });
 
 function checkPenalty() {
-	var goalsOne = $('#goalsTeamOne, #teamResultOne').val();
-	var goalsTwo = $('#goalsTeamTwo, #teamResultTwo').val();
-	if (goalsOne != "" && goalsTwo != "" && goalsOne == goalsTwo) {
-		$('#penaltyBox').show();
-	} else {
-		$('#penaltyBox').hide();
-	}
-}
-
-function oneCountUp() {
-	var val = $('#goalsTeamOne, #teamResultOne').val();
-	if (val === "") {
-		val = -1;
-	}
-	$('#goalsTeamOne, #teamResultOne').val((val*1)+1); 
-	checkPenalty();
-}
-
-function oneCountDown() {
-	var val = $('#goalsTeamOne, #teamResultOne').val();
-	if (val > 0) {
-		$('#goalsTeamOne, #teamResultOne').val((val*1)-1);
-		checkPenalty();
-	}
-}
-
-function twoCountUp() {
-	var val = $('#goalsTeamTwo, #teamResultTwo').val();
-	if (val === "") {
-		val = -1;
-	}
-	$('#goalsTeamTwo, #teamResultTwo').val((val*1)+1);
-	checkPenalty();
-}
-
-function twoCountDown() {
-	var val = $('#goalsTeamTwo, #teamResultTwo').val();
-	if (val > 0) {
-		$('#goalsTeamTwo, #teamResultTwo').val((val*1)-1); 
-		checkPenalty();
-	}
+	var goalsOne = $(GOAL_FIELDS.one).val();
+	var goalsTwo = $(GOAL_FIELDS.two).val();
+	$('#penaltyBox').toggle(goalsOne != "" && goalsTwo != "" && goalsOne == goalsTwo);
 }

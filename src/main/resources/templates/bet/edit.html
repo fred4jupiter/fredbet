@@ -25,13 +25,13 @@
 						</div>
 						<div class="row center">
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()"  />
+								<input type="text" th:field="*{goalsTeamOne}" class="form-control form-size-small bg-success-subtle fw-bold"  />
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</p>
 							</div>
 							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small bg-success-subtle fw-bold" onchange="checkPenalty()" />
+								<input type="text" th:field="*{goalsTeamTwo}" class="form-control form-size-small bg-success-subtle fw-bold" />
 								<br/>
 								<br/>
 								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('goalsTeamTwo')}" th:errors="*{goalsTeamTwo}">goalsTeamTwo error</p>
@@ -39,12 +39,12 @@
 						</div>
 						<div class="row center mb-3">
 							<div class="col-6">
-								<button type="button" class="btn btn-secondary vote" onclick="oneCountUp()"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-secondary vote" onclick="oneCountDown()"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-secondary vote goal-counter" data-team="one" data-step="1"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-secondary vote goal-counter" data-team="one" data-step="-1"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
 							</div>
 							<div class="col-6">
-								<button type="button" class="btn btn-secondary vote" onclick="twoCountUp()"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-secondary vote" onclick="twoCountDown()"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-secondary vote goal-counter" data-team="two" data-step="1"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-secondary vote goal-counter" data-team="two" data-step="-1"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
 							</div>
 						</div>
 						<div id="penaltyBox" th:if="${!betCommand.isGroupMatch()}">
@@ -67,7 +67,7 @@
                                     <div class="form-check">
                                         <input class="form-check-input" id="useJoker" type="checkbox" th:field="*{useJoker}" th:value="${useJoker}"/>
                                         <label class="form-check-label" for="useJoker" th:text="#{betting.joker}"></label>
-                                        <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                        <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-bs-placement="top"
                                               th:title="#{betting.joker.tooltip}"></span>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
 						<div class="row">
 							<div class="col-12">
 								<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-								<button type="button" class="btn btn-info" onclick="runRandomDice()"><i class="fas fa-dice" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-info" id="randomDice"><i class="fas fa-dice" aria-hidden="true"></i></button>
 								<a href="#" th:href="@{${betCommand.getBackUrl()}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 							</div>
 						</div>

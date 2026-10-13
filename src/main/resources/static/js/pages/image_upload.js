@@ -12,28 +12,23 @@ $(document).ready(function() {
 
     $(".popup-link").on("click", function() {
         var imageUrl = $(this).data('image-url');
-        console.log('imageUrl: '+imageUrl);
         $('#imagepreview').attr('src', imageUrl); // here asign the image to the modal when the user click the enlarge link
         $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
     });
+
+    const compressor = new Compress();
+    $('#upload').on('change', function () {
+        compressor.compress([...this.files], {
+            size: 4,
+            quality: .75
+        }).then(function (results) {
+            const output = results[0];
+            const base64 = output.prefix + output.data;
+            $('#preview').attr('src', base64);
+            $('#myFileBase64').attr('value', base64);
+        });
+    });
 });
-
-const compressor = new Compress()
-const upload = document.getElementById('upload')
-const preview = document.getElementById('preview')
-
-upload.addEventListener('change', function (evt) {
-    const files = [...evt.target.files]
-    compressor.compress(files, {
-        size: 4,
-        quality: .75
-    }).then((results) => {
-        const output = results[0]
-        const file = Compress.convertBase64ToFile(output.data, output.ext)
-        preview.src = output.prefix + output.data
-        $("#myFileBase64").attr("value", output.prefix + output.data);
-    })
-}, false)
 
 function rotate(srcBase64, degrees, callback) {
     const canvas = document.createElement('canvas');
