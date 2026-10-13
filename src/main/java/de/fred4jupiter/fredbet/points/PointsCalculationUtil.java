@@ -3,7 +3,6 @@ package de.fred4jupiter.fredbet.points;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 @Component
  class PointsCalculationUtil {
@@ -47,53 +46,13 @@ import org.springframework.util.Assert;
     }
 
     private int calculateStandardPointsFor(Match match, Bet bet) {
-        if (isSameGoalResult(match, bet)) {
-            return pointsConfigService.loadPointsConfig().getPointsCorrectResult();
-        }
-
-        if (isSameGoalDifference(match, bet)) {
-            return pointsConfigService.loadPointsConfig().getPointsSameGoalDifference();
-        }
-
-        if (isCorrectWinner(match, bet)) {
-            return pointsConfigService.loadPointsConfig().getPointsCorrectWinner();
-        }
-
-        if (isCorrectNumberOfGoalsOfOneTeam(match, bet)) {
-            return pointsConfigService.loadPointsConfig().getPointsCorrectNumberOfGoalsOneTeam();
-        }
-        return 0;
-    }
-
-
-    private boolean isCorrectWinner(Match match, Bet bet) {
-        if (match.isKnockoutMatch() && match.isUndecidedResult()) {
-            // you can only get points if the penalty winner is correct and this is calculated in the other method
-            return false;
-        }
-        return (match.isTeamOneWinner() && bet.isTeamOneWinner()) || (match.isTeamTwoWinner() && bet.isTeamTwoWinner());
-    }
-
-    private boolean isSameGoalDifference(Match match, Bet bet) {
-        if (match.isTeamOneWinner() && bet.isTeamTwoWinner()) {
-            return false;
-        }
-        if (match.isTeamTwoWinner() && bet.isTeamOneWinner()) {
-            return false;
-        }
-
-        return match.getGoalDifference().intValue() == bet.getGoalDifference().intValue();
-    }
-
-    private boolean isSameGoalResult(Match match, Bet bet) {
-        Assert.notNull(match.getGoalsTeamOne(), "no goals team one given");
-        Assert.notNull(match.getGoalsTeamTwo(), "no goals team two given");
-        return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) && match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
-    }
-
-    private boolean isCorrectNumberOfGoalsOfOneTeam(Match match, Bet bet) {
-        Assert.notNull(match.getGoalsTeamOne(), "no goals team one given");
-        Assert.notNull(match.getGoalsTeamTwo(), "no goals team two given");
-        return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) || match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
+        final PointsConfiguration pointsConfig = pointsConfigService.loadPointsConfig();
+        return switch (BetOutcome.of(match, bet)) {
+            case CORRECT_RESULT -> pointsConfig.getPointsCorrectResult();
+            case SAME_GOAL_DIFFERENCE -> pointsConfig.getPointsSameGoalDifference();
+            case CORRECT_WINNER -> pointsConfig.getPointsCorrectWinner();
+            case CORRECT_NUMBER_OF_GOALS_ONE_TEAM -> pointsConfig.getPointsCorrectNumberOfGoalsOneTeam();
+            case NONE -> 0;
+        };
     }
 }

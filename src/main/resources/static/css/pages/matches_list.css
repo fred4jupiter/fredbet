@@ -6,3 +6,35 @@
 .group-label:empty::before {
     content: "\00a0";
 }
+
+/* points of the own bet, coloured by how good the bet was */
+.points-badge {
+    min-width: 2.5rem;
+}
+
+.points-correct-result {
+    background-color: var(--bs-success);
+}
+
+.points-same-goal-difference {
+    background-color: var(--bs-teal);
+}
+
+.points-correct-winner {
+    background-color: var(--bs-warning);
+    color: var(--bs-dark);
+}
+
+.points-correct-number-of-goals-one-team {
+    background-color: var(--bs-orange);
+}
+
+.points-none {
+    background-color: var(--bs-secondary);
+}
+
+.points-pending {
+    background-color: transparent;
+    color: var(--bs-secondary-color);
+    border: 1px dashed var(--bs-border-color);
+}

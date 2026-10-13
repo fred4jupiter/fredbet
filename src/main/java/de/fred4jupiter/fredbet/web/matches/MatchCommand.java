@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.points.BetOutcome;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +33,41 @@ public class MatchCommand {
             return 0;
         }
         return this.betOpt.map(Bet::getPoints).orElse(0);
+    }
+
+    /**
+     * Outcome of the bet of the current user, or <code>null</code> as long as the match has no result.
+     */
+    public BetOutcome getBetOutcome() {
+        if (!this.match.hasMatchFinished()) {
+            return null;
+        }
+        return this.betOpt.filter(bet -> bet.getGoalsTeamOne() != null && bet.getGoalsTeamTwo() != null)
+            .map(bet -> BetOutcome.of(this.match, bet))
+            .orElse(BetOutcome.NONE);
+    }
+
+    public String getPointsCssClass() {
+        final BetOutcome betOutcome = getRewardedBetOutcome();
+        return betOutcome == null ? "points-pending" : "points-" + betOutcome.name().toLowerCase().replace('_', '-');
+    }
+
+    public String getPointsMsgKey() {
+        final BetOutcome betOutcome = getRewardedBetOutcome();
+        return betOutcome == null ? "matches.list.points.pending" : betOutcome.getMsgKey();
+    }
+
+    // an outcome that is configured with zero points is shown like no hit at all
+    private BetOutcome getRewardedBetOutcome() {
+        final BetOutcome betOutcome = getBetOutcome();
+        if (betOutcome != null && getPoints() == 0) {
+            return BetOutcome.NONE;
+        }
+        return betOutcome;
+    }
+
+    public boolean isJokerBet() {
+        return this.betOpt.map(Bet::isJoker).orElse(false);
     }
 
     public String getUserBetGoalsTeamOneCssClasses() {
