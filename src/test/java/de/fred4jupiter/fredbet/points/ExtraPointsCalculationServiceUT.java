@@ -73,8 +73,8 @@ public class ExtraPointsCalculationServiceUT {
         when(matchGoalsChangedEvent.match()).thenReturn(match);
 
         match.setGroup(Group.FINAL);
-        match.getTeamOne().setCountry(Country.AFGHANISTAN);
-        match.getTeamTwo().setCountry(Country.CUBA);
+        match.getTeamOne().setTeamBundleEntry(Country.AFGHANISTAN);
+        match.getTeamTwo().setTeamBundleEntry(Country.CUBA);
 
         when(extraBetRepository.findAll()).thenReturn(Collections.singletonList(extraBet));
 
@@ -91,8 +91,8 @@ public class ExtraPointsCalculationServiceUT {
         when(matchGoalsChangedEvent.match()).thenReturn(match);
 
         match.setGroup(Group.FINAL);
-        match.getTeamOne().setCountry(Country.GERMANY);
-        match.getTeamTwo().setCountry(Country.FRANCE);
+        match.getTeamOne().setTeamBundleEntry(Country.GERMANY);
+        match.getTeamTwo().setTeamBundleEntry(Country.FRANCE);
         match.setGoalsTeamOne(2);
         match.setGoalsTeamTwo(1);
 
@@ -119,8 +119,8 @@ public class ExtraPointsCalculationServiceUT {
         extraBet.setThirdFinalWinner(Country.GERMANY);
 
         match.setGroup(Group.GAME_FOR_THIRD);
-        match.getTeamOne().setCountry(Country.GERMANY);
-        match.getTeamTwo().setCountry(Country.FRANCE);
+        match.getTeamOne().setTeamBundleEntry(Country.GERMANY);
+        match.getTeamTwo().setTeamBundleEntry(Country.FRANCE);
         match.setGoalsTeamOne(2);
         match.setGoalsTeamTwo(1);
 

@@ -3,13 +3,14 @@ package de.fred4jupiter.fredbet.team;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
 import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntryType;
 import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -77,38 +78,38 @@ public class TeamService {
 
         final Team team = teamOpt.get();
 
-        // a stored crest wins, so that crests uploaded for country teams are shown as well
+        // a stored crest wins, so that crests uploaded for country or club teams are shown as well
         if (StringUtils.isNotBlank(team.getSvgContent())) {
             return new SvgImage(team.getSvgContent(), team.getVersion());
         }
 
-        if (team.getCountry() != null) {
-            return crestsCountryResolver.loadCrestsImageFor(team.getCountry());
+        if (team.getTeamBundleEntry() != null) {
+            return crestsCountryResolver.loadCrestsImageFor(team.getTeamBundleEntry());
         }
 
         return crestPlaceholderLoader.getCrestPlaceholderIcon();
     }
 
-    public Team findOrCreateTeam(Country country, String teamName) {
-        return findOrCreateTeam(country, teamName, _ -> {
+    public Team findOrCreateTeam(TeamBundleEntry teamBundleEntry, String teamName) {
+        return findOrCreateTeam(teamBundleEntry, teamName, _ -> {
         });
     }
 
-    public Team findOrCreateTeam(Country country, String teamName, String fdTeamId) {
-        return findOrCreateTeam(country, teamName, newTeam -> {
+    public Team findOrCreateTeam(TeamBundleEntry teamBundleEntry, String teamName, String fdTeamId) {
+        return findOrCreateTeam(teamBundleEntry, teamName, newTeam -> {
             if (newTeam.getSvgContent() == null) {
                 newTeam.setSvgContent(crestsDownloader.downloadCrestsByUrl(fdTeamId));
             }
         });
     }
 
-    public Team findOrCreateTeam(Country country, String teamName, Consumer<Team> newTeamCallback) {
-        Team team = teamRepository.findByCountryOrName(country, StringUtils.isNotBlank(teamName) ? teamName : FALLBACK_TEAM_NAME);
+    public Team findOrCreateTeam(TeamBundleEntry teamBundleEntry, String teamName, Consumer<Team> newTeamCallback) {
+        Team team = teamRepository.findByTeamBundleEntryOrName(teamBundleEntry, StringUtils.isNotBlank(teamName) ? teamName : FALLBACK_TEAM_NAME);
         if (team != null) {
             return team;
         }
 
-        Team newTeam = createNewTeam(country, teamName);
+        Team newTeam = createNewTeam(teamBundleEntry, teamName);
 
         newTeamCallback.accept(newTeam);
 
@@ -119,10 +120,10 @@ public class TeamService {
         return teamRepository.save(newTeam);
     }
 
-    private @NonNull Team createNewTeam(Country country, String teamName) {
-        if (country != null) {
-            Team newTeam = new Team(country);
-            crestsCountryResolver.loadCrestsImageFor(country, false).ifPresent(newTeam::setSvgContent);
+    private @NonNull Team createNewTeam(TeamBundleEntry teamBundleEntry, String teamName) {
+        if (teamBundleEntry != null) {
+            Team newTeam = new Team(teamBundleEntry);
+            crestsCountryResolver.loadCrestsImageFor(teamBundleEntry, false).ifPresent(newTeam::setSvgContent);
             return newTeam;
         }
 
@@ -148,57 +149,58 @@ public class TeamService {
     }
 
     private boolean isFallbackTeam(Team team) {
-        return team.getCountry() == null && FALLBACK_TEAM_NAME.equals(team.getName());
+        return team.getTeamBundleEntry() == null && FALLBACK_TEAM_NAME.equals(team.getName());
     }
 
     public List<Team> findAllTeams() {
         return teamRepository.findAll().stream().sorted(new TeamSortComparator(messageSourceUtil)).toList();
     }
 
-    public List<Country> getAllCountriesSorted() {
+    public List<TeamBundleEntry> getAllTeamBundleEntriesSorted() {
         Locale locale = LocaleContextHolder.getLocale();
-        return Arrays.stream(Country.values())
-            .sorted(Comparator.comparing(country -> messageSourceUtil.getCountryName(country, locale)))
+        return Arrays.stream(TeamBundleEntryType.values())
+            .flatMap(teamBundleEntryType -> teamBundleEntryType.getEntries().stream())
+            .sorted(Comparator.comparing(teamBundleEntry -> messageSourceUtil.getTeamBundleEntryName(teamBundleEntry, locale)))
             .toList();
     }
 
     /**
-     * Creates a new team, either for a country or with a team name. If no crest is given, the default crest of
-     * the country (or the placeholder) is used.
+     * Creates a new team, either for a team bundle entry (country or club) or with a team name. If no crest is
+     * given, the default crest of the entry (or the placeholder) is used.
      *
      * @param favourite whether the team is marked as team favourite (removes the flag from all other teams)
      * @param crestSvg  optional SVG content of the crest
      */
-    public Team createTeam(Country country, String teamName, boolean favourite, byte[] crestSvg) {
-        Team team = country != null ? new Team(country) : new Team(teamName);
-        return saveTeam(team, country, teamName, favourite, crestSvg, true);
+    public Team createTeam(TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestSvg) {
+        Team team = teamBundleEntry != null ? new Team(teamBundleEntry) : new Team(teamName);
+        return saveTeam(team, teamBundleEntry, teamName, favourite, crestSvg, true);
     }
 
     /**
-     * Updates an existing team. If no crest is given, the stored crest is kept unless the country has changed.
+     * Updates an existing team. If no crest is given, the stored crest is kept unless the team bundle entry has changed.
      *
      * @param favourite whether the team is marked as team favourite (removes the flag from all other teams)
      * @param crestSvg  optional SVG content of the crest
      */
-    public Team updateTeam(Long teamId, Country country, String teamName, boolean favourite, byte[] crestSvg) {
+    public Team updateTeam(Long teamId, TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestSvg) {
         Team team = teamRepository.findById(teamId)
             .orElseThrow(() -> new IllegalArgumentException("Could not find team with id=" + teamId));
-        boolean countryChanged = !Objects.equals(team.getCountry(), country);
-        return saveTeam(team, country, teamName, favourite, crestSvg, countryChanged);
+        boolean teamBundleEntryChanged = !Objects.equals(team.getTeamBundleEntry(), teamBundleEntry);
+        return saveTeam(team, teamBundleEntry, teamName, favourite, crestSvg, teamBundleEntryChanged);
     }
 
-    private Team saveTeam(Team team, Country country, String teamName, boolean favourite, byte[] crestSvg, boolean resetCrest) {
-        if (country == null && StringUtils.isBlank(teamName)) {
-            throw new IllegalArgumentException("Either country or team name must be given!");
+    private Team saveTeam(Team team, TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestSvg, boolean resetCrest) {
+        if (teamBundleEntry == null && StringUtils.isBlank(teamName)) {
+            throw new IllegalArgumentException("Either team bundle entry or team name must be given!");
         }
         if (crestSvg != null && !SvgCrestValidator.isValidSvg(crestSvg)) {
             throw new InvalidCrestException("Given crest is no valid SVG image!");
         }
 
-        String name = country != null ? null : teamName.trim();
-        checkTeamIsUnique(team.getId(), country, name);
+        String name = teamBundleEntry != null ? null : teamName.trim();
+        checkTeamIsUnique(team.getId(), teamBundleEntry, name);
 
-        team.setCountry(country);
+        team.setTeamBundleEntry(teamBundleEntry);
         team.setName(name);
         if (favourite) {
             clearOtherFavourites(team.getId());
@@ -208,7 +210,7 @@ public class TeamService {
         if (crestSvg != null) {
             team.setSvgContent(new SvgImage(new String(crestSvg, StandardCharsets.UTF_8)));
         } else if (resetCrest || StringUtils.isBlank(team.getSvgContent())) {
-            team.setSvgContent(loadDefaultCrest(country));
+            team.setSvgContent(loadDefaultCrest(teamBundleEntry));
         }
 
         return teamRepository.save(team);
@@ -222,7 +224,7 @@ public class TeamService {
     }
 
     /**
-     * Creates a team for each country of the given team bundle. Countries that already have a team are skipped.
+     * Creates a team for each entry of the given team bundle. Entries that already have a team are skipped.
      *
      * @return number of newly created teams
      */
@@ -231,17 +233,17 @@ public class TeamService {
             throw new IllegalArgumentException("Teams cannot be created without a team bundle!");
         }
 
-        Set<Country> existingCountries = teamRepository.findAll().stream()
-            .map(Team::getCountry)
+        Set<TeamBundleEntry> existingEntries = teamRepository.findAll().stream()
+            .map(Team::getTeamBundleEntry)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
         List<Team> newTeams = teamBundleProvider.getTeams(teamBundle).stream()
             .distinct()
-            .filter(country -> !existingCountries.contains(country))
-            .map(country -> {
-                Team team = new Team(country);
-                team.setSvgContent(loadDefaultCrest(country));
+            .filter(teamBundleEntry -> !existingEntries.contains(teamBundleEntry))
+            .map(teamBundleEntry -> {
+                Team team = new Team(teamBundleEntry);
+                team.setSvgContent(loadDefaultCrest(teamBundleEntry));
                 return team;
             })
             .toList();
@@ -283,18 +285,18 @@ public class TeamService {
             .forEach(other -> other.setFavourite(false));
     }
 
-    private void checkTeamIsUnique(Long teamId, Country country, String name) {
-        Team existing = country != null ? teamRepository.findByCountry(country) : teamRepository.findByName(name);
+    private void checkTeamIsUnique(Long teamId, TeamBundleEntry teamBundleEntry, String name) {
+        Team existing = teamBundleEntry != null ? teamRepository.findByTeamBundleEntry(teamBundleEntry) : teamRepository.findByName(name);
         if (existing != null && !existing.getId().equals(teamId)) {
-            throw new TeamAlreadyExistsException("Team with country=%s or name=%s already exists!".formatted(country, name));
+            throw new TeamAlreadyExistsException("Team with teamBundleEntry=%s or name=%s already exists!".formatted(teamBundleEntry, name));
         }
     }
 
-    private SvgImage loadDefaultCrest(Country country) {
-        if (country == null) {
+    private SvgImage loadDefaultCrest(TeamBundleEntry teamBundleEntry) {
+        if (teamBundleEntry == null) {
             return crestPlaceholderLoader.getCrestPlaceholderIcon();
         }
-        return crestsCountryResolver.loadCrestsImageFor(country, false)
+        return crestsCountryResolver.loadCrestsImageFor(teamBundleEntry, false)
             .orElseGet(crestPlaceholderLoader::getCrestPlaceholderIcon);
     }
 

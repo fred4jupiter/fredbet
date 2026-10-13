@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
@@ -162,33 +162,33 @@ public class Match extends BaseEntity {
         return this.getGoalsTeamOne() < this.getGoalsTeamTwo();
     }
 
-    public Country getWinner() {
+    public TeamBundleEntry getWinner() {
         if (!hasResultSet()) {
             return null;
         }
 
         if (isTeamOneWinner()) {
-            return teamOne.getCountry();
+            return teamOne.getTeamBundleEntry();
         }
 
         if (isTeamTwoWinner()) {
-            return teamTwo.getCountry();
+            return teamTwo.getTeamBundleEntry();
         }
 
         return null;
     }
 
-    public Country getLooser() {
+    public TeamBundleEntry getLooser() {
         if (!hasResultSet()) {
             return null;
         }
 
         if (isTeamOneWinner()) {
-            return teamTwo.getCountry();
+            return teamTwo.getTeamBundleEntry();
         }
 
         if (isTeamTwoWinner()) {
-            return teamOne.getCountry();
+            return teamOne.getTeamBundleEntry();
         }
 
         return null;

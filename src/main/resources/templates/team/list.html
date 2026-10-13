@@ -55,8 +55,8 @@
                             <i th:if="${team.favourite}" class="fas fa-star text-warning flex-shrink-0" th:title="#{team.form.favourite}" aria-hidden="true"></i>
                             <span th:if="${team.favourite}" class="visually-hidden" th:text="#{team.form.favourite}"></span>
                         </div>
-                        <span th:if="${team.country != null}" class="badge text-bg-secondary" th:text="#{team.type.country}"></span>
-                        <span th:if="${team.country == null}" class="badge text-bg-info" th:text="#{team.type.name}"></span>
+                        <span th:if="${team.teamBundleEntry != null}" class="badge text-bg-secondary" th:text="#{team.type.country}"></span>
+                        <span th:if="${team.teamBundleEntry == null}" class="badge text-bg-info" th:text="#{team.type.name}"></span>
                     </div>
                     <a th:href="@{'/teams/' + ${team.id}}" class="btn btn-primary flex-shrink-0" role="button" th:title="#{button.edit}" th:aria-label="#{button.edit}">
                         <span class="fas fa-edit"></span>

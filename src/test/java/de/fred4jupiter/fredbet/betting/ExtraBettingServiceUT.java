@@ -51,7 +51,7 @@ public class ExtraBettingServiceUT {
         createService().saveExtraBet(new Team(Country.GERMANY), new Team(Country.FRANCE), new Team(Country.SPAIN), "user");
 
         verify(extraBetRepository).save(org.mockito.ArgumentMatchers.argThat(extraBet ->
-            Country.SPAIN.equals(extraBet.getThirdFinalWinnerCountry()) && "user".equals(extraBet.getUserName())));
+            Country.SPAIN.equals(extraBet.getThirdFinalWinnerTeamBundleEntry()) && "user".equals(extraBet.getUserName())));
     }
 
     @Test
@@ -90,8 +90,8 @@ public class ExtraBettingServiceUT {
         createService().createExtraBetForUser("user");
 
         verify(extraBetRepository).save(org.mockito.ArgumentMatchers.argThat(extraBet ->
-            Country.GERMANY.equals(extraBet.getFinalWinnerCountry()) && Country.FRANCE.equals(extraBet.getSemiFinalWinnerCountry())
-                && Country.SPAIN.equals(extraBet.getThirdFinalWinnerCountry())));
+            Country.GERMANY.equals(extraBet.getFinalWinnerTeamBundleEntry()) && Country.FRANCE.equals(extraBet.getSemiFinalWinnerTeamBundleEntry())
+                && Country.SPAIN.equals(extraBet.getThirdFinalWinnerTeamBundleEntry())));
     }
 
     private ExtraBettingService createService() {

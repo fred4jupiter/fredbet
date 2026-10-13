@@ -30,11 +30,11 @@
 
                 <div id="countryGroup" class="mb-3" th:classappend="*{useCountry} ? '' : 'd-none'">
                     <label class="form-label" for="country" th:text="#{team.form.country} + ':'"></label>
-                    <select id="country" th:field="*{country}" class="form-select" th:classappend="${#fields.hasErrors('country')} ? 'is-invalid'">
+                    <select id="country" th:field="*{teamBundleEntry}" class="form-select" th:classappend="${#fields.hasErrors('teamBundleEntry')} ? 'is-invalid'">
                         <option value="" th:text="#{country.none}"></option>
-                        <option th:each="c : ${availableCountries}" th:value="${c}" th:text="${@messageSourceUtil.getCountryName(c, #locale)}"></option>
+                        <option th:each="e : ${availableTeamBundleEntries}" th:value="${e.qualifiedName}" th:text="${@messageSourceUtil.getTeamBundleEntryName(e, #locale)}"></option>
                     </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">country error</div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('teamBundleEntry')}" th:errors="*{teamBundleEntry}">country error</div>
                 </div>
 
                 <div id="nameGroup" class="mb-3" th:classappend="*{useCountry} ? 'd-none' : ''">

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.team;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntryType;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,8 @@ public class TeamCommand {
 
     private boolean useCountry = true;
 
-    private Country country;
+    // qualified name of the team bundle entry, e.g. COUNTRY:GERMANY
+    private String teamBundleEntry;
 
     @Size(max = 100)
     private String name;
@@ -45,12 +47,16 @@ public class TeamCommand {
         this.useCountry = useCountry;
     }
 
-    public Country getCountry() {
-        return country;
+    public String getTeamBundleEntry() {
+        return teamBundleEntry;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setTeamBundleEntry(String teamBundleEntry) {
+        this.teamBundleEntry = teamBundleEntry;
+    }
+
+    public TeamBundleEntry resolveTeamBundleEntry() {
+        return TeamBundleEntryType.fromQualifiedName(teamBundleEntry);
     }
 
     public String getName() {

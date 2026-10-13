@@ -1,8 +1,9 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.TranslationAware;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntryType;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -25,8 +26,12 @@ public class Team {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "COUNTRY", unique = true)
-    private Country country;
+    @Column(name = "TEAM_TYPE")
+    private TeamBundleEntryType teamType;
+
+    // name of the team bundle entry, e.g. the country enum name
+    @Column(name = "TEAM_KEY")
+    private String teamKey;
 
     @Column(name = "NAME", unique = true)
     private String name;
@@ -47,8 +52,8 @@ public class Team {
         // for hibernate
     }
 
-    public Team(Country country) {
-        this.country = country;
+    public Team(TeamBundleEntry teamBundleEntry) {
+        setTeamBundleEntry(teamBundleEntry);
     }
 
     public Team(String name) {
@@ -67,12 +72,16 @@ public class Team {
         return id;
     }
 
-    public Country getCountry() {
-        return country;
+    public TeamBundleEntry getTeamBundleEntry() {
+        if (teamType == null || teamKey == null) {
+            return null;
+        }
+        return teamType.resolve(teamKey);
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setTeamBundleEntry(TeamBundleEntry teamBundleEntry) {
+        this.teamType = teamBundleEntry != null ? teamBundleEntry.getType() : null;
+        this.teamKey = teamBundleEntry != null ? teamBundleEntry.name() : null;
     }
 
     public String getName() {
@@ -84,11 +93,12 @@ public class Team {
     }
 
     public String getNameTranslated(TranslationAware translationAware, Locale locale) {
-        if (this.country == null) {
+        TeamBundleEntry teamBundleEntry = getTeamBundleEntry();
+        if (teamBundleEntry == null) {
             return name;
         }
 
-        return translationAware.getCountryName(this.country, locale);
+        return translationAware.getTeamBundleEntryName(teamBundleEntry, locale);
     }
 
     public void setName(String name) {
@@ -107,25 +117,26 @@ public class Team {
 
         Team team = (Team) o;
 
-        return new EqualsBuilder().append(id, team.id).append(country, team.country).append(name, team.name).append(svgContent, team.svgContent).isEquals();
+        return new EqualsBuilder().append(id, team.id).append(teamType, team.teamType).append(teamKey, team.teamKey).append(name, team.name).append(svgContent, team.svgContent).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(country).append(name).append(svgContent).toHashCode();
+        return new HashCodeBuilder(17, 37).append(id).append(teamType).append(teamKey).append(name).append(svgContent).toHashCode();
     }
 
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
-        builder.append("country", country);
+        builder.append("teamType", teamType);
+        builder.append("teamKey", teamKey);
         builder.append("name", name);
         builder.append("favourite", favourite);
         return builder.build();
     }
 
     public String getBusinessKey() {
-        return "team_%s_%s".formatted(this.country, this.name);
+        return "team_%s_%s_%s".formatted(this.teamType, this.teamKey, this.name);
     }
 
     public String getSvgContent() {
@@ -149,6 +160,6 @@ public class Team {
     }
 
     public String getUniqueId() {
-        return id + "@" + country + "@" + name;
+        return id + "@" + teamType + "@" + teamKey + "@" + name;
     }
 }

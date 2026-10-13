@@ -3,11 +3,11 @@ package de.fred4jupiter.fredbet.betting;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamTriple;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -100,7 +100,7 @@ public class ExtraBettingService {
         return extraBetRepository.findAll();
     }
 
-    public void createExtraBetForUser(String userName, Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner,
+    public void createExtraBetForUser(String userName, TeamBundleEntry finalWinner, TeamBundleEntry semiFinalWinner, TeamBundleEntry thirdFinalWinner,
                                       Integer pointsOne, Integer pointsTwo, Integer pointsThree) {
         ExtraBet extraBet = new ExtraBet();
         extraBet.setUserName(userName);

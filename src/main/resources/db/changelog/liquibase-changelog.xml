@@ -408,4 +408,25 @@
         </sql>
     </changeSet>
 
+    <changeSet id="24" author="michael">
+        <comment>club teams have been extracted from Country into ClubTeam, so a team is stored with type and key</comment>
+        <addColumn tableName="team">
+            <column name="team_type" type="varchar(20)"/>
+        </addColumn>
+        <dropUniqueConstraint tableName="team" constraintName="UC_COUNTRY"/>
+        <renameColumn tableName="team" oldColumnName="country" newColumnName="team_key" columnDataType="varchar(100)"/>
+        <sql>
+            UPDATE team SET team_type = 'CLUB'
+            WHERE team_key IN ('AL_AHLY', 'ATLETICO_MADRID', 'BOTAFOGO', 'FC_PORTO', 'INTER_MIAMI', 'MANCHESTER_CITY', 'PALMEIRAS',
+                        'PARIS_SAINT_GERMAIN', 'SEATLE_SOUNDERS', 'AL_AIN_FC', 'AL_HILAL', 'AUCKLAND_CITY',
+                        'BAYERN_MUENCHEN', 'BENFICA_LISSABON', 'BOCA_JUNIORS', 'BORUSSIA_DORTMUND',
+                        'CA_RIVER_PLATE_MONTEVIDEO', 'CF_MONTERREY', 'CF_PACHUCA', 'CHELSEA_CREST', 'CLUB_LEON',
+                        'CR_FLAMENGO', 'ESPERANCE_SPORTIVE_TUNIS', 'FC_INTERNAZIONALE_MILANO', 'FC_SALZBURG',
+                        'FLUMINENSE_FC', 'JUVENTUS_FC', 'MAMELODI_SUNDOWNS_FC', 'REAL_MADRID', 'ULSAN_HD',
+                        'URAWA_RED_DIAMONDS', 'WYDAD_CASABLANCA');
+            UPDATE team SET team_type = 'COUNTRY' WHERE team_key IS NOT NULL AND team_type IS NULL;
+        </sql>
+        <addUniqueConstraint tableName="team" columnNames="team_type, team_key" constraintName="UC_TEAM_TYPE_KEY"/>
+    </changeSet>
+
 </databaseChangeLog>

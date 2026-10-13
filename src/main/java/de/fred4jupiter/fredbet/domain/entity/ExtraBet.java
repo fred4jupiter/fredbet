@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -96,46 +96,32 @@ public class ExtraBet {
         return finalWinner;
     }
 
-    public Country getFinalWinnerCountry() {
-        return finalWinner != null ? finalWinner.getCountry() : null;
+    public TeamBundleEntry getFinalWinnerTeamBundleEntry() {
+        return finalWinner != null ? finalWinner.getTeamBundleEntry() : null;
     }
 
     public void setFinalWinner(Team finalWinner) {
         this.finalWinner = finalWinner;
     }
 
-    public void setFinalWinner(Country finalWinner) {
-        if (finalWinner == null) {
-            this.finalWinner = null;
-            return;
-        }
-
-        Team team = new Team();
-        team.setCountry(finalWinner);
-        this.finalWinner = team;
+    public void setFinalWinner(TeamBundleEntry finalWinner) {
+        this.finalWinner = finalWinner != null ? new Team(finalWinner) : null;
     }
 
     public Team getSemiFinalWinner() {
         return semiFinalWinner;
     }
 
-    public Country getSemiFinalWinnerCountry() {
-        return semiFinalWinner != null ? semiFinalWinner.getCountry() : null;
+    public TeamBundleEntry getSemiFinalWinnerTeamBundleEntry() {
+        return semiFinalWinner != null ? semiFinalWinner.getTeamBundleEntry() : null;
     }
 
     public void setSemiFinalWinner(Team semiFinalWinner) {
         this.semiFinalWinner = semiFinalWinner;
     }
 
-    public void setSemiFinalWinner(Country semiFinalWinner) {
-        if (semiFinalWinner == null) {
-            this.semiFinalWinner = null;
-            return;
-        }
-
-        Team team = new Team();
-        team.setCountry(semiFinalWinner);
-        this.semiFinalWinner = team;
+    public void setSemiFinalWinner(TeamBundleEntry semiFinalWinner) {
+        this.semiFinalWinner = semiFinalWinner != null ? new Team(semiFinalWinner) : null;
     }
 
     public Long getId() {
@@ -154,23 +140,16 @@ public class ExtraBet {
         return thirdFinalWinner;
     }
 
-    public Country getThirdFinalWinnerCountry() {
-        return thirdFinalWinner != null ? thirdFinalWinner.getCountry() : null;
+    public TeamBundleEntry getThirdFinalWinnerTeamBundleEntry() {
+        return thirdFinalWinner != null ? thirdFinalWinner.getTeamBundleEntry() : null;
     }
 
     public void setThirdFinalWinner(Team thirdFinalWinner) {
         this.thirdFinalWinner = thirdFinalWinner;
     }
 
-    public void setThirdFinalWinner(Country thirdFinalWinner) {
-        if (thirdFinalWinner == null) {
-            this.thirdFinalWinner = null;
-            return;
-        }
-
-        Team team = new Team();
-        team.setCountry(thirdFinalWinner);
-        this.thirdFinalWinner = team;
+    public void setThirdFinalWinner(TeamBundleEntry thirdFinalWinner) {
+        this.thirdFinalWinner = thirdFinalWinner != null ? new Team(thirdFinalWinner) : null;
     }
 
     public Integer getPointsOne() {

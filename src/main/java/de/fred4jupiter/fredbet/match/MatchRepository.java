@@ -1,9 +1,10 @@
 package de.fred4jupiter.fredbet.match;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntryType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,7 +46,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     List<Match> findByGroupOrderByKickOffDateAsc(Group group);
 
-    List<Match> findByTeamOneCountry(Country country);
+    List<Match> findByTeamOneTeamTypeAndTeamOneTeamKey(TeamBundleEntryType teamType, String teamKey);
+
+    default List<Match> findByTeamOneTeamBundleEntry(TeamBundleEntry teamBundleEntry) {
+        return findByTeamOneTeamTypeAndTeamOneTeamKey(teamBundleEntry.getType(), teamBundleEntry.name());
+    }
 
     List<Match> findByGroup(Group group);
 

@@ -1,8 +1,9 @@
 package de.fred4jupiter.fredbet.web.team;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.team.TeamService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntryType;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
 import org.springframework.core.convert.converter.Converter;
@@ -25,17 +26,18 @@ public class TeamConverter implements Converter<String, Team> {
 
         String[] parts = uniqueId.split("@");
         String idPart = parts.length > 0 ? parts[0] : null;
-        String countryPart = parts.length > 1 ? parts[1] : null;
-        String namePart = parts.length > 2 ? parts[2] : null;
+        String typePart = parts.length > 1 ? parts[1] : null;
+        String keyPart = parts.length > 2 ? parts[2] : null;
+        String namePart = parts.length > 3 ? parts[3] : null;
 
         if (StringUtils.isNotBlank(idPart) && !"null".equals(idPart)) {
             Long teamId = Long.parseLong(idPart);
             return teamService.findTeamById(teamId);
         }
 
-        Country country = parseCountry(countryPart);
+        TeamBundleEntry teamBundleEntry = parseTeamBundleEntry(typePart, keyPart);
         String teamName = parseTeamName(namePart);
-        return teamService.findOrCreateTeam(country, teamName);
+        return teamService.findOrCreateTeam(teamBundleEntry, teamName);
     }
 
     private String parseTeamName(String namePart) {
@@ -45,10 +47,10 @@ public class TeamConverter implements Converter<String, Team> {
         return namePart;
     }
 
-    private Country parseCountry(String countryPart) {
-        if (countryPart == null || "null".equals(countryPart)) {
+    private TeamBundleEntry parseTeamBundleEntry(String typePart, String keyPart) {
+        if (typePart == null || "null".equals(typePart) || keyPart == null || "null".equals(keyPart)) {
             return null;
         }
-        return Country.valueOf(countryPart);
+        return TeamBundleEntryType.valueOf(typePart).resolve(keyPart);
     }
 }

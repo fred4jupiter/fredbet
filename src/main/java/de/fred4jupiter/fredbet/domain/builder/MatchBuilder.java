@@ -1,10 +1,12 @@
 package de.fred4jupiter.fredbet.domain.builder;
 
+import de.fred4jupiter.fredbet.domain.ClubTeam;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.team.TeamService;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 
 import java.time.LocalDateTime;
 
@@ -25,9 +27,9 @@ public class MatchBuilder {
     }
 
     public MatchBuilder withTeamOne(String teamOne) {
-        Country country = Country.fromName(teamOne);
-        if (country != null) {
-            match.getTeamOne().setCountry(country);
+        TeamBundleEntry teamBundleEntry = findTeamBundleEntry(teamOne);
+        if (teamBundleEntry != null) {
+            match.getTeamOne().setTeamBundleEntry(teamBundleEntry);
         } else {
             match.getTeamOne().setName(teamOne);
         }
@@ -36,9 +38,9 @@ public class MatchBuilder {
     }
 
     public MatchBuilder withTeamTwo(String teamTwo) {
-        Country country = Country.fromName(teamTwo);
-        if (country != null) {
-            match.getTeamTwo().setCountry(country);
+        TeamBundleEntry teamBundleEntry = findTeamBundleEntry(teamTwo);
+        if (teamBundleEntry != null) {
+            match.getTeamTwo().setTeamBundleEntry(teamBundleEntry);
         } else {
             match.getTeamTwo().setName(teamTwo);
         }
@@ -52,10 +54,15 @@ public class MatchBuilder {
         return this;
     }
 
-    public MatchBuilder withTeams(Country one, Country two) {
-        match.getTeamOne().setCountry(one);
-        match.getTeamTwo().setCountry(two);
+    public MatchBuilder withTeams(TeamBundleEntry one, TeamBundleEntry two) {
+        match.getTeamOne().setTeamBundleEntry(one);
+        match.getTeamTwo().setTeamBundleEntry(two);
         return this;
+    }
+
+    private TeamBundleEntry findTeamBundleEntry(String name) {
+        Country country = Country.fromName(name);
+        return country != null ? country : ClubTeam.fromName(name);
     }
 
     public MatchBuilder withTeams(Team one, Team two) {
@@ -111,6 +118,6 @@ public class MatchBuilder {
     }
 
     private Team findOrCreateTeamFor(Team team) {
-        return teamService.findOrCreateTeam(team.getCountry(), team.getName());
+        return teamService.findOrCreateTeam(team.getTeamBundleEntry(), team.getName());
     }
 }

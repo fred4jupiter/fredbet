@@ -8,6 +8,7 @@ import de.fred4jupiter.fredbet.team.TeamInUseException;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.team.TeamUsage;
 import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.validation.Valid;
@@ -106,14 +107,14 @@ public class TeamController {
 
         try {
             Team savedTeam = teamCommand.isNew()
-                ? teamService.createTeam(teamCommand.getCountry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg)
-                : teamService.updateTeam(teamCommand.getTeamId(), teamCommand.getCountry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg);
+                ? teamService.createTeam(teamCommand.resolveTeamBundleEntry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg)
+                : teamService.updateTeam(teamCommand.getTeamId(), teamCommand.resolveTeamBundleEntry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg);
 
             String msgKey = teamCommand.isNew() ? "team.msg.created" : "team.msg.updated";
             webMessageUtil.addInfoMsg(redirect, msgKey, savedTeam.getNameTranslated(messageSourceUtil));
             return REDIRECT_LIST_TEAMS + "#team-" + savedTeam.getId();
         } catch (TeamAlreadyExistsException e) {
-            String field = teamCommand.isUseCountry() ? "country" : "name";
+            String field = teamCommand.isUseCountry() ? "teamBundleEntry" : "name";
             result.rejectValue(field, "team.form.msg.alreadyExists");
         } catch (InvalidCrestException e) {
             result.rejectValue("crestFile", "team.form.msg.invalidSvg");
@@ -145,18 +146,18 @@ public class TeamController {
     }
 
     private String showEditView(Model model) {
-        model.addAttribute("availableCountries", teamService.getAllCountriesSorted());
+        model.addAttribute("availableTeamBundleEntries", teamService.getAllTeamBundleEntriesSorted());
         return VIEW_EDIT_TEAM;
     }
 
     private void validateCountryOrName(TeamCommand teamCommand, BindingResult result) {
         if (teamCommand.isUseCountry()) {
             teamCommand.setName(null);
-            if (teamCommand.getCountry() == null) {
-                result.rejectValue("country", "team.form.msg.countryRequired");
+            if (StringUtils.isBlank(teamCommand.getTeamBundleEntry())) {
+                result.rejectValue("teamBundleEntry", "team.form.msg.countryRequired");
             }
         } else {
-            teamCommand.setCountry(null);
+            teamCommand.setTeamBundleEntry(null);
             if (StringUtils.isBlank(teamCommand.getName())) {
                 result.rejectValue("name", "team.form.msg.nameRequired");
             }
@@ -187,8 +188,9 @@ public class TeamController {
         TeamCommand command = new TeamCommand();
         command.setTeamId(team.getId());
         command.setVersion(team.getVersion());
-        command.setUseCountry(team.getCountry() != null);
-        command.setCountry(team.getCountry());
+        TeamBundleEntry teamBundleEntry = team.getTeamBundleEntry();
+        command.setUseCountry(teamBundleEntry != null);
+        command.setTeamBundleEntry(teamBundleEntry != null ? teamBundleEntry.getQualifiedName() : null);
         command.setName(team.getName());
         command.setFavourite(team.isFavourite());
         return command;

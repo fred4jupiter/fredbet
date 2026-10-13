@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.teambundle;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.domain.ClubTeam;
 import de.fred4jupiter.fredbet.domain.Country;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,16 +19,16 @@ public class TeamBundleProviderUT {
     @Test
     public void clubWorldCupContainsKnownClubTeams() {
         assertThat(teamBundleProvider.getTeams(TeamBundle.CLUB_WM))
-            .contains(Country.REAL_MADRID, Country.BAYERN_MUENCHEN)
+            .contains(ClubTeam.REAL_MADRID, ClubTeam.BAYERN_MUENCHEN)
             .doesNotContain(Country.GERMANY);
     }
 
     @Test
     public void worldCupExcludesClubWorldCupTeams() {
-        List<Country> worldCupTeams = teamBundleProvider.getTeams(TeamBundle.WORLD_CUP);
+        List<TeamBundleEntry> worldCupTeams = teamBundleProvider.getTeams(TeamBundle.WORLD_CUP);
 
         assertThat(worldCupTeams).contains(Country.GERMANY);
-        assertThat(worldCupTeams).doesNotContain(Country.REAL_MADRID);
+        assertThat(worldCupTeams).doesNotContain(ClubTeam.REAL_MADRID);
     }
 }
 

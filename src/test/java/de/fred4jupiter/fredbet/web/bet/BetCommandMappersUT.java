@@ -44,9 +44,9 @@ public class BetCommandMappersUT {
 
         ExtraBetCommand command = new ExtraBetCommandMapper(matchService).toExtraBetCommand(extraBet);
 
-        assertThat(command.getFinalWinner().getCountry()).isEqualTo(Country.GERMANY);
-        assertThat(command.getSemiFinalWinner().getCountry()).isEqualTo(Country.FRANCE);
-        assertThat(command.getThirdFinalWinner().getCountry()).isEqualTo(Country.SPAIN);
+        assertThat(command.getFinalWinner().getTeamBundleEntry()).isEqualTo(Country.GERMANY);
+        assertThat(command.getSemiFinalWinner().getTeamBundleEntry()).isEqualTo(Country.FRANCE);
+        assertThat(command.getThirdFinalWinner().getTeamBundleEntry()).isEqualTo(Country.SPAIN);
         assertThat(command.getFinalMatch()).isSameAs(finalMatch);
         assertThat(command.getPoints()).isEqualTo(17);
     }

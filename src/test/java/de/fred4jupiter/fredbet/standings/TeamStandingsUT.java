@@ -13,7 +13,7 @@ public class TeamStandingsUT {
     @Test
     public void shouldCalculateStandingsForWinDrawAndLoss() {
         Team team = new Team(Country.GERMANY);
-        team.setCountry(Country.GERMANY);
+        team.setTeamBundleEntry(Country.GERMANY);
 
         TeamStandings teamStandings = new TeamStandings(team);
         teamStandings.addMatch(2, 1);

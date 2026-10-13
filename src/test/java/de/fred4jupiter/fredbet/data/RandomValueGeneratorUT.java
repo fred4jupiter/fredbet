@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.domain.ClubTeam;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
@@ -12,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static de.fred4jupiter.fredbet.domain.Country.*;
+import static de.fred4jupiter.fredbet.domain.ClubTeam.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -53,15 +54,15 @@ public class RandomValueGeneratorUT {
 
     @Test
     public void distinctRandomElements() {
-        final List<Country> list = List.of(AL_AHLY, ATLETICO_MADRID, BOTAFOGO, FC_PORTO, INTER_MIAMI, MANCHESTER_CITY);
+        final List<ClubTeam> list = List.of(AL_AHLY, ATLETICO_MADRID, BOTAFOGO, FC_PORTO, INTER_MIAMI, MANCHESTER_CITY);
 
-        List<Country> countries = randomValueGenerator.distinctRandomElements(list, 3);
+        List<ClubTeam> countries = randomValueGenerator.distinctRandomElements(list, 3);
         LOG.debug("countries: {}", countries);
         assertThat(countries).hasSize(3);
 
-        Country one = countries.get(0);
-        Country two = countries.get(1);
-        Country three = countries.get(2);
+        ClubTeam one = countries.get(0);
+        ClubTeam two = countries.get(1);
+        ClubTeam three = countries.get(2);
 
         assertThat(one).isNotEqualTo(two);
         assertThat(one).isNotEqualTo(three);
