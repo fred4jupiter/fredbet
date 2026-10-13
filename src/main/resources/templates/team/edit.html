@@ -17,27 +17,27 @@
                 <div class="mb-3">
                     <label class="form-label d-block" th:text="#{team.form.type} + ':'"></label>
                     <div class="btn-group w-100" role="group" th:aria-label="#{team.form.type}">
-                        <input type="radio" class="btn-check" id="useCountryTrue" th:field="*{useCountry}" value="true" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="useCountryTrue">
-                            <i class="fas fa-flag"></i> <span th:text="#{team.type.country}"></span>
+                        <input type="radio" class="btn-check" id="useTeamBundleEntryTrue" th:field="*{useTeamBundleEntry}" value="true" autocomplete="off" />
+                        <label class="btn btn-outline-primary" for="useTeamBundleEntryTrue">
+                            <i class="fas fa-trophy"></i> <span th:text="#{team.type.teamBundleEntry}"></span>
                         </label>
-                        <input type="radio" class="btn-check" id="useCountryFalse" th:field="*{useCountry}" value="false" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="useCountryFalse">
+                        <input type="radio" class="btn-check" id="useTeamBundleEntryFalse" th:field="*{useTeamBundleEntry}" value="false" autocomplete="off" />
+                        <label class="btn btn-outline-primary" for="useTeamBundleEntryFalse">
                             <i class="fas fa-shield-alt"></i> <span th:text="#{team.type.name}"></span>
                         </label>
                     </div>
                 </div>
 
-                <div id="countryGroup" class="mb-3" th:classappend="*{useCountry} ? '' : 'd-none'">
-                    <label class="form-label" for="country" th:text="#{team.form.country} + ':'"></label>
-                    <select id="country" th:field="*{teamBundleEntry}" class="form-select" th:classappend="${#fields.hasErrors('teamBundleEntry')} ? 'is-invalid'">
+                <div id="teamBundleEntryGroup" class="mb-3" th:classappend="*{useTeamBundleEntry} ? '' : 'd-none'">
+                    <label class="form-label" for="teamBundleEntry" th:text="#{team.form.teamBundleEntry} + ':'"></label>
+                    <select id="teamBundleEntry" th:field="*{teamBundleEntry}" class="form-select" th:classappend="${#fields.hasErrors('teamBundleEntry')} ? 'is-invalid'">
                         <option value="" th:text="#{country.none}"></option>
                         <option th:each="e : ${availableTeamBundleEntries}" th:value="${e.qualifiedName}" th:text="${@messageSourceUtil.getTeamBundleEntryName(e, #locale)}"></option>
                     </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('teamBundleEntry')}" th:errors="*{teamBundleEntry}">country error</div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('teamBundleEntry')}" th:errors="*{teamBundleEntry}">teamBundleEntry error</div>
                 </div>
 
-                <div id="nameGroup" class="mb-3" th:classappend="*{useCountry} ? 'd-none' : ''">
+                <div id="nameGroup" class="mb-3" th:classappend="*{useTeamBundleEntry} ? 'd-none' : ''">
                     <label class="form-label" for="name" th:text="#{team.form.name} + ':'"></label>
                     <input id="name" type="text" th:field="*{name}" class="form-control" maxlength="100"
                            th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" />

@@ -11,7 +11,7 @@ public class TeamCommand {
 
     private Integer version;
 
-    private boolean useCountry = true;
+    private boolean useTeamBundleEntry = true;
 
     // qualified name of the team bundle entry, e.g. COUNTRY:GERMANY
     private String teamBundleEntry;
@@ -39,12 +39,12 @@ public class TeamCommand {
         this.version = version;
     }
 
-    public boolean isUseCountry() {
-        return useCountry;
+    public boolean isUseTeamBundleEntry() {
+        return useTeamBundleEntry;
     }
 
-    public void setUseCountry(boolean useCountry) {
-        this.useCountry = useCountry;
+    public void setUseTeamBundleEntry(boolean useTeamBundleEntry) {
+        this.useTeamBundleEntry = useTeamBundleEntry;
     }
 
     public String getTeamBundleEntry() {

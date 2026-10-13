@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // team form: toggle between country and team name
-    const countryGroup = document.getElementById('countryGroup');
+    // team form: toggle between team of a team bundle and team name
+    const teamBundleEntryGroup = document.getElementById('teamBundleEntryGroup');
     const nameGroup = document.getElementById('nameGroup');
-    document.querySelectorAll('input[name="useCountry"]').forEach(function (radio) {
+    document.querySelectorAll('input[name="useTeamBundleEntry"]').forEach(function (radio) {
         radio.addEventListener('change', function () {
-            const useCountry = radio.value === 'true';
-            countryGroup.classList.toggle('d-none', !useCountry);
-            nameGroup.classList.toggle('d-none', useCountry);
+            const useTeamBundleEntry = radio.value === 'true';
+            teamBundleEntryGroup.classList.toggle('d-none', !useTeamBundleEntry);
+            nameGroup.classList.toggle('d-none', useTeamBundleEntry);
         });
     });
 

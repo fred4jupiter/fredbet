@@ -99,7 +99,7 @@ public class TeamController {
 
     @PostMapping
     public String save(@Valid TeamCommand teamCommand, BindingResult result, Model model, RedirectAttributes redirect) {
-        validateCountryOrName(teamCommand, result);
+        validateTeamBundleEntryOrName(teamCommand, result);
         byte[] crestSvg = readCrestFile(teamCommand.getCrestFile(), result);
         if (result.hasErrors()) {
             return showEditView(model);
@@ -114,7 +114,7 @@ public class TeamController {
             webMessageUtil.addInfoMsg(redirect, msgKey, savedTeam.getNameTranslated(messageSourceUtil));
             return REDIRECT_LIST_TEAMS + "#team-" + savedTeam.getId();
         } catch (TeamAlreadyExistsException e) {
-            String field = teamCommand.isUseCountry() ? "teamBundleEntry" : "name";
+            String field = teamCommand.isUseTeamBundleEntry() ? "teamBundleEntry" : "name";
             result.rejectValue(field, "team.form.msg.alreadyExists");
         } catch (InvalidCrestException e) {
             result.rejectValue("crestFile", "team.form.msg.invalidSvg");
@@ -150,11 +150,11 @@ public class TeamController {
         return VIEW_EDIT_TEAM;
     }
 
-    private void validateCountryOrName(TeamCommand teamCommand, BindingResult result) {
-        if (teamCommand.isUseCountry()) {
+    private void validateTeamBundleEntryOrName(TeamCommand teamCommand, BindingResult result) {
+        if (teamCommand.isUseTeamBundleEntry()) {
             teamCommand.setName(null);
             if (StringUtils.isBlank(teamCommand.getTeamBundleEntry())) {
-                result.rejectValue("teamBundleEntry", "team.form.msg.countryRequired");
+                result.rejectValue("teamBundleEntry", "team.form.msg.teamBundleEntryRequired");
             }
         } else {
             teamCommand.setTeamBundleEntry(null);
@@ -189,7 +189,7 @@ public class TeamController {
         command.setTeamId(team.getId());
         command.setVersion(team.getVersion());
         TeamBundleEntry teamBundleEntry = team.getTeamBundleEntry();
-        command.setUseCountry(teamBundleEntry != null);
+        command.setUseTeamBundleEntry(teamBundleEntry != null);
         command.setTeamBundleEntry(teamBundleEntry != null ? teamBundleEntry.getQualifiedName() : null);
         command.setName(team.getName());
         command.setFavourite(team.isFavourite());
