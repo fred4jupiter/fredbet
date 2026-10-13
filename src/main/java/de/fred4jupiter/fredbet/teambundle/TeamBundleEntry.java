@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.teambundle;
 
-public interface TeamKey {
+public interface TeamBundleEntry {
 
     String name();
 }

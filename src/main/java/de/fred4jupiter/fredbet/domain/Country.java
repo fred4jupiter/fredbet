@@ -1,13 +1,13 @@
 package de.fred4jupiter.fredbet.domain;
 
-import de.fred4jupiter.fredbet.teambundle.TeamKey;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 
 /**
  * Country ISO Code 3166 ALPHA-3
  *
  * @author michael
  */
-public enum Country implements TeamKey {
+public enum Country implements TeamBundleEntry {
 
     ALBANIA("alb"), BELGIUM("bel"), GERMANY("deu"), GREAT_BRITAIN("gbr"), ENGLAND("eng", "gb-eng"), FRANCE("fra"),
     IRELAND("irl"), ICELAND("isl"), ITALY("ita"), CROATIA("hrv"),
