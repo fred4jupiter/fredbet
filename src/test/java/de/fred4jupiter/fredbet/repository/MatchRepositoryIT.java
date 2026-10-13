@@ -92,6 +92,20 @@ public class MatchRepositoryIT {
     }
 
     @Test
+    public void getAllTeamsOfMatches() {
+        matchRepository.deleteAll();
+
+        Team withoutMatch = teamService.findOrCreateTeam(Country.SPAIN, null);
+        matchService.save(MatchBuilder.create(teamService).withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_A).build());
+        matchService.save(MatchBuilder.create(teamService).withTeams(Country.GERMANY, Country.ITALY).withGroup(Group.GROUP_A).build());
+
+        List<Team> teams = matchRepository.getAllTeamsOfMatches();
+
+        assertThat(teams).extracting(Team::getTeamBundleEntry).containsExactlyInAnyOrder(Country.GERMANY, Country.FRANCE, Country.ITALY);
+        assertThat(teams).doesNotContain(withoutMatch);
+    }
+
+    @Test
     public void findMatchesOfJokerBets() {
         matchRepository.deleteAll();
 

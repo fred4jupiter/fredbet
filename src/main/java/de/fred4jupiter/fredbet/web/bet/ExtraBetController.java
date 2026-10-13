@@ -49,7 +49,7 @@ public class ExtraBetController {
 
     @ModelAttribute("availableTeams")
     public List<Team> availableTeams() {
-        return teamService.findAllSelectableTeams();
+        return teamService.findAllSelectableTeamsOfMatches();
     }
 
     @ModelAttribute("gameForThirdAvailable")

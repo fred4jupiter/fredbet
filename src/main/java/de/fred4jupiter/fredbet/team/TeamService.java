@@ -148,6 +148,16 @@ public class TeamService {
         return findAllTeams().stream().filter(team -> !isFallbackTeam(team)).toList();
     }
 
+    /**
+     * All teams that play in at least one match, without the fallback placeholder team.
+     */
+    public List<Team> findAllSelectableTeamsOfMatches() {
+        return matchRepository.getAllTeamsOfMatches().stream()
+            .filter(team -> !isFallbackTeam(team))
+            .sorted(new TeamSortComparator(messageSourceUtil))
+            .toList();
+    }
+
     private boolean isFallbackTeam(Team team) {
         return team.getTeamBundleEntry() == null && FALLBACK_TEAM_NAME.equals(team.getName());
     }

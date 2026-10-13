@@ -11,10 +11,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public interface MatchRepository extends JpaRepository<Match, Long> {
 
@@ -71,10 +69,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Query("select m from Match m where m.goalsTeamOne is not null and m.goalsTeamTwo is not null order by m.kickOffDate asc")
     List<Match> findFinishedMatches();
 
-    default List<Team> getAllTeamsOfMatches() {
-        List<Match> matches = findAll();
-        return matches.stream().flatMap(match -> Stream.of(match.getTeamOne(), match.getTeamTwo())).distinct().filter(Objects::nonNull).toList();
-    }
+    @Query("select t from Team t where t in (select m.teamOne from Match m) or t in (select m.teamTwo from Match m)")
+    List<Team> getAllTeamsOfMatches();
 
     @Query("""
         select case when (count(m) > 0) then true else false end
