@@ -21,47 +21,36 @@
                             <div th:replace="~{fragments/match_head :: match_head_detail(${matchResultCommand.match})}"></div>
 						</div>
 						<div class="row center mb-3">
-							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{teamResultOne}" class="form-control form-size-small bg-info-subtle fw-bold"/>
-								<br/>
-								<br/>
-								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamResultOne')}" th:errors="*{teamResultOne}">teamResultOne error</p>
-							</div>
-							<div class="col-6 ps-5 pe-5">
-								<input type="text" th:field="*{teamResultTwo}" class="form-control form-size-small bg-info-subtle fw-bold"/>
-								<br/>
-								<br/>
-								<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('teamResultTwo')}" th:errors="*{teamResultTwo}">teamResultTwo error</p>
-							</div>
-						</div>
-						<div class="row center">
 							<div class="col-6">
-								<button type="button" class="btn btn-secondary vote goal-counter" data-team="one" data-step="1"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-secondary vote goal-counter" data-team="one" data-step="-1"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+								<div class="input-group goal-input-group mx-auto">
+									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
+									<input type="text" inputmode="numeric" th:field="*{teamResultOne}" class="form-control text-center fw-bold bg-info-subtle" th:errorclass="is-invalid"/>
+									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+								</div>
+								<div class="text-danger small mt-1" th:if="${#fields.hasErrors('teamResultOne')}" th:errors="*{teamResultOne}">teamResultOne error</div>
 							</div>
 							<div class="col-6">
-								<button type="button" class="btn btn-secondary vote goal-counter" data-team="two" data-step="1"><i class="fas fa-chevron-up" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-secondary vote goal-counter" data-team="two" data-step="-1"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+								<div class="input-group goal-input-group mx-auto">
+									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
+									<input type="text" inputmode="numeric" th:field="*{teamResultTwo}" class="form-control text-center fw-bold bg-info-subtle" th:errorclass="is-invalid"/>
+									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+								</div>
+								<div class="text-danger small mt-1" th:if="${#fields.hasErrors('teamResultTwo')}" th:errors="*{teamResultTwo}">teamResultTwo error</div>
 							</div>
 						</div>
-						<div class="mt-3" id="penaltyBox" th:if="${matchResultCommand.isKnockoutMatch()}">
-							<div class="row">
-                                <div class="col-12">
-								    <span class="fw-bold" th:text="#{penalty.box.heading}"></span>
-                                </div>
-							</div>
-							<div class="row center">
-								<div class="col-6 mt-3 mb-3">
-									<input class="form-check-input" type="radio" th:field="*{penaltyWinnerOne}" value="true" />
-								</div>
-								<div class="col-6 mt-3 mb-3">
-									<input class="form-check-input" type="radio" th:field="*{penaltyWinnerOne}" value="false" />
-								</div>
+						<div id="penaltyBox" class="mb-3" th:if="${matchResultCommand.isKnockoutMatch()}">
+							<div class="fw-bold mb-2" th:text="#{penalty.box.heading}"></div>
+							<div class="btn-group w-100" role="group" th:aria-label="#{penalty.box.heading}">
+								<input type="radio" class="btn-check" th:field="*{penaltyWinnerOne}" value="true" autocomplete="off"/>
+								<label class="btn btn-outline-primary" th:for="${#ids.prev('penaltyWinnerOne')}"
+									   th:text="${matchResultCommand.match.teamOne.getNameTranslated(@messageSourceUtil)}"></label>
+								<input type="radio" class="btn-check" th:field="*{penaltyWinnerOne}" value="false" autocomplete="off"/>
+								<label class="btn btn-outline-primary" th:for="${#ids.prev('penaltyWinnerOne')}"
+									   th:text="${matchResultCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)}"></label>
 							</div>
 						</div>
-						<br/>
 						<div class="row">
-							<div class="col-12">
+							<div class="col-12 d-flex gap-2">
 								<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 								<a href="#" th:href="@{${matchResultCommand.getBackUrl()}}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
 							</div>
