@@ -9,20 +9,20 @@
 	<div layout:fragment="content">
 		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
 			<div class="row">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="matchCommand : ${allMatches}">
+				<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3" th:each="matchCommand : ${allMatches}">
 					<a class="anchor" th:id="${matchCommand.match.id}"></a>
-					<div class="card  mb-3">
+					<div class="card h-100">
 						<div class="card-header">
-							<div class="row">
-								<div class="col-12">
-                                    <div th:replace="~{fragments/match_head :: match_head_list(${matchCommand.match})}"></div>
-									<br/>
-									<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-									<span class="badge rounded-pill bg-warning big-badge right" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points}"></span>
-									<br/>
-                                    <span th:text="${matchCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
-					  			</div>
-				  			</div>
+							<div>
+                                <div th:replace="~{fragments/match_head :: match_head_list(${matchCommand.match})}"></div>
+							</div>
+							<div class="d-flex justify-content-between align-items-center gap-2">
+								<div>
+									<div th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></div>
+									<div class="group-label" th:text="${matchCommand.match.getGroupLabel(@messageSourceUtil)}"></div>
+								</div>
+								<span class="badge rounded-pill bg-warning big-badge" th:if="${matchCommand.match.hasMatchFinished()}" th:text="${matchCommand.bet?.points ?: 0}"></span>
+							</div>
 						</div>
 						<div class="card-body">
 							<div class="row">

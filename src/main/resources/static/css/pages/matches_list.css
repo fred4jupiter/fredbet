@@ -2,6 +2,7 @@
     font-size: 15px;
 }
 
-.right {
-    float: right;
+/* keep the line even without group or stadium, so all headers have the same height */
+.group-label:empty::before {
+    content: "\00a0";
 }
