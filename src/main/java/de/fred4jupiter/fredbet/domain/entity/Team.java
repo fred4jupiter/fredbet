@@ -158,8 +158,4 @@ public class Team {
     public Integer getVersion() {
         return version;
     }
-
-    public String getUniqueId() {
-        return id + "@" + teamType + "@" + teamKey + "@" + name;
-    }
 }
