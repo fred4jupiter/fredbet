@@ -47,10 +47,7 @@
 									      th:text="${matchCommand.match.goalsTeamTwo != null ? matchCommand.match.goalsTeamTwo : '?'}"></span>
 								</div>
 							</div>
-							<span class="badge rounded-pill big-badge points-badge" th:classappend="${matchCommand.pointsCssClass}"
-							      th:text="${matchCommand.match.hasMatchFinished() ? (matchCommand.points > 0 ? '+' + matchCommand.points : '0') : '–'}"
-							      th:title="#{${matchCommand.pointsMsgKey}} + (${matchCommand.jokerBet and matchCommand.points > 0} ? ' (' + #{matches.list.points.joker} + ')' : '')"
-							      data-toggle="tooltip" data-bs-placement="top"></span>
+							<span th:replace="~{fragments/points_badge :: points_badge(${matchCommand.pointsBadge})}"></span>
 							<div class="d-flex flex-wrap justify-content-end gap-2 ms-auto">
 								<a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" th:href="@{'/match/' + ${matchCommand.match.id}}"
 								   class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
