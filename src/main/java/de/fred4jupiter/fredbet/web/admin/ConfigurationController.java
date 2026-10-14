@@ -45,6 +45,7 @@ public class ConfigurationController {
     public String showCachePage(ConfigurationCommand configurationCommand, Model model) {
         configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
         model.addAttribute("configurationCommand", configurationCommand);
+        model.addAttribute("cacheNames", cacheAdministrationService.getCacheNames());
         return PAGE_CONFIGURATION;
     }
 
