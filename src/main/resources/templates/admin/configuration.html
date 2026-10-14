@@ -24,7 +24,9 @@
 				</div>
 				<div class="col-12 col-sm-6 col-md-4">
 					<h2 th:text="#{administration.cache.title}"></h2>
-					<a class="btn btn-primary" role="button" th:href="@{/config/clearCache}" th:text="#{administration.clearCache}"></a>
+					<form th:action="@{/config/clearCache}" method="post">
+						<button type="submit" class="btn btn-primary" th:text="#{administration.clearCache}"></button>
+					</form>
 				</div>
 			</div>
 		</div>
