@@ -1,50 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
-<head>
-	<title th:text="#{user.edit.title}"></title>
-</head>
-<body>
-	<div layout:fragment="content">
-        <form id="userForm" th:action="@{/user/edit}" th:object="${editUserCommand}" action="#" method="post" role="form">
-			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/user/' + ${editUserCommand.userId} + '/delete', id='confirm-delete')}"></div>
+	<head>
+		<title th:text="#{user.edit.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<h1 th:text="#{user.edit.title}"></h1>
+			<div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/user/' + ${editUserCommand.userId} + '/delete', id = 'confirm-delete')}"></div>
+
 			<div class="row">
-				<div class="col-12 col-sm-6">
-					<input type="hidden" th:field="*{userId}" class="form-control" />
-					<div class="mb-3">
-						<label for="username" th:text="#{user.edit.username} + ':'" class="form-label"></label>
-						<input id="username" type="text" th:field="*{username}" class="form-control" readonly />
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
-					</div>
-					<div class="mb-3">
-						<div class="mb-2" th:text="#{user.create.roles} + ':'"></div>
-                        <div class="form-check" th:each="role : ${availableRoles}">
-                            <input type="hidden" th:field="*{roles}" th:value="${role}" th:if="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
-                            <input class="form-check-input" type="radio" th:field="*{roles}" th:value="${role}" th:disabled="${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}"/>
-                            <label class="form-check-label" th:for="${#ids.prev('roles')}" th:text="#{'msg.' + ${role}}" ></label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-bs-placement="top"
-                            th:title="#{'user.edit.tooltip.' + ${role}}"></span>
-                        </div>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles error</p>
-					</div>
-					<div class="form-check mb-3">
-						<input class="form-check-input" id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
-						<label class="form-check-label" for="child" th:text="#{user.create.child}"></label>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child error</p>
-					</div>
-					<div class="mb-3">
-						<a href="#" th:href="@{'/user/' + ${editUserCommand.userId} + '/resetPwd'}" class="btn btn-warning" role="button" th:text="#{button.password.reset}"></a>
-					</div>
-					<div class="mb-3">
-						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-						<button type="button" sec:authorize="hasAuthority('PERM_DELETE_USER')" class="btn btn-danger"
-								data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"
-                                th:classappend="${!editUserCommand.deletable}? 'disabled'"></button>
-						<a href="#" th:href="@{/user}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
-					</div>
+				<div class="col-12 col-md-8 col-lg-6">
+					<form id="userForm" th:action="@{/user/edit}" th:object="${editUserCommand}" method="post" role="form">
+						<input type="hidden" th:field="*{userId}" />
+						<div class="card mb-3" th:with="roleSelectionDisabled=${@webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.username)}">
+							<div class="card-body">
+								<div th:replace="~{user/user_form :: username(readonly = true)}"></div>
+								<div th:replace="~{user/user_form :: roles(disabled = ${roleSelectionDisabled})}"></div>
+								<div th:replace="~{user/user_form :: child()}"></div>
+							</div>
+							<div class="card-footer d-flex flex-wrap gap-2">
+								<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+								<a th:href="@{/user}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+								<div class="col-12 col-sm-auto d-flex flex-wrap gap-2 ms-sm-auto">
+									<a th:href="@{'/user/' + ${editUserCommand.userId} + '/resetPwd'}" sec:authorize="hasAuthority('PERM_PASSWORD_RESET')"
+									   class="btn btn-outline-warning" role="button" th:text="#{button.password.reset}"></a>
+									<button type="button" sec:authorize="hasAuthority('PERM_DELETE_USER')" class="btn btn-outline-danger"
+											data-bs-toggle="modal" data-bs-target="#confirm-delete" th:text="#{button.delete}"
+											th:disabled="${!editUserCommand.deletable}"></button>
+								</div>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
-		</form>
-	</div>
-</body>
+		</div>
+	</body>
 </html>
