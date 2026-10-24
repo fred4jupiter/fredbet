@@ -1,15 +1,15 @@
 package de.fred4jupiter.fredbet.web.bet;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 
 public class ExtraBetCommand {
 
     private Long extraBetId;
 
-    private Country finalWinner;
-    private Country semiFinalWinner;
-    private Country thirdFinalWinner;
+    private Team finalWinner;
+    private Team semiFinalWinner;
+    private Team thirdFinalWinner;
 
     private Integer pointsOne = 0;
 
@@ -19,21 +19,6 @@ public class ExtraBetCommand {
 
     private Match finalMatch;
 
-    public Country getFinalWinner() {
-        return finalWinner;
-    }
-
-    public void setFinalWinner(Country finalWinner) {
-        this.finalWinner = finalWinner;
-    }
-
-    public Country getSemiFinalWinner() {
-        return semiFinalWinner;
-    }
-
-    public void setSemiFinalWinner(Country semiFinalWinner) {
-        this.semiFinalWinner = semiFinalWinner;
-    }
 
     public Long getExtraBetId() {
         return extraBetId;
@@ -62,14 +47,6 @@ public class ExtraBetCommand {
         this.finalMatch = finalMatch;
     }
 
-    public Country getThirdFinalWinner() {
-        return thirdFinalWinner;
-    }
-
-    public void setThirdFinalWinner(Country thirdFinalWinner) {
-        this.thirdFinalWinner = thirdFinalWinner;
-    }
-
     public void setPointsOne(Integer pointsOne) {
         this.pointsOne = pointsOne;
     }
@@ -92,5 +69,29 @@ public class ExtraBetCommand {
 
     public Integer getPointsThree() {
         return pointsThree;
+    }
+
+    public Team getFinalWinner() {
+        return finalWinner;
+    }
+
+    public void setFinalWinner(Team finalWinner) {
+        this.finalWinner = finalWinner;
+    }
+
+    public Team getSemiFinalWinner() {
+        return semiFinalWinner;
+    }
+
+    public void setSemiFinalWinner(Team semiFinalWinner) {
+        this.semiFinalWinner = semiFinalWinner;
+    }
+
+    public Team getThirdFinalWinner() {
+        return thirdFinalWinner;
+    }
+
+    public void setThirdFinalWinner(Team thirdFinalWinner) {
+        this.thirdFinalWinner = thirdFinalWinner;
     }
 }

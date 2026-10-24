@@ -42,3 +42,43 @@ h3 {
     background: -moz-repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* For Firefox 3.6 to 15 */
     background: repeating-linear-gradient(180deg, #5BC0DE, black 30%); /* Standard syntax (must be last) */
 }
+
+/* team crests in match lists: same box for every crest, whatever its aspect ratio */
+img.crest-small {
+    width: 1.5em;
+    height: 1.5em;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* points of a bet, coloured by how good the bet was (fragments/points_badge.html) */
+.points-badge {
+    min-width: 2.5rem;
+}
+
+.points-correct-result {
+    background-color: var(--bs-success);
+}
+
+.points-same-goal-difference {
+    background-color: var(--bs-teal);
+}
+
+.points-correct-winner {
+    background-color: var(--bs-warning);
+    color: var(--bs-dark);
+}
+
+.points-correct-number-of-goals-one-team {
+    background-color: var(--bs-orange);
+}
+
+.points-none {
+    background-color: var(--bs-secondary);
+}
+
+.points-pending {
+    background-color: transparent;
+    color: var(--bs-secondary-color);
+    border: 1px dashed var(--bs-border-color);
+}

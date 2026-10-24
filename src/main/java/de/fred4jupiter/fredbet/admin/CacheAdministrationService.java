@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Service for clearing all caches.
@@ -35,6 +36,10 @@ public class CacheAdministrationService {
         }
 
         cacheNames.forEach(this::clearCacheByCacheName);
+    }
+
+    public List<String> getCacheNames() {
+        return this.cacheManager.getCacheNames().stream().sorted().toList();
     }
 
     public void clearCacheByCacheName(String cacheName) {

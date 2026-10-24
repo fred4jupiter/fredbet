@@ -2,6 +2,19 @@
     font-size: 15px;
 }
 
-.right {
-    float: right;
+/* keep the line even without group or stadium, so all headers have the same height */
+.group-label:empty::before {
+    content: "\00a0";
+}
+
+/* framed box around the bet, the result and the points of a match */
+.score-group {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.5rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius-pill);
+    background-color: var(--bs-tertiary-bg);
+    white-space: nowrap;
 }

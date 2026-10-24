@@ -2,6 +2,9 @@ $(document).ready(function () {
     imageCroppingUpload();
 
     $('#spinner').hide();
+    $('#saveCroppedImage').on('click', function () {
+        $('#spinner').show();
+    });
 });
 
 function imageCroppingUpload() {
@@ -23,8 +26,6 @@ function imageCroppingUpload() {
             reader.onload = function (e) {
                 $uploadCrop.croppie('bind', {
                     url: e.target.result
-                }).then(function () {
-                    console.log('jQuery bind complete');
                 });
             }
             reader.readAsDataURL(input.files[0]);
@@ -49,8 +50,4 @@ function imageCroppingUpload() {
             $("#croppedFileBase64").attr("value", resp);
         });
     });
-}
-
-function showSpinner() {
-    $('#spinner').show();
 }

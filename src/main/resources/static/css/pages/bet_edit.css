@@ -1,11 +1,3 @@
-.form-group input.form-size-small {
-    width: 45px;
-    text-align: center;
-    display: inline;
+.goal-input-group {
+    max-width: 9rem;
 }
-
-button.vote {
-    width: 45%;
-}
-
-

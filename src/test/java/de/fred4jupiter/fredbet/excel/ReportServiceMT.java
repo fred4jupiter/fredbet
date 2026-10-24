@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.excel;
 
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.common.IntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
@@ -24,11 +26,15 @@ public class ReportServiceMT {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     public void exportResultsToExcel() {
         AppUser appUser = AppUserBuilder.create().withUsernameAndPassword("fred", "feuerstein").withUserGroup(FredBetUserGroup.ROLE_USER).build();
         userService.createUserIfNotExists(appUser);
 
+        teamService.createTeamsOfBundle(TeamBundle.EUROPEAN_CHAMPIONSHIP);
         dataBasePopulator.createDemoData();
 
         byte[] export = reportService.exportBetsToExcel(Locale.GERMAN);

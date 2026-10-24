@@ -1,11 +1,8 @@
-$(document).ready(function () {
+$(function () {
+    $('#enabled').on('change', showHideActive);
     showHideActive();
 });
 
 function showHideActive() {
-    if ($('#enabled').is(":checked")) {
-        $('#fd-setup').show();
-    } else {
-        $('#fd-setup').hide();
-    }
+    $('#fd-setup').toggle($('#enabled').is(':checked'));
 }

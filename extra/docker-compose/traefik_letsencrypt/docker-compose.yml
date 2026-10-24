@@ -42,7 +42,7 @@ services:
       - "-c"
       - "lo_compat_privileges=on"
   databasus:
-    image: databasus/databasus:v3.42.0
+    image: databasus/databasus:v3.60.0
     depends_on:
       - postgres
     ports:

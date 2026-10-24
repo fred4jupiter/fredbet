@@ -3,13 +3,12 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.util.DateUtils;
+import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.util.TeamUtil;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,17 +38,17 @@ public class CreateEditMatchController {
 
     private final BettingService bettingService;
 
-    private final TeamUtil teamUtil;
-
     private final TeamService teamService;
 
+    private final MessageSourceUtil messageSourceUtil;
+
     public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService,
-                                     BettingService bettingService, TeamUtil teamUtil, TeamService teamService) {
+                                     BettingService bettingService, TeamService teamService, MessageSourceUtil messageSourceUtil) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
         this.bettingService = bettingService;
-        this.teamUtil = teamUtil;
         this.teamService = teamService;
+        this.messageSourceUtil = messageSourceUtil;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
@@ -92,12 +91,12 @@ public class CreateEditMatchController {
             return VIEW_EDIT_MATCH;
         }
 
-        save(createEditMatchCommand);
+        final Match savedMatch = save(createEditMatchCommand);
 
         final String msgKey = createEditMatchCommand.getMatchId() == null ? "msg.match.created" : "msg.match.updated";
 
-        String teamNameOne = webMessageUtil.getTeamName(createEditMatchCommand.getCountryTeamOne(), createEditMatchCommand.getTeamNameOne());
-        String teamNameTwo = webMessageUtil.getTeamName(createEditMatchCommand.getCountryTeamTwo(), createEditMatchCommand.getTeamNameTwo());
+        String teamNameOne = savedMatch.getTeamOne().getNameTranslated(messageSourceUtil);
+        String teamNameTwo = savedMatch.getTeamTwo().getNameTranslated(messageSourceUtil);
         webMessageUtil.addInfoMsg(redirect, msgKey, teamNameOne, teamNameTwo);
 
         return "redirect:/matches#" + createEditMatchCommand.getMatchId();
@@ -123,15 +122,13 @@ public class CreateEditMatchController {
 
     private void addCountriesAndGroups(Model model) {
         model.addAttribute("availableGroups", Group.getAllGroups());
-        model.addAttribute("availableTeams", teamUtil.getAvailableTeams());
+        model.addAttribute("availableTeams", teamService.findAllSelectableTeams());
     }
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
         CreateEditMatchCommand command = new CreateEditMatchCommand();
-        command.setCountryTeamOne(match.getTeamOne().getCountry());
-        command.setCountryTeamTwo(match.getTeamTwo().getCountry());
-        command.setTeamNameOne(match.getTeamOne().getName());
-        command.setTeamNameTwo(match.getTeamTwo().getName());
+        command.setTeamOne(match.getTeamOne());
+        command.setTeamTwo(match.getTeamTwo());
         command.setGroup(match.getGroup());
         command.setKickOffDate(match.getKickOffDate());
         command.setMatchId(match.getId());
@@ -139,14 +136,14 @@ public class CreateEditMatchController {
         return command;
     }
 
-    private Long save(CreateEditMatchCommand createEditMatchCommand) {
+    private Match save(CreateEditMatchCommand createEditMatchCommand) {
         Match match = loadOrCreateMatch(createEditMatchCommand.getMatchId());
 
         toMatch(createEditMatchCommand, match);
 
         Match savedMatch = matchService.save(match);
         createEditMatchCommand.setMatchId(savedMatch.getId());
-        return savedMatch.getId();
+        return savedMatch;
     }
 
     private Match loadOrCreateMatch(Long matchId) {
@@ -159,12 +156,8 @@ public class CreateEditMatchController {
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
-        final Team teamOne = teamService.findOrCreateTeam(matchCommand.getCountryTeamOne(), matchCommand.getTeamNameOne());
-        final Team teamTwo = teamService.findOrCreateTeam(matchCommand.getCountryTeamTwo(), matchCommand.getTeamNameTwo());
-
-        match.setTeamOne(teamOne);
-        match.setTeamTwo(teamTwo);
-
+        match.setTeamOne(matchCommand.getTeamOne());
+        match.setTeamTwo(matchCommand.getTeamTwo());
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());
         match.setStadium(matchCommand.getStadium());

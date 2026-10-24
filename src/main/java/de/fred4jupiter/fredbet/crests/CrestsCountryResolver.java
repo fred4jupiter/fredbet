@@ -1,8 +1,10 @@
 package de.fred4jupiter.fredbet.crests;
 
 import de.fred4jupiter.fredbet.country.CountryResolver;
+import de.fred4jupiter.fredbet.domain.ClubTeam;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,25 +37,27 @@ public class CrestsCountryResolver {
         this.countryAlpha2Codes = countryAlpha2Codes;
     }
 
-    public SvgImage loadCrestsImageFor(Country country) {
-        return loadCrestsImageFor(country, true).orElseThrow(() -> new IllegalStateException("Could not load crests image for country=" + country));
+    public SvgImage loadCrestsImageFor(TeamBundleEntry teamBundleEntry) {
+        return loadCrestsImageFor(teamBundleEntry, true)
+            .orElseThrow(() -> new IllegalStateException("Could not load crests image for teamBundleEntry=" + teamBundleEntry));
     }
 
-    public Optional<SvgImage> loadCrestsImageFor(Country country, boolean fallbackToPlaceholderIcon) {
-        if (country == null) {
-            return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(country) : Optional.empty();
+    public Optional<SvgImage> loadCrestsImageFor(TeamBundleEntry teamBundleEntry, boolean fallbackToPlaceholderIcon) {
+        Optional<SvgImage> imageOpt = switch (teamBundleEntry) {
+            case null -> Optional.empty();
+            case Country country -> loadCountryFlag(country);
+            case ClubTeam clubTeam -> loadClubTeamCrest(clubTeam);
+            default -> throw new IllegalArgumentException("Unsupported team bundle entry: " + teamBundleEntry);
+        };
+
+        if (imageOpt.isPresent()) {
+            return imageOpt;
         }
 
-        if (StringUtils.isNotBlank(country.getCssIconClass())) {
-            Optional<SvgImage> flagOpt = loadClubWmIcon(country);
-            if (flagOpt.isPresent()) {
-                return flagOpt;
-            } else {
-                LOG.warn("Could not load crests image for CLUB WM country={}", country);
-                return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(country) : Optional.empty();
-            }
-        }
+        return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(teamBundleEntry) : Optional.empty();
+    }
 
+    private Optional<SvgImage> loadCountryFlag(Country country) {
         if (StringUtils.isNotBlank(country.getFlagIconCode())) {
             Optional<SvgImage> imageOpt = loadByCode(country.getFlagIconCode());
             if (imageOpt.isPresent()) {
@@ -61,51 +65,20 @@ public class CrestsCountryResolver {
             }
         }
 
-        Optional<String> alpha2CodeOpt = resolveToAlpha2Code(country);
-        if (alpha2CodeOpt.isPresent()) {
-            Optional<SvgImage> imageOpt = loadByCode(alpha2CodeOpt.get());
-            if (imageOpt.isPresent()) {
-                return imageOpt;
-            }
-        }
-
-        return fallbackToPlaceholderIcon ? useFallbackPlaceholderIcon(country) : Optional.empty();
+        return resolveToAlpha2Code(country).flatMap(this::loadByCode);
     }
 
-    private Optional<SvgImage> useFallbackPlaceholderIcon(Country country) {
-        if (country != null) {
-            LOG.warn("Could not load crests image for country={}. Using fallback crests icon...", country);
+    private Optional<SvgImage> loadClubTeamCrest(ClubTeam clubTeam) {
+        String fileName = "%s.svg".formatted(clubTeam.getCrestFileName());
+        return Optional.ofNullable(loadResourceByFilename(fileName, CLUB_WM_FLAGS_CLASSPATH_LOCATION));
+    }
+
+    private Optional<SvgImage> useFallbackPlaceholderIcon(TeamBundleEntry teamBundleEntry) {
+        if (teamBundleEntry != null) {
+            LOG.warn("Could not load crests image for teamBundleEntry={}. Using fallback crests icon...", teamBundleEntry);
         }
 
         return Optional.of(crestPlaceholderLoader.getCrestPlaceholderIcon());
-    }
-
-    private Optional<SvgImage> loadClubWmIcon(Country country) {
-        Optional<SvgImage> imageOpt = loadClubWmIconByCssIconClass(country.getCssIconClass());
-        if (imageOpt.isPresent()) {
-            return imageOpt;
-        }
-
-        String filename = mapClubWmCountryToFilename(country);
-        return Optional.ofNullable(loadResourceByFilename(filename, CLUB_WM_FLAGS_CLASSPATH_LOCATION));
-    }
-
-    private String mapClubWmCountryToFilename(Country country) {
-        if (country == null) {
-            return null;
-        }
-
-        return switch (country) {
-            case INTER_MIAMI -> "inter-miami-cf.svg";
-            case MANCHESTER_CITY -> "manchester-city.svg";
-            default -> null;
-        };
-    }
-
-    private Optional<SvgImage> loadClubWmIconByCssIconClass(String cssIconClass) {
-        String filenameWithoutExtension = StringUtils.substringAfter(cssIconClass, "kwm kwm-");
-        String fileName = "%s.svg".formatted(filenameWithoutExtension).toLowerCase();
-        return Optional.ofNullable(loadResourceByFilename(fileName, CLUB_WM_FLAGS_CLASSPATH_LOCATION));
     }
 
     private Optional<SvgImage> loadByCode(String code) {
@@ -132,10 +105,6 @@ public class CrestsCountryResolver {
     }
 
     private Optional<String> resolveToAlpha2Code(Country country) {
-        if (StringUtils.isBlank(country.getAlpha3Code())) {
-            return Optional.empty();
-        }
-
         return Optional.ofNullable(countryAlpha2Codes.countryToAlpha2Code(country));
     }
 }

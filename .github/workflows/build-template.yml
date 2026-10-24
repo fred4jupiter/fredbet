@@ -13,6 +13,11 @@ on:
         required: false
         type: string
         default: '25'
+      static_code_analysis:
+        description: "Run the static code analysis (PMD). Issues are reported, but never break the build."
+        required: false
+        type: boolean
+        default: false
     outputs:
       jar_file_id:
         description: "The id of the uploaded fredbet.jar file"
@@ -54,6 +59,23 @@ jobs:
           path: target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
+      - name: Static code analysis (PMD)
+        if: ${{ inputs.static_code_analysis }}
+        continue-on-error: true
+        run: mvn -B pmd:pmd
+      - name: Publish static code analysis results
+        if: ${{ inputs.static_code_analysis }}
+        continue-on-error: true
+        run: python3 .github/scripts/pmd-report.py target/pmd.xml
+      - name: Upload static code analysis report
+        if: ${{ inputs.static_code_analysis }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: pmd-report
+          path: target/pmd.xml
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Upload jar file
         if: ${{ inputs.upload_artifact }}
         id: fredbet-jar-artifact

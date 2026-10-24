@@ -101,12 +101,7 @@
             <artifactId>spring-boot-h2console</artifactId>
         </dependency>
 
-        <!-- JDBC drivers -->
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+        <!-- JDBC drivers (support for H2 and PostgreSQL) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -117,11 +112,7 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
@@ -345,6 +336,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <!-- static code analysis, not bound to the lifecycle; run with: mvn pmd:pmd (report: target/pmd.xml) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.28.0</version>
+                <configuration>
+                    <targetJdk>${java.version}</targetJdk>
+                    <format>xml</format>
+                    <linkXRef>false</linkXRef>
+                    <includeTests>false</includeTests>
+                    <failOnViolation>false</failOnViolation>
+                </configuration>
             </plugin>
         </plugins>
     </build>

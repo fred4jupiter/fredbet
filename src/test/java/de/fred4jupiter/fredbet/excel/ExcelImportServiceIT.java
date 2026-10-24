@@ -27,15 +27,15 @@ public class ExcelImportServiceIT {
         assertEquals(3, matches.size());
 
         Match match1 = matches.get(0);
-        assertEquals(Country.GERMANY, match1.getTeamOne().getCountry());
-        assertEquals(Country.BELGIUM, match1.getTeamTwo().getCountry());
+        assertEquals(Country.GERMANY, match1.getTeamOne().getTeamBundleEntry());
+        assertEquals(Country.BELGIUM, match1.getTeamTwo().getTeamBundleEntry());
         assertEquals(Group.GROUP_B, match1.getGroup());
         assertEquals(LocalDateTime.of(2017, 6, 1, 18, 0), match1.getKickOffDate());
         assertEquals("Dortmund", match1.getStadium());
 
         Match match2 = matches.get(1);
-        assertEquals(Country.ANDORRA, match2.getTeamOne().getCountry());
-        assertEquals(Country.ISRAEL, match2.getTeamTwo().getCountry());
+        assertEquals(Country.ANDORRA, match2.getTeamOne().getTeamBundleEntry());
+        assertEquals(Country.ISRAEL, match2.getTeamTwo().getTeamBundleEntry());
         assertEquals(Group.GROUP_E, match2.getGroup());
         assertEquals(LocalDateTime.of(2018, 2, 5, 20, 0), match2.getKickOffDate());
         assertEquals("München", match2.getStadium());

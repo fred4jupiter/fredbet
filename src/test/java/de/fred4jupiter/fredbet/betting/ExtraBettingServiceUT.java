@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamTriple;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.props.IntegrationProperties;
@@ -47,10 +48,10 @@ public class ExtraBettingServiceUT {
     public void saveExtraBetStoresThirdPlaceWinnerOnlyWhenMatchExists() {
         when(matchService.isGameForThirdAvailable()).thenReturn(true);
 
-        createService().saveExtraBet(Country.GERMANY, Country.FRANCE, Country.SPAIN, "user");
+        createService().saveExtraBet(new Team(Country.GERMANY), new Team(Country.FRANCE), new Team(Country.SPAIN), "user");
 
         verify(extraBetRepository).save(org.mockito.ArgumentMatchers.argThat(extraBet ->
-            Country.SPAIN.equals(extraBet.getThirdFinalWinner()) && "user".equals(extraBet.getUserName())));
+            Country.SPAIN.equals(extraBet.getThirdFinalWinnerTeamBundleEntry()) && "user".equals(extraBet.getUserName())));
     }
 
     @Test
@@ -83,14 +84,14 @@ public class ExtraBettingServiceUT {
 
     @Test
     public void createExtraBetForUserUsesRandomTripleWhenAvailable() {
-        when(randomValueGenerator.generateTeamTriple()).thenReturn(new TeamTriple(Country.GERMANY, Country.FRANCE, Country.SPAIN));
+        when(randomValueGenerator.generateTeamTriple()).thenReturn(new TeamTriple(new Team(Country.GERMANY), new Team(Country.FRANCE), new Team(Country.SPAIN)));
         when(matchService.isGameForThirdAvailable()).thenReturn(true);
 
         createService().createExtraBetForUser("user");
 
         verify(extraBetRepository).save(org.mockito.ArgumentMatchers.argThat(extraBet ->
-            Country.GERMANY.equals(extraBet.getFinalWinner()) && Country.FRANCE.equals(extraBet.getSemiFinalWinner())
-                && Country.SPAIN.equals(extraBet.getThirdFinalWinner())));
+            Country.GERMANY.equals(extraBet.getFinalWinnerTeamBundleEntry()) && Country.FRANCE.equals(extraBet.getSemiFinalWinnerTeamBundleEntry())
+                && Country.SPAIN.equals(extraBet.getThirdFinalWinnerTeamBundleEntry())));
     }
 
     private ExtraBettingService createService() {

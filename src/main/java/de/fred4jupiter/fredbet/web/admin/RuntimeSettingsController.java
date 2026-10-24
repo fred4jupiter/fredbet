@@ -1,26 +1,18 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.domain.NavbarLayout;
-import de.fred4jupiter.fredbet.domain.BootswatchTheme;
-import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
-import de.fred4jupiter.fredbet.integration.FootballDataService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.settings.RuntimeSettings;
 import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.util.TeamUtil;
-import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @RequestMapping("/runtimesettings")
@@ -31,18 +23,11 @@ public class RuntimeSettingsController {
 
     private final RuntimeSettingsService runtimeSettingsService;
 
-    private final FootballDataService footballDataService;
-
     private final WebMessageUtil webMessageUtil;
 
-    private final TeamUtil teamUtil;
-
-    public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, FootballDataService footballDataService, WebMessageUtil webMessageUtil,
-                                     TeamUtil teamUtil) {
+    public RuntimeSettingsController(RuntimeSettingsService runtimeSettingsService, WebMessageUtil webMessageUtil) {
         this.runtimeSettingsService = runtimeSettingsService;
-        this.footballDataService = footballDataService;
         this.webMessageUtil = webMessageUtil;
-        this.teamUtil = teamUtil;
     }
 
     @GetMapping("/show")
@@ -50,8 +35,6 @@ public class RuntimeSettingsController {
         final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
         runtimeSettingsCommand.setRuntimeSettings(runtimeSettings);
         model.addAttribute("runtimeSettingsCommand", runtimeSettingsCommand);
-        model.addAttribute("availableTeamBundles", TeamBundle.values());
-        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(runtimeSettings.getTeamBundle()));
         return PAGE_RUNTIME_CONFIG;
     }
 
@@ -61,24 +44,10 @@ public class RuntimeSettingsController {
             return PAGE_RUNTIME_CONFIG;
         }
 
-        final RuntimeSettings runtimeSettings = command.getRuntimeSettings();
-        if (!TeamBundle.FOOTBALL_DATA_USAGE.equals(runtimeSettings.getTeamBundle())) {
-            final FootballDataRuntimeSettings footballDataRuntimeSettings = footballDataService.loadSettings();
-            footballDataRuntimeSettings.setEnabled(false);
-            footballDataService.saveSettings(footballDataRuntimeSettings);
-        }
-
-        runtimeSettingsService.saveRuntimeSettings(runtimeSettings);
+        runtimeSettingsService.saveRuntimeSettings(command.getRuntimeSettings());
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.runtimeConfigSaved");
 
         return "redirect:/runtimesettings/show";
-    }
-
-    @HxRequest
-    @GetMapping("/team-bundle")
-    public String favouriteCountryOptions(@RequestParam(name = "runtimeSettings.teamBundle") TeamBundle teamBundle, Model model) {
-        model.addAttribute("availableTeams", teamUtil.getAvailableTeams(teamBundle));
-        return PAGE_RUNTIME_CONFIG + " :: favouriteCountryOptions";
     }
 }

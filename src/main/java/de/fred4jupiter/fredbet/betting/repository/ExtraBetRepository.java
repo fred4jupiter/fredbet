@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 
 public interface ExtraBetRepository extends JpaRepository<ExtraBet, Long>{
 
 	ExtraBet findByUserName(String userName);
+
+	long countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(Team finalWinner, Team semiFinalWinner, Team thirdFinalWinner);
 
 	@Modifying
 	@Query("update ExtraBet b set b.userName = :newUsername where b.userName = :oldUsername")

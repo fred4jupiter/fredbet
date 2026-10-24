@@ -1,9 +1,8 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
-import de.fred4jupiter.fredbet.imexport.MatchBusinessKey;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "MATCHES")
-public class Match extends BaseEntity implements MatchBusinessKey {
+public class Match extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -163,33 +162,33 @@ public class Match extends BaseEntity implements MatchBusinessKey {
         return this.getGoalsTeamOne() < this.getGoalsTeamTwo();
     }
 
-    public Country getWinner() {
+    public TeamBundleEntry getWinner() {
         if (!hasResultSet()) {
             return null;
         }
 
         if (isTeamOneWinner()) {
-            return teamOne.getCountry();
+            return teamOne.getTeamBundleEntry();
         }
 
         if (isTeamTwoWinner()) {
-            return teamTwo.getCountry();
+            return teamTwo.getTeamBundleEntry();
         }
 
         return null;
     }
 
-    public Country getLooser() {
+    public TeamBundleEntry getLooser() {
         if (!hasResultSet()) {
             return null;
         }
 
         if (isTeamOneWinner()) {
-            return teamTwo.getCountry();
+            return teamTwo.getTeamBundleEntry();
         }
 
         if (isTeamTwoWinner()) {
-            return teamOne.getCountry();
+            return teamOne.getTeamBundleEntry();
         }
 
         return null;
@@ -347,12 +346,6 @@ public class Match extends BaseEntity implements MatchBusinessKey {
     public String getLabel(MessageSourceUtil messageSourceUtil, Locale locale) {
         return getTeamOne().getNameTranslated(messageSourceUtil, locale) + " - "
             + getTeamTwo().getNameTranslated(messageSourceUtil, locale);
-    }
-
-    @Override
-    public String getBusinessKey() {
-        return StringUtils.joinWith("_", this.teamOne.getBusinessKey(),
-            this.teamTwo.getBusinessKey(), this.group, dateTimeFormatter.format(this.kickOffDate));
     }
 
     public String getKickOffDateFormated() {

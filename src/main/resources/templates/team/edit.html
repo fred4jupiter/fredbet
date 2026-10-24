@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <title th:text="${teamCommand.isNew()} ? #{team.form.title.create} : #{team.form.title.edit}"></title>
+    <link rel="stylesheet" th:href="@{/css/pages/team.css}" />
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 th:text="${teamCommand.isNew()} ? #{team.form.title.create} : #{team.form.title.edit}"></h1>
+
+    <form id="teamForm" th:action="@{/teams}" th:object="${teamCommand}" method="post" enctype="multipart/form-data" role="form">
+        <input type="hidden" th:field="*{teamId}" />
+        <input type="hidden" th:field="*{version}" />
+
+        <div class="row g-3">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label d-block" th:text="#{team.form.type} + ':'"></label>
+                    <div class="btn-group w-100" role="group" th:aria-label="#{team.form.type}">
+                        <input type="radio" class="btn-check" id="useTeamBundleEntryTrue" th:field="*{useTeamBundleEntry}" value="true" autocomplete="off" />
+                        <label class="btn btn-outline-primary" for="useTeamBundleEntryTrue">
+                            <i class="fas fa-trophy"></i> <span th:text="#{team.type.teamBundleEntry}"></span>
+                        </label>
+                        <input type="radio" class="btn-check" id="useTeamBundleEntryFalse" th:field="*{useTeamBundleEntry}" value="false" autocomplete="off" />
+                        <label class="btn btn-outline-primary" for="useTeamBundleEntryFalse">
+                            <i class="fas fa-shield-alt"></i> <span th:text="#{team.type.name}"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="teamBundleEntryGroup" class="mb-3" th:classappend="*{useTeamBundleEntry} ? '' : 'd-none'">
+                    <label class="form-label" for="teamBundleEntry" th:text="#{team.form.teamBundleEntry} + ':'"></label>
+                    <select id="teamBundleEntry" th:field="*{teamBundleEntry}" class="form-select" th:classappend="${#fields.hasErrors('teamBundleEntry')} ? 'is-invalid'">
+                        <option value="" th:text="#{country.none}"></option>
+                        <option th:each="e : ${availableTeamBundleEntries}" th:value="${e.qualifiedName}" th:text="${@messageSourceUtil.getTeamBundleEntryName(e, #locale)}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('teamBundleEntry')}" th:errors="*{teamBundleEntry}">teamBundleEntry error</div>
+                </div>
+
+                <div id="nameGroup" class="mb-3" th:classappend="*{useTeamBundleEntry} ? 'd-none' : ''">
+                    <label class="form-label" for="name" th:text="#{team.form.name} + ':'"></label>
+                    <input id="name" type="text" th:field="*{name}" class="form-control" maxlength="100"
+                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" />
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input id="favourite" type="checkbox" role="switch" th:field="*{favourite}" class="form-check-input" aria-describedby="favouriteHelp" />
+                        <label class="form-check-label" for="favourite">
+                            <i class="fas fa-star text-warning"></i> <span th:text="#{team.form.favourite}"></span>
+                        </label>
+                    </div>
+                    <div id="favouriteHelp" class="form-text" th:text="#{team.form.favourite.hint}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="crestFile" th:text="#{team.form.crest} + ':'"></label>
+                    <div class="d-flex align-items-center gap-3">
+                        <img id="crestPreview" class="team-crest team-crest-lg flex-shrink-0" alt=""
+                             th:src="*{teamId} != null ? @{${'/team/' + teamCommand.teamId + '.svg'}(v=*{version})} : @{/crests/crests-placeholder.svg}" />
+                        <input id="crestFile" name="crestFile" type="file" accept=".svg,image/svg+xml" class="form-control"
+                               th:classappend="${#fields.hasErrors('crestFile')} ? 'is-invalid'" aria-describedby="crestHelp" />
+                    </div>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('crestFile')}" th:errors="*{crestFile}">crest error</div>
+                    <div id="crestHelp" class="form-text" th:text="#{team.form.crest.hint}"></div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    <button th:unless="*{isNew()}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteTeam"
+                            th:text="#{button.delete}"></button>
+                    <a th:href="@{/teams}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div th:unless="${teamCommand.isNew()}" class="modal fade" id="confirmDeleteTeam" tabindex="-1" aria-labelledby="confirmDeleteTeamLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="confirmDeleteTeamLabel" th:text="#{confirmation.msg}"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{button.cancel}"></button>
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{'/teams/delete/' + ${teamCommand.teamId}}" method="post">
+                        <button type="submit" class="btn btn-danger" th:text="#{button.delete}"></button>
+                    </form>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:src="@{/js/pages/team.js}" charset="UTF-8"></script>
+</th:block>
+</body>
+</html>

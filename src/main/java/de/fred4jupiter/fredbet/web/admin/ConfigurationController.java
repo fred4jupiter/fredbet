@@ -45,16 +45,16 @@ public class ConfigurationController {
     public String showCachePage(ConfigurationCommand configurationCommand, Model model) {
         configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
         model.addAttribute("configurationCommand", configurationCommand);
+        model.addAttribute("cacheNames", cacheAdministrationService.getCacheNames());
         return PAGE_CONFIGURATION;
     }
 
-    @GetMapping("/clearCache")
-    public String clearCache(ConfigurationCommand configurationCommand, Model model) {
+    @PostMapping("/clearCache")
+    public String clearCache(RedirectAttributes redirect) {
         this.cacheAdministrationService.clearCaches();
 
-        configurationCommand.setLevel(logLevelChangable.getCurrentLogLevel());
-        webMessageUtil.addInfoMsg(model, "administration.msg.info.cacheCleared");
-        return PAGE_CONFIGURATION;
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.cacheCleared");
+        return "redirect:/config/show";
     }
 
     @PostMapping("/changeLogLevel")

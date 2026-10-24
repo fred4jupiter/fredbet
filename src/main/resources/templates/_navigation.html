@@ -26,10 +26,13 @@
                             <ul class="dropdown-menu" aria-labelledby="betting">
                                 <li><a class="dropdown-item" th:href="@{/bet/open}" th:text="#{navigation.betting.open}"></a>
                                 </li>
-                                <li th:if="${@footballDataWebUtil.isCupCompetitionEnabled()}">
+                                <li>
                                     <a class="dropdown-item" th:href="@{/extrabets}" th:text="#{navigation.betting.extraBets}"></a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="nav-item" sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
+                            <a class="nav-link" th:href="@{/teams}" th:text="#{team.list.title}"></a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="matches" role="button" data-bs-toggle="dropdown"
@@ -139,9 +142,6 @@
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
-                                </li>
-                                <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
-                                    <a class="dropdown-item" th:href="@{/importexport}" th:text="#{importexport.title}"></a>
                                 </li>
                                 <li sec:authorize="hasAuthority('PERM_ADMINISTRATION')">
                                     <a class="dropdown-item" th:href="@{/excelimport/show}" th:text="#{navigation.excelimport}"></a>

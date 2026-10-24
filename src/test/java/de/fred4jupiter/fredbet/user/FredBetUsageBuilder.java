@@ -4,7 +4,7 @@ import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.data.GoalResult;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
-import de.fred4jupiter.fredbet.data.TeamPair;
+import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -13,7 +13,6 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -62,9 +61,8 @@ public class FredBetUsageBuilder {
         return this;
     }
 
-    public FredBetUsageBuilder withMatch(TeamBundle teamBundle) {
-        TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
-        this.match = MatchBuilder.create(teamService).withTeams(teamPair.teamOne(), teamPair.teamTwo()).withGroup(Group.GROUP_A)
+    public FredBetUsageBuilder withMatch() {
+        this.match = MatchBuilder.create(teamService).withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_A)
             .withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
         return this;
     }
@@ -88,7 +86,7 @@ public class FredBetUsageBuilder {
         }
 
         if (this.match == null) {
-            withMatch(TeamBundle.WORLD_CUP);
+            withMatch();
         }
 
         if (this.bet == null) {

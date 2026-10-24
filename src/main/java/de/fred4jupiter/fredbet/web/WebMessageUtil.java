@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -71,8 +71,8 @@ public class WebMessageUtil {
         return messageSourceUtil.getTeamNameTwo(match, LocaleContextHolder.getLocale());
     }
 
-    public String getTeamName(Country country, String teamName) {
-        return messageSourceUtil.getTeamName(country, teamName, LocaleContextHolder.getLocale());
+    public String getTeamName(TeamBundleEntry teamBundleEntry, String teamName) {
+        return messageSourceUtil.getTeamName(teamBundleEntry, teamName, LocaleContextHolder.getLocale());
     }
 
     public static final class WebMessage {

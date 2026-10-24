@@ -1,0 +1,10 @@
+.team-crest {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.team-crest-lg {
+    width: 64px;
+    height: 64px;
+}

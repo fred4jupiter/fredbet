@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.statistic;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 
 public class Statistic {
 
@@ -18,7 +18,7 @@ public class Statistic {
 
 	private Integer pointsGameForThird = 0;
 
-	private Integer pointsFavoriteCountry = 0;
+	private Integer pointsFavouriteTeam = 0;
 
 	private Integer pointsForExtraBets = 0;
 
@@ -26,11 +26,11 @@ public class Statistic {
 
 	private boolean maxPointsCandidate;
 
-	private boolean maxFavoriteCountryCandidate;
+	private boolean maxFavouriteTeamCandidate;
 
 	private boolean maxGroupPointsCandidate;
 
-	private Country favoriteCountry;
+	private Team favouriteTeam;
 
 	private final String username;
 
@@ -121,20 +121,20 @@ public class Statistic {
 		return result;
 	}
 
-	public Integer getPointsFavoriteCountry() {
-		return pointsFavoriteCountry;
+	public Integer getPointsFavouriteTeam() {
+		return pointsFavouriteTeam;
 	}
 
-	public void setPointsFavoriteCountry(Integer pointsFavoriteCountry) {
-		this.pointsFavoriteCountry = getValueOrDefault(pointsFavoriteCountry);
+	public void setPointsFavouriteTeam(Integer pointsFavouriteTeam) {
+		this.pointsFavouriteTeam = getValueOrDefault(pointsFavouriteTeam);
 	}
 
-	public Country getFavoriteCountry() {
-		return favoriteCountry;
+	public Team getFavouriteTeam() {
+		return favouriteTeam;
 	}
 
-	public void setFavoriteCountry(Country favoriteCountry) {
-		this.favoriteCountry = favoriteCountry;
+	public void setFavouriteTeam(Team favouriteTeam) {
+		this.favouriteTeam = favouriteTeam;
 	}
 
 	public boolean isMaxGroupPointsCandidate() {
@@ -145,12 +145,12 @@ public class Statistic {
 		this.maxGroupPointsCandidate = maxGroupPointsCandidate;
 	}
 
-	public boolean isMaxFavoriteCountryCandidate() {
-		return maxFavoriteCountryCandidate;
+	public boolean isMaxFavouriteTeamCandidate() {
+		return maxFavouriteTeamCandidate;
 	}
 
-	public void setMaxFavoriteCountryCandidate(boolean maxFavoriteCountryCandidate) {
-		this.maxFavoriteCountryCandidate = maxFavoriteCountryCandidate;
+	public void setMaxFavouriteTeamCandidate(boolean maxFavouriteTeamCandidate) {
+		this.maxFavouriteTeamCandidate = maxFavouriteTeamCandidate;
 	}
 
 	public boolean isMinPointsCandidate() {

@@ -178,7 +178,7 @@ public class InfoController {
     public String showStatistics(Model model) {
         final List<Statistic> statisticList = statisticService.createStatistic();
 
-        model.addAttribute("favouriteCountry", statisticService.getFavouriteCountry());
+        model.addAttribute("favouriteTeam", statisticService.getFavouriteTeam());
         if (statisticList.isEmpty()) {
             webMessageUtil.addInfoMsg(model, "msg.warn.no.statistics");
             return PAGE_INFO_STATISTIC;

@@ -1,16 +1,16 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import de.fred4jupiter.fredbet.web.util.TeamUtil;
-import de.fred4jupiter.fredbet.web.util.TeamView;
-import org.springframework.context.i18n.LocaleContextHolder;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,26 +30,26 @@ public class ExtraBetController {
 
     private final WebMessageUtil messageUtil;
 
-    private final TeamUtil teamUtil;
-
     private final MatchService matchService;
 
     private final ExtraBettingService extraBettingService;
 
+    private final TeamService teamService;
+
     public ExtraBetController(ExtraBetCommandMapper extraBetCommandMapper, SecurityService securityService,
-                              WebMessageUtil messageUtil, TeamUtil teamUtil, MatchService matchService,
-                              ExtraBettingService extraBettingService) {
+                              WebMessageUtil messageUtil, MatchService matchService,
+                              ExtraBettingService extraBettingService, TeamService teamService) {
         this.extraBetCommandMapper = extraBetCommandMapper;
         this.securityService = securityService;
         this.messageUtil = messageUtil;
-        this.teamUtil = teamUtil;
         this.matchService = matchService;
         this.extraBettingService = extraBettingService;
+        this.teamService = teamService;
     }
 
     @ModelAttribute("availableTeams")
-    public List<TeamView> availableTeams() {
-        return teamUtil.getAvailableTeamsBasedOnMatches();
+    public List<Team> availableTeams() {
+        return teamService.findAllSelectableTeamsOfMatches();
     }
 
     @ModelAttribute("gameForThirdAvailable")
@@ -66,7 +66,11 @@ public class ExtraBetController {
     }
 
     @PostMapping
-    public String saveExtraBets(ExtraBetCommand extraBetCommand, RedirectAttributes redirect) {
+    public String saveExtraBets(@Valid ExtraBetCommand extraBetCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+        if (bindingResult.hasErrors()) {
+            return "bet/extra_bets";
+        }
+
         extraBettingService.saveExtraBet(extraBetCommand.getFinalWinner(), extraBetCommand.getSemiFinalWinner(),
             extraBetCommand.getThirdFinalWinner(), securityService.getCurrentUserName());
 

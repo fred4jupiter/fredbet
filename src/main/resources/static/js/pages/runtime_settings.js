@@ -1,13 +1,5 @@
-$(document).ready(function() {
-	triggerCheckboxSelfRegistration();
+$(function () {
+	$('#selfRegistrationEnabled').on('change', function () {
+		$('#registrationCodeBox').toggleClass('d-none', !this.checked);
+	});
 });
-
-function triggerCheckboxSelfRegistration() {
-	if($('#selfRegistrationEnabled').prop("checked")) {
-		$('#registrationCodeBox').show();
-	} else {
-		$('#registrationCodeBox').hide();
-	}
-}
-
-

@@ -8,9 +8,9 @@
 		      'resizeDuration': 0
 		    })
 		</script>
-		<div th:fragment="profile_image_small_with_popup(username)" th:remove="tag">
-            <a th:with="imageKey=${@webSecurityUtil.getUserProfileImageKeyFor(username)}" th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="img-link">
-                <img th:if="${imageKey}" th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="30" alt="user profile thumb" class="rounded float-start"/>
+		<div th:fragment="profile_image_small_with_popup(username)" th:remove="tag" th:with="imageKey=${@webSecurityUtil.getUserProfileImageKeyFor(username)}">
+            <a th:if="${imageKey}" th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="img-link flex-shrink-0">
+                <img th:src="@{'/gallery/showthumb/' + ${imageKey}}" width="30" height="30" alt="user profile thumb" class="rounded align-middle object-fit-cover"/>
             </a>
 		</div>
 	</body>

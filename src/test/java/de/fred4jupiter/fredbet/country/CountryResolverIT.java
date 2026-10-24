@@ -23,9 +23,7 @@ public class CountryResolverIT {
 
     @Test
     void resolveCountries() {
-        List<Country> countries = Stream.of(Country.values())
-            .filter(country -> country.getCssIconClass() != null && !country.getCssIconClass().startsWith("kwm"))
-            .toList();
+        List<Country> countries = Stream.of(Country.values()).toList();
 
         countries.forEach(country -> assertThat(countryResolver.countryToAlpha2Code(country)).isNotBlank());
     }

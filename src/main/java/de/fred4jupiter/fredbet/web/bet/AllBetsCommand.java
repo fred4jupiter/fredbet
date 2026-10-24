@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.bet;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.util.Validator;
+import de.fred4jupiter.fredbet.web.matches.PointsBadge;
 
 import java.util.List;
 
@@ -45,6 +46,10 @@ public class AllBetsCommand {
 
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    public PointsBadge getPointsBadge(Bet bet) {
+        return PointsBadge.of(this.match, bet);
     }
 
     public GroupAvg getAvgGroupBet() {

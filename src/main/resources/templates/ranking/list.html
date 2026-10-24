@@ -32,7 +32,7 @@
 			<div class="row mt-3">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="ranking,status : ${rankings}">
 					<div class="card mb-3">
-                        <div class="card-header rankingDetails">
+                        <div class="card-header rankingDetails" style="display: none">
                             <span th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></span>
                         </div>
 						<div class="card-body" th:classappend="${ranking.sameRankingPositionAsOtherUser} ? 'ranking-same-position'">
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-5 mt-1">
                                     <span th:text="${ranking.userName}"></span>
-                                    <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                    <span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip" data-bs-placement="top"
                                           th:title="#{ranking.topTipperOfToday.tooltip}"></span>
                                 </div>
                                 <div class="col-2 ps-0 pe-0">
@@ -58,7 +58,7 @@
 			</div>
             <div class="row" th:if="${not #lists.isEmpty(rankings)}">
                 <div class="col-auto mb-3">
-                    <button type="button" class="btn btn-info" onclick="showHideDetails()"><span th:text="#{ranking.show.details.button}"></span></button>
+                    <button type="button" class="btn btn-info" id="showHideDetails"><span th:text="#{ranking.show.details.button}"></span></button>
                 </div>
                 <div class="col-auto mb-3">
                     <a class="btn btn-primary" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}">

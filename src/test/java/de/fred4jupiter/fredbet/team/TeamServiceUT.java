@@ -1,20 +1,30 @@
 package de.fred4jupiter.fredbet.team;
 
 import de.fred4jupiter.fredbet.common.UnitTest;
+import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.crests.CrestPlaceholderLoader;
 import de.fred4jupiter.fredbet.crests.CrestsCountryResolver;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.integration.CrestsDownloader;
+import de.fred4jupiter.fredbet.match.MatchRepository;
 import de.fred4jupiter.fredbet.match.TeamRepository;
+import de.fred4jupiter.fredbet.teambundle.TeamBundle;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -35,6 +45,15 @@ public class TeamServiceUT {
     @Mock
     private CrestPlaceholderLoader crestPlaceholderLoader;
 
+    @Mock
+    private MatchRepository matchRepository;
+
+    @Mock
+    private ExtraBetRepository extraBetRepository;
+
+    @Mock
+    private TeamBundleProvider teamBundleProvider;
+
     @InjectMocks
     private TeamService teamService;
 
@@ -49,8 +68,7 @@ public class TeamServiceUT {
 
     @Test
     public void loadCrestImage_whenCountryIsSet_usesCountryResolver() {
-        Team team = new Team();
-        team.setCountry(Country.GERMANY);
+        Team team = new Team(Country.GERMANY);
         SvgImage expected = new SvgImage("<svg>germany</svg>", 12);
 
         when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
@@ -63,10 +81,9 @@ public class TeamServiceUT {
 
     @Test
     public void findOrCreateTeam_whenExistingTeamFound_returnsExistingWithoutSaving() {
-        Team existing = new Team();
-        existing.setName("Existing Team");
+        Team existing = new Team("Existing Team");
 
-        when(teamRepository.findByCountryOrName(null, "Existing Team")).thenReturn(existing);
+        when(teamRepository.findByTeamBundleEntryOrName(null, "Existing Team")).thenReturn(existing);
 
         Team result = teamService.findOrCreateTeam(null, "Existing Team");
 
@@ -77,7 +94,7 @@ public class TeamServiceUT {
     @Test
     public void findOrCreateTeam_withoutCountryAndBlankName_usesFallbackNameAndPlaceholder() {
         SvgImage placeholder = new SvgImage("<svg>placeholder</svg>", 1);
-        when(teamRepository.findByCountryOrName(null, TeamService.FALLBACK_TEAM_NAME)).thenReturn(null);
+        when(teamRepository.findByTeamBundleEntryOrName(null, TeamService.FALLBACK_TEAM_NAME)).thenReturn(null);
         when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(placeholder);
         when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -89,15 +106,183 @@ public class TeamServiceUT {
 
     @Test
     public void findOrCreateTeam_withFdTeamId_downloadsCrestWhenCountryCrestMissing() {
-        when(teamRepository.findByCountryOrName(Country.GERMANY, TeamService.FALLBACK_TEAM_NAME)).thenReturn(null);
+        when(teamRepository.findByTeamBundleEntryOrName(Country.GERMANY, TeamService.FALLBACK_TEAM_NAME)).thenReturn(null);
         when(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false)).thenReturn(Optional.empty());
         when(crestsDownloader.downloadCrestsByUrl("fd-10")).thenReturn(new SvgImage("<svg>fd</svg>", 1));
         when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Team result = teamService.findOrCreateTeam(Country.GERMANY, null, "fd-10");
 
-        assertThat(result.getCountry()).isEqualTo(Country.GERMANY);
+        assertThat(result.getTeamBundleEntry()).isEqualTo(Country.GERMANY);
         assertThat(result.getSvgContent()).isEqualTo("<svg>fd</svg>");
     }
-}
 
+    @Test
+    public void createTeam_withTeamNameAndCrest_savesUploadedCrest() {
+        byte[] crest = "<svg xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"5\"/></svg>".getBytes(StandardCharsets.UTF_8);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, " FC Test ", false, crest);
+
+        assertThat(result.getName()).isEqualTo("FC Test");
+        assertThat(result.getTeamBundleEntry()).isNull();
+        assertThat(result.getSvgContent()).isEqualTo(new String(crest, StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void createTeam_withCountryWithoutCrest_usesCountryCrestAndIgnoresName() {
+        when(teamRepository.findByTeamBundleEntry(Country.GERMANY)).thenReturn(null);
+        when(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false)).thenReturn(Optional.of(new SvgImage("<svg>germany</svg>")));
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(Country.GERMANY, "ignored", false, null);
+
+        assertThat(result.getTeamBundleEntry()).isEqualTo(Country.GERMANY);
+        assertThat(result.getName()).isNull();
+        assertThat(result.getSvgContent()).isEqualTo("<svg>germany</svg>");
+    }
+
+    @Test
+    public void createTeam_whenTeamAlreadyExists_throwsException() {
+        Team existing = new Team("FC Test");
+        ReflectionTestUtils.setField(existing, "id", 3L);
+        when(teamRepository.findByName("FC Test")).thenReturn(existing);
+
+        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", false, null)).isInstanceOf(TeamAlreadyExistsException.class);
+        verify(teamRepository, never()).save(any(Team.class));
+    }
+
+    @Test
+    public void createTeam_withInvalidCrest_throwsException() {
+        byte[] crest = "<svg xmlns=\"http://www.w3.org/2000/svg\"><script>alert(1)</script></svg>".getBytes(StandardCharsets.UTF_8);
+
+        assertThatThrownBy(() -> teamService.createTeam(null, "FC Test", false, crest)).isInstanceOf(InvalidCrestException.class);
+        verify(teamRepository, never()).save(any(Team.class));
+    }
+
+    @Test
+    public void updateTeam_withoutNewCrestAndSameCountry_keepsStoredCrest() {
+        Team team = new Team(Country.GERMANY);
+        ReflectionTestUtils.setField(team, "id", 5L);
+        team.setSvgContent(new SvgImage("<svg>custom</svg>"));
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(teamRepository.findByTeamBundleEntry(Country.GERMANY)).thenReturn(team);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.updateTeam(5L, Country.GERMANY, null, false, null);
+
+        assertThat(result.getSvgContent()).isEqualTo("<svg>custom</svg>");
+    }
+
+    @Test
+    public void updateTeam_withFavourite_marksTeamAsFavourite() {
+        Team team = new Team(Country.GERMANY);
+        ReflectionTestUtils.setField(team, "id", 5L);
+        team.setSvgContent(new SvgImage("<svg>custom</svg>"));
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(teamRepository.findByTeamBundleEntry(Country.GERMANY)).thenReturn(team);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.updateTeam(5L, Country.GERMANY, null, true, null);
+
+        assertThat(result.isFavourite()).isTrue();
+    }
+
+    @Test
+    public void createTeam_withFavourite_removesFavouriteFromOtherTeam() {
+        Team otherFavourite = new Team("FC Other");
+        ReflectionTestUtils.setField(otherFavourite, "id", 7L);
+        otherFavourite.setFavourite(true);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.findByFavouriteTrue()).thenReturn(List.of(otherFavourite));
+        when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, "FC Test", true, null);
+
+        assertThat(result.isFavourite()).isTrue();
+        assertThat(otherFavourite.isFavourite()).isFalse();
+    }
+
+    @Test
+    public void updateTeam_fromCountryToTeamName_resetsCrestToPlaceholder() {
+        Team team = new Team(Country.GERMANY);
+        ReflectionTestUtils.setField(team, "id", 5L);
+        team.setSvgContent(new SvgImage("<svg>germany</svg>"));
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.updateTeam(5L, null, "FC Test", false, null);
+
+        assertThat(result.getTeamBundleEntry()).isNull();
+        assertThat(result.getName()).isEqualTo("FC Test");
+        assertThat(result.getSvgContent()).isEqualTo("<svg>placeholder</svg>");
+    }
+
+    @Test
+    public void deleteTeam_whenNotReferenced_deletesTeam() {
+        Team team = new Team("FC Test");
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(matchRepository.countByTeamOneOrTeamTwo(team, team)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(0L);
+
+        teamService.deleteTeam(5L);
+
+        verify(teamRepository).delete(team);
+    }
+
+    @Test
+    public void deleteTeam_whenUsedInMatch_throwsException() {
+        Team team = new Team("FC Test");
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(matchRepository.countByTeamOneOrTeamTwo(team, team)).thenReturn(2L);
+
+        assertThatThrownBy(() -> teamService.deleteTeam(5L))
+            .isInstanceOfSatisfying(TeamInUseException.class, e -> assertThat(e.getTeamUsage()).isEqualTo(new TeamUsage(2, 0)));
+        verify(teamRepository, never()).delete(any(Team.class));
+    }
+
+    @Test
+    public void deleteTeam_whenUsedInExtraBet_throwsException() {
+        Team team = new Team("FC Test");
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
+        when(matchRepository.countByTeamOneOrTeamTwo(team, team)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(team, team, team)).thenReturn(3L);
+
+        assertThatThrownBy(() -> teamService.deleteTeam(5L))
+            .isInstanceOfSatisfying(TeamInUseException.class, e -> assertThat(e.getTeamUsage()).isEqualTo(new TeamUsage(0, 3)));
+        verify(teamRepository, never()).delete(any(Team.class));
+    }
+
+    @Test
+    public void createTeamsOfBundle_createsOnlyMissingCountryTeams() {
+        when(teamRepository.findAll()).thenReturn(List.of(new Team(Country.GERMANY), new Team("FC Test")));
+        when(teamBundleProvider.getTeams(TeamBundle.EUROPEAN_CHAMPIONSHIP)).thenReturn(List.of(Country.GERMANY, Country.FRANCE, Country.SPAIN));
+        when(crestsCountryResolver.loadCrestsImageFor(Country.FRANCE, false)).thenReturn(Optional.of(new SvgImage("<svg>france</svg>")));
+        when(crestsCountryResolver.loadCrestsImageFor(Country.SPAIN, false)).thenReturn(Optional.empty());
+        when(crestPlaceholderLoader.getCrestPlaceholderIcon()).thenReturn(new SvgImage("<svg>placeholder</svg>"));
+
+        int created = teamService.createTeamsOfBundle(TeamBundle.EUROPEAN_CHAMPIONSHIP);
+
+        assertThat(created).isEqualTo(2);
+        ArgumentCaptor<List<Team>> captor = ArgumentCaptor.captor();
+        verify(teamRepository).saveAll(captor.capture());
+        assertThat(captor.getValue()).extracting(Team::getTeamBundleEntry).containsExactly(Country.FRANCE, Country.SPAIN);
+        assertThat(captor.getValue()).extracting(Team::getSvgContent).containsExactly("<svg>france</svg>", "<svg>placeholder</svg>");
+    }
+
+    @Test
+    public void createTeamsOfBundle_withoutTeamBundle_throwsException() {
+        assertThatThrownBy(() -> teamService.createTeamsOfBundle(null)).isInstanceOf(IllegalArgumentException.class);
+        verify(teamRepository, never()).saveAll(any());
+    }
+
+    @Test
+    public void getCreatableTeamBundles_returnsAllTeamBundles() {
+        assertThat(teamService.getCreatableTeamBundles())
+            .containsExactly(TeamBundle.WORLD_CUP, TeamBundle.CLUB_WM, TeamBundle.EUROPEAN_CHAMPIONSHIP);
+    }
+}

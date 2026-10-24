@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- points of a bet, coloured by how good the bet was (see PointsBadge) -->
+    <span th:fragment="points_badge(badge)" class="badge rounded-pill big-badge points-badge" th:classappend="${badge.cssClass()}"
+          th:text="${badge.text()}"
+          th:title="#{${badge.msgKey()}} + (${badge.jokerHint()} ? ' (' + #{matches.list.points.joker} + ')' : '')"
+          data-toggle="tooltip" data-bs-placement="top"></span>
+</body>
+</html>

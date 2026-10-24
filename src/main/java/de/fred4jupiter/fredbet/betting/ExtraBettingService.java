@@ -3,19 +3,22 @@ package de.fred4jupiter.fredbet.betting;
 import de.fred4jupiter.fredbet.betting.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.data.TeamTriple;
-import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
+@Transactional
 public class ExtraBettingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExtraBettingService.class);
@@ -36,7 +39,7 @@ public class ExtraBettingService {
         this.randomValueGenerator = randomValueGenerator;
     }
 
-    public void saveExtraBet(Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner, String username) {
+    public void saveExtraBet(Team finalWinner, Team semiFinalWinner, Team thirdFinalWinner, String username) {
         ExtraBet found = extraBetRepository.findByUserName(username);
         if (finalWinner == null && semiFinalWinner == null && found != null) {
             // reset/delete existing extra bet
@@ -85,9 +88,9 @@ public class ExtraBettingService {
     public void createExtraBetForUser(String username) {
         TeamTriple triple = randomValueGenerator.generateTeamTriple();
         if (triple != null) {
-            Country extraBetCountryFinalWinner = triple.finalWinner();
-            Country extraBetCountrySemiFinalWinner = triple.semiFinalWinner();
-            Country extraBetCountryThirdFinalWinner = triple.thirdFinalWinner();
+            Team extraBetCountryFinalWinner = triple.finalWinner();
+            Team extraBetCountrySemiFinalWinner = triple.semiFinalWinner();
+            Team extraBetCountryThirdFinalWinner = triple.thirdFinalWinner();
             saveExtraBet(extraBetCountryFinalWinner, extraBetCountrySemiFinalWinner, extraBetCountryThirdFinalWinner,
                 username);
         }
@@ -97,7 +100,7 @@ public class ExtraBettingService {
         return extraBetRepository.findAll();
     }
 
-    public void createExtraBetForUser(String userName, Country finalWinner, Country semiFinalWinner, Country thirdFinalWinner,
+    public void createExtraBetForUser(String userName, TeamBundleEntry finalWinner, TeamBundleEntry semiFinalWinner, TeamBundleEntry thirdFinalWinner,
                                       Integer pointsOne, Integer pointsTwo, Integer pointsThree) {
         ExtraBet extraBet = new ExtraBet();
         extraBet.setUserName(userName);

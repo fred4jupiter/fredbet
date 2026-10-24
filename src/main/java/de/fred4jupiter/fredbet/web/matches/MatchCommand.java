@@ -34,6 +34,10 @@ public class MatchCommand {
         return this.betOpt.map(Bet::getPoints).orElse(0);
     }
 
+    public PointsBadge getPointsBadge() {
+        return PointsBadge.of(this.match, this.betOpt.orElse(null));
+    }
+
     public String getUserBetGoalsTeamOneCssClasses() {
         if (this.betOpt.isEmpty() || this.betOpt.get().getGoalsTeamOne() == null) {
             return LABEL_DEFAULT;

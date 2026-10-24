@@ -8,9 +8,9 @@
 		<div layout:fragment="content">
 			<h1 th:text="#{statistics.title}"></h1>
 			<div class="row mb-3" th:if="${not #lists.isEmpty(statisticList)}">
-				<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2" th:if="${favouriteCountry != null}">
-                    <span class="" th:classappend="${@teamUtil.cssClassFor(favouriteCountry)}"></span>
-                    <span th:text="#{statistics.legend.favouriteCountry}"></span>
+				<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2" th:if="${favouriteTeam != null}">
+                    <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${favouriteTeam.id}, v=${favouriteTeam.version})}" th:alt="${favouriteTeam.getNameTranslated(@messageSourceUtil)}"/>
+                    <span th:text="#{statistics.legend.favouriteTeam}"></span>
 				</div>
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
                     <span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>
@@ -71,10 +71,10 @@
 					   </div>
                        <div class="card-footer bg-light">
                            <div class="row">
-                               <div th:if="${favouriteCountry != null}" class="col-auto">
-                                   <span class="" th:classappend="${@teamUtil.cssClassFor(statistic.favoriteCountry)}"></span>
-                                   <span th:text="' (' + ${statistic.pointsFavoriteCountry} + ')'"></span>
-                                   <span th:if="${statistic.maxFavoriteCountryCandidate}" class="fas fa-star" aria-hidden="true"></span>
+                               <div th:if="${favouriteTeam != null}" class="col-auto">
+                                   <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${statistic.favouriteTeam.id}, v=${statistic.favouriteTeam.version})}" th:alt="${statistic.favouriteTeam.getNameTranslated(@messageSourceUtil)}"/>
+                                   <span th:text="' (' + ${statistic.pointsFavouriteTeam} + ')'"></span>
+                                   <span th:if="${statistic.maxFavouriteTeamCandidate}" class="fas fa-star" aria-hidden="true"></span>
                                </div>
                                <div class="col-auto">
                                    <span class="fas fa-magic" aria-hidden="true"></span>

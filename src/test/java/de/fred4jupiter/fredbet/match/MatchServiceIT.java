@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.match;
 
+import de.fred4jupiter.fredbet.betting.ExtraBettingService;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
 import de.fred4jupiter.fredbet.data.DataPopulator;
@@ -7,6 +8,7 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,9 @@ public class MatchServiceIT {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private ExtraBettingService extraBettingService;
 
     @BeforeEach
     public void setup() {
@@ -86,7 +91,7 @@ public class MatchServiceIT {
 
         matchService.save(match);
 
-        List<Match> foundList = matchRepository.findByTeamOneCountry(countryOne);
+        List<Match> foundList = matchRepository.findByTeamOneTeamBundleEntry(countryOne);
         assertEquals(1, foundList.size());
     }
 
@@ -94,15 +99,15 @@ public class MatchServiceIT {
     public void createTwoMatches() {
         Match match1 = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
             .withKickOffDate(11, 6, 15).build();
-        assertThat(match1.getTeamOne().getCountry()).isEqualTo(Country.ALBANIA);
-        assertThat(match1.getTeamTwo().getCountry()).isEqualTo(Country.SWITZERLAND);
+        assertThat(match1.getTeamOne().getTeamBundleEntry()).isEqualTo(Country.ALBANIA);
+        assertThat(match1.getTeamTwo().getTeamBundleEntry()).isEqualTo(Country.SWITZERLAND);
 
         matchService.save(match1);
 
         Match match2 = MatchBuilder.create(teamService).withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
             .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build();
-        assertThat(match2.getTeamOne().getCountry()).isEqualTo(Country.ROMANIA);
-        assertThat(match2.getTeamTwo().getCountry()).isEqualTo(Country.SWITZERLAND);
+        assertThat(match2.getTeamOne().getTeamBundleEntry()).isEqualTo(Country.ROMANIA);
+        assertThat(match2.getTeamTwo().getTeamBundleEntry()).isEqualTo(Country.SWITZERLAND);
         matchService.save(match2);
 
         Match foundMatchOne = matchRepository.getReferenceById(match1.getId());
@@ -115,9 +120,9 @@ public class MatchServiceIT {
         assertThat(foundMatchTwo.getTeamOne()).isEqualTo(match2.getTeamOne());
         assertThat(foundMatchTwo.getTeamTwo()).isEqualTo(match2.getTeamTwo());
 
-        assertThat(teamRepository.countByCountry(Country.ALBANIA)).isEqualTo(1);
-        assertThat(teamRepository.countByCountry(Country.ROMANIA)).isEqualTo(1);
-        assertThat(teamRepository.countByCountry(Country.SWITZERLAND)).isEqualTo(1);
+        assertThat(teamRepository.countByTeamBundleEntry(Country.ALBANIA)).isEqualTo(1);
+        assertThat(teamRepository.countByTeamBundleEntry(Country.ROMANIA)).isEqualTo(1);
+        assertThat(teamRepository.countByTeamBundleEntry(Country.SWITZERLAND)).isEqualTo(1);
     }
 
     @Test
@@ -131,7 +136,7 @@ public class MatchServiceIT {
         assertThat(found).isEqualTo(match);
 
         final Country newCountry = Country.ENGLAND;
-        found.getTeamOne().setCountry(newCountry);
+        found.getTeamOne().setTeamBundleEntry(newCountry);
 
         matchService.save(found);
         matchRepository.flush();
@@ -139,6 +144,21 @@ public class MatchServiceIT {
         assertThat(match.getId()).isEqualTo(found.getId());
 
         Match found2 = matchRepository.getReferenceById(found.getId());
-        assertThat(newCountry).isEqualTo(found2.getTeamOne().getCountry());
+        assertThat(newCountry).isEqualTo(found2.getTeamOne().getTeamBundleEntry());
+    }
+
+    @Test
+    public void deleteMatchKeepsTeamsEvenIfUsedInExtraBet() {
+        Match match = MatchBuilder.create(teamService).withGroup(Group.GROUP_A).withTeams(Country.GERMANY, Country.FRANCE).build();
+        matchService.save(match);
+        Team germany = teamRepository.findByTeamBundleEntry(Country.GERMANY);
+        extraBettingService.saveExtraBet(germany, null, null, "someUser");
+
+        matchService.deleteMatch(match);
+        matchRepository.flush();
+
+        assertThat(matchRepository.findById(match.getId())).isEmpty();
+        assertThat(teamRepository.findByTeamBundleEntry(Country.GERMANY)).isNotNull();
+        assertThat(teamRepository.findByTeamBundleEntry(Country.FRANCE)).isNotNull();
     }
 }

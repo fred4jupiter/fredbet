@@ -1,0 +1,33 @@
+.team-row {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.team-rank {
+    flex: 0 0 1.5rem;
+    font-weight: 600;
+}
+
+.team-crest {
+    flex: 0 0 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-crest img.fi {
+    display: block;
+    max-height: 2rem;
+    max-width: 2rem;
+    width: auto;
+    height: auto;
+}
+
+.team-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: left;
+}

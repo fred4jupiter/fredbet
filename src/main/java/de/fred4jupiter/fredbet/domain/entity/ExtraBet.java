@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -19,17 +19,17 @@ public class ExtraBet {
     @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "FINAL_WINNER")
-    private Country finalWinner;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "FINAL_WINNER_TEAM_ID")
+    private Team finalWinner;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "SEMI_FINAL_WINNER")
-    private Country semiFinalWinner;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SEMI_FINAL_WINNER_TEAM_ID")
+    private Team semiFinalWinner;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "THIRD_FINAL_WINNER")
-    private Country thirdFinalWinner;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "THIRD_FINAL_WINNER_TEAM_ID")
+    private Team thirdFinalWinner;
 
     @Column(name = "POINTS_ONE")
     private Integer pointsOne = 0;
@@ -92,20 +92,36 @@ public class ExtraBet {
         return builder.toString();
     }
 
-    public Country getFinalWinner() {
+    public Team getFinalWinner() {
         return finalWinner;
     }
 
-    public void setFinalWinner(Country finalWinner) {
+    public TeamBundleEntry getFinalWinnerTeamBundleEntry() {
+        return finalWinner != null ? finalWinner.getTeamBundleEntry() : null;
+    }
+
+    public void setFinalWinner(Team finalWinner) {
         this.finalWinner = finalWinner;
     }
 
-    public Country getSemiFinalWinner() {
+    public void setFinalWinner(TeamBundleEntry finalWinner) {
+        this.finalWinner = finalWinner != null ? new Team(finalWinner) : null;
+    }
+
+    public Team getSemiFinalWinner() {
         return semiFinalWinner;
     }
 
-    public void setSemiFinalWinner(Country semiFinalWinner) {
+    public TeamBundleEntry getSemiFinalWinnerTeamBundleEntry() {
+        return semiFinalWinner != null ? semiFinalWinner.getTeamBundleEntry() : null;
+    }
+
+    public void setSemiFinalWinner(Team semiFinalWinner) {
         this.semiFinalWinner = semiFinalWinner;
+    }
+
+    public void setSemiFinalWinner(TeamBundleEntry semiFinalWinner) {
+        this.semiFinalWinner = semiFinalWinner != null ? new Team(semiFinalWinner) : null;
     }
 
     public Long getId() {
@@ -120,12 +136,20 @@ public class ExtraBet {
         this.userName = userName;
     }
 
-    public Country getThirdFinalWinner() {
+    public Team getThirdFinalWinner() {
         return thirdFinalWinner;
     }
 
-    public void setThirdFinalWinner(Country thirdFinalWinner) {
+    public TeamBundleEntry getThirdFinalWinnerTeamBundleEntry() {
+        return thirdFinalWinner != null ? thirdFinalWinner.getTeamBundleEntry() : null;
+    }
+
+    public void setThirdFinalWinner(Team thirdFinalWinner) {
         this.thirdFinalWinner = thirdFinalWinner;
+    }
+
+    public void setThirdFinalWinner(TeamBundleEntry thirdFinalWinner) {
+        this.thirdFinalWinner = thirdFinalWinner != null ? new Team(thirdFinalWinner) : null;
     }
 
     public Integer getPointsOne() {

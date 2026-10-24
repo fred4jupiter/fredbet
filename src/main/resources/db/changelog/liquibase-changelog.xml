@@ -354,4 +354,79 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="21" author="michael">
+        <addColumn tableName="extra_bet">
+            <column name="final_winner_team_id" type="BIGINT"/>
+            <column name="semi_final_winner_team_id" type="BIGINT"/>
+            <column name="third_final_winner_team_id" type="BIGINT"/>
+        </addColumn>
+
+        <sql>
+            UPDATE extra_bet eb
+            SET final_winner_team_id = (SELECT t.id FROM team t WHERE t.country = eb.final_winner)
+            WHERE eb.final_winner IS NOT NULL;
+
+            UPDATE extra_bet eb
+            SET semi_final_winner_team_id = (SELECT t.id FROM team t WHERE t.country = eb.semi_final_winner)
+            WHERE eb.semi_final_winner IS NOT NULL;
+
+            UPDATE extra_bet eb
+            SET third_final_winner_team_id = (SELECT t.id FROM team t WHERE t.country = eb.third_final_winner)
+            WHERE eb.third_final_winner IS NOT NULL;
+        </sql>
+
+        <addForeignKeyConstraint baseTableName="extra_bet" baseColumnNames="final_winner_team_id"
+                                 constraintName="FK_extra_bet_final_winner_team"
+                                 referencedTableName="team" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="extra_bet" baseColumnNames="semi_final_winner_team_id"
+                                 constraintName="FK_extra_bet_semi_final_winner_team"
+                                 referencedTableName="team" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="extra_bet" baseColumnNames="third_final_winner_team_id"
+                                 constraintName="FK_extra_bet_third_final_winner_team"
+                                 referencedTableName="team" referencedColumnNames="id"/>
+
+        <dropColumn tableName="extra_bet" columnName="final_winner"/>
+        <dropColumn tableName="extra_bet" columnName="semi_final_winner"/>
+        <dropColumn tableName="extra_bet" columnName="third_final_winner"/>
+    </changeSet>
+
+    <changeSet id="22" author="michael">
+        <addColumn tableName="team">
+            <column name="favourite" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="23" author="michael">
+        <comment>team bundle FOOTBALL_DATA_USAGE has been removed</comment>
+        <sql>
+            UPDATE runtime_setting
+            SET json_config = REPLACE(json_config, '"teamBundle":"FOOTBALL_DATA_USAGE"', '"teamBundle":"WORLD_CUP"')
+            WHERE json_config LIKE '%"teamBundle":"FOOTBALL_DATA_USAGE"%';
+        </sql>
+    </changeSet>
+
+    <changeSet id="24" author="michael">
+        <comment>club teams have been extracted from Country into ClubTeam, so a team is stored with type and key</comment>
+        <addColumn tableName="team">
+            <column name="team_type" type="varchar(20)"/>
+        </addColumn>
+        <dropUniqueConstraint tableName="team" constraintName="UC_COUNTRY"/>
+        <renameColumn tableName="team" oldColumnName="country" newColumnName="team_key" columnDataType="varchar(100)"/>
+        <sql>
+            UPDATE team SET team_type = 'CLUB'
+            WHERE team_key IN ('AL_AHLY', 'ATLETICO_MADRID', 'BOTAFOGO', 'FC_PORTO', 'INTER_MIAMI', 'MANCHESTER_CITY', 'PALMEIRAS',
+                        'PARIS_SAINT_GERMAIN', 'SEATLE_SOUNDERS', 'AL_AIN_FC', 'AL_HILAL', 'AUCKLAND_CITY',
+                        'BAYERN_MUENCHEN', 'BENFICA_LISSABON', 'BOCA_JUNIORS', 'BORUSSIA_DORTMUND',
+                        'CA_RIVER_PLATE_MONTEVIDEO', 'CF_MONTERREY', 'CF_PACHUCA', 'CHELSEA_CREST', 'CLUB_LEON',
+                        'CR_FLAMENGO', 'ESPERANCE_SPORTIVE_TUNIS', 'FC_INTERNAZIONALE_MILANO', 'FC_SALZBURG',
+                        'FLUMINENSE_FC', 'JUVENTUS_FC', 'MAMELODI_SUNDOWNS_FC', 'REAL_MADRID', 'ULSAN_HD',
+                        'URAWA_RED_DIAMONDS', 'WYDAD_CASABLANCA');
+            UPDATE team SET team_type = 'COUNTRY' WHERE team_key IS NOT NULL AND team_type IS NULL;
+        </sql>
+        <addUniqueConstraint tableName="team" columnNames="team_type, team_key" constraintName="UC_TEAM_TYPE_KEY"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -92,19 +92,8 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public Match save(Match match) {
-//        Team teamOne = teamService.findOrCreateTeam(match.getTeamOne().getCountry(), match.getTeamOne().getName());
-//        Team teamTwo = teamService.findOrCreateTeam(match.getTeamTwo().getCountry(), match.getTeamTwo().getName());
-//
-//        match.setTeamOne(teamOne);
-//        match.setTeamTwo(teamTwo);
-
         return matchRepository.save(match);
     }
-
-//    @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-//    public Match saveOnly(Match match) {
-//        return matchRepository.save(match);
-//    }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public List<Match> saveAll(List<Match> matches) {
@@ -155,18 +144,8 @@ public class MatchService {
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public void deleteMatch(Match match) {
-        Long teamOneId = match.getTeamOne().getId();
-        Long teamTwoId = match.getTeamTwo().getId();
+        // teams are maintained separately and are kept, as they may still be used in other matches or extra bets
         matchRepository.deleteById(match.getId());
-
-        deleteTeamIfNotReferencedAnymore(teamOneId);
-        deleteTeamIfNotReferencedAnymore(teamTwoId);
-    }
-
-    private void deleteTeamIfNotReferencedAnymore(Long teamId) {
-        if (!matchRepository.hasMatchesWithTeamId(teamId)) {
-            teamRepository.deleteById(teamId);
-        }
     }
 
     public Match findMatchById(Long matchId) {

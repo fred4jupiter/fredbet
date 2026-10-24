@@ -49,23 +49,19 @@
             <div class="row">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="bet : ${allBetsCommand.allBetsForMatch}">
                     <div class="card mt-3">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-6 pe-0">
-                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${bet.userName})}"></span>
-                                    <div class="mt-1">
-                                        <span class="ms-3" th:text="${bet.userName}"/>
-                                    </div>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <span class="badge rounded-pill bg-success big-badge" th:classappend="${bet.getCssClassPenaltyWinnerOne()}"
-                                          th:text="${bet.goalsTeamOne}"></span>
-                                    <span> : </span>
-                                    <span class="badge rounded-pill bg-success big-badge" th:classappend="${bet.getCssClassPenaltyWinnerTwo()}"
-                                          th:text="${bet.goalsTeamTwo}"></span>
-                                    <span class="badge rounded-pill bg-warning big-badge ms-1" th:text="${bet.points}"></span>
-                                </div>
+                        <div class="card-body d-flex align-items-center gap-2">
+                            <div class="d-flex align-items-center gap-2 me-auto">
+                                <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${bet.userName})}"></span>
+                                <span th:text="${bet.userName}"></span>
                             </div>
+                            <div class="text-nowrap">
+                                <span class="badge rounded-pill bg-success big-badge" th:classappend="${bet.getCssClassPenaltyWinnerOne()}"
+                                      th:text="${bet.goalsTeamOne}"></span>
+                                <span> : </span>
+                                <span class="badge rounded-pill bg-success big-badge" th:classappend="${bet.getCssClassPenaltyWinnerTwo()}"
+                                      th:text="${bet.goalsTeamTwo}"></span>
+                            </div>
+                            <span th:replace="~{fragments/points_badge :: points_badge(${allBetsCommand.getPointsBadge(bet)})}"></span>
                         </div>
                     </div>
                 </div>

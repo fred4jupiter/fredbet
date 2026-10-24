@@ -10,13 +10,10 @@ import de.fred4jupiter.fredbet.domain.builder.AppUserBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.Match;
-import de.fred4jupiter.fredbet.integration.FootballDataRuntimeSettings;
-import de.fred4jupiter.fredbet.integration.FootballDataService;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
-import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.team.TeamService;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import de.fred4jupiter.fredbet.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +32,11 @@ public class DataPopulator {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataPopulator.class);
 
+    /**
+     * Each demo match needs two different teams.
+     */
+    private static final int MIN_TEAMS_FOR_DEMO_DATA = 2;
+
     private final MatchService matchService;
 
     private final UserService userService;
@@ -49,29 +51,23 @@ public class DataPopulator {
 
     private final Faker faker = new Faker(Locale.getDefault());
 
-    private final RuntimeSettingsService runtimeSettingsService;
-
     private final CacheAdministrationService cacheAdministrationService;
 
     private final TeamService teamService;
 
-    private final FootballDataService footballDataService;
-
     public DataPopulator(MatchService matchService, UserService userService,
                          BettingService bettingService, RandomValueGenerator randomValueGenerator,
                          JokerService jokerService, ExtraBettingService extraBettingService,
-                         RuntimeSettingsService runtimeSettingsService, CacheAdministrationService cacheAdministrationService,
-                         TeamService teamService, FootballDataService footballDataService) {
+                         CacheAdministrationService cacheAdministrationService,
+                         TeamService teamService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
         this.randomValueGenerator = randomValueGenerator;
         this.jokerService = jokerService;
         this.extraBettingService = extraBettingService;
-        this.runtimeSettingsService = runtimeSettingsService;
         this.cacheAdministrationService = cacheAdministrationService;
         this.teamService = teamService;
-        this.footballDataService = footballDataService;
     }
 
     @Async
@@ -83,41 +79,52 @@ public class DataPopulator {
         createDemoData(new DemoDataCreation(GroupSelection.ROUND_OF_SIXTEEN, true, true, true));
     }
 
+    /**
+     * Demo matches are created with the teams stored in the database, so these teams have to be created first.
+     */
+    public boolean hasEnoughTeamsForDemoData() {
+        return teamService.findAllSelectableTeams().size() >= MIN_TEAMS_FOR_DEMO_DATA;
+    }
+
     public void createDemoData(DemoDataCreation demoDataCreation) {
+        final List<Team> teams = teamService.findAllSelectableTeams();
+        if (teams.size() < MIN_TEAMS_FOR_DEMO_DATA) {
+            throw new IllegalStateException("At least %d teams are needed to create demo data, but found %d!".formatted(MIN_TEAMS_FOR_DEMO_DATA, teams.size()));
+        }
+
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
 
         final KickOffDateCreator kickOffDateCreator = new KickOffDateCreator();
 
-        final TeamBundle teamBundle = runtimeSettingsService.loadRuntimeSettings().getTeamBundle();
         final GroupSelection groupSelection = demoDataCreation.groupSelection();
 
         // create group matches
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_A, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_B, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_C, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_D, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_E, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_F, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_G, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_H, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_A, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_B, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_C, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_D, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_E, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_F, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_G, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_H, 4);
 
         if (GroupSelection.ROUND_OF_THIRTY_TWO.equals(groupSelection)) {
-            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_I, 4);
-            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_J, 4);
-            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_K, 4);
-            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GROUP_L, 4);
+            createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_I, 4);
+            createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_J, 4);
+            createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_K, 4);
+            createMatchesForGroup(teams, kickOffDateCreator, Group.GROUP_L, 4);
 
-            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.ROUND_OF_THIRTY_TWO, 16);
+            createMatchesForGroup(teams, kickOffDateCreator, Group.ROUND_OF_THIRTY_TWO, 16);
         }
 
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.ROUND_OF_SIXTEEN, 8);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.QUARTER_FINAL, 4);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.SEMI_FINAL, 2);
-        createMatchesForGroup(teamBundle, kickOffDateCreator, Group.FINAL, 1);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.ROUND_OF_SIXTEEN, 8);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.QUARTER_FINAL, 4);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.SEMI_FINAL, 2);
+        createMatchesForGroup(teams, kickOffDateCreator, Group.FINAL, 1);
 
         if (demoDataCreation.withGameOfThird()) {
-            createMatchesForGroup(teamBundle, kickOffDateCreator, Group.GAME_FOR_THIRD, 1);
+            createMatchesForGroup(teams, kickOffDateCreator, Group.GAME_FOR_THIRD, 1);
         }
 
         if (demoDataCreation.withBets()) {
@@ -131,12 +138,12 @@ public class DataPopulator {
         cacheAdministrationService.clearCaches();
     }
 
-    private void createMatchesForGroup(TeamBundle teamBundle, KickOffDateCreator kickOffDateCreator,
+    private void createMatchesForGroup(List<Team> teams, KickOffDateCreator kickOffDateCreator,
                                        Group group, int numberOfMatches) {
         LOG.debug("creating group {} with {} matches.", group, numberOfMatches);
 
         IntStream.rangeClosed(1, numberOfMatches).forEach(counter -> {
-            TeamPair teamPair = randomValueGenerator.generateTeamPair(teamBundle);
+            TeamPair teamPair = randomValueGenerator.generateTeamPair(teams);
             Match match = MatchBuilder.create(teamService)
                 .withTeams(teamPair.teamOne(), teamPair.teamTwo())
                 .withGroup(group)
@@ -150,8 +157,6 @@ public class DataPopulator {
         LOG.info("createDemoBetsForAllUsers...");
         bettingService.deleteAllBets();
 
-        final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
-
         final List<Match> allMatches = matchService.findAll();
         final List<AppUser> users = userService.findAll();
         users.forEach(appUser -> {
@@ -163,9 +168,7 @@ public class DataPopulator {
                 createBetForUser(appUser, match, jokerAllowed);
             });
 
-            if (settings.isEnabled() && settings.getCompetition().isCupCompetition()) {
-                extraBettingService.createExtraBetForUser(appUser.getUsername());
-            }
+            extraBettingService.createExtraBetForUser(appUser.getUsername());
         });
         LOG.debug("created demo bets for all users finished.");
     }

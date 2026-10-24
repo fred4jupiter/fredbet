@@ -1,7 +1,5 @@
 package de.fred4jupiter.fredbet.settings;
 
-import de.fred4jupiter.fredbet.domain.Country;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -20,12 +18,6 @@ public class RuntimeSettings {
     private boolean enableChangingUsername;
 
     private boolean showDemoDataNavigationEntry;
-
-    /**
-     * Sum points per user for selected country that will be shown in points
-     * statistics.
-     */
-    private Country favouriteCountry;
 
     /**
      * Password used if the user password has been reset.
@@ -53,9 +45,6 @@ public class RuntimeSettings {
     @NotNull
     private String timeZone;
 
-    @NotNull
-    private TeamBundle teamBundle = TeamBundle.WORLD_CUP;
-
     public boolean isEnabledParentChildRanking() {
         return enabledParentChildRanking;
     }
@@ -78,14 +67,6 @@ public class RuntimeSettings {
 
     public void setShowDemoDataNavigationEntry(boolean showDemoDataNavigationEntry) {
         this.showDemoDataNavigationEntry = showDemoDataNavigationEntry;
-    }
-
-    public Country getFavouriteCountry() {
-        return favouriteCountry;
-    }
-
-    public void setFavouriteCountry(Country favouriteCountry) {
-        this.favouriteCountry = favouriteCountry;
     }
 
     public String getPasswordForReset() {
@@ -142,13 +123,5 @@ public class RuntimeSettings {
 
     public void setImageUploadLimit(Integer imageUploadLimit) {
         this.imageUploadLimit = imageUploadLimit;
-    }
-
-    public @NotNull TeamBundle getTeamBundle() {
-        return teamBundle;
-    }
-
-    public void setTeamBundle(@NotNull TeamBundle teamBundle) {
-        this.teamBundle = teamBundle;
     }
 }

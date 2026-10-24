@@ -6,7 +6,6 @@ import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.Validator;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,14 +23,11 @@ public class MatchCommandMapper {
 
     private final MatchService matchService;
 
-    private final WebMessageUtil webMessageUtil;
-
     private final SecurityService securityBean;
 
-    public MatchCommandMapper(BettingService bettingService, MatchService matchService, WebMessageUtil webMessageUtil, SecurityService securityBean) {
+    public MatchCommandMapper(BettingService bettingService, MatchService matchService, SecurityService securityBean) {
         this.bettingService = bettingService;
         this.matchService = matchService;
-        this.webMessageUtil = webMessageUtil;
         this.securityBean = securityBean;
     }
 

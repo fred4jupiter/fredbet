@@ -1,9 +1,7 @@
 package de.fred4jupiter.fredbet.data;
 
-import de.fred4jupiter.fredbet.domain.Country;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchRepository;
-import de.fred4jupiter.fredbet.teambundle.TeamBundle;
-import de.fred4jupiter.fredbet.teambundle.TeamBundleProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,11 +14,8 @@ public class RandomValueGenerator {
 
     private final MatchRepository matchRepository;
 
-    private final TeamBundleProvider teamBundleProvider;
-
-    public RandomValueGenerator(MatchRepository matchRepository, TeamBundleProvider teamBundleProvider) {
+    public RandomValueGenerator(MatchRepository matchRepository) {
         this.matchRepository = matchRepository;
-        this.teamBundleProvider = teamBundleProvider;
     }
 
     public GoalResult generateGoalResult() {
@@ -41,36 +36,37 @@ public class RandomValueGenerator {
         return Math.random() < 0.5;
     }
 
-    public TeamPair generateTeamPair(TeamBundle teamBundle) {
-        if (TeamBundle.FOOTBALL_DATA_USAGE.equals(teamBundle)) {
-            throw new IllegalArgumentException("Please select another team bundle to generate test data. FOOTBALL_DATA_USAGE is not allowed to generated test data!");
+    /**
+     * Picks two different teams of the given teams randomly.
+     */
+    public TeamPair generateTeamPair(List<Team> teams) {
+        if (teams.size() < 2) {
+            throw new IllegalArgumentException("At least two teams are needed to generate a team pair!");
         }
-
-        List<Country> teams = teamBundleProvider.getTeams(teamBundle);
-        List<Country> countries = distinctRandomElements(teams, 2);
-        return new TeamPair(countries.get(0), countries.get(1));
+        List<Team> pair = distinctRandomElements(teams, 2);
+        return new TeamPair(pair.get(0), pair.get(1));
     }
 
     public TeamTriple generateTeamTriple() {
-        List<Country> allCountriesOfMatches = matchRepository.getAllCountriesOfMatches();
-        if (allCountriesOfMatches.isEmpty()) {
+        List<Team> allTeams = matchRepository.getAllTeamsOfMatches();
+        if (allTeams.isEmpty()) {
             throw new IllegalArgumentException("Could not create triple, because no matches found.");
         }
 
-        if (allCountriesOfMatches.size() == 1) {
-            Country country = allCountriesOfMatches.getFirst();
-            return new TeamTriple(country, country, country);
+        if (allTeams.size() == 1) {
+            Team team = allTeams.getFirst();
+            return new TeamTriple(team, team, team);
         }
 
-        if (allCountriesOfMatches.size() == 2) {
-            return new TeamTriple(allCountriesOfMatches.getFirst(), allCountriesOfMatches.get(1), allCountriesOfMatches.get(1));
+        if (allTeams.size() == 2) {
+            return new TeamTriple(allTeams.getFirst(), allTeams.get(1), allTeams.get(1));
         }
 
-        if (allCountriesOfMatches.size() == 3) {
-            return new TeamTriple(allCountriesOfMatches.getFirst(), allCountriesOfMatches.get(1), allCountriesOfMatches.get(2));
+        if (allTeams.size() == 3) {
+            return new TeamTriple(allTeams.getFirst(), allTeams.get(1), allTeams.get(2));
         }
 
-        List<Country> countries = distinctRandomElements(allCountriesOfMatches, 3);
+        List<Team> countries = distinctRandomElements(allTeams, 3);
         return new TeamTriple(countries.get(0), countries.get(1), countries.get(2));
     }
 
