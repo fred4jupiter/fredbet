@@ -2,11 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="match_head_list(match)" th:remove="tag">
-        <img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id})}" alt="crests"/>
-        <span class="fw-bold" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-        <span> - </span>
-        <img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id})}" alt="crests"/>
-        <span class="fw-bold" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+        <span class="text-nowrap">
+            <img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id})}" alt="crests"/>
+            <span class="fw-bold" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
+            <span> - </span>
+        </span>
+        <span class="text-nowrap">
+            <img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id})}" alt="crests"/>
+            <span class="fw-bold" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+        </span>
 	</div>
 
     <div th:fragment="match_head_detail(match)" th:remove="tag">
