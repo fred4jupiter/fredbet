@@ -15,7 +15,7 @@ h3 {
 }
 
 .teamName {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: bold;
 }
 
@@ -27,6 +27,7 @@ h3 {
     font-size: 3rem;
     /*border: 1px solid #0d6efd;*/
     border-radius: 5px;
+    height: 64px;
 }
 
 .badge-penalty-winner-bet {
