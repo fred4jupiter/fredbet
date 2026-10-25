@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.statistic;
 
 import de.fred4jupiter.fredbet.betting.repository.BetRepository;
 import de.fred4jupiter.fredbet.common.TransactionalIntegrationTest;
-import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.BetBuilder;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
@@ -34,11 +34,11 @@ public class StatisticRepositoryIT {
     private TeamService teamService;
 
     @Autowired
-    private DataPopulator dataPopulator;
+    private DataService dataService;
 
     @BeforeEach
     public void setup() {
-        dataPopulator.deleteAllBetsAndMatches();
+        dataService.deleteAllBetsMatchesAndTeams();
     }
 
     @Test

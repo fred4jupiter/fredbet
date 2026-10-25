@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.admin;
 import de.fred4jupiter.fredbet.admin.AdministrationService;
 import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
@@ -62,10 +63,12 @@ public class AdminController {
 
     private final ApplicationContext applicationContext;
 
+    private final DataService dataService;
+
     public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
                            SessionTrackingService sessionTrackingService,
                            AdministrationService administrationService, UserService userService, FootballDataTestingService footballDataTestingService,
-                           ApplicationContext applicationContext) {
+                           ApplicationContext applicationContext, DataService dataService) {
         this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
         this.sessionTrackingService = sessionTrackingService;
@@ -73,6 +76,7 @@ public class AdminController {
         this.userService = userService;
         this.footballDataTestingService = footballDataTestingService;
         this.applicationContext = applicationContext;
+        this.dataService = dataService;
     }
 
     @ModelAttribute("adminFormCommand")

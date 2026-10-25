@@ -41,13 +41,9 @@ public class MatchService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final TeamRepository teamRepository;
-
-    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher,
-                        TeamRepository teamRepository) {
+    public MatchService(MatchRepository matchRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.matchRepository = matchRepository;
         this.applicationEventPublisher = applicationEventPublisher;
-        this.teamRepository = teamRepository;
     }
 
     public Optional<Match> findFinalMatch() {
@@ -139,7 +135,6 @@ public class MatchService {
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
     public void deleteAllMatches() {
         matchRepository.deleteAll();
-        teamRepository.deleteAll();
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)

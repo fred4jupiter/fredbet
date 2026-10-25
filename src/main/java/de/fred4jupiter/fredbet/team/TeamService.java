@@ -315,4 +315,8 @@ public class TeamService {
         team.setSvgContent(crestPlaceholderLoader.getCrestPlaceholderIcon());
         return team;
     }
+
+    public void deleteAllTeams() {
+        teamRepository.deleteAll();
+    }
 }

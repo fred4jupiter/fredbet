@@ -55,11 +55,13 @@ public class DataPopulator {
 
     private final TeamService teamService;
 
+    private final DataService dataService;
+
     public DataPopulator(MatchService matchService, UserService userService,
                          BettingService bettingService, RandomValueGenerator randomValueGenerator,
                          JokerService jokerService, ExtraBettingService extraBettingService,
                          CacheAdministrationService cacheAdministrationService,
-                         TeamService teamService) {
+                         TeamService teamService, DataService dataService) {
         this.matchService = matchService;
         this.userService = userService;
         this.bettingService = bettingService;
@@ -68,6 +70,7 @@ public class DataPopulator {
         this.extraBettingService = extraBettingService;
         this.cacheAdministrationService = cacheAdministrationService;
         this.teamService = teamService;
+        this.dataService = dataService;
     }
 
     @Async
@@ -92,8 +95,7 @@ public class DataPopulator {
             throw new IllegalStateException("At least %d teams are needed to create demo data, but found %d!".formatted(MIN_TEAMS_FOR_DEMO_DATA, teams.size()));
         }
 
-        bettingService.deleteAllBets();
-        matchService.deleteAllMatches();
+        dataService.deleteAllBetsMatchesAndTeams();
 
         final KickOffDateCreator kickOffDateCreator = new KickOffDateCreator();
 
@@ -204,6 +206,7 @@ public class DataPopulator {
     }
 
 
+    // TODO: remove this method
     @Transactional
     public void deleteAllBetsAndMatches() {
         bettingService.deleteAllBets();

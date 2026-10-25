@@ -1,11 +1,11 @@
 package de.fred4jupiter.fredbet.excel;
 
-import de.fred4jupiter.fredbet.team.TeamService;
-import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.builder.MatchBuilder;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.match.MatchRepository;
+import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
@@ -28,14 +28,14 @@ public class ExcelImportService {
 
     private final MatchRepository matchRepository;
 
-    private final DataPopulator dataBasePopulator;
-
     private final TeamService teamService;
 
-    public ExcelImportService(MatchRepository matchRepository, DataPopulator dataBasePopulator, TeamService teamService) {
+    private final DataService dataService;
+
+    public ExcelImportService(MatchRepository matchRepository, TeamService teamService, DataService dataService) {
         this.matchRepository = matchRepository;
-        this.dataBasePopulator = dataBasePopulator;
         this.teamService = teamService;
+        this.dataService = dataService;
     }
 
     public List<Match> importFromExcel(File file) {
@@ -56,7 +56,7 @@ public class ExcelImportService {
 
     @Transactional
     public void importMatchesFromExcelAndSave(byte[] bytes) {
-        dataBasePopulator.deleteAllBetsAndMatches();
+        dataService.deleteAllBetsMatchesAndTeams();
 
         List<Match> matches = importFromExcel(bytes);
         matchRepository.saveAll(matches);
