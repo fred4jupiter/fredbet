@@ -41,14 +41,27 @@ function imageCroppingUpload() {
     });
 
     $('#crop-image').on('click', function () {
+        $('#saveCroppedImage').prop('disabled', true);
+
         var canvas = cropper.getCroppedCanvas({
             maxWidth: 800,
             maxHeight: 800,
             fillColor: '#fff',
             imageSmoothingQuality: 'high'
         });
-        var dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-        $('#resultImage').attr('src', dataUrl);
-        $('#croppedFileBase64').val(dataUrl);
+        canvas.toBlob(function (blob) {
+            // put the cropped image into the file input, so the form uploads it like a chosen file
+            var transfer = new DataTransfer();
+            transfer.items.add(new File([blob], 'profile.jpg', {type: 'image/jpeg'}));
+            document.getElementById('croppedFile').files = transfer.files;
+
+            var resultImage = document.getElementById('resultImage');
+            if (resultImage.src.startsWith('blob:')) {
+                URL.revokeObjectURL(resultImage.src);
+            }
+            resultImage.src = URL.createObjectURL(blob);
+
+            $('#saveCroppedImage').prop('disabled', false);
+        }, 'image/jpeg', 0.9);
     });
 }

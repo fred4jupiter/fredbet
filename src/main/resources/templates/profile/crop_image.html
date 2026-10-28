@@ -50,12 +50,12 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-center">
-                                <input id="croppedFileBase64" type="hidden" name="croppedFileBase64" value="" />
+                                <input id="croppedFile" type="file" name="croppedFile" accept="image/jpeg" class="d-none" />
                                 <img id="resultImage" src="" class="crop-result img-fluid rounded" alt=""/>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
-                                <button class="btn btn-primary" id="saveCroppedImage" type="submit">
+                                <button class="btn btn-primary" id="saveCroppedImage" type="submit" disabled>
                                     <span id="spinner" class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
                                     <span role="status" th:text="#{button.save}"></span>
                                 </button>
