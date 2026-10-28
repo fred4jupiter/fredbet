@@ -1,0 +1,16 @@
+/* photo editor of static/js/image_cropper.js: Cropper.js needs a container with a fixed height */
+.crop-area {
+	height: 360px;
+}
+
+/* the source image must be a block element limited to the container (see the Cropper.js docs) */
+.crop-area img {
+	display: block;
+	max-width: 100%;
+}
+
+@media (max-width: 575.98px) {
+	.crop-area {
+		height: 280px;
+	}
+}

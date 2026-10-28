@@ -4,103 +4,97 @@
 	<head>
 		<title th:text="#{image.upload.title}"></title>
 		<link rel="stylesheet" th:href="@{/bootstrap-table/bootstrap-table.min.css}">
+		<link rel="stylesheet" th:href="@{/webjars/cropperjs/dist/cropper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/image_cropper.css}" />
 		<link rel="stylesheet" th:href="@{/css/pages/image_upload.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <form th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form">
-                <div class="row">
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                        <div class="row">
-                            <div class="col-auto mb-3">
-                                <label for="groupName" class="form-label" th:text="#{image.upload.groupName}"></label><br/>
-                                <select id="groupName" th:field="*{galleryGroup}" class="form-select">
-                                    <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
-                                </select>
+            <h1 th:text="#{image.upload.title}"></h1>
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <form id="imageUploadForm" th:action="@{/image/upload}" th:object="${imageUploadCommand}" method="post" enctype="multipart/form-data" role="form" class="card mt-3">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="groupName" class="form-label fw-bold" th:text="#{image.upload.groupName}"></label>
+                                <div class="input-group">
+                                    <select id="groupName" th:field="*{galleryGroup}" class="form-select">
+                                        <option th:each="imageGroupName : ${availableImageGroups}" th:value="${imageGroupName}" th:text="${imageGroupName}"></option>
+                                    </select>
+                                    <a th:href="@{/imagegroup/show}" class="btn btn-outline-secondary" role="button" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')"
+                                       th:title="#{image.upload.editGroup}" th:aria-label="#{image.upload.editGroup}">
+                                        <i class="fas fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-auto mb-3" sec:authorize="hasAuthority('PERM_EDIT_IMAGE_GROUP')">
-                                <label class="form-label" th:text="#{image.upload.editGroup}"></label><br/>
-                                <a href="#" th:href="@{/imagegroup/show}" class="btn btn-info" role="button" th:text="#{image.upload.msg.editGroup}"></a>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label fw-bold" th:text="#{image.upload.description}"></label>
+                                <input id="description" type="text" th:field="*{description}" class="form-control" />
+                            </div>
+
+                            <label for="upload" class="form-label fw-bold" th:text="#{image.upload.file}"></label>
+                            <input id="upload" type="file" accept="image/*" class="form-control"/>
+                            <input id="imageFile" type="file" name="imageFile" accept="image/jpeg" class="d-none" />
+
+                            <!-- shown once an image has been chosen -->
+                            <div id="crop-editor" class="d-none mt-3">
+                                <div class="crop-area mb-3">
+                                    <img id="crop-source" src="" alt=""/>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="crop-image-rotate btn btn-outline-secondary" data-deg="-90"
+                                                th:title="#{user.image.cropping.rotateLeft}" th:aria-label="#{user.image.cropping.rotateLeft}">
+                                            <i class="fas fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="crop-image-rotate btn btn-outline-secondary" data-deg="90"
+                                                th:title="#{user.image.cropping.rotateRight}" th:aria-label="#{user.image.cropping.rotateRight}">
+                                            <i class="fas fa-redo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                        <div class="mb-3">
-                            <label class="form-label" th:text="#{image.upload.file}"></label><br/>
-                            <input class="form-control" id="upload" type="file" accept="image/jpeg"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="mb-3">
-                            <input id="myFileBase64" type="hidden" name="myFileBase64" value="" />
-                            <img id="preview" class="img-thumbnail" alt="preview"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 col-sm-2">
-                        <div class="mb-3">
-                            <label class="form-label" th:text="#{image.upload.rotate}"></label><br/>
-                            <button type="button" class="rotate-image-btn btn btn-dark" data-deg="-90">
-                                <i class="fas fa-undo" aria-hidden="true"></i>
+                        <div class="card-footer d-flex flex-wrap gap-2">
+                            <button id="uploadImage" type="submit" class="btn btn-primary">
+                                <span id="spinner" class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                <span role="status" th:text="#{image.upload.button}"></span>
                             </button>
-                            <button type="button" class="rotate-image-btn btn btn-dark" data-deg="90">
-                                <i class="fas fa-redo" aria-hidden="true"></i>
-                            </button>
+                            <a th:href="@{/gallery/show}" class="btn btn-light" th:text="#{image.upload.toImageGallery}"></a>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="mb-3">
-                            <label for="description" class="form-label" th:text="#{image.upload.description}"></label><br/>
-                            <input id="description" type="text" th:field="*{description}" class="form-control" />
-                        </div>
-                    </div>
+                    </form>
                 </div>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col-auto mb-3">
-                        <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
-                    </div>
-                    <div class="col-auto mb-3">
-                        <a href="#" th:href="@{/gallery/show}" class="btn btn-light" th:text="#{image.upload.toImageGallery}"></a>
-                    </div>
-                </div>
-            </form>
-
-			<div class="row mt-3">
+			<div class="row mt-4">
 				<div class="col-12 mb-3">
 					<div class="table-responsive">
-				   		<table class="table table-condensed" data-toggle="table" data-pagination="true" data-page-size="5">
+				   		<table class="table table-sm align-middle" data-toggle="table" data-pagination="true" data-page-size="5">
 				   			<thead class="table-light">
 					   			<tr>
-					   				<th data-sortable="true" th:text="#{image.upload.id}" class="d-none d-sm-block"></th>
+					   				<th data-sortable="true" th:text="#{image.upload.id}" class="d-none d-sm-table-cell"></th>
 					   				<th data-sortable="true" th:text="#{image.upload.groupName}"></th>
-					   				<th data-sortable="true" th:text="#{image.upload.description}" class="d-none d-sm-block"></th>
-					   				<th th:text="#{image.upload.thumbnail}"></th>
-					   				<th th:text="#{image.upload.deleteImage}"></th>
+					   				<th data-sortable="true" th:text="#{image.upload.description}" class="d-none d-sm-table-cell"></th>
+					   				<th th:text="#{image.upload.thumbnail}" class="text-center"></th>
+					   				<th th:text="#{image.upload.deleteImage}" class="text-center"></th>
 					   			</tr>
 				   			</thead>
 				   			<tbody>
 					   			<tr th:each="imageCommand : ${availableImages}">
-					   				<td th:text="${imageCommand.imageId}" class="vert-align d-none d-sm-block"></td>
-					   				<td th:text="${imageCommand.galleryGroup}" class="vert-align"></td>
-					   				<td th:text="${imageCommand.description}" class="vert-align d-none d-sm-block"></td>
+					   				<td th:text="${imageCommand.imageId}" class="d-none d-sm-table-cell"></td>
+					   				<td th:text="${imageCommand.galleryGroup}"></td>
+					   				<td th:text="${imageCommand.description}" class="d-none d-sm-table-cell"></td>
 					   				<td class="text-center">
-                                        <a th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" th:attr="data-lightbox=${imageCommand.imageKey}" class="img-link">
-                                            <img th:if="${imageCommand.imageKey}" th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}"
-                                                 height="35" class="rounded" alt="image"/>
+                                        <a th:if="${imageCommand.imageKey}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" th:attr="data-lightbox=${imageCommand.imageKey}" class="img-link">
+                                            <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}"
+                                                 height="35" class="rounded" th:alt="${imageCommand.description}"/>
                                         </a>
 					   				</td>
 					   				<td class="text-center">
-					   					<a href="#" th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger btn-sm" role="button">
-                                            <i class="fas fa-trash"></i>
+					   					<a th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger btn-sm" role="button"
+                                           th:title="#{image.upload.deleteImage}" th:aria-label="#{image.upload.deleteImage}">
+                                            <i class="fas fa-trash" aria-hidden="true"></i>
                                         </a>
 					   				</td>
 					   			</tr>
@@ -112,15 +106,15 @@
             <div class="row">
                 <div class="col-12 col-sm-6" sec:authorize="hasAuthority('PERM_DOWNLOAD_IMAGES')">
                     <a class="btn btn-secondary" role="button" th:href="@{/gallery/download/all}">
-                        <i class="fas fa-download"></i>
+                        <i class="fas fa-download" aria-hidden="true"></i>
                         <span th:text="#{image.gallery.downloadAll}"></span>
                     </a>
                 </div>
             </div>
 		</div>
 		<th:block layout:fragment="scripts">
-			<script type="text/javascript" th:src="@{/js/jquery-rotate.js}"></script>
-			<script type="text/javascript" th:src="@{/js/compress.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/webjars/cropperjs/dist/cropper.min.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/js/image_cropper.js}" charset="UTF-8"></script>
 			<script type="text/javascript" th:src="@{/js/pages/image_upload.js}" charset="UTF-8"></script>
 			<script th:src="@{/bootstrap-table/bootstrap-table.min.js}"></script>
 			<script th:src="@{/bootstrap-table/extensions/multiple-sort/bootstrap-table-multiple-sort.js}"></script>

@@ -7,20 +7,26 @@ import de.fred4jupiter.fredbet.image.ImageUploadLimitReachedException;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Base64;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/image")
 public class ImageUploadController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ImageUploadController.class);
+
     private static final String REDIRECT_SHOW_PAGE = "redirect:/image/show";
+
+    private static final String CONTENT_TYPE_JPEG = "image/jpeg";
 
     private final ImageAdministrationService imageAdministrationService;
 
@@ -69,24 +75,26 @@ public class ImageUploadController {
 
     @PostMapping("/upload")
     public String uploadImage(ImageUploadCommand imageUploadCommand, RedirectAttributes redirect) {
-        if (StringUtils.isBlank(imageUploadCommand.getMyFileBase64())) {
+        final MultipartFile imageFile = imageUploadCommand.getImageFile();
+        if (imageFile == null || imageFile.isEmpty()) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
             return REDIRECT_SHOW_PAGE;
         }
 
-        final byte[] imageByte = Base64.getDecoder().decode(imageUploadCommand.getMyFileBase64().split(",")[1]);
-
-        if (imageByte.length == 0) {
-            messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+        if (!CONTENT_TYPE_JPEG.equals(imageFile.getContentType())) {
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.noJpegImage");
             return REDIRECT_SHOW_PAGE;
         }
 
         try {
-            imageAdministrationService.saveImage(imageByte, imageUploadCommand.getGalleryGroup(),
+            imageAdministrationService.saveImage(imageFile.getBytes(), imageUploadCommand.getGalleryGroup(),
                 imageUploadCommand.getDescription(), webSecurityUtil.getCurrentUser());
             messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
         } catch (ImageUploadLimitReachedException e) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.limitReached", e.getLimit());
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
         }
 
         return REDIRECT_SHOW_PAGE;

@@ -1,14 +1,3 @@
-/* Cropper.js needs a container with a fixed height */
-.crop-area {
-	height: 360px;
-}
-
-/* the source image must be a block element limited to the container (see the Cropper.js docs) */
-.crop-area img {
-	display: block;
-	max-width: 100%;
-}
-
 /* the user's current profile image above the upload */
 .current-profile-image {
 	width: 6rem;
@@ -19,10 +8,4 @@
 /* result preview in the modal */
 .crop-result {
 	max-height: 300px;
-}
-
-@media (max-width: 575.98px) {
-	.crop-area {
-		height: 280px;
-	}
 }

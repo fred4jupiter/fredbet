@@ -4,6 +4,7 @@
 	<head>
 		<title th:text="#{user.image.cropping.title}"></title>
 		<link rel="stylesheet" th:href="@{/webjars/cropperjs/dist/cropper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/image_cropper.css}" />
 		<link rel="stylesheet" th:href="@{/css/pages/crop_image.css}" />
 	</head>
 	<body>
@@ -77,6 +78,7 @@
 	</body>
 	<th:block layout:fragment="scripts">
 		<script type="text/javascript" th:src="@{/webjars/cropperjs/dist/cropper.min.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/image_cropper.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/crop_image.js}" charset="UTF-8"></script>
 	</th:block>
 </html>
