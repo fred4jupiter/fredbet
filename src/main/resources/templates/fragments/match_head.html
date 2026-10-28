@@ -5,7 +5,7 @@
         <span class="text-nowrap">
             <img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id})}" alt="crests"/>
             <span class="fw-bold" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-            <span> - </span>
+            <span> : </span>
         </span>
         <span class="text-nowrap">
             <img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id})}" alt="crests"/>
@@ -13,16 +13,17 @@
         </span>
 	</div>
 
-    <div th:fragment="match_head_detail(match)" th:remove="tag">
-        <div class="col-6">
-            <img class="fi big-flag" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id})}" alt="crests"/>
-            <br/>
-            <span class="teamName" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-        </div>
-        <div class="col-6">
-            <img class="fi big-flag" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id})}" alt="crests"/>
-            <br/>
-            <span class="teamName" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+    <div th:fragment="match_head_detail(match)" class="col-12">
+        <div class="match-head">
+            <div class="match-head-team">
+                <img class="big-flag" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id})}" alt=""/>
+                <span class="teamName" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
+            </div>
+            <span class="match-head-separator" aria-hidden="true">:</span>
+            <div class="match-head-team">
+                <img class="big-flag" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id})}" alt=""/>
+                <span class="teamName" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
+            </div>
         </div>
     </div>
 </body>

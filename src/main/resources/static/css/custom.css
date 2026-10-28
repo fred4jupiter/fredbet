@@ -23,11 +23,56 @@ h3 {
     font-size: 15px;
 }
 
-.big-flag {
-    font-size: 3rem;
-    /*border: 1px solid #0d6efd;*/
-    border-radius: 5px;
-    height: 64px;
+/* match header on the bet and result pages (fragments/match_head.html): crest : crest, names below */
+.match-head {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+}
+
+.match-head-team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    min-width: 0;
+    padding: 0 1rem;
+}
+
+.match-head-team .teamName {
+    overflow-wrap: anywhere;
+}
+
+/* centred between the crests, at the vertical middle of the crest box */
+.match-head-separator {
+    position: absolute;
+    left: 50%;
+    top: 2rem;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+    color: var(--bs-secondary-color);
+}
+
+/* same box for every crest, whatever its aspect ratio; the shadow outlines white flags */
+img.big-flag {
+    width: 5rem;
+    height: 4rem;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+}
+
+@media (max-width: 575.98px) {
+    img.big-flag {
+        width: 3.5rem;
+        height: 2.75rem;
+    }
+
+    .match-head-separator {
+        top: 1.375rem;
+    }
 }
 
 .badge-penalty-winner-bet {
