@@ -58,12 +58,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer d-flex flex-wrap gap-2">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary">
                                 <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
                                 <span role="status" th:text="#{image.upload.button}"></span>
                             </button>
-                            <a th:href="@{/gallery/show}" class="btn btn-light" th:text="#{image.upload.toImageGallery}"></a>
                         </div>
                     </form>
                 </div>
@@ -106,13 +105,12 @@
 			   	   </div>
 				</div>
 			</div>
-            <div class="row">
-                <div class="col-12 col-sm-6" sec:authorize="hasAuthority('PERM_DOWNLOAD_IMAGES')">
-                    <a class="btn btn-secondary" role="button" th:href="@{/gallery/download/all}">
-                        <i class="fas fa-download" aria-hidden="true"></i>
-                        <span th:text="#{image.gallery.downloadAll}"></span>
-                    </a>
-                </div>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <a th:href="@{/gallery/show}" class="btn btn-light" th:text="#{image.upload.toImageGallery}"></a>
+                <a class="btn btn-secondary" role="button" th:href="@{/gallery/download/all}" sec:authorize="hasAuthority('PERM_DOWNLOAD_IMAGES')">
+                    <i class="fas fa-download" aria-hidden="true"></i>
+                    <span th:text="#{image.gallery.downloadAll}"></span>
+                </a>
             </div>
 		</div>
 		<th:block layout:fragment="scripts">
