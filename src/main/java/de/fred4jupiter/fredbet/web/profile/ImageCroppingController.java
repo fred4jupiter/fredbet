@@ -2,7 +2,6 @@ package de.fred4jupiter.fredbet.web.profile;
 
 import de.fred4jupiter.fredbet.image.ImageAdministrationService;
 import de.fred4jupiter.fredbet.security.SecurityService;
-import de.fred4jupiter.fredbet.user.UserService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -31,12 +30,12 @@ public class ImageCroppingController {
 
     private final ImageAdministrationService imageAdministrationService;
 
-    private final SecurityService securityServic;
+    private final SecurityService securityService;
 
-    public ImageCroppingController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService, SecurityService securityServic) {
+    public ImageCroppingController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService, SecurityService securityService) {
         this.messageUtil = messageUtil;
         this.imageAdministrationService = imageAdministrationService;
-        this.securityServic = securityServic;
+        this.securityService = securityService;
     }
 
     @GetMapping("/show")
@@ -60,7 +59,7 @@ public class ImageCroppingController {
         try {
             final byte[] imageByte = croppedFile.getBytes();
             LOG.debug("image size: {}", FileUtils.byteCountToDisplaySize(imageByte.length));
-            imageAdministrationService.saveUserProfileImage(imageByte, securityServic.getCurrentUser());
+            imageAdministrationService.saveUserProfileImage(imageByte, securityService.getCurrentUser());
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
             messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
