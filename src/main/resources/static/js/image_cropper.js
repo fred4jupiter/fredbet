@@ -54,6 +54,27 @@ function initImageCropper(cropperOptions) {
                 fileInput.files = transfer.files;
                 callback(blob);
             }, 'image/jpeg', 0.9);
+        },
+
+        /**
+         * Uploads the cropped image through the given file input when the form is submitted.
+         * Without a chosen image the form is submitted as it is, so the server answers with "no file given".
+         */
+        submitCroppedImage: function (form, fileInput, canvasOptions) {
+            var self = this;
+            $(form).on('submit', function (ev) {
+                if (!self.hasImage()) {
+                    return;
+                }
+
+                ev.preventDefault();
+                $(form).find('[type=submit]').prop('disabled', true).find('.spinner-border').removeClass('d-none');
+
+                self.toFileInput(fileInput, canvasOptions, function () {
+                    // the native submit does not trigger this handler again
+                    form.submit();
+                });
+            });
         }
     };
 }

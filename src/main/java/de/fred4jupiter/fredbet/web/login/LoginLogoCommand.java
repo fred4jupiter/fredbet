@@ -1,14 +1,16 @@
 package de.fred4jupiter.fredbet.web.login;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class LoginLogoCommand {
 
-    private String myFileBase64;
+    private MultipartFile imageFile;
 
-    public String getMyFileBase64() {
-        return myFileBase64;
+    public MultipartFile getImageFile() {
+        return imageFile;
     }
 
-    public void setMyFileBase64(String myFileBase64) {
-        this.myFileBase64 = myFileBase64;
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
     }
 }

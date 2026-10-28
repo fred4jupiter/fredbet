@@ -10,6 +10,8 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
+            <!-- one dialog for all images; the link of the clicked row is set in image_upload.js -->
+            <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/image/show', id = 'confirm-delete-image')}"></div>
             <h1 th:text="#{image.upload.title}"></h1>
             <div class="row">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -57,8 +59,8 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex flex-wrap gap-2">
-                            <button id="uploadImage" type="submit" class="btn btn-primary">
-                                <span id="spinner" class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
                                 <span role="status" th:text="#{image.upload.button}"></span>
                             </button>
                             <a th:href="@{/gallery/show}" class="btn btn-light" th:text="#{image.upload.toImageGallery}"></a>
@@ -92,10 +94,11 @@
                                         </a>
 					   				</td>
 					   				<td class="text-center">
-					   					<a th:href="@{'/image/delete/' + ${imageCommand.imageKey}}" class="btn btn-danger btn-sm" role="button"
-                                           th:title="#{image.upload.deleteImage}" th:aria-label="#{image.upload.deleteImage}">
+					   					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirm-delete-image"
+                                                th:data-href="@{'/image/delete/' + ${imageCommand.imageKey}}"
+                                                th:title="#{image.upload.deleteImage}" th:aria-label="#{image.upload.deleteImage}">
                                             <i class="fas fa-trash" aria-hidden="true"></i>
-                                        </a>
+                                        </button>
 					   				</td>
 					   			</tr>
 				   			</tbody>
