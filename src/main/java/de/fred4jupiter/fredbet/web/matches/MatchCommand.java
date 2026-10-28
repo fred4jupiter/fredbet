@@ -3,8 +3,7 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
-import de.fred4jupiter.fredbet.util.MessageSourceUtil;
-import org.apache.commons.lang3.StringUtils;
+import de.fred4jupiter.fredbet.util.DateUtils;
 
 import java.util.Optional;
 
@@ -90,6 +89,18 @@ public class MatchCommand {
         }
 
         return this.match.isKnockoutMatch() && this.match.isUndecidedResult() && !this.match.isPenaltyWinnerOne() ? LABEL_INFO_PENALTY : LABEL_INFO;
+    }
+
+    public String getExternalLastUpdated() {
+        return DateUtils.formatZonedDateTime(this.match.getExternalLastUpdated());
+    }
+
+    public String getCreateDate() {
+        return this.match.getCreateDate() != null ? DateUtils.format(this.match.getCreateDate()) : null;
+    }
+
+    public String getUpdateDate() {
+        return this.match.getUpdateDate() != null ? DateUtils.format(this.match.getUpdateDate()) : null;
     }
 
     public Match getMatch() {
