@@ -10,32 +10,36 @@
 		<form id="matchresultForm" th:action="@{/matchresult}" th:object="${matchResultCommand}" action="#" method="post" role="form">
             <div class="alert alert-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
 			<div class="row">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-4">
+				<div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 					<input type="hidden" th:field="*{matchId}" />
                     <input type="hidden" th:field="*{match}" />
 					<input type="hidden" th:field="*{redirectViewName}" />
 					<input type="hidden" th:field="*{knockoutMatch}" />
 
                     <div class="form-group mt-3">
-						<div class="row center mb-3">
-                            <div th:replace="~{fragments/match_head :: match_head_detail(${matchResultCommand.match})}"></div>
-						</div>
-						<div class="row center mb-3">
-							<div class="col-6">
-								<div class="input-group goal-input-group mx-auto">
-									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
-									<input type="text" inputmode="numeric" th:field="*{teamResultOne}" class="form-control text-center fw-bold bg-info-subtle" th:errorclass="is-invalid"/>
-									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+						<div class="match-head mb-3">
+							<div class="card">
+								<div class="card-body match-head-team">
+									<div th:replace="~{fragments/match_head :: match_head_team(${matchResultCommand.match.teamOne})}"></div>
+									<div class="input-group goal-input-group mt-auto">
+										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
+										<input type="text" inputmode="numeric" th:field="*{teamResultOne}" class="form-control text-center fw-bold bg-info-subtle" th:errorclass="is-invalid"/>
+										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+									</div>
+									<div class="text-danger small" th:if="${#fields.hasErrors('teamResultOne')}" th:errors="*{teamResultOne}">teamResultOne error</div>
 								</div>
-								<div class="text-danger small mt-1" th:if="${#fields.hasErrors('teamResultOne')}" th:errors="*{teamResultOne}">teamResultOne error</div>
 							</div>
-							<div class="col-6">
-								<div class="input-group goal-input-group mx-auto">
-									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
-									<input type="text" inputmode="numeric" th:field="*{teamResultTwo}" class="form-control text-center fw-bold bg-info-subtle" th:errorclass="is-invalid"/>
-									<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+							<span class="match-head-separator" aria-hidden="true">:</span>
+							<div class="card">
+								<div class="card-body match-head-team">
+									<div th:replace="~{fragments/match_head :: match_head_team(${matchResultCommand.match.teamTwo})}"></div>
+									<div class="input-group goal-input-group mt-auto">
+										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
+										<input type="text" inputmode="numeric" th:field="*{teamResultTwo}" class="form-control text-center fw-bold bg-info-subtle" th:errorclass="is-invalid"/>
+										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+									</div>
+									<div class="text-danger small" th:if="${#fields.hasErrors('teamResultTwo')}" th:errors="*{teamResultTwo}">teamResultTwo error</div>
 								</div>
-								<div class="text-danger small mt-1" th:if="${#fields.hasErrors('teamResultTwo')}" th:errors="*{teamResultTwo}">teamResultTwo error</div>
 							</div>
 						</div>
 						<div id="penaltyBox" class="mb-3" th:if="${matchResultCommand.isKnockoutMatch()}">

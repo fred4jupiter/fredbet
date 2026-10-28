@@ -13,18 +13,9 @@
         </span>
 	</div>
 
-    <div th:fragment="match_head_detail(match)" class="col-12">
-        <div class="match-head">
-            <div class="match-head-team">
-                <img class="big-flag" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id})}" alt=""/>
-                <span class="teamName" th:text="${match.teamOne.getNameTranslated(@messageSourceUtil)}"></span>
-            </div>
-            <span class="match-head-separator" aria-hidden="true">:</span>
-            <div class="match-head-team">
-                <img class="big-flag" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id})}" alt=""/>
-                <span class="teamName" th:text="${match.teamTwo.getNameTranslated(@messageSourceUtil)}"></span>
-            </div>
-        </div>
+    <div th:fragment="match_head_team(team)" th:remove="tag">
+        <img class="big-flag" th:src="@{/team/{teamId}.svg(teamId=${team.id})}" alt=""/>
+        <span class="teamName" th:text="${team.getNameTranslated(@messageSourceUtil)}"></span>
     </div>
 </body>
 </html>
