@@ -140,6 +140,14 @@ public class AdminController {
         return "redirect:/administration";
     }
 
+    @GetMapping("/deleteAllBetsMatchesAndTeams")
+    public String deleteAllBetsMatchesAndTeams(RedirectAttributes redirect) {
+        dataService.deleteAllBetsMatchesAndTeamsAsync();
+
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsMatchesAndTeamsDeleted");
+        return "redirect:/administration";
+    }
+
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
     @GetMapping("/active/users")
     public String showActiveUsers(Model model) {

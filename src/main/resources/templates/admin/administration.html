@@ -114,6 +114,7 @@
 
             <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllUsers', id='deleteAllUsers')}"></div>
             <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
+            <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/administration/deleteAllBetsMatchesAndTeams', id='deleteAllBetsMatchesAndTeams')}"></div>
             <h5 class="mt-3 mb-3" th:text="#{administration.dangerzone.title}">Danger Zone</h5>
             <div class="row">
                 <div class="col-auto mb-3">
@@ -121,6 +122,9 @@
                 </div>
                 <div class="col-auto mb-3">
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
+                </div>
+                <div class="col-auto mb-3">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsMatchesAndTeams" th:text="#{administration.deleteAllBetsMatchesAndTeams}"></button>
                 </div>
             </div>
 		</div>
