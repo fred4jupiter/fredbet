@@ -1,53 +1,54 @@
 $(document).ready(function () {
     imageCroppingUpload();
 
-    $('#spinner').hide();
     $('#saveCroppedImage').on('click', function () {
-        $('#spinner').show();
+        $('#spinner').removeClass('d-none');
     });
 });
 
 function imageCroppingUpload() {
-    var $uploadCrop;
+    var cropper = null;
+    var image = document.getElementById('crop-source');
 
+    // the server cuts a square thumbnail from the image, so the crop frame is square as well
     var opts = {
-        viewport: 'original',
-        type: 'canvas',
-        enableResize: true,
-        enableExif: true,
-        enableOrientation: true,
-        format: 'jpeg'
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 0.9,
+        background: false
     };
 
-    function readFile(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $uploadCrop.croppie('bind', {
-                    url: e.target.result
-                });
-            }
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            console.log("Sorry - you're browser doesn't support the FileReader API");
-        }
-    }
-
     $('#upload').on('change', function () {
-        readFile(this);
+        var file = this.files && this.files[0];
+        if (!file) {
+            return;
+        }
+
+        if (cropper) {
+            cropper.destroy();
+            URL.revokeObjectURL(image.src);
+        }
+
+        // Cropper.js measures its container, so it has to be visible before it starts
+        $('#crop-editor').removeClass('d-none');
+        image.src = URL.createObjectURL(file);
+        cropper = new Cropper(image, opts);
     });
 
-    $uploadCrop = $('#croppie-container').croppie(opts);
-
-    $('.crop-image-rotate').on('click', function (ev) {
-        $uploadCrop.croppie('rotate', parseInt($(this).data('deg')));
+    $('.crop-image-rotate').on('click', function () {
+        cropper.rotate(parseInt($(this).data('deg')));
     });
 
-    $('#crop-image').on('click', function (ev) {
-        $uploadCrop.croppie('result', opts).then(function (resp) {
-            $("#resultImage").attr("src", resp);
-            $("#croppedFileBase64").attr("value", resp);
+    $('#crop-image').on('click', function () {
+        var canvas = cropper.getCroppedCanvas({
+            maxWidth: 800,
+            maxHeight: 800,
+            fillColor: '#fff',
+            imageSmoothingQuality: 'high'
         });
+        var dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+        $('#resultImage').attr('src', dataUrl);
+        $('#croppedFileBase64').val(dataUrl);
     });
 }
