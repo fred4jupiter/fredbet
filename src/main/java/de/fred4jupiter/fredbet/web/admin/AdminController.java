@@ -134,7 +134,7 @@ public class AdminController {
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
-        dataService.deleteAllBetsMatchesAndTeamsAsync();
+        dataService.deleteAllBetsMatchesAsync();
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/administration";

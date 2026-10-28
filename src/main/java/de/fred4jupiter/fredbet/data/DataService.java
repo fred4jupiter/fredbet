@@ -32,6 +32,13 @@ public class DataService {
 
     @Async
     @Transactional
+    public void deleteAllBetsMatchesAsync() {
+        bettingService.deleteAllBets();
+        matchService.deleteAllMatches();
+    }
+
+    @Async
+    @Transactional
     public void deleteAllBetsMatchesAndTeamsAsync() {
         deleteAllBetsMatchesAndTeams();
     }
