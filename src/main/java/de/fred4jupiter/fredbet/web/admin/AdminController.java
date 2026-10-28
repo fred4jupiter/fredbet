@@ -9,7 +9,6 @@ import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
-import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
 import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.user.UserService;
@@ -135,7 +134,7 @@ public class AdminController {
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
-        dataPopulator.executeAsync(DataPopulator::deleteAllBetsAndMatches);
+        dataService.deleteAllBetsMatchesAndTeamsAsync();
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/administration";

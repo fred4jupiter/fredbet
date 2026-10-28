@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.data;
 import de.fred4jupiter.fredbet.betting.BettingService;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.team.TeamService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,5 +28,11 @@ public class DataService {
         bettingService.deleteAllBets();
         matchService.deleteAllMatches();
         teamService.deleteAllTeams();
+    }
+
+    @Async
+    @Transactional
+    public void deleteAllBetsMatchesAndTeamsAsync() {
+        deleteAllBetsMatchesAndTeams();
     }
 }
