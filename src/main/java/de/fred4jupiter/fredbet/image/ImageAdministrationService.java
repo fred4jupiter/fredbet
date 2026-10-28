@@ -69,11 +69,12 @@ public class ImageAdministrationService {
     }
 
     public void saveImage(byte[] binary, String galleryGroup, String description, AppUser currentUser) {
+        checkIfImageUploadPerUserIsReached(currentUser);
+
         final byte[] thumbnail = imageResizingService.createThumbnail(binary);
         final String imageKey = imageBinaryRepository.saveImage(binary, thumbnail);
 
         final ImageGroup imageGroup = findOrCreateImageGroup(galleryGroup);
-        checkIfImageUploadPerUserIsReached(currentUser);
 
         ImageMetaData imageMetaData = new ImageMetaData(imageKey, imageGroup, currentUser);
         imageMetaData.setDescription(description);
