@@ -13,6 +13,14 @@
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card mt-3">
                         <div class="card-body">
+                            <th:block th:with="imageKey=${@webSecurityUtil.getCurrentUserProfileImageKey()}">
+                                <div class="d-flex align-items-center gap-3 mb-3" th:if="${imageKey}">
+                                    <a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="flex-shrink-0">
+                                        <img th:src="@{'/gallery/show/' + ${imageKey}}" class="current-profile-image rounded" th:alt="#{user.image.cropping.current}"/>
+                                    </a>
+                                    <span class="text-body-secondary" th:text="#{user.image.cropping.current}"></span>
+                                </div>
+                            </th:block>
                             <label for="upload" class="form-label fw-bold" th:text="#{user.image.cropping.upload}"></label>
                             <input id="upload" type="file" accept="image/*" class="form-control"/>
 

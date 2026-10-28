@@ -9,6 +9,13 @@
 	max-width: 100%;
 }
 
+/* the user's current profile image above the upload */
+.current-profile-image {
+	width: 6rem;
+	height: 6rem;
+	object-fit: cover;
+}
+
 /* result preview in the modal */
 .crop-result {
 	max-height: 300px;
