@@ -35,9 +35,9 @@ public class TeamStandingsUT {
     public void shouldReturnCssClassDependingOnRowCount() {
         TeamStandings teamStandings = new TeamStandings(new Team(Country.GERMANY));
 
-        assertThat(teamStandings.getCssClass(1)).isEqualTo("success");
-        assertThat(teamStandings.getCssClass(2)).isEqualTo("success");
-        assertThat(teamStandings.getCssClass(3)).isEqualTo("warning");
+        assertThat(teamStandings.getCssClass(1)).isEqualTo("table-success");
+        assertThat(teamStandings.getCssClass(2)).isEqualTo("table-success");
+        assertThat(teamStandings.getCssClass(3)).isEqualTo("table-warning");
         assertThat(teamStandings.getCssClass(4)).isEmpty();
     }
 }

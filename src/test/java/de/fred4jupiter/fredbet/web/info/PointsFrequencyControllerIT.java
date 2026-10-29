@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.web.info;
 
+import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.excel.PointCountResult;
 import de.fred4jupiter.fredbet.excel.ReportService;
@@ -7,12 +8,8 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -60,10 +57,6 @@ public class PointsFrequencyControllerIT {
     }
 
     private MockHttpSession loggedInSession() {
-        UserDetails admin = userDetailsService.loadUserByUsername("admin");
-        var authentication = UsernamePasswordAuthenticationToken.authenticated(admin, null, admin.getAuthorities());
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, new SecurityContextImpl(authentication));
-        return session;
+        return LoggedInSession.of(userDetailsService, "admin");
     }
 }
