@@ -2,48 +2,71 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{standings.title}"></title>
+		<link rel="stylesheet" th:href="@{/css/pages/standings.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content" th:with="columns=${ {'matchesPlayed', 'wins', 'draws', 'losses', 'goals', 'goalDifference', 'points'} }">
 			<h1 th:text="#{standings.title}"></h1>
-			<div class="row">
-				<th:block th:each="group : ${standingsContainer.groups}" th:with="groupStandings=${standingsContainer.getForGroup(group)}">
-					<div class="col-12 col-sm-6 mb-3" th:unless="${#lists.isEmpty(groupStandings)}">
-						<h2 th:text="#{${group.getTitleMsgKey()}}"></h2>
-						<div class="table-responsive">
-							<table class="table small table-sm table-striped">
-								<thead class="table-light">
-									<tr>
-										<th>#</th>
-										<th th:text="#{standings.team}"></th>
-										<th th:each="column : ${columns}">
-											<abbr th:title="#{${'standings.' + column}}" th:text="#{${'standings.abbr.' + column}}"></abbr>
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:classappend="${teamStandings.getCssClass(iter.count)}" th:each="teamStandings,iter : ${groupStandings}">
-										<td th:text="${iter.count}"></td>
-										<td th:text="${teamStandings.getTeam().getNameTranslated(@messageSourceUtil)}"></td>
-										<td th:text="${teamStandings.numberOfMatches}"></td>
-										<td th:text="${teamStandings.numberOfWins}"></td>
-										<td th:text="${teamStandings.numberOfUndecided}"></td>
-										<td th:text="${teamStandings.numberOfLooses}"></td>
-										<td th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
-										<td th:text="${teamStandings.numberOfGoalDifference}"></td>
-										<td class="fw-bold" th:text="${teamStandings.numberOfPoints}"></td>
-									</tr>
-								</tbody>
-							</table>
+
+			<p class="text-body-secondary" th:unless="${standingsContainer.hasStandings()}" th:text="#{standings.noData}"></p>
+
+			<th:block th:if="${standingsContainer.hasStandings()}">
+				<div class="row g-3 mb-3">
+					<th:block th:each="group : ${standingsContainer.groups}" th:with="groupStandings=${standingsContainer.getForGroup(group)}">
+						<div class="col-12 col-md-6 col-xl-4" th:unless="${#lists.isEmpty(groupStandings)}">
+							<div class="card h-100">
+								<div class="card-header">
+									<h2 class="h5 mb-0" th:text="#{${group.getTitleMsgKey()}}"></h2>
+								</div>
+								<div class="table-responsive">
+									<table class="table small table-sm table-striped align-middle mb-0 standings-table">
+										<thead class="table-light">
+											<tr>
+												<th class="standings-number">#</th>
+												<th th:text="#{standings.team}"></th>
+												<th th:each="column : ${columns}" class="standings-number" th:classappend="${column == 'points'} ? 'standings-points'">
+													<abbr th:title="#{${'standings.' + column}}" th:text="#{${'standings.abbr.' + column}}"></abbr>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:classappend="${teamStandings.getCssClass(iter.count)}" th:each="teamStandings,iter : ${groupStandings}"
+												th:with="team=${teamStandings.team},teamName=${team.getNameTranslated(@messageSourceUtil)}">
+												<td class="standings-number" th:text="${iter.count}"></td>
+												<td>
+													<div class="d-flex align-items-center gap-2">
+														<img class="crest-small flex-shrink-0" th:src="@{/team/{teamId}.svg(teamId=${team.id}, v=${team.version})}" alt="" loading="lazy" />
+														<span th:text="${teamName}"></span>
+													</div>
+												</td>
+												<td class="standings-number" th:text="${teamStandings.numberOfMatches}"></td>
+												<td class="standings-number" th:text="${teamStandings.numberOfWins}"></td>
+												<td class="standings-number" th:text="${teamStandings.numberOfUndecided}"></td>
+												<td class="standings-number" th:text="${teamStandings.numberOfLooses}"></td>
+												<td class="standings-number" th:text="${teamStandings.numberOfGoals} + ':' + ${teamStandings.numberOfGoalsAgainst}"></td>
+												<td class="standings-number" th:text="${teamStandings.numberOfGoalDifference}"></td>
+												<td class="standings-number standings-points" th:text="${teamStandings.numberOfPoints}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
 						</div>
+					</th:block>
+				</div>
+
+				<div class="small text-body-secondary">
+					<div class="d-flex flex-wrap column-gap-3 row-gap-1 mb-1">
+						<span><span class="standings-color bg-success-subtle"></span> <span th:text="#{standings.legend.qualified}"></span></span>
+						<span><span class="standings-color bg-warning-subtle"></span> <span th:text="#{standings.legend.maybeQualified}"></span></span>
 					</div>
-				</th:block>
-			</div>
-			<p class="small text-body-secondary">
-				<th:block th:each="column, iter : ${columns}">
-					<span class="text-nowrap"><strong th:text="#{${'standings.abbr.' + column}}"></strong> = <span th:text="#{${'standings.' + column}}"></span></span><span th:unless="${iter.last}"> · </span>
-				</th:block>
-			</p>
+					<p>
+						<th:block th:each="column, iter : ${columns}">
+							<span class="text-nowrap"><strong th:text="#{${'standings.abbr.' + column}}"></strong> = <span th:text="#{${'standings.' + column}}"></span></span><span th:unless="${iter.last}"> · </span>
+						</th:block>
+					</p>
+				</div>
+			</th:block>
 		</div>
 	</body>
 </html>
