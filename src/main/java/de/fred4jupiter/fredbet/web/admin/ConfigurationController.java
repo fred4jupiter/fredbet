@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/config")
@@ -54,6 +57,18 @@ public class ConfigurationController {
         this.cacheAdministrationService.clearCaches();
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.cacheCleared");
+        return "redirect:/config/show";
+    }
+
+    @PostMapping("/clearSelectedCaches")
+    public String clearSelectedCaches(@RequestParam(name = "selectedCaches", required = false) List<String> selectedCaches,
+                                      RedirectAttributes redirect) {
+        List<String> clearedCaches = this.cacheAdministrationService.clearCaches(selectedCaches);
+        if (clearedCaches.isEmpty()) {
+            webMessageUtil.addErrorMsg(redirect, "administration.msg.error.noCacheSelected");
+        } else {
+            webMessageUtil.addInfoMsg(redirect, "administration.msg.info.selectedCachesCleared", String.join(", ", clearedCaches));
+        }
         return "redirect:/config/show";
     }
 
