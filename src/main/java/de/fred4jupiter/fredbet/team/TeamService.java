@@ -179,33 +179,31 @@ public class TeamService {
      * given, the default crest of the entry (or the placeholder) is used.
      *
      * @param favourite whether the team is marked as team favourite (removes the flag from all other teams)
-     * @param crestSvg  optional SVG content of the crest
+     * @param crestImage optional crest as SVG, JPEG or PNG image (JPEG and PNG are wrapped into an SVG)
      */
-    public Team createTeam(TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestSvg) {
+    public Team createTeam(TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestImage) {
         Team team = teamBundleEntry != null ? new Team(teamBundleEntry) : new Team(teamName);
-        return saveTeam(team, teamBundleEntry, teamName, favourite, crestSvg, true);
+        return saveTeam(team, teamBundleEntry, teamName, favourite, crestImage, true);
     }
 
     /**
      * Updates an existing team. If no crest is given, the stored crest is kept unless the team bundle entry has changed.
      *
      * @param favourite whether the team is marked as team favourite (removes the flag from all other teams)
-     * @param crestSvg  optional SVG content of the crest
+     * @param crestImage optional crest as SVG, JPEG or PNG image (JPEG and PNG are wrapped into an SVG)
      */
-    public Team updateTeam(Long teamId, TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestSvg) {
+    public Team updateTeam(Long teamId, TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestImage) {
         Team team = teamRepository.findById(teamId)
             .orElseThrow(() -> new IllegalArgumentException("Could not find team with id=" + teamId));
         boolean teamBundleEntryChanged = !Objects.equals(team.getTeamBundleEntry(), teamBundleEntry);
-        return saveTeam(team, teamBundleEntry, teamName, favourite, crestSvg, teamBundleEntryChanged);
+        return saveTeam(team, teamBundleEntry, teamName, favourite, crestImage, teamBundleEntryChanged);
     }
 
-    private Team saveTeam(Team team, TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestSvg, boolean resetCrest) {
+    private Team saveTeam(Team team, TeamBundleEntry teamBundleEntry, String teamName, boolean favourite, byte[] crestImage, boolean resetCrest) {
         if (teamBundleEntry == null && StringUtils.isBlank(teamName)) {
             throw new IllegalArgumentException("Either team bundle entry or team name must be given!");
         }
-        if (crestSvg != null && !SvgCrestValidator.isValidSvg(crestSvg)) {
-            throw new InvalidCrestException("Given crest is no valid SVG image!");
-        }
+        String crestSvg = toCrestSvg(crestImage);
 
         String name = teamBundleEntry != null ? null : teamName.trim();
         checkTeamIsUnique(team.getId(), teamBundleEntry, name);
@@ -218,7 +216,7 @@ public class TeamService {
         team.setFavourite(favourite);
 
         if (crestSvg != null) {
-            team.setSvgContent(new SvgImage(new String(crestSvg, StandardCharsets.UTF_8)));
+            team.setSvgContent(new SvgImage(crestSvg));
         } else if (resetCrest || StringUtils.isBlank(team.getSvgContent())) {
             team.setSvgContent(loadDefaultCrest(teamBundleEntry));
         }
@@ -284,6 +282,22 @@ public class TeamService {
             throw new TeamInUseException(teamId, teamUsage);
         }
         teamRepository.delete(team);
+    }
+
+    /**
+     * @throws InvalidCrestException if the given crest is no valid SVG, JPEG or PNG image
+     */
+    private String toCrestSvg(byte[] crestImage) {
+        if (crestImage == null) {
+            return null;
+        }
+        if (RasterCrestConverter.isRasterImage(crestImage)) {
+            return RasterCrestConverter.toSvg(crestImage);
+        }
+        if (!SvgCrestValidator.isValidSvg(crestImage)) {
+            throw new InvalidCrestException("Given crest is no valid SVG image!");
+        }
+        return new String(crestImage, StandardCharsets.UTF_8);
     }
 
     /**

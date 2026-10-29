@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/teams")
@@ -45,7 +46,9 @@ public class TeamController {
 
     private static final String REDIRECT_LIST_TEAMS = "redirect:/teams";
 
-    private static final String CONTENT_TYPE_SVG = "image/svg+xml";
+    private static final Set<String> CREST_CONTENT_TYPES = Set.of("image/svg+xml", "image/jpeg", "image/png");
+
+    private static final Set<String> CREST_FILE_EXTENSIONS = Set.of(".svg", ".jpg", ".jpeg", ".png");
 
     private final TeamService teamService;
 
@@ -101,15 +104,15 @@ public class TeamController {
     @PostMapping
     public String save(@Valid TeamCommand teamCommand, BindingResult result, Model model, RedirectAttributes redirect) {
         validateTeamBundleEntryOrName(teamCommand, result);
-        byte[] crestSvg = readCrestFile(teamCommand.getCrestFile(), result);
+        byte[] crestImage = readCrestFile(teamCommand.getCrestFile(), result);
         if (result.hasErrors()) {
             return showEditView(model);
         }
 
         try {
             Team savedTeam = teamCommand.isNew()
-                ? teamService.createTeam(teamCommand.resolveTeamBundleEntry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg)
-                : teamService.updateTeam(teamCommand.getTeamId(), teamCommand.resolveTeamBundleEntry(), teamCommand.getName(), teamCommand.isFavourite(), crestSvg);
+                ? teamService.createTeam(teamCommand.resolveTeamBundleEntry(), teamCommand.getName(), teamCommand.isFavourite(), crestImage)
+                : teamService.updateTeam(teamCommand.getTeamId(), teamCommand.resolveTeamBundleEntry(), teamCommand.getName(), teamCommand.isFavourite(), crestImage);
 
             String msgKey = teamCommand.isNew() ? "team.msg.created" : "team.msg.updated";
             webMessageUtil.addInfoMsg(redirect, msgKey, savedTeam.getNameTranslated(messageSourceUtil));
@@ -118,7 +121,7 @@ public class TeamController {
             String field = teamCommand.isUseTeamBundleEntry() ? "teamBundleEntry" : "name";
             result.rejectValue(field, "team.form.msg.alreadyExists");
         } catch (InvalidCrestException e) {
-            result.rejectValue("crestFile", "team.form.msg.invalidSvg");
+            result.rejectValue("crestFile", "team.form.msg.invalidCrest");
         }
 
         return showEditView(model);
@@ -183,8 +186,8 @@ public class TeamController {
         }
 
         String filename = Objects.toString(crestFile.getOriginalFilename(), "").toLowerCase(Locale.ROOT);
-        if (!filename.endsWith(".svg") || !CONTENT_TYPE_SVG.equals(crestFile.getContentType())) {
-            result.rejectValue("crestFile", "team.form.msg.invalidSvg");
+        if (CREST_FILE_EXTENSIONS.stream().noneMatch(filename::endsWith) || !CREST_CONTENT_TYPES.contains(crestFile.getContentType())) {
+            result.rejectValue("crestFile", "team.form.msg.invalidCrest");
             return null;
         }
 
@@ -192,7 +195,7 @@ public class TeamController {
             return crestFile.getBytes();
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
-            result.rejectValue("crestFile", "team.form.msg.invalidSvg");
+            result.rejectValue("crestFile", "team.form.msg.invalidCrest");
             return null;
         }
     }

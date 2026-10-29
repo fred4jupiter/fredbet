@@ -131,6 +131,28 @@ public class TeamServiceUT {
     }
 
     @Test
+    public void createTeam_withPngCrest_savesCrestWrappedInSvg() {
+        byte[] crest = RasterCrestConverterUT.createPng(40, 20);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, "FC Test", false, crest);
+
+        assertThat(result.getSvgContent()).startsWith("<svg").contains("viewBox=\"0 0 40 20\"").contains("data:image/png;base64,");
+    }
+
+    @Test
+    public void createTeam_withJpegCrest_savesCrestWrappedInSvg() {
+        byte[] crest = RasterCrestConverterUT.createJpeg(40, 20);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, "FC Test", false, crest);
+
+        assertThat(result.getSvgContent()).startsWith("<svg").contains("viewBox=\"0 0 40 20\"").contains("data:image/jpeg;base64,");
+    }
+
+    @Test
     public void createTeam_withCountryWithoutCrest_usesCountryCrestAndIgnoresName() {
         when(teamRepository.findByTeamBundleEntry(Country.GERMANY)).thenReturn(null);
         when(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false)).thenReturn(Optional.of(new SvgImage("<svg>germany</svg>")));
