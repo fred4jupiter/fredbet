@@ -258,6 +258,25 @@ public class TeamServiceUT {
     }
 
     @Test
+    public void deleteAllUnusedTeams_keepsTeamsStillInUse() {
+        Team unused = new Team("FC Unused");
+        Team inMatch = new Team("FC Match");
+        Team inExtraBet = new Team("FC Extra Bet");
+        when(teamRepository.findAll()).thenReturn(List.of(unused, inMatch, inExtraBet));
+        when(matchRepository.countByTeamOneOrTeamTwo(unused, unused)).thenReturn(0L);
+        when(matchRepository.countByTeamOneOrTeamTwo(inMatch, inMatch)).thenReturn(1L);
+        when(matchRepository.countByTeamOneOrTeamTwo(inExtraBet, inExtraBet)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(unused, unused, unused)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(inMatch, inMatch, inMatch)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(inExtraBet, inExtraBet, inExtraBet)).thenReturn(2L);
+
+        TeamDeletionResult result = teamService.deleteAllUnusedTeams();
+
+        assertThat(result).isEqualTo(new TeamDeletionResult(1, 2));
+        verify(teamRepository).deleteAll(List.of(unused));
+    }
+
+    @Test
     public void createTeamsOfBundle_createsOnlyMissingCountryTeams() {
         when(teamRepository.findAll()).thenReturn(List.of(new Team(Country.GERMANY), new Team("FC Test")));
         when(teamBundleProvider.getTeams(TeamBundle.EUROPEAN_CHAMPIONSHIP)).thenReturn(List.of(Country.GERMANY, Country.FRANCE, Country.SPAIN));

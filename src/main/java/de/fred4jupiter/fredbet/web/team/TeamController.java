@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.team.InvalidCrestException;
 import de.fred4jupiter.fredbet.team.TeamAlreadyExistsException;
+import de.fred4jupiter.fredbet.team.TeamDeletionResult;
 import de.fred4jupiter.fredbet.team.TeamInUseException;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.team.TeamUsage;
@@ -142,6 +143,18 @@ public class TeamController {
             return REDIRECT_LIST_TEAMS + "/" + teamId;
         }
 
+        return REDIRECT_LIST_TEAMS;
+    }
+
+    @PostMapping("/deleteAll")
+    public String deleteAll(RedirectAttributes redirect) {
+        TeamDeletionResult result = teamService.deleteAllUnusedTeams();
+        LOG.debug("deleted {} teams, kept {} teams still in use", result.deleted(), result.kept());
+        if (result.kept() > 0) {
+            webMessageUtil.addErrorMsg(redirect, "team.msg.allDeletedSomeInUse", result.deleted(), result.kept());
+        } else {
+            webMessageUtil.addInfoMsg(redirect, "team.msg.allDeleted", result.deleted());
+        }
         return REDIRECT_LIST_TEAMS;
     }
 

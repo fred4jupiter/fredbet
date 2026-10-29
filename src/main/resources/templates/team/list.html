@@ -8,9 +8,32 @@
 <div layout:fragment="content">
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
         <h1 class="mb-0" th:text="#{team.list.title} + ' (' + ${allTeams.size()} + ')'"></h1>
-        <a th:href="@{/teams/create}" class="btn btn-primary" role="button">
-            <i class="fas fa-plus"></i> <span th:text="#{team.list.createTeam}"></span>
-        </a>
+        <div class="d-flex flex-wrap gap-2">
+            <a th:href="@{/teams/create}" class="btn btn-primary" role="button">
+                <i class="fas fa-plus"></i> <span th:text="#{team.list.createTeam}"></span>
+            </a>
+            <button th:unless="${allTeams.isEmpty()}" type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteAllTeams">
+                <i class="fas fa-trash"></i> <span th:text="#{team.list.deleteAllTeams}"></span>
+            </button>
+        </div>
+    </div>
+
+    <div th:unless="${allTeams.isEmpty()}" class="modal fade" id="confirmDeleteAllTeams" tabindex="-1" aria-labelledby="confirmDeleteAllTeamsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="confirmDeleteAllTeamsLabel" th:text="#{confirmation.msg}"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{button.cancel}"></button>
+                </div>
+                <div class="modal-body" th:text="#{team.list.deleteAllTeams.hint}"></div>
+                <div class="modal-footer">
+                    <form th:action="@{/teams/deleteAll}" method="post">
+                        <button type="submit" class="btn btn-danger" th:text="#{team.list.deleteAllTeams}"></button>
+                    </form>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="card mb-3">

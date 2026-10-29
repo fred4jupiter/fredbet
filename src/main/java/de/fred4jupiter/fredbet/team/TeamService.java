@@ -287,6 +287,16 @@ public class TeamService {
     }
 
     /**
+     * Deletes all teams that are not used in a match or an extra bet. Teams that are still used are kept.
+     */
+    public TeamDeletionResult deleteAllUnusedTeams() {
+        List<Team> allTeams = teamRepository.findAll();
+        List<Team> unusedTeams = allTeams.stream().filter(team -> !getTeamUsage(team).isUsed()).toList();
+        teamRepository.deleteAll(unusedTeams);
+        return new TeamDeletionResult(unusedTeams.size(), allTeams.size() - unusedTeams.size());
+    }
+
+    /**
      * Only one team can be the team favourite, so the flag is removed from all other teams.
      */
     private void clearOtherFavourites(Long teamId) {
