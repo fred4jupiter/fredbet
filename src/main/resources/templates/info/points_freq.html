@@ -2,34 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{pointsfrequency.title}"></title>
+		<link rel="stylesheet" th:href="@{/css/pages/points_freq.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<h1 th:text="#{pointsfrequency.title}"></h1>
-			<span th:text="#{pointsfrequency.title2}"></span>
+			<p class="text-body-secondary" th:text="#{pointsfrequency.title2}"></p>
 
-            <div class="row mt-3" th:if="${pointsFrequencyCommand != null}">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-3" th:each="pointsfrequency : ${pointsFrequencyCommand.resultList}">
-					<div class="table-responsive">
-				   		<table class="table table-centered small table-sm table-striped">
-							<thead>
-								<tr class="active">
-									<th th:text="#{pointsfrequency.table.header.name}"></th>
-									<th>
-										<span class="badge rounded-pill bg-warning big-badge" th:text="${pointsfrequency.points}">
-										</span>
-										<span th:text="#{pointsfrequency.points}"></span>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="success" th:each="pointCountResult : ${pointsfrequency.list}">
-									<td th:text="${pointCountResult.username}"></td>
-									<td th:text="${pointCountResult.numberOfPointsCount}"></td>
-								</tr>
-							</tbody>
-				   		</table>
-				   	</div>
+			<div class="card" th:if="${pointsFrequencyCommand != null}">
+				<div class="table-responsive">
+					<table class="table table-striped table-hover align-middle mb-0 points-freq-table">
+						<thead>
+							<tr>
+								<th scope="col" class="text-end">#</th>
+								<th scope="col" class="points-freq-name" th:text="#{pointsfrequency.table.header.name}"></th>
+								<th scope="col" class="text-center" th:each="points : ${pointsFrequencyCommand.pointsList}">
+									<span class="badge rounded-pill bg-warning text-dark" th:text="${points}"></span>
+									<span class="d-block small fw-normal" th:text="#{pointsfrequency.points}"></span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="row, iter : ${pointsFrequencyCommand.rows}">
+								<td class="text-end text-body-secondary" th:text="${iter.count}"></td>
+								<th scope="row" class="points-freq-name fw-normal">
+									<div class="d-flex align-items-center gap-2">
+										<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${row.username})}"></span>
+										<span th:text="${row.username}"></span>
+									</div>
+								</th>
+								<td class="text-center" th:each="points : ${pointsFrequencyCommand.pointsList}"
+									th:with="count=${row.getCount(points)}">
+									<span th:if="${pointsFrequencyCommand.isMaxCount(points, count)}" class="badge rounded-pill text-bg-success"
+										  th:text="${count}" th:title="#{pointsfrequency.maxCount}"></span>
+									<span th:unless="${pointsFrequencyCommand.isMaxCount(points, count)}" th:text="${count}"
+										  th:classappend="${count == 0} ? 'text-body-tertiary'"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
