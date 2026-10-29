@@ -7,7 +7,12 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
+		<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+			<h1 class="mb-0" th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
+			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" th:href="@{/match/create}" class="btn btn-primary" role="button">
+				<i class="fas fa-plus"></i> <span th:text="#{matches.list.createMatch}"></span>
+			</a>
+		</div>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3" th:each="matchCommand : ${allMatches}">
 					<a class="anchor" th:id="${matchCommand.match.id}"></a>
@@ -84,7 +89,6 @@
 					</div>
 				</div>
 			</div>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
 	</div>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript" th:src="@{/js/pages/matches_list.js}" charset="UTF-8"></script>
