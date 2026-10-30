@@ -9,9 +9,15 @@
 	<div layout:fragment="content">
 		<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
 			<h1 class="mb-0" th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" th:href="@{/match/create}" class="btn btn-primary" role="button">
-				<i class="fas fa-plus"></i> <span th:text="#{matches.list.createMatch}"></span>
-			</a>
+			<div class="d-flex flex-wrap gap-2">
+				<!-- always exports all matches with the own bets, independent of the current filter -->
+				<a th:href="@{/matches/pdf}" class="btn btn-outline-secondary" role="button" th:title="#{pdf.export.myBets.button}">
+					<i class="fas fa-file-pdf" aria-hidden="true"></i> <span th:text="#{pdf.export.myBets.button}"></span>
+				</a>
+				<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" th:href="@{/match/create}" class="btn btn-primary" role="button">
+					<i class="fas fa-plus"></i> <span th:text="#{matches.list.createMatch}"></span>
+				</a>
+			</div>
 		</div>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3" th:each="matchCommand : ${allMatches}">

@@ -1,15 +1,22 @@
 package de.fred4jupiter.fredbet.web.matches;
 
+import de.fred4jupiter.fredbet.betting.BetsPdfExportService;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.security.SecurityService;
+import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -18,13 +25,39 @@ public class MatchController {
 
     private static final String VIEW_LIST_MATCHES = "matches/list";
 
+    private static final String CONTENT_TYPE_PDF = "application/pdf";
+
     private final WebMessageUtil messageUtil;
 
     private final MatchCommandMapper matchCommandMapper;
 
-    public MatchController(WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper) {
+    private final BetsPdfExportService betsPdfExportService;
+
+    private final SecurityService securityService;
+
+    private final DateTimeFormatter fileNameDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
+
+    public MatchController(WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper, BetsPdfExportService betsPdfExportService,
+                           SecurityService securityService) {
         this.messageUtil = messageUtil;
         this.matchCommandMapper = matchCommandMapper;
+        this.betsPdfExportService = betsPdfExportService;
+        this.securityService = securityService;
+    }
+
+    /**
+     * All matches with the bets of the current user as PDF (DIN A4).
+     */
+    @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
+    public ResponseEntity<byte[]> exportMyBetsAsPdf() {
+        final String username = securityService.getCurrentUserName();
+        byte[] fileContent = betsPdfExportService.exportBetsOfUser(username, LocaleContextHolder.getLocale());
+        if (fileContent == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final String fileName = "%s_fredbet_bets_%s.pdf".formatted(fileNameDateFormatter.format(LocalDateTime.now()), username);
+        return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF);
     }
 
     @GetMapping
