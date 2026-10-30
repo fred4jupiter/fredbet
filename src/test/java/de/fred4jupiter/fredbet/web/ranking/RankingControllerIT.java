@@ -44,6 +44,11 @@ public class RankingControllerIT {
         UsernamePoints carl = new UsernamePoints("carl", 5);
         bert.setSameRankingPositionAsOtherUser(true);
         admin.setSameRankingPositionAsOtherUser(true);
+        // the positions are calculated by the (mocked) ranking service
+        anna.setRankPosition(1);
+        bert.setRankPosition(2);
+        admin.setRankPosition(2);
+        carl.setRankPosition(4);
         when(rankingService.calculateCurrentRanking(RankingSelection.MIXED)).thenReturn(List.of(anna, bert, admin, carl));
 
         MvcResult result = mockMvc.perform(get("/ranking").session(englishSession()))
@@ -55,11 +60,8 @@ public class RankingControllerIT {
                 containsString("Correct Result Bets: 0, Goal Difference: 0"))))
             .andReturn();
 
-        assertThat(anna.getRankPosition()).isEqualTo(1);
-        assertThat(bert.getRankPosition()).isEqualTo(2);
-        assertThat(admin.getRankPosition()).isEqualTo(2);
-        assertThat(carl.getRankPosition()).isEqualTo(4);
-        assertThat(result.getResponse().getContentAsString()).doesNotContain("ranking-medal-4");
+        String html = result.getResponse().getContentAsString();
+        assertThat(html).contains("ranking-medal-2\">2</span>").doesNotContain("ranking-medal-4");
     }
 
     @Test

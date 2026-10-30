@@ -10,16 +10,25 @@ import de.fred4jupiter.fredbet.settings.RuntimeSettingsService;
 import de.fred4jupiter.fredbet.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.pdf.PdfTableDataBuilder;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import com.lowagie.text.Element;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.Color;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 @Service
 @Transactional
 public class RankingService {
+
+    // same colors as on the ranking page (ranking.css)
+    private static final Color SHARED_POSITION_COLOR = new Color(255, 243, 205);
+
+    private static final Map<Integer, Color> MEDAL_COLORS = Map.of(
+        1, new Color(245, 197, 24),
+        2, new Color(192, 196, 200),
+        3, new Color(211, 154, 99));
 
     private final BetRepository betRepository;
 
@@ -52,9 +61,11 @@ public class RankingService {
 
         calculateAdditionalMetricsForRanking(rankings);
 
-        sameRankingCollector.markEntriesWithSameRanking(rankings);
-
-        return filterAndSortRankings(rankingSelection, rankings);
+        // positions and ties are determined within the selection (e.g. only adults), not across all users
+        final List<UsernamePoints> sortedRankings = filterAndSortRankings(rankingSelection, rankings);
+        sameRankingCollector.markEntriesWithSameRanking(sortedRankings);
+        sameRankingCollector.assignRankPositions(sortedRankings);
+        return sortedRankings;
     }
 
     private void calculateAdditionalMetricsForRanking(List<UsernamePoints> rankings) {
@@ -106,36 +117,51 @@ public class RankingService {
 
     public byte[] exportBetsToPdf(Locale locale, RankingSelection rankingSelection) {
         final String title = "FredBet " + messageSourceUtil.getMessageFor("ranking.list.title", locale);
-        PdfTableDataBuilder builder = PdfTableDataBuilder.create()
-            .withHeaderColumn("#")
-            .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale));
         final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        if (runtimeSettings.isEnabledParentChildRanking()) {
+        final boolean parentChildRanking = runtimeSettings.isEnabledParentChildRanking();
+
+        PdfTableDataBuilder builder = PdfTableDataBuilder.create()
+            .withTitle(title)
+            .withLocale(locale)
+            .withHeaderColumn("#")
+            .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.username", locale), Element.ALIGN_LEFT);
+        if (parentChildRanking) {
+            builder.withSubtitle(messageSourceUtil.getMessageFor(rankingSelectionMessageKey(rankingSelection), locale));
             builder.withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.child", locale));
-            builder.withColumnWidths(new float[]{1, 3, 2, 3, 3, 3});
+            builder.withColumnWidths(new float[]{1, 5, 1.5f, 2, 2, 2});
         } else {
-            builder.withColumnWidths(new float[]{1, 3, 3, 3, 3});
+            builder.withColumnWidths(new float[]{1, 5, 2, 2, 2});
         }
         builder.withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.totalPoints", locale))
             .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.correctResult", locale))
             .withHeaderColumn(messageSourceUtil.getMessageFor("pdf.export.goalDifference", locale));
 
-        builder.withTitle(title).withLocale(locale);
-
         final List<UsernamePoints> rankings = calculateCurrentRanking(rankingSelection);
+        if (rankings.stream().anyMatch(UsernamePoints::isSameRankingPositionAsOtherUser)) {
+            builder.withLegendEntry(SHARED_POSITION_COLOR, messageSourceUtil.getMessageFor("ranking.legend.sharedPosition", locale));
+        }
         final Map<String, Boolean> relationMap = childRelationFetcher.fetchUserIsChildRelation();
 
-        final AtomicInteger rank = new AtomicInteger();
         return pdfExportService.createPdfFileFrom(builder.build(), rankings, (rowContentAdder, row) -> {
-            rowContentAdder.addCellContent("" + rank.incrementAndGet());
-            rowContentAdder.addCellContent(row.getUserName());
-            if (runtimeSettings.isEnabledParentChildRanking()) {
-                Boolean isChild = relationMap.get(row.getUserName());
-                rowContentAdder.addCellContent(isChild ? "X" : "");
+            if (row.isSameRankingPositionAsOtherUser()) {
+                rowContentAdder.setRowBackground(SHARED_POSITION_COLOR);
             }
-            rowContentAdder.addCellContent("" + row.getTotalPoints());
-            rowContentAdder.addCellContent("" + row.getCorrectResultCount());
-            rowContentAdder.addCellContent("" + row.getGoalDifference());
+            rowContentAdder.addCellContent(String.valueOf(row.getRankPosition()), MEDAL_COLORS.get(row.getRankPosition()));
+            rowContentAdder.addCellContent(row.getUserName());
+            if (parentChildRanking) {
+                rowContentAdder.addCellContent(Boolean.TRUE.equals(relationMap.get(row.getUserName())) ? "X" : "");
+            }
+            rowContentAdder.addCellContent(String.valueOf(row.getTotalPoints()));
+            rowContentAdder.addCellContent(String.valueOf(row.getCorrectResultCount()));
+            rowContentAdder.addCellContent(String.valueOf(row.getGoalDifference()));
         });
+    }
+
+    private String rankingSelectionMessageKey(RankingSelection rankingSelection) {
+        return switch (rankingSelection) {
+            case MIXED -> "ranking.mode.mixed";
+            case ONLY_ADULTS -> "ranking.mode.adults";
+            case ONLY_CHILDREN -> "ranking.mode.children";
+        };
     }
 }

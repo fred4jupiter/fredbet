@@ -44,6 +44,19 @@ public class SameRankingCollectorUT {
         assertThat(sameResult).isEqualTo(0);
     }
 
+    @Test
+    public void assignRankPositionsSharesPositionForSameRanking() {
+        List<UsernamePoints> list = Arrays.asList(
+                createFor("user1", 10, 3, 170),
+                createFor("user2", 8, 2, 170),
+                createFor("user3", 8, 2, 170),
+                createFor("user4", 5, 1, 171));
+
+        sameRankingCollector.assignRankPositions(list);
+
+        assertThat(list).extracting(UsernamePoints::getRankPosition).containsExactly(1, 2, 2, 4);
+    }
+
     private UsernamePoints createFor(String username, int totalPoints, int correctResults, int goalDifference) {
         UsernamePoints usernamePoints = new UsernamePoints(username, totalPoints);
         usernamePoints.setCorrectResultCount(correctResults);
