@@ -122,11 +122,6 @@
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>4.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>io.github.wimdeblauwe</groupId>
-            <artifactId>htmx-spring-boot</artifactId>
-            <version>5.0.0</version>
-        </dependency>
 
         <!-- webjars -->
         <dependency>
