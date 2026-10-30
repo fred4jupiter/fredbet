@@ -106,7 +106,6 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li><a class="dropdown-item" th:href="@{/gallery/show}" th:text="#{image.gallery.title}"></a></li>
-                                <li><a class="dropdown-item" th:href="@{/image/show}" th:text="#{image.upload.title}"></a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('PERM_USER_ADMINISTRATION','PERM_SYSTEM_INFO','PERM_ADMINISTRATION')">
