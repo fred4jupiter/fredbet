@@ -6,7 +6,12 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h1 th:text="#{user.list.title} + ' (' + ${allUsers.size()} + ')'"></h1>
+			<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+				<h1 class="mb-0" th:text="#{user.list.title} + ' (' + ${allUsers.size()} + ')'"></h1>
+				<a sec:authorize="hasAuthority('PERM_CREATE_USER')" th:href="@{/user/create}" class="btn btn-primary" role="button">
+					<i class="fas fa-plus"></i> <span th:text="#{user.list.createUser}"></span>
+				</a>
+			</div>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="userDto : ${allUsers}">
 					<div class="card mb-3">
@@ -30,12 +35,6 @@
 					</div>
 				</div>
 			</div>
-
-            <div class="row mt-3">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <a href="#" th:href="@{/user/create}" class="btn btn-primary" role="button" th:text="#{user.list.createUser}"></a>
-                </div>
-            </div>
 		</div>
 	</body>
 </html>
