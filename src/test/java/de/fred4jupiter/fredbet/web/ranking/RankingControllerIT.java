@@ -1,21 +1,17 @@
 package de.fred4jupiter.fredbet.web.ranking;
 
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.ranking.RankingService;
 import de.fred4jupiter.fredbet.ranking.UsernamePoints;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -25,13 +21,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class RankingControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @MockitoBean
     private RankingService rankingService;
@@ -51,7 +45,7 @@ public class RankingControllerIT {
         carl.setRankPosition(4);
         when(rankingService.calculateCurrentRanking(RankingSelection.MIXED)).thenReturn(List.of(anna, bert, admin, carl));
 
-        MvcResult result = mockMvc.perform(get("/ranking").session(englishSession()))
+        MvcResult result = mockMvc.perform(get("/ranking"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("ranking-medal-1"),
@@ -68,14 +62,9 @@ public class RankingControllerIT {
     public void showNoRankingMessageWithoutBets() throws Exception {
         when(rankingService.calculateCurrentRanking(RankingSelection.MIXED)).thenReturn(List.of());
 
-        mockMvc.perform(get("/ranking").session(englishSession()))
+        mockMvc.perform(get("/ranking"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("No bets assigned!")));
     }
 
-    private MockHttpSession englishSession() {
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.ENGLISH);
-        return session;
-    }
 }

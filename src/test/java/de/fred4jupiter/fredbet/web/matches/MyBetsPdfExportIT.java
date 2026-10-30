@@ -4,7 +4,6 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.parser.PdfTextExtractor;
 import de.fred4jupiter.fredbet.betting.BettingService;
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
@@ -14,18 +13,15 @@ import de.fred4jupiter.fredbet.match.MatchService;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -33,13 +29,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class MyBetsPdfExportIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @MockitoBean
     private MatchService matchService;
@@ -83,7 +77,7 @@ public class MyBetsPdfExportIT {
         when(matchService.findAllByOrderByKickOffDateAsc()).thenReturn(matches);
         when(bettingService.findAllByUsername("admin")).thenReturn(List.of(bet, penaltyBet));
 
-        byte[] pdf = mockMvc.perform(get("/matches/pdf").session(englishSession()))
+        byte[] pdf = mockMvc.perform(get("/matches/pdf"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/pdf"))
             .andReturn().getResponse().getContentAsByteArray();
@@ -122,9 +116,4 @@ public class MyBetsPdfExportIT {
         return team;
     }
 
-    private MockHttpSession englishSession() {
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.ENGLISH);
-        return session;
-    }
 }

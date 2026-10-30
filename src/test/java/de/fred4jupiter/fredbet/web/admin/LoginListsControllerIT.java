@@ -1,15 +1,10 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-
-import java.util.Locale;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -17,17 +12,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class LoginListsControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     @Test
     public void showLastLogins() throws Exception {
-        mockMvc.perform(get("/administration/lastlogins").session(englishSession()))
+        mockMvc.perform(get("/administration/lastlogins"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("Last logins of users ("),
@@ -36,16 +29,11 @@ public class LoginListsControllerIT {
 
     @Test
     public void showActiveUsers() throws Exception {
-        mockMvc.perform(get("/administration/active/users").session(englishSession()))
+        mockMvc.perform(get("/administration/active/users"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("Currently logged-in users ("),
                 containsString("list-group"))));
     }
 
-    private MockHttpSession englishSession() {
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.ENGLISH);
-        return session;
-    }
 }

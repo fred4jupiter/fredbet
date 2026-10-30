@@ -1,27 +1,25 @@
 package de.fred4jupiter.fredbet.web.login;
 
 import de.fred4jupiter.fredbet.admin.LoginLogoService;
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.web.WebAttributes;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,9 +32,6 @@ public class LoginControllerIT {
 
     @Autowired
     private LoginLogoService loginLogoService;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Test
     public void showLoginPageWithoutLogo() throws Exception {
@@ -91,19 +86,14 @@ public class LoginControllerIT {
     }
 
     @Test
+    @WithUserDetails("admin")
     public void logoutWithLoginLogoShowsLoginPage() throws Exception {
         loginLogoService.saveImage("logo".getBytes(StandardCharsets.UTF_8));
-
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        String html = mockMvc.perform(get("/matches/upcoming").session(session)).andReturn().getResponse().getContentAsString();
-        Matcher matcher = Pattern.compile("name=\"_csrf\" value=\"([^\"]+)\"").matcher(html);
-        assertThat(matcher.find()).isTrue();
-
-        MvcResult logout = mockMvc.perform(post("/logout").session(session).param("_csrf", matcher.group(1)))
+        MvcResult logout = mockMvc.perform(post("/logout").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andReturn();
 
-        mockMvc.perform(get(logout.getResponse().getRedirectedUrl()))
+        mockMvc.perform(get(logout.getResponse().getRedirectedUrl()).with(anonymous()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("id=\"loginLogo\"")));
     }

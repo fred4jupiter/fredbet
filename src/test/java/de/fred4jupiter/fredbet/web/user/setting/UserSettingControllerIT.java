@@ -1,15 +1,10 @@
 package de.fred4jupiter.fredbet.web.user.setting;
 
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-
-import java.util.Locale;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -17,17 +12,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class UserSettingControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     @Test
     public void showSettingsWithReadableThemeNames() throws Exception {
-        mockMvc.perform(get("/setting").session(englishSession()))
+        mockMvc.perform(get("/setting"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("form-switch"),
@@ -38,14 +31,9 @@ public class UserSettingControllerIT {
 
     @Test
     public void resetToDefaultsShowsDefaultTheme() throws Exception {
-        mockMvc.perform(get("/setting/default").session(englishSession()))
+        mockMvc.perform(get("/setting/default"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("value=\"DEFAULT\" selected=\"selected\">Default</option>")));
     }
 
-    private MockHttpSession englishSession() {
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.ENGLISH);
-        return session;
-    }
 }

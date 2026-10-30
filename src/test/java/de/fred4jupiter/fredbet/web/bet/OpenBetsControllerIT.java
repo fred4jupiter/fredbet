@@ -1,24 +1,20 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.betting.BettingService;
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -30,13 +26,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class OpenBetsControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @MockitoBean
     private BettingService bettingService;
@@ -49,7 +43,7 @@ public class OpenBetsControllerIT {
             match(102L, day.plusHours(3), "FC Three", "FC Four"),
             match(103L, day.plusDays(1), "FC Five", "FC Six")));
 
-        MvcResult result = mockMvc.perform(get("/bet/open").session(englishSession()))
+        MvcResult result = mockMvc.perform(get("/bet/open"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("/bet/createOrUpdate/101?redirectViewName=OPEN_BETS"),
@@ -64,7 +58,7 @@ public class OpenBetsControllerIT {
 
     @Test
     public void diceShowsMessageAfterRedirect() throws Exception {
-        mockMvc.perform(get("/bet/dice").session(englishSession()))
+        mockMvc.perform(get("/bet/dice"))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/bet/open"))
             .andExpect(flash().attributeExists("globalMessage"));
@@ -89,9 +83,4 @@ public class OpenBetsControllerIT {
         return team;
     }
 
-    private MockHttpSession englishSession() {
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.ENGLISH);
-        return session;
-    }
 }
