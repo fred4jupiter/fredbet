@@ -68,7 +68,7 @@
 								<span class="fas fa-trophy"></span>
 							</a>
 							<button sec:authorize="hasAuthority('PERM_ADMINISTRATION')" type="button" class="btn btn-secondary"
-									data-bs-toggle="modal" data-bs-target="#match-info"
+									data-bs-toggle="modal" data-bs-target="#match-info" th:title="#{matches.list.info}"
 									th:attr="data-external-last-updated=${matchCommand.externalLastUpdated},data-create-date=${matchCommand.createDate},data-created-by=${matchCommand.match.createdBy},data-update-date=${matchCommand.updateDate},data-updated-by=${matchCommand.match.updatedBy}">
 								<span class="bi bi-info-circle"></span>
 							</button>
@@ -79,18 +79,36 @@
 			<div sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="modal fade" id="match-info" tabindex="-1" aria-labelledby="match-info-title" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
-						<div class="modal-header bg-info">
-							<h1 class="modal-title fs-5" id="match-info-title">Info</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="match-info-title"><i class="bi bi-info-circle me-2" aria-hidden="true"></i><span th:text="#{matches.list.info}"></span></h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{button.close}"></button>
 						</div>
-						<div class="modal-body">
-							<dl class="row mb-0">
-								<dt class="col-5">FD last update</dt><dd class="col-7" data-field="externalLastUpdated"></dd>
-								<dt class="col-5">created</dt><dd class="col-7" data-field="createDate"></dd>
-								<dt class="col-5">created by</dt><dd class="col-7" data-field="createdBy"></dd>
-								<dt class="col-5">updated</dt><dd class="col-7" data-field="updateDate"></dd>
-								<dt class="col-5">updated by</dt><dd class="col-7 mb-0" data-field="updatedBy"></dd>
+						<div class="modal-body p-0">
+							<dl class="list-group list-group-flush mb-0">
+								<div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+									<dt class="fw-normal text-body-secondary"><i class="fas fa-sync-alt fa-fw me-2" aria-hidden="true"></i><span th:text="#{matches.list.info.externalLastUpdated}"></span></dt>
+									<dd class="mb-0 fw-semibold text-end" data-field="externalLastUpdated"></dd>
+								</div>
+								<div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+									<dt class="fw-normal text-body-secondary"><i class="fas fa-calendar-plus fa-fw me-2" aria-hidden="true"></i><span th:text="#{matches.list.info.createDate}"></span></dt>
+									<dd class="mb-0 fw-semibold text-end" data-field="createDate"></dd>
+								</div>
+								<div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+									<dt class="fw-normal text-body-secondary"><i class="fas fa-user fa-fw me-2" aria-hidden="true"></i><span th:text="#{matches.list.info.createdBy}"></span></dt>
+									<dd class="mb-0 fw-semibold text-end" data-field="createdBy"></dd>
+								</div>
+								<div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+									<dt class="fw-normal text-body-secondary"><i class="fas fa-calendar-check fa-fw me-2" aria-hidden="true"></i><span th:text="#{matches.list.info.updateDate}"></span></dt>
+									<dd class="mb-0 fw-semibold text-end" data-field="updateDate"></dd>
+								</div>
+								<div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+									<dt class="fw-normal text-body-secondary"><i class="fas fa-user-edit fa-fw me-2" aria-hidden="true"></i><span th:text="#{matches.list.info.updatedBy}"></span></dt>
+									<dd class="mb-0 fw-semibold text-end" data-field="updatedBy"></dd>
+								</div>
 							</dl>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.close}"></button>
 						</div>
 					</div>
 				</div>

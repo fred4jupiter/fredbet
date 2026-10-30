@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.common.UnitTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -48,6 +49,19 @@ public class DateUtilsUT {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("UTC+02:00"));
         String formatedEn = DateUtils.formatByLocale(zonedDateTime, Locale.ENGLISH);
         assertThat(formatedEn).startsWith("May 20, 2017, 8:25:00");
+    }
+
+    @Test
+    public void formatZonedDateTimeLikeLocalDateTime() {
+        LocaleContextHolder.setLocale(Locale.GERMAN);
+        try {
+            LocalDateTime localDateTime = LocalDateTime.of(2017, 5, 20, 20, 25);
+            ZonedDateTime utcDateTime = localDateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
+            assertEquals("20.05.2017, 20:25:00", DateUtils.format(utcDateTime));
+            assertEquals(DateUtils.format(localDateTime), DateUtils.format(utcDateTime));
+        } finally {
+            LocaleContextHolder.resetLocaleContext();
+        }
     }
 
     @Test
