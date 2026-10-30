@@ -42,7 +42,7 @@ public class AdminController {
 
     private static final String CONTENT_TYPE_JSON = "application/json";
 
-    private static final String PAGE_ADMINISTRATION = "admin/administration";
+    private static final String PAGE_DATA_CREATION = "admin/data_creation";
 
     private static final String PAGE_ACTIVE_USERS = "admin/active_users";
 
@@ -98,37 +98,37 @@ public class AdminController {
     @GetMapping("/createDemoBets")
     public String createDemoBets(RedirectAttributes redirect) {
         dataPopulator.executeAsync(DataPopulator::createDemoBetsForAllUsers);
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoBetsCreated");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.demoBetsCreated");
         return "redirect:/administration";
     }
 
     @GetMapping("/createDemoResults")
     public String createDemoResults(RedirectAttributes redirect) {
         dataPopulator.executeAsync(DataPopulator::createDemoResultsForAllMatches);
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoResultsCreated");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.demoResultsCreated");
         return "redirect:/administration";
     }
 
     @RequestMapping
     public String list(Model model) {
-        return PAGE_ADMINISTRATION;
+        return PAGE_DATA_CREATION;
     }
 
     @PostMapping("/testdata")
     public String createTestData(@Valid TestDataCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            return PAGE_ADMINISTRATION;
+            return PAGE_DATA_CREATION;
         }
 
         if (!dataPopulator.hasEnoughTeamsForDemoData()) {
-            webMessageUtil.addErrorMsg(redirect, "administration.msg.error.noTeamsForDemoData");
+            webMessageUtil.addErrorMsg(redirect, "datacreation.msg.error.noTeamsForDemoData");
             return "redirect:/administration";
         }
 
         DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(),
             command.getIncludeResults(), command.getCreateGameOfThird());
         dataPopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.demoDataCreated");
         return "redirect:/administration";
     }
 
@@ -136,7 +136,7 @@ public class AdminController {
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
         dataService.deleteAllBetsMatchesAsync();
 
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/administration";
     }
 
@@ -144,7 +144,7 @@ public class AdminController {
     public String deleteAllBetsMatchesAndTeams(RedirectAttributes redirect) {
         dataService.deleteAllBetsMatchesAndTeamsAsync();
 
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsMatchesAndTeamsDeleted");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.allBetsMatchesAndTeamsDeleted");
         return "redirect:/administration";
     }
 
@@ -167,18 +167,18 @@ public class AdminController {
     @PostMapping("/save")
     public String createDemoUsers(@Valid AdminFormCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            return PAGE_ADMINISTRATION;
+            return PAGE_DATA_CREATION;
         }
 
         dataPopulator.executeAsync(populator -> populator.createDemoUsers(command.getNumberOfTestUsers()));
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }
 
     @GetMapping("/deleteAllUsers")
     public String deleteAllUsers(RedirectAttributes redirect) {
         userService.deleteAllUsers();
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.deleteAllUsers");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.deleteAllUsers");
         return "redirect:/administration";
     }
 

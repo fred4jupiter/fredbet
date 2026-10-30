@@ -145,7 +145,7 @@ public class FootballDataController {
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
         dataService.deleteAllBetsMatchesAndTeams();
 
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/footballdata";
     }
 }
