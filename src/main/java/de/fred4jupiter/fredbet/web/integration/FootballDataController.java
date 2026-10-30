@@ -56,13 +56,13 @@ public class FootballDataController {
         return new FootballDataSyncCommand();
     }
 
-    @ModelAttribute("tabStatus")
-    public TabStatus tabStatus() {
-        return new TabStatus();
+    @ModelAttribute("setupStatus")
+    public FootballDataSetupStatus setupStatus() {
+        return FootballDataSetupStatus.of(footballDataService.loadSettings());
     }
 
     @RequestMapping
-    public String showPage(FootballDataCommand footballDataCommand, TabStatus tabStatus, Model model) {
+    public String showPage(FootballDataCommand footballDataCommand, Model model) {
         final FootballDataRuntimeSettings settings = footballDataService.loadSettings();
         footballDataCommand.setEnabled(settings.isEnabled());
         footballDataCommand.setApiToken(settings.getApiToken());
@@ -73,30 +73,19 @@ public class FootballDataController {
             }
         }
 
-        if (settings.isEnabled()) {
-            tabStatus.setTab1Active(false);
-            tabStatus.setTab2Active(true);
-        } else {
-            tabStatus.setTab1Active(true);
-            tabStatus.setTab2Active(false);
-            tabStatus.setTab2Disabled(true);
-        }
-
         return "integration/footballdata";
     }
 
     @RequestMapping("/fetch-comp")
-    public String fetchCompetitions(FootballDataCommand footballDataCommand, RedirectAttributes redirect, Model model) {
-        if (footballDataCommand.isEnabled() && StringUtils.isBlank(footballDataCommand.getApiToken())) {
-            webMessageUtil.addErrorMsg(model, "footballdata.msg.apiTokenMissing");
-            return "integration/footballdata";
+    public String fetchCompetitions(FootballDataCommand footballDataCommand, RedirectAttributes redirect) {
+        if (!footballDataService.loadSettings().isReadyToFetchCompetitions()) {
+            webMessageUtil.addErrorMsg(redirect, "footballdata.step.tournament.locked");
+            return "redirect:/footballdata";
         }
 
-        if (footballDataCommand.isReadyToFetchCompetitions()) {
-            LOG.debug("fetching competitions...");
-            List<Competition> competitions = footballDataLoader.loadCompetitions();
-            footballDataCommand.setCompetitions(competitions);
-        }
+        LOG.debug("fetching competitions...");
+        List<Competition> competitions = footballDataLoader.loadCompetitions();
+        footballDataCommand.setCompetitions(competitions);
 
         return "redirect:/footballdata";
     }
@@ -134,6 +123,11 @@ public class FootballDataController {
         if (!footballDataRuntimeSettings.isEnabled()) {
             LOG.info("Football data integration is disabled. Will not import or sync any data.");
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.disabled");
+            return "redirect:/footballdata";
+        }
+
+        if (!FootballDataSetupStatus.of(footballDataRuntimeSettings).competitionSelected()) {
+            webMessageUtil.addErrorMsg(redirect, "footballdata.step.sync.locked");
             return "redirect:/footballdata";
         }
 
