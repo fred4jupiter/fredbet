@@ -9,7 +9,6 @@ import de.fred4jupiter.fredbet.statistic.Statistic;
 import de.fred4jupiter.fredbet.statistic.StatisticService;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
-import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -39,8 +38,6 @@ public class InfoController {
 
     private static final String CONTENT_TYPE_PDF = "application/pdf";
 
-    private final WebMessageUtil webMessageUtil;
-
     private final InfoService infoService;
 
     private final StatisticService statisticService;
@@ -51,9 +48,8 @@ public class InfoController {
 
     private final MessageSourceUtil messageSourceUtil;
 
-    public InfoController(WebMessageUtil webMessageUtil, InfoService infoService, StatisticService statisticService,
+    public InfoController(InfoService infoService, StatisticService statisticService,
                           SecurityService securityService, PdfExportService pdfExportService, MessageSourceUtil messageSourceUtil) {
-        this.webMessageUtil = webMessageUtil;
         this.infoService = infoService;
         this.statisticService = statisticService;
         this.securityService = securityService;
@@ -179,11 +175,6 @@ public class InfoController {
         final List<Statistic> statisticList = statisticService.createStatistic();
 
         model.addAttribute("favouriteTeam", statisticService.getFavouriteTeam());
-        if (statisticList.isEmpty()) {
-            webMessageUtil.addInfoMsg(model, "msg.warn.no.statistics");
-            return PAGE_INFO_STATISTIC;
-        }
-
         model.addAttribute("statisticList", statisticList);
 
         return PAGE_INFO_STATISTIC;

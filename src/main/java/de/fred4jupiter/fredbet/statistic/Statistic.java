@@ -107,7 +107,7 @@ public class Statistic {
 	}
 
 	public Integer getSum() {
-		return nullSafeAdd(pointsGroup, pointsRoundOfSixteen, pointsQuarterFinal, pointsSemiFinal, pointsFinal, pointsGameForThird,
+		return nullSafeAdd(pointsGroup, pointsRoundOfThirtyTwo, pointsRoundOfSixteen, pointsQuarterFinal, pointsSemiFinal, pointsFinal, pointsGameForThird,
 				pointsForExtraBets);
 	}
 

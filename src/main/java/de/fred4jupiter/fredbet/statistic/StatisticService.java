@@ -57,18 +57,22 @@ public class StatisticService {
 
             statistic.setPointsForExtraBets(extraBetsPerUser.get(statistic.getUsername()));
 
-            if (statistic.getSum() == statisticAgg.minPoints()) {
-                statistic.setMinPointsCandidate(true);
+            // as long as everybody has the same points, there is neither a top nor a flop better
+            if (statisticAgg.minPoints() < statisticAgg.maxPoints()) {
+                if (statistic.getSum() == statisticAgg.minPoints()) {
+                    statistic.setMinPointsCandidate(true);
+                }
+                if (statistic.getSum() == statisticAgg.maxPoints()) {
+                    statistic.setMaxPointsCandidate(true);
+                }
             }
-            if (statistic.getSum() == statisticAgg.maxPoints()) {
-                statistic.setMaxPointsCandidate(true);
-            }
-            if (statistic.getPointsGroup() == statisticAgg.maxGroupPoints()) {
+            if (statisticAgg.maxGroupPoints() > 0 && statistic.getPointsGroup() == statisticAgg.maxGroupPoints()) {
                 statistic.setMaxGroupPointsCandidate(true);
             }
         }
 
-        statisticList.sort(Comparator.comparing(Statistic::getUsername, String.CASE_INSENSITIVE_ORDER));
+        statisticList.sort(Comparator.comparing(Statistic::getSum, Comparator.reverseOrder())
+            .thenComparing(Statistic::getUsername, String.CASE_INSENSITIVE_ORDER));
         return statisticList;
     }
 
