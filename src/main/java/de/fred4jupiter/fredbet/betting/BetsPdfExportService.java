@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.betting;
 import com.lowagie.text.Element;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
+import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.pdf.PdfTableDataBuilder;
@@ -68,7 +69,7 @@ public class BetsPdfExportService {
             .withHeaderColumn(message("pdf.export.result", locale))
             .withHeaderColumn(message("pdf.export.bet", locale))
             .withHeaderColumn(message("pdf.export.points", locale))
-            .withColumnWidths(new float[]{2.6f, 2.2f, 4.8f, 1.3f, 1.8f, 1.2f});
+            .withColumnWidths(new float[]{2.6f, 2.0f, 4.0f, 2.2f, 2.4f, 1.2f});
         OUTCOME_COLORS.forEach((outcome, color) -> builder.withLegendEntry(color, message(outcome.getMsgKey(), locale)));
 
         final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE dd.MM. HH:mm", locale);
@@ -81,18 +82,44 @@ public class BetsPdfExportService {
             rowContentAdder.addCellContent(match.getGroup() != null ? message(match.getGroup().getTitleMsgKey(), locale) : "");
             rowContentAdder.addCellContent(match.getTeamOne().getNameTranslated(messageSourceUtil, locale) + " – "
                 + match.getTeamTwo().getNameTranslated(messageSourceUtil, locale));
-            rowContentAdder.addCellContent(match.hasResultSet() ? match.getGoalsTeamOne() + ":" + match.getGoalsTeamTwo() : NO_VALUE);
-            rowContentAdder.addCellContent(betText(bet, joker));
+            rowContentAdder.addCellContent(resultText(match, locale));
+            rowContentAdder.addCellContent(betText(match, bet, joker, locale));
             addPoints(rowContentAdder, match, bet);
         });
     }
 
-    private String betText(Bet bet, String joker) {
+    private String resultText(Match match, Locale locale) {
+        if (!match.hasResultSet()) {
+            return NO_VALUE;
+        }
+        final String result = match.getGoalsTeamOne() + ":" + match.getGoalsTeamTwo();
+        if (match.isKnockoutMatch() && match.isUndecidedResult()) {
+            return result + " (" + penaltyWinner(match, match.isPenaltyWinnerOne(), locale) + ")";
+        }
+        return result;
+    }
+
+    private String betText(Match match, Bet bet, String joker, Locale locale) {
         if (bet == null || bet.getGoalsTeamOne() == null || bet.getGoalsTeamTwo() == null) {
             return NO_VALUE;
         }
+
+        final List<String> additions = new ArrayList<>();
+        // a draw in a knockout match is decided by the penalty shoot-out, so the bet contains the penalty winner
+        if (match.isKnockoutMatch() && bet.isUndecidedBetting()) {
+            additions.add(penaltyWinner(match, bet.isPenaltyWinnerOne(), locale));
+        }
+        if (bet.isJoker()) {
+            additions.add(joker);
+        }
+
         final String result = bet.getGoalsTeamOne() + ":" + bet.getGoalsTeamTwo();
-        return bet.isJoker() ? result + " (" + joker + ")" : result;
+        return additions.isEmpty() ? result : result + " (" + String.join(", ", additions) + ")";
+    }
+
+    private String penaltyWinner(Match match, boolean penaltyWinnerOne, Locale locale) {
+        final Team winner = penaltyWinnerOne ? match.getTeamOne() : match.getTeamTwo();
+        return winner.getNameTranslated(messageSourceUtil, locale);
     }
 
     private void addPoints(PdfExportService.RowContentAdder rowContentAdder, Match match, Bet bet) {

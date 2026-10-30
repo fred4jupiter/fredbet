@@ -66,8 +66,22 @@ public class MyBetsPdfExportIT {
         bet.setJoker(true);
         bet.setPoints(6);
 
+        // a knockout match decided by penalty shoot-out, the bet is a draw with the other team as penalty winner
+        Match knockout = matches.get(1);
+        knockout.setGroup(Group.ROUND_OF_SIXTEEN);
+        knockout.setGoalsTeamOne(1);
+        knockout.setGoalsTeamTwo(1);
+        knockout.setPenaltyWinnerOne(true);
+        Bet penaltyBet = new Bet();
+        penaltyBet.setUserName("admin");
+        penaltyBet.setMatch(knockout);
+        penaltyBet.setGoalsTeamOne(0);
+        penaltyBet.setGoalsTeamTwo(0);
+        penaltyBet.setPenaltyWinnerOne(false);
+        penaltyBet.setPoints(0);
+
         when(matchService.findAllByOrderByKickOffDateAsc()).thenReturn(matches);
-        when(bettingService.findAllByUsername("admin")).thenReturn(List.of(bet));
+        when(bettingService.findAllByUsername("admin")).thenReturn(List.of(bet, penaltyBet));
 
         byte[] pdf = mockMvc.perform(get("/matches/pdf").session(englishSession()))
             .andExpect(status().isOk())
@@ -83,7 +97,7 @@ public class MyBetsPdfExportIT {
 
             PdfTextExtractor extractor = new PdfTextExtractor(reader);
             String firstPage = extractor.getTextFromPage(1);
-            assertThat(firstPage).contains("FredBet My bets", "admin", "total points: 6", "Team1A", "2:1 (Joker)", "+6");
+            assertThat(firstPage).contains("FredBet My bets", "admin", "total points: 6", "Team1A", "2:1 (Joker)", "+6", "1:1 (Team2A)", "0:0 (Team2B)");
             // all matches are exported, also those without a bet, with the header repeated on every page
             String lastPage = extractor.getTextFromPage(pages);
             assertThat(lastPage).contains("Team64B", "Match", "correct result");
