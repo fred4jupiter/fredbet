@@ -5,59 +5,66 @@
         <link rel="stylesheet" th:href="@{/css/pages/extra_others.css}" />
 	</head>
 	<body>
-		<div layout:fragment="content">
+		<div layout:fragment="content"
+			 th:with="currentUser=${@webSecurityUtil.getCurrentUsername()},hasThirdFinalWinner=${not #lists.isEmpty(allExtraBets.?[thirdFinalWinner != null])}">
 			<h1 th:text="#{bet.extra.others.title}"></h1>
-			<div class="row">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="extraBet : ${allExtraBets}">
-					<div class="card mb-3">
-						<div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col-9 d-flex align-items-center gap-2">
-                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${extraBet.userName})}"></span>
-                                    <span th:text="${extraBet.userName}"></span>
-                                </div>
-                                <div class="col-3">
-                                    <span class="badge rounded-pill bg-warning big-badge" th:text="${extraBet.points}"></span>
-                                </div>
-                            </div>
-						</div>
-					   <div class="card-body">
-						   <div class="table-responsive">
-                                <table class="table table-condensed">
-									<tr>
-										<td class="bg-success-subtle team-row">
-											<span class="team-rank">1.</span>
-											<span class="team-crest"><img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.finalWinner.id})}" alt="crests"/></span>
-											<span class="team-name" th:text="${extraBet.finalWinner.getNameTranslated(@messageSourceUtil)}"></span>
-										</td>
-									</tr>
-									<tr>
-										<td class="bg-warning-subtle team-row">
-											<span class="team-rank">2.</span>
-											<span class="team-crest"><img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.semiFinalWinner.id})}" alt="crests"/></span>
-											<span class="team-name" th:text="${extraBet.semiFinalWinner.getNameTranslated(@messageSourceUtil)}"></span>
-										</td>
-									</tr>
-									<tr th:if="${extraBet.thirdFinalWinner}">
-										<td class="bg-info-subtle team-row">
-											<span class="team-rank">3.</span>
-											<span class="team-crest"><img class="fi" th:src="@{/team/{teamId}.svg(teamId=${extraBet.thirdFinalWinner.id})}" alt="crests"/></span>
-											<span class="team-name" th:text="${extraBet.thirdFinalWinner.getNameTranslated(@messageSourceUtil)}"></span>
-										</td>
-									</tr>
-								</table>
 
-					       </div>
-					   </div>
-					</div>
+			<p class="text-body-secondary" th:if="${#lists.isEmpty(allExtraBets)}" th:text="#{ranking.noRankings}"></p>
+
+			<!-- one row per user, so the picks can be compared column by column -->
+			<div class="card mb-3" th:unless="${#lists.isEmpty(allExtraBets)}">
+				<div class="table-responsive">
+					<table class="table table-hover align-middle mb-0 extra-others-table">
+						<thead class="table-light">
+							<tr>
+								<th scope="col" class="extra-others-name" th:text="#{registration.username}"></th>
+								<th scope="col"><span class="extra-medal extra-medal-1" th:title="#{extra_bets.finalWinner}">1</span>
+									<span class="d-none d-md-inline-block extra-label" th:text="#{extra_bets.finalWinner}"></span></th>
+								<th scope="col"><span class="extra-medal extra-medal-2" th:title="#{extra_bets.semiFinalWinner}">2</span>
+									<span class="d-none d-md-inline-block extra-label" th:text="#{extra_bets.semiFinalWinner}"></span></th>
+								<th scope="col" th:if="${hasThirdFinalWinner}"><span class="extra-medal extra-medal-3" th:title="#{extra_bets.thirdFinalWinner}">3</span>
+									<span class="d-none d-md-inline-block extra-label" th:text="#{extra_bets.thirdFinalWinner}"></span></th>
+								<th scope="col" class="text-end" th:text="#{excel.export.points}"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="extraBet : ${allExtraBets}" th:classappend="${extraBet.userName == currentUser} ? 'extra-others-current-user'">
+								<th scope="row" class="extra-others-name fw-normal">
+									<div class="d-flex align-items-center gap-2">
+										<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${extraBet.userName})}"></span>
+										<span th:text="${extraBet.userName}" th:classappend="${extraBet.userName == currentUser} ? 'fw-bold'"></span>
+									</div>
+								</th>
+								<td th:replace="~{:: extra_pick(team=${extraBet.finalWinner}, points=${extraBet.pointsOne})}"></td>
+								<td th:replace="~{:: extra_pick(team=${extraBet.semiFinalWinner}, points=${extraBet.pointsTwo})}"></td>
+								<th:block th:if="${hasThirdFinalWinner}">
+									<td th:replace="~{:: extra_pick(team=${extraBet.thirdFinalWinner}, points=${extraBet.pointsThree})}"></td>
+								</th:block>
+								<td class="text-end">
+									<span class="badge rounded-pill text-bg-warning extra-others-points" th:text="${extraBet.points}"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-auto mt-3">
-                    <a href="#" th:href="@{/extrabets}" class="btn btn-light" role="button" th:text="#{button.back}"></a>
-				</div>
-			</div>
+			<a th:href="@{/extrabets}" class="btn btn-light" role="button">
+				<i class="fas fa-arrow-left" aria-hidden="true"></i> <span th:text="#{button.back}"></span>
+			</a>
 		</div>
+
+		<!-- a picked team: the crest only on small screens (the name is shown as tooltip), crest and name on wider screens;
+			 picks that already scored are marked green -->
+		<td th:fragment="extra_pick(team, points)" th:classappend="${points != null and points > 0} ? 'table-success'"
+			th:with="teamName=${team != null} ? ${team.getNameTranslated(@messageSourceUtil)}">
+			<div class="d-flex align-items-center gap-2" th:if="${team != null}">
+				<img class="crest-small flex-shrink-0" th:src="@{/team/{teamId}.svg(teamId=${team.id}, v=${team.version})}"
+					 th:alt="${teamName}" th:title="${teamName}" loading="lazy"/>
+				<span class="d-none d-md-inline text-truncate" th:text="${teamName}"></span>
+				<i th:if="${points != null and points > 0}" class="fas fa-check text-success" th:title="${points}" aria-hidden="true"></i>
+			</div>
+			<span th:if="${team == null}" class="text-body-tertiary">&ndash;</span>
+		</td>
 	</body>
 </html>

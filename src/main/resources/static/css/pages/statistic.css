@@ -1,12 +1,44 @@
 .fas.fa-magic {
-    color: orange;
+    color: var(--bs-warning);
 }
 
 .fas.fa-star {
-    color: blue;
+    color: var(--bs-primary);
 }
 
 .fas.fa-lightbulb {
-    color: red;
+    color: var(--bs-danger);
 }
 
+/* the card is only as wide as the table needs, so there is no blank space after the name on wide screens;
+   on small screens it is limited to the page width and the table scrolls horizontally */
+.statistic-card {
+    width: fit-content;
+    max-width: 100%;
+}
+
+/* the number columns only take the space they need, but keep a minimum width so the columns don't look cramped */
+.statistic-table .statistic-number {
+    width: 1%;
+    min-width: 3.5rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* keeps the user name visible while scrolling the points columns horizontally on small screens */
+.statistic-table .statistic-name {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.statistic-table .statistic-total {
+    font-weight: bold;
+    border-left: 2px solid var(--bs-border-color);
+}
+
+/* the favourite team points are already part of the phase points, so they are set apart from the total */
+.statistic-table .statistic-favourite {
+    border-left: 2px solid var(--bs-border-color);
+}

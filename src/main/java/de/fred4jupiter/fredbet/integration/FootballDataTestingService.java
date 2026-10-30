@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.integration;
 
 import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.integration.model.FdMatches;
 import de.fred4jupiter.fredbet.util.JsonObjectConverter;
 import org.slf4j.Logger;
@@ -20,13 +21,16 @@ public class FootballDataTestingService {
 
     private final DataPopulator dataPopulator;
 
+    private final DataService dataService;
+
     public FootballDataTestingService(FootballDataSyncService footballDataSyncService,
                                       FootballDataService footballDataService,
-                                      JsonObjectConverter jsonObjectConverter, DataPopulator dataPopulator) {
+                                      JsonObjectConverter jsonObjectConverter, DataPopulator dataPopulator, DataService dataService) {
         this.footballDataSyncService = footballDataSyncService;
         this.footballDataService = footballDataService;
         this.jsonObjectConverter = jsonObjectConverter;
         this.dataPopulator = dataPopulator;
+        this.dataService = dataService;
     }
 
     public void syncDataFromJson(byte[] fsMatchesAsJson) {
@@ -45,7 +49,7 @@ public class FootballDataTestingService {
 
         if (fdMatches.hasMatches()) {
             // delete all bets and matches before importing the new ones...
-            dataPopulator.deleteAllBetsAndMatches();
+            dataService.deleteAllBetsMatchesAndTeams();
             LOG.info("deleted all bets and matches");
         }
 

@@ -15,7 +15,7 @@ h3 {
 }
 
 .teamName {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: bold;
 }
 
@@ -23,10 +23,50 @@ h3 {
     font-size: 15px;
 }
 
-.big-flag {
-    font-size: 3rem;
-    /*border: 1px solid #0d6efd;*/
-    border-radius: 5px;
+/* bet and result pages: one card per team (crest, name, goal input), separated by a colon */
+.match-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: .5rem;
+}
+
+.match-head-team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    text-align: center;
+}
+
+.match-head-team .teamName {
+    overflow-wrap: anywhere;
+}
+
+.match-head-separator {
+    align-self: center;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+    color: var(--bs-secondary-color);
+}
+
+/* same box for every crest, whatever its aspect ratio; the shadow outlines white flags */
+img.big-flag {
+    width: 5rem;
+    height: 4rem;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+}
+
+@media (max-width: 575.98px) {
+    img.big-flag {
+        width: 3.5rem;
+        height: 2.75rem;
+    }
+
+    .match-head .card-body {
+        padding: .5rem;
+    }
 }
 
 .badge-penalty-winner-bet {

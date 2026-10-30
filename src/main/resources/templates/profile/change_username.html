@@ -5,21 +5,26 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-            <form id="changePasswordForm" th:action="@{/profile/changeUsername}" th:object="${changeUsernameCommand}" action="#" method="post" role="form">
-				<div class="row">
-					<div class="col-12 col-sm-6 col-md-4">
-						<div class="mb-3">
-							<label for="newUsername" class="form-label" th:text="#{userprofile.changeUsername.newUsername} + ':'"></label>
-							<input id="newUsername" type="text" th:field="*{newUsername}" class="form-control" size="12" maxlength="12"/>
-							<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}">newUsername error</p>
-						</div>
-						<div class="mb-3">
-							<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-							<a href="#" th:href="@{/}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
-						</div>
-					</div>
-				</div>
-			</form>
+            <h1 th:text="#{userprofile.changeUsername.title}"></h1>
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <form id="changeUsernameForm" th:action="@{/profile/changeUsername}" th:object="${changeUsernameCommand}" action="#" method="post" role="form" class="card mt-3">
+                        <div class="card-body">
+                            <label for="newUsername" class="form-label fw-bold" th:text="#{userprofile.changeUsername.newUsername}"></label>
+                            <!-- length limits as in ChangeUsernameCommand (FredbetConstants.USERNAME_MAX_LENGTH) -->
+                            <input id="newUsername" type="text" th:field="*{newUsername}" class="form-control" th:errorclass="is-invalid"
+                                   autocomplete="username" required minlength="2" maxlength="12" autofocus />
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('newUsername')}" th:errors="*{newUsername}"></div>
+                        </div>
+                        <div class="card-footer d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save" aria-hidden="true"></i> <span th:text="#{button.save}"></span>
+                            </button>
+                            <a th:href="@{/}" class="btn btn-light" role="button" th:text="#{button.cancel}"></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>

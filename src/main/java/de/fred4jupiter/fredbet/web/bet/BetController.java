@@ -88,9 +88,9 @@ public class BetController {
     }
 
     @GetMapping("/dice")
-    public String diceAllMatches(Model model) {
+    public String diceAllMatches(RedirectAttributes redirect) {
         this.bettingService.diceAllMatchesForUser(securityService.getCurrentUserName());
-        messageUtil.addInfoMsg(model, "msg.bet.betting.random.dice.all");
+        messageUtil.addInfoMsg(redirect, "msg.bet.betting.random.dice.all");
         return "redirect:/bet/open";
     }
 

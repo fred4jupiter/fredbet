@@ -3,39 +3,47 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{user.list.title}"></title>
+		<link rel="stylesheet" th:href="@{/css/pages/user_list.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h1 th:text="#{user.list.title} + ' (' + ${allUsers.size()} + ')'"></h1>
-			<div class="row">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="userDto : ${allUsers}">
-					<div class="card mb-3">
-						<div class="card-body">
-							<div class="row">
-								<div class="col-2">
-                                    <a th:href="@{'/gallery/show/' + ${userDto.userProfileImageKey}}" th:attr="data-lightbox=${userDto.userProfileImageKey}">
-                                        <img th:if="${userDto.userProfileImageKey}" th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" width="34" class="rounded" alt="userImage"/>
-                                    </a>
-					  			</div>
-                                <div class="col-7 mt-2">
-                                    <span class="fw-bold" th:text="${userDto.username}"></span>
-                                </div>
-					  			<div class="col-3">
-                                    <a sec:authorize="hasAuthority('PERM_EDIT_USER')" th:href="@{'/user/' + ${userDto.userId}}" class="btn btn-primary" role="button">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-					  			</div>
-	      					</div>
-					   </div>
+			<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+				<h1 class="mb-0" th:text="#{user.list.title} + ' (' + ${allUsers.size()} + ')'"></h1>
+				<a sec:authorize="hasAuthority('PERM_CREATE_USER')" th:href="@{/user/create}" class="btn btn-primary" role="button">
+					<i class="fas fa-plus"></i> <span th:text="#{user.list.createUser}"></span>
+				</a>
+			</div>
+
+			<div class="input-group mb-3 user-filter">
+				<span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
+				<input id="userFilter" type="search" class="form-control" th:placeholder="#{user.list.search}" th:aria-label="#{user.list.search}"
+					   autocomplete="off" autocapitalize="none" spellcheck="false" />
+			</div>
+
+			<!-- users are sorted by name; the whole card links to the edit page -->
+			<div id="userList" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-4 g-2">
+				<div class="col" th:each="userDto : ${allUsers}" th:attr="data-username=${#strings.toLowerCase(userDto.username)}">
+					<div class="card h-100 user-card">
+						<div class="card-body d-flex align-items-center gap-2 py-2">
+							<a th:if="${userDto.userProfileImageKey}" th:href="@{'/gallery/show/' + ${userDto.userProfileImageKey}}"
+							   th:attr="data-lightbox=${userDto.userProfileImageKey}" class="user-avatar-link flex-shrink-0">
+								<img th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" class="user-avatar rounded" alt=""/>
+							</a>
+							<span th:unless="${userDto.userProfileImageKey}" class="user-avatar user-initial rounded flex-shrink-0" aria-hidden="true"
+								  th:text="${#strings.toUpperCase(#strings.substring(userDto.username, 0, 1))}"></span>
+							<span class="fw-bold text-truncate flex-grow-1" th:text="${userDto.username}"></span>
+							<a sec:authorize="hasAuthority('PERM_EDIT_USER')" th:href="@{'/user/' + ${userDto.userId}}" class="btn btn-primary btn-sm stretched-link" role="button"
+							   th:title="#{button.edit}" th:aria-label="#{button.edit} + ': ' + ${userDto.username}">
+								<i class="fas fa-edit" aria-hidden="true"></i>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
-
-            <div class="row mt-3">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <a href="#" th:href="@{/user/create}" class="btn btn-primary" role="button" th:text="#{user.list.createUser}"></a>
-                </div>
-            </div>
+			<p id="noUserMatch" class="text-body-secondary d-none" th:text="#{user.list.noMatch}"></p>
 		</div>
+		<th:block layout:fragment="scripts">
+			<script type="text/javascript" th:src="@{/js/pages/user_list.js}" charset="UTF-8"></script>
+		</th:block>
 	</body>
 </html>

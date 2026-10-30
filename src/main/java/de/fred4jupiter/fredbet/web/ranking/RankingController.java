@@ -67,24 +67,8 @@ public class RankingController {
             return PAGE_RANKING;
         }
 
-        for (int i = 0; i < rankings.size(); i++) {
-            rankings.get(i).setCssRankClass(getCssRankingClassForPosition(i));
-        }
-
         model.addAttribute("rankings", rankings);
         model.addAttribute("rankingSelection", rankingSelection);
         return PAGE_RANKING;
-    }
-
-    private String getCssRankingClassForPosition(int position) {
-        return switch (position) {
-            case 0 -> "label-success";
-            case 1 -> "label-primary";
-            case 2 -> "label-warning";
-            case 3 -> "label-rank4";
-            case 4 -> "label-rank5";
-            case 5 -> "label-rank6";
-            default -> "label-default";
-        };
     }
 }

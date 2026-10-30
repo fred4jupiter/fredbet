@@ -9,6 +9,8 @@ public class ImageGroupCommand implements Comparable<ImageGroupCommand>{
 	@NotBlank
 	private String name;
 
+	private boolean deletable;
+
 	public Long getId() {
 		return id;
 	}
@@ -23,6 +25,14 @@ public class ImageGroupCommand implements Comparable<ImageGroupCommand>{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
 	}
 
 	@Override

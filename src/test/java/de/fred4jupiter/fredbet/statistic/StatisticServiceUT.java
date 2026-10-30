@@ -83,4 +83,48 @@ public class StatisticServiceUT {
         assertThat(resBob.getPointsFavouriteTeam()).isEqualTo(1);
         assertThat(resBob.isMaxFavouriteTeamCandidate()).isFalse();
     }
+
+    @Test
+    public void createStatistic_sortsByTotalDescendingThenByName() {
+        Statistic anna = statistic("anna", 3);
+        Statistic bert = statistic("bert", 7);
+        Statistic carl = statistic("Carl", 3);
+        when(statisticRepository.createStatistic()).thenReturn(List.of(carl, anna, bert));
+        when(extraBetRepository.findAll()).thenReturn(List.of());
+
+        List<Statistic> result = statisticService.createStatistic();
+
+        assertThat(result).extracting(Statistic::getUsername).containsExactly("bert", "anna", "Carl");
+        assertThat(result.get(0).isMaxPointsCandidate()).isTrue();
+        assertThat(result.get(0).isMaxGroupPointsCandidate()).isTrue();
+        assertThat(result.get(1).isMinPointsCandidate()).isTrue();
+        assertThat(result.get(2).isMinPointsCandidate()).isTrue();
+    }
+
+    @Test
+    public void createStatistic_samePointsForEverybody_setsNoTopOrFlopCandidate() {
+        when(statisticRepository.createStatistic()).thenReturn(List.of(statistic("anna", 0), statistic("bert", 0)));
+        when(extraBetRepository.findAll()).thenReturn(List.of());
+
+        List<Statistic> result = statisticService.createStatistic();
+
+        assertThat(result).noneMatch(Statistic::isMaxPointsCandidate);
+        assertThat(result).noneMatch(Statistic::isMinPointsCandidate);
+        assertThat(result).noneMatch(Statistic::isMaxGroupPointsCandidate);
+    }
+
+    @Test
+    public void getSum_includesRoundOfThirtyTwo() {
+        Statistic statistic = statistic("anna", 1);
+        statistic.setPointsRoundOfThirtyTwo(2);
+        statistic.setPointsForExtraBets(4);
+
+        assertThat(statistic.getSum()).isEqualTo(7);
+    }
+
+    private Statistic statistic(String username, int groupPoints) {
+        Statistic statistic = new Statistic(username);
+        statistic.setPointsGroup(groupPoints);
+        return statistic;
+    }
 }

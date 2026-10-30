@@ -19,7 +19,7 @@ $(function () {
     const $crestPreview = $('#crestPreview');
     $('#crestFile').on('change', function () {
         const file = this.files[0];
-        if ($crestPreview.length && file && (file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg'))) {
+        if ($crestPreview.length && file && /\.(svg|jpe?g|png)$/i.test(file.name)) {
             $crestPreview.attr('src', URL.createObjectURL(file));
         }
     });

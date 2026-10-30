@@ -1,0 +1,30 @@
+.user-filter {
+    max-width: 24rem;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    object-fit: cover;
+}
+
+/* placeholder with the first letter, so all names are aligned even without a profile image */
+.user-initial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-tertiary-bg);
+}
+
+/* the profile image opens the lightbox, so it is placed above the stretched link of the card */
+.user-avatar-link {
+    position: relative;
+    z-index: 2;
+}
+
+.user-card:has(.stretched-link):hover {
+    border-color: var(--bs-primary);
+    background-color: var(--bs-tertiary-bg);
+}

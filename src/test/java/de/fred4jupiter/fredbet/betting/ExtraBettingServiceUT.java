@@ -83,6 +83,19 @@ public class ExtraBettingServiceUT {
     }
 
     @Test
+    public void loadExtraBetDataOthersSortsByPointsFirst() {
+        ExtraBet anna = createExtraBet("anna");
+        ExtraBet bert = createExtraBet("bert");
+        bert.setPointsOne(10);
+        ExtraBet carl = createExtraBet("Carl");
+        when(extraBetRepository.findAll(Sort.by(Sort.Direction.ASC, "userName"))).thenReturn(List.of(anna, bert, carl));
+
+        List<ExtraBet> result = createService().loadExtraBetDataOthers();
+
+        assertThat(result).extracting(ExtraBet::getUserName).containsExactly("bert", "anna", "Carl");
+    }
+
+    @Test
     public void createExtraBetForUserUsesRandomTripleWhenAvailable() {
         when(randomValueGenerator.generateTeamTriple()).thenReturn(new TeamTriple(new Team(Country.GERMANY), new Team(Country.FRANCE), new Team(Country.SPAIN)));
         when(matchService.isGameForThirdAvailable()).thenReturn(true);

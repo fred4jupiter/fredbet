@@ -1,0 +1,20 @@
+/* the number columns only take the space they need, the team column gets the rest */
+.standings-table .standings-number {
+    width: 1%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.standings-table .standings-points {
+    font-weight: bold;
+    border-left: 2px solid var(--bs-border-color);
+}
+
+.standings-color {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.2em;
+}

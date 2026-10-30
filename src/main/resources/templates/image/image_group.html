@@ -4,47 +4,86 @@
 		<title th:text="#{image.group.title}"></title>
 	</head>
 	<body>
-		<div layout:fragment="content">
-            <form th:action="@{/imagegroup/delete}" th:object="${imageGroupCommand}" method="post" role="form">
-                <div class="row">
-                    <div class="col-12 col-sm-3 col-md-2 mb-3">
-                        <select id="groupSelection" th:field="*{id}" class="form-select">
-                            <option th:each="imageGroupCommand : ${availableImageGroups}" th:value="${imageGroupCommand.id}" th:text="${imageGroupCommand.name}"></option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="row">
-                            <div class="col-auto mb-3">
-                                <button type="button" class="btn btn-info" id="editImageGroup" th:text="#{button.edit}"></button>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <input type="submit" class="btn btn-danger" th:value="#{button.delete}"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+		<div layout:fragment="content" th:with="hasNameError=${#fields.hasErrors('${imageGroupCommand.name}')},errorGroupId=${imageGroupCommand.id}">
+			<!-- one dialog for all groups; the id and name of the clicked group are set in image_group.js -->
+			<div class="modal fade" id="confirm-delete-group" tabindex="-1" aria-labelledby="confirm-delete-groupLabel" aria-hidden="true">
+				<div class="modal-dialog modal-sm">
+					<form class="modal-content" th:action="@{/imagegroup/delete}" method="post">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="confirm-delete-groupLabel" th:text="#{confirmation.msg}"></h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{button.cancel}"></button>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" name="id" />
+							<span class="fw-bold" data-group-name></span>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger" th:text="#{button.delete}"></button>
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
+						</div>
+					</form>
+				</div>
+			</div>
 
-            <form th:action="@{/imagegroup/save}" th:object="${imageGroupCommand}" method="post" role="form">
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4 mt-3">
-                        <div class="mb-3">
-                            <input type="hidden" th:field="*{id}"  />
-                            <label class="form-label" for="imageGroupName" th:text="#{image.group.name}"></label>
-                            <input id="imageGroupName" type="text" th:field="*{name}" class="form-control" />
-                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-auto">
-                        <input type="submit" class="btn btn-primary" th:value="#{button.save}" />
-                    </div>
-                    <div class="col-auto">
-                        <a href="#" th:href="@{/image/show}" class="btn btn-light" role="button" th:text="#{button.backToImageUpload}"></a>
-                    </div>
-                </div>
-            </form>
+			<h1 th:text="#{image.group.title}"></h1>
+			<div class="row">
+				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+					<form th:action="@{/imagegroup/save}" method="post" class="card mt-3">
+						<div class="card-header">
+							<h2 class="h5 mb-0" th:text="#{image.group.new}"></h2>
+						</div>
+						<div class="card-body">
+							<label class="form-label visually-hidden" for="imageGroupName" th:text="#{image.group.name}"></label>
+							<div class="input-group has-validation">
+								<input id="imageGroupName" type="text" name="name" class="form-control" required
+									   th:placeholder="#{image.group.name}" th:classappend="${hasNameError and errorGroupId == null} ? 'is-invalid'" />
+								<button type="submit" class="btn btn-primary" th:title="#{button.save}" th:aria-label="#{button.save}">
+									<i class="fas fa-plus" aria-hidden="true"></i>
+								</button>
+								<div class="invalid-feedback" th:if="${hasNameError and errorGroupId == null}" th:errors="${imageGroupCommand.name}"></div>
+							</div>
+						</div>
+					</form>
+
+					<div class="card mt-3">
+						<div class="card-header">
+							<h2 class="h5 mb-0" th:text="#{image.group.list}"></h2>
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item" th:each="group : ${availableImageGroups}"
+								th:with="rowError=${hasNameError and errorGroupId == group.id}">
+								<form th:action="@{/imagegroup/save}" method="post">
+									<input type="hidden" name="id" th:value="${group.id}" />
+									<label class="visually-hidden" th:for="${'imageGroupName-' + group.id}" th:text="#{image.group.name}"></label>
+									<div class="input-group input-group-sm has-validation">
+										<input th:id="${'imageGroupName-' + group.id}" type="text" name="name" class="form-control" required
+											   th:value="${group.name}" th:classappend="${rowError} ? 'is-invalid'" />
+										<button type="submit" class="btn btn-outline-primary" th:title="#{button.save}" th:aria-label="#{button.save}">
+											<i class="fas fa-save" aria-hidden="true"></i>
+										</button>
+										<button type="button" class="btn btn-outline-danger" th:if="${group.deletable}"
+												data-bs-toggle="modal" data-bs-target="#confirm-delete-group"
+												th:attr="data-id=${group.id},data-name=${group.name}"
+												th:title="#{image.group.button.delete}" th:aria-label="#{image.group.button.delete}">
+											<i class="fas fa-trash" aria-hidden="true"></i>
+										</button>
+										<span class="input-group-text text-body-secondary" th:unless="${group.deletable}"
+											  th:title="#{image.group.msg.deletionNotAllowed}">
+											<i class="fas fa-lock" aria-hidden="true"></i>
+											<span class="visually-hidden" th:text="#{image.group.msg.deletionNotAllowed}"></span>
+										</span>
+										<div class="invalid-feedback" th:if="${rowError}" th:errors="${imageGroupCommand.name}"></div>
+									</div>
+								</form>
+							</li>
+						</ul>
+					</div>
+
+					<a th:href="@{/image/show}" class="btn btn-light mt-3" role="button">
+						<i class="fas fa-arrow-left" aria-hidden="true"></i> <span th:text="#{button.backToImageUpload}"></span>
+					</a>
+				</div>
+			</div>
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">

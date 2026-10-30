@@ -131,6 +131,28 @@ public class TeamServiceUT {
     }
 
     @Test
+    public void createTeam_withPngCrest_savesCrestWrappedInSvg() {
+        byte[] crest = RasterCrestConverterUT.createPng(40, 20);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, "FC Test", false, crest);
+
+        assertThat(result.getSvgContent()).startsWith("<svg").contains("viewBox=\"0 0 40 20\"").contains("data:image/png;base64,");
+    }
+
+    @Test
+    public void createTeam_withJpegCrest_savesCrestWrappedInSvg() {
+        byte[] crest = RasterCrestConverterUT.createJpeg(40, 20);
+        when(teamRepository.findByName("FC Test")).thenReturn(null);
+        when(teamRepository.save(any(Team.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Team result = teamService.createTeam(null, "FC Test", false, crest);
+
+        assertThat(result.getSvgContent()).startsWith("<svg").contains("viewBox=\"0 0 40 20\"").contains("data:image/jpeg;base64,");
+    }
+
+    @Test
     public void createTeam_withCountryWithoutCrest_usesCountryCrestAndIgnoresName() {
         when(teamRepository.findByTeamBundleEntry(Country.GERMANY)).thenReturn(null);
         when(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false)).thenReturn(Optional.of(new SvgImage("<svg>germany</svg>")));
@@ -255,6 +277,25 @@ public class TeamServiceUT {
         assertThatThrownBy(() -> teamService.deleteTeam(5L))
             .isInstanceOfSatisfying(TeamInUseException.class, e -> assertThat(e.getTeamUsage()).isEqualTo(new TeamUsage(0, 3)));
         verify(teamRepository, never()).delete(any(Team.class));
+    }
+
+    @Test
+    public void deleteAllUnusedTeams_keepsTeamsStillInUse() {
+        Team unused = new Team("FC Unused");
+        Team inMatch = new Team("FC Match");
+        Team inExtraBet = new Team("FC Extra Bet");
+        when(teamRepository.findAll()).thenReturn(List.of(unused, inMatch, inExtraBet));
+        when(matchRepository.countByTeamOneOrTeamTwo(unused, unused)).thenReturn(0L);
+        when(matchRepository.countByTeamOneOrTeamTwo(inMatch, inMatch)).thenReturn(1L);
+        when(matchRepository.countByTeamOneOrTeamTwo(inExtraBet, inExtraBet)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(unused, unused, unused)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(inMatch, inMatch, inMatch)).thenReturn(0L);
+        when(extraBetRepository.countByFinalWinnerOrSemiFinalWinnerOrThirdFinalWinner(inExtraBet, inExtraBet, inExtraBet)).thenReturn(2L);
+
+        TeamDeletionResult result = teamService.deleteAllUnusedTeams();
+
+        assertThat(result).isEqualTo(new TeamDeletionResult(1, 2));
+        verify(teamRepository).deleteAll(List.of(unused));
     }
 
     @Test

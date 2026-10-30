@@ -1,7 +1,65 @@
-.rank-badge {
-    font-size: 17px;
+/* the position column has the same width for all rows, so the names are aligned */
+.ranking-position {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    font-weight: bold;
+    color: var(--bs-secondary-color);
 }
 
-.ranking-same-position {
-    background-color: #ffe8b3;
+.ranking-medal {
+    color: #212529;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+.ranking-medal-1 {
+    background-color: #f5c518;
+}
+
+.ranking-medal-2 {
+    background-color: #c0c4c8;
+}
+
+.ranking-medal-3 {
+    background-color: #d39a63;
+}
+
+.ranking-points {
+    min-width: 3rem;
+    font-size: 1rem;
+}
+
+/* users that share their position with other users */
+.ranking-shared-position {
+    background-color: var(--bs-warning-bg-subtle);
+}
+
+/* the own row: background only if it is not already marked as shared position, the left bar is always shown */
+.ranking-current-user {
+    box-shadow: inset 4px 0 0 var(--bs-primary);
+}
+
+.ranking-current-user:not(.ranking-shared-position) {
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+.ranking-legend {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.2em;
+}
+
+/* shown with the details button (ranking_list.js) */
+.ranking-details {
+    display: none;
+}
+
+.min-w-0 {
+    min-width: 0;
 }

@@ -1,28 +1,83 @@
-html, body {
-    height: 100%;
+/* vertically centres the login card in the visible area below the global messages */
+.login-wrapper {
+    min-height: calc(100vh - 6rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
 }
 
-.form-signin {
-    max-width: 330px;
-    padding: 1rem;
+.login-card {
+    width: 100%;
+    max-width: 960px;
+    overflow: hidden;
 }
 
-.form-signin .form-floating:focus-within {
+/* the logo may have any aspect ratio, so it is always shown completely (contain);
+   the blurred backdrop fills the remaining space of the panel */
+.login-visual {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: var(--bs-tertiary-bg);
+}
+
+.login-visual-backdrop {
+    position: absolute;
+    inset: -2rem;
+    background-position: center;
+    background-size: cover;
+    filter: blur(24px) brightness(0.85);
+}
+
+.login-logo {
+    position: relative;
+    max-width: 100%;
+    max-height: 25vh;
+    object-fit: contain;
+    box-shadow: var(--bs-box-shadow);
+}
+
+.login-visual-default {
+    background-color: var(--bs-primary);
+}
+
+.login-icon {
+    position: relative;
+    font-size: 4rem;
+    color: var(--bs-white);
+}
+
+@media (min-width: 992px) {
+    .login-visual {
+        min-height: 480px;
+        padding: 2.5rem;
+    }
+
+    .login-logo {
+        max-height: 420px;
+    }
+
+    .login-icon {
+        font-size: 9rem;
+    }
+}
+
+/* username and password are joined to one input block */
+.login-form .form-floating:focus-within {
     z-index: 2;
 }
 
-.form-signin input[type="text"] {
+.login-form input[type="text"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
+.login-form input[type="password"] {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-}
-
-.logo-color {
-    color: #0b5ed7;
 }

@@ -1,0 +1,44 @@
+/* the places, same colors as the medals on the ranking page */
+.extra-medal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    font-weight: bold;
+    color: #212529;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+.extra-medal-1 {
+    background-color: #f5c518;
+}
+
+.extra-medal-2 {
+    background-color: #c0c4c8;
+}
+
+.extra-medal-3 {
+    background-color: #d39a63;
+}
+
+.extra-bets-crest {
+    width: 3rem;
+    justify-content: center;
+}
+
+.extra-bets-total {
+    min-width: 2.5rem;
+    font-size: 1rem;
+}
+
+/* only the first letter is capitalized, the texts are lower case in some languages */
+.extra-bets-title::first-letter,
+.extra-bets-label::first-letter {
+    text-transform: uppercase;
+}
+
+.extra-bets-label {
+    display: inline-block;
+}

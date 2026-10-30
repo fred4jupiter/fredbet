@@ -59,7 +59,7 @@
                     <div class="d-flex align-items-center gap-3">
                         <img id="crestPreview" class="team-crest team-crest-lg flex-shrink-0" alt=""
                              th:src="*{teamId} != null ? @{${'/team/' + teamCommand.teamId + '.svg'}(v=*{version})} : @{/crests/crests-placeholder.svg}" />
-                        <input id="crestFile" name="crestFile" type="file" accept=".svg,image/svg+xml" class="form-control"
+                        <input id="crestFile" name="crestFile" type="file" accept=".svg,.jpg,.jpeg,.png,image/svg+xml,image/jpeg,image/png" class="form-control"
                                th:classappend="${#fields.hasErrors('crestFile')} ? 'is-invalid'" aria-describedby="crestHelp" />
                     </div>
                     <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('crestFile')}" th:errors="*{crestFile}">crest error</div>

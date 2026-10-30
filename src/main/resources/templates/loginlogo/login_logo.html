@@ -2,71 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{login.logo.title}"></title>
+		<link rel="stylesheet" th:href="@{/webjars/cropperjs/dist/cropper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/image_cropper.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
+            <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/loginlogo/delete', id = 'confirm-delete-logo')}"></div>
+            <h1 th:text="#{login.logo.title}"></h1>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <h2 th:text="#{login.logo.current.title}"></h2>
-                    <div th:if="${currentLoginLogo == null}" class="mb-3">
-                        <p th:value="#{login.logo.current}"></p>
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card mt-3">
+                        <div class="card-header fw-bold" th:text="#{login.logo.current.title}"></div>
+                        <div class="card-body">
+                            <p th:if="${currentLoginLogo == null}" class="text-body-secondary mb-0" th:text="#{login.logo.current}"></p>
+                            <img th:if="${currentLoginLogo != null}" th:src="${currentLoginLogo}" class="img-fluid rounded-3" th:alt="#{login.logo.current.title}"/>
+                        </div>
+                        <div class="card-footer" th:if="${currentLoginLogo != null}">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-delete-logo" th:text="#{button.delete}"></button>
+                        </div>
                     </div>
-                    <div th:if="${currentLoginLogo != null}" class="mb-3">
-                        <img th:src="${currentLoginLogo}" class="img-fluid rounded-3"/>
-                    </div>
+
+                    <form id="loginLogoForm" th:action="@{/loginlogo}" th:object="${loginLogoCommand}" method="post" enctype="multipart/form-data" role="form" class="card mt-3">
+                        <div class="card-header fw-bold" th:text="#{login.logo.update.title}"></div>
+                        <div class="card-body">
+                            <label for="upload" class="form-label fw-bold" th:text="#{image.upload.file}"></label>
+                            <input id="upload" type="file" accept="image/*" class="form-control"/>
+                            <input id="imageFile" type="file" name="imageFile" accept="image/jpeg" class="d-none" />
+
+                            <!-- shown once an image has been chosen -->
+                            <div id="crop-editor" class="d-none mt-3">
+                                <div class="crop-area mb-3">
+                                    <img id="crop-source" src="" alt=""/>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="crop-image-rotate btn btn-outline-secondary" data-deg="-90"
+                                                th:title="#{user.image.cropping.rotateLeft}" th:aria-label="#{user.image.cropping.rotateLeft}">
+                                            <i class="fas fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="crop-image-rotate btn btn-outline-secondary" data-deg="90"
+                                                th:title="#{user.image.cropping.rotateRight}" th:aria-label="#{user.image.cropping.rotateRight}">
+                                            <i class="fas fa-redo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                                <span role="status" th:text="#{image.upload.button}"></span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-auto mb-3">
-                    <a href="#" th:href="@{/loginlogo/delete}" class="btn btn-danger" role="button" th:text="#{button.delete}" th:classappend="${currentLoginLogo == null} ? 'disabled' : ''" ></a>
-                </div>
-            </div>
-
-            <form th:action="@{/loginlogo}" th:object="${loginLogoCommand}" method="post" enctype="multipart/form-data" role="form">
-                <div class="row">
-                    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                        <h2 th:text="#{login.logo.update.title}"></h2>
-                        <div class="mb-3">
-                            <label class="form-label" th:text="#{image.upload.file}"></label><br/>
-                            <input class="form-control" id="upload" type="file" accept="image/jpeg"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="mb-3">
-                            <input id="myFileBase64" type="hidden" name="myFileBase64" />
-                            <img id="preview" class="img-thumbnail" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 col-sm-2">
-                        <div class="mb-3">
-                            <label class="form-label" th:text="#{image.upload.rotate}"></label><br/>
-                            <button type="button" class="rotate-image-btn btn btn-dark" data-deg="-90">
-                                <i class="fas fa-undo" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="rotate-image-btn btn btn-dark" data-deg="90">
-                                <i class="fas fa-redo" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-auto mb-3">
-                        <input type="submit" class="btn btn-primary" th:value="#{image.upload.button}" />
-                    </div>
-                </div>
-            </form>
 		</div>
 		<th:block layout:fragment="scripts">
-            <script type="text/javascript" th:src="@{/js/jquery-rotate.js}"></script>
-			<script type="text/javascript" th:src="@{/js/compress.js}" charset="UTF-8"></script>
-			<script type="text/javascript" th:src="@{/js/pages/image_upload.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/webjars/cropperjs/dist/cropper.min.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/js/image_cropper.js}" charset="UTF-8"></script>
+			<script type="text/javascript" th:src="@{/js/pages/login_logo.js}" charset="UTF-8"></script>
 		</th:block>
 	</body>
 </html>

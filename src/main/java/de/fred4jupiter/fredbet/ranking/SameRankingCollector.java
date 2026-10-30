@@ -22,4 +22,16 @@ class SameRankingCollector {
             }
         });
     }
+
+    /**
+     * Assigns the position to each entry of the sorted rankings. Users with the same ranking get the same position,
+     * the following user skips the shared positions (1, 2, 2, 4).
+     */
+    void assignRankPositions(List<UsernamePoints> sortedRankings) {
+        for (int i = 0; i < sortedRankings.size(); i++) {
+            UsernamePoints current = sortedRankings.get(i);
+            boolean sameAsPrevious = i > 0 && current.getUniqueHash() == sortedRankings.get(i - 1).getUniqueHash();
+            current.setRankPosition(sameAsPrevious ? sortedRankings.get(i - 1).getRankPosition() : i + 1);
+        }
+    }
 }

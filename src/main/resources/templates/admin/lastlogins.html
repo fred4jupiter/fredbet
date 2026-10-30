@@ -5,23 +5,23 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h1 th:text="#{lastlogins.title}"></h1>
-            <div class="row">
-                <div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="appUser : ${userList}">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-6">
-                                    <span th:text="${appUser.username}"></span>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <span th:text="${#temporals.format(appUser.lastLogin, 'yyyy-MM-dd HH:mm')}"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<h1 th:text="#{lastlogins.title} + ' (' + ${#lists.size(userList)} + ')'"></h1>
+			<div class="row">
+				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+					<!-- sorted by the latest login first -->
+					<ul class="list-group mt-3">
+						<li class="list-group-item d-flex align-items-center gap-2" th:each="appUser : ${userList}">
+							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${appUser.username})}"></span>
+							<span class="flex-grow-1 fw-bold text-truncate" th:text="${appUser.username}"></span>
+							<time class="text-body-secondary small text-nowrap" th:if="${appUser.lastLogin}"
+								  th:datetime="${#temporals.formatISO(appUser.lastLogin)}">
+								<i class="fas fa-clock" aria-hidden="true"></i>
+								<span th:text="${#temporals.format(appUser.lastLogin, 'yyyy-MM-dd HH:mm')}"></span>
+							</time>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

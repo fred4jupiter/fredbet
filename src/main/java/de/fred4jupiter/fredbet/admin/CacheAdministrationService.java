@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Service for clearing all caches.
+ * Service for clearing all or selected caches.
  *
  * <p>See Application for configuring the caches.
  *
@@ -36,6 +36,21 @@ public class CacheAdministrationService {
         }
 
         cacheNames.forEach(this::clearCacheByCacheName);
+    }
+
+    /**
+     * Clears the given caches. Unknown cache names are ignored.
+     *
+     * @return the sorted names of the caches that were cleared
+     */
+    public List<String> clearCaches(Collection<String> cacheNamesToClear) {
+        if (CollectionUtils.isEmpty(cacheNamesToClear)) {
+            return List.of();
+        }
+
+        List<String> cacheNames = getCacheNames().stream().filter(cacheNamesToClear::contains).toList();
+        cacheNames.forEach(this::clearCacheByCacheName);
+        return cacheNames;
     }
 
     public List<String> getCacheNames() {

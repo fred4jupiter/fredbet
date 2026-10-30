@@ -3,23 +3,29 @@ package de.fred4jupiter.fredbet.web.login;
 import de.fred4jupiter.fredbet.admin.LoginLogoService;
 import de.fred4jupiter.fredbet.image.BinaryImage;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Base64;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/loginlogo")
 public class LoginLogoController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LoginLogoController.class);
+
     private static final String REDIRECT_SHOW_PAGE = "redirect:/loginlogo";
+
+    private static final String CONTENT_TYPE_JPEG = "image/jpeg";
 
     private final WebMessageUtil messageUtil;
 
@@ -44,20 +50,24 @@ public class LoginLogoController {
 
     @PostMapping
     public String uploadImage(LoginLogoCommand loginLogoCommand, RedirectAttributes redirect) {
-        if (StringUtils.isBlank(loginLogoCommand.getMyFileBase64())) {
+        final MultipartFile imageFile = loginLogoCommand.getImageFile();
+        if (imageFile == null || imageFile.isEmpty()) {
             messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
             return REDIRECT_SHOW_PAGE;
         }
 
-        final byte[] imageByte = Base64.getDecoder().decode(loginLogoCommand.getMyFileBase64().split(",")[1]);
-
-        if (imageByte.length == 0) {
-            messageUtil.addErrorMsg(redirect, "image.upload.msg.noFileGiven");
+        if (!CONTENT_TYPE_JPEG.equals(imageFile.getContentType())) {
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.noJpegImage");
             return REDIRECT_SHOW_PAGE;
         }
 
-        loginLogoService.saveImage(imageByte);
-        messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
+        try {
+            loginLogoService.saveImage(imageFile.getBytes());
+            messageUtil.addInfoMsg(redirect, "image.upload.msg.saved");
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            messageUtil.addErrorMsg(redirect, "image.upload.msg.failed");
+        }
 
         return REDIRECT_SHOW_PAGE;
     }

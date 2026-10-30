@@ -1,53 +1,25 @@
 $(document).ready(function () {
-    imageCroppingUpload();
-
-    $('#spinner').hide();
-    $('#saveCroppedImage').on('click', function () {
-        $('#spinner').show();
+    // the server cuts a square thumbnail from the image, so the crop frame is square as well
+    var imageCropper = initImageCropper({
+        aspectRatio: 1,
+        autoCropArea: 0.9
     });
-});
 
-function imageCroppingUpload() {
-    var $uploadCrop;
+    $('#crop-image').on('click', function () {
+        $('#saveCroppedImage').prop('disabled', true);
 
-    var opts = {
-        viewport: 'original',
-        type: 'canvas',
-        enableResize: true,
-        enableExif: true,
-        enableOrientation: true,
-        format: 'jpeg'
-    };
-
-    function readFile(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $uploadCrop.croppie('bind', {
-                    url: e.target.result
-                });
+        imageCropper.toFileInput(document.getElementById('croppedFile'), {maxWidth: 800, maxHeight: 800}, function (blob) {
+            var resultImage = document.getElementById('resultImage');
+            if (resultImage.src.startsWith('blob:')) {
+                URL.revokeObjectURL(resultImage.src);
             }
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            console.log("Sorry - you're browser doesn't support the FileReader API");
-        }
-    }
+            resultImage.src = URL.createObjectURL(blob);
 
-    $('#upload').on('change', function () {
-        readFile(this);
-    });
-
-    $uploadCrop = $('#croppie-container').croppie(opts);
-
-    $('.crop-image-rotate').on('click', function (ev) {
-        $uploadCrop.croppie('rotate', parseInt($(this).data('deg')));
-    });
-
-    $('#crop-image').on('click', function (ev) {
-        $uploadCrop.croppie('result', opts).then(function (resp) {
-            $("#resultImage").attr("src", resp);
-            $("#croppedFileBase64").attr("value", resp);
+            $('#saveCroppedImage').prop('disabled', false);
         });
     });
-}
+
+    $('#saveCroppedImage').on('click', function () {
+        $('#spinner').removeClass('d-none');
+    });
+});

@@ -101,10 +101,10 @@ public class TeamStandings {
 
     public String getCssClass(Integer rowCount) {
         if (rowCount == 1 || rowCount == 2) {
-            return "success";
+            return "table-success";
         }
         if (rowCount == 3) {
-            return "warning";
+            return "table-warning";
         }
         return "";
     }

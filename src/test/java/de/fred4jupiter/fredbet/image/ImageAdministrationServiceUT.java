@@ -67,9 +67,6 @@ public class ImageAdministrationServiceUT {
         AppUser user = new AppUser();
         user.setUsername("alfredo");
 
-        when(imageResizingService.createThumbnail(new byte[]{1})).thenReturn(new byte[]{2});
-        when(imageBinaryRepository.saveImage(new byte[]{1}, new byte[]{2})).thenReturn("img-key");
-        when(imageGroupRepository.findByName("gallery")).thenReturn(new ImageGroup("gallery"));
         when(runtimeSettingsService.loadRuntimeSettings()).thenReturn(runtimeSettings);
         when(imageMetaDataRepository.numberOfImagesOfUser("alfredo")).thenReturn(1);
 
@@ -78,6 +75,10 @@ public class ImageAdministrationServiceUT {
             .extracting("limit")
             .isEqualTo(1);
 
+        // nothing is created or stored once the limit is reached
+        verify(imageResizingService, never()).createThumbnail(any());
+        verify(imageBinaryRepository, never()).saveImage(any(), any());
+        verify(imageGroupRepository, never()).save(any());
         verify(imageMetaDataRepository, never()).save(any());
     }
 

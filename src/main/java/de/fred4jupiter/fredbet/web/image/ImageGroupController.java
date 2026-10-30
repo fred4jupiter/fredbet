@@ -48,17 +48,22 @@ public class ImageGroupController {
         ImageGroupCommand imageGroupCommand = new ImageGroupCommand();
         imageGroupCommand.setId(imageGroup.getId());
         imageGroupCommand.setName(imageGroup.getName());
+        imageGroupCommand.setDeletable(!imageGroup.isUserProfileImageGroup() && !imageGroup.isDefaultImageGroup());
         return imageGroupCommand;
     }
 
     @GetMapping("/show")
     public String show(Model model) {
+        addAvailableImageGroups(model);
+        return PAGE_IMAGE_GROUP;
+    }
+
+    private void addAvailableImageGroups(Model model) {
         List<ImageGroup> imageGroups = imageGroupService.findAvailableImageGroups();
         List<ImageGroupCommand> availableImageGroups = imageGroups.stream().map(this::mapToImageGroupCommand)
                 .sorted(Comparator.comparing(ImageGroupCommand::getName, String.CASE_INSENSITIVE_ORDER))
                 .toList();
         model.addAttribute("availableImageGroups", availableImageGroups);
-        return PAGE_IMAGE_GROUP;
     }
 
     @PostMapping("/delete")
@@ -76,8 +81,10 @@ public class ImageGroupController {
     }
 
     @PostMapping("/save")
-    public String addImageGroup(@Valid ImageGroupCommand imageGroupCommand, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String addImageGroup(@Valid ImageGroupCommand imageGroupCommand, BindingResult bindingResult, RedirectAttributes redirect,
+                                Model model) {
         if (bindingResult.hasErrors()) {
+            addAvailableImageGroups(model);
             return PAGE_IMAGE_GROUP;
         }
 

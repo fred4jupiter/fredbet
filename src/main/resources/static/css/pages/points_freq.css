@@ -1,0 +1,11 @@
+/* keeps the user name visible while scrolling the points columns horizontally on small screens */
+.points-freq-table .points-freq-name {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.points-freq-table td.text-center {
+    min-width: 4.5rem;
+}

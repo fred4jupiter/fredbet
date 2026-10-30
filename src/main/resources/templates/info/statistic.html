@@ -2,89 +2,92 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{statistics.title}"></title>
-        <link rel="stylesheet" th:href="@{/css/pages/statistic.css}" />
+		<link rel="stylesheet" th:href="@{/css/pages/statistic.css}" />
 	</head>
 	<body>
-		<div layout:fragment="content">
+		<div layout:fragment="content"
+			 th:with="hasRoundOfThirtyTwo=${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')},hasGameForThird=${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')},
+			 		  favouriteTeamName=${favouriteTeam != null} ? ${favouriteTeam.getNameTranslated(@messageSourceUtil)}">
 			<h1 th:text="#{statistics.title}"></h1>
-			<div class="row mb-3" th:if="${not #lists.isEmpty(statisticList)}">
-				<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2" th:if="${favouriteTeam != null}">
-                    <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${favouriteTeam.id}, v=${favouriteTeam.version})}" th:alt="${favouriteTeam.getNameTranslated(@messageSourceUtil)}"/>
-                    <span th:text="#{statistics.legend.favouriteTeam}"></span>
-				</div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
-                    <span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
-                    <span class="fas fa-star" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span>
-                </div>
-				<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
-					<span class="fas fa-lightbulb" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span>
-				</div>
-			</div>
 
-			<div class="row">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="statistic : ${statisticList}">
-					<div class="card mb-3">
-						<div class="card-header bg-info-subtle">
-                            <div class="row">
-                                <div class="col-2">
-                                    <span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${statistic.username})}"></span>
-                                </div>
-                                <div class="col-10">
-                                    <span th:text="${statistic.username} + ' (' + ${statistic.getSum()} + ') '"></span>
-                                    <span th:if="${statistic.minPointsCandidate}" class="fas fa-lightbulb" aria-hidden="true"></span>
-                                    <span th:if="${statistic.maxPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
-                                </div>
-                            </div>
-					   </div>
-					   <div class="card-body">
-						   <div class="table-responsive">
-						   		<table class="table table-condensed table-centered table-striped center">
-									<thead>
-										<tr class="active">
-											<th><i class="fas fa-users" aria-hidden="true"></i></th>
-                                            <th th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')}">1/16</th>
-                                            <th>1/8</th>
-											<th>1/4</th>
-											<th>1/2</th>
-											<th>1/1</th>
-											<th th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}">3.</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td class="success">
-												<span th:text="${statistic.pointsGroup}"></span>
-												<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star" aria-hidden="true"></span>
-											</td>
-                                            <td th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_THIRTY_TWO')}" class="warning" th:text="${statistic.pointsRoundOfThirtyTwo}"></td>
-											<td class="warning" th:text="${statistic.pointsRoundOfSixteen}"></td>
-											<td class="warning" th:text="${statistic.pointsQuarterFinal}"></td>
-											<td class="warning" th:text="${statistic.pointsSemiFinal}"></td>
-											<td class="warning" th:text="${statistic.pointsFinal}"></td>
-											<td th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="info" th:text="${statistic.pointsGameForThird}"></td>
-										</tr>
-									</tbody>
-						   		</table>
-					   	   </div>
-					   </div>
-                       <div class="card-footer bg-light">
-                           <div class="row">
-                               <div th:if="${favouriteTeam != null}" class="col-auto">
-                                   <img class="fi" th:src="@{/team/{teamId}.svg(teamId=${statistic.favouriteTeam.id}, v=${statistic.favouriteTeam.version})}" th:alt="${statistic.favouriteTeam.getNameTranslated(@messageSourceUtil)}"/>
-                                   <span th:text="' (' + ${statistic.pointsFavouriteTeam} + ')'"></span>
-                                   <span th:if="${statistic.maxFavouriteTeamCandidate}" class="fas fa-star" aria-hidden="true"></span>
-                               </div>
-                               <div class="col-auto">
-                                   <span class="fas fa-magic" aria-hidden="true"></span>
-                                   <span th:text="'(' + ${statistic.getPointsForExtraBets()} + ')'"></span>
-                               </div>
-                           </div>
-                       </div>
+			<p class="text-body-secondary" th:if="${#lists.isEmpty(statisticList)}" th:text="#{msg.warn.no.statistics}"></p>
+
+			<th:block th:unless="${#lists.isEmpty(statisticList)}">
+				<p class="text-body-secondary" th:text="#{statistics.title2}"></p>
+
+				<div class="card mb-3 statistic-card">
+					<div class="table-responsive">
+						<table class="table small table-sm table-striped table-hover align-middle mb-0 statistic-table">
+							<thead class="table-light">
+								<tr>
+									<th scope="col" class="statistic-number">#</th>
+									<th scope="col" class="statistic-name" th:text="#{statistics.user}"></th>
+									<th scope="col" class="statistic-number">
+										<abbr th:title="#{statistics.groupStage}"><i class="fas fa-users" aria-hidden="true"></i></abbr>
+										<span class="visually-hidden" th:text="#{statistics.groupStage}"></span>
+									</th>
+									<th scope="col" class="statistic-number" th:if="${hasRoundOfThirtyTwo}"><abbr th:title="#{group.title.roundOfThirtyTwo}">1/16</abbr></th>
+									<th scope="col" class="statistic-number"><abbr th:title="#{group.title.roundOfSixteen}">1/8</abbr></th>
+									<th scope="col" class="statistic-number"><abbr th:title="#{group.title.quarterFinal}">1/4</abbr></th>
+									<th scope="col" class="statistic-number"><abbr th:title="#{group.title.semiFinal}">1/2</abbr></th>
+									<th scope="col" class="statistic-number"><abbr th:title="#{group.title.final}">1/1</abbr></th>
+									<th scope="col" class="statistic-number" th:if="${hasGameForThird}"><abbr th:title="#{group.title.gameForThird}">3.</abbr></th>
+									<th scope="col" class="statistic-number">
+										<abbr th:title="#{statistics.legend.bonusPoints}"><i class="fas fa-magic" aria-hidden="true"></i></abbr>
+										<span class="visually-hidden" th:text="#{statistics.legend.bonusPoints}"></span>
+									</th>
+									<th scope="col" class="statistic-number statistic-total" th:text="#{statistics.total}"></th>
+									<th scope="col" class="statistic-number statistic-favourite" th:if="${favouriteTeam != null}">
+										<img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${favouriteTeam.id}, v=${favouriteTeam.version})}"
+											 th:alt="${favouriteTeamName}" th:title="#{statistics.legend.favouriteTeam} + ': ' + ${favouriteTeamName}" />
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="statistic, iter : ${statisticList}">
+									<td class="statistic-number text-body-secondary" th:text="${iter.count}"></td>
+									<th scope="row" class="statistic-name fw-normal">
+										<div class="d-flex align-items-center gap-2">
+											<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${statistic.username})}"></span>
+											<span th:text="${statistic.username}"></span>
+										</div>
+									</th>
+									<td class="statistic-number">
+										<span th:text="${statistic.pointsGroup}"></span>
+										<span th:if="${statistic.maxGroupPointsCandidate}" class="fas fa-star" th:title="#{statistics.legend.topBetter}"></span>
+									</td>
+									<td class="statistic-number" th:if="${hasRoundOfThirtyTwo}" th:text="${statistic.pointsRoundOfThirtyTwo}"></td>
+									<td class="statistic-number" th:text="${statistic.pointsRoundOfSixteen}"></td>
+									<td class="statistic-number" th:text="${statistic.pointsQuarterFinal}"></td>
+									<td class="statistic-number" th:text="${statistic.pointsSemiFinal}"></td>
+									<td class="statistic-number" th:text="${statistic.pointsFinal}"></td>
+									<td class="statistic-number" th:if="${hasGameForThird}" th:text="${statistic.pointsGameForThird}"></td>
+									<td class="statistic-number" th:text="${statistic.pointsForExtraBets}"></td>
+									<td class="statistic-number statistic-total">
+										<span th:text="${statistic.sum}"></span>
+										<span th:if="${statistic.maxPointsCandidate}" class="fas fa-star" th:title="#{statistics.legend.topBetter}"></span>
+										<span th:if="${statistic.minPointsCandidate}" class="fas fa-lightbulb" th:title="#{statistics.legend.flopBetter}"></span>
+									</td>
+									<td class="statistic-number statistic-favourite" th:if="${favouriteTeam != null}">
+										<span th:text="${statistic.pointsFavouriteTeam}"></span>
+										<span th:if="${statistic.maxFavouriteTeamCandidate}" class="fas fa-star" th:title="#{statistics.legend.topBetter}"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
-			</div>
+
+				<div class="small text-body-secondary d-flex flex-wrap column-gap-3 row-gap-1">
+					<span><span class="fas fa-star" aria-hidden="true"></span> <span th:text="#{statistics.legend.topBetter}"></span></span>
+					<span><span class="fas fa-lightbulb" aria-hidden="true"></span> <span th:text="#{statistics.legend.flopBetter}"></span></span>
+					<span><span class="fas fa-magic" aria-hidden="true"></span> <span th:text="#{statistics.legend.bonusPoints}"></span></span>
+					<span th:if="${favouriteTeam != null}">
+						<img class="crest-small" th:src="@{/team/{teamId}.svg(teamId=${favouriteTeam.id}, v=${favouriteTeam.version})}" alt="" />
+						<span th:text="#{statistics.legend.favouriteTeam} + ': ' + ${favouriteTeamName} + ' (' + #{statistics.legend.favouriteTeamIncluded} + ')'"></span>
+					</span>
+				</div>
+			</th:block>
 		</div>
 	</body>
 </html>

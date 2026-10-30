@@ -36,14 +36,20 @@
 							<div class="card-body">
 								<p class="card-text" th:text="#{administration.cache.description}"></p>
 							</div>
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item" th:each="cacheName : ${cacheNames}" th:with="desc=${#messages.msgOrNull('administration.cache.name.' + cacheName)}">
-									<code th:text="${cacheName}"></code>
-									<div class="small text-body-secondary" th:if="${desc != null}" th:text="${desc}"></div>
-								</li>
-							</ul>
-							<div class="card-footer mt-auto">
-								<button type="submit" class="btn btn-outline-warning">
+							<div class="list-group list-group-flush">
+								<label class="list-group-item list-group-item-action d-flex align-items-start gap-2" th:each="cacheName : ${cacheNames}" th:with="desc=${#messages.msgOrNull('administration.cache.name.' + cacheName)}">
+									<input class="form-check-input mt-1 flex-shrink-0" type="checkbox" name="selectedCaches" th:value="${cacheName}" />
+									<span>
+										<code th:text="${cacheName}"></code>
+										<span class="d-block small text-body-secondary" th:if="${desc != null}" th:text="${desc}"></span>
+									</span>
+								</label>
+							</div>
+							<div class="card-footer mt-auto d-flex flex-wrap gap-2">
+								<button type="submit" class="btn btn-outline-warning" th:formaction="@{/config/clearSelectedCaches}">
+									<i class="bi bi-check2-square"></i> <span th:text="#{administration.clearSelectedCaches}"></span>
+								</button>
+								<button type="submit" class="btn btn-warning">
 									<i class="bi bi-arrow-clockwise"></i> <span th:text="#{administration.clearCache}"></span>
 								</button>
 							</div>

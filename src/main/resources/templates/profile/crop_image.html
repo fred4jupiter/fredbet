@@ -3,62 +3,71 @@
 	layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{user.image.cropping.title}"></title>
-		<link rel="stylesheet" th:href="@{/css/pages/croppie.css}" />
+		<link rel="stylesheet" th:href="@{/webjars/cropperjs/dist/cropper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/image_cropper.css}" />
 		<link rel="stylesheet" th:href="@{/css/pages/crop_image.css}" />
 	</head>
 	<body>
         <div layout:fragment="content">
-            <div class="row mt-3">
-                <div class="col-12 col-sm-6 col-md-4 h-75">
-                    <h2 th:text="#{user.image.cropping.upload}"></h2>
-                    <input id="upload" value="Choose a file" accept="image/jpeg" type="file" class="mb-3"/>
+            <h1 th:text="#{user.image.cropping.title}"></h1>
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <th:block th:with="imageKey=${@webSecurityUtil.getCurrentUserProfileImageKey()}">
+                                <div class="d-flex align-items-center gap-3 mb-3" th:if="${imageKey}">
+                                    <a th:href="@{'/gallery/show/' + ${imageKey}}" th:attr="data-lightbox=${imageKey}" class="flex-shrink-0">
+                                        <img th:src="@{'/gallery/show/' + ${imageKey}}" class="current-profile-image rounded" th:alt="#{user.image.cropping.current}"/>
+                                    </a>
+                                    <span class="text-body-secondary" th:text="#{user.image.cropping.current}"></span>
+                                </div>
+                            </th:block>
+                            <label for="upload" class="form-label fw-bold" th:text="#{user.image.cropping.upload}"></label>
+                            <input id="upload" type="file" accept="image/*" class="form-control"/>
 
-                    <div id="croppie-container" class="mb-5"></div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-auto mb-3">
-                            <button type="button" class="crop-image-rotate btn bg-secondary" data-deg="-90">
-                                <i class="fas fa-undo" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="col-auto mb-3">
-                            <button type="button" class="crop-image-rotate btn bg-secondary" data-deg="90">
-                                <i class="fas fa-redo" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-auto mt-3 mb-3">
-                            <button id="crop-image" th:text="#{user.image.cropping.select.range}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+                            <!-- shown once an image has been chosen -->
+                            <div id="crop-editor" class="d-none mt-3">
+                                <div class="crop-area mb-3">
+                                    <img id="crop-source" src="" alt=""/>
+                                </div>
+                                <div class="d-flex justify-content-center flex-wrap gap-2">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="crop-image-rotate btn btn-outline-secondary" data-deg="-90"
+                                                th:title="#{user.image.cropping.rotateLeft}" th:aria-label="#{user.image.cropping.rotateLeft}">
+                                            <i class="fas fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="crop-image-rotate btn btn-outline-secondary" data-deg="90"
+                                                th:title="#{user.image.cropping.rotateRight}" th:aria-label="#{user.image.cropping.rotateRight}">
+                                            <i class="fas fa-redo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <button type="button" id="crop-image" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cropResultModal"
+                                            th:text="#{user.image.cropping.select.range}"></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="croppedImageModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <form th:action="@{/cropping/upload}" method="post" enctype="multipart/form-data" role="form">
+            <div class="modal fade" id="cropResultModal" tabindex="-1" aria-labelledby="cropResultModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <form th:action="@{/cropping/upload}" method="post" enctype="multipart/form-data" role="form" class="w-100">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="croppedImageModal" th:text="#{user.image.cropping.result}">Modal title</h1>
+                                <h1 class="modal-title fs-5" id="cropResultModalTitle" th:text="#{user.image.cropping.result}"></h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-12 text-center">
-                                        <input id="croppedFileBase64" type="hidden" name="croppedFileBase64" value="" />
-                                        <img id="resultImage" src="" class="croppie-container" alt="croppedImage"/>
-                                    </div>
-                                </div>
+                            <div class="modal-body text-center">
+                                <input id="croppedFile" type="file" name="croppedFile" accept="image/jpeg" class="d-none" />
+                                <img id="resultImage" src="" class="crop-result img-fluid rounded" alt=""/>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-primary" id="saveCroppedImage" type="submit">
-                                    <span id="spinner" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal" th:text="#{button.cancel}"></button>
+                                <button class="btn btn-primary" id="saveCroppedImage" type="submit" disabled>
+                                    <span id="spinner" class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
                                     <span role="status" th:text="#{button.save}"></span>
                                 </button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Close</button>
                             </div>
                         </div>
                     </form>
@@ -68,8 +77,8 @@
         </div>
 	</body>
 	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/js/croppie.min.js}" charset="UTF-8"></script>
-		<script type="text/javascript" th:src="@{/js/exif.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/webjars/cropperjs/dist/cropper.min.js}" charset="UTF-8"></script>
+		<script type="text/javascript" th:src="@{/js/image_cropper.js}" charset="UTF-8"></script>
 		<script type="text/javascript" th:src="@{/js/pages/crop_image.js}" charset="UTF-8"></script>
 	</th:block>
 </html>

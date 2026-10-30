@@ -7,7 +7,12 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
+		<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+			<h1 class="mb-0" th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
+			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" th:href="@{/match/create}" class="btn btn-primary" role="button">
+				<i class="fas fa-plus"></i> <span th:text="#{matches.list.createMatch}"></span>
+			</a>
+		</div>
 			<div class="row">
 				<div class="col-12 col-sm-8 col-md-6 col-lg-4 mb-3" th:each="matchCommand : ${allMatches}">
 					<a class="anchor" th:id="${matchCommand.match.id}"></a>
@@ -56,11 +61,37 @@
 							   class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
 								<span class="fas fa-trophy"></span>
 							</a>
+							<button sec:authorize="hasAuthority('PERM_ADMINISTRATION')" type="button" class="btn btn-secondary"
+									data-bs-toggle="modal" data-bs-target="#match-info"
+									th:attr="data-external-last-updated=${matchCommand.externalLastUpdated},data-create-date=${matchCommand.createDate},data-created-by=${matchCommand.match.createdBy},data-update-date=${matchCommand.updateDate},data-updated-by=${matchCommand.match.updatedBy}">
+								<span class="bi bi-info-circle"></span>
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
+			<div sec:authorize="hasAuthority('PERM_ADMINISTRATION')" class="modal fade" id="match-info" tabindex="-1" aria-labelledby="match-info-title" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header bg-info">
+							<h1 class="modal-title fs-5" id="match-info-title">Info</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<dl class="row mb-0">
+								<dt class="col-5">FD last update</dt><dd class="col-7" data-field="externalLastUpdated"></dd>
+								<dt class="col-5">created</dt><dd class="col-7" data-field="createDate"></dd>
+								<dt class="col-5">created by</dt><dd class="col-7" data-field="createdBy"></dd>
+								<dt class="col-5">updated</dt><dd class="col-7" data-field="updateDate"></dd>
+								<dt class="col-5">updated by</dt><dd class="col-7 mb-0" data-field="updatedBy"></dd>
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
 	</div>
+<th:block layout:fragment="scripts">
+	<script type="text/javascript" th:src="@{/js/pages/matches_list.js}" charset="UTF-8"></script>
+</th:block>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package de.fred4jupiter.fredbet.web.integration;
 
 
-import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.integration.*;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -34,16 +34,16 @@ public class FootballDataController {
 
     private final WebMessageUtil webMessageUtil;
 
-    private final DataPopulator dataPopulator;
+    private final DataService dataService;
 
     public FootballDataController(FootballDataService footballDataService, FootballDataSyncService footballDataSyncService,
                                   FootballDataLoader footballDataLoader,
-                                  WebMessageUtil webMessageUtil, DataPopulator dataPopulator) {
+                                  WebMessageUtil webMessageUtil, DataService dataService) {
         this.footballDataService = footballDataService;
         this.footballDataSyncService = footballDataSyncService;
         this.footballDataLoader = footballDataLoader;
         this.webMessageUtil = webMessageUtil;
-        this.dataPopulator = dataPopulator;
+        this.dataService = dataService;
     }
 
     @ModelAttribute("footballDataCommand")
@@ -149,7 +149,7 @@ public class FootballDataController {
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
-        dataPopulator.executeAsync(DataPopulator::deleteAllBetsAndMatches);
+        dataService.deleteAllBetsMatchesAndTeams();
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/footballdata";

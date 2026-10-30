@@ -1,10 +1,13 @@
-.registrationBox {
-	background-color: #EAEAEA;
-	padding: 20px;
-	border: 1px solid #9C9C9C;
+/* vertically centres the registration card in the visible area below the global messages, like on the login page */
+.registration-wrapper {
+    min-height: calc(100vh - 6rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
 }
 
-.token-input {
-	width: 50%;
-	background-color: #c4ecd9;
+.registration-card {
+    width: 100%;
+    max-width: 480px;
 }

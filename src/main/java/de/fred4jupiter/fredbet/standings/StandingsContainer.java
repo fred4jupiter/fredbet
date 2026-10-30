@@ -39,6 +39,13 @@ public class StandingsContainer {
         return Group.getMainGroups();
     }
 
+    /**
+     * @return true if at least one main group has standings, i.e. a group match has a result
+     */
+    public boolean hasStandings() {
+        return getGroups().stream().map(standingsMap::get).anyMatch(list -> list != null && !list.isEmpty());
+    }
+
     public List<TeamStandings> getForGroup(Group group) {
         List<TeamStandings> teamPoints = standingsMap.get(group);
         if (teamPoints == null || teamPoints.isEmpty()) {

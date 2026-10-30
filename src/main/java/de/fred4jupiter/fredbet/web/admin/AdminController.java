@@ -3,12 +3,12 @@ package de.fred4jupiter.fredbet.web.admin;
 import de.fred4jupiter.fredbet.admin.AdministrationService;
 import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.data.DataPopulator;
+import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.data.GroupSelection;
 import de.fred4jupiter.fredbet.domain.entity.AppUser;
 import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
-import de.fred4jupiter.fredbet.integration.FootballDataSyncService;
 import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.user.UserService;
@@ -62,10 +62,12 @@ public class AdminController {
 
     private final ApplicationContext applicationContext;
 
+    private final DataService dataService;
+
     public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
                            SessionTrackingService sessionTrackingService,
                            AdministrationService administrationService, UserService userService, FootballDataTestingService footballDataTestingService,
-                           ApplicationContext applicationContext) {
+                           ApplicationContext applicationContext, DataService dataService) {
         this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
         this.sessionTrackingService = sessionTrackingService;
@@ -73,6 +75,7 @@ public class AdminController {
         this.userService = userService;
         this.footballDataTestingService = footballDataTestingService;
         this.applicationContext = applicationContext;
+        this.dataService = dataService;
     }
 
     @ModelAttribute("adminFormCommand")
@@ -131,9 +134,17 @@ public class AdminController {
 
     @GetMapping("/deleteAllBetsAndMatches")
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
-        dataPopulator.executeAsync(DataPopulator::deleteAllBetsAndMatches);
+        dataService.deleteAllBetsMatchesAsync();
 
         webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
+        return "redirect:/administration";
+    }
+
+    @GetMapping("/deleteAllBetsMatchesAndTeams")
+    public String deleteAllBetsMatchesAndTeams(RedirectAttributes redirect) {
+        dataService.deleteAllBetsMatchesAndTeamsAsync();
+
+        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsMatchesAndTeamsDeleted");
         return "redirect:/administration";
     }
 

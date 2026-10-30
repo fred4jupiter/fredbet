@@ -6,42 +6,64 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="#{registration.text}"></h2>
-	<form id="registrationForm" th:action="@{/registration}" th:object="${registrationCommand}" action="#" method="post" role="form">
-		<div class="row">
-			<div class="col-12 col-sm-6 col-md-4">
+	<!-- same centred card as the login page, but with the form only -->
+	<div class="registration-wrapper">
+		<div class="card shadow-sm registration-card">
+			<form id="registrationForm" th:action="@{/registration}" th:object="${registrationCommand}" action="#" method="post" role="form"
+				  class="card-body p-4 p-sm-5">
+				<h1 class="h3 mb-1" th:text="#{registration.title}"></h1>
+				<p class="text-body-secondary mb-4" th:text="#{registration.text}"></p>
+
 				<div class="mb-3">
-					<label class="form-label" for="token" th:text="#{registration.token} + ':'"></label>
-					<input id="token" type="text" th:field="*{token}" class="form-control token-input" />
-					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('token')}" th:errors="*{token}">token error</p>
+					<label class="form-label fw-bold" for="token" th:text="#{registration.token}"></label>
+					<div class="input-group has-validation">
+						<span class="input-group-text"><i class="fas fa-key" aria-hidden="true"></i></span>
+						<input id="token" type="text" th:field="*{token}" class="form-control" th:errorclass="is-invalid"
+							   autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" required autofocus />
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('token')}" th:errors="*{token}"></div>
+					</div>
 				</div>
+
 				<div class="mb-3">
-					<label class="form-label" for="username" th:text="#{registration.username} + ':'"></label>
-					<input id="username" type="text" th:field="*{username}" class="form-control" size="12" maxlength="12" />
-					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
+					<label class="form-label fw-bold" for="username" th:text="#{registration.username}"></label>
+					<!-- length limits as in RegistrationCommand (FredbetConstants.USERNAME_MAX_LENGTH) -->
+					<input id="username" type="text" th:field="*{username}" class="form-control" th:errorclass="is-invalid"
+						   autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required minlength="2" maxlength="12" />
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 				</div>
+
 				<div class="mb-3">
-					<label class="form-label" for="password" th:text="#{registration.password} + ':'"></label>
-					<input id="password" type="password" th:field="*{password}" class="form-control" />
-					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">passwordRepeat error</p>
+					<label class="form-label fw-bold" for="password" th:text="#{registration.password}"></label>
+					<input id="password" type="password" th:field="*{password}" class="form-control" th:errorclass="is-invalid"
+						   autocomplete="new-password" required minlength="4" maxlength="100" />
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 				</div>
+
 				<div class="mb-3">
-					<label class="form-label" for="passwordRepeat" th:text="#{registration.passwordRepeat} + ':'"></label>
-					<input id="passwordRepeat" type="password" th:field="*{passwordRepeat}" class="form-control" />
-					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}">passwordRepeat error</p>
+					<label class="form-label fw-bold" for="passwordRepeat" th:text="#{registration.passwordRepeat}"></label>
+					<input id="passwordRepeat" type="password" th:field="*{passwordRepeat}" class="form-control" th:errorclass="is-invalid"
+						   autocomplete="new-password" required minlength="4" maxlength="100" />
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}"></div>
 				</div>
-				<div class="mb-3" th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}">
-					<input class="form-check-input me-2" id="child" type="checkbox" th:field="*{child}" th:value="${child}"/>
+
+				<div class="form-check form-switch mb-3" th:if="${@runtimeSettingsUtil.getSettings().isEnabledParentChildRanking()}">
+					<input class="form-check-input" id="child" type="checkbox" role="switch" th:field="*{child}" th:errorclass="is-invalid"/>
 					<label class="form-check-label" for="child" th:text="#{registration.child}"></label>
-					<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('child')}" th:errors="*{child}">child error</p>
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('child')}" th:errors="*{child}"></div>
 				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-					<a href="#" th:href="@{/}" class="btn btn-light" role="button" th:text="#{back.to.login}"></a>
+
+				<button type="submit" class="btn btn-primary btn-lg w-100 mt-2">
+					<i class="fas fa-user-plus" aria-hidden="true"></i> <span th:text="#{registration.link.text}"></span>
+				</button>
+
+				<div class="text-center mt-3">
+					<a th:href="@{/login}" class="btn btn-link">
+						<i class="fas fa-arrow-left" aria-hidden="true"></i> <span th:text="#{back.to.login}"></span>
+					</a>
 				</div>
-			</div>
+			</form>
 		</div>
-	</form>
+	</div>
 </div>
 </body>
 </html>

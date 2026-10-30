@@ -21,24 +21,25 @@
                                     <br/>
                                     <span th:text="${allBetsCommand.match.getGroupLabel(@messageSourceUtil)}"></span>
                                 </div>
-                                <div class="col-4 ps-0">
-                                    <div class="text-end mt-2">
-                                        <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
-                                              th:text="${allBetsCommand.match.goalsTeamOne}"></span>
-                                        <span th:if="${allBetsCommand.match.goalsTeamOne != null}" class=""> : </span>
-                                        <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}"
-                                              th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <span th:text="#{others.bet.groupBet} + ':'"></span>
-                                    <span class="badge rounded-pill bg-success" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
+                        <div class="card-body d-flex justify-content-between align-items-end gap-3">
+                            <div>
+                                <div class="small text-uppercase text-body-secondary mb-1" th:text="#{others.bet.groupBet}"></div>
+                                <div class="text-nowrap">
+                                    <span class="badge rounded-pill bg-success big-badge" th:text="${groupAvg.avgGoalsTeamOne}">1</span>
                                     <span> : </span>
-                                    <span class="badge rounded-pill bg-success" th:text="${groupAvg.avgGoalsTeamTwo}">1</span>
+                                    <span class="badge rounded-pill bg-success big-badge" th:text="${groupAvg.avgGoalsTeamTwo}">1</span>
+                                </div>
+                            </div>
+                            <div class="text-end" th:if="${allBetsCommand.match.goalsTeamOne != null}">
+                                <div class="small text-uppercase text-body-secondary mb-1" th:text="#{matches.list.result}"></div>
+                                <div class="text-nowrap">
+                                    <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerOne()}"
+                                          th:text="${allBetsCommand.match.goalsTeamOne}"></span>
+                                    <span> : </span>
+                                    <span class="badge rounded-pill bg-info big-badge" th:classappend="${allBetsCommand.match.getCssClassPenaltyWinnerTwo()}"
+                                          th:text="${allBetsCommand.match.goalsTeamTwo}"></span>
                                 </div>
                             </div>
                         </div>
