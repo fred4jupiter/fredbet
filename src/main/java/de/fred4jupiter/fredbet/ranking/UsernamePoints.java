@@ -19,7 +19,7 @@ public class UsernamePoints {
 
     private boolean child;
 
-    private String cssRankClass;
+    private int rankPosition;
 
     private boolean sameRankingPositionAsOtherUser;
 
@@ -84,12 +84,15 @@ public class UsernamePoints {
         return totalPoints;
     }
 
-    public String getCssRankClass() {
-        return cssRankClass;
+    /**
+     * The position in the ranking, starting with 1. Users with the same ranking share the same position.
+     */
+    public int getRankPosition() {
+        return rankPosition;
     }
 
-    public void setCssRankClass(String cssRankClass) {
-        this.cssRankClass = cssRankClass;
+    public void setRankPosition(int rankPosition) {
+        this.rankPosition = rankPosition;
     }
 
     public boolean isTopTipperOfToday() {

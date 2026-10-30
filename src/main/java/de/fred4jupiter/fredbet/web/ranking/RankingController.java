@@ -67,24 +67,15 @@ public class RankingController {
             return PAGE_RANKING;
         }
 
+        // users with the same ranking get the same position, the following user skips the shared positions (1, 2, 2, 4)
         for (int i = 0; i < rankings.size(); i++) {
-            rankings.get(i).setCssRankClass(getCssRankingClassForPosition(i));
+            UsernamePoints current = rankings.get(i);
+            boolean sameAsPrevious = i > 0 && current.getUniqueHash() == rankings.get(i - 1).getUniqueHash();
+            current.setRankPosition(sameAsPrevious ? rankings.get(i - 1).getRankPosition() : i + 1);
         }
 
         model.addAttribute("rankings", rankings);
         model.addAttribute("rankingSelection", rankingSelection);
         return PAGE_RANKING;
-    }
-
-    private String getCssRankingClassForPosition(int position) {
-        return switch (position) {
-            case 0 -> "label-success";
-            case 1 -> "label-primary";
-            case 2 -> "label-warning";
-            case 3 -> "label-rank4";
-            case 4 -> "label-rank5";
-            case 5 -> "label-rank6";
-            default -> "label-default";
-        };
     }
 }
