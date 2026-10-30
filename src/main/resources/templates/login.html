@@ -7,60 +7,66 @@
 </head>
 <body>
     <div layout:fragment="content">
-        <main class="form-signin w-100 m-auto">
-            <form class="form" th:action="@{/login}" method="post">
-                <div class="text-center mb-5">
-                    <i th:if="${loginLogo == null}" class="fas fa-thumbs-up fa-8x logo-color"></i>
-                    <img th:if="${loginLogo != null}" th:src="${loginLogo}" class="img-fluid rounded-3"/>
-                </div>
-
-                <h1 class="h3 mb-3 fw-normal" th:text="'FredBet - ' + #{login.title.short}">Please sign in</h1>
-
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="floatingInput" name="username" th:placeholder="#{login.placeholder.username}">
-                    <label for="floatingInput" th:text="#{login.placeholder.username}"></label>
-                </div>
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="floatingPassword" name="password" th:placeholder="#{login.placeholder.password}">
-                    <label for="floatingPassword" th:text="#{login.placeholder.password}">Password</label>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <div class="form-check text-start my-3">
-                            <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="remember-me" checked>
-                            <label class="form-check-label" for="flexCheckDefault">Auto-Login</label>
-                            <span class="fas fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                  data-bs-placement="top" th:title="#{login.autologin.tooltip}"></span>
-                        </div>
+        <div class="login-wrapper">
+            <div class="card shadow-sm login-card">
+                <div class="row g-0">
+                    <!-- banner on small screens, left half of the card on wide screens -->
+                    <div class="col-lg-6 login-visual" th:classappend="${loginLogo == null} ? 'login-visual-default'">
+                        <!-- blurred copy of the logo that fills the panel; the image is set in login.js -->
+                        <div class="login-visual-backdrop" aria-hidden="true"></div>
+                        <img th:if="${loginLogo != null}" id="loginLogo" th:src="${loginLogo}" class="login-logo rounded-3" alt=""/>
+                        <i th:if="${loginLogo == null}" class="fas fa-thumbs-up login-icon" aria-hidden="true"></i>
                     </div>
-                    <div class="col-6">
-                        <div class="mt-1">
-                            <div class="dropdown">
-                                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="fi" th:classappend="${@languageUtil.cssClassCurrentUserLanguage()}"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li th:replace="~{fragments/language_selector :: language_selector}"></li>
-                                </ul>
+
+                    <div class="col-lg-6">
+                        <form class="card-body p-4 p-lg-5 login-form" th:action="@{/login}" method="post">
+                            <div class="d-flex align-items-start justify-content-between gap-2 mb-4">
+                                <div>
+                                    <h1 class="h3 mb-0">FredBet</h1>
+                                    <p class="text-body-secondary mb-0" th:text="#{login.title.short}">Login</p>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="fi" th:classappend="${@languageUtil.cssClassCurrentUserLanguage()}"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li th:replace="~{fragments/language_selector :: language_selector}"></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="floatingInput" name="username" th:placeholder="#{login.placeholder.username}"
+                                       autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required autofocus>
+                                <label for="floatingInput" th:text="#{login.placeholder.username}"></label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword" name="password" th:placeholder="#{login.placeholder.password}"
+                                       autocomplete="current-password" required>
+                                <label for="floatingPassword" th:text="#{login.placeholder.password}">Password</label>
+                            </div>
+
+                            <div class="form-check mt-3 mb-4">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" name="remember-me" checked aria-describedby="rememberMeHelp">
+                                <label class="form-check-label" for="rememberMe">Auto-Login</label>
+                                <div id="rememberMeHelp" class="form-text" th:text="#{login.autologin.tooltip}"></div>
+                            </div>
+
+                            <button class="btn btn-primary btn-lg w-100" type="submit">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i> <span th:text="#{login.button.login}"></span>
+                            </button>
+
+                            <div class="text-center mt-3" th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}">
+                                <a class="btn btn-link" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <button class="btn btn-primary w-100 py-2" type="submit" th:value="#{login.button.login}">
-                    <i class="fas fa-sign-in-alt"></i>&nbsp;<span th:text="#{login.button.login}"></span>
-                </button>
-
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <a th:if="${@runtimeSettingsUtil.getSettings().isSelfRegistrationEnabled()}" class="btn btn-light" th:href="@{/registration}" th:text="#{registration.link.text}"></a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </main>
+            </div>
+        </div>
     </div>
+    <th:block layout:fragment="scripts">
+        <script type="text/javascript" th:src="@{/js/pages/login.js}" charset="UTF-8"></script>
+    </th:block>
 </body>
 </html>

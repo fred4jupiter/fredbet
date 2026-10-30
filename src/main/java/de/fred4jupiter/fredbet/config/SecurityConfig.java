@@ -41,6 +41,8 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
                     "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
                     "/webjars/**", "/css/**", "/js/**").permitAll()
+                // the error page must be reachable for anonymous users, otherwise any error is hidden behind an AccessDenied error
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
                 .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .anyRequest().authenticated()

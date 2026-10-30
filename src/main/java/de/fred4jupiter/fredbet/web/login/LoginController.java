@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,12 @@ public class LoginController {
     }
 
     @GetMapping
-    public String loginPage(Model model) {
+    public String loginPage(Model model, CsrfToken csrfToken) {
+        // The CSRF token (and with it the session) is created lazily while the form is rendered. With a login logo the page
+        // is big enough that the response is already committed at that point, so no session could be created anymore
+        // (e.g. after logout, when the session has been invalidated). Creating the token here avoids this.
+        csrfToken.getToken();
+
         Optional<BinaryImage> bytes = loginLogoService.loadLoginLogo();
         bytes.ifPresent(value -> model.addAttribute("loginLogo", value.getAsBase64()));
         return "login";
