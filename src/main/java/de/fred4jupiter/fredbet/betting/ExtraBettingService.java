@@ -81,7 +81,8 @@ public class ExtraBettingService {
         List<ExtraBet> allExtraBets = extraBetRepository.findAll(Sort.by(Sort.Direction.ASC, "userName"));
         return allExtraBets.stream()
             .filter(extraBet -> !extraBet.getUserName().equals(fredbetProperties.adminUsername()))
-            .sorted(Comparator.comparing(ExtraBet::getUserName, String.CASE_INSENSITIVE_ORDER))
+            .sorted(Comparator.comparing(ExtraBet::getPoints, Comparator.reverseOrder())
+                .thenComparing(ExtraBet::getUserName, String.CASE_INSENSITIVE_ORDER))
             .toList();
     }
 

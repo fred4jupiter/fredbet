@@ -1,33 +1,55 @@
-.team-row {
-    display: flex;
-    align-items: center;
-    height: 48px;
-    gap: 0.5rem;
-    width: 100%;
+/* keeps the user name visible while scrolling the picks horizontally on small screens */
+.extra-others-table .extra-others-name {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
 }
 
-.team-rank {
-    flex: 0 0 1.5rem;
-    font-weight: 600;
+.extra-others-table td {
+    white-space: nowrap;
 }
 
-.team-crest {
-    flex: 0 0 2rem;
+/* the places in the header, same colors as the medals on the ranking page */
+.extra-medal {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    font-weight: bold;
+    color: #212529;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.15);
 }
 
-.team-crest img.fi {
-    display: block;
-    max-height: 2rem;
-    max-width: 2rem;
-    width: auto;
-    height: auto;
+.extra-medal-1 {
+    background-color: #f5c518;
 }
 
-.team-name {
-    flex: 1 1 auto;
-    min-width: 0;
-    text-align: left;
+.extra-medal-2 {
+    background-color: #c0c4c8;
+}
+
+.extra-medal-3 {
+    background-color: #d39a63;
+}
+
+.extra-others-points {
+    min-width: 2.5rem;
+    font-size: 0.95rem;
+}
+
+/* the own row, like on the ranking page */
+.extra-others-current-user {
+    --bs-table-bg: var(--bs-primary-bg-subtle);
+}
+
+.extra-others-current-user > :first-child {
+    border-left: 4px solid var(--bs-primary);
+}
+
+/* only the first letter is capitalized, the labels are lower case in some languages */
+.extra-label::first-letter {
+    text-transform: uppercase;
 }
