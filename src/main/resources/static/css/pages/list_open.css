@@ -1,0 +1,17 @@
+.list-open-time {
+    min-width: 3rem;
+}
+
+.list-open-card:hover {
+    border-color: var(--bs-success);
+    background-color: var(--bs-tertiary-bg);
+}
+
+/* only the first letter is capitalized, the title is lower case in some languages */
+.list-open-title::first-letter {
+    text-transform: uppercase;
+}
+
+.min-w-0 {
+    min-width: 0;
+}

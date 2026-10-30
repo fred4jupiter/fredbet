@@ -2,44 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 <head>
 	<title th:text="#{bet.listOpen.title}"></title>
+	<link rel="stylesheet" th:href="@{/css/pages/list_open.css}" />
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1 th:text="#{bet.listOpen.title} + ' (' + ${#lists.size(matchesToBet)} + ')'"></h1>
-		<div class="row" th:if="${not #lists.isEmpty(matchesToBet)}">
-			<div class="col-12 mb-3">
-                <a href="#" th:href="@{'/bet/dice'}" class="btn btn-info" role="button">
-                    <span class="fas fa-dice"></span> <span th:text="#{bet.listOpen.dice.all}"></span>
-                </a>
-			</div>
+		<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+			<h1 class="mb-0 list-open-title" th:text="#{bet.listOpen.title} + ' (' + ${#lists.size(matchesToBet)} + ')'"></h1>
+			<a th:if="${not #lists.isEmpty(matchesToBet)}" th:href="@{/bet/dice}" class="btn btn-outline-secondary" role="button">
+				<i class="fas fa-dice" aria-hidden="true"></i> <span th:text="#{bet.listOpen.dice.all}"></span>
+			</a>
 		</div>
-		<div class="row">
-			<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="matchCommand : ${matchesToBet}">
-				<div class="card mb-3">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-12">
-                                <div th:replace="~{fragments/match_head :: match_head_list(${matchCommand.match})}"></div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-9">
-								<span th:text="${#temporals.format(matchCommand.match.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-								<br/>
-								<span th:if="${matchCommand.match.group != null}" th:text="#{${matchCommand.match.group.titleMsgKey}}"></span>
-								<br/>
-								<span th:text="${matchCommand.match.stadium}"></span>
-							</div>
-							<div class="col-3">
-								<a href="#" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.match.id} + '?redirectViewName=OPEN_BETS'}" th:classappend="${matchCommand.match.hasMatchStarted()}? 'disabled'"
-									class="btn btn-success" role="button">
-									<span class="fas fa-thumbs-up fa-lg"></span>
-								</a>
-							</div>
-						</div>
-				   </div>
+
+		<!-- the matches are sorted by kick-off; a heading is shown for every new match day -->
+		<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+			<th:block th:each="matchCommand, iter : ${matchesToBet}"
+					  th:with="match=${matchCommand.match},teamOneName=${matchCommand.match.teamOne.getNameTranslated(@messageSourceUtil)},
+					  		   teamTwoName=${matchCommand.match.teamTwo.getNameTranslated(@messageSourceUtil)},day=${#temporals.format(match.kickOffDate, 'yyyy-MM-dd')},
+					  		   previousDay=${iter.index > 0} ? ${#temporals.format(matchesToBet[iter.index - 1].match.kickOffDate, 'yyyy-MM-dd')} : ''">
+				<div class="col-12 w-100" th:if="${day != previousDay}" th:classappend="${iter.index > 0} ? 'mt-4'">
+					<h2 class="h6 text-body-secondary mb-0 list-open-day">
+						<i class="fas fa-calendar-day" aria-hidden="true"></i>
+						<span th:text="${#temporals.format(match.kickOffDate, 'EEEE, dd. MMMM yyyy')}"></span>
+					</h2>
 				</div>
-			</div>
+				<div class="col">
+					<div class="card h-100 list-open-card">
+						<div class="card-body d-flex align-items-center gap-3">
+							<div class="text-center flex-shrink-0 list-open-time">
+								<div class="fw-bold" th:text="${#temporals.format(match.kickOffDate, 'HH:mm')}"></div>
+							</div>
+							<div class="flex-grow-1 min-w-0">
+								<div class="d-flex align-items-center gap-2 text-truncate">
+									<img class="crest-small flex-shrink-0" th:src="@{/team/{teamId}.svg(teamId=${match.teamOne.id}, v=${match.teamOne.version})}" alt=""/>
+									<span class="fw-bold text-truncate" th:text="${teamOneName}"></span>
+								</div>
+								<div class="d-flex align-items-center gap-2 text-truncate mt-1">
+									<img class="crest-small flex-shrink-0" th:src="@{/team/{teamId}.svg(teamId=${match.teamTwo.id}, v=${match.teamTwo.version})}" alt=""/>
+									<span class="fw-bold text-truncate" th:text="${teamTwoName}"></span>
+								</div>
+								<div class="small text-body-secondary text-truncate mt-1" th:text="${match.getGroupLabel(@messageSourceUtil)}"></div>
+							</div>
+							<!-- the whole card opens the bet -->
+							<a th:href="@{'/bet/createOrUpdate/' + ${match.id} + '?redirectViewName=OPEN_BETS'}" class="btn btn-success stretched-link flex-shrink-0"
+							   role="button" th:title="#{matches.list.betMatch}"
+							   th:aria-label="#{matches.list.betMatch} + ': ' + ${teamOneName} + ' - ' + ${teamTwoName}">
+								<i class="fas fa-thumbs-up fa-lg" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</th:block>
 		</div>
 	</div>
 </body>
