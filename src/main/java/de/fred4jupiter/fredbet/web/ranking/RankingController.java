@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.ranking;
 import de.fred4jupiter.fredbet.domain.RankingSelection;
 import de.fred4jupiter.fredbet.ranking.RankingService;
 import de.fred4jupiter.fredbet.ranking.UsernamePoints;
+import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.util.ResponseEntityUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -30,11 +31,14 @@ public class RankingController {
 
     private final WebMessageUtil messageUtil;
 
+    private final SecurityService securityService;
+
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMyy_HHmmss");
 
-    public RankingController(RankingService rankingService, WebMessageUtil messageUtil) {
+    public RankingController(RankingService rankingService, WebMessageUtil messageUtil, SecurityService securityService) {
         this.rankingService = rankingService;
         this.messageUtil = messageUtil;
+        this.securityService = securityService;
     }
 
     @GetMapping
@@ -62,13 +66,11 @@ public class RankingController {
         List<UsernamePoints> rankings = rankingService.calculateCurrentRanking(rankingSelection);
         if (Validator.isEmpty(rankings) && RankingSelection.MIXED.equals(rankingSelection)) {
             messageUtil.addInfoMsg(model, "ranking.noRankings");
-            model.addAttribute("rankings", rankings);
-            model.addAttribute("rankingSelection", rankingSelection);
-            return PAGE_RANKING;
         }
 
         model.addAttribute("rankings", rankings);
         model.addAttribute("rankingSelection", rankingSelection);
+        model.addAttribute("rankingSummary", RankingSummary.of(rankings, securityService.getCurrentUserName()));
         return PAGE_RANKING;
     }
 }

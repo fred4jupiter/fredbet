@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.common;
 import de.fred4jupiter.fredbet.props.FredBetProfile;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Import(MockMvcDefaults.class)
 @Transactional
 @Rollback
 @ActiveProfiles(FredBetProfile.INTEGRATION_TEST)

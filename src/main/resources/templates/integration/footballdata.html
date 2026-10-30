@@ -7,91 +7,97 @@
 <div layout:fragment="content">
     <h1 th:text="#{footballdata.title}"></h1>
     <div class="row">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#setup-tab-pane" type="button"
-                            role="tab" aria-controls="setup-tab-pane" aria-selected="false" th:text="#{footballdata.title.settings}"></button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" th:classappend="${tabStatus.tab2Disabled ? 'disabled' : 'active'}" data-bs-toggle="tab" data-bs-target="#tournament-tab-pane" type="button"
-                            role="tab" aria-controls="tournament-tab-pane" aria-selected="false" th:text="#{footballdata.title.tournament}"></button>
-                </li>
-            </ul>
-            <div class="tab-content mb-3" id="myTabContent">
-                <div class="tab-pane hide show" th:classappend="${tabStatus.tab1Active ? 'active' : ''}" id="setup-tab-pane" role="tabpanel" aria-labelledby="setup-tab" tabindex="0">
-                    <div class="col-12 col-sm-5 mb-3 mt-3">
-                        <div class="row">
-                            <div class="col-auto">
-                                <span>Quickstart: </span><a href="https://www.football-data.org/documentation/quickstart" target="_blank">football-data.org</a>
-                            </div>
-                        </div>
-                        <form id="footballDataSetupForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
-                            <div class="row">
-                                <div class="col-12 col-sm-10 mb-3">
-                                    <div class="form-check mt-3 mb-3">
-                                        <input id="enabled" type="checkbox" th:field="*{enabled}" class="form-check-input"/>
-                                        <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
-                                    </div>
-                                    <div id="fd-setup">
-                                        <div class="mb-3">
-                                            <label for="apiToken" class="form-label" th:text="#{footballdata.apiToken}"></label><br/>
-                                            <input type="text" id="apiToken" class="form-control" th:field="*{apiToken}" />
-                                            <p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        <div class="col-12 col-lg-8 col-xl-7 d-flex flex-column gap-3 mb-3">
+
+            <!-- step 1: activate the integration with an API token -->
+            <div class="card">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <span class="badge rounded-pill text-bg-primary">1</span>
+                    <h2 class="h5 mb-0 flex-grow-1" th:text="#{footballdata.title.settings}"></h2>
+                    <i th:if="${setupStatus.activated()}" class="fas fa-check-circle text-success" th:title="#{footballdata.step.done}"></i>
                 </div>
-                <div class="tab-pane hide show" th:classappend="${tabStatus.tab2Active ? 'active' : ''}" id="tournament-tab-pane" role="tabpanel" aria-labelledby="tournament-tab" tabindex="1">
-                    <div class="col-auto mb-3 mt-3">
-                        <form id="tournamentForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
-                            <div class="row">
-                                <div class="col-auto mb-3">
-                                    <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label><br/>
+                <div class="card-body">
+                    <p class="text-body-secondary">
+                        <span th:text="#{footballdata.step.settings.hint}"></span>
+                        <a href="https://www.football-data.org/documentation/quickstart" target="_blank" rel="noopener">football-data.org</a>
+                    </p>
+                    <form id="footballDataSetupForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
+                        <div class="form-check form-switch mb-3">
+                            <input id="enabled" type="checkbox" role="switch" th:field="*{enabled}" class="form-check-input"/>
+                            <label for="enabled" class="form-check-label" th:text="#{footballdata.enabled}"></label>
+                        </div>
+                        <div id="fd-setup" class="mb-3">
+                            <label for="apiToken" class="form-label" th:text="#{footballdata.apiToken}"></label>
+                            <input type="text" id="apiToken" class="form-control font-monospace" th:field="*{apiToken}" th:errorclass="is-invalid"
+                                   autocomplete="off" spellcheck="false"/>
+                            <div class="text-danger small" th:if="${#fields.hasErrors('apiToken')}" th:errors="*{apiToken}">apiToken error</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- step 2: select the tournament, requires step 1 -->
+            <div class="card">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <span class="badge rounded-pill" th:classappend="${setupStatus.activated()} ? 'text-bg-primary' : 'text-bg-secondary'">2</span>
+                    <h2 class="h5 mb-0 flex-grow-1" th:text="#{footballdata.title.tournament}"></h2>
+                    <i th:if="${setupStatus.competitionSelected()}" class="fas fa-check-circle text-success" th:title="#{footballdata.step.done}"></i>
+                    <i th:unless="${setupStatus.activated()}" class="fas fa-lock text-body-secondary" aria-hidden="true"></i>
+                </div>
+                <div class="card-body">
+                    <div th:unless="${setupStatus.activated()}" class="alert alert-secondary mb-3" th:text="#{footballdata.step.tournament.locked}"></div>
+                    <form id="tournamentForm" th:action="@{/footballdata/save}" th:object="${footballDataCommand}" action="#" method="post" role="form">
+                        <fieldset th:disabled="${!setupStatus.activated()}">
+                            <div class="mb-3">
+                                <label for="competitions" class="form-label" th:text="#{footballdata.competitions}"></label>
+                                <div class="input-group">
                                     <select id="competitions" th:field="*{competitionId}" class="form-select">
+                                        <option th:if="${#lists.isEmpty(footballDataCommand.competitions)}" value="" th:text="#{footballdata.competitions.empty}"></option>
                                         <option th:each="competition : ${footballDataCommand.competitions}" th:value="${competition.id()}" th:text="${competition.name() + ' - ' + competition.seasonYear()}"></option>
                                     </select>
+                                    <a th:href="@{/footballdata/fetch-comp}" class="btn btn-outline-secondary" th:classappend="${!setupStatus.activated()} ? 'disabled'" role="button">
+                                        <i class="fas fa-sync-alt" aria-hidden="true"></i> <span th:text="#{footballdata.fetch}"></span>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-auto">
-                                    <a th:classappend="${!footballDataCommand.isEnabled()}? 'disabled'" th:href="@{/footballdata/fetch-comp}" class="btn btn-outline-info" role="button" th:text="#{footballdata.fetch}">Fetch</a>
-                                </div>
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-auto mb-3">
-                        <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/footballdata/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
-                        <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
-                            <h2 th:text="#{footballdata.title.sync}"></h2>
-                            <div class="form-check mt-3 mb-3">
-                                <input id="forceUpdate" type="checkbox" th:field="*{forceUpdate}" class="form-check-input"/>
+                            <button type="submit" class="btn btn-primary" th:disabled="${#lists.isEmpty(footballDataCommand.competitions)}" th:text="#{button.save}"></button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <!-- step 3: synchronise the matches, requires step 2 -->
+            <div class="card">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <span class="badge rounded-pill" th:classappend="${setupStatus.competitionSelected()} ? 'text-bg-primary' : 'text-bg-secondary'">3</span>
+                    <h2 class="h5 mb-0 flex-grow-1" th:text="#{footballdata.title.sync}"></h2>
+                    <i th:unless="${setupStatus.competitionSelected()}" class="fas fa-lock text-body-secondary" aria-hidden="true"></i>
+                </div>
+                <div class="card-body">
+                    <div th:unless="${setupStatus.competitionSelected()}" class="alert alert-secondary mb-3" th:text="#{footballdata.step.sync.locked}"></div>
+                    <form id="footballDataSyncCommandForm" th:action="@{/footballdata/sync}" th:object="${footballDataSyncCommand}" action="#" method="post" role="form">
+                        <fieldset th:disabled="${!setupStatus.competitionSelected()}">
+                            <div class="form-check form-switch mb-3">
+                                <input id="forceUpdate" type="checkbox" role="switch" th:field="*{forceUpdate}" class="form-check-input"/>
                                 <label for="forceUpdate" class="form-check-label" th:text="#{footballdata.forceUpdate}"></label>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-auto mb-3">
-                                    <button th:disabled="${!footballDataCommand.isEnabled()}" type="submit" class="btn btn-info" th:text="#{footballdata.sync}"></button>
-                                </div>
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches" th:text="#{administration.deleteAllBetsAndMatches}"></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            <button type="submit" class="btn btn-info">
+                                <i class="fas fa-sync-alt" aria-hidden="true"></i> <span th:text="#{footballdata.sync}"></span>
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <span class="small text-body-secondary" th:text="#{footballdata.delete.hint}"></span>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAllBetsAndMatches">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i> <span th:text="#{datacreation.deleteAllBetsMatchesAndTeams}"></span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+    <div th:replace="~{fragments/delete_confirm :: delete_confirm_modal(href = '/footballdata/deleteAllBetsAndMatches', id='deleteAllBetsAndMatches')}"></div>
 </div>
 </body>
 <th:block layout:fragment="scripts">

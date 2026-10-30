@@ -1,13 +1,9 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.admin.AdministrationService;
-import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.data.GroupSelection;
-import de.fred4jupiter.fredbet.domain.entity.AppUser;
-import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -31,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 @RequestMapping("/administration")
@@ -42,19 +37,11 @@ public class AdminController {
 
     private static final String CONTENT_TYPE_JSON = "application/json";
 
-    private static final String PAGE_ADMINISTRATION = "admin/administration";
-
-    private static final String PAGE_ACTIVE_USERS = "admin/active_users";
-
-    private static final String PAGE_LAST_LOGINS = "admin/lastlogins";
+    private static final String PAGE_DATA_CREATION = "admin/data_creation";
 
     private final DataPopulator dataPopulator;
 
     private final WebMessageUtil webMessageUtil;
-
-    private final SessionTrackingService sessionTrackingService;
-
-    private final AdministrationService administrationService;
 
     private final UserService userService;
 
@@ -64,14 +51,11 @@ public class AdminController {
 
     private final DataService dataService;
 
-    public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
-                           SessionTrackingService sessionTrackingService,
-                           AdministrationService administrationService, UserService userService, FootballDataTestingService footballDataTestingService,
-                           ApplicationContext applicationContext, DataService dataService) {
+    public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil, UserService userService,
+                           FootballDataTestingService footballDataTestingService, ApplicationContext applicationContext,
+                           DataService dataService) {
         this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
-        this.sessionTrackingService = sessionTrackingService;
-        this.administrationService = administrationService;
         this.userService = userService;
         this.footballDataTestingService = footballDataTestingService;
         this.applicationContext = applicationContext;
@@ -98,37 +82,37 @@ public class AdminController {
     @GetMapping("/createDemoBets")
     public String createDemoBets(RedirectAttributes redirect) {
         dataPopulator.executeAsync(DataPopulator::createDemoBetsForAllUsers);
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoBetsCreated");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.demoBetsCreated");
         return "redirect:/administration";
     }
 
     @GetMapping("/createDemoResults")
     public String createDemoResults(RedirectAttributes redirect) {
         dataPopulator.executeAsync(DataPopulator::createDemoResultsForAllMatches);
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoResultsCreated");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.demoResultsCreated");
         return "redirect:/administration";
     }
 
     @RequestMapping
     public String list(Model model) {
-        return PAGE_ADMINISTRATION;
+        return PAGE_DATA_CREATION;
     }
 
     @PostMapping("/testdata")
     public String createTestData(@Valid TestDataCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            return PAGE_ADMINISTRATION;
+            return PAGE_DATA_CREATION;
         }
 
         if (!dataPopulator.hasEnoughTeamsForDemoData()) {
-            webMessageUtil.addErrorMsg(redirect, "administration.msg.error.noTeamsForDemoData");
+            webMessageUtil.addErrorMsg(redirect, "datacreation.msg.error.noTeamsForDemoData");
             return "redirect:/administration";
         }
 
         DemoDataCreation demoDataCreation = new DemoDataCreation(command.getGroupSelection(), command.getIncludeBets(),
             command.getIncludeResults(), command.getCreateGameOfThird());
         dataPopulator.executeAsync(populator -> populator.createDemoData(demoDataCreation));
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.demoDataCreated");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.demoDataCreated");
         return "redirect:/administration";
     }
 
@@ -136,7 +120,7 @@ public class AdminController {
     public String deleteAllBetsAndMatches(RedirectAttributes redirect) {
         dataService.deleteAllBetsMatchesAsync();
 
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsAndMatchesDeleted");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.allBetsAndMatchesDeleted");
         return "redirect:/administration";
     }
 
@@ -144,41 +128,25 @@ public class AdminController {
     public String deleteAllBetsMatchesAndTeams(RedirectAttributes redirect) {
         dataService.deleteAllBetsMatchesAndTeamsAsync();
 
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.allBetsMatchesAndTeamsDeleted");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.allBetsMatchesAndTeamsDeleted");
         return "redirect:/administration";
-    }
-
-    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
-    @GetMapping("/active/users")
-    public String showActiveUsers(Model model) {
-        List<SessionTracking> userList = sessionTrackingService.findLoggedInUsers();
-        model.addAttribute("userList", userList);
-        return PAGE_ACTIVE_USERS;
-    }
-
-    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_LAST_LOGINS + "')")
-    @GetMapping("/lastlogins")
-    public String showLastLogins(Model model) {
-        List<AppUser> lastLoginUsers = administrationService.fetchLastLoginUsers();
-        model.addAttribute("userList", lastLoginUsers);
-        return PAGE_LAST_LOGINS;
     }
 
     @PostMapping("/save")
     public String createDemoUsers(@Valid AdminFormCommand command, BindingResult bindingResult, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            return PAGE_ADMINISTRATION;
+            return PAGE_DATA_CREATION;
         }
 
         dataPopulator.executeAsync(populator -> populator.createDemoUsers(command.getNumberOfTestUsers()));
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.testUsersCreated", command.getNumberOfTestUsers());
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.testUsersCreated", command.getNumberOfTestUsers());
         return "redirect:/administration";
     }
 
     @GetMapping("/deleteAllUsers")
     public String deleteAllUsers(RedirectAttributes redirect) {
         userService.deleteAllUsers();
-        webMessageUtil.addInfoMsg(redirect, "administration.msg.info.deleteAllUsers");
+        webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.deleteAllUsers");
         return "redirect:/administration";
     }
 

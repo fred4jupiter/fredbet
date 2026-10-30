@@ -28,14 +28,23 @@
 			</div>
 
 			<div class="row" th:unless="${#lists.isEmpty(rankings)}">
-				<div class="col-12 col-md-10 col-lg-8 col-xl-6">
-					<div class="d-flex flex-wrap gap-2 mb-3">
+				<div class="col-12 col-md-10 col-lg-8">
+					<!-- on large screens the details are shown as columns, the buttons are in the sidebar -->
+					<div class="d-flex flex-wrap gap-2 mb-3 d-lg-none">
 						<button type="button" class="btn btn-outline-secondary btn-sm" id="showHideDetails">
 							<i class="fas fa-list" aria-hidden="true"></i> <span th:text="#{ranking.show.details.button}"></span>
 						</button>
 						<a class="btn btn-outline-secondary btn-sm" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}">
 							<i class="fas fa-file-pdf" aria-hidden="true"></i> <span th:text="#{pdf.export.button}"></span>
 						</a>
+					</div>
+
+					<div class="ranking-header d-none d-lg-flex align-items-center gap-2 px-3 pb-1 small text-body-secondary" aria-hidden="true">
+						<span class="ranking-position-col flex-shrink-0">#</span>
+						<span class="flex-grow-1" th:text="#{ranking.column.user}"></span>
+						<span class="ranking-detail-col text-end" th:text="#{ranking.column.correctResults}"></span>
+						<span class="ranking-detail-col text-end" th:text="#{ranking.column.goalDifference}"></span>
+						<span class="ranking-points-col text-center" th:text="#{ranking.column.points}"></span>
 					</div>
 
 					<!-- users with the same ranking share the same position -->
@@ -45,22 +54,68 @@
 							th:attrappend="aria-current=${ranking.userName == currentUser} ? 'true'">
 							<span class="ranking-position flex-shrink-0" th:text="${ranking.rankPosition}"
 								  th:classappend="${ranking.rankPosition <= 3} ? ${'ranking-medal ranking-medal-' + ranking.rankPosition}"></span>
-							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${ranking.userName})}"></span>
+							<!-- the slot keeps the names aligned, also for users without profile image -->
+							<span class="ranking-avatar flex-shrink-0"><span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${ranking.userName})}"></span></span>
 							<div class="flex-grow-1 min-w-0">
 								<div class="text-truncate">
 									<span th:text="${ranking.userName}" th:classappend="${ranking.userName == currentUser} ? 'fw-bold'"></span>
 									<span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip"
 										  data-bs-placement="top" th:title="#{ranking.topTipperOfToday.tooltip}"></span>
 								</div>
-								<div class="ranking-details small text-body-secondary"
+								<div class="ranking-details small text-body-secondary d-lg-none"
 									 th:text="#{ranking.details.title(${ranking.correctResultCount}, ${ranking.goalDifference})}"></div>
 							</div>
-							<span class="badge rounded-pill text-bg-warning ranking-points flex-shrink-0" th:text="${ranking.totalPoints}"></span>
+							<span class="ranking-detail-col d-none d-lg-inline text-end text-body-secondary"
+								  th:text="${ranking.correctResultCount}" th:title="#{ranking.column.correctResults}"></span>
+							<span class="ranking-detail-col d-none d-lg-inline text-end text-body-secondary"
+								  th:text="${ranking.goalDifference}" th:title="#{ranking.column.goalDifference}"></span>
+							<span class="badge rounded-pill text-bg-warning ranking-points ranking-points-col flex-shrink-0" th:text="${ranking.totalPoints}"></span>
 						</li>
 					</ol>
-					<p class="small text-body-secondary" th:if="${#lists.contains(rankings.![sameRankingPositionAsOtherUser], true)}">
+					<p class="small text-body-secondary d-lg-none" th:if="${#lists.contains(rankings.![sameRankingPositionAsOtherUser], true)}">
 						<span class="ranking-legend ranking-shared-position"></span> <span th:text="#{ranking.legend.sharedPosition}"></span>
 					</p>
+				</div>
+
+				<!-- sidebar on large screens only, phones keep the compact layout -->
+				<div class="d-none d-lg-block col-lg-4">
+					<div class="ranking-sidebar d-flex flex-column gap-3">
+						<div class="card ranking-summary">
+							<div class="card-header fw-bold" th:text="#{ranking.summary.title}"></div>
+							<div class="card-body" th:if="${rankingSummary}">
+								<div class="d-flex align-items-center gap-3 mb-3">
+									<span class="ranking-position ranking-position-lg flex-shrink-0" th:text="${rankingSummary.position()}"
+										  th:classappend="${rankingSummary.position() <= 3} ? ${'ranking-medal ranking-medal-' + rankingSummary.position()}"></span>
+									<div>
+										<div class="fs-5 fw-bold" th:text="#{ranking.summary.position(${rankingSummary.position()})}"></div>
+										<div class="text-body-secondary" th:text="#{ranking.summary.points(${rankingSummary.points()})}"></div>
+									</div>
+								</div>
+								<ul class="list-unstyled small mb-0">
+									<li th:if="${rankingSummary.leading()}">
+										<i class="fas fa-trophy fa-fw text-warning" aria-hidden="true"></i> <span th:text="#{ranking.summary.leading}"></span>
+									</li>
+									<li th:unless="${rankingSummary.leading()}">
+										<i class="fas fa-arrow-up fa-fw text-body-secondary" aria-hidden="true"></i>
+										<span th:text="#{ranking.summary.behindLeader(${rankingSummary.pointsBehindLeader()})}"></span>
+									</li>
+									<li th:if="${rankingSummary.nextPosition() != null}" class="mt-1">
+										<i class="fas fa-arrow-down fa-fw text-body-secondary" aria-hidden="true"></i>
+										<span th:text="#{ranking.summary.aheadOfNext(${rankingSummary.pointsAheadOfNext()}, ${rankingSummary.nextPosition()})}"></span>
+									</li>
+								</ul>
+							</div>
+							<div class="card-body text-body-secondary" th:unless="${rankingSummary}" th:text="#{ranking.summary.notRanked}"></div>
+						</div>
+						<div>
+							<a class="btn btn-outline-secondary btn-sm" role="button" th:href="@{/ranking/pdf(mode=${param.mode})}">
+								<i class="fas fa-file-pdf" aria-hidden="true"></i> <span th:text="#{pdf.export.button}"></span>
+							</a>
+						</div>
+						<p class="small text-body-secondary mb-0" th:if="${#lists.contains(rankings.![sameRankingPositionAsOtherUser], true)}">
+							<span class="ranking-legend ranking-shared-position"></span> <span th:text="#{ranking.legend.sharedPosition}"></span>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>

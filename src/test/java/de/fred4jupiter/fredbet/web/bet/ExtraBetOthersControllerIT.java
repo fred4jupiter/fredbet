@@ -1,21 +1,17 @@
 package de.fred4jupiter.fredbet.web.bet;
 
 import de.fred4jupiter.fredbet.betting.ExtraBettingService;
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -25,13 +21,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class ExtraBetOthersControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @MockitoBean
     private ExtraBettingService extraBettingService;
@@ -43,7 +37,7 @@ public class ExtraBetOthersControllerIT {
         ExtraBet admin = extraBet("admin", team(2L, "FC Two"), team(1L, "FC One"), null);
         when(extraBettingService.loadExtraBetDataOthers()).thenReturn(List.of(anna, admin));
 
-        mockMvc.perform(get("/extrabets/others").session(englishSession()))
+        mockMvc.perform(get("/extrabets/others"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("extra-others-table"),
@@ -59,7 +53,7 @@ public class ExtraBetOthersControllerIT {
         ExtraBet anna = extraBet("anna", team(1L, "FC One"), team(2L, "FC Two"), team(3L, "FC Three"));
         when(extraBettingService.loadExtraBetDataOthers()).thenReturn(List.of(anna));
 
-        mockMvc.perform(get("/extrabets/others").session(englishSession()))
+        mockMvc.perform(get("/extrabets/others"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("extra-medal-3"),
@@ -70,7 +64,7 @@ public class ExtraBetOthersControllerIT {
     public void showMessageWithoutExtraBets() throws Exception {
         when(extraBettingService.loadExtraBetDataOthers()).thenReturn(List.of());
 
-        mockMvc.perform(get("/extrabets/others").session(englishSession()))
+        mockMvc.perform(get("/extrabets/others"))
             .andExpect(status().isOk())
             .andExpect(content().string(allOf(
                 containsString("No bets assigned!"),
@@ -92,9 +86,4 @@ public class ExtraBetOthersControllerIT {
         return team;
     }
 
-    private MockHttpSession englishSession() {
-        MockHttpSession session = LoggedInSession.of(userDetailsService, "admin");
-        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.ENGLISH);
-        return session;
-    }
 }

@@ -1,6 +1,5 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import de.fred4jupiter.fredbet.common.LoggedInSession;
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.excel.PointCountResult;
 import de.fred4jupiter.fredbet.excel.ReportService;
@@ -8,8 +7,7 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,13 +18,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
+@WithUserDetails("admin")
 public class PointsFrequencyControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @MockitoBean
     private ReportService reportService;
@@ -38,7 +34,7 @@ public class PointsFrequencyControllerIT {
         map.put(2, new PointCountResult("bert", 2, 4L));
         when(reportService.reportPointsFrequency()).thenReturn(map);
 
-        mockMvc.perform(get("/info/pointsfrequency").session(loggedInSession()))
+        mockMvc.perform(get("/info/pointsfrequency"))
             .andExpect(status().isOk())
             .andExpect(view().name("info/points_freq"))
             .andExpect(content().string(containsString("points-freq-table")))
@@ -50,13 +46,10 @@ public class PointsFrequencyControllerIT {
     public void showNoDataMessage() throws Exception {
         when(reportService.reportPointsFrequency()).thenReturn(new ArrayListValuedHashMap<>());
 
-        mockMvc.perform(get("/info/pointsfrequency").session(loggedInSession()))
+        mockMvc.perform(get("/info/pointsfrequency"))
             .andExpect(status().isOk())
             .andExpect(model().attributeDoesNotExist("pointsFrequencyCommand"))
             .andExpect(content().string(not(containsString("points-freq-table"))));
     }
 
-    private MockHttpSession loggedInSession() {
-        return LoggedInSession.of(userDetailsService, "admin");
-    }
 }

@@ -165,12 +165,6 @@ You will see a response of `{"status":"UP"}`. The health check URL is callable w
 While running in `dev` profile (JVM param: `spring.profiles.active=dev`) the H2 web console is available 
 at [http://localhost:8080/console](http://localhost:8080/console).
 
-## MS Excel-Templates ready to import
-
-The following Microsoft Excel templates with matches are prepared for import:
-
-* [World Cup 2026](extra/excel_templates/WorldCup_2026.xlsx?raw=true)
-
 ## Screenshots
 
 ![FredBet Screenshot 1](extra/docs/screenshot/Screenshot1.jpg?raw=true "FredBet Screenshot 1")

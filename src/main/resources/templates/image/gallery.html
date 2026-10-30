@@ -7,6 +7,11 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
+			<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+				<h1 class="mb-0" th:text="#{image.gallery.title}"></h1>
+				<a th:href="@{/image/show}" class="btn btn-primary" th:text="#{image.gallery.toUploadImagePage}"></a>
+			</div>
+
 			<div class="row mb-3">
 				<div class="col-12">
 					<div id="links">
@@ -27,12 +32,6 @@
 					    <a class="play-pause"></a>
 					    <ol class="indicator"></ol>
 					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-auto">
-					<a th:href="@{/image/show}" class="btn btn-primary" th:text="#{image.gallery.toUploadImagePage}"></a>
 				</div>
 			</div>
 		</div>

@@ -25,9 +25,9 @@
 								<div class="card-body match-head-team">
 									<div th:replace="~{fragments/match_head :: match_head_team(${betCommand.match.teamOne})}"></div>
 									<div class="input-group goal-input-group mt-auto">
-										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
-										<input type="text" inputmode="numeric" th:field="*{goalsTeamOne}" class="form-control text-center fw-bold bg-success-subtle" th:errorclass="is-invalid"/>
-										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+										<button type="button" tabindex="-1" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
+										<input type="text" inputmode="numeric" th:field="*{goalsTeamOne}" autofocus="autofocus" class="form-control text-center fw-bold bg-success-subtle" th:errorclass="is-invalid"/>
+										<button type="button" tabindex="-1" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
 									</div>
 									<div class="text-danger small" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</div>
 								</div>
@@ -37,9 +37,9 @@
 								<div class="card-body match-head-team">
 									<div th:replace="~{fragments/match_head :: match_head_team(${betCommand.match.teamTwo})}"></div>
 									<div class="input-group goal-input-group mt-auto">
-										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
+										<button type="button" tabindex="-1" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
 										<input type="text" inputmode="numeric" th:field="*{goalsTeamTwo}" class="form-control text-center fw-bold bg-success-subtle" th:errorclass="is-invalid"/>
-										<button type="button" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
+										<button type="button" tabindex="-1" class="btn btn-outline-secondary goal-counter" data-team="two" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
 									</div>
 									<div class="text-danger small" th:if="${#fields.hasErrors('goalsTeamTwo')}" th:errors="*{goalsTeamTwo}">goalsTeamTwo error</div>
 								</div>

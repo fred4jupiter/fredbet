@@ -97,6 +97,10 @@ public final class DateUtils {
         return formatByLocale(localDateTime, LocaleContextHolder.getLocale());
     }
 
+    public static String format(ZonedDateTime zonedDateTime) {
+        return format(zonedDateTime.withZoneSameInstant(getZoneId()).toLocalDateTime());
+    }
+
     public static String formatByLocale(LocalDateTime localDateTime, Locale locale) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
         return localDateTime.format(dateTimeFormatter);

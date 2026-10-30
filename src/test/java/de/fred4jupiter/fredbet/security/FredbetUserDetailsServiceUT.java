@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.user.AppUserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -38,16 +39,18 @@ public class FredbetUserDetailsServiceUT {
     }
 
     @Test
-    public void loadUserByUsernameResolvesPermissionsIntoRoles() {
+    public void loadUserByUsernameResolvesPermissionsWithoutChangingRoles() {
         AppUser appUser = new AppUser();
         appUser.setUsername("alfredo");
+        appUser.addUserGroup(FredBetUserGroup.ROLE_ADMIN);
         when(appUserRepository.findByUsername("alfredo")).thenReturn(appUser);
-        when(permissionResolver.resolvePermissions(appUser.getAuthorities())).thenReturn(List.of(
+        when(permissionResolver.resolvePermissions(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))).thenReturn(List.of(
             new SimpleGrantedAuthority("PERM_A"), new SimpleGrantedAuthority("PERM_B")));
 
         AppUser loaded = (AppUser) fredbetUserDetailsService.loadUserByUsername("alfredo");
 
-        assertThat(loaded.getRoles()).isEqualTo(Set.of("PERM_A", "PERM_B"));
+        assertThat(loaded.getAuthorities()).extracting(GrantedAuthority::getAuthority).containsExactlyInAnyOrder("PERM_A", "PERM_B");
+        assertThat(loaded.getRoles()).isEqualTo(Set.of("ROLE_ADMIN"));
     }
 }
 

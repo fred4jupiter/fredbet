@@ -5,6 +5,9 @@ var GOAL_FIELDS = {
 
 $(function() {
 	$(GOAL_FIELDS.one + ', ' + GOAL_FIELDS.two).on('change', checkPenalty);
+	$(GOAL_FIELDS.one + ', ' + GOAL_FIELDS.two).on('focus', function() {
+		$(this).select();
+	});
 
 	$('.goal-counter').on('click', function() {
 		var $field = $(GOAL_FIELDS[$(this).data('team')]);

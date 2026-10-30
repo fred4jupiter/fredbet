@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 @Service
 public class SystemInfoService {
@@ -26,7 +26,13 @@ public class SystemInfoService {
 
     private final Environment environment;
 
-    private final SortedMap<String, Object> allProperties = new TreeMap<>();
+    private static final String SECTION_BUILD = "Build";
+    private static final String SECTION_GIT = "Git";
+    private static final String SECTION_CONFIGURATION = "Configuration";
+    private static final String SECTION_RUNTIME = "Runtime";
+
+    // section -> (label -> value), both in the order they are added
+    private final Map<String, Map<String, Object>> staticProperties = new LinkedHashMap<>();
 
     private final Optional<GitProperties> gitProperties;
 
@@ -41,19 +47,19 @@ public class SystemInfoService {
 
     private void addStaticProperties() {
         buildProperties.ifPresent(props -> {
-            add("Build: Build Time", props.getTime());
-            add("Build: Build Version", props.getVersion());
-            add("Build: Java Version", props.get("build.java.version"));
+            add(SECTION_BUILD, "Version", props.getVersion());
+            add(SECTION_BUILD, "Build Time", format(props.getTime()));
+            add(SECTION_BUILD, "Java Version", props.get("build.java.version"));
         });
 
         gitProperties.ifPresent(props -> {
-            add("GIT: Commit ID", props.getCommitId());
-            add("GIT: Branch", props.getBranch());
-            add("GIT: Commit Message", props.get("commit.message.full"));
-            add("GIT: Commit Time", props.getCommitTime());
+            add(SECTION_GIT, "Branch", props.getBranch());
+            add(SECTION_GIT, "Commit ID", props.getCommitId());
+            add(SECTION_GIT, "Commit Time", format(props.getCommitTime()));
+            add(SECTION_GIT, "Commit Message", props.get("commit.message.full"));
         });
 
-        addSpringProfiles();
+        add(SECTION_CONFIGURATION, "Active Profiles", String.join(", ", environment.getActiveProfiles()));
         addEnvProperty("JDBC Driver Class", "spring.datasource.driver-class-name");
         addEnvProperty("JDBC-URL", "spring.datasource.url");
         addEnvProperty("Image Location", "fredbet.image-location");
@@ -61,26 +67,32 @@ public class SystemInfoService {
         addEnvProperty("Thumbnail Size", "fredbet.thumbnail-size");
     }
 
-    public SortedMap<String, Object> fetchSystemInfo() {
-        SortedMap<String, Object> props = new TreeMap<>(allProperties);
-        props.put("Current Date", ZonedDateTime.now().format(dateTimeFormatter));
-        props.put("Host Name", getHostName());
-        props.put("Timezone", ZoneId.systemDefault().toString());
-        props.put("Current User", System.getProperty("user.name"));
-        return props;
+    /**
+     * @return the system info grouped by section (build, git, configuration, runtime)
+     */
+    public Map<String, Map<String, Object>> fetchSystemInfo() {
+        Map<String, Map<String, Object>> sections = new LinkedHashMap<>();
+        staticProperties.forEach((section, properties) -> sections.put(section, new LinkedHashMap<>(properties)));
+
+        Map<String, Object> runtime = sections.computeIfAbsent(SECTION_RUNTIME, key -> new LinkedHashMap<>());
+        runtime.put("Current Date", ZonedDateTime.now().format(dateTimeFormatter));
+        runtime.put("Timezone", ZoneId.systemDefault().toString());
+        runtime.put("Host Name", getHostName());
+        runtime.put("Current User", System.getProperty("user.name"));
+        return sections;
+    }
+
+    private String format(Instant instant) {
+        return instant != null ? instant.atZone(ZoneId.systemDefault()).format(dateTimeFormatter) : null;
     }
 
     private void addEnvProperty(String label, String envKey) {
-        add(label, environment.getProperty(envKey));
+        add(SECTION_CONFIGURATION, label, environment.getProperty(envKey));
     }
 
-    private void addSpringProfiles() {
-        add("Active Profiles", Arrays.asList(environment.getActiveProfiles()));
-    }
-
-    private void add(String key, Object value) {
-        if (value != null) {
-            allProperties.put(key, value);
+    private void add(String section, String label, Object value) {
+        if (value != null && !value.toString().isBlank()) {
+            staticProperties.computeIfAbsent(section, key -> new LinkedHashMap<>()).put(label, value);
         }
     }
 

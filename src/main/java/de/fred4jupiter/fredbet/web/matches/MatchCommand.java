@@ -92,7 +92,7 @@ public class MatchCommand {
     }
 
     public String getExternalLastUpdated() {
-        return DateUtils.formatZonedDateTime(this.match.getExternalLastUpdated());
+        return this.match.getExternalLastUpdated() != null ? DateUtils.format(this.match.getExternalLastUpdated()) : null;
     }
 
     public String getCreateDate() {
