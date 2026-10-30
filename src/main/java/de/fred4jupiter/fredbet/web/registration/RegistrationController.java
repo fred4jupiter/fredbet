@@ -58,6 +58,6 @@ public class RegistrationController {
         }
 
         webMessageUtil.addInfoMsg(redirect, "msg.registration.info.success");
-        return "redirect:/registration";
+        return "redirect:/login";
     }
 }
