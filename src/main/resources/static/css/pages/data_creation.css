@@ -1,0 +1,4 @@
+/* the number of test users only needs a narrow field next to the button */
+.data-creation-number {
+    width: 8rem;
+}
