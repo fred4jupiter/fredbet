@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
-<head>
-	<title th:text="#{active.users.title}"></title>
-</head>
-<body>
-	<div layout:fragment="content">
-		<h1 th:text="#{active.users.title}"></h1>
-        <div class="row">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                <div class="card mb-3" th:each="sessionTracking : ${userList}">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-6">
-                                <span th:text="${sessionTracking.userName}"></span>
-                            </div>
-                            <div class="col-6 text-end">
-                                <span th:text="${#temporals.format(sessionTracking.lastLogin, 'yyyy-MM-dd HH:mm')}"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-	</div>
-</body>
+	<head>
+		<title th:text="#{active.users.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<h1 th:text="#{active.users.title} + ' (' + ${#lists.size(userList)} + ')'"></h1>
+			<div class="row">
+				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+					<!-- sorted by the latest login first -->
+					<ul class="list-group mt-3">
+						<li class="list-group-item d-flex align-items-center gap-2" th:each="sessionTracking : ${userList}">
+							<span th:replace="~{fragments/profile_image :: profile_image_small_with_popup(${sessionTracking.userName})}"></span>
+							<span class="flex-grow-1 fw-bold text-truncate" th:text="${sessionTracking.userName}"></span>
+							<time class="text-body-secondary small text-nowrap" th:if="${sessionTracking.lastLogin}"
+								  th:datetime="${#temporals.formatISO(sessionTracking.lastLogin)}">
+								<i class="fas fa-clock" aria-hidden="true"></i>
+								<span th:text="${#temporals.format(sessionTracking.lastLogin, 'yyyy-MM-dd HH:mm')}"></span>
+							</time>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
