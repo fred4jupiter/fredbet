@@ -1,4 +1,8 @@
-.panel-text-responsive {
-    overflow-x: scroll;
-    white-space: nowrap;
+/* long values (commit message, JDBC URL) wrap instead of scrolling horizontally */
+.systeminfo-list dd {
+    margin-bottom: 0.5rem;
+}
+
+.systeminfo-list dd:last-of-type {
+    margin-bottom: 0;
 }

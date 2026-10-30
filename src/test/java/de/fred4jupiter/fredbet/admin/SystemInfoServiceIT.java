@@ -7,8 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Map.Entry;
-import java.util.SortedMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,11 +21,10 @@ public class SystemInfoServiceIT {
 
     @Test
     public void fetchSystemInfo() {
-        SortedMap<String, Object> map = systemInfoService.fetchSystemInfo();
-        assertThat(map).isNotNull();
-        for (Entry<String, Object> entry : map.entrySet()) {
-            LOG.debug("{}: {}", entry.getKey(), entry.getValue());
-        }
+        Map<String, Map<String, Object>> sections = systemInfoService.fetchSystemInfo();
+        assertThat(sections).containsKeys("Configuration", "Runtime");
+        assertThat(sections.get("Runtime")).containsKeys("Current Date", "Timezone", "Host Name", "Current User");
+        sections.forEach((section, properties) -> properties.forEach((label, value) -> LOG.debug("{} - {}: {}", section, label, value)));
     }
 
 }

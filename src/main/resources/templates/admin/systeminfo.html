@@ -5,15 +5,28 @@
         <link rel="stylesheet" th:href="@{/css/pages/systeminfo.css}" />
 	</head>
 	<body>
-		<div layout:fragment="content">
-			<div class="row">
-				<div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="entry: ${buildInfoMap.entrySet()}">
-					<div class="card mb-3">
+		<div layout:fragment="content"
+			 th:with="sectionIcons=${ {'Build': 'fa-cube', 'Git': 'fa-code-branch', 'Configuration': 'fa-cogs', 'Runtime': 'fa-server'} },
+			 		  technicalValues=${ {'Commit ID', 'JDBC Driver Class', 'JDBC-URL', 'Image Location'} }">
+			<h1 th:text="#{systeminfo.title}"></h1>
+			<!-- one card per section (build, git, configuration, runtime) with its values as key/value list -->
+			<div class="row row-cols-1 row-cols-lg-2 g-3 mt-1">
+				<div class="col" th:each="section : ${buildInfoMap}">
+					<div class="card h-100">
 						<div class="card-header">
-							  <span th:text="${entry.key}"></span>
+							<h2 class="h6 mb-0">
+								<i class="fas fa-fw" th:classappend="${sectionIcons[section.key]}" aria-hidden="true"></i>
+								<span th:text="${section.key}"></span>
+							</h2>
 						</div>
-						<div class="card-body panel-text-responsive">
-							 <span th:text="${entry.value}"></span>
+						<div class="card-body">
+							<dl class="row mb-0 systeminfo-list">
+								<th:block th:each="entry : ${section.value}">
+									<dt class="col-sm-4 text-body-secondary fw-normal" th:text="${entry.key}"></dt>
+									<dd class="col-sm-8 text-break" th:text="${entry.value}"
+										th:classappend="${#lists.contains(technicalValues, entry.key)} ? 'font-monospace small'"></dd>
+								</th:block>
+							</dl>
 						</div>
 					</div>
 				</div>
