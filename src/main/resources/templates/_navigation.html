@@ -192,14 +192,14 @@
                                 <li class="bg-light">
                                     <h6 class="dropdown-header text-center fst-italic" th:text="${'-- ' + username + ' --'}">Dropdown header</h6>
                                 </li>
+                                <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
+                                    <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
+                                </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/profile/changePassword}" th:text="#{navigation.changePassword}"></a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/cropping/show}" th:text="#{navigation.profileImage}"></a>
-                                </li>
-                                <li th:if="${@runtimeSettingsUtil.getSettings().isEnableChangingUsername()}">
-                                    <a class="dropdown-item" th:href="@{/profile/changeUsername}" th:text="#{navigation.changeUsername}"></a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/setting}" th:text="#{user.setting.title}"></a>
