@@ -1,8 +1,10 @@
 package de.fred4jupiter.fredbet.web.admin;
 
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
+import de.fred4jupiter.fredbet.security.FredBetPermission;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -12,28 +14,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
-@WithUserDetails("admin")
-public class LoginListsControllerIT {
+public class LastLoginsControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @WithUserDetails("admin")
     public void showLastLogins() throws Exception {
         mockMvc.perform(get("/administration/lastlogins"))
             .andExpect(status().isOk())
+            .andExpect(handler().handlerType(LastLoginsController.class))
             .andExpect(content().string(allOf(
                 containsString("Last logins of users ("),
                 containsString("list-group"))));
     }
 
     @Test
-    public void showActiveUsers() throws Exception {
-        mockMvc.perform(get("/administration/active/users"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("Currently logged-in users ("),
-                containsString("list-group"))));
+    @WithMockUser(authorities = FredBetPermission.PERM_ADMINISTRATION)
+    public void deniedWithoutPermission() throws Exception {
+        // the administration permission alone is not enough, the page needs PERM_SHOW_LAST_LOGINS
+        mockMvc.perform(get("/administration/lastlogins"))
+            .andExpect(status().isForbidden());
     }
-
 }

@@ -1,13 +1,9 @@
 package de.fred4jupiter.fredbet.web.admin;
 
-import de.fred4jupiter.fredbet.admin.AdministrationService;
-import de.fred4jupiter.fredbet.admin.sessiontracking.SessionTrackingService;
 import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.data.GroupSelection;
-import de.fred4jupiter.fredbet.domain.entity.AppUser;
-import de.fred4jupiter.fredbet.domain.entity.SessionTracking;
 import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -31,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 @RequestMapping("/administration")
@@ -44,17 +39,9 @@ public class AdminController {
 
     private static final String PAGE_DATA_CREATION = "admin/data_creation";
 
-    private static final String PAGE_ACTIVE_USERS = "admin/active_users";
-
-    private static final String PAGE_LAST_LOGINS = "admin/lastlogins";
-
     private final DataPopulator dataPopulator;
 
     private final WebMessageUtil webMessageUtil;
-
-    private final SessionTrackingService sessionTrackingService;
-
-    private final AdministrationService administrationService;
 
     private final UserService userService;
 
@@ -64,14 +51,11 @@ public class AdminController {
 
     private final DataService dataService;
 
-    public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil,
-                           SessionTrackingService sessionTrackingService,
-                           AdministrationService administrationService, UserService userService, FootballDataTestingService footballDataTestingService,
-                           ApplicationContext applicationContext, DataService dataService) {
+    public AdminController(DataPopulator dataPopulator, WebMessageUtil webMessageUtil, UserService userService,
+                           FootballDataTestingService footballDataTestingService, ApplicationContext applicationContext,
+                           DataService dataService) {
         this.dataPopulator = dataPopulator;
         this.webMessageUtil = webMessageUtil;
-        this.sessionTrackingService = sessionTrackingService;
-        this.administrationService = administrationService;
         this.userService = userService;
         this.footballDataTestingService = footballDataTestingService;
         this.applicationContext = applicationContext;
@@ -146,22 +130,6 @@ public class AdminController {
 
         webMessageUtil.addInfoMsg(redirect, "datacreation.msg.info.allBetsMatchesAndTeamsDeleted");
         return "redirect:/administration";
-    }
-
-    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_ACTIVE_USERS + "')")
-    @GetMapping("/active/users")
-    public String showActiveUsers(Model model) {
-        List<SessionTracking> userList = sessionTrackingService.findLoggedInUsers();
-        model.addAttribute("userList", userList);
-        return PAGE_ACTIVE_USERS;
-    }
-
-    @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_SHOW_LAST_LOGINS + "')")
-    @GetMapping("/lastlogins")
-    public String showLastLogins(Model model) {
-        List<AppUser> lastLoginUsers = administrationService.fetchLastLoginUsers();
-        model.addAttribute("userList", lastLoginUsers);
-        return PAGE_LAST_LOGINS;
     }
 
     @PostMapping("/save")

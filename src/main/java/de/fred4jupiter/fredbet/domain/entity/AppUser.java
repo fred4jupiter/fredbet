@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author michael
@@ -33,6 +34,12 @@ public class AppUser implements UserDetails {
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
     @Column(name = "ROLE")
     private Set<String> roles;
+
+    /**
+     * The permissions resolved from the roles at login. They are never persisted, so the roles stay user groups.
+     */
+    @Transient
+    private Set<String> permissions;
 
     @Column(name = "USER_NAME", unique = true, nullable = false)
     private String username;
@@ -76,12 +83,19 @@ public class AppUser implements UserDetails {
         return id;
     }
 
+    /**
+     * @return the permissions of the logged-in user, see {@link #setPermissions(Collection)}. Use {@link #getRoles()} for the user groups.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (CollectionUtils.isEmpty(roles)) {
+        if (CollectionUtils.isEmpty(permissions)) {
             return Collections.emptyList();
         }
-        return roles.stream().map(SimpleGrantedAuthority::new).toList();
+        return permissions.stream().map(SimpleGrantedAuthority::new).toList();
+    }
+
+    public void setPermissions(Collection<? extends GrantedAuthority> permissions) {
+        this.permissions = permissions.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
     }
 
     public boolean hasPermission(String permission) {

@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,10 +101,8 @@ public class UserController {
         userCommand.setUsername(appUser.getUsername());
         userCommand.setDeletable(appUser.isDeletable());
         userCommand.setChild(appUser.isChild());
-        if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
-            for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
-                userCommand.addRole(grantedAuthority.getAuthority());
-            }
+        if (!CollectionUtils.isEmpty(appUser.getRoles())) {
+            appUser.getRoles().forEach(userCommand::addRole);
         }
         return userCommand;
     }

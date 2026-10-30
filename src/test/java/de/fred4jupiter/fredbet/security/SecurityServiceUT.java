@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -71,7 +72,7 @@ class SecurityServiceUT {
     void isCurrentUserHavingPermission_checksPermission() {
         AppUser user = new AppUser();
         user.setUsername("permUser");
-        user.setRoles(Set.of("SOME_PERMISSION"));
+        user.setPermissions(List.of(new SimpleGrantedAuthority("SOME_PERMISSION")));
 
         Authentication authentication = Mockito.mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);
