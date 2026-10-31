@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.web.info;
 
-import de.fred4jupiter.fredbet.domain.entity.Info;
+import de.fred4jupiter.fredbet.domain.entity.InfoContent;
 import de.fred4jupiter.fredbet.info.InfoService;
 import de.fred4jupiter.fredbet.pdf.PdfExportService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
@@ -141,12 +141,12 @@ public class InfoController {
     }
 
     private ModelAndView prepareShowEditInfoFor(InfoType infoType) {
-        Info info = infoService.findBy(infoType, LocaleContextHolder.getLocale());
+        InfoContent infoContent = infoService.findBy(infoType, LocaleContextHolder.getLocale());
 
         ModelAndView modelAndView = new ModelAndView(PAGE_EDIT_INFO);
         InfoCommand infoCommand = new InfoCommand();
-        infoCommand.setName(info.getPk().getName());
-        infoCommand.setTextContent(info.getContent());
+        infoCommand.setName(infoContent.getPk().getName());
+        infoCommand.setTextContent(infoContent.getContent());
         modelAndView.addObject("infoCommand", infoCommand);
         return modelAndView;
     }
@@ -182,7 +182,7 @@ public class InfoController {
 
     private String loadContentFor(InfoType infoType) {
         Locale locale = LocaleContextHolder.getLocale();
-        Info info = infoService.findBy(infoType, locale);
-        return info.getContent();
+        InfoContent infoContent = infoService.findBy(infoType, locale);
+        return infoContent.getContent();
     }
 }

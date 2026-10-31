@@ -10,19 +10,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "BET")
+@Table(name = "bet")
 public class Bet implements Visitable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BET_ID")
+    @Column(name = "bet_id")
     private Long id;
 
-    @Column(name = "USER_NAME", nullable = false)
+    @Column(name = "user_name", nullable = false)
     private String userName;
 
     @ManyToOne(targetEntity = Match.class)
-    @JoinColumn(name = "MATCH_ID")
+    @JoinColumn(name = "match_id")
     private Match match;
 
     private Integer goalsTeamOne;
@@ -31,10 +31,10 @@ public class Bet implements Visitable {
 
     private Integer points = 0;
 
-    @Column(name = "PENALTY_WINNER_ONE")
+    @Column(name = "penalty_winner_one")
     private boolean penaltyWinnerOne;
 
-    @Column(name = "JOKER", nullable = false)
+    @Column(name = "joker", nullable = false)
     private boolean joker;
 
     public Integer getGoalDifference() {

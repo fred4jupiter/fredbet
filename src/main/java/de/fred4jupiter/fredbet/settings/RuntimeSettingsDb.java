@@ -12,18 +12,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "RUNTIME_SETTING")
+@Table(name = "runtime_setting")
 public class RuntimeSettingsDb {
 
 	@Id
-	@Column(name = "CONFIG_ID")
+	@Column(name = "config_id")
 	private Long configId;
 
-	@Column(name = "JSON_CONFIG")
+	@Column(name = "json_config")
 	private String jsonConfig;
 
 	@Version
-	@Column(name = "VERSION", nullable = false)
+	@Column(name = "version", nullable = false)
 	private Integer version;
 
 	protected RuntimeSettingsDb() {

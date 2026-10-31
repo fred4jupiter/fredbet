@@ -8,36 +8,36 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "EXTRA_BET")
+@Table(name = "extra_bet")
 public class ExtraBet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EXTRA_BET_ID")
+    @Column(name = "extra_bet_id")
     private Long id;
 
-    @Column(name = "USER_NAME", nullable = false)
+    @Column(name = "user_name", nullable = false)
     private String userName;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "FINAL_WINNER_TEAM_ID")
+    @JoinColumn(name = "final_winner_team_id")
     private Team finalWinner;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SEMI_FINAL_WINNER_TEAM_ID")
+    @JoinColumn(name = "semi_final_winner_team_id")
     private Team semiFinalWinner;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "THIRD_FINAL_WINNER_TEAM_ID")
+    @JoinColumn(name = "third_final_winner_team_id")
     private Team thirdFinalWinner;
 
-    @Column(name = "POINTS_ONE")
+    @Column(name = "points_one")
     private Integer pointsOne = 0;
 
-    @Column(name = "POINTS_TWO")
+    @Column(name = "points_two")
     private Integer pointsTwo = 0;
 
-    @Column(name = "POINTS_THREE")
+    @Column(name = "points_three")
     private Integer pointsThree = 0;
 
     public boolean equals(Object obj) {

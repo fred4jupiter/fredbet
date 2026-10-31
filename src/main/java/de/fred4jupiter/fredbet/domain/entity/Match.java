@@ -18,12 +18,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Entity
-@Table(name = "MATCHES")
+@Table(name = "matches")
 public class Match extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MATCH_ID")
+    @Column(name = "match_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -35,29 +35,29 @@ public class Match extends BaseEntity {
     private Team teamTwo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "MATCH_GROUP")
+    @Column(name = "match_group")
     private Group group;
 
-    @Column(name = "PENALTY_WINNER_ONE")
+    @Column(name = "penalty_winner_one")
     private boolean penaltyWinnerOne;
 
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
-    @Column(name = "KICK_OFF_DATE")
+    @Column(name = "kick_off_date")
     private LocalDateTime kickOffDate;
 
-    @Column(name = "STADIUM")
+    @Column(name = "stadium")
     private String stadium;
 
-    @Column(name = "GOALS_TEAM_ONE")
+    @Column(name = "goals_team_one")
     private Integer goalsTeamOne;
 
-    @Column(name = "GOALS_TEAM_TWO")
+    @Column(name = "goals_team_two")
     private Integer goalsTeamTwo;
 
-    @Column(name = "EXTERNAL_LAST_UPDATED")
+    @Column(name = "external_last_updated")
     private ZonedDateTime externalLastUpdated;
 
-    @Column(name = "EXTERNAL_ID")
+    @Column(name = "external_id")
     private String externalId;
 
     @Transient

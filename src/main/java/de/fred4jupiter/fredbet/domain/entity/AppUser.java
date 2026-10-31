@@ -2,8 +2,6 @@ package de.fred4jupiter.fredbet.domain.entity;
 
 import de.fred4jupiter.fredbet.security.FredBetUserGroup;
 import jakarta.persistence.*;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,17 +20,17 @@ import java.util.stream.Collectors;
  * @author michael
  */
 @Entity
-@Table(name = "APP_USER")
+@Table(name = "app_user")
 public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @Column(name = "user_id")
     private Long id;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
-    @Column(name = "ROLE")
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
     private Set<String> roles;
 
     /**
@@ -41,25 +39,25 @@ public class AppUser implements UserDetails {
     @Transient
     private Set<String> permissions;
 
-    @Column(name = "USER_NAME", unique = true, nullable = false)
+    @Column(name = "user_name", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "CREATED_AT", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "LAST_LOGIN")
+    @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
-    @Column(name = "DELETABLE", nullable = false)
+    @Column(name = "deletable", nullable = false)
     private boolean deletable = true;
 
-    @Column(name = "IS_CHILD", nullable = false)
+    @Column(name = "is_child", nullable = false)
     private boolean child;
 
-    @Column(name = "FIRST_LOGIN", nullable = false)
+    @Column(name = "first_login", nullable = false)
     private boolean firstLogin;
 
     @Embedded

@@ -1,6 +1,8 @@
 package de.fred4jupiter.fredbet.domain.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,24 +15,24 @@ import java.util.UUID;
  *
  */
 @Entity
-@Table(name = "IMAGE_BINARY")
+@Table(name = "image_binary")
 public class ImageBinary {
 
     @Id
-    @Column(name = "IMAGE_KEY")
+    @Column(name = "image_key")
     private String key;
 
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "IMAGE_BYTES", nullable = false)
-    @Lob
+    @Column(name = "image_bytes", nullable = false)
+    @JdbcTypeCode(SqlTypes.LONG32VARBINARY)
     private byte[] imageBinary;
 
-    @Column(name = "THUMB_IMAGE_BYTES")
-    @Lob
+    @Column(name = "thumb_image_bytes")
+    @JdbcTypeCode(SqlTypes.LONG32VARBINARY)
     private byte[] thumbImageBinary;
 
     @Version
-    @Column(name = "VERSION", nullable = false)
+    @Column(name = "version", nullable = false)
     private Integer version;
 
     protected ImageBinary() {

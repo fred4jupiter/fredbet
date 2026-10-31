@@ -13,17 +13,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "SESSION_TRACKING")
+@Table(name = "session_tracking")
 public class SessionTracking {
 
 	@Id
-	@Column(name = "USER_NAME")
+	@Column(name = "user_name")
 	private String userName;
 
-	@Column(name = "SESSION_ID", nullable = false)
+	@Column(name = "session_id", nullable = false)
 	private String sessionId;
 
-	@Column(name = "LAST_LOGIN", nullable = false)
+	@Column(name = "last_login", nullable = false)
 	private LocalDateTime lastLogin;
 
 	public boolean equals(Object obj) {
