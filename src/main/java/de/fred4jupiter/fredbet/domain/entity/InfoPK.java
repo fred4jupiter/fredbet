@@ -12,10 +12,10 @@ import java.io.Serializable;
 @Embeddable
 public class InfoPK implements Serializable {
 
-    @Column(name = "INFO_NAME")
+    @Column(name = "info_name")
     private String name;
 
-    @Column(name = "LOCALE_STRING")
+    @Column(name = "locale_string")
     private String localeString;
 
     protected InfoPK() {

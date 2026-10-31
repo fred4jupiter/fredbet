@@ -1,6 +1,6 @@
 package de.fred4jupiter.fredbet.info;
 
-import de.fred4jupiter.fredbet.domain.entity.Info;
+import de.fred4jupiter.fredbet.domain.entity.InfoContent;
 import de.fred4jupiter.fredbet.domain.entity.InfoPK;
 import de.fred4jupiter.fredbet.web.info.InfoType;
 import org.springframework.stereotype.Service;
@@ -19,31 +19,31 @@ public class InfoService {
         this.infoRepository = infoRepository;
     }
 
-    public Info saveInfoContent(InfoType infoType, String content, Locale locale) {
+    public InfoContent saveInfoContent(InfoType infoType, String content, Locale locale) {
         InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
-        Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
+        Optional<InfoContent> foundInfoOpt = infoRepository.findById(infoPK);
         if (foundInfoOpt.isPresent()) {
-            Info info = foundInfoOpt.get();
-            info.setContent(content);
-            return infoRepository.save(info);
+            InfoContent infoContent = foundInfoOpt.get();
+            infoContent.setContent(content);
+            return infoRepository.save(infoContent);
         }
 
-        Info info = new Info(infoPK, content);
-        return infoRepository.save(info);
+        InfoContent infoContent = new InfoContent(infoPK, content);
+        return infoRepository.save(infoContent);
     }
 
     public void saveInfoContentIfNotPresent(InfoType infoType, String content, String language) {
         InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), language);
-        Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
+        Optional<InfoContent> foundInfoOpt = infoRepository.findById(infoPK);
         if (foundInfoOpt.isEmpty()) {
-            Info info = new Info(infoPK, content);
-            infoRepository.save(info);
+            InfoContent infoContent = new InfoContent(infoPK, content);
+            infoRepository.save(infoContent);
         }
     }
 
-    public Info findBy(InfoType infoType, Locale locale) {
+    public InfoContent findBy(InfoType infoType, Locale locale) {
         InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
-        Optional<Info> foundInfoOpt = infoRepository.findById(infoPK);
+        Optional<InfoContent> foundInfoOpt = infoRepository.findById(infoPK);
         return foundInfoOpt.orElseGet(() -> saveInfoContent(infoType, "", locale));
     }
 }

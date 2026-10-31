@@ -5,6 +5,8 @@ import de.fred4jupiter.fredbet.domain.TranslationAware;
 import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import de.fred4jupiter.fredbet.teambundle.TeamBundleEntryType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -17,35 +19,35 @@ import java.util.Base64;
 import java.util.Locale;
 
 @Entity
-@Table(name = "TEAM")
+@Table(name = "team")
 public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TEAM_TYPE")
+    @Column(name = "team_type")
     private TeamBundleEntryType teamType;
 
     // name of the team bundle entry, e.g. the country enum name
-    @Column(name = "TEAM_KEY")
+    @Column(name = "team_key")
     private String teamKey;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "name", unique = true)
     private String name;
 
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "SVG_CONTENT", columnDefinition = "TEXT")
-    @Lob
+    @Column(name = "svg_content")
+    @JdbcTypeCode(SqlTypes.LONG32VARCHAR)
     private String svgContent;
 
-    @Column(name = "FAVOURITE", nullable = false)
+    @Column(name = "favourite", nullable = false)
     private boolean favourite;
 
     @Version
-    @Column(name = "VERSION", nullable = false)
+    @Column(name = "version", nullable = false)
     private Integer version;
 
     protected Team() {

@@ -14,30 +14,30 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "IMAGE_METADATA")
+@Table(name = "image_meta_data")
 public class ImageMetaData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "IMAGE_ID")
+	@Column(name = "image_id")
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "IMAGE_GROUP_ID", nullable = false)
+	@JoinColumn(name = "image_group_id", nullable = false)
 	private ImageGroup imageGroup;
 
-	@Column(name = "IMAGE_KEY", unique = true, nullable = false)
+	@Column(name = "image_key", unique = true, nullable = false)
 	private String imageKey;
 
-	@Column(name = "DESCRIPTION")
+	@Column(name = "description")
 	private String description;
 
 	@Version
-	@Column(name = "VERSION", nullable = false)
+	@Column(name = "version", nullable = false)
 	private Integer version;
 
 	@ManyToOne
-	@JoinColumn(name = "USER_ID", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	private AppUser owner;
 
 	protected ImageMetaData() {

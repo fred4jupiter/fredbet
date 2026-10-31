@@ -13,22 +13,22 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "IMAGE_GROUP")
+@Table(name = "image_group")
 public class ImageGroup {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "IMAGE_GROUP_ID")
+	@Column(name = "image_group_id")
 	private Long id;
 
-	@Column(name = "NAME", unique = true, nullable = false)
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
 	@Version
-	@Column(name = "VERSION", nullable = false)
+	@Column(name = "version", nullable = false)
 	private Integer version;
 
-	@Column(name = "USER_PROFILE_IMG_GROUP", nullable = false)
+	@Column(name = "user_profile_img_group", nullable = false)
 	private boolean userProfileImageGroup;
 
 	protected ImageGroup() {
