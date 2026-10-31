@@ -4,59 +4,51 @@ import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class UserProfileControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @Test
-    public void showChangePasswordForm() throws Exception {
-        mockMvc.perform(get("/profile/changePassword"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("<h1>Change password</h1>"),
-                containsString("autocomplete=\"current-password\""),
-                containsString("Repeat new password"))));
+    public void showChangePasswordForm() {
+        assertThat(mvc.get().uri("/profile/changePassword"))
+            .hasStatusOk()
+            .bodyText().contains(
+                "<h1>Change password</h1>",
+                "autocomplete=\"current-password\"",
+                "Repeat new password");
     }
 
     @Test
-    public void changePasswordWithMismatchingPasswordsShowsErrorAtField() throws Exception {
-        mockMvc.perform(post("/profile/changePassword").with(csrf())
+    public void changePasswordWithMismatchingPasswordsShowsErrorAtField() {
+        assertThat(mvc.post().uri("/profile/changePassword").with(csrf())
                 .param("oldPassword", "whatever").param("newPassword", "secret1").param("newPasswordRepeat", "secret2"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("is-invalid"),
-                containsString("invalid-feedback"))));
+            .hasStatusOk()
+            .bodyText().contains("is-invalid", "invalid-feedback");
     }
 
     @Test
-    public void showChangeUsernameForm() throws Exception {
-        mockMvc.perform(get("/profile/changeUsername"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("<h1>Change username</h1>"),
-                containsString("maxlength=\"12\""))));
+    public void showChangeUsernameForm() {
+        assertThat(mvc.get().uri("/profile/changeUsername"))
+            .hasStatusOk()
+            .bodyText().contains(
+                "<h1>Change username</h1>",
+                "maxlength=\"12\"");
     }
 
     @Test
-    public void changeUsernameWithTooShortNameShowsErrorAtField() throws Exception {
-        mockMvc.perform(post("/profile/changeUsername").with(csrf())
+    public void changeUsernameWithTooShortNameShowsErrorAtField() {
+        assertThat(mvc.post().uri("/profile/changeUsername").with(csrf())
                 .param("newUsername", "x"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("is-invalid"),
-                containsString("invalid-feedback"))));
+            .hasStatusOk()
+            .bodyText().contains("is-invalid", "invalid-feedback");
     }
 
 }

@@ -10,58 +10,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
+import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class OpenBetsControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @MockitoBean
     private BettingService bettingService;
 
     @Test
-    public void openMatchesAreGroupedByMatchDay() throws Exception {
+    public void openMatchesAreGroupedByMatchDay() {
         LocalDateTime day = LocalDateTime.now().plusDays(10).withHour(18).withMinute(0);
         when(bettingService.findMatchesToBet(any())).thenReturn(List.of(
             match(101L, day, "FC One", "FC Two"),
             match(102L, day.plusHours(3), "FC Three", "FC Four"),
             match(103L, day.plusDays(1), "FC Five", "FC Six")));
 
-        MvcResult result = mockMvc.perform(get("/bet/open"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("/bet/createOrUpdate/101?redirectViewName=OPEN_BETS"),
-                containsString("FC Six"),
-                containsString("21:00"))))
-            .andReturn();
-
-        // two match days, so two headings
-        String html = result.getResponse().getContentAsString();
-        assertThat(html.split("list-open-day", -1)).hasSize(3);
+        assertThat(mvc.get().uri("/bet/open"))
+            .hasStatusOk()
+            .bodyText()
+            .contains(
+                "/bet/createOrUpdate/101?redirectViewName=OPEN_BETS",
+                "FC Six",
+                "21:00")
+            // two match days, so two headings
+            .satisfies(html -> assertThat(html.split("list-open-day", -1)).hasSize(3));
     }
 
     @Test
-    public void diceShowsMessageAfterRedirect() throws Exception {
-        mockMvc.perform(get("/bet/dice"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/bet/open"))
-            .andExpect(flash().attributeExists("globalMessage"));
+    public void diceShowsMessageAfterRedirect() {
+        MvcTestResult result = mvc.get().uri("/bet/dice").exchange();
+
+        assertThat(result).hasStatus3xxRedirection().hasRedirectedUrl("/bet/open");
+        assertThat(result).flash().containsKey("globalMessage");
 
         verify(bettingService).diceAllMatchesForUser("admin");
     }

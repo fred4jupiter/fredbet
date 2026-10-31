@@ -9,47 +9,43 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
+import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class PointsFrequencyControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @MockitoBean
     private ReportService reportService;
 
     @Test
-    public void showPointsFrequencyMatrix() throws Exception {
+    public void showPointsFrequencyMatrix() {
         MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
         map.put(3, new PointCountResult("anna", 3, 2L));
         map.put(2, new PointCountResult("bert", 2, 4L));
         when(reportService.reportPointsFrequency()).thenReturn(map);
 
-        mockMvc.perform(get("/info/pointsfrequency"))
-            .andExpect(status().isOk())
-            .andExpect(view().name("info/points_freq"))
-            .andExpect(content().string(containsString("points-freq-table")))
-            .andExpect(content().string(containsString("anna")))
-            .andExpect(content().string(containsString("bert")));
+        assertThat(mvc.get().uri("/info/pointsfrequency"))
+            .hasStatusOk()
+            .hasViewName("info/points_freq")
+            .bodyText().contains("points-freq-table", "anna", "bert");
     }
 
     @Test
-    public void showNoDataMessage() throws Exception {
+    public void showNoDataMessage() {
         when(reportService.reportPointsFrequency()).thenReturn(new ArrayListValuedHashMap<>());
 
-        mockMvc.perform(get("/info/pointsfrequency"))
-            .andExpect(status().isOk())
-            .andExpect(model().attributeDoesNotExist("pointsFrequencyCommand"))
-            .andExpect(content().string(not(containsString("points-freq-table"))));
+        MvcTestResult result = mvc.get().uri("/info/pointsfrequency").exchange();
+
+        assertThat(result).hasStatusOk().model().doesNotContainKey("pointsFrequencyCommand");
+        assertThat(result).bodyText().doesNotContain("points-freq-table");
     }
 
 }

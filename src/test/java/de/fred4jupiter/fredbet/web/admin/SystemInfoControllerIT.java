@@ -4,28 +4,25 @@ import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class SystemInfoControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @Test
-    public void showSystemInfoGroupedBySection() throws Exception {
-        mockMvc.perform(get("/systeminfo"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("fa-cogs"),
-                containsString("<span>Runtime</span>"),
-                containsString("<dt class=\"col-sm-4 text-body-secondary fw-normal\">Host Name</dt>"),
-                containsString("font-monospace"))));
+    public void showSystemInfoGroupedBySection() {
+        assertThat(mvc.get().uri("/systeminfo"))
+            .hasStatusOk()
+            .bodyText().contains(
+                "fa-cogs",
+                "<span>Runtime</span>",
+                "<dt class=\"col-sm-4 text-body-secondary fw-normal\">Host Name</dt>",
+                "font-monospace");
     }
 }
