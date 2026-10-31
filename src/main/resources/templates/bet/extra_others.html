@@ -18,11 +18,11 @@
 						<thead class="table-light">
 							<tr>
 								<th scope="col" class="extra-others-name" th:text="#{registration.username}"></th>
-								<th scope="col"><span class="extra-medal extra-medal-1" th:title="#{extra_bets.finalWinner}">1</span>
+								<th scope="col"><span class="extra-medal extra-medal-1 extra-tooltip" th:data-bs-title="#{extra_bets.finalWinner}">1</span>
 									<span class="d-none d-md-inline-block extra-label" th:text="#{extra_bets.finalWinner}"></span></th>
-								<th scope="col"><span class="extra-medal extra-medal-2" th:title="#{extra_bets.semiFinalWinner}">2</span>
+								<th scope="col"><span class="extra-medal extra-medal-2 extra-tooltip" th:data-bs-title="#{extra_bets.semiFinalWinner}">2</span>
 									<span class="d-none d-md-inline-block extra-label" th:text="#{extra_bets.semiFinalWinner}"></span></th>
-								<th scope="col" th:if="${hasThirdFinalWinner}"><span class="extra-medal extra-medal-3" th:title="#{extra_bets.thirdFinalWinner}">3</span>
+								<th scope="col" th:if="${hasThirdFinalWinner}"><span class="extra-medal extra-medal-3 extra-tooltip" th:data-bs-title="#{extra_bets.thirdFinalWinner}">3</span>
 									<span class="d-none d-md-inline-block extra-label" th:text="#{extra_bets.thirdFinalWinner}"></span></th>
 								<th scope="col" class="text-end" th:text="#{excel.export.points}"></th>
 							</tr>
@@ -54,17 +54,21 @@
 			</a>
 		</div>
 
-		<!-- a picked team: the crest only on small screens (the name is shown as tooltip), crest and name on wider screens;
+		<!-- a picked team: the crest only on small screens (the name is shown as tooltip, touch devices open it by tapping the crest),
+			 crest and name on wider screens;
 			 picks that already scored are marked green -->
 		<td th:fragment="extra_pick(team, points)" th:classappend="${points != null and points > 0} ? 'table-success'"
 			th:with="teamName=${team != null} ? ${team.getNameTranslated(@messageSourceUtil)}">
 			<div class="d-flex align-items-center gap-2" th:if="${team != null}">
-				<img class="crest-small flex-shrink-0" th:src="@{/team/{teamId}.svg(teamId=${team.id}, v=${team.version})}"
-					 th:alt="${teamName}" th:title="${teamName}" loading="lazy"/>
+				<img class="crest-small flex-shrink-0 extra-tooltip" th:src="@{/team/{teamId}.svg(teamId=${team.id}, v=${team.version})}"
+					 th:alt="${teamName}" th:data-bs-title="${teamName}" tabindex="0" role="button" loading="lazy"/>
 				<span class="d-none d-md-inline text-truncate" th:text="${teamName}"></span>
-				<i th:if="${points != null and points > 0}" class="fas fa-check text-success" th:title="${points}" aria-hidden="true"></i>
+				<i th:if="${points != null and points > 0}" class="fas fa-check text-success extra-tooltip" th:data-bs-title="${points}" aria-hidden="true"></i>
 			</div>
 			<span th:if="${team == null}" class="text-body-tertiary">&ndash;</span>
 		</td>
 	</body>
+	<th:block layout:fragment="scripts">
+		<script type="text/javascript" th:src="@{/js/pages/extra_others.js}" charset="UTF-8"></script>
+	</th:block>
 </html>
