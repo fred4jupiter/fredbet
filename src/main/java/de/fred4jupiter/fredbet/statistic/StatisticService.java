@@ -48,10 +48,9 @@ public class StatisticService {
             final Integer favouriteTeamPoints = favouriteTeamPointsPerUserMap.get(statistic.getUsername());
             if (favouriteTeamPoints != null) {
                 statistic.setPointsFavouriteTeam(favouriteTeamPoints);
-                if (maxFavouriteTeamPoints.isPresent() && favouriteTeamPoints.equals(maxFavouriteTeamPoints.get())) {
-                    if (maxFavouriteTeamPoints.get() > 0) {
-                        statistic.setMaxFavouriteTeamCandidate(true);
-                    }
+                if (maxFavouriteTeamPoints.isPresent() && favouriteTeamPoints.equals(maxFavouriteTeamPoints.get())
+                    && maxFavouriteTeamPoints.get() > 0) {
+                    statistic.setMaxFavouriteTeamCandidate(true);
                 }
             }
 

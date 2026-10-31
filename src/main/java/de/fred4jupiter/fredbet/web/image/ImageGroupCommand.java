@@ -2,7 +2,7 @@ package de.fred4jupiter.fredbet.web.image;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class ImageGroupCommand implements Comparable<ImageGroupCommand>{
+public class ImageGroupCommand {
 
 	private Long id;
 
@@ -33,10 +33,5 @@ public class ImageGroupCommand implements Comparable<ImageGroupCommand>{
 
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
-	}
-
-	@Override
-	public int compareTo(ImageGroupCommand imageGroupCommand) {
-		return this.getName().compareTo(imageGroupCommand.getName());
 	}
 }

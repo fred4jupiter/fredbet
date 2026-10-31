@@ -4,7 +4,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AvatarService {
@@ -22,7 +22,7 @@ public class AvatarService {
     }
 
     private int randomNumber() {
-        return new Random().nextInt(40) + 1;
+        return ThreadLocalRandom.current().nextInt(1, 41);
     }
 
     private byte[] resourceToByteArray(String numberFormated) {

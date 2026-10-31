@@ -9,7 +9,7 @@ import java.util.Properties;
 public final class ResourceToPropertiesUtil {
 
     public static Properties loadCountryNames(Resource countryNameResource) {
-        try (final InputStream in = countryNameResource.getInputStream()) {
+        try (InputStream in = countryNameResource.getInputStream()) {
             final Properties properties = new Properties();
             properties.load(in);
             return properties;

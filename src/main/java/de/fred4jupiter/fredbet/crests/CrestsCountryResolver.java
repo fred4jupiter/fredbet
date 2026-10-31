@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Optional;
 
 @Component
@@ -86,7 +87,7 @@ public class CrestsCountryResolver {
             return Optional.empty();
         }
 
-        String fileName = "%s.svg".formatted(code).toLowerCase();
+        String fileName = "%s.svg".formatted(code).toLowerCase(Locale.ROOT);
         return Optional.ofNullable(loadResourceByFilename(fileName, COUNTRY_FLAGS_CLASSPATH_LOCATION));
     }
 

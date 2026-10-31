@@ -1,7 +1,6 @@
 package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;

@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -33,7 +32,7 @@ class TeamNameToCountryResolver {
             return null;
         }
 
-        Country country = Country.fromAlpha3Code(team.tla().toLowerCase());
+        Country country = Country.fromAlpha3Code(team.tla().toLowerCase(Locale.ROOT));
         if (country != null) {
             return country;
         }

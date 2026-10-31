@@ -4,6 +4,8 @@ import de.fred4jupiter.fredbet.domain.entity.Bet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.points.BetOutcome;
 
+import java.util.Locale;
+
 /**
  * Points of a bet for a match, as shown in the badge of fragments/points_badge.html.
  */
@@ -30,7 +32,7 @@ public record PointsBadge(String cssClass, String msgKey, String text, boolean j
     }
 
     private static PointsBadge of(BetOutcome betOutcome, String text, boolean jokerHint) {
-        final String cssClass = "points-" + betOutcome.name().toLowerCase().replace('_', '-');
+        final String cssClass = "points-" + betOutcome.name().toLowerCase(Locale.ROOT).replace('_', '-');
         return new PointsBadge(cssClass, betOutcome.getMsgKey(), text, jokerHint);
     }
 }
