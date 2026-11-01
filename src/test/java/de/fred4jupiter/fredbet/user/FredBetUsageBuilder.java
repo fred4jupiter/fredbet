@@ -63,7 +63,7 @@ public class FredBetUsageBuilder {
 
     public FredBetUsageBuilder withMatch() {
         this.match = MatchBuilder.create(teamService).withTeams(Country.GERMANY, Country.FRANCE).withGroup(Group.GROUP_A)
-            .withStadium("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
+            .withVenue("Somewhere").withKickOffDate(LocalDateTime.now().plusDays(1)).build();
         return this;
     }
 

@@ -46,7 +46,7 @@ public class Match extends BaseEntity {
     private LocalDateTime kickOffDate;
 
     @Column(name = "stadium")
-    private String stadium;
+    private String venue;
 
     @Column(name = "goals_team_one")
     private Integer goalsTeamOne;
@@ -65,13 +65,13 @@ public class Match extends BaseEntity {
 
     public String getGroupLabel(MessageSourceUtil messageSourceUtil) {
         if (this.getGroup() != null) {
-            if (StringUtils.isNotBlank(this.getStadium())) {
-                return "%s, %s".formatted(messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey()), this.getStadium());
+            if (StringUtils.isNotBlank(this.getVenue())) {
+                return "%s, %s".formatted(messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey()), this.getVenue());
             }
             return messageSourceUtil.getMessageFor(this.getGroup().getTitleMsgKey());
         }
-        if (StringUtils.isNotBlank(this.getStadium())) {
-            return this.getStadium();
+        if (StringUtils.isNotBlank(this.getVenue())) {
+            return this.getVenue();
         }
 
         return null;
@@ -212,7 +212,7 @@ public class Match extends BaseEntity {
         builder.append(teamTwo, match.teamTwo);
         builder.append(group, match.group);
         builder.append(kickOffDate, match.kickOffDate);
-        builder.append(stadium, match.stadium);
+        builder.append(venue, match.venue);
 
         return builder.isEquals();
     }
@@ -225,7 +225,7 @@ public class Match extends BaseEntity {
         builder.append(teamTwo);
         builder.append(group);
         builder.append(kickOffDate);
-        builder.append(stadium);
+        builder.append(venue);
         return builder.toHashCode();
     }
 
@@ -237,7 +237,7 @@ public class Match extends BaseEntity {
         builder.append("teamTwo", teamTwo);
         builder.append("group", group);
         builder.append("kickOffDate", kickOffDate);
-        builder.append("stadium", stadium);
+        builder.append("venue", venue);
         return builder.toString();
     }
 
@@ -253,12 +253,12 @@ public class Match extends BaseEntity {
         this.group = group;
     }
 
-    public String getStadium() {
-        return stadium;
+    public String getVenue() {
+        return venue;
     }
 
-    public void setStadium(String stadium) {
-        this.stadium = stadium;
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 
     public LocalDateTime getKickOffDate() {

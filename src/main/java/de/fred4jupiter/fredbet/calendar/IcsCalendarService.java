@@ -37,7 +37,7 @@ public class IcsCalendarService {
         String content = createContent(match, locale);
 
         byte[] binary = IcsCalendarBuilder.create().withTitle(title).withContent(content)
-                .withLocation(match.getStadium())
+                .withLocation(match.getVenue())
                 .withTimeZone(TimeZone.getDefault().getID())
                 .withStartEnd(match.getKickOffDate(), match.getKickOffDate().plusHours(2))
                 .build();

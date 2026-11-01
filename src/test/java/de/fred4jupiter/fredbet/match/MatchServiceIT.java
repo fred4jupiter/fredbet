@@ -97,7 +97,7 @@ public class MatchServiceIT {
 
     @Test
     public void createTwoMatches() {
-        Match match1 = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
+        Match match1 = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withVenue("Lens")
             .withKickOffDate(11, 6, 15).build();
         assertThat(match1.getTeamOne().getTeamBundleEntry()).isEqualTo(Country.ALBANIA);
         assertThat(match1.getTeamTwo().getTeamBundleEntry()).isEqualTo(Country.SWITZERLAND);
@@ -105,7 +105,7 @@ public class MatchServiceIT {
         matchService.save(match1);
 
         Match match2 = MatchBuilder.create(teamService).withTeams(Country.ROMANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A)
-            .withStadium("Parc de Princes").withKickOffDate(15, 6, 18).build();
+            .withVenue("Parc de Princes").withKickOffDate(15, 6, 18).build();
         assertThat(match2.getTeamOne().getTeamBundleEntry()).isEqualTo(Country.ROMANIA);
         assertThat(match2.getTeamTwo().getTeamBundleEntry()).isEqualTo(Country.SWITZERLAND);
         matchService.save(match2);
@@ -127,7 +127,7 @@ public class MatchServiceIT {
 
     @Test
     public void changeTeamInMatch() {
-        Match match = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withStadium("Lens")
+        Match match = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.SWITZERLAND).withGroup(Group.GROUP_A).withVenue("Lens")
             .withKickOffDate(11, 6, 15).build();
         matchService.save(match);
         matchRepository.flush();

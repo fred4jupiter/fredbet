@@ -63,19 +63,19 @@ public class MatchRepositoryIT {
 
     private void createSomeMatches() {
         matchService.save(MatchBuilder.create(teamService).withTeams("Deutschland", "Frankfreich").withGroup(Group.GROUP_B)
-            .withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build());
+            .withVenue("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build());
 
         matchService.save(MatchBuilder.create(teamService).withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
-            .withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build());
+            .withVenue("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build());
 
         matchService.save(MatchBuilder.create(teamService).withTeams("Belgien", "England").withGroup(Group.GROUP_D)
-            .withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(15)).withGoals(1, 2).build());
+            .withVenue("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(15)).withGoals(1, 2).build());
 
         matchService.save(MatchBuilder.create(teamService).withTeams(Country.AFGHANISTAN, Country.ARMENIA).withGroup(Group.QUARTER_FINAL)
-            .withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(90)).withGoals(1, 2).build());
+            .withVenue("AOL Arena, München").withKickOffDate(LocalDateTime.now().plusMinutes(90)).withGoals(1, 2).build());
 
         matchService.save(MatchBuilder.create(teamService).withTeams(Country.BANGLADESH, Country.COLOMBIA).withGroup(Group.FINAL)
-            .withStadium("AOL Arena, München").withKickOffDate(LocalDateTime.now().minusDays(8)).withGoals(1, 2).build());
+            .withVenue("AOL Arena, München").withKickOffDate(LocalDateTime.now().minusDays(8)).withGoals(1, 2).build());
     }
 
     @Test
@@ -111,11 +111,11 @@ public class MatchRepositoryIT {
         matchRepository.deleteAll();
 
         Match match1 = MatchBuilder.create(teamService).withTeams("Deutschland", "Frankfreich").withGroup(Group.GROUP_B)
-            .withStadium("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build();
+            .withVenue("Weserstadium, bremen").withKickOffDate(LocalDateTime.now().plusMinutes(20)).withGoals(1, 2).build();
         matchService.save(match1);
 
         Match match2 = MatchBuilder.create(teamService).withTeams("Bulgarien", "Irland").withGroup(Group.GROUP_A)
-            .withStadium("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build();
+            .withVenue("Westfalenstadium, Dortmund").withKickOffDate(LocalDateTime.now().plusMinutes(10)).withGoals(1, 2).build();
         matchService.save(match2);
 
         final String userName = "Albert";

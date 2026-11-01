@@ -23,7 +23,7 @@ public class CreateEditMatchCommand {
 
     private Group group;
 
-    private String stadium;
+    private String venue;
 
     private boolean deletable;
 
@@ -51,12 +51,12 @@ public class CreateEditMatchCommand {
         this.group = group;
     }
 
-    public String getStadium() {
-        return stadium;
+    public String getVenue() {
+        return venue;
     }
 
-    public void setStadium(String stadium) {
-        this.stadium = stadium;
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 
     public boolean isDeletable() {

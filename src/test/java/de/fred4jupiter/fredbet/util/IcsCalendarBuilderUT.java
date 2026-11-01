@@ -28,7 +28,7 @@ public class IcsCalendarBuilderUT {
             .build();
 
         byte[] binary = IcsCalendarBuilder.create().withTitle("Some match").withContent("There is a match")
-            .withLocation(match.getStadium())
+            .withLocation(match.getVenue())
             .withTimeZone(TimeZone.getDefault().getID())
             .withStartEnd(match.getKickOffDate(), match.getKickOffDate())
             .build();

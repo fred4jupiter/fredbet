@@ -67,7 +67,7 @@ public class OpenBetsControllerIT {
         match.setTeamTwo(team(id * 10 + 1, teamTwo));
         match.setKickOffDate(kickOff);
         match.setGroup(Group.GROUP_A);
-        match.setStadium("Arena");
+        match.setVenue("Arena");
         return match;
     }
 

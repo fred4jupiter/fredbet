@@ -96,12 +96,12 @@ public class ExcelImportService {
         LOG.debug("countr1={}, country2={}, group={}", country1, country2, group);
 
         final Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
-        final String stadium = safeGetString(row, 4);
+        final String venue = safeGetString(row, 4);
 
         final MatchBuilder matchBuilder = MatchBuilder.create(teamService)
             .withGroup(Group.valueOf(group))
             .withKickOffDate(DateUtils.toLocalDateTime(kickOffDate))
-            .withStadium(StringUtils.substring(stadium, 0, 20));
+            .withVenue(StringUtils.substring(venue, 0, 20));
 
         matchBuilder.withTeamOne(country1).withTeamTwo(country2);
 
