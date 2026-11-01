@@ -285,19 +285,15 @@ public class Match extends BaseEntity {
         this.penaltyWinnerOne = penaltyWinnerOne;
     }
 
+    /**
+     * A match without a group is handled like a group match (no penalty shoot-out).
+     */
     public boolean isGroupMatch() {
-        if (this.group == null) {
-            return false;
-        }
-        return this.group.name().startsWith("GROUP");
+        return !isKnockoutMatch();
     }
 
     public boolean isKnockoutMatch() {
-        if (this.group == null) {
-            return false;
-        }
-
-        return Group.getKnockoutGroups().contains(this.group);
+        return this.group != null && this.group.isKnockoutGroup();
     }
 
     public String getCssClassPenaltyWinnerOne() {
