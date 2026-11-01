@@ -27,6 +27,16 @@ spring:
       max-file-size: 30MB
       max-request-size: 30MB
       resolve-lazily: true
+  web:
+    resources:
+      # static resources get a content hash in their url (via Thymeleaf @{...}), so they can be cached long
+      chain:
+        strategy:
+          content:
+            enabled: true
+      cache:
+        cachecontrol:
+          max-age: 365d
   jmx:
     enabled: false
   threads:

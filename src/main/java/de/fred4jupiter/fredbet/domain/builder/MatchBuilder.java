@@ -92,8 +92,8 @@ public class MatchBuilder {
         return this;
     }
 
-    public MatchBuilder withStadium(String stadium) {
-        match.setStadium(stadium);
+    public MatchBuilder withVenue(String venue) {
+        match.setVenue(venue);
         return this;
     }
 

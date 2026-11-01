@@ -57,7 +57,7 @@ public class WebSecurityUtil {
         }
 
         final AppUser currentUser = securityService.getCurrentUser();
-        return currentUser.getUsername().equals(username) || !(currentUser.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE));
+        return currentUser.getUsername().equals(username) || !currentUser.hasPermission(FredBetPermission.PERM_CHANGE_USER_ROLE);
     }
 
     public boolean isUsersFirstLogin() {

@@ -58,7 +58,7 @@ public enum Group {
     }
 
     public static List<Group> getAllGroups() {
-        return List.of(Group.values());
+        return List.of(values());
     }
 
     public static List<Group> getMainGroups() {

@@ -20,7 +20,7 @@ public class InfoService {
     }
 
     public InfoContent saveInfoContent(InfoType infoType, String content, Locale locale) {
-        InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
+        InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(Locale.ROOT), locale.getLanguage());
         Optional<InfoContent> foundInfoOpt = infoRepository.findById(infoPK);
         if (foundInfoOpt.isPresent()) {
             InfoContent infoContent = foundInfoOpt.get();
@@ -33,7 +33,7 @@ public class InfoService {
     }
 
     public void saveInfoContentIfNotPresent(InfoType infoType, String content, String language) {
-        InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), language);
+        InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(Locale.ROOT), language);
         Optional<InfoContent> foundInfoOpt = infoRepository.findById(infoPK);
         if (foundInfoOpt.isEmpty()) {
             InfoContent infoContent = new InfoContent(infoPK, content);
@@ -42,7 +42,7 @@ public class InfoService {
     }
 
     public InfoContent findBy(InfoType infoType, Locale locale) {
-        InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(), locale.getLanguage());
+        InfoPK infoPK = new InfoPK(infoType.name().toLowerCase(Locale.ROOT), locale.getLanguage());
         Optional<InfoContent> foundInfoOpt = infoRepository.findById(infoPK);
         return foundInfoOpt.orElseGet(() -> saveInfoContent(infoType, "", locale));
     }

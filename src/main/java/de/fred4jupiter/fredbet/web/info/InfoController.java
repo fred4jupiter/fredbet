@@ -74,7 +74,7 @@ public class InfoController {
 
     @GetMapping(value = "/pdf", produces = CONTENT_TYPE_PDF)
     public ResponseEntity<byte[]> exportToPdf(@RequestParam("type") String infoTypeString) {
-        final InfoType infoType = InfoType.valueOf(infoTypeString.toUpperCase());
+        final InfoType infoType = InfoType.valueOf(infoTypeString.toUpperCase(Locale.ROOT));
         final String content = loadContentFor(infoType);
 
         if (StringUtils.isBlank(content)) {
@@ -97,7 +97,7 @@ public class InfoController {
     }
 
     private String createFileNameFor(InfoType infoType) {
-        return "%s_export".formatted(infoType.name().toLowerCase());
+        return "%s_export".formatted(infoType.name().toLowerCase(Locale.ROOT));
     }
 
     private ModelAndView prepareModelAndViewFor(InfoType infoType) {
@@ -153,7 +153,7 @@ public class InfoController {
 
     @PostMapping(value = "/editinfo")
     public String saveEditedInfoMisc(InfoCommand infoCommand) {
-        final InfoType infoType = InfoType.valueOf(infoCommand.getName().toUpperCase());
+        final InfoType infoType = InfoType.valueOf(infoCommand.getName().toUpperCase(Locale.ROOT));
         if (InfoType.MISC.equals(infoType)) {
             infoService.saveInfoContent(infoType, infoCommand.getTextContent(), LocaleContextHolder.getLocale());
             return "redirect:/" + infoType.getPageName();

@@ -11,24 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class ExtraBetControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @MockitoBean
     private ExtraBettingService extraBettingService;
@@ -40,7 +36,7 @@ public class ExtraBetControllerIT {
     private MatchService matchService;
 
     @Test
-    public void showSelectedTeamsWithCrests() throws Exception {
+    public void showSelectedTeamsWithCrests() {
         Team one = team(11L, "FC One");
         Team two = team(12L, "FC Two");
         when(teamService.findAllSelectableTeamsOfMatches()).thenReturn(List.of(one, two));
@@ -51,16 +47,17 @@ public class ExtraBetControllerIT {
         extraBet.setFinalWinner(two);
         when(extraBettingService.loadExtraBetForUser(any())).thenReturn(extraBet);
 
-        mockMvc.perform(get("/extrabets"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                // the crest of the selected champion is shown, the vice champion is not selected yet
-                containsString("id=\"finalWinnerCrest\""),
-                containsString("src=\"/team/12.svg"),
-                containsString("data-crest=\"/team/11.svg"),
-                containsString("id=\"semiFinalWinnerCrest\""),
-                containsString("extra-medal-2"),
-                not(containsString("extra-medal-3")))));
+        assertThat(mvc.get().uri("/extrabets"))
+            .hasStatusOk()
+            .bodyText()
+            // the crest of the selected champion is shown, the vice champion is not selected yet
+            .contains(
+                "id=\"finalWinnerCrest\"",
+                "src=\"/team/12.svg",
+                "data-crest=\"/team/11.svg",
+                "id=\"semiFinalWinnerCrest\"",
+                "extra-medal-2")
+            .doesNotContain("extra-medal-3");
     }
 
     private Team team(Long id, String name) {

@@ -9,29 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class StatisticControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @MockitoBean
     private StatisticService statisticService;
 
     @Test
-    public void showStatisticTableWithFavouriteTeamColumn() throws Exception {
+    public void showStatisticTableWithFavouriteTeamColumn() {
         Team favouriteTeam = new Team("FC Favourite");
         ReflectionTestUtils.setField(favouriteTeam, "id", 7L);
 
@@ -47,28 +43,28 @@ public class StatisticControllerIT {
         when(statisticService.getFavouriteTeam()).thenReturn(favouriteTeam);
         when(statisticService.createStatistic()).thenReturn(List.of(anna, bert));
 
-        mockMvc.perform(get("/info/statistic"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("statistic-table"),
-                containsString("anna"),
-                containsString("bert"),
-                containsString("/team/7.svg"),
-                containsString("<abbr title=\"Quarter Final\">1/4</abbr>"),
-                containsString("Total"),
-                containsString("Flop-Better"),
-                containsString("already included in the phase points"))));
+        assertThat(mvc.get().uri("/info/statistic"))
+            .hasStatusOk()
+            .bodyText().contains(
+                "statistic-table",
+                "anna",
+                "bert",
+                "/team/7.svg",
+                "<abbr title=\"Quarter Final\">1/4</abbr>",
+                "Total",
+                "Flop-Better",
+                "already included in the phase points");
     }
 
     @Test
-    public void showNoDataMessageWithoutStatistics() throws Exception {
+    public void showNoDataMessageWithoutStatistics() {
         when(statisticService.createStatistic()).thenReturn(List.of());
 
-        mockMvc.perform(get("/info/statistic"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("There are no statistics by now!"),
-                not(containsString("statistic-table")))));
+        assertThat(mvc.get().uri("/info/statistic"))
+            .hasStatusOk()
+            .bodyText()
+            .contains("There are no statistics by now!")
+            .doesNotContain("statistic-table");
     }
 
 }

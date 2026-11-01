@@ -114,7 +114,7 @@ public class BetRepositoryIT {
     @Test
     public void findByMatchIdOrderByUserName() {
         Match match1 = MatchBuilder.create(teamService).withTeams(Country.ALBANIA, Country.AUSTRIA).withGroup(Group.GROUP_A)
-            .withKickOffDate(LocalDateTime.now().minusHours(1)).withStadium("somewhere").build();
+            .withKickOffDate(LocalDateTime.now().minusHours(1)).withVenue("somewhere").build();
         match1 = matchService.save(match1);
 
         Bet bet1 = new Bet();

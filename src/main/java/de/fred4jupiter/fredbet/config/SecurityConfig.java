@@ -1,8 +1,8 @@
 package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.security.FredBetPermission;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -38,13 +38,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
-                .requestMatchers("/actuator/**", "/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
+                // only the health endpoint is public, any other (later exposed) actuator endpoint needs admin rights
+                .requestMatchers(EndpointRequest.to("health")).permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAuthority(FredBetPermission.PERM_ADMINISTRATION)
+                .requestMatchers("/blueimpgallery/**", "/lightbox/**", "/flag-icons*/**",
                     "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
                     "/webjars/**", "/css/**", "/js/**").permitAll()
                 // the error page must be reachable for anonymous users, otherwise any error is hidden behind an AccessDenied error
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)
-                .requestMatchers("/admin/**", "/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
+                .requestMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .anyRequest().authenticated()
             )
             .rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS))
@@ -55,14 +58,14 @@ public class SecurityConfig {
             .logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me"))
-            // disable cache control to allow usage of ETAG headers (no image reload if the image has not been changed)
-            .headers(headers -> headers.cacheControl(HeadersConfigurer.CacheControlConfig::disable));
+                .deleteCookies("JSESSIONID", "remember-me"));
+        // the default cache control headers (no-store) stay active for all pages; controllers serving
+        // cacheable content (images with ETag) set their own Cache-Control header, which Spring Security keeps
 
         if (h2ConsoleProperties.isPresent() && h2ConsoleProperties.get().isEnabled()) {
-            // this is for the embedded h2 console
-            http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-            http.csrf(csrf -> csrf.ignoringRequestMatchers("/console/**"));
+            // the embedded h2 console uses frames and posts its forms without csrf token
+            http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+            http.csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console()));
         }
 
         return http.build();

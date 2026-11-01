@@ -2,7 +2,7 @@
     font-size: 15px;
 }
 
-/* keep the line even without group or stadium, so all headers have the same height */
+/* keep the line even without group or venue, so all headers have the same height */
 .group-label:empty::before {
     content: "\00a0";
 }

@@ -149,7 +149,7 @@ public class DataPopulator {
             Match match = MatchBuilder.create(teamService)
                 .withTeams(teamPair.teamOne(), teamPair.teamTwo())
                 .withGroup(group)
-                .withStadium(nextStadium())
+                .withVenue(nextVenue())
                 .withKickOffDate(kickOffDateCreator.createNextKickOffDate()).build();
             matchService.save(match);
         });
@@ -221,7 +221,7 @@ public class DataPopulator {
         return this.faker.name().firstName();
     }
 
-    private String nextStadium() {
+    private String nextVenue() {
         return this.faker.country().capital();
     }
 }

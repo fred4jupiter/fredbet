@@ -43,7 +43,7 @@ public enum RedirectViewName {
 
     public static String resolveBackUrl(String redirectViewNameString) {
         if (StringUtils.isBlank(redirectViewNameString)) {
-            return RedirectViewName.MATCHES.getRedirectViewName();
+            return MATCHES.getRedirectViewName();
         }
 
         if (redirectViewNameString.startsWith(GROUP_PREFIX)) {
@@ -52,9 +52,9 @@ public enum RedirectViewName {
         }
 
         try {
-            return RedirectViewName.fromName(redirectViewNameString).getRedirectViewName();
+            return fromName(redirectViewNameString).getRedirectViewName();
         } catch (IllegalArgumentException e) {
-            return RedirectViewName.MATCHES.getRedirectViewName();
+            return MATCHES.getRedirectViewName();
         }
     }
 

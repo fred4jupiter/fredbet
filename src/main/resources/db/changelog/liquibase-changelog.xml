@@ -120,7 +120,7 @@
             <column name="penalty_winner_one" type="boolean" defaultValueBoolean="false"/>
             <column name="match_group" type="varchar(100)"/>
             <column name="kick_off_date" type="datetime"/>
-            <column name="stadium" type="varchar(100)"/>
+            <column name="venue" type="varchar(100)"/>
             <column name="external_id" type="varchar(100)"/>
             <column name="external_last_updated" type="datetime"/>
             <column name="create_date" type="datetime"/>

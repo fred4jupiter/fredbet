@@ -42,8 +42,8 @@ public class ImageGalleryController {
 
     private final ImageCommandMapper imageCommandMapper;
 
-    public ImageGalleryController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService,
-                                  DownloadService downloadService, ImageCommandMapper imageCommandMapper) {
+    ImageGalleryController(WebMessageUtil messageUtil, ImageAdministrationService imageAdministrationService,
+                           DownloadService downloadService, ImageCommandMapper imageCommandMapper) {
         this.messageUtil = messageUtil;
         this.imageAdministrationService = imageAdministrationService;
         this.downloadService = downloadService;
@@ -69,13 +69,13 @@ public class ImageGalleryController {
     @GetMapping(value = "/show/{imageKey}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> showImage(@PathVariable String imageKey, WebRequest webRequest) {
         return createResponseEntityForImageId(imageKey, webRequest,
-                imageAdministrationService -> imageAdministrationService.loadImageByImageKey(imageKey));
+            imageAdministrationService -> imageAdministrationService.loadImageByImageKey(imageKey));
     }
 
     @GetMapping(value = "/showthumb/{imageKey}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> showThumbnail(@PathVariable String imageKey, WebRequest webRequest) {
         return createResponseEntityForImageId(imageKey, webRequest,
-                imageAdministrationService -> imageAdministrationService.loadThumbnailByImageKey(imageKey));
+            imageAdministrationService -> imageAdministrationService.loadThumbnailByImageKey(imageKey));
     }
 
     @GetMapping(value = "/download/all", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -89,12 +89,15 @@ public class ImageGalleryController {
         return ResponseEntityUtil.createResponseEntity(zipFileName, zipFile, MediaType.APPLICATION_OCTET_STREAM_VALUE);
     }
 
-    private ResponseEntity<byte[]> createResponseEntityForImageId(String imageKey, WebRequest webRequest, Function<ImageAdministrationService, BinaryImage> imageLoadingCallback) {
-        final String etag = "" + imageKey;
+    private ResponseEntity<byte[]> createResponseEntityForImageId(String imageKey, WebRequest webRequest,
+                                                                  Function<ImageAdministrationService, BinaryImage> imageLoadingCallback) {
+        final String etag = imageKey;
         boolean notModified = webRequest.checkNotModified(etag);
         if (notModified) {
             LOG.debug("image with imageKey={} and etag={} has not been modified.", imageKey, etag);
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS)).eTag(etag).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                .cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+                .eTag(etag).body(null);
         }
 
         final BinaryImage binaryImage = imageLoadingCallback.apply(imageAdministrationService);
@@ -103,6 +106,9 @@ public class ImageGalleryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.ok().eTag(etag).header("Content-Type", MediaType.IMAGE_JPEG_VALUE).body(binaryImage.imageBinary());
+        return ResponseEntity.ok()
+            .cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+            .eTag(etag).header("Content-Type", MediaType.IMAGE_JPEG_VALUE)
+            .body(binaryImage.imageBinary());
     }
 }

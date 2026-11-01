@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
+import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -25,15 +26,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class MyBetsPdfExportIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @MockitoBean
     private MatchService matchService;
@@ -77,10 +76,9 @@ public class MyBetsPdfExportIT {
         when(matchService.findAllByOrderByKickOffDateAsc()).thenReturn(matches);
         when(bettingService.findAllByUsername("admin")).thenReturn(List.of(bet, penaltyBet));
 
-        byte[] pdf = mockMvc.perform(get("/matches/pdf"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith("application/pdf"))
-            .andReturn().getResponse().getContentAsByteArray();
+        MvcTestResult result = mvc.get().uri("/matches/pdf").exchange();
+        assertThat(result).hasStatusOk().hasContentTypeCompatibleWith("application/pdf");
+        byte[] pdf = result.getResponse().getContentAsByteArray();
         FileUtils.writeByteArrayToFile(new File("target/my_bets.pdf"), pdf);
 
         PdfReader reader = new PdfReader(pdf);

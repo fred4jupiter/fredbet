@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class LanguageUtil {
@@ -28,7 +29,7 @@ public class LanguageUtil {
     }
 
     public String cssClassFor(String alpha2Code) {
-        return "fi-%s".formatted(alpha2Code.toLowerCase());
+        return "fi-%s".formatted(alpha2Code.toLowerCase(Locale.ROOT));
     }
 
     public String cssClassCurrentUserLanguage() {

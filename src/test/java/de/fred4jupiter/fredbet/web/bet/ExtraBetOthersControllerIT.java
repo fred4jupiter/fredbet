@@ -9,66 +9,61 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcIntegrationTest
 @WithUserDetails("admin")
 public class ExtraBetOthersControllerIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvcTester mvc;
 
     @MockitoBean
     private ExtraBettingService extraBettingService;
 
     @Test
-    public void showPicksOfAllUsersInOneTable() throws Exception {
+    public void showPicksOfAllUsersInOneTable() {
         ExtraBet anna = extraBet("anna", team(1L, "FC One"), team(2L, "FC Two"), null);
         anna.setPointsOne(10);
         ExtraBet admin = extraBet("admin", team(2L, "FC Two"), team(1L, "FC One"), null);
         when(extraBettingService.loadExtraBetDataOthers()).thenReturn(List.of(anna, admin));
 
-        mockMvc.perform(get("/extrabets/others"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("extra-others-table"),
-                containsString("/team/1.svg"),
-                containsString("table-success"),
-                containsString("extra-others-current-user"),
-                // nobody picked a third place, so the column is hidden
-                not(containsString("extra-medal-3")))));
+        assertThat(mvc.get().uri("/extrabets/others"))
+            .hasStatusOk()
+            .bodyText()
+            .contains(
+                "extra-others-table",
+                "/team/1.svg",
+                "table-success",
+                "extra-others-current-user")
+            // nobody picked a third place, so the column is hidden
+            .doesNotContain("extra-medal-3");
     }
 
     @Test
-    public void showThirdPlaceColumnIfPicked() throws Exception {
+    public void showThirdPlaceColumnIfPicked() {
         ExtraBet anna = extraBet("anna", team(1L, "FC One"), team(2L, "FC Two"), team(3L, "FC Three"));
         when(extraBettingService.loadExtraBetDataOthers()).thenReturn(List.of(anna));
 
-        mockMvc.perform(get("/extrabets/others"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("extra-medal-3"),
-                containsString("/team/3.svg"))));
+        assertThat(mvc.get().uri("/extrabets/others"))
+            .hasStatusOk()
+            .bodyText().contains("extra-medal-3", "/team/3.svg");
     }
 
     @Test
-    public void showMessageWithoutExtraBets() throws Exception {
+    public void showMessageWithoutExtraBets() {
         when(extraBettingService.loadExtraBetDataOthers()).thenReturn(List.of());
 
-        mockMvc.perform(get("/extrabets/others"))
-            .andExpect(status().isOk())
-            .andExpect(content().string(allOf(
-                containsString("No bets assigned!"),
-                not(containsString("extra-others-table")))));
+        assertThat(mvc.get().uri("/extrabets/others"))
+            .hasStatusOk()
+            .bodyText()
+            .contains("No bets assigned!")
+            .doesNotContain("extra-others-table");
     }
 
     private ExtraBet extraBet(String userName, Team finalWinner, Team semiFinalWinner, Team thirdFinalWinner) {

@@ -126,7 +126,7 @@ public class CreateEditMatchController {
         command.setGroup(match.getGroup());
         command.setKickOffDate(match.getKickOffDate());
         command.setMatchId(match.getId());
-        command.setStadium(match.getStadium());
+        command.setVenue(match.getVenue());
         return command;
     }
 
@@ -154,6 +154,6 @@ public class CreateEditMatchController {
         match.setTeamTwo(matchCommand.getTeamTwo());
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());
-        match.setStadium(matchCommand.getStadium());
+        match.setVenue(matchCommand.getVenue());
     }
 }

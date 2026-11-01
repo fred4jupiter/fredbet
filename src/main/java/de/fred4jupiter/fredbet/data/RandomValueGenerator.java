@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class RandomValueGenerator {
@@ -27,13 +27,11 @@ public class RandomValueGenerator {
     }
 
     private Integer generateRandomValueInRange(int min, int max) {
-        Random rn = new Random();
-        int range = max - min + 1;
-        return rn.nextInt(range) + min;
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     public Boolean generateRandomBoolean() {
-        return Math.random() < 0.5;
+        return ThreadLocalRandom.current().nextBoolean();
     }
 
     /**

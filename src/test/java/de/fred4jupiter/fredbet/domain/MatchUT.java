@@ -56,6 +56,22 @@ public class MatchUT {
     }
 
     @Test
+    public void matchWithoutGroupIsHandledAsGroupMatch() {
+        Match match = MatchBuilder.create(teamService)
+            .withTeams("a", "b")
+            .withGoals(1, 1)
+            .withPenaltyWinnerOne(true)
+            .build();
+        assertThat(match.getGroup()).isNull();
+        assertThat(match.isGroupMatch()).isTrue();
+        assertThat(match.isKnockoutMatch()).isFalse();
+        assertThat(match.isTeamOneWinner()).isFalse();
+        assertThat(match.isTeamTwoWinner()).isFalse();
+        assertThat(match.getCssClassPenaltyWinnerOne()).isEmpty();
+        assertThat(match.getCssClassPenaltyWinnerTwo()).isEmpty();
+    }
+
+    @Test
     public void undecidedResultInKnockoutMatchAndPenaltyWinnerIsOne() {
         Match match = MatchBuilder.create(teamService)
             .withTeams("a", "b")
