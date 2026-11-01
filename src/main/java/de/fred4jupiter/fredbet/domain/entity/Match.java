@@ -45,7 +45,7 @@ public class Match extends BaseEntity {
     @Column(name = "kick_off_date")
     private LocalDateTime kickOffDate;
 
-    @Column(name = "stadium")
+    @Column(name = "venue")
     private String venue;
 
     @Column(name = "goals_team_one")
