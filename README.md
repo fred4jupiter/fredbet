@@ -147,6 +147,10 @@ Another option is to run all on a virtual machine with a Docker Compose file. Yo
 
 ## Hints
 
+> [!IMPORTANT]
+> **Release 5.0.0 requires a new database.** The Liquibase scripts were changed in this release, so a database
+> created with a release before 5.0.0 can't be migrated. Start version 5.0.0 with a new, empty database.
+
 ```bash
 -Dspring.liquibase.enabled = false
 ```
