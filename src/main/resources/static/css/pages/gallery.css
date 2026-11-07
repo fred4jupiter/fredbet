@@ -6,3 +6,29 @@ a.img-link  {
     text-decoration: none !important;
 }
 
+/* thumbnail while its image is loaded before the gallery opens */
+#links a.gallery-link-loading img {
+    opacity: 0.5;
+    cursor: progress;
+}
+
+/* PhotoSwipe slide shown until the size of its image is known */
+.gallery-slide-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.pswp .gallery-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    max-width: calc(100% - 2rem);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+}

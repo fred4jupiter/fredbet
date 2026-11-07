@@ -16,22 +16,21 @@ public class GalleryPageIT {
     private MockMvcTester mvc;
 
     @Test
-    public void showGalleryWithBlueimpGalleryFromWebjar() {
+    public void showGalleryWithPhotoSwipeFromWebjar() {
         assertThat(mvc.get().uri("/gallery/show"))
             .hasStatusOk()
             .hasViewName("image/gallery")
             .bodyText().contains(
-                "id=\"blueimp-gallery\"",
-                "/webjars/blueimp-gallery/3.4.0/css/blueimp-gallery.min",
-                "/webjars/blueimp-gallery/3.4.0/js/blueimp-gallery.min");
+                "id=\"links\"",
+                "/webjars/photoswipe/5.4.3/dist/photoswipe",
+                "/webjars/photoswipe/5.4.3/dist/umd/photoswipe.umd.min",
+                "js/pages/gallery")
+            .doesNotContain("blueimp");
     }
 
     @Test
-    public void blueimpGalleryWebjarResourcesAreServed() {
-        assertThat(mvc.get().uri("/webjars/blueimp-gallery/js/blueimp-gallery.min.js")).hasStatusOk();
-        assertThat(mvc.get().uri("/webjars/blueimp-gallery/css/blueimp-gallery.min.css")).hasStatusOk();
-        // referenced relatively from the CSS
-        assertThat(mvc.get().uri("/webjars/blueimp-gallery/img/close.svg")).hasStatusOk();
-        assertThat(mvc.get().uri("/webjars/blueimp-gallery/img/loading.gif")).hasStatusOk();
+    public void photoSwipeWebjarResourcesAreServed() {
+        assertThat(mvc.get().uri("/webjars/photoswipe/dist/umd/photoswipe.umd.min.js")).hasStatusOk();
+        assertThat(mvc.get().uri("/webjars/photoswipe/dist/photoswipe.css")).hasStatusOk();
     }
 }

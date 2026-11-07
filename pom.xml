@@ -171,8 +171,8 @@
         </dependency>
         <dependency>
             <groupId>org.webjars.npm</groupId>
-            <artifactId>blueimp-gallery</artifactId>
-            <version>3.4.0</version>
+            <artifactId>photoswipe</artifactId>
+            <version>5.4.3</version>
         </dependency>
 
         <dependency>
