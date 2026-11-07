@@ -159,6 +159,11 @@
             <artifactId>summernote</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-table</artifactId>
+            <version>1.24.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>
