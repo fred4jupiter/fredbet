@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
+import org.webjars.WebJarVersionLocator;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,7 @@ public class CrestsCountryResolver {
 
     private static final Logger LOG = LoggerFactory.getLogger(CrestsCountryResolver.class);
 
-    private static final String COUNTRY_FLAGS_CLASSPATH_LOCATION = "classpath:static/flag-icons-7.2.3/flags/4x3";
+    private static final String FLAG_ICONS_WEBJAR = "flag-icons";
 
     private static final String CLUB_WM_FLAGS_CLASSPATH_LOCATION = "classpath:static/club-wm-icons/flags";
 
@@ -32,10 +33,22 @@ public class CrestsCountryResolver {
 
     private final CountryResolver countryAlpha2Codes;
 
+    private final String countryFlagsClasspathLocation;
+
     CrestsCountryResolver(ResourceLoader resourceLoader, CrestPlaceholderLoader crestPlaceholderLoader, CountryResolver countryAlpha2Codes) {
         this.resourceLoader = resourceLoader;
         this.crestPlaceholderLoader = crestPlaceholderLoader;
         this.countryAlpha2Codes = countryAlpha2Codes;
+        this.countryFlagsClasspathLocation = resolveCountryFlagsClasspathLocation();
+    }
+
+    // the flag SVGs come from the flag-icons webjar, its version is only defined in the pom.xml
+    private static String resolveCountryFlagsClasspathLocation() {
+        String version = new WebJarVersionLocator().version(FLAG_ICONS_WEBJAR);
+        if (version == null) {
+            throw new IllegalStateException("Could not find webjar " + FLAG_ICONS_WEBJAR + " on the classpath");
+        }
+        return "classpath:%s/%s/%s/flags/4x3".formatted(WebJarVersionLocator.WEBJARS_PATH_PREFIX, FLAG_ICONS_WEBJAR, version);
     }
 
     public SvgImage loadCrestsImageFor(TeamBundleEntry teamBundleEntry) {
@@ -88,7 +101,7 @@ public class CrestsCountryResolver {
         }
 
         String fileName = "%s.svg".formatted(code).toLowerCase(Locale.ROOT);
-        return Optional.ofNullable(loadResourceByFilename(fileName, COUNTRY_FLAGS_CLASSPATH_LOCATION));
+        return Optional.ofNullable(loadResourceByFilename(fileName, countryFlagsClasspathLocation));
     }
 
     private SvgImage loadResourceByFilename(String filename, String classpathLocation) {

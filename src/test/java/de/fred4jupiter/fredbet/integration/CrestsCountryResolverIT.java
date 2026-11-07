@@ -27,4 +27,13 @@ public class CrestsCountryResolverIT {
             assertThat(crestsImage.svgContent()).isNotBlank();
         });
     }
+
+    @Test
+    void loadCountryFlagsFromFlagIconsWebjarWithoutFallback() {
+        // without the placeholder fallback an empty result means the flag SVG was not found in the webjar
+        assertThat(crestsCountryResolver.loadCrestsImageFor(Country.GERMANY, false))
+            .hasValueSatisfying(svg -> assertThat(svg.svgContent()).contains("<svg"));
+        assertThat(crestsCountryResolver.loadCrestsImageFor(Country.ENGLAND, false))
+            .hasValueSatisfying(svg -> assertThat(svg.svgContent()).contains("<svg"));
+    }
 }
