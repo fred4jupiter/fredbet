@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.gallery.title}"></title>
-		<link rel="stylesheet" th:href="@{/webjars/photoswipe/dist/photoswipe.css}" />
         <link rel="stylesheet" th:href="@{/css/pages/gallery.css}" />
 	</head>
 	<body>
@@ -16,7 +15,7 @@
 
 			<div class="row mb-3">
 				<div class="col-12">
-					<!-- the links are opened with PhotoSwipe in gallery.js, the title is shown as caption -->
+					<!-- the links are opened with the image viewer in gallery.js, the title is shown as caption -->
 					<div id="links">
 						<div th:id="${galleryGroup}" th:each="galleryGroup : ${groupedImageCommands.keySet()}">
 							<span class="fw-bold" th:text="${galleryGroup}"></span><br/>
@@ -30,7 +29,6 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/webjars/photoswipe/dist/umd/photoswipe.umd.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/pages/gallery.js}"></script>
 	</th:block>
 </html>

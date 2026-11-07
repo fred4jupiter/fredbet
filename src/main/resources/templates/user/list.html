@@ -26,7 +26,7 @@
 					<div class="card h-100 user-card">
 						<div class="card-body d-flex align-items-center gap-2 py-2">
 							<a th:if="${userDto.userProfileImageKey}" th:href="@{'/gallery/show/' + ${userDto.userProfileImageKey}}"
-							   th:attr="data-lightbox=${userDto.userProfileImageKey}" class="user-avatar-link flex-shrink-0">
+							   data-image-viewer th:title="${userDto.username}" class="user-avatar-link flex-shrink-0">
 								<img th:src="@{'/gallery/showthumb/' + ${userDto.userProfileImageKey}}" class="user-avatar rounded" alt=""/>
 							</a>
 							<span th:unless="${userDto.userProfileImageKey}" class="user-avatar user-initial rounded flex-shrink-0" aria-hidden="true"

@@ -87,7 +87,7 @@
 					   				<td th:text="${imageCommand.galleryGroup}"></td>
 					   				<td th:text="${imageCommand.description}" class="d-none d-sm-table-cell"></td>
 					   				<td class="text-center">
-                                        <a th:if="${imageCommand.imageKey}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" th:attr="data-lightbox=${imageCommand.imageKey}" class="img-link">
+                                        <a th:if="${imageCommand.imageKey}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}" data-image-viewer th:title="${imageCommand.description}" class="img-link">
                                             <img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}"
                                                  height="35" class="rounded" th:alt="${imageCommand.description}"/>
                                         </a>

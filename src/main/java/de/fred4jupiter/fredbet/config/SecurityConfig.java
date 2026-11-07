@@ -41,8 +41,7 @@ public class SecurityConfig {
                 // only the health endpoint is public, any other (later exposed) actuator endpoint needs admin rights
                 .requestMatchers(EndpointRequest.to("health")).permitAll()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAuthority(FredBetPermission.PERM_ADMINISTRATION)
-                .requestMatchers("/lightbox/**",
-                    "/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
+                .requestMatchers("/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
                     "/webjars/**", "/css/**", "/js/**").permitAll()
                 // the error page must be reachable for anonymous users, otherwise any error is hidden behind an AccessDenied error
                 .requestMatchers("/error").permitAll()
