@@ -26,6 +26,10 @@
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+		<!-- translated texts of the image viewer, the data attributes are named like the PhotoSwipe options -->
+		<div id="imageViewerTexts" hidden th:data-close-title="#{image.viewer.close}" th:data-zoom-title="#{image.viewer.zoom}"
+			 th:data-arrow-prev-title="#{image.viewer.previous}" th:data-arrow-next-title="#{image.viewer.next}"
+			 th:data-error-msg="#{image.viewer.error}"></div>
 		<script type="text/javascript" th:src="@{/webjars/photoswipe/dist/umd/photoswipe.umd.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/image_viewer.js}"></script>
         <script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>

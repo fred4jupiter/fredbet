@@ -31,6 +31,19 @@ public class GalleryPageIT {
     }
 
     @Test
+    public void rendersTranslatedImageViewerTexts() {
+        assertThat(mvc.get().uri("/gallery/show").param("lang", "de"))
+            .hasStatusOk()
+            .bodyText().contains(
+                "id=\"imageViewerTexts\"",
+                "data-close-title=\"Schließen\"",
+                "data-zoom-title=\"Zoomen\"",
+                "data-arrow-prev-title=\"Zurück\"",
+                "data-arrow-next-title=\"Weiter\"",
+                "data-error-msg=\"Das Bild konnte nicht geladen werden\"");
+    }
+
+    @Test
     public void imageViewerResourcesAreServed() {
         assertThat(mvc.get().uri("/webjars/photoswipe/dist/umd/photoswipe.umd.min.js")).hasStatusOk();
         assertThat(mvc.get().uri("/webjars/photoswipe/dist/photoswipe.css")).hasStatusOk();

@@ -78,13 +78,15 @@ var openImageViewer = (function () {
     }
 
     function open(items, index) {
-        var instance = new PhotoSwipe({
+        // button titles and error message in the language of the user, rendered by the layout as data attributes
+        var texts = $('#imageViewerTexts').data() || {};
+        var instance = new PhotoSwipe($.extend({}, texts, {
             dataSource: items,
             index: index,
             // the thumbnails are cropped to a square, zooming out of them would look distorted
             showHideAnimationType: 'fade',
             bgOpacity: 0.9
-        });
+        }));
         instance.addFilter('itemData', function (itemData, itemIndex) {
             return slideData(items[itemIndex]);
         });
