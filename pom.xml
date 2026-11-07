@@ -169,6 +169,11 @@
             <artifactId>flag-icons</artifactId>
             <version>7.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>blueimp-gallery</artifactId>
+            <version>3.4.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>

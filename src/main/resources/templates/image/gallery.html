@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{image.gallery.title}"></title>
-		<link rel="stylesheet" th:href="@{/blueimpgallery-3.4.0/css/blueimp-gallery.min.css}" />
+		<link rel="stylesheet" th:href="@{/webjars/blueimp-gallery/css/blueimp-gallery.min.css}" />
         <link rel="stylesheet" th:href="@{/css/pages/gallery.css}" />
 	</head>
 	<body>
@@ -39,7 +39,7 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/blueimpgallery-3.4.0/js/blueimp-gallery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/blueimp-gallery/js/blueimp-gallery.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/pages/gallery.js}"></script>
 	</th:block>
 </html>
