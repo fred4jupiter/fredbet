@@ -105,6 +105,25 @@ public class PdfExportServiceUT {
         reader.close();
     }
 
+    @Test
+    public void createPdfFromHtmlWithHeadlineFooterAndSpecialCharacters() throws IOException {
+        when(messageSourceUtil.getMessageFor(eq("page"), any(Locale.class))).thenReturn("Seite");
+
+        String html = "<h2>Wer kann teilnehmen?</h2><p>Freunde und Bekannte: Łódź, Čeština, Größe</p>"
+            + "<ul><li><b>Richtiger Tipp</b>: 3 Punkte</li><li>Tendenz: 1 Punkt</li></ul>"
+            + "<ol><li>erstens</li><li>zweitens</li></ol>";
+
+        byte[] pdf = pdfExportService.createPdfFromHtml("Regeln", html, Locale.GERMAN);
+        assertThat(pdf).isNotNull();
+        FileUtils.writeByteArrayToFile(new File("target/result_html.pdf"), pdf);
+
+        PdfReader reader = new PdfReader(pdf);
+        String text = new PdfTextExtractor(reader).getTextFromPage(1);
+        assertThat(text).contains("Regeln", "Wer kann teilnehmen?", "Łódź, Čeština, Größe", "Richtiger Tipp", "zweitens");
+        assertThat(text.replaceAll("\\s", "")).contains("Seite1/1");
+        reader.close();
+    }
+
     private List<UsernamePoints> createTestData() {
         List<UsernamePoints> data = new ArrayList<>();
 

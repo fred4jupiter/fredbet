@@ -4,6 +4,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.html.simpleparser.HTMLWorker;
+import com.lowagie.text.html.simpleparser.StyleSheet;
 import com.lowagie.text.pdf.*;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 @Service
@@ -39,6 +42,10 @@ public class PdfExportService {
     private static final Color BORDER_COLOR = new Color(222, 226, 230);
     private static final Color SECONDARY_TEXT = new Color(108, 117, 125);
 
+    // left indentation of the bullets/numbers of HTML lists and the minimal gap between bullet/number and text
+    private static final float LIST_INDENTATION = 12;
+    private static final float LIST_SYMBOL_GAP = 5;
+
     private final MessageSourceUtil messageSourceUtil;
 
     private final FontCreator fontCreator;
@@ -49,9 +56,9 @@ public class PdfExportService {
     }
 
     public <T> byte[] createPdfFileFrom(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
-        return createPdf(new PageFooter(pdfTableData), document -> {
-            document.add(createHeadline(pdfTableData));
-            document.add(createSubtitleParagraph(pdfTableData));
+        return createPdf(new PageFooter(pdfTableData.title(), pdfTableData.locale()), document -> {
+            document.add(createHeadline(pdfTableData.title()));
+            document.add(createSubtitleParagraph(pdfTableData.subtitle(), pdfTableData.locale()));
             document.add(createTable(data, rowCallback, pdfTableData));
             if (!pdfTableData.legendEntries().isEmpty()) {
                 document.add(createLegend(pdfTableData));
@@ -59,11 +66,75 @@ public class PdfExportService {
         });
     }
 
-    public byte[] createPdfFromHtml(String html) {
-        return createPdf(null, document -> {
-            HTMLWorker htmlWorker = new HTMLWorker(document);
-            htmlWorker.parse(new StringReader(html));
+    /**
+     * Creates a PDF from simple HTML (e.g. edited with the WYSIWYG editor) with the same headline and page footer as the
+     * table exports.
+     */
+    public byte[] createPdfFromHtml(String title, String html, Locale locale) {
+        return createPdf(new PageFooter(title, locale), document -> {
+            document.add(createHeadline(title));
+            document.add(createSubtitleParagraph(null, locale));
+
+            List<Element> elements = HTMLWorker.parseToList(new StringReader(html), createHtmlStyleSheet(),
+                Map.of("font_factory", fontCreator.createFontProvider()));
+            for (Element element : elements) {
+                if (element instanceof com.lowagie.text.List list) {
+                    list.setIndentationLeft(list.getIndentationLeft() + LIST_INDENTATION);
+                    alignListItems(list);
+                }
+                document.add(element);
+            }
         });
+    }
+
+    /**
+     * The HTML parser indents the list item text by the exact width of the bullet/number, so the text sticks to it and
+     * the text of "9." and "10." is not aligned. This uses the same hanging indentation for all items of a list.
+     */
+    private void alignListItems(com.lowagie.text.List list) {
+        float symbolWidth = 0;
+        for (Element element : list.getItems()) {
+            if (element instanceof ListItem item) {
+                symbolWidth = Math.max(symbolWidth, item.getListSymbol().getWidthPoint());
+            }
+        }
+
+        final float indentation = symbolWidth + LIST_SYMBOL_GAP;
+        for (Element element : list.getItems()) {
+            if (element instanceof ListItem item) {
+                item.setIndentationLeft(indentation);
+            } else if (element instanceof com.lowagie.text.List nested) {
+                alignListItems(nested);
+            }
+        }
+    }
+
+    /**
+     * Styles of the HTML tags, similar to the Bootstrap defaults of the web page. Sizes are in pt, "leading" is a
+     * multiple of the font size and "before"/"after" are the spacings around paragraphs.
+     */
+    private StyleSheet createHtmlStyleSheet() {
+        StyleSheet styles = new StyleSheet();
+        styles.loadTagStyle("body", "size", "10.5pt");
+        styles.loadTagStyle("body", "leading", "0,1.35");
+        styles.loadTagStyle("body", "color", "#212529");
+        styles.loadTagStyle("body", "after", "6");
+
+        loadHeadingStyle(styles, "h1", "16pt", 14);
+        loadHeadingStyle(styles, "h2", "13pt", 12);
+        loadHeadingStyle(styles, "h3", "11.5pt", 10);
+        loadHeadingStyle(styles, "h4", "10.5pt", 8);
+
+        styles.loadTagStyle("li", "after", "3");
+        return styles;
+    }
+
+    private void loadHeadingStyle(StyleSheet styles, String tag, String size, float spacingBefore) {
+        styles.loadTagStyle(tag, "size", size);
+        styles.loadTagStyle(tag, "b", "");
+        styles.loadTagStyle(tag, "leading", "0,1.2");
+        styles.loadTagStyle(tag, "before", String.valueOf(spacingBefore));
+        styles.loadTagStyle(tag, "after", "4");
     }
 
     private byte[] createPdf(PdfPageEvent pageEvent, DocumentCallback documentCallback) {
@@ -146,19 +217,19 @@ public class PdfExportService {
         return legend;
     }
 
-    private Paragraph createSubtitleParagraph(PdfTableData pdfTableData) {
+    private Paragraph createSubtitleParagraph(String subtitleText, Locale locale) {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-            .withLocale(pdfTableData.locale());
+            .withLocale(locale);
         String dateTime = ZonedDateTime.now().format(formatter);
-        String text = StringUtils.isBlank(pdfTableData.subtitle()) ? dateTime : pdfTableData.subtitle() + " · " + dateTime;
+        String text = StringUtils.isBlank(subtitleText) ? dateTime : subtitleText + " · " + dateTime;
 
         Paragraph subtitle = new Paragraph(text, createFont(TABLE_FONT_SIZE, Font.NORMAL, SECONDARY_TEXT));
         subtitle.setSpacingAfter(12);
         return subtitle;
     }
 
-    private Paragraph createHeadline(PdfTableData pdfTableData) {
-        Paragraph headline = new Paragraph(pdfTableData.title(), createFont(18, Font.BOLD, Color.BLACK));
+    private Paragraph createHeadline(String title) {
+        Paragraph headline = new Paragraph(title, createFont(18, Font.BOLD, Color.BLACK));
         headline.setSpacingAfter(4);
         return headline;
     }
@@ -179,14 +250,17 @@ public class PdfExportService {
 
         private static final float TOTAL_WIDTH = 24;
 
-        private final PdfTableData pdfTableData;
+        private final String title;
+
+        private final Locale locale;
 
         private final Font font = createFont(FOOTER_FONT_SIZE, Font.NORMAL, SECONDARY_TEXT);
 
         private PdfTemplate totalPages;
 
-        private PageFooter(PdfTableData pdfTableData) {
-            this.pdfTableData = pdfTableData;
+        private PageFooter(String title, Locale locale) {
+            this.title = title;
+            this.locale = locale;
         }
 
         @Override
@@ -208,9 +282,9 @@ public class PdfExportService {
             canvas.stroke();
             canvas.restoreState();
 
-            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(pdfTableData.title(), font), document.left(), textY, 0);
+            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(title, font), document.left(), textY, 0);
 
-            String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.locale());
+            String pageLabel = messageSourceUtil.getMessageFor("page", locale);
             String pageText = pageLabel + " " + writer.getPageNumber() + " /";
             float totalX = document.right() - TOTAL_WIDTH;
             ColumnText.showTextAligned(canvas, Element.ALIGN_RIGHT, new Phrase(pageText, font), totalX, textY, 0);
