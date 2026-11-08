@@ -59,7 +59,7 @@
 							<div class="flex-grow-1 min-w-0">
 								<div class="text-truncate">
 									<span th:text="${ranking.userName}" th:classappend="${ranking.userName == currentUser} ? 'fw-bold'"></span>
-									<span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-toggle="tooltip"
+									<span th:if="${ranking.topTipperOfToday}" class="fas fa-grin-stars text-primary" aria-hidden="true" data-bs-toggle="tooltip"
 										  data-bs-placement="top" th:title="#{ranking.topTipperOfToday.tooltip}"></span>
 								</div>
 								<div class="ranking-details small text-body-secondary d-lg-none"

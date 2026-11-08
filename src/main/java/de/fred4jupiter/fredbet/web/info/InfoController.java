@@ -118,7 +118,7 @@ public class InfoController {
 
     private String prepareForImages(String content) {
         if (StringUtils.isNotBlank(content) && content.contains("<img ")) {
-            return Strings.CS.replace(content, "<img ", "<img class=\"img-responsive\" ");
+            return Strings.CS.replace(content, "<img ", "<img class=\"img-fluid\" ");
         }
         return content;
     }

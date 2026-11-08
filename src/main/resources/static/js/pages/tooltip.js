@@ -1,3 +1,4 @@
-$(function() {
-	$('[data-toggle="tooltip"]').tooltip()
-})
+"use strict";
+$(function () {
+	$('[data-bs-toggle="tooltip"]').tooltip();
+});

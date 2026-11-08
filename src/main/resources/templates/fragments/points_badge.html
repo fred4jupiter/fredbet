@@ -5,6 +5,6 @@
     <span th:fragment="points_badge(badge)" class="badge rounded-pill big-badge points-badge" th:classappend="${badge.cssClass()}"
           th:text="${badge.text()}"
           th:title="#{${badge.msgKey()}} + (${badge.jokerHint()} ? ' (' + #{matches.list.points.joker} + ')' : '')"
-          data-toggle="tooltip" data-bs-placement="top"></span>
+          data-bs-toggle="tooltip" data-bs-placement="top"></span>
 </body>
 </html>

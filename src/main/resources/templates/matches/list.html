@@ -33,9 +33,9 @@
 						<div class="card-body d-flex flex-nowrap align-items-center justify-content-center gap-2">
 							<div class="score-group">
 								<a th:if="${!matchCommand.match.isBettable()}" th:href="@{'/bet/others/match/' + ${matchCommand.match.id} + '?redirectViewName=' + ${redirectViewName}}">
-									<span class="fas fa-thumbs-up fa-lg" th:title="#{matches.list.betted}" data-toggle="tooltip" data-bs-placement="top"></span>
+									<span class="fas fa-thumbs-up fa-lg" th:title="#{matches.list.betted}" data-bs-toggle="tooltip" data-bs-placement="top"></span>
 								</a>
-								<span th:if="${matchCommand.match.isBettable()}" class="fas fa-thumbs-up fa-lg" th:title="#{matches.list.betted}" data-toggle="tooltip" data-bs-placement="top"></span>
+								<span th:if="${matchCommand.match.isBettable()}" class="fas fa-thumbs-up fa-lg" th:title="#{matches.list.betted}" data-bs-toggle="tooltip" data-bs-placement="top"></span>
 								<span class="badge rounded-pill bg-success big-badge" th:classappend="${matchCommand.getUserBetGoalsTeamOneCssClasses()}"
 								      th:text="${matchCommand.bet?.goalsTeamOne != null ? matchCommand.bet?.goalsTeamOne : '?'}"></span>
 								<span>:</span>
@@ -43,7 +43,7 @@
 								      th:text="${matchCommand.bet?.goalsTeamTwo != null ? matchCommand.bet?.goalsTeamTwo : '?'}"></span>
 							</div>
 							<div class="score-group">
-                                <span class="fas fa-trophy fa-lg" th:title="#{matches.list.result}" data-toggle="tooltip" data-bs-placement="top"></span>
+                                <span class="fas fa-trophy fa-lg" th:title="#{matches.list.result}" data-bs-toggle="tooltip" data-bs-placement="top"></span>
                                 <span class="badge rounded-pill bg-info big-badge" th:classappend="${matchCommand.getTeamResultOneCssClasses()}"
 								      th:text="${matchCommand.match.goalsTeamOne != null ? matchCommand.match.goalsTeamOne : '?'}"></span>
 								<span>:</span>

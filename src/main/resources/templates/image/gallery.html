@@ -21,7 +21,7 @@
 							<span class="fw-bold" th:text="${galleryGroup}"></span><br/>
 							<a th:each="imageCommand : ${groupedImageCommands.get(galleryGroup)}" th:href="@{'/gallery/show/' + ${imageCommand.imageKey}}"
 										th:title="${imageCommand.description}"><img th:src="@{'/gallery/showthumb/' + ${imageCommand.imageKey}}" th:alt="${imageCommand.imageKey}"
-                                     class="rounded img-responsive mt-2 me-2 mb-2"/></a>
+                                     class="rounded img-fluid mt-2 me-2 mb-2"/></a>
 						</div>
 					</div>
 				</div>
