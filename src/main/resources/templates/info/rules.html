@@ -7,23 +7,22 @@
 <body>
 	<div layout:fragment="content">
 
-		<h1 th:text="#{rules.title}"></h1>
+		<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+			<h1 class="mb-0" th:text="#{rules.title}"></h1>
+			<div class="d-flex flex-wrap gap-2">
+				<a th:if="${showPdfExportButton}" th:href="@{/info/pdf(type='rules')}" class="btn btn-outline-secondary" role="button" th:title="#{pdf.export.button}">
+					<i class="fas fa-file-pdf" aria-hidden="true"></i> <span th:text="#{pdf.export.button}"></span>
+				</a>
+				<a sec:authorize="hasAuthority('PERM_EDIT_INFOS_RULES')" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button">
+					<i class="fas fa-edit" aria-hidden="true"></i> <span th:text="#{info.rules.edit.button}"></span>
+				</a>
+			</div>
+		</div>
 		<div class="row">
-			<div class="col-12 col-sm-12 col-md-12">
+			<div class="col-12">
 				<div th:remove="tag" th:utext="${textContent}"></div>
 			</div>
 		</div>
-        <div class="row">
-            <div sec:authorize="hasAuthority('PERM_EDIT_INFOS_RULES')" class="col-auto mb-3">
-                <a href="#" th:href="@{/info/editinfo/rules}" class="btn btn-primary" role="button" th:text="#{info.rules.edit.button}"></a>
-            </div>
-            <div class="col-auto mb-3" th:if="${showPdfExportButton}">
-                <a class="btn btn-info" role="button" th:href="@{/info/pdf(type='rules')}">
-                    <i class="fas fa-file-pdf"></i>
-                    <span th:text="#{pdf.export.button}"></span>
-                </a>
-            </div>
-        </div>
 	</div>
 </body>
 </html>
