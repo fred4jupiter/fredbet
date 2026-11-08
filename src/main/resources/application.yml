@@ -82,10 +82,6 @@ fredbet:
       base-url: "https://api.football-data.org/v4"
       crests-base-url: "https://crests.football-data.org"
       scheduler-interval-minutes: 10
-  excel-templates:
-    template-files:
-      - "ImportTemplateWorldCup.xlsx"
-      - "ImportTemplateClubWorldCup.xlsx"
   authorization:
     user-groups:
       - groupName: ROLE_USER

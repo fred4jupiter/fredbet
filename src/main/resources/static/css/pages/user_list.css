@@ -18,7 +18,7 @@
     background-color: var(--bs-tertiary-bg);
 }
 
-/* the profile image opens the lightbox, so it is placed above the stretched link of the card */
+/* the profile image opens the image viewer, so it is placed above the stretched link of the card */
 .user-avatar-link {
     position: relative;
     z-index: 2;

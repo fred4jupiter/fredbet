@@ -3,48 +3,27 @@
       layout:decorate="~{_layout}">
 <head>
     <title th:text="#{pointcourse.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/pages/pointcourse.css}" />
 </head>
 <body>
 <div layout:fragment="content">
     <h1 th:text="#{pointcourse.title}"></h1>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <p th:text="#{pointcourse.subtitle}"></p>
-        </div>
-        <div th:if="${chartData}" class="col-12" style="height: 430px;">
-            <canvas id="myChart"></canvas>
+    <p class="text-body-secondary" th:text="#{pointcourse.subtitle}"></p>
+
+    <div class="card" th:if="${chartJson}">
+        <div class="card-body">
+            <div class="pointcourse-chart">
+                <canvas id="pointCourseChart" th:data-chart="${chartJson}"></canvas>
+            </div>
         </div>
     </div>
 </div>
 <th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{/js/Chart.bundle.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/chartjs-plugin-colorschemes.min.js}"></script>
-    <script th:inline="javascript">
-        // Ensure canvas exists before creating the chart (page may render without chartData)
-        var canvas = document.getElementById('myChart');
-        if (canvas) {
-            var ctx = canvas.getContext('2d');
-            // Render Thymeleaf model attribute as JS literal (Map/List -> JS object/array).
-            // If chartData is missing or not a JS-literal, the fallback is an empty object.
-            var chartData = /*[[${chartData}]]*/ {};
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: chartData,
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'bottom'
-                    },
-                    plugins: {
-                        colorschemes: {
-                            scheme: 'brewer.Paired7'
-                        }
-                    },
-                    maintainAspectRatio: false
-                }
-            });
-        }
-    </script>
+    <th:block th:if="${chartJson}">
+        <script type="text/javascript" th:src="@{/js/Chart.bundle.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/chartjs-plugin-colorschemes.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/pages/pointcourse.js}"></script>
+    </th:block>
 </th:block>
 </body>
 </html>

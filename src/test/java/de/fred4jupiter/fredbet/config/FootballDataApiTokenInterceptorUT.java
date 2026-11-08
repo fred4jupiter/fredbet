@@ -81,7 +81,7 @@ public class FootballDataApiTokenInterceptorUT {
 
     private FredbetProperties fredbetProperties(String apiToken) {
         FootballDataProperties footballDataProperties = new FootballDataProperties("base", 1, apiToken, "crest");
-        return new FredbetProperties("en", 1, 2, 3, "admin", "pw", null, null, new IntegrationProperties(footballDataProperties));
+        return new FredbetProperties("en", 1, 2, 3, "admin", "pw", null, new IntegrationProperties(footballDataProperties));
     }
 }
 

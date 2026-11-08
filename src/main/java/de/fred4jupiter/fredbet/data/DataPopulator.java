@@ -205,14 +205,6 @@ public class DataPopulator {
         });
     }
 
-
-    // TODO: remove this method
-    @Transactional
-    public void deleteAllBetsAndMatches() {
-        bettingService.deleteAllBets();
-        matchService.deleteAllMatches();
-    }
-
     private Boolean nextRandomBoolean() {
         return this.faker.random().nextBoolean();
     }

@@ -4,7 +4,6 @@ import de.fred4jupiter.fredbet.data.DataPopulator;
 import de.fred4jupiter.fredbet.data.DataService;
 import de.fred4jupiter.fredbet.data.DemoDataCreation;
 import de.fred4jupiter.fredbet.data.GroupSelection;
-import de.fred4jupiter.fredbet.excel.ExcelReadingException;
 import de.fred4jupiter.fredbet.integration.FootballDataTestingService;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.user.UserService;
@@ -167,7 +166,7 @@ public class AdminController {
 
             footballDataTestingService.syncDataFromJson(jsonFile.getBytes());
             webMessageUtil.addInfoMsg(redirect, "footballdata.import.successful");
-        } catch (IOException | ExcelReadingException e) {
+        } catch (IOException e) {
             LOG.error(e.getMessage(), e);
             webMessageUtil.addErrorMsg(redirect, "footballdata.upload.msg.failed", e.getMessage());
         }

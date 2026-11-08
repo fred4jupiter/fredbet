@@ -1,0 +1,5 @@
+/* Chart.js needs a positioned parent with an explicit height when maintainAspectRatio is false */
+.pointcourse-chart {
+    position: relative;
+    height: clamp(300px, 60vh, 600px);
+}

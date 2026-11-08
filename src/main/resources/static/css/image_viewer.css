@@ -1,0 +1,28 @@
+/* styles for the PhotoSwipe based image viewer, see js/image_viewer.js */
+
+/* link while its image is loaded before the viewer opens */
+.image-viewer-trigger-loading img {
+    opacity: 0.5;
+    cursor: progress;
+}
+
+/* slide shown until the size of its image is known */
+.image-viewer-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.pswp .image-viewer-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    max-width: calc(100% - 2rem);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+}

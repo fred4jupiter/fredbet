@@ -81,19 +81,14 @@ public class InfoController {
             return ResponseEntity.notFound().build();
         }
 
-        final String finalContent = createPdfContent(infoType, content);
-        byte[] fileContent = this.pdfExportService.createPdfFromHtml(finalContent);
+        final String title = messageSourceUtil.getMessageFor(infoType.getMsgKey());
+        byte[] fileContent = this.pdfExportService.createPdfFromHtml(title, content, LocaleContextHolder.getLocale());
         if (fileContent == null) {
             return ResponseEntity.notFound().build();
         }
 
         final String fileName = createFileNameFor(infoType);
         return ResponseEntityUtil.createResponseEntity(fileName, fileContent, CONTENT_TYPE_PDF);
-    }
-
-    private String createPdfContent(InfoType infoType, String content) {
-        String title = messageSourceUtil.getMessageFor(infoType.getMsgKey());
-        return "<h1>%s</h1>".formatted(title) + content;
     }
 
     private String createFileNameFor(InfoType infoType) {
@@ -118,7 +113,7 @@ public class InfoController {
 
     private String prepareForImages(String content) {
         if (StringUtils.isNotBlank(content) && content.contains("<img ")) {
-            return Strings.CS.replace(content, "<img ", "<img class=\"img-responsive\" ");
+            return Strings.CS.replace(content, "<img ", "<img class=\"img-fluid\" ");
         }
         return content;
     }

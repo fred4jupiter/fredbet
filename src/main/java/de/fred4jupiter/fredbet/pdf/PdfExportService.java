@@ -4,6 +4,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.html.simpleparser.HTMLWorker;
+import com.lowagie.text.html.simpleparser.StyleSheet;
 import com.lowagie.text.pdf.*;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 @Service
@@ -32,12 +35,17 @@ public class PdfExportService {
     private static final float MARGIN_BOTTOM = 54;
 
     private static final float TABLE_FONT_SIZE = 10;
+    private static final float SECTION_HEADING_FONT_SIZE = 11;
     private static final float FOOTER_FONT_SIZE = 8;
 
     private static final Color HEADER_BACKGROUND = new Color(52, 58, 64);
     private static final Color STRIPE_BACKGROUND = new Color(245, 246, 247);
     private static final Color BORDER_COLOR = new Color(222, 226, 230);
     private static final Color SECONDARY_TEXT = new Color(108, 117, 125);
+
+    // left indentation of the bullets/numbers of HTML lists and the minimal gap between bullet/number and text
+    private static final float LIST_INDENTATION = 12;
+    private static final float LIST_SYMBOL_GAP = 5;
 
     private final MessageSourceUtil messageSourceUtil;
 
@@ -49,21 +57,140 @@ public class PdfExportService {
     }
 
     public <T> byte[] createPdfFileFrom(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
-        return createPdf(new PageFooter(pdfTableData), document -> {
-            document.add(createHeadline(pdfTableData));
-            document.add(createSubtitleParagraph(pdfTableData));
-            document.add(createTable(data, rowCallback, pdfTableData));
+        return createPdf(new PageFooter(pdfTableData.title(), pdfTableData.locale()), document -> {
+            document.add(createHeadline(pdfTableData.title()));
+            document.add(createSubtitleParagraph(pdfTableData.subtitle(), pdfTableData.locale()));
+            document.add(createTable(pdfTableData, createRows(data, rowCallback), null));
             if (!pdfTableData.legendEntries().isEmpty()) {
-                document.add(createLegend(pdfTableData));
+                document.add(createLegend(pdfTableData.legendEntries()));
             }
         });
     }
 
-    public byte[] createPdfFromHtml(String html) {
-        return createPdf(null, document -> {
-            HTMLWorker htmlWorker = new HTMLWorker(document);
-            htmlWorker.parse(new StringReader(html));
+    /**
+     * Creates a section for {@link #createPdfWithSections}: a table with its own heading. The title of the given table
+     * data is used as the heading and the subtitle is shown next to it. The legend entries of the table data are ignored.
+     */
+    public <T> PdfSection createSection(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
+        return new PdfSection(pdfTableData, createRows(data, rowCallback));
+    }
+
+    /**
+     * Creates a PDF with several tables, each with its own heading. The heading and the column headers are repeated when
+     * a table continues on the next page, and small tables are not split over two pages.
+     *
+     * @param subtitle optional line below the title (may be null)
+     * @param legend   explanations of the cell colors, shown at the end of the document
+     */
+    public byte[] createPdfWithSections(String title, String subtitle, Locale locale, List<PdfSection> sections,
+                                        List<PdfTableData.LegendEntry> legend) {
+        return createPdf(new PageFooter(title, locale), document -> {
+            document.add(createHeadline(title));
+            document.add(createSubtitleParagraph(subtitle, locale));
+            for (PdfSection section : sections) {
+                PdfPTable table = createTable(section.tableData(), section.rows(), createSectionHeadingCell(section.tableData()));
+                table.setKeepTogether(true);
+                document.add(table);
+            }
+            if (!legend.isEmpty()) {
+                document.add(createLegend(legend));
+            }
         });
+    }
+
+    private <T> List<RowContentAdder> createRows(List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
+        return data.stream().map(entry -> {
+            RowContentAdder rowContentAdder = new RowContentAdder();
+            rowCallback.accept(rowContentAdder, entry);
+            return rowContentAdder;
+        }).toList();
+    }
+
+    private PdfPCell createSectionHeadingCell(PdfTableData pdfTableData) {
+        Phrase phrase = new Phrase();
+        phrase.add(new Chunk(pdfTableData.title(), createFont(SECTION_HEADING_FONT_SIZE, Font.BOLD, Color.BLACK)));
+        if (StringUtils.isNotBlank(pdfTableData.subtitle())) {
+            phrase.add(new Chunk("   " + pdfTableData.subtitle(), createFont(FOOTER_FONT_SIZE + 1, Font.NORMAL, SECONDARY_TEXT)));
+        }
+
+        PdfPCell cell = new PdfPCell(phrase);
+        cell.setColspan(pdfTableData.headerColumns().size());
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setPaddingTop(14);
+        cell.setPaddingBottom(5);
+        cell.setPaddingLeft(0);
+        return cell;
+    }
+
+    /**
+     * Creates a PDF from simple HTML (e.g. edited with the WYSIWYG editor) with the same headline and page footer as the
+     * table exports.
+     */
+    public byte[] createPdfFromHtml(String title, String html, Locale locale) {
+        return createPdf(new PageFooter(title, locale), document -> {
+            document.add(createHeadline(title));
+            document.add(createSubtitleParagraph(null, locale));
+
+            List<Element> elements = HTMLWorker.parseToList(new StringReader(html), createHtmlStyleSheet(),
+                Map.of("font_factory", fontCreator.createFontProvider()));
+            for (Element element : elements) {
+                if (element instanceof com.lowagie.text.List list) {
+                    list.setIndentationLeft(list.getIndentationLeft() + LIST_INDENTATION);
+                    alignListItems(list);
+                }
+                document.add(element);
+            }
+        });
+    }
+
+    /**
+     * The HTML parser indents the list item text by the exact width of the bullet/number, so the text sticks to it and
+     * the text of "9." and "10." is not aligned. This uses the same hanging indentation for all items of a list.
+     */
+    private void alignListItems(com.lowagie.text.List list) {
+        float symbolWidth = 0;
+        for (Element element : list.getItems()) {
+            if (element instanceof ListItem item) {
+                symbolWidth = Math.max(symbolWidth, item.getListSymbol().getWidthPoint());
+            }
+        }
+
+        final float indentation = symbolWidth + LIST_SYMBOL_GAP;
+        for (Element element : list.getItems()) {
+            if (element instanceof ListItem item) {
+                item.setIndentationLeft(indentation);
+            } else if (element instanceof com.lowagie.text.List nested) {
+                alignListItems(nested);
+            }
+        }
+    }
+
+    /**
+     * Styles of the HTML tags, similar to the Bootstrap defaults of the web page. Sizes are in pt, "leading" is a
+     * multiple of the font size and "before"/"after" are the spacings around paragraphs.
+     */
+    private StyleSheet createHtmlStyleSheet() {
+        StyleSheet styles = new StyleSheet();
+        styles.loadTagStyle("body", "size", "10.5pt");
+        styles.loadTagStyle("body", "leading", "0,1.35");
+        styles.loadTagStyle("body", "color", "#212529");
+        styles.loadTagStyle("body", "after", "6");
+
+        loadHeadingStyle(styles, "h1", "16pt", 14);
+        loadHeadingStyle(styles, "h2", "13pt", 12);
+        loadHeadingStyle(styles, "h3", "11.5pt", 10);
+        loadHeadingStyle(styles, "h4", "10.5pt", 8);
+
+        styles.loadTagStyle("li", "after", "3");
+        return styles;
+    }
+
+    private void loadHeadingStyle(StyleSheet styles, String tag, String size, float spacingBefore) {
+        styles.loadTagStyle(tag, "size", size);
+        styles.loadTagStyle(tag, "b", "");
+        styles.loadTagStyle(tag, "leading", "0,1.2");
+        styles.loadTagStyle(tag, "before", String.valueOf(spacingBefore));
+        styles.loadTagStyle(tag, "after", "4");
     }
 
     private byte[] createPdf(PdfPageEvent pageEvent, DocumentCallback documentCallback) {
@@ -84,11 +211,17 @@ public class PdfExportService {
         }
     }
 
-    private <T> PdfPTable createTable(List<T> data, BiConsumer<RowContentAdder, T> rowCallback, PdfTableData pdfTableData) {
+    /**
+     * @param headingCell optional heading above the column headers (may be null), repeated together with them on every page
+     */
+    private PdfPTable createTable(PdfTableData pdfTableData, List<RowContentAdder> rows, PdfPCell headingCell) {
         PdfPTable table = new PdfPTable(pdfTableData.columnWidths());
         table.setWidthPercentage(100);
-        // the header row is repeated on every page
-        table.setHeaderRows(1);
+        if (headingCell != null) {
+            table.addCell(headingCell);
+        }
+        // the header rows are repeated on every page
+        table.setHeaderRows(headingCell != null ? 2 : 1);
 
         final Font headerFont = createFont(TABLE_FONT_SIZE, Font.BOLD, Color.WHITE);
         final List<String> headerColumns = pdfTableData.headerColumns();
@@ -99,9 +232,8 @@ public class PdfExportService {
         }
 
         final Font font = createFont(TABLE_FONT_SIZE, Font.NORMAL, Color.BLACK);
-        for (int row = 0; row < data.size(); row++) {
-            RowContentAdder rowContentAdder = new RowContentAdder();
-            rowCallback.accept(rowContentAdder, data.get(row));
+        for (int row = 0; row < rows.size(); row++) {
+            RowContentAdder rowContentAdder = rows.get(row);
 
             Color rowBackground = rowContentAdder.getRowBackground() != null ? rowContentAdder.getRowBackground()
                 : (row % 2 == 1 ? STRIPE_BACKGROUND : null);
@@ -133,11 +265,11 @@ public class PdfExportService {
         return cell;
     }
 
-    private Paragraph createLegend(PdfTableData pdfTableData) {
+    private Paragraph createLegend(List<PdfTableData.LegendEntry> legendEntries) {
         Paragraph legend = new Paragraph();
         legend.setSpacingBefore(8);
         final Font font = createFont(FOOTER_FONT_SIZE + 1, Font.NORMAL, SECONDARY_TEXT);
-        for (PdfTableData.LegendEntry entry : pdfTableData.legendEntries()) {
+        for (PdfTableData.LegendEntry entry : legendEntries) {
             Chunk colorBox = new Chunk("    ", font);
             colorBox.setBackground(entry.color(), 0, 1, 0, 1);
             legend.add(colorBox);
@@ -146,19 +278,19 @@ public class PdfExportService {
         return legend;
     }
 
-    private Paragraph createSubtitleParagraph(PdfTableData pdfTableData) {
+    private Paragraph createSubtitleParagraph(String subtitleText, Locale locale) {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-            .withLocale(pdfTableData.locale());
+            .withLocale(locale);
         String dateTime = ZonedDateTime.now().format(formatter);
-        String text = StringUtils.isBlank(pdfTableData.subtitle()) ? dateTime : pdfTableData.subtitle() + " · " + dateTime;
+        String text = StringUtils.isBlank(subtitleText) ? dateTime : subtitleText + " · " + dateTime;
 
         Paragraph subtitle = new Paragraph(text, createFont(TABLE_FONT_SIZE, Font.NORMAL, SECONDARY_TEXT));
         subtitle.setSpacingAfter(12);
         return subtitle;
     }
 
-    private Paragraph createHeadline(PdfTableData pdfTableData) {
-        Paragraph headline = new Paragraph(pdfTableData.title(), createFont(18, Font.BOLD, Color.BLACK));
+    private Paragraph createHeadline(String title) {
+        Paragraph headline = new Paragraph(title, createFont(18, Font.BOLD, Color.BLACK));
         headline.setSpacingAfter(4);
         return headline;
     }
@@ -179,14 +311,17 @@ public class PdfExportService {
 
         private static final float TOTAL_WIDTH = 24;
 
-        private final PdfTableData pdfTableData;
+        private final String title;
+
+        private final Locale locale;
 
         private final Font font = createFont(FOOTER_FONT_SIZE, Font.NORMAL, SECONDARY_TEXT);
 
         private PdfTemplate totalPages;
 
-        private PageFooter(PdfTableData pdfTableData) {
-            this.pdfTableData = pdfTableData;
+        private PageFooter(String title, Locale locale) {
+            this.title = title;
+            this.locale = locale;
         }
 
         @Override
@@ -208,9 +343,9 @@ public class PdfExportService {
             canvas.stroke();
             canvas.restoreState();
 
-            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(pdfTableData.title(), font), document.left(), textY, 0);
+            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(title, font), document.left(), textY, 0);
 
-            String pageLabel = messageSourceUtil.getMessageFor("page", pdfTableData.locale());
+            String pageLabel = messageSourceUtil.getMessageFor("page", locale);
             String pageText = pageLabel + " " + writer.getPageNumber() + " /";
             float totalX = document.right() - TOTAL_WIDTH;
             ColumnText.showTextAligned(canvas, Element.ALIGN_RIGHT, new Phrase(pageText, font), totalX, textY, 0);

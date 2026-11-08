@@ -2,12 +2,16 @@ package de.fred4jupiter.fredbet.betting;
 
 import com.lowagie.text.Element;
 import de.fred4jupiter.fredbet.domain.entity.Bet;
+import de.fred4jupiter.fredbet.domain.entity.ExtraBet;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
 import de.fred4jupiter.fredbet.pdf.PdfExportService;
+import de.fred4jupiter.fredbet.pdf.PdfSection;
+import de.fred4jupiter.fredbet.pdf.PdfTableData;
 import de.fred4jupiter.fredbet.pdf.PdfTableDataBuilder;
 import de.fred4jupiter.fredbet.points.BetOutcome;
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +21,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Exports all matches with the bets of a user as PDF (DIN A4).
+ * Exports all matches with the bets of a user or of all users as PDF (DIN A4).
  */
 @Service
 @Transactional(readOnly = true)
@@ -42,12 +47,19 @@ public class BetsPdfExportService {
 
     private final MessageSourceUtil messageSourceUtil;
 
+    private final ExtraBettingService extraBettingService;
+
+    private final FredbetProperties fredbetProperties;
+
     BetsPdfExportService(MatchService matchService, BettingService bettingService, PdfExportService pdfExportService,
-                         MessageSourceUtil messageSourceUtil) {
+                         MessageSourceUtil messageSourceUtil, ExtraBettingService extraBettingService,
+                         FredbetProperties fredbetProperties) {
         this.matchService = matchService;
         this.bettingService = bettingService;
         this.pdfExportService = pdfExportService;
         this.messageSourceUtil = messageSourceUtil;
+        this.extraBettingService = extraBettingService;
+        this.fredbetProperties = fredbetProperties;
     }
 
     public byte[] exportBetsOfUser(String username, Locale locale) {
@@ -86,6 +98,127 @@ public class BetsPdfExportService {
             rowContentAdder.addCellContent(betText(match, bet, joker, locale));
             addPoints(rowContentAdder, match, bet);
         });
+    }
+
+    /**
+     * Exports an overview of the extra bets of all users, followed by all matches, each with the bets of all users. Users
+     * without a bet for a match are listed too. The admin user is left out, like in the Excel exports.
+     */
+    public byte[] exportBetsOfAllUsers(Locale locale) {
+        final List<Match> matches = matchService.findAllByOrderByKickOffDateAsc();
+        final List<Bet> bets = bettingService.findAll().stream()
+            .filter(bet -> bet.getMatch() != null && isNotAdmin(bet.getUserName()))
+            .toList();
+        final Map<String, ExtraBet> extraBetsByUser = extraBettingService.findAllExtraBets().stream()
+            .filter(extraBet -> isNotAdmin(extraBet.getUserName()))
+            .collect(Collectors.toMap(ExtraBet::getUserName, Function.identity(), (first, second) -> first));
+
+        final SortedSet<String> usernames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        bets.forEach(bet -> usernames.add(bet.getUserName()));
+        usernames.addAll(extraBetsByUser.keySet());
+        final List<String> sortedUsernames = List.copyOf(usernames);
+
+        final List<PdfSection> sections = new ArrayList<>();
+        sections.add(createExtraBetsSection(sortedUsernames, extraBetsByUser, locale));
+
+        final Map<Long, Map<String, Bet>> betsByMatchAndUser = bets.stream().collect(Collectors.groupingBy(
+            bet -> bet.getMatch().getId(), Collectors.toMap(Bet::getUserName, Function.identity(), (first, second) -> first)));
+        final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE dd.MM.yyyy HH:mm", locale);
+        for (Match match : matches) {
+            final Map<String, Bet> betsByUser = betsByMatchAndUser.getOrDefault(match.getId(), Map.of());
+            sections.add(createMatchSection(match, sortedUsernames, betsByUser, dateFormatter, locale));
+        }
+
+        final String subtitle = "%s: %d · %s: %d".formatted(message("pdf.export.users", locale), sortedUsernames.size(),
+            message("pdf.export.matches", locale), matches.size());
+        final List<PdfTableData.LegendEntry> legend = OUTCOME_COLORS.entrySet().stream()
+            .map(entry -> new PdfTableData.LegendEntry(entry.getValue(), message(entry.getKey().getMsgKey(), locale)))
+            .toList();
+
+        return pdfExportService.createPdfWithSections("FredBet " + message("pdf.export.allBets.title", locale), subtitle,
+            locale, sections, legend);
+    }
+
+    private PdfSection createExtraBetsSection(List<String> usernames, Map<String, ExtraBet> extraBetsByUser, Locale locale) {
+        final String points = message("pdf.export.points", locale);
+        PdfTableData tableData = PdfTableDataBuilder.create()
+            .withTitle(message("pdf.export.extraBets", locale))
+            .withLocale(locale)
+            .withHeaderColumn(message("pdf.export.username", locale), Element.ALIGN_LEFT)
+            .withHeaderColumn(message("excel.export.extrabet.finalWinner", locale), Element.ALIGN_LEFT)
+            .withHeaderColumn(points)
+            .withHeaderColumn(message("excel.export.extrabet.semiFinalWinner", locale), Element.ALIGN_LEFT)
+            .withHeaderColumn(points)
+            .withHeaderColumn(message("excel.export.extrabet.thirdFinalWinner", locale), Element.ALIGN_LEFT)
+            .withHeaderColumn(points)
+            .withHeaderColumn(message("pdf.export.totalPoints", locale))
+            .withColumnWidths(new float[]{2.6f, 2.4f, 1.7f, 2.4f, 1.7f, 2.4f, 1.7f, 2.0f})
+            .build();
+
+        return pdfExportService.createSection(tableData, usernames, (rowContentAdder, username) -> {
+            final ExtraBet extraBet = extraBetsByUser.get(username);
+            rowContentAdder.addCellContent(username);
+            if (extraBet == null) {
+                for (int i = 0; i < 7; i++) {
+                    rowContentAdder.addCellContent(NO_VALUE);
+                }
+                return;
+            }
+
+            addExtraBet(rowContentAdder, extraBet.getFinalWinner(), extraBet.getPointsOne(), locale);
+            addExtraBet(rowContentAdder, extraBet.getSemiFinalWinner(), extraBet.getPointsTwo(), locale);
+            addExtraBet(rowContentAdder, extraBet.getThirdFinalWinner(), extraBet.getPointsThree(), locale);
+            final int total = Stream.of(extraBet.getPointsOne(), extraBet.getPointsTwo(), extraBet.getPointsThree())
+                .filter(Objects::nonNull).mapToInt(Integer::intValue).sum();
+            rowContentAdder.addCellContent(String.valueOf(total));
+        });
+    }
+
+    private void addExtraBet(PdfExportService.RowContentAdder rowContentAdder, Team team, Integer points, Locale locale) {
+        rowContentAdder.addCellContent(team != null ? team.getNameTranslated(messageSourceUtil, locale) : NO_VALUE);
+        if (points != null && points > 0) {
+            rowContentAdder.addCellContent("+" + points, OUTCOME_COLORS.get(BetOutcome.CORRECT_RESULT));
+        } else {
+            rowContentAdder.addCellContent(points != null ? String.valueOf(points) : NO_VALUE);
+        }
+    }
+
+    private PdfSection createMatchSection(Match match, List<String> usernames, Map<String, Bet> betsByUser,
+                                          DateTimeFormatter dateFormatter, Locale locale) {
+        final String teams = match.getTeamOne().getNameTranslated(messageSourceUtil, locale) + " – "
+            + match.getTeamTwo().getNameTranslated(messageSourceUtil, locale);
+        final String result = resultText(match, locale);
+        final String heading = NO_VALUE.equals(result) ? teams : teams + "   " + result;
+
+        final List<String> details = new ArrayList<>();
+        if (match.getKickOffDate() != null) {
+            details.add(match.getKickOffDate().format(dateFormatter));
+        }
+        if (match.getGroup() != null) {
+            details.add(message(match.getGroup().getTitleMsgKey(), locale));
+        }
+
+        PdfTableData tableData = PdfTableDataBuilder.create()
+            .withTitle(heading)
+            .withSubtitle(String.join(" · ", details))
+            .withLocale(locale)
+            .withHeaderColumn(message("pdf.export.username", locale), Element.ALIGN_LEFT)
+            .withHeaderColumn(message("pdf.export.bet", locale))
+            .withHeaderColumn(message("pdf.export.points", locale))
+            .withColumnWidths(new float[]{5.0f, 4.0f, 1.6f})
+            .build();
+
+        final String joker = message("excel.export.joker", locale);
+        return pdfExportService.createSection(tableData, usernames, (rowContentAdder, username) -> {
+            final Bet bet = betsByUser.get(username);
+            rowContentAdder.addCellContent(username);
+            rowContentAdder.addCellContent(betText(match, bet, joker, locale));
+            addPoints(rowContentAdder, match, bet);
+        });
+    }
+
+    private boolean isNotAdmin(String username) {
+        return !fredbetProperties.adminUsername().equals(username);
     }
 
     private String resultText(Match match, Locale locale) {

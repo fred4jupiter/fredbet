@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 	<head>
 		<title th:text="#{info.edit.title}"></title>
-		<link rel="stylesheet" th:href="@{/summernote-0.8.18/summernote-lite.min.css}" />
+		<link rel="stylesheet" th:href="@{/webjars/summernote/dist/summernote-lite.min.css}" />
 	</head>
 	<body>
 		<div layout:fragment="content">
             <form id="editInfoForm" th:action="@{/info/editinfo}" th:object="${infoCommand}" method="post" role="form">
 				<div class="row">
-					<div class="col-xs-12">
+					<div class="col-12">
 						<h1 th:text="#{${infoCommand.name} + '.title'}"></h1>
 						<input type="hidden" th:field="*{name}" class="form-control" />
 	                    <textarea id="summernote" name="textContent" required="required" th:text="${infoCommand.textContent}">
@@ -22,26 +22,7 @@
 		</div>
 	</body>
 	<th:block layout:fragment="scripts">
-		<script type="text/javascript" th:src="@{/summernote-0.8.18/summernote-lite.min.js}"></script>
-		<script>
-			$(document).ready(function() {
-				$('#summernote').summernote({
-					height: 300,
-					focus: true,
-					toolbar: [
-						['style', ['style']],
-						['font', ['bold', 'italic', 'underline', 'clear']],
-						['fontname', ['fontname']],
-						['color', ['color']],
-						['para', ['ul', 'ol', 'paragraph']],
-						['height', ['height']],
-						['table', ['table']],
-						['insert', ['link', 'picture', 'hr']],
-						['view', ['fullscreen', 'codeview']],
-						['help', ['help']]
-					]
-				});
-			});
-		</script>
+		<script type="text/javascript" th:src="@{/webjars/summernote/dist/summernote-lite.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/pages/edit_info.js}"></script>
 	</th:block>
 </html>
