@@ -17,7 +17,6 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - points statistic
 - display other users bets after match kickoff
 - ranking page
-- Microsoft Excel match import
 - Microsoft Excel bets, statistic export
 - language switcher (supported languages: englisch, german, polish, catalan, spanish, swedish)
 - ranking filter for adults and childs listing

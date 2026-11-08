@@ -31,7 +31,7 @@ public class ExtraBettingServiceUT {
     @Mock
     private RandomValueGenerator randomValueGenerator;
 
-    private final FredbetProperties fredbetProperties = new FredbetProperties("en", 1, 2, 3, "admin", "secret", null, null, new IntegrationProperties(null));
+    private final FredbetProperties fredbetProperties = new FredbetProperties("en", 1, 2, 3, "admin", "secret", null, new IntegrationProperties(null));
 
     @Test
     public void saveExtraBetDeletesExistingBetWhenNoSelectionsAreGiven() {
