@@ -35,6 +35,7 @@ public class PdfExportService {
     private static final float MARGIN_BOTTOM = 54;
 
     private static final float TABLE_FONT_SIZE = 10;
+    private static final float SECTION_HEADING_FONT_SIZE = 11;
     private static final float FOOTER_FONT_SIZE = 8;
 
     private static final Color HEADER_BACKGROUND = new Color(52, 58, 64);
@@ -59,11 +60,66 @@ public class PdfExportService {
         return createPdf(new PageFooter(pdfTableData.title(), pdfTableData.locale()), document -> {
             document.add(createHeadline(pdfTableData.title()));
             document.add(createSubtitleParagraph(pdfTableData.subtitle(), pdfTableData.locale()));
-            document.add(createTable(data, rowCallback, pdfTableData));
+            document.add(createTable(pdfTableData, createRows(data, rowCallback), null));
             if (!pdfTableData.legendEntries().isEmpty()) {
-                document.add(createLegend(pdfTableData));
+                document.add(createLegend(pdfTableData.legendEntries()));
             }
         });
+    }
+
+    /**
+     * Creates a section for {@link #createPdfWithSections}: a table with its own heading. The title of the given table
+     * data is used as the heading and the subtitle is shown next to it. The legend entries of the table data are ignored.
+     */
+    public <T> PdfSection createSection(PdfTableData pdfTableData, List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
+        return new PdfSection(pdfTableData, createRows(data, rowCallback));
+    }
+
+    /**
+     * Creates a PDF with several tables, each with its own heading. The heading and the column headers are repeated when
+     * a table continues on the next page, and small tables are not split over two pages.
+     *
+     * @param subtitle optional line below the title (may be null)
+     * @param legend   explanations of the cell colors, shown at the end of the document
+     */
+    public byte[] createPdfWithSections(String title, String subtitle, Locale locale, List<PdfSection> sections,
+                                        List<PdfTableData.LegendEntry> legend) {
+        return createPdf(new PageFooter(title, locale), document -> {
+            document.add(createHeadline(title));
+            document.add(createSubtitleParagraph(subtitle, locale));
+            for (PdfSection section : sections) {
+                PdfPTable table = createTable(section.tableData(), section.rows(), createSectionHeadingCell(section.tableData()));
+                table.setKeepTogether(true);
+                document.add(table);
+            }
+            if (!legend.isEmpty()) {
+                document.add(createLegend(legend));
+            }
+        });
+    }
+
+    private <T> List<RowContentAdder> createRows(List<T> data, BiConsumer<RowContentAdder, T> rowCallback) {
+        return data.stream().map(entry -> {
+            RowContentAdder rowContentAdder = new RowContentAdder();
+            rowCallback.accept(rowContentAdder, entry);
+            return rowContentAdder;
+        }).toList();
+    }
+
+    private PdfPCell createSectionHeadingCell(PdfTableData pdfTableData) {
+        Phrase phrase = new Phrase();
+        phrase.add(new Chunk(pdfTableData.title(), createFont(SECTION_HEADING_FONT_SIZE, Font.BOLD, Color.BLACK)));
+        if (StringUtils.isNotBlank(pdfTableData.subtitle())) {
+            phrase.add(new Chunk("   " + pdfTableData.subtitle(), createFont(FOOTER_FONT_SIZE + 1, Font.NORMAL, SECONDARY_TEXT)));
+        }
+
+        PdfPCell cell = new PdfPCell(phrase);
+        cell.setColspan(pdfTableData.headerColumns().size());
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setPaddingTop(14);
+        cell.setPaddingBottom(5);
+        cell.setPaddingLeft(0);
+        return cell;
     }
 
     /**
@@ -155,11 +211,17 @@ public class PdfExportService {
         }
     }
 
-    private <T> PdfPTable createTable(List<T> data, BiConsumer<RowContentAdder, T> rowCallback, PdfTableData pdfTableData) {
+    /**
+     * @param headingCell optional heading above the column headers (may be null), repeated together with them on every page
+     */
+    private PdfPTable createTable(PdfTableData pdfTableData, List<RowContentAdder> rows, PdfPCell headingCell) {
         PdfPTable table = new PdfPTable(pdfTableData.columnWidths());
         table.setWidthPercentage(100);
-        // the header row is repeated on every page
-        table.setHeaderRows(1);
+        if (headingCell != null) {
+            table.addCell(headingCell);
+        }
+        // the header rows are repeated on every page
+        table.setHeaderRows(headingCell != null ? 2 : 1);
 
         final Font headerFont = createFont(TABLE_FONT_SIZE, Font.BOLD, Color.WHITE);
         final List<String> headerColumns = pdfTableData.headerColumns();
@@ -170,9 +232,8 @@ public class PdfExportService {
         }
 
         final Font font = createFont(TABLE_FONT_SIZE, Font.NORMAL, Color.BLACK);
-        for (int row = 0; row < data.size(); row++) {
-            RowContentAdder rowContentAdder = new RowContentAdder();
-            rowCallback.accept(rowContentAdder, data.get(row));
+        for (int row = 0; row < rows.size(); row++) {
+            RowContentAdder rowContentAdder = rows.get(row);
 
             Color rowBackground = rowContentAdder.getRowBackground() != null ? rowContentAdder.getRowBackground()
                 : (row % 2 == 1 ? STRIPE_BACKGROUND : null);
@@ -204,11 +265,11 @@ public class PdfExportService {
         return cell;
     }
 
-    private Paragraph createLegend(PdfTableData pdfTableData) {
+    private Paragraph createLegend(List<PdfTableData.LegendEntry> legendEntries) {
         Paragraph legend = new Paragraph();
         legend.setSpacingBefore(8);
         final Font font = createFont(FOOTER_FONT_SIZE + 1, Font.NORMAL, SECONDARY_TEXT);
-        for (PdfTableData.LegendEntry entry : pdfTableData.legendEntries()) {
+        for (PdfTableData.LegendEntry entry : legendEntries) {
             Chunk colorBox = new Chunk("    ", font);
             colorBox.setBackground(entry.color(), 0, 1, 0, 1);
             legend.add(colorBox);
