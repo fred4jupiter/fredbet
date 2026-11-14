@@ -20,6 +20,11 @@ $(function() {
 	});
 
 	checkPenalty();
+
+	// Autofocus only on desktop: on touch devices it would pop up the keyboard
+	if (!window.matchMedia('(hover: none)').matches) {
+		$(GOAL_FIELDS.one).first().trigger('focus');
+	}
 });
 
 function checkPenalty() {

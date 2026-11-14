@@ -18,13 +18,23 @@ Simple football betting application using [Spring Boot](https://projects.spring.
 - display other users bets after match kickoff
 - ranking page
 - Microsoft Excel bets, statistic export
-- language switcher (supported languages: englisch, german, polish, catalan, spanish, swedish)
+- multi-language support with language switcher. Supported languages:
+  - English
+  - German
+  - Dutch
+  - French
+  - Spanish
+  - Catalan
+  - Polish
+  - Czech
+  - Swedish
+  - Estonian
 - ranking filter for adults and childs listing
 - integrated testing capabilities: create demo users, matches, bets...
 - configurable runtime configuration
 - use a joker to double your points
 - self registration (can be disabled)
-- PDF export of user ranking 
+- PDF export of user ranking, match and bets results
 - group standings
 - change UI design themes
 - **NEW: Integration of [football-data.org](https://www.football-data.org) API for automatic match import and live score updates**

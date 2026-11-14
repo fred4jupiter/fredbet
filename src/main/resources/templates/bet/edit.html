@@ -20,13 +20,14 @@
 					<input type="hidden" th:field="*{jokerEditable}"  />
 
 					<div class="form-group mt-3">
-						<div class="match-head mb-3">
+						<div th:replace="~{fragments/match_head :: match_info(${betCommand.match})}"></div>
+						<div class="match-head mt-2 mb-3">
 							<div class="card">
 								<div class="card-body match-head-team">
 									<div th:replace="~{fragments/match_head :: match_head_team(${betCommand.match.teamOne})}"></div>
 									<div class="input-group goal-input-group mt-auto">
 										<button type="button" tabindex="-1" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="-1"><i class="fas fa-minus" aria-hidden="true"></i></button>
-										<input type="text" inputmode="numeric" th:field="*{goalsTeamOne}" autofocus="autofocus" class="form-control text-center fw-bold bg-success-subtle" th:errorclass="is-invalid"/>
+										<input type="text" inputmode="numeric" th:field="*{goalsTeamOne}" class="form-control text-center fw-bold bg-success-subtle" th:errorclass="is-invalid"/>
 										<button type="button" tabindex="-1" class="btn btn-outline-secondary goal-counter" data-team="one" data-step="1"><i class="fas fa-plus" aria-hidden="true"></i></button>
 									</div>
 									<div class="text-danger small" th:if="${#fields.hasErrors('goalsTeamOne')}" th:errors="*{goalsTeamOne}">goalsTeamOne error</div>

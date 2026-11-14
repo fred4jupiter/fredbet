@@ -53,7 +53,7 @@ public class LoginControllerIT {
         assertThat(result).hasStatusOk().hasViewName("login")
                 .model().containsEntry("loginLogo", "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(logo));
         assertThat(result).bodyText()
-                .contains("id=\"loginLogo\"", "login-visual-backdrop")
+                .contains("id=\"loginLogo\"", "class=\"login-logo\"")
                 .doesNotContain("login-visual-default");
     }
 
