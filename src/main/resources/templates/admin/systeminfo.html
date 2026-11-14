@@ -7,7 +7,7 @@
 	<body>
 		<div layout:fragment="content"
 			 th:with="sectionIcons=${ {'Build': 'fa-cube', 'Git': 'fa-code-branch', 'Configuration': 'fa-cogs', 'Runtime': 'fa-server'} },
-			 		  technicalValues=${ {'Commit ID', 'JDBC Driver Class', 'JDBC-URL', 'Image Location'} }">
+			 		  technicalValues=${ {'Commit ID', 'JDBC Driver Class', 'JDBC-URL'} }">
 			<h1 th:text="#{systeminfo.title}"></h1>
 			<!-- one card per section (build, git, configuration, runtime) with its values as key/value list -->
 			<div class="row row-cols-1 row-cols-lg-2 g-3 mt-1">
