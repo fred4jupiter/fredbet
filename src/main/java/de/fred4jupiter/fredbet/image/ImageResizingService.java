@@ -32,12 +32,12 @@ class ImageResizingService {
     public byte[] createThumbnail(byte[] imageBinary) {
         Integer thumbnailSize = fredbetProperties.thumbnailSize();
         if (thumbnailSize == 0) {
-            throw new IllegalArgumentException("Given thumbnailSize must be greather than 0!");
+            throw new IllegalArgumentException("Given thumbnailSize must be greater than 0!");
         }
         try (ByteArrayInputStream byteIn = new ByteArrayInputStream(imageBinary); ByteArrayOutputStream byteOut = new ByteArrayOutputStream()) {
             BufferedImage bufferedImage = ImageIO.read(byteIn);
             if (bufferedImage.getWidth() <= thumbnailSize && bufferedImage.getHeight() <= thumbnailSize) {
-                LOG.info("The original image does have the prefered thumbnailSize of {} or is smaller than that. Do not change image thumbnailSize. " +
+                LOG.info("The original image does have the preferred thumbnailSize of {} or is smaller than that. Do not change image thumbnailSize. " +
                          "image with: {}, image height: {}", thumbnailSize, bufferedImage.getWidth(), bufferedImage.getHeight());
                 return imageBinary;
             }
