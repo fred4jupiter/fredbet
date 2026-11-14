@@ -17,7 +17,8 @@
 					<input type="hidden" th:field="*{knockoutMatch}" />
 
                     <div class="form-group mt-3">
-						<div class="match-head mb-3">
+						<div th:replace="~{fragments/match_head :: match_info(${matchResultCommand.match})}"></div>
+						<div class="match-head mt-2 mb-3">
 							<div class="card">
 								<div class="card-body match-head-team">
 									<div th:replace="~{fragments/match_head :: match_head_team(${matchResultCommand.match.teamOne})}"></div>

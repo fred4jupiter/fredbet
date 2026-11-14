@@ -13,6 +13,25 @@
         </span>
 	</div>
 
+    <div th:fragment="match_info(match)" class="match-info d-flex flex-wrap column-gap-3 row-gap-1 small text-body-secondary">
+        <span class="text-nowrap">
+            <i class="fas fa-calendar-day" aria-hidden="true"></i>
+            <span th:text="${#temporals.format(match.kickOffDate, 'EEE dd. MMMM yyyy')}"></span>
+        </span>
+        <span class="text-nowrap">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span th:text="${#temporals.format(match.kickOffDate, 'HH:mm')}"></span>
+        </span>
+        <span class="text-nowrap" th:if="${match.group != null}">
+            <i class="fas fa-layer-group" aria-hidden="true"></i>
+            <span th:text="#{${match.group.titleMsgKey}}"></span>
+        </span>
+        <span class="text-nowrap" th:if="${!#strings.isEmpty(match.venue)}">
+            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+            <span th:text="${match.venue}"></span>
+        </span>
+    </div>
+
     <div th:fragment="match_head_team(team)" th:remove="tag">
         <img class="big-flag" th:src="@{/team/{teamId}.svg(teamId=${team.id})}" alt=""/>
         <span class="teamName" th:text="${team.getNameTranslated(@messageSourceUtil)}"></span>
