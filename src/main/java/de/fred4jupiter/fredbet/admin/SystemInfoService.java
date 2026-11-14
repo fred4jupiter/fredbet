@@ -47,7 +47,7 @@ public class SystemInfoService {
 
     private void addStaticProperties() {
         buildProperties.ifPresent(props -> {
-            add(SECTION_BUILD, "Version", props.getVersion());
+            add(SECTION_BUILD, "FredBet Version", props.getVersion());
             add(SECTION_BUILD, "Build Time", format(props.getTime()));
             add(SECTION_BUILD, "Java Version", props.get("build.java.version"));
         });
