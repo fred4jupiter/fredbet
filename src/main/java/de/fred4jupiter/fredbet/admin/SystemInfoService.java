@@ -62,7 +62,6 @@ public class SystemInfoService {
         add(SECTION_CONFIGURATION, "Active Profiles", String.join(", ", environment.getActiveProfiles()));
         addEnvProperty("JDBC Driver Class", "spring.datasource.driver-class-name");
         addEnvProperty("JDBC-URL", "spring.datasource.url");
-        addEnvProperty("Image Location", "fredbet.image-location");
         addEnvProperty("Image Size", "fredbet.image-size");
         addEnvProperty("Thumbnail Size", "fredbet.thumbnail-size");
     }
