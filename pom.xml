@@ -40,8 +40,8 @@
         <revision>0.0.1-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>25</java.version>
-        <buildtimestamp>${maven.build.timestamp}</buildtimestamp>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+        <!-- ISO-8601 (UTC) so that it can be used as build time in build-info.properties -->
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
     </properties>
 
     <dependencies>
@@ -307,6 +307,8 @@
                             <goal>build-info</goal>
                         </goals>
                         <configuration>
+                            <!-- use the real build time instead of project.build.outputTimestamp (reproducible builds) -->
+                            <time>${maven.build.timestamp}</time>
                             <additionalProperties>
                                 <encoding.source>UTF-8</encoding.source>
                                 <encoding.reporting>UTF-8</encoding.reporting>
