@@ -4,9 +4,12 @@ FROM ${JRE_BASE_IMAGE}
 
 LABEL maintainer="Michael Staehler"
 
-RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m appuser
+RUN groupadd --gid 10001 appuser \
+ && useradd --uid 10001 --gid appuser --create-home --shell /usr/sbin/nologin appuser
 
 WORKDIR /home/appuser
 
@@ -14,8 +17,9 @@ ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
-COPY --chown=appuser:appuser target/fredbet.jar fredbet.jar
+# owned by root, read-only for appuser; home dir stays writable (H2 file DB in ~/fredbetdb)
+COPY target/fredbet.jar /opt/fredbet/fredbet.jar
 
-USER appuser
+USER 10001:10001
 
-ENTRYPOINT ["java", "-jar", "fredbet.jar"]
+ENTRYPOINT ["java", "-jar", "/opt/fredbet/fredbet.jar"]
