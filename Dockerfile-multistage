@@ -12,9 +12,8 @@ FROM eclipse-temurin:25-jre-jammy
 
 LABEL maintainer="Michael Staehler"
 
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
- && apt-get clean \
+RUN apt-get update -qqy \
+ && DEBIAN_FRONTEND=noninteractive apt-get upgrade -qqy \
  && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid 10001 appuser \
