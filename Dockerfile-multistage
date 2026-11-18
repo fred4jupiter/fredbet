@@ -12,20 +12,23 @@ FROM eclipse-temurin:25-jre-jammy
 
 LABEL maintainer="Michael Staehler"
 
-RUN apt-get update && apt-get upgrade -y \
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /
+RUN groupadd --gid 10001 appuser \
+ && useradd --uid 10001 --gid appuser --create-home --shell /usr/sbin/nologin appuser
+
+WORKDIR /home/appuser
 
 ENV JAVA_TOOL_OPTIONS="-Duser.timezone=Europe/Berlin"
 
 EXPOSE 8080
 
-COPY --from=builder /build/target/fredbet.jar fredbet.jar
+# owned by root, read-only for appuser; home dir stays writable (H2 file DB in ~/fredbetdb)
+COPY --from=builder /build/target/fredbet.jar /opt/fredbet/fredbet.jar
 
-RUN useradd -m appuser
-USER appuser
+USER 10001:10001
 
-ENTRYPOINT ["java", "-jar", "fredbet.jar"]
-CMD ["exec"]
+ENTRYPOINT ["java", "-jar", "/opt/fredbet/fredbet.jar"]
