@@ -16,6 +16,7 @@ import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -81,7 +82,7 @@ public class FootballDataApiTokenInterceptorUT {
 
     private FredbetProperties fredbetProperties(String apiToken) {
         FootballDataProperties footballDataProperties = new FootballDataProperties("base", 1, apiToken, "crest");
-        return new FredbetProperties("en", 1, 2, 3, "admin", "pw", null, new IntegrationProperties(footballDataProperties));
+        return new FredbetProperties("en", 1, 2, 3, "admin", "pw", Duration.ofDays(30), null, new IntegrationProperties(footballDataProperties));
     }
 }
 

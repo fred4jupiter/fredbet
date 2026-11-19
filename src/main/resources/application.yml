@@ -77,6 +77,8 @@ fredbet:
   thumbnail-size: 100
   admin-username: "admin"
   admin-password: "admin"
+  # auto-login (remember-me): how long a user stays logged in after the last visit, e.g. 30d or 12h
+  remember-me-validity: 30d
   integration:
     football-data:
       base-url: "https://api.football-data.org/v4"

@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet.config;
 
+import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
@@ -26,8 +27,6 @@ import java.util.Optional;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 24 * 60 * 60; // 24 hours
-
     private final Optional<H2ConsoleProperties> h2ConsoleProperties;
 
     public SecurityConfig(Optional<H2ConsoleProperties> h2ConsoleProperties) {
@@ -35,7 +34,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository,
+                                           FredbetProperties fredbetProperties) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
                 // only the health endpoint is public, any other (later exposed) actuator endpoint needs admin rights
@@ -51,7 +51,9 @@ public class SecurityConfig {
                 .requestMatchers("/administration/**").hasAnyAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .anyRequest().authenticated()
             )
-            .rememberMe(remember -> remember.tokenRepository(persistentTokenRepository).tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS))
+            // auto-login: a long validity avoids the login page in the installed app (PWA) after the session has expired
+            .rememberMe(remember -> remember.tokenRepository(persistentTokenRepository)
+                .tokenValiditySeconds(rememberMeValiditySeconds(fredbetProperties)))
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/matches/upcoming")
@@ -70,6 +72,15 @@ public class SecurityConfig {
         }
 
         return http.build();
+    }
+
+    private static int rememberMeValiditySeconds(FredbetProperties fredbetProperties) {
+        long seconds = fredbetProperties.rememberMeValidity().toSeconds();
+        if (seconds <= 0 || seconds > Integer.MAX_VALUE) {
+            throw new IllegalStateException("fredbet.remember-me-validity must be positive and at most 68 years, but was: "
+                + fredbetProperties.rememberMeValidity());
+        }
+        return (int) seconds;
     }
 
     @Bean

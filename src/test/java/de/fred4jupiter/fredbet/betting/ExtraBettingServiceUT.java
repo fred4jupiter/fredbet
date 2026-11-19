@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.data.domain.Sort;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +32,7 @@ public class ExtraBettingServiceUT {
     @Mock
     private RandomValueGenerator randomValueGenerator;
 
-    private final FredbetProperties fredbetProperties = new FredbetProperties("en", 1, 2, 3, "admin", "secret", null, new IntegrationProperties(null));
+    private final FredbetProperties fredbetProperties = new FredbetProperties("en", 1, 2, 3, "admin", "secret", Duration.ofDays(30), null, new IntegrationProperties(null));
 
     @Test
     public void saveExtraBetDeletesExistingBetWhenNoSelectionsAreGiven() {
