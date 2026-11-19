@@ -11,10 +11,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
+import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @MockMvcIntegrationTest
 // info is not exposed by default; it stands in for any actuator endpoint that is exposed later
@@ -42,6 +44,17 @@ public class SecurityConfigIT {
         assertThat(mvc.get().uri(matcher.group()))
             .hasStatusOk()
             .headers().hasValue(HttpHeaders.CACHE_CONTROL, "max-age=31536000");
+    }
+
+    @Test
+    public void autoLoginCookieIsValidFor30DaysByDefault() {
+        MvcTestResult result = mvc.post().uri("/login").with(csrf())
+            .param("username", "admin").param("password", "admin").param("remember-me", "on")
+            .exchange();
+
+        assertThat(result).hasStatus3xxRedirection();
+        assertThat(result).cookies().containsCookie("remember-me")
+            .hasMaxAge("remember-me", Duration.ofDays(30));
     }
 
     @Test
