@@ -8,9 +8,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.CacheControl;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -30,6 +32,16 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/error").setViewName("error");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // The manifest and the service worker of the installable web app (PWA) are loaded by the browser
+        // under a fixed url without content hash. They must not get the long cache time of the other static
+        // resources, otherwise changes would not reach the installed apps.
+        registry.addResourceHandler("/manifest.json", "/sw.js")
+            .addResourceLocations("classpath:/static/")
+            .setCacheControl(CacheControl.noCache());
     }
 
     @Override

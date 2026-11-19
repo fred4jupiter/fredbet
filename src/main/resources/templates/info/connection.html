@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
+	<head>
+		<title th:text="#{connection.title}"></title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<h1 th:text="#{connection.title}"></h1>
+			<p class="text-body-secondary" th:text="#{connection.intro}"></p>
+
+			<!-- the values are filled in by connection_info.js, as only the browser knows the address it really uses -->
+			<div class="card mb-3" id="connectionInfo" th:data-context-root="@{/}"
+				 th:data-mode-app="#{connection.mode.app}" th:data-mode-browser="#{connection.mode.browser}"
+				 th:data-yes="#{connection.yes}" th:data-no="#{connection.no}">
+				<div class="card-body">
+					<dl class="row mb-0">
+						<dt class="col-sm-4" th:text="#{connection.baseUrl}"></dt>
+						<dd class="col-sm-8"><code id="connectionBaseUrl" class="text-break">-</code></dd>
+
+						<dt class="col-sm-4" th:text="#{connection.mode}"></dt>
+						<dd class="col-sm-8" id="connectionMode">-</dd>
+
+						<dt class="col-sm-4" th:text="#{connection.secure}"></dt>
+						<dd class="col-sm-8 mb-0" id="connectionSecure">-</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<th:block layout:fragment="scripts">
+			<script type="text/javascript" th:src="@{/js/pages/connection_info.js}" charset="UTF-8"></script>
+		</th:block>
+	</body>
+</html>
