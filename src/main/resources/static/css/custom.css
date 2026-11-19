@@ -122,3 +122,20 @@ img.crest-small {
     color: var(--bs-secondary-color);
     border: 1px dashed var(--bs-border-color);
 }
+
+/* hint to install FredBet as app (PWA), floating at the bottom of the screen */
+.pwa-install-hint {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    max-width: 540px;
+    margin: 0 auto;
+    z-index: 1050;
+}
+
+.pwa-install-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}

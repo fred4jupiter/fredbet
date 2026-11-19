@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAuthority(FredBetPermission.PERM_ADMINISTRATION)
                 .requestMatchers("/club-wm-icons*/**", "/fonts/**", "/login/**", "/logout", "/registration",
                     "/webjars/**", "/css/**", "/js/**").permitAll()
+                // the browser loads the files of the installable web app (PWA) without session, e.g. on the login page
+                .requestMatchers("/manifest.json", "/sw.js", "/pwa/**").permitAll()
                 // the error page must be reachable for anonymous users, otherwise any error is hidden behind an AccessDenied error
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/user/**").hasAnyAuthority(FredBetPermission.PERM_USER_ADMINISTRATION)

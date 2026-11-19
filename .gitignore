@@ -7,6 +7,8 @@
 target/
 release_version.txt
 
+.claude/settings.local.json
+
 .vscode/
 
 # IntelliJ IDEA
