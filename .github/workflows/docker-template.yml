@@ -1,0 +1,72 @@
+name: Docker Build and Push Template
+
+on:
+  workflow_call:
+    inputs:
+      tags:
+        description: "Image tags to push (e.g. 'latest' or '5.0.0'), one per line. Each tag is pushed to ghcr.io and, if enabled, to Docker Hub."
+        required: true
+        type: string
+      push_to_docker_hub:
+        description: "Also push the image to Docker Hub (needs the DOCKER_USERNAME and DOCKER_TOKEN secrets)"
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      DOCKER_USERNAME:
+        required: false
+      DOCKER_TOKEN:
+        required: false
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      DOCKER_IMAGE: fred4jupiter/fredbet
+      DOCKER_TARGET_PLATFORM: linux/arm64/v8,linux/amd64
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v6
+      - name: Download jar file
+        uses: actions/download-artifact@v8
+        with:
+          name: fredbet.jar
+          path: target
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Login to Docker Hub
+        if: ${{ inputs.push_to_docker_hub }}
+        uses: docker/login-action@v4
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push image
+        env:
+          TAGS: ${{ inputs.tags }}
+          PUSH_TO_DOCKER_HUB: ${{ inputs.push_to_docker_hub }}
+        run: |
+          tag_args=()
+          while IFS= read -r tag; do
+            [ -z "${tag}" ] && continue
+            tag_args+=(--tag "ghcr.io/${DOCKER_IMAGE}:${tag}")
+            if [ "${PUSH_TO_DOCKER_HUB}" = "true" ]; then
+              tag_args+=(--tag "docker.io/${DOCKER_IMAGE}:${tag}")
+            fi
+          done <<< "${TAGS}"
+          docker buildx build \
+            --platform "${DOCKER_TARGET_PLATFORM}" \
+            "${tag_args[@]}" \
+            --file ./Dockerfile \
+            --output type=image,push=true .

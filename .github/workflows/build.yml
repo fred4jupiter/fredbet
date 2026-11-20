@@ -9,9 +9,21 @@ on:
       - 'bugfix/*'
       - 'feature/*'
 
+# a newer push to the same branch cancels the outdated build
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   build:
     uses: ./.github/workflows/build-template.yml
+    permissions:
+      contents: read
+      actions: read
+      checks: write
     with:
       maven_command: 'mvn -B verify'
       upload_artifact: false

@@ -1,0 +1,16 @@
+# Categories for the automatically generated release notes (see publish-release-manual.yml).
+# Pull requests are grouped by their labels; unlabeled ones end up under "Other Changes".
+changelog:
+  categories:
+    - title: New Features
+      labels:
+        - enhancement
+    - title: Bug Fixes
+      labels:
+        - bug
+    - title: Dependency Updates
+      labels:
+        - dependencies
+    - title: Other Changes
+      labels:
+        - "*"

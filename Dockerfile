@@ -4,8 +4,8 @@ FROM ${JRE_BASE_IMAGE}
 
 LABEL maintainer="Michael Staehler"
 
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+RUN apt-get update -qqy \
+ && DEBIAN_FRONTEND=noninteractive apt-get upgrade -qqy \
  && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid 10001 appuser \
