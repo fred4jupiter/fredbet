@@ -6,10 +6,22 @@ on:
       release_version:
         description: 'The application release version'
         required: true
-        default: '4.1.1'
 
 jobs:
+  check_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if the release tag already exists
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}.git
+        run: |
+          if git ls-remote --exit-code --tags "$REPO_URL" "refs/tags/${RELEASE_VERSION}" > /dev/null; then
+            echo "::error::Tag ${RELEASE_VERSION} already exists. Choose a new release version."
+            exit 1
+          fi
   build:
+    needs: check_version
     uses: ./.github/workflows/build-template.yml
     with:
       maven_command: 'mvn -Drevision=${{ github.event.inputs.release_version }} -B verify'
@@ -29,7 +41,6 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: fredbet.jar
-          run-id: ${{needs.build.outputs.jar_file_id}}
           path: target
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
@@ -55,11 +66,6 @@ jobs:
             --tag ghcr.io/${DOCKER_IMAGE}:${{ github.event.inputs.release_version }} \
             --file ./Dockerfile \
             --output type=image,push=true .
-      - name: Generate changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@v4.6.2
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -67,6 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{github.event.inputs.release_version}}
+          target_commitish: ${{ github.sha }} # tag the commit that was built, not the current head of master
           draft: false
           prerelease: false
-          body: ${{steps.changelog.outputs.changelog}}
+          generate_release_notes: true # GitHub release notes from merged PRs since the last release, grouped via .github/release.yml
