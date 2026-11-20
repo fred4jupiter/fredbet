@@ -18,19 +18,14 @@ on:
         required: false
         type: boolean
         default: false
-    outputs:
-      jar_file_id:
-        description: "The id of the uploaded fredbet.jar file"
-        value: ${{ jobs.build.outputs.jar-file-id }}
-  #    secrets:
-#      personal_access_token:
-#        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      jar-file-id: ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}
+    permissions:
+      contents: read
+      actions: read
+      checks: write # test report
     steps:
       - name: Checkout the code
         uses: actions/checkout@v6
@@ -42,13 +37,7 @@ jobs:
         with:
           java-version: ${{ inputs.java_version }}
           distribution: 'temurin'
-      - name: Cache local Maven repository
-        uses: actions/cache@v5
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          cache: maven
       - name: Build with Maven
         run: ${{ inputs.maven_command }}
       - name: Publish Test Report
@@ -78,12 +67,8 @@ jobs:
           retention-days: 7
       - name: Upload jar file
         if: ${{ inputs.upload_artifact }}
-        id: fredbet-jar-artifact
         uses: actions/upload-artifact@v7
         with:
           name: fredbet.jar
           path: target/fredbet.jar
           retention-days: 1
-      - name: Output artifact ID
-        if: ${{ inputs.upload_artifact }}
-        run: echo 'Artifact ID is ${{ steps.fredbet-jar-artifact.outputs.artifact-id }}'
