@@ -15,7 +15,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: Vigilant-LLC/runner-guard@v1
+      - name: Run Runner Guard
+        uses: Vigilant-LLC/runner-guard@v1
+        # Manual check only: report findings, never fail the build.
+        # SARIF upload inside the action runs with if: always(), so findings still reach Code Scanning.
+        continue-on-error: true
         with:
           fail-on: high
           sarif-upload: 'true'
+      - name: Write findings to job summary
+        if: always()
+        run: |
+          if [ ! -f runner-guard.sarif ]; then
+            echo "No SARIF report produced." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          COUNT=$(jq '[.runs[].results[]] | length' runner-guard.sarif)
+          {
+            echo "## Runner Guard findings: ${COUNT}"
+            echo
+            if [ "$COUNT" -gt 0 ]; then
+              echo "| Level | Rule | Location | Message |"
+              echo "|---|---|---|---|"
+              jq -r '.runs[].results[] |
+                "| \(.level // "warning") | \(.ruleId) | \(.locations[0].physicalLocation.artifactLocation.uri // "-"):\(.locations[0].physicalLocation.region.startLine // "") | \(.message.text | gsub("\\|"; "\\|") | gsub("\n"; " ")) |"' runner-guard.sarif
+            fi
+            QUERY=$(jq -rn --arg q "is:open tool:runner-guard branch:${GITHUB_REF_NAME}" '$q|@uri')
+            echo
+            echo "[View results in Code scanning](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/security/code-scanning?query=${QUERY})"
+          } >> "$GITHUB_STEP_SUMMARY"
