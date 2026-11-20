@@ -21,6 +21,8 @@ jobs:
         # SARIF upload inside the action runs with if: always(), so findings still reach Code Scanning.
         continue-on-error: true
         with:
+          # Pinned: "latest" makes an unauthenticated GitHub API call that gets rate-limited (403).
+          version: v3.1.5
           fail-on: high
           sarif-upload: 'true'
       - name: Write findings to job summary
