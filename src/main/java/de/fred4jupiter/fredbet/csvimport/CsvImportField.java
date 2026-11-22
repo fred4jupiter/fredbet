@@ -22,7 +22,13 @@ public enum CsvImportField {
         "hometeamimage", "homeimage"),
 
     TEAM_TWO_IMAGE("csvimport.field.teamTwoImage", false, "teamtwoimage", "team2image", "teamtwocrest", "team2crest", "awayteamcrest", "awaycrest",
-        "awayteamimage", "awayimage");
+        "awayteamimage", "awayimage"),
+
+    TEAM_ONE_SVG("csvimport.field.teamOneSvg", false, "teamonesvg", "team1svg", "teamonecrestsvg", "team1crestsvg", "hometeamsvg", "homesvg",
+        "hometeamcrestsvg", "homecrestsvg"),
+
+    TEAM_TWO_SVG("csvimport.field.teamTwoSvg", false, "teamtwosvg", "team2svg", "teamtwocrestsvg", "team2crestsvg", "awayteamsvg", "awaysvg",
+        "awayteamcrestsvg", "awaycrestsvg");
 
     private final String msgKey;
 

@@ -80,7 +80,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="row : ${previewRows}">
-                                    <td th:each="value : ${row}" class="text-nowrap small" th:text="${value}"></td>
+                                    <td th:each="value : ${row}" class="text-nowrap small" th:text="${#strings.abbreviate(value, 60)}"></td>
                                 </tr>
                                 </tbody>
                             </table>

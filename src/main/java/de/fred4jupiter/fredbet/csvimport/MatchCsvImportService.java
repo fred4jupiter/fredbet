@@ -5,6 +5,7 @@ import de.fred4jupiter.fredbet.domain.SvgImage;
 import de.fred4jupiter.fredbet.domain.entity.Match;
 import de.fred4jupiter.fredbet.domain.entity.Team;
 import de.fred4jupiter.fredbet.match.MatchService;
+import de.fred4jupiter.fredbet.team.InvalidCrestException;
 import de.fred4jupiter.fredbet.team.TeamService;
 import de.fred4jupiter.fredbet.teambundle.TeamBundleEntry;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +27,8 @@ import java.util.Optional;
 /**
  * Imports the matches of a tournament from a CSV file. Each column of the CSV file is mapped to a
  * {@link CsvImportField}. Team names that can be resolved to a team bundle entry (country or club team) are saved as
- * such, all other teams are saved with their name. The import is all or nothing: if a single line is invalid, no
+ * such, all other teams are saved with their name. The crest of a new team can be given as SVG content or as URL of an
+ * image to download. The import is all or nothing: if a single line is invalid, no
  * match is imported.
  */
 @Service
@@ -33,6 +36,8 @@ import java.util.Optional;
 public class MatchCsvImportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MatchCsvImportService.class);
+
+    private static final int MAX_SVG_SIZE = 2 * 1024 * 1024;
 
     private final TeamNameResolver teamNameResolver;
 
@@ -46,7 +51,7 @@ public class MatchCsvImportService {
 
     private final MatchService matchService;
 
-    public MatchCsvImportService(TeamNameResolver teamNameResolver, GroupResolver groupResolver, KickOffDateParser kickOffDateParser,
+    MatchCsvImportService(TeamNameResolver teamNameResolver, GroupResolver groupResolver, KickOffDateParser kickOffDateParser,
                                  CrestImageDownloader crestImageDownloader, TeamService teamService, MatchService matchService) {
         this.teamNameResolver = teamNameResolver;
         this.groupResolver = groupResolver;
@@ -157,6 +162,8 @@ public class MatchCsvImportService {
         String venue = valueOf(row, columnIndexes, CsvImportField.VENUE);
         String teamOneImage = valueOf(row, columnIndexes, CsvImportField.TEAM_ONE_IMAGE);
         String teamTwoImage = valueOf(row, columnIndexes, CsvImportField.TEAM_TWO_IMAGE);
+        String teamOneSvg = valueOf(row, columnIndexes, CsvImportField.TEAM_ONE_SVG);
+        String teamTwoSvg = valueOf(row, columnIndexes, CsvImportField.TEAM_TWO_SVG);
 
         requireValue(lineNumber, CsvImportField.TEAM_ONE, teamOne, errors);
         requireValue(lineNumber, CsvImportField.TEAM_TWO, teamTwo, errors);
@@ -176,13 +183,15 @@ public class MatchCsvImportService {
 
         validateImageUrl(lineNumber, CsvImportField.TEAM_ONE_IMAGE, teamOneImage, errors);
         validateImageUrl(lineNumber, CsvImportField.TEAM_TWO_IMAGE, teamTwoImage, errors);
+        SvgImage teamOneCrest = toCrest(lineNumber, CsvImportField.TEAM_ONE_SVG, teamOneSvg, errors);
+        SvgImage teamTwoCrest = toCrest(lineNumber, CsvImportField.TEAM_TWO_SVG, teamTwoSvg, errors);
 
         if (errors.size() > errorCountBefore) {
             return null;
         }
 
-        return new ImportRow(lineNumber, new ImportTeam(teamOne, teamNameResolver.resolve(teamOne), teamOneImage),
-            new ImportTeam(teamTwo, teamNameResolver.resolve(teamTwo), teamTwoImage), group, kickOffDate, StringUtils.trimToNull(venue));
+        return new ImportRow(lineNumber, new ImportTeam(teamOne, teamNameResolver.resolve(teamOne), teamOneImage, teamOneCrest),
+            new ImportTeam(teamTwo, teamNameResolver.resolve(teamTwo), teamTwoImage, teamTwoCrest), group, kickOffDate, StringUtils.trimToNull(venue));
     }
 
     private String valueOf(List<String> row, Map<CsvImportField, Integer> columnIndexes, CsvImportField field) {
@@ -207,6 +216,29 @@ public class MatchCsvImportService {
         }
     }
 
+    /**
+     * Converts the SVG content of a column to a crest.
+     *
+     * @return the crest or null, if the column is empty or contains no valid SVG image (an error is added then)
+     */
+    private SvgImage toCrest(int lineNumber, CsvImportField field, String svgContent, List<CsvImportError> errors) {
+        if (StringUtils.isBlank(svgContent)) {
+            return null;
+        }
+
+        byte[] svgBinary = svgContent.getBytes(StandardCharsets.UTF_8);
+        if (svgBinary.length > MAX_SVG_SIZE) {
+            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.svgTooLarge", field, null));
+            return null;
+        }
+        try {
+            return teamService.convertToCrest(svgBinary);
+        } catch (InvalidCrestException e) {
+            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.invalidSvg", field, null));
+            return null;
+        }
+    }
+
     private MatchCsvImportResult saveMatches(List<ImportRow> importRows) {
         TeamCreator teamCreator = new TeamCreator();
         for (ImportRow importRow : importRows) {
@@ -224,8 +256,8 @@ public class MatchCsvImportService {
     }
 
     /**
-     * Creates the teams of the import. The crest image of a team is only downloaded for a newly created team, so that
-     * crests of existing teams are not overwritten.
+     * Creates the teams of the import. The crest of a team is only set for a newly created team, so that crests of
+     * existing teams are not overwritten. A crest given as SVG content takes precedence over a crest URL.
      */
     private final class TeamCreator {
 
@@ -238,6 +270,10 @@ public class MatchCsvImportService {
         Team findOrCreateTeam(int lineNumber, ImportTeam importTeam, CsvImportField imageField) {
             return teamService.findOrCreateTeam(importTeam.teamBundleEntry(), importTeam.name(), newTeam -> {
                 createdTeams++;
+                if (importTeam.crest() != null) {
+                    newTeam.setSvgContent(importTeam.crest());
+                    return;
+                }
                 if (StringUtils.isBlank(importTeam.imageUrl())) {
                     return;
                 }
@@ -249,7 +285,7 @@ public class MatchCsvImportService {
         }
     }
 
-    private record ImportTeam(String name, TeamBundleEntry teamBundleEntry, String imageUrl) {
+    private record ImportTeam(String name, TeamBundleEntry teamBundleEntry, String imageUrl, SvgImage crest) {
     }
 
     private record ImportRow(int lineNumber, ImportTeam teamOne, ImportTeam teamTwo, Group group, LocalDateTime kickOffDate, String venue) {

@@ -89,6 +89,46 @@ public class MatchCsvImportServiceIT {
     }
 
     @Test
+    public void importCrestGivenAsSvgContent() {
+        String svg = "<svg xmlns=\"\"http://www.w3.org/2000/svg\"\" viewBox=\"\"0 0 10 10\"\"><circle cx=\"\"5\"\" cy=\"\"5\"\" r=\"\"4\"\"/></svg>";
+        CsvTable table = parse("""
+            Home,Away,Date,Home SVG,Home Crest
+            SVG Crest United,Away Crest City,2026-07-01T18:00,"%s",https://invalid.example.org/crest.svg
+            """.formatted(svg));
+
+        assertThat(matchCsvImportService.suggestMapping(table.headers()))
+            .containsExactly(TEAM_ONE, TEAM_TWO, KICK_OFF_DATE, TEAM_ONE_SVG, TEAM_ONE_IMAGE);
+
+        MatchCsvImportResult result = matchCsvImportService.importMatches(table, matchCsvImportService.suggestMapping(table.headers()), null);
+
+        assertThat(result.isSuccessful()).isTrue();
+        // the SVG content takes precedence, so the URL is not downloaded
+        assertThat(result.warnings()).isEmpty();
+        Match match = matchService.findAll().stream()
+            .filter(m -> "SVG Crest United".equals(m.getTeamOne().getName()))
+            .findFirst().orElseThrow();
+        assertThat(match.getTeamOne().getSvgContent()).isEqualTo(svg.replace("\"\"", "\""));
+    }
+
+    @Test
+    public void invalidSvgContentIsRejected() {
+        CsvTable table = parse("""
+            Home,Away,Date,Away SVG
+            Germany,France,2026-07-01T18:00,"<svg xmlns=""http://www.w3.org/2000/svg""><script>alert(1)</script></svg>"
+            Germany,Spain,2026-07-02T18:00,no svg at all
+            """);
+
+        MatchCsvImportResult result = matchCsvImportService.importMatches(table, matchCsvImportService.suggestMapping(table.headers()), null);
+
+        assertThat(result.isSuccessful()).isFalse();
+        assertThat(result.errors())
+            .extracting(CsvImportError::lineNumber, CsvImportError::msgKey, CsvImportError::field)
+            .containsExactly(
+                tuple(2, "csvimport.error.invalidSvg", TEAM_TWO_SVG),
+                tuple(3, "csvimport.error.invalidSvg", TEAM_TWO_SVG));
+    }
+
+    @Test
     public void mappingIsValidated() {
         CsvTable table = parse(CSV);
 
