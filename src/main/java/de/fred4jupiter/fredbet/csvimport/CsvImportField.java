@@ -14,15 +14,18 @@ public enum CsvImportField {
 
     GROUP("csvimport.field.group", false, "group", "gruppe", "stage", "round", "runde"),
 
-    KICK_OFF_DATE("csvimport.field.kickOffDate", true, "kickoffdate", "kickoff", "date", "datetime", "datum", "anstoss", "utcdate"),
+    KICK_OFF_DATE("csvimport.field.kickOffDate", true, "kickoffdate", "kickoff", "kickoffdatetime", "kickoffdateiso", "kickofftime", "date", "datetime", "datum", "anstoss", "utcdate",
+        "matchdate", "spieldatum"),
 
     VENUE("csvimport.field.venue", false, "venue", "stadium", "location", "stadion", "ort", "spielort"),
 
     TEAM_ONE_IMAGE("csvimport.field.teamOneImage", false, "teamoneimage", "team1image", "teamonecrest", "team1crest", "hometeamcrest", "homecrest",
-        "hometeamimage", "homeimage"),
+        "hometeamimage", "homeimage", "teamonecresturl", "team1cresturl", "hometeamcresturl", "homecresturl", "homeimageurl",
+        "hometeamimageurl"),
 
     TEAM_TWO_IMAGE("csvimport.field.teamTwoImage", false, "teamtwoimage", "team2image", "teamtwocrest", "team2crest", "awayteamcrest", "awaycrest",
-        "awayteamimage", "awayimage"),
+        "awayteamimage", "awayimage", "teamtwocresturl", "team2cresturl", "awayteamcresturl", "awaycresturl", "awayimageurl",
+        "awayteamimageurl"),
 
     TEAM_ONE_SVG("csvimport.field.teamOneSvg", false, "teamonesvg", "team1svg", "teamonecrestsvg", "team1crestsvg", "hometeamsvg", "homesvg",
         "hometeamcrestsvg", "homecrestsvg"),
@@ -51,8 +54,11 @@ public enum CsvImportField {
         return required;
     }
 
-    boolean matchesHeader(String normalizedHeader) {
-        return headerAliases.contains(normalizedHeader);
+    /**
+     * @return the priority of the header for this field (0 is the best match) or -1, if the header does not match
+     */
+    int headerPriority(String normalizedHeader) {
+        return headerAliases.indexOf(normalizedHeader);
     }
 
     public static List<CsvImportField> requiredFields() {

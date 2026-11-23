@@ -6,6 +6,7 @@ import de.fred4jupiter.fredbet.team.TeamService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -34,6 +35,9 @@ class CrestImageDownloader {
 
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
+    // some image hosts (e.g. Wikimedia) reject requests with the default user agent of the Java HTTP client
+    private static final String USER_AGENT = "FredBet (crest import; https://github.com/fred4jupiter/fredbet)";
+
     private final RestClient restClient;
 
     private final TeamService teamService;
@@ -46,7 +50,11 @@ class CrestImageDownloader {
             .build();
         JdkClientHttpRequestFactory requestFactory = new JdkClientHttpRequestFactory(httpClient);
         requestFactory.setReadTimeout(TIMEOUT);
-        this.restClient = RestClient.builder().requestFactory(requestFactory).build();
+        this.restClient = RestClient.builder()
+            .requestFactory(requestFactory)
+            .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
+            .defaultHeader(HttpHeaders.ACCEPT, "image/svg+xml,image/png,image/jpeg;q=0.9,*/*;q=0.5")
+            .build();
     }
 
     /**

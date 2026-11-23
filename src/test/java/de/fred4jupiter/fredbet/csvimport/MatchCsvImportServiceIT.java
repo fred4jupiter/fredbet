@@ -8,9 +8,14 @@ import de.fred4jupiter.fredbet.match.MatchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import static de.fred4jupiter.fredbet.csvimport.CsvImportField.*;
@@ -124,8 +129,76 @@ public class MatchCsvImportServiceIT {
         assertThat(result.errors())
             .extracting(CsvImportError::lineNumber, CsvImportError::msgKey, CsvImportError::field)
             .containsExactly(
-                tuple(2, "csvimport.error.invalidSvg", TEAM_TWO_SVG),
-                tuple(3, "csvimport.error.invalidSvg", TEAM_TWO_SVG));
+                tuple(2, "csvimport.error.invalidCrest", TEAM_TWO_SVG),
+                tuple(3, "csvimport.error.invalidCrest", TEAM_TWO_SVG));
+    }
+
+    @Test
+    public void importCrestGivenAsBase64EncodedRasterImage() {
+        String pngDataUri = "data:image/png;base64," + Base64.getEncoder().encodeToString(createImage("png", BufferedImage.TYPE_INT_ARGB));
+        String plainJpegBase64 = Base64.getEncoder().encodeToString(createImage("jpg", BufferedImage.TYPE_INT_RGB));
+        // a data URI contains a comma, so it has to be quoted
+        CsvTable table = parse("""
+            Home,Away,Date,Home SVG,Away SVG
+            PNG Crest United,JPEG Crest City,2026-07-03T18:00,"%s",%s
+            """.formatted(pngDataUri, plainJpegBase64));
+
+        MatchCsvImportResult result = matchCsvImportService.importMatches(table, matchCsvImportService.suggestMapping(table.headers()), null);
+
+        assertThat(result.isSuccessful()).isTrue();
+        Match match = matchService.findAll().stream()
+            .filter(m -> "PNG Crest United".equals(m.getTeamOne().getName()))
+            .findFirst().orElseThrow();
+        // raster images are wrapped into an SVG, the same way as for a crest uploaded on the team page
+        assertThat(match.getTeamOne().getSvgContent()).startsWith("<svg").contains("href=\"data:image/png;base64,");
+        assertThat(match.getTeamTwo().getSvgContent()).startsWith("<svg").contains("href=\"data:image/jpeg;base64,");
+    }
+
+    @Test
+    public void suggestMappingPrefersBestMatchingHeader() {
+        List<String> headers = List.of("match_id", "round", "group", "kickoff_datetime", "home_team", "away_team", "home_crest_url", "away_crest_url");
+
+        assertThat(matchCsvImportService.suggestMapping(headers))
+            .containsExactly(null, null, GROUP, KICK_OFF_DATE, TEAM_ONE, TEAM_TWO, TEAM_ONE_IMAGE, TEAM_TWO_IMAGE);
+    }
+
+    @Test
+    public void urlInCrestColumnIsDownloaded() {
+        CsvTable table = parse("""
+            Home,Away,Date,Home SVG
+            URL Crest United,Germany,2026-07-04T18:00,https://invalid.example.org/crest.png
+            """);
+
+        MatchCsvImportResult result = matchCsvImportService.importMatches(table, matchCsvImportService.suggestMapping(table.headers()), null);
+
+        assertThat(result.isSuccessful()).isTrue();
+        assertThat(result.warnings())
+            .extracting(CsvImportError::msgKey, CsvImportError::field, CsvImportError::value)
+            .containsExactly(tuple("csvimport.warning.crestDownloadFailed", TEAM_ONE_IMAGE, "https://invalid.example.org/crest.png"));
+    }
+
+    @Test
+    public void crestOfExistingTeamIsUpdated() {
+        String firstSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><rect width=\"10\" height=\"10\"/></svg>";
+        String secondSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><circle cx=\"5\" cy=\"5\" r=\"4\"/></svg>";
+        String csv = """
+            Home,Away,Date,Home SVG,Home Crest
+            Repeated Crest FC,Germany,2026-07-05T18:00,%s,%s
+            """;
+
+        matchCsvImportService.importMatches(parse(csv.formatted(quote(firstSvg), "")), List.of(TEAM_ONE, TEAM_TWO, KICK_OFF_DATE, TEAM_ONE_SVG, TEAM_ONE_IMAGE), null);
+        MatchCsvImportResult result = matchCsvImportService.importMatches(parse(csv.formatted(quote(secondSvg), "")),
+            List.of(TEAM_ONE, TEAM_TWO, KICK_OFF_DATE, TEAM_ONE_SVG, TEAM_ONE_IMAGE), null);
+        // a failed download keeps the crest of the existing team
+        MatchCsvImportResult failedDownload = matchCsvImportService.importMatches(parse(csv.formatted("", "https://invalid.example.org/crest.svg")),
+            List.of(TEAM_ONE, TEAM_TWO, KICK_OFF_DATE, TEAM_ONE_SVG, TEAM_ONE_IMAGE), null);
+
+        assertThat(result.createdTeams()).isZero();
+        assertThat(failedDownload.warnings()).hasSize(1);
+        assertThat(matchService.findAll())
+            .filteredOn(match -> "Repeated Crest FC".equals(match.getTeamOne().getName()))
+            .hasSize(3)
+            .allSatisfy(match -> assertThat(match.getTeamOne().getSvgContent()).isEqualTo(secondSvg));
     }
 
     @Test
@@ -147,6 +220,19 @@ public class MatchCsvImportServiceIT {
         return matchService.findAll().stream()
             .filter(match -> kickOffDate.equals(match.getKickOffDate()) && teamTwo.equals(match.getTeamTwo().getTeamBundleEntry()))
             .findFirst().orElseThrow();
+    }
+
+    private static byte[] createImage(String formatName, int imageType) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            ImageIO.write(new BufferedImage(10, 10, imageType), formatName, out);
+            return out.toByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static String quote(String value) {
+        return "\"" + value.replace("\"", "\"\"") + "\"";
     }
 
     private CsvTable parse(String csv) {

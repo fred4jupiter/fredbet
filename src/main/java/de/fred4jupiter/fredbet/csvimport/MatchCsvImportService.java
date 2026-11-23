@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,8 +26,8 @@ import java.util.Optional;
 /**
  * Imports the matches of a tournament from a CSV file. Each column of the CSV file is mapped to a
  * {@link CsvImportField}. Team names that can be resolved to a team bundle entry (country or club team) are saved as
- * such, all other teams are saved with their name. The crest of a new team can be given as SVG content or as URL of an
- * image to download. The import is all or nothing: if a single line is invalid, no
+ * such, all other teams are saved with their name. The crest of a new team can be given as SVG markup, as Base64
+ * encoded SVG, JPEG or PNG image or as URL of an image to download (the same image types as for a team created manually). The import is all or nothing: if a single line is invalid, no
  * match is imported.
  */
 @Service
@@ -37,7 +36,10 @@ public class MatchCsvImportService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MatchCsvImportService.class);
 
-    private static final int MAX_SVG_SIZE = 2 * 1024 * 1024;
+    private static final int MAX_CREST_SIZE = 2 * 1024 * 1024;
+
+    // Base64 encoding increases the size by a third
+    private static final int MAX_CREST_CONTENT_LENGTH = MAX_CREST_SIZE / 3 * 4 + 1024;
 
     private final TeamNameResolver teamNameResolver;
 
@@ -73,22 +75,28 @@ public class MatchCsvImportService {
 
     /**
      * Suggests a field for each column based on the column header, e.g. 'Home Team' is mapped to {@link CsvImportField#TEAM_ONE}.
+     * If several columns match the same field, the column with the best matching header is used, e.g. 'group' is preferred
+     * to 'round'.
      *
      * @return the suggested field for each column (in the order of the columns), null for a column that is not imported
      */
     @Transactional(readOnly = true)
     public List<CsvImportField> suggestMapping(List<String> headers) {
-        List<CsvImportField> mapping = new ArrayList<>();
-        for (String header : headers) {
-            String normalized = TranslationLookup.normalize(header);
-            CsvImportField field = null;
-            for (CsvImportField candidate : CsvImportField.values()) {
-                if (!mapping.contains(candidate) && candidate.matchesHeader(normalized)) {
-                    field = candidate;
-                    break;
+        List<String> normalizedHeaders = headers.stream().map(TranslationLookup::normalize).toList();
+        List<CsvImportField> mapping = new ArrayList<>(Collections.nCopies(headers.size(), null));
+        for (CsvImportField field : CsvImportField.values()) {
+            int bestColumn = -1;
+            int bestPriority = Integer.MAX_VALUE;
+            for (int i = 0; i < normalizedHeaders.size(); i++) {
+                int priority = field.headerPriority(normalizedHeaders.get(i));
+                if (mapping.get(i) == null && priority >= 0 && priority < bestPriority) {
+                    bestColumn = i;
+                    bestPriority = priority;
                 }
             }
-            mapping.add(field);
+            if (bestColumn >= 0) {
+                mapping.set(bestColumn, field);
+            }
         }
         return mapping;
     }
@@ -181,6 +189,16 @@ public class MatchCsvImportService {
             errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.unknownGroup", CsvImportField.GROUP, groupValue));
         }
 
+        // an image URL in the crest column is downloaded, as if it was given in the image URL column
+        if (CrestImageDownloader.isValidImageUrl(teamOneSvg)) {
+            teamOneImage = StringUtils.defaultIfBlank(teamOneImage, teamOneSvg);
+            teamOneSvg = null;
+        }
+        if (CrestImageDownloader.isValidImageUrl(teamTwoSvg)) {
+            teamTwoImage = StringUtils.defaultIfBlank(teamTwoImage, teamTwoSvg);
+            teamTwoSvg = null;
+        }
+
         validateImageUrl(lineNumber, CsvImportField.TEAM_ONE_IMAGE, teamOneImage, errors);
         validateImageUrl(lineNumber, CsvImportField.TEAM_TWO_IMAGE, teamTwoImage, errors);
         SvgImage teamOneCrest = toCrest(lineNumber, CsvImportField.TEAM_ONE_SVG, teamOneSvg, errors);
@@ -217,24 +235,32 @@ public class MatchCsvImportService {
     }
 
     /**
-     * Converts the SVG content of a column to a crest.
+     * Converts the crest content of a column (SVG markup or a Base64 encoded SVG, JPEG or PNG image) to a crest.
      *
-     * @return the crest or null, if the column is empty or contains no valid SVG image (an error is added then)
+     * @return the crest or null, if the column is empty or contains no valid image (an error is added then)
      */
-    private SvgImage toCrest(int lineNumber, CsvImportField field, String svgContent, List<CsvImportError> errors) {
-        if (StringUtils.isBlank(svgContent)) {
+    private SvgImage toCrest(int lineNumber, CsvImportField field, String crestContent, List<CsvImportError> errors) {
+        if (StringUtils.isBlank(crestContent)) {
+            return null;
+        }
+        if (crestContent.length() > MAX_CREST_CONTENT_LENGTH) {
+            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.crestTooLarge", field, null));
             return null;
         }
 
-        byte[] svgBinary = svgContent.getBytes(StandardCharsets.UTF_8);
-        if (svgBinary.length > MAX_SVG_SIZE) {
-            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.svgTooLarge", field, null));
+        Optional<byte[]> image = CrestContentDecoder.decode(crestContent);
+        if (image.isEmpty()) {
+            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.invalidCrest", field, null));
+            return null;
+        }
+        if (image.get().length > MAX_CREST_SIZE) {
+            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.crestTooLarge", field, null));
             return null;
         }
         try {
-            return teamService.convertToCrest(svgBinary);
+            return teamService.convertToCrest(image.get());
         } catch (InvalidCrestException e) {
-            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.invalidSvg", field, null));
+            errors.add(CsvImportError.ofLine(lineNumber, "csvimport.error.invalidCrest", field, null));
             return null;
         }
     }
@@ -256,8 +282,9 @@ public class MatchCsvImportService {
     }
 
     /**
-     * Creates the teams of the import. The crest of a team is only set for a newly created team, so that crests of
-     * existing teams are not overwritten. A crest given as SVG content takes precedence over a crest URL.
+     * Creates the teams of the import. A crest given in the CSV file is also set for an existing team, the crest of an
+     * existing team is only kept if no crest is given or the crest image could not be downloaded. A crest given as
+     * content takes precedence over a crest URL.
      */
     private final class TeamCreator {
 
@@ -268,20 +295,34 @@ public class MatchCsvImportService {
         private int createdTeams;
 
         Team findOrCreateTeam(int lineNumber, ImportTeam importTeam, CsvImportField imageField) {
-            return teamService.findOrCreateTeam(importTeam.teamBundleEntry(), importTeam.name(), newTeam -> {
+            boolean[] created = {false};
+            Team team = teamService.findOrCreateTeam(importTeam.teamBundleEntry(), importTeam.name(), newTeam -> {
+                created[0] = true;
                 createdTeams++;
-                if (importTeam.crest() != null) {
-                    newTeam.setSvgContent(importTeam.crest());
-                    return;
-                }
-                if (StringUtils.isBlank(importTeam.imageUrl())) {
-                    return;
-                }
-
-                Optional<SvgImage> crest = downloadedCrests.computeIfAbsent(importTeam.imageUrl(), crestImageDownloader::download);
-                crest.ifPresentOrElse(newTeam::setSvgContent,
-                    () -> warnings.add(CsvImportError.ofLine(lineNumber, "csvimport.warning.crestDownloadFailed", imageField, importTeam.imageUrl())));
+                crestOf(lineNumber, importTeam, imageField).ifPresent(newTeam::setSvgContent);
             });
+
+            if (!created[0]) {
+                crestOf(lineNumber, importTeam, imageField).ifPresent(team::setSvgContent);
+            }
+            return team;
+        }
+
+        private Optional<SvgImage> crestOf(int lineNumber, ImportTeam importTeam, CsvImportField imageField) {
+            if (importTeam.crest() != null) {
+                return Optional.of(importTeam.crest());
+            }
+            if (StringUtils.isBlank(importTeam.imageUrl())) {
+                return Optional.empty();
+            }
+
+            boolean alreadyDownloaded = downloadedCrests.containsKey(importTeam.imageUrl());
+            Optional<SvgImage> crest = downloadedCrests.computeIfAbsent(importTeam.imageUrl(), crestImageDownloader::download);
+            // a failed download is reported only once per URL
+            if (crest.isEmpty() && !alreadyDownloaded) {
+                warnings.add(CsvImportError.ofLine(lineNumber, "csvimport.warning.crestDownloadFailed", imageField, importTeam.imageUrl()));
+            }
+            return crest;
         }
     }
 
