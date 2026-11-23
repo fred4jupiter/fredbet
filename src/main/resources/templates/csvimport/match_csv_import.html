@@ -90,10 +90,14 @@
 
                         <div class="row mb-3">
                             <div class="col-12 col-md-6 col-lg-4">
-                                <label for="dateFormat" class="form-label" th:text="#{csvimport.dateFormat}"></label>
+                                <label for="dateFormat" class="form-label">
+                                    <span th:text="#{csvimport.dateFormat}"></span>
+                                    <span class="fas fa-info-circle text-body-secondary ms-1" aria-hidden="true" data-bs-toggle="tooltip"
+                                          data-bs-placement="top" th:title="#{csvimport.dateFormat.hint}"></span>
+                                </label>
                                 <input type="text" id="dateFormat" class="form-control font-monospace" th:field="*{dateFormat}" placeholder="dd.MM.yyyy HH:mm"
-                                       autocomplete="off" spellcheck="false"/>
-                                <div class="form-text" th:text="#{csvimport.dateFormat.hint}"></div>
+                                       autocomplete="off" spellcheck="false" aria-describedby="dateFormatHelp"/>
+                                <span id="dateFormatHelp" class="visually-hidden" th:text="#{csvimport.dateFormat.hint}"></span>
                             </div>
                         </div>
 
