@@ -36,7 +36,7 @@ class CrestImageDownloader {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
     // some image hosts (e.g. Wikimedia) reject requests with the default user agent of the Java HTTP client
-    private static final String USER_AGENT = "FredBet (crest import; https://github.com/fred4jupiter/fredbet)";
+    private static final String USER_AGENT = "FredBet crest import";
 
     private final RestClient restClient;
 
