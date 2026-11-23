@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{_layout}">
 <head>
     <title th:text="#{csvimport.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/pages/csv_import.css}"/>
 </head>
 <body>
 <div layout:fragment="content" th:with="uploaded=${matchCsvImportCommand.uploaded}">
@@ -65,22 +66,28 @@
                         </div>
 
                         <div class="table-responsive mb-3">
-                            <table class="table table-sm table-striped align-middle">
+                            <table id="csvPreviewTable" class="table table-sm table-striped align-middle csv-preview-table">
+                                <colgroup>
+                                    <col th:each="header : *{csvTable.headers()}"/>
+                                </colgroup>
                                 <thead>
                                 <tr>
-                                    <th th:each="header, stat : *{csvTable.headers()}" scope="col" class="text-nowrap">
-                                        <div class="small text-body-secondary" th:text="${header}"></div>
+                                    <th th:each="header, stat : *{csvTable.headers()}" scope="col">
+                                        <div class="small text-body-secondary text-truncate" th:text="${header}" th:title="${header}"></div>
                                         <select class="form-select form-select-sm csv-column-mapping" th:field="*{columnMappings[__${stat.index}__]}"
                                                 th:aria-label="${header}">
                                             <option value="" th:text="#{csvimport.field.ignore}"></option>
                                             <option th:each="field : ${availableFields}" th:value="${field}" th:text="#{${field.msgKey}}"></option>
                                         </select>
+                                        <span class="csv-column-resizer" role="separator" aria-orientation="vertical" tabindex="0"
+                                              th:aria-label="#{csvimport.column.resize(${header})}" th:title="#{csvimport.column.resize.hint}"></span>
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="row : ${previewRows}">
-                                    <td th:each="value : ${row}" class="text-nowrap small" th:text="${#strings.abbreviate(value, 60)}"></td>
+                                    <td th:each="value : ${row}" class="small" th:text="${#strings.abbreviate(value, 200)}"
+                                        th:title="${#strings.abbreviate(value, 500)}"></td>
                                 </tr>
                                 </tbody>
                             </table>
