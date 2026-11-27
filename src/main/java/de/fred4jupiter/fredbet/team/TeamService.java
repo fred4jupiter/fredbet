@@ -285,6 +285,18 @@ public class TeamService {
     }
 
     /**
+     * Converts the given image to a crest. JPEG and PNG images are wrapped into an SVG.
+     *
+     * @throws InvalidCrestException if the given image is no valid SVG, JPEG or PNG image
+     */
+    public SvgImage convertToCrest(byte[] image) {
+        if (image == null || image.length == 0) {
+            throw new InvalidCrestException("Given crest is empty!");
+        }
+        return new SvgImage(toCrestSvg(image));
+    }
+
+    /**
      * @throws InvalidCrestException if the given crest is no valid SVG, JPEG or PNG image
      */
     private String toCrestSvg(byte[] crestImage) {
