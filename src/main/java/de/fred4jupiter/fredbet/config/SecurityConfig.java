@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.props.FredbetProperties;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import de.fred4jupiter.fredbet.security.TolerantPersistentTokenRememberMeServices;
 import org.springframework.boot.h2console.autoconfigure.H2ConsoleProperties;
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
@@ -12,15 +13,18 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.sql.DataSource;
 import java.util.Optional;
+import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -34,8 +38,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, PersistentTokenRepository persistentTokenRepository,
-                                           FredbetProperties fredbetProperties) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, RememberMeServices rememberMeServices) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // see StaticResourceLocation for default static resource mappings
                 // only the health endpoint is public, any other (later exposed) actuator endpoint needs admin rights
@@ -52,8 +55,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             // auto-login: a long validity avoids the login page in the installed app (PWA) after the session has expired
-            .rememberMe(remember -> remember.tokenRepository(persistentTokenRepository)
-                .tokenValiditySeconds(rememberMeValiditySeconds(fredbetProperties)))
+            .rememberMe(remember -> remember.rememberMeServices(rememberMeServices))
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/matches/upcoming")
@@ -72,6 +74,17 @@ public class SecurityConfig {
         }
 
         return http.build();
+    }
+
+    @Bean
+    public RememberMeServices rememberMeServices(UserDetailsService userDetailsService,
+                                                 PersistentTokenRepository persistentTokenRepository,
+                                                 FredbetProperties fredbetProperties) {
+        // the key only signs the authentication within this application, the tokens themselves are in the database
+        var rememberMeServices = new TolerantPersistentTokenRememberMeServices(UUID.randomUUID().toString(),
+            userDetailsService, persistentTokenRepository);
+        rememberMeServices.setTokenValiditySeconds(rememberMeValiditySeconds(fredbetProperties));
+        return rememberMeServices;
     }
 
     private static int rememberMeValiditySeconds(FredbetProperties fredbetProperties) {
