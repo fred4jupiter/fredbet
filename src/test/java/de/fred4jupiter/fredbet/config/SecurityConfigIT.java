@@ -2,6 +2,7 @@ package de.fred4jupiter.fredbet.config;
 
 import de.fred4jupiter.fredbet.common.MockMvcIntegrationTest;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +56,25 @@ public class SecurityConfigIT {
         assertThat(result).hasStatus3xxRedirection();
         assertThat(result).cookies().containsCookie("remember-me")
             .hasMaxAge("remember-me", Duration.ofDays(30));
+    }
+
+    @Test
+    public void outdatedAutoLoginCookieLeadsToLoginPageInsteadOfError() {
+        Cookie firstCookie = mvc.post().uri("/login").with(csrf())
+            .param("username", "admin").param("password", "admin").param("remember-me", "on")
+            .exchange().getResponse().getCookie("remember-me");
+        assertThat(firstCookie).isNotNull();
+
+        // the auto-login replaces the token, so the first cookie is outdated afterwards
+        assertThat(mvc.get().uri("/matches/upcoming").cookie(firstCookie))
+            .hasStatusOk()
+            .cookies().containsCookie("remember-me");
+
+        // e.g. a second request with the old cookie at the same time
+        assertThat(mvc.get().uri("/matches/upcoming").cookie(firstCookie))
+            .hasStatus3xxRedirection()
+            .hasRedirectedUrl("/login")
+            .cookies().hasMaxAge("remember-me", Duration.ZERO);
     }
 
     @Test
